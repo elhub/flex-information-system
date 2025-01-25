@@ -1,0 +1,110 @@
+# Service Providing Group Membership
+
+The relation that links a controllable unit to a service providing group.
+
+## Relevant links
+
+* [API Documentation](/api/v0/#/operations/list_service_providing_group_membership)
+* [Download docx](/docs/download/service_providing_group_membership.docx)
+
+## Fields
+
+| Name                                                                                                               | Description                                                                                               | Format                                 | Reference                                                         |
+|--------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------|-------------------------------------------------------------------|
+| <a name="field-id" href="#field-id">id</a>                                                                         | Unique surrogate key.                                                                                     | bigint<br/>Read only                   |                                                                   |
+| <a name="field-controllable_unit_id" href="#field-controllable_unit_id">controllable_unit_id</a>                   | Reference to the controllable unit this relation links to a service providing group.                      | bigint<br/>Required<br/>Non-updatable  | [controllable_unit.id](controllable_unit.md#field-id)             |
+| <a name="field-service_providing_group_id" href="#field-service_providing_group_id">service_providing_group_id</a> | Reference to the service providing group this relation links to a controllable unit.                      | bigint<br/>Required<br/>Non-updatable  | [service_providing_group.id](service_providing_group.md#field-id) |
+| <a name="field-valid_from" href="#field-valid_from">valid_from</a>                                                 | The date from which the relation between the controllable unit and the service providing group is valid.  | timestamp with time zone<br/>Required  |                                                                   |
+| <a name="field-valid_to" href="#field-valid_to">valid_to</a>                                                       | The date until which the relation between the controllable unit and the service providing group is valid. | timestamp with time zone               |                                                                   |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                              | When the resource was recorded (created or updated) in the system.                                        | timestamp with time zone<br/>Read only |                                                                   |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                              | The identity that recorded the resource.                                                                  | bigint<br/>Read only                   |                                                                   |
+
+## Validation Rules
+
+### Inter-Field Validation
+
+No validation rules.
+
+### Resource-Level Validation
+
+No validation rules
+
+### Process-Level Validation
+
+No validation rules.
+
+## Notifications
+
+| Action                 | Recipient                       | Comment |
+|------------------------|---------------------------------|---------|
+| create, update, delete | SP of SPG, Impacted SO on SPGGP |         |
+
+## Authorization
+
+### Resource Level Authorization
+
+Below is the [RLA](../auth.md#resource-level-authorization-rla) for the
+resource. The default policy is **deny**.
+
+#### Anonymous
+
+No policies.
+
+#### Common
+
+| Policy key  | Policy                                   | Status |
+|-------------|------------------------------------------|--------|
+| SPGM-COM001 | Read history on SPGM that they can read. | DONE   |
+
+#### Balance Responsible Party
+
+No policies.
+
+#### End User
+
+No policies.
+
+#### Energy Supplier
+
+No policies.
+
+#### Flexibility Information System Operator
+
+| Policy key   | Policy                                                        | Status |
+|--------------|---------------------------------------------------------------|--------|
+| SPGM-FISO001 | Read, create, update and delete all SPG membership relations. | DONE   |
+
+#### Market Operator
+
+No policies.
+
+#### System Operator
+
+| Policy key | Policy                                     | Status |
+|------------|--------------------------------------------|--------|
+| SPGM-SO001 | Read SPGM belonging to SPGs they can read. | DONE   |
+
+#### Service Provider
+
+| Policy key | Policy                                                                                      | Status |
+|------------|---------------------------------------------------------------------------------------------|--------|
+| SPGM-SP001 | Create and update SPGM for SPGS that belongs to them and CU where they are or have been SP. | DONE   |
+| SPGM-SP002 | Read, delete SPGM for SPGS that belongs to them.                                            | DONE   |
+
+#### Third Party
+
+No policies.
+
+### Field Level Authorization
+
+For party type abbreviations, check [the auth docs](../auth.md#party)
+
+| FIELD                      | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
+|----------------------------|------|-----|----|----|------|----|----|-----|----|
+| id                         |      | R   | R  | R  | R    | R  | R  | R   | R  |
+| controllable_unit_id       |      | R   | R  | R  | RC   | R  | R  | RC  | R  |
+| service_providing_group_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |
+| valid_from                 |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |
+| valid_to                   |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |
+| recorded_at                |      | R   | R  | R  | R    | R  | R  | R   | R  |
+| recorded_by                |      | R   | R  | R  | R    | R  | R  | R   | R  |

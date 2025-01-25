@@ -1,0 +1,8 @@
+---
+extends: default
+
+rules:
+  # 160 chars is the accepted Elhub default line length
+  line-length:
+    max: 160
+    level: error

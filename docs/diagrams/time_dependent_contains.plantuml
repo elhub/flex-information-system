@@ -1,0 +1,34 @@
+@startgantt time_dependent_contains
+scale 500 width
+Project starts 2020-06-28
+
+
+
+
+
+-- Existing entries --
+
+[1 ] as [E1] starts 2020-07-01
+[E1] ends 2020-07-02
+[4 ] as [E4] starts 2020-07-03
+[E4] ends 2020-07-14
+[3 ] as [E3] starts 2020-07-15
+[E3] ends 2020-07-17
+
+-- New entry --
+
+[5 ] as [N5] starts 2020-07-06
+[N5] ends 2020-07-10
+
+-- Resulting timeline --
+
+[1] as [R1] starts 2020-07-01
+[R1] ends 2020-07-02
+[4] as [R4] starts 2020-07-03
+[R4] ends 2020-07-05
+[3] as [R3] starts 2020-07-15
+[R3] ends 2020-07-17
+[5] as [R5] starts 2020-07-06
+[R5] ends 2020-07-10
+
+@endgantt

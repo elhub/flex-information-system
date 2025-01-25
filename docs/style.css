@@ -1,0 +1,50 @@
+/*
+Full width layout to allow for large tables
+https://github.com/squidfunk/mkdocs-material/issues/619
+TODO - Make this a toggle?
+*/
+@media only screen and (min-width: 76.25em) {
+  .md-main__inner {
+    max-width: none;
+  }
+  .md-sidebar--primary {
+    left: 0;
+  }
+  .md-sidebar--secondary {
+    right: 0;
+    margin-left: 0;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+/* Ensure that there is room at the bottom for our custom footer */
+.md-sidebar__inner,
+.md-content__inner {
+  margin-bottom: 2.5rem;
+}
+
+/*
+Table styling stolen from
+
+https://blog.ktz.me/making-mkdocs-tables-look-like-github-markdown-tables/
+
+*/
+th,
+td {
+  border: 1px solid var(--md-typeset-table-color);
+  border-spacing: 0;
+  border-bottom: none;
+  border-left: none;
+  border-top: none;
+}
+
+/* light mode alternating table bg colors */
+.md-typeset__table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* dark mode alternating table bg colors */
+[data-md-color-scheme="slate"] .md-typeset__table tr:nth-child(2n) {
+  background-color: hsla(var(--md-hue), 25%, 25%, 1);
+}

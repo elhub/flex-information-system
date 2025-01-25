@@ -1,0 +1,43 @@
+@startdot grid_balance
+digraph G {
+    layout=dot;
+    compound=true;
+    ranksep=1;
+
+    node [label="\N",
+        shape=rect,
+    ];
+
+    #edge [dir=none];
+
+    subgraph cluster_MBA1 {
+        graph [label=MBA1];
+
+        MGA_A;
+        subgraph cluster_mga_b {
+            graph [label=MGA_B];
+            SGA_B;
+        }
+
+        MGA_A -> SGA_B [lhead=cluster_mga_b];
+    }
+
+    subgraph cluster_MBA2 {
+        graph [label=MBA2];
+        MGA_C;
+
+        subgraph cluster_mga_d {
+            graph [label=MGA_D];
+            SGA_D;
+        }
+
+        MGA_E;
+
+        MGA_C -> SGA_D [lhead=cluster_mga_d];
+        MGA_C -> MGA_E;
+        SGA_D -> MGA_E [ltail=cluster_mga_d];
+
+    }
+    MGA_C -> MGA_A;
+}
+@enddot

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>API_TITLE</title>
+    <!-- Embed elements Elements via Web Component -->
+    <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@stoplight/elements/styles.min.css"
+    />
+  </head>
+  <body>
+    <elements-api
+      apiDescriptionUrl="/API_NAME/v0/openapi.json"
+      router="hash"
+      layout="sidebar"
+    />
+    <footer id="link-footer">
+      <form style="display: flex; gap: 10px">
+        <a class="link-footer-button" href="/">Portal</a>
+        <a class="link-footer-button" href="/docs">Project documentation</a>
+        <a class="link-footer-button" href="/api/v0">Main API documentation</a>
+        <a class="link-footer-button" href="/auth/v0">Auth API documentation</a>
+      </form>
+    </footer>
+  </body>
+  <style>
+    #link-footer {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      background-color: #0b3c28;
+      text-align: center;
+    }
+    .link-footer-button {
+      display: inline-block;
+      padding: 2px 8px;
+      border: 1px solid #f6f6f6;
+      color: #f6f6f6;
+      border-radius: 3px;
+      text-decoration: none;
+    }
+  </style>
+</html>

@@ -1,0 +1,49 @@
+@startdot grid_real_world
+digraph FlexReg {
+    graph [direction=TD,
+        nodesep=0.5
+    ];
+    node [label="\N",
+        shape=circle,
+        style=filled
+    ];
+    edge [color=green,
+        dir=forward
+    ];
+    {
+        graph [rank=same];
+        A;
+        B;
+        C;
+    }
+    {
+        graph [rank=same];
+        F;
+        L;
+        D;
+        J;
+    }
+    A -> B    [color="green:red;0.01",
+        dir=both];
+    A -> F;
+    A -> L;
+    B -> C;
+    B -> L;
+    C -> D;
+    C -> J;
+    F -> L;
+    F -> G;
+    F -> M;
+    L -> D    [color="red;0.01:green",
+        dir=both];
+    D -> E;
+    J -> K;
+    G -> H;
+    M -> H    [color=red];
+    M -> N;
+    M -> P;
+    H -> I;
+    H -> O;
+    N -> O    [color=red];
+}
+@enddot

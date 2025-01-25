@@ -1,2 +1,47 @@
 .*
 !.gitignore
+!.gitattributes
+!.gitkeep
+!.pre-commit-config.yaml
+!.markdownlint.json
+!.mega-linter.yml
+!.gitleaks.toml
+!.gitleaksignore
+!.secretlintignore
+!.secretlintrc.json
+!.sqlfluff
+!.tbls.yml
+!.yamlfmt
+!.yamllint.yml
+!.golangci*.yml
+!.spectral.yaml
+!.eslintrc.js
+*.dot
+# draw.io
+*:PG$Secure
+*:Zone.Identifier
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+!.env
+__pycache__/
+*.py[cod]
+*$py.class
+
+**/node_modules
+
+# Logs
+logs
+*.log
+*-debug.log*
+*-error.log*
+
+# Temp directories
+dist
+out
+dist-ssr
+
+# Frontend
+!frontend/.env.[dlpst]*
+
+megalinter-reports/

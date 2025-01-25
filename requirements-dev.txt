@@ -1,0 +1,15 @@
+hypothesis
+mkdocs-material
+psycopg[binary,pool]
+pyjwt
+cryptography
+pytest
+python-dotenv
+schemathesis
+tabulate
+pandas
+openpyxl
+openapi-python-client==0.21.6
+click
+argon2-cffi
+markdown-callouts

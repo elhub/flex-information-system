@@ -1,0 +1,20 @@
+---
+dsn: >-
+  postgres://flex_migrator@localhost:5432/flex?sslmode=disable&search_path=flex
+docPath: docs/tables
+format:
+  adjust: true
+  sort: false
+  number: true
+include:
+  - flex.*
+lint:
+  requireColumnComment:
+    enabled: true
+    exclude:
+      - id
+      - created
+      - updated
+templates:
+  dot:
+    schema: 'local/tbls/templates/schema.dot.tmpl'

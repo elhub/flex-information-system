@@ -1,0 +1,59 @@
+@startdot tables
+digraph "flex" {
+  # https://github.com/k1LoW/tbls/blob/main/output/dot/templates/schema.dot.tmpl
+  // Config
+  graph [rankdir=TB, layout=dot, fontname="Arial"];
+  node [shape=record, fontsize=14, fontname="Arial"];
+  edge [fontsize=10, labelfloat=false, splines=none, fontname="Arial"];
+
+  // Tables
+  "flex.business_id_type" [label="flex.business_id_type" ];
+  "flex.event" [label="flex.event" ];
+  "flex.entity" [label="flex.entity" ];
+  "flex.party" [label="flex.party" ];
+  "flex.party_membership" [label="flex.party_membership" ];
+  "flex.identity" [label="flex.identity" ];
+  "flex.grid_node" [label="flex.grid_node" ];
+  "flex.grid_edge" [label="flex.grid_edge" ];
+  "flex.accounting_point" [label="flex.accounting_point" ];
+  "flex.controllable_unit" [label="flex.controllable_unit" ];
+  "flex.controllable_unit_service_provider" [label="flex.controllable_unit_service_provider" ];
+  "flex.notification" [label="flex.notification" ];
+  "flex.technical_resource" [label="flex.technical_resource" ];
+  "flex.service_providing_group" [label="flex.service_providing_group" ];
+  "flex.service_providing_group_membership" [label="flex.service_providing_group_membership" ];
+  "flex.service_providing_group_grid_prequalification" [label="flex.service_providing_group_grid_prequalification" ];
+  "flex.accounting_point_history" [label="flex.accounting_point_history" ];
+  "flex.controllable_unit_history" [label="flex.controllable_unit_history" ];
+  "flex.controllable_unit_service_provider_history" [label="flex.controllable_unit_service_provider_history" ];
+  "flex.party_history" [label="flex.party_history" ];
+  "flex.party_membership_history" [label="flex.party_membership_history" ];
+  "flex.service_providing_group_grid_prequalification_history" [label="flex.service_providing_group_grid_prequalification_history" ];
+  "flex.service_providing_group_history" [label="flex.service_providing_group_history" ];
+  "flex.service_providing_group_membership_history" [label="flex.service_providing_group_membership_history" ];
+  "flex.technical_resource_history" [label="flex.technical_resource_history" ];
+
+  // Relations
+  "flex.entity" -> "flex.business_id_type" [label="business_id_type" ];
+  "flex.party" -> "flex.business_id_type" [label="business_id_type" ];
+  "flex.party_membership" -> "flex.entity" [label="entity_id" ];
+  "flex.party_membership" -> "flex.party" [label="party_id" ];
+  "flex.identity" -> "flex.entity" [label="entity_id" ];
+  "flex.identity" -> "flex.party" [label="party_id" ];
+  "flex.grid_node" -> "flex.party" [label="system_operator_id" ];
+  "flex.grid_edge" -> "flex.grid_node" [label="child_node_id" ];
+  "flex.grid_edge" -> "flex.grid_node" [label="parent_node_id" ];
+  "flex.accounting_point" -> "flex.party" [label="balance_responsible_id" ];
+  "flex.accounting_point" -> "flex.party" [label="system_operator_id" ];
+  "flex.controllable_unit" -> "flex.accounting_point" [label="accounting_point_id" ];
+  "flex.controllable_unit_service_provider" -> "flex.party" [label="service_provider_id" ];
+  "flex.controllable_unit_service_provider" -> "flex.controllable_unit" [label="controllable_unit_id" ];
+  "flex.notification" -> "flex.party" [label="party_id" ];
+  "flex.technical_resource" -> "flex.controllable_unit" [label="controllable_unit_id" ];
+  "flex.service_providing_group" -> "flex.party" [label="service_provider_id" ];
+  "flex.service_providing_group_membership" -> "flex.controllable_unit" [label="controllable_unit_id" ];
+  "flex.service_providing_group_membership" -> "flex.service_providing_group" [label="service_providing_group_id" ];
+  "flex.service_providing_group_grid_prequalification" -> "flex.party" [label="impacted_system_operator_id" ];
+  "flex.service_providing_group_grid_prequalification" -> "flex.service_providing_group" [label="service_providing_group_id" ];
+}
+@enddot

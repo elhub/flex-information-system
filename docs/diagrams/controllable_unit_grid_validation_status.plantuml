@@ -1,0 +1,28 @@
+@startdot controllable_unit_grid_validation_status
+digraph G {
+    layout=dot;
+    overlap=false;
+
+    node [shape=rect,width=0.1,height=0.1,margin=0.04];
+
+    start [shape=point];
+
+    // status
+    pending;
+    in_progress;
+    incomplete_information;
+    validated;
+    validation_failed;
+
+    // transitions
+    start -> pending [label="", color="pink"];
+    pending -> in_progress [label="CSO start\nvalidation", color="green"];
+    validated -> pending [label="SP significantly \nupdates data", color="pink"];
+    in_progress -> incomplete_information [label="CSO request \ndetails from SP", color="green"];
+    incomplete_information -> pending [label="SP updates \ndata", color="pink"];
+    in_progress -> validated [label="", color="green"];
+    in_progress -> validation_failed [label="", color="green"];
+    validation_failed -> pending [label="SP updates \ndata", color="pink"];
+
+   }
+@enddot

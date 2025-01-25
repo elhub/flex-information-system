@@ -1,0 +1,322 @@
+---
+default_install_hook_types:
+  - commit-msg
+  - pre-push
+  - pre-commit
+  - prepare-commit-msg
+
+default_stages:
+  - pre-commit
+
+repos:
+  #
+  ## Commits
+  #
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args:
+          - --strict
+          - feat
+          - fix
+          - docs
+          - style
+          - refactor
+          - perf
+          - test
+          - chore
+          - build
+          - ci
+  - repo: >-
+      https://gitlab.com/codementors/pre-commit/add-issue-number-to-conventional-commit
+    rev: 1.0.2
+    hooks:
+      - id: add-issue-number
+        stages: [prepare-commit-msg]
+        args: []
+
+  #
+  ## Basics
+  #
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: "test/flex/.*"
+      - id: end-of-file-fixer
+        exclude: "test/flex/.*"
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-added-large-files
+        args: ['--maxkb=10240']
+  - repo: local
+    hooks:
+      - id: allowed-file-extensions
+        name: Allowed file extensions
+        entry: Only files that have formatters/linters configured are allowed
+        language: fail
+        # yamllint disable-line rule:line-length
+        exclude: ^(.*ignore|.gitattributes|CODEOWNERS|LICENSE.*|.*justfile|.sqlfluff|.yamlfmt|.*\.tmpl|.*\.ico|.*\.dot|.*\.conf|.*\.cfg|.*\.ini|.*/dhparam|.*Makefile.*|.*Dockerfile.*|.*.docx|.*\.psql|.*\.hurl|.*\.plantuml|.*\.env(\..*)?|.*\.service|.*py.typed|.*.mod|.*.sum|.*authelia/secrets/.*)$
+        # https://github.com/pre-commit/identify/blob/main/identify/extensions.py
+        exclude_types:
+          - json
+          - markdown
+          - png
+          - yaml
+          - sql
+          - shell
+          - csv
+          - python
+          - plain-text
+          - toml
+          - html
+          - css
+          - scss
+          - javascript
+          - ts
+          - tsx
+          - go
+  #
+  ## YAML
+  #
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+        args: []
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+  #
+  ## JSON
+  #
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-json
+      - id: pretty-format-json
+        args: ['--indent', '4', '--autofix', '--no-sort-keys']
+  #
+  ## Markdown
+  #
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.17.1
+    hooks:
+      - id: markdownlint-cli2
+        language_version: lts
+        exclude: ^(docs/tables/.*)|(test/flex/.*)$
+  #
+  ## SQL
+  #
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 3.3.0
+    hooks:
+      - id: sqlfluff-fix
+        exclude: ^backend/event/.*$
+      - id: sqlfluff-lint
+        exclude: ^backend/event/.*$
+
+  # squawk errors on CREATE TABLE LIKE clauses had to be disabled
+  # TODO - report bug to squawk and update this
+  # - repo: https://github.com/sbdchd/squawk
+  #   rev: v0.28.0
+  #   hooks:
+  #     - id: squawk
+  #       files: ^db/.*\.sql$
+  #       args: ['--assume-in-transaction']
+
+  #
+  ## Graphviz
+  #
+  - repo: local
+    hooks:
+      - id: check-dot
+        name: check dot files
+        entry: ./local/pre-commit/lint-dot.sh
+        language: script
+        pass_filenames: true
+        files: '^.*\.dot$'
+
+  #
+  ## PlantUML
+  #
+  - repo: local
+    hooks:
+      - id: check-plantuml
+        name: check plantuml files
+        entry: ./local/pre-commit/lint-plantuml.sh
+        language: script
+        pass_filenames: true
+        files: '^.*\.plantuml$'
+
+  #
+  ## Bash / Shell
+  #
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.10.0-2
+    hooks:
+      - id: shfmt
+  #
+  ## Docker
+  #
+  - repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
+    rev: v0.1.0
+    hooks:
+      - id: dockerfilelint
+        language_version: lts
+  - repo: https://github.com/iamthefij/docker-pre-commit
+    rev: v3.0.1
+    hooks:
+      - id: docker-compose-check
+  #
+  ## HTML / CSS / JS / TS
+  #
+  - repo: local
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@3.4.2
+        name: prettier
+        entry: prettier --write --ignore-unknown --print-width 80
+        language: node
+        types_or:
+          - html
+          - javascript
+          - ts
+          - tsx
+          - css
+          - scss
+        exclude: "local/mkdocs/.*"
+
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.18.0
+    hooks:
+      - id: eslint
+        additional_dependencies:
+          - eslint@^8.43.0
+          - eslint-plugin-react@^7.32.2
+        files: \.[t]sx?$  # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
+
+  - repo: local
+    hooks:
+      - id: frontend-type-check
+        name: npm type-check
+        # Yes, this is a pretty hacky way to go about it, but it works ;)
+        entry: /usr/bin/bash
+        args: ['-c', 'cd frontend && npm run type-check']
+        language: script
+        types_or: [ts, tsx]
+        pass_filenames: false
+      - id: frontend-dependency-check
+        name: npm audit fix
+        entry: /usr/bin/bash
+        args: ['-c', 'cd frontend && npm audit fix']
+        language: script
+        types_or: [ts, tsx]
+        pass_filenames: false
+        stages:
+          - pre-push
+
+  #
+  ## Go
+  #
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.63.4
+    hooks:
+      - id: golangci-lint-config-verify
+
+  - repo: local
+    hooks:
+      - id: golangci-lint
+        name: golangci-lint
+        entry: /usr/bin/bash
+        args: ['-c', 'cd backend && golangci-lint run --fix']
+        types: [go]
+        language: script
+      - id: go-unit-tests
+        name: go-unit-tests
+        entry: /usr/bin/bash
+        args: ['-c', 'cd backend && go test -tags=unit -timeout 30s -short -v']
+        types: [go]
+        language: script
+      - id: go-build
+        name: go-build
+        entry: /usr/bin/bash
+        args: ['-c', 'cd backend/cmd/flex && go build && rm -f flex']
+        types: [go]
+        language: script
+      - id: go-mod-tidy
+        name: go-mod-tidy
+        entry: /usr/bin/bash
+        args: ['-c', 'cd backend && go mod tidy -v']
+        types: [go]
+        language: script
+
+
+  #
+  ## Python
+  #
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: "v0.9.1"
+    hooks:
+      - id: ruff-format
+        exclude: "test/flex/.*"
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        # test/flex is excluded because it is a generated directory
+        exclude: "test/flex/.*"
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.392
+    hooks:
+      - id: pyright
+        # test/flex is excluded because it is a generated directory
+        exclude: "test/flex/.*"
+
+  #
+  ## TOML
+  #
+  - repo: https://github.com/pappasam/toml-sort
+    rev: "v0.24.2"
+    hooks:
+      - id: toml-sort-fix
+        exclude: "test/flex/.*"
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-toml
+        exclude: "test/flex/.*"
+
+  #
+  ## OpenAPI
+  #
+  - repo: local
+    hooks:
+      - id: check-openapi
+        name: check openapi documents with spectral
+        language: system
+        entry: spectral
+        args:
+          - lint
+          - --fail-severity
+          - warn
+          - --verbose
+        pass_filenames: true
+        files: '^.*openapi\.(json|yml|yaml)$'
+
+  #
+  ## MegaLinter
+  #
+  - repo: https://github.com/oxsecurity/megalinter
+    rev: v8.3.0
+    hooks:
+      - id: megalinter-full
+        stages:
+          - pre-push

@@ -1,0 +1,28 @@
+---
+# This file is inspired by the Elhub-general mega-linter configuration file from devxp
+# https://raw.githubusercontent.com/elhub/devxp-lint-configuration/main/resources/.mega-linter.yml
+#
+# General configuration documentation is available at:
+# https://megalinter.io/latest/config-file/
+
+# GENERAL CONFIG
+# Megalinter runs in docker and all files touched by it ends up owned by root:root
+# https://github.com/oxsecurity/megalinter/issues/1975
+REPORT_OUTPUT_FOLDER: none
+APPLY_FIXES: none
+
+# https://megalinter.io/latest/supported-linters/
+ENABLE_LINTERS:
+  - REPOSITORY_GITLEAKS
+  - REPOSITORY_SECRETLINT
+
+# We generally want to filter out generated files
+# https://megalinter.io/latest/config-filtering/
+FILTER_REGEX_EXCLUDE: (test/flex/)
+
+# Don't print the Alpaca image in console
+PRINT_ALPACA: false
+
+# LINTERS
+# Secretlint
+REPOSITORY_SECRETLINT_ARGUMENTS: --secretlintignore .gitignore

@@ -1,0 +1,99 @@
+@startuml service_provider_registration
+
+!theme plain
+
+title Service Provider (SP) Registration
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "GS1 Norway" as GS1
+actor "Service Provider (SP)" as SP
+participant "Ediel Portal" as EDIEL
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "FIS Operator" as FISO
+
+== Obtain Business Identifier ==
+
+SP -> GS1: Apply for GLN for party
+activate GS1
+return Unique GLN
+activate SP
+
+== Register in Ediel register ==
+
+SP -> EDIEL: Register SP
+activate EDIEL
+EDIEL --> SP: OK
+note left
+    Registers party with the following data:
+    - Identifiers and names
+    - Contact information
+    - Party type
+end note
+deactivate EDIEL
+
+== User agreement ==
+
+SP -> FISO: Request access to FIS
+activate FISO
+note left
+    Request is done via email or
+    other support channels.
+end note
+FISO --> SP: Grant access to FIS test environment
+FISO --> SP: User agreement for signing
+deactivate FISO
+
+SP -> SP: Sign user agreement
+SP --> FISO: Return signed user agreement
+note left
+    User agreement <i>process</i>
+    includes sharing the
+    national ID of the first user.
+end note
+deactivate SP
+
+== Activation in Flexibility Information System (FIS) ==
+
+note over FIS: Every hour
+FIS -> EDIEL: Get updated party data
+activate EDIEL
+return Party data
+activate FIS
+FIS -> FIS: Sync party data
+FIS --> FISO: Notify new party
+deactivate FIS
+activate FISO
+
+FISO -> FIS: Activate party
+note left
+    Activation requires
+    signed user agreement.
+end note
+activate FIS
+FIS --> FISO: Party activated
+deactivate FIS
+
+FISO -> FIS: Add first user
+activate FIS
+FIS --> FISO: User added
+deactivate FIS
+
+FISO --> SP: Notify user added to FIS
+deactivate FISO
+note left
+    Notification using
+    email from user
+    agreement process.
+end note
+activate SP
+
+SP -> FIS: Add additional users
+activate FIS
+FIS --> SP: Users added
+deactivate FIS
+
+@enduml

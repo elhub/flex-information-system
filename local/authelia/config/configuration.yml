@@ -1,0 +1,121 @@
+---
+# https://www.authelia.com/configuration/prologue/introduction/
+# secretlint-disable
+storage:
+  local:
+    path: '/config/.db.sqlite3'
+access_control:
+  default_policy: 'one_factor'
+session:
+  cookies:
+    - domain: 'idp.flex.localhost'
+      authelia_url: 'https://idp.flex.localhost:9091/'
+      name: 'flex_session'
+      same_site: 'lax'
+      inactivity: '5m'
+      expiration: '1h'
+      remember_me: '1d'
+    # This cookie is just a workaround for logout redirect to work
+    # https://github.com/authelia/authelia/issues/5368#issuecomment-1654481662
+    - domain: 'flex.localhost'
+      authelia_url: 'https://idp.flex.localhost:9091/'
+authentication_backend:
+  file:
+    path: '/config/users.yml'
+    watch: false
+    search:
+      email: false
+      case_insensitive: false
+    password:
+      algorithm: 'argon2'
+      argon2:
+        variant: 'argon2id'
+        iterations: 3
+        memory: 65536
+        parallelism: 4
+        key_length: 32
+        salt_length: 16
+
+# OIDC
+# https://www.authelia.com/configuration/identity-providers/openid-connect/provider/
+identity_providers:
+  oidc:
+    hmac_secret: 'lb0NYvgQFTIBbWG19jjlMoQtZ1Jx25ppIwW3LalwRgtTP6vJtuMOl6yOYFZSoATL'
+    jwks:
+      # https://www.authelia.com/reference/guides/generating-secure-values/#generating-an-rsa-keypair
+      # openssl genrsa 2048
+      - algorithm: 'RS256'
+        use: 'sig'
+        # TODO secret file
+        key: |
+          -----BEGIN PRIVATE KEY-----
+          MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDPX0y9jCK+XSUM
+          TWfNk4y0f0D3AZyEJ8cjROII4eOFoSXf3jRu4+nCDvosA1WQkVFNkMOlTCy2ymGL
+          z8eFpx4yMsWGb/uT6R+o9s3ibSJd/9MFjx/LoJxxPQcwDeguTIAvb8ZJgvz61Pw/
+          7XNugKZaXNerpMr92LZMZohSX3VYxR3ioj3nCTJ4BDZ5XvUV6UxYWpJ5WZksutQn
+          Xrv9DNRCfbYkhz1bOFgW4msT3bZe/t30JfwYKOyhu5eUDVZxdMM7mFYIn22Q+Qk5
+          AKQoUB4i4kr4Blo++FUNR6EPnJGS3WMiMAxWX2V39M/Il9RcP68YFX+vduFs6DDk
+          ABVeKVc/AgMBAAECggEAF3c5P9mztMblglbgACtKKMKdn1XXWD0IE72ftlGZZW2u
+          035ZgJLZyNPZC1H1RL6s7JINEY9lH+oWz7NbaIxYpmWIZIYXec1Pf9ctxQmEcg6Y
+          2nAvsOMj0MyPG6j3NQYDG1sSnQ7tgZTIVpOQFFkKef83iHzFW6RCPLL9ihSzOrAf
+          WLpQony2Bz4iOFgytC3KPGqNWg3U2vgzw6KoAuEqc44dgdYoiYc+BzSQmq4f90eG
+          gR3ZoRYnSBXBWno31Z5Y4pYbQei348fu2UrY8bYBysNIO6CGT+DFBMDFUGoCs2W3
+          27jznVmU5T1M28fcAUGv8Davxq4+vVbGAHM+LsWJAQKBgQDwQU7PYhycBhoBYAye
+          67hTW/LDeIuJfktTBS6vrncvPx+1jr8i/5FL7qGa8hL/JMVFL2LnhVSmpdqHQNI4
+          FW9PadAuKQVJO7KcbpR94wQJMGf4Q5CYStGNr+vzd7k2YVxFekuQu35cc0iLuYFb
+          1D8jZffEAROpvW8FYbmQ8xm1EQKBgQDc9lNieoWP9PJxE/25+8eIyfqqHWpnv6i2
+          k3e5RJonv/b1Q6K9TZN0mWOdnu+hOWoATmpWnMdH+lMRa/ZGaILhbDCeWGw8wYkq
+          MaXKJvSxx393eMiJ4SDPdXXXh1eDDMK6va5g4Eq6E8kwsMElF69QQX2PlidhQwdG
+          4CB0VNcHTwKBgFhExj2vIC+6lidXMIvasrf9mi1yxmFXgzkXOFXXVXaITJAZx+OF
+          3c31+G3C7nPLAKcwh7fj5nvrh2QVzqZIScL1b0TmUUjco/yRLAEsPLlbjXdK637o
+          TiEuNxQWMnfmQU5NZiHgoMY6nLapCvu/+Qp6VhMvChhcvsNNai31AsbhAoGBALMd
+          Rkis8vnX4HODdgi+LWgX+obNo4SIW3Xson9fOesA9Gqqsg/sA5zf/l02Ch/SD7hB
+          2HdvTSdupsmXj6JRc87RybOCD/NMGylF55Ov8mjuQ8iP81e5U8R3/deBkZHc1TlV
+          KzbCejDOeydqEJdF1Mok3Gh5mmCAWjS81/IVF92HAoGAdZRNjUtAGx4+NTPWLheq
+          ZLXA04KOYcIc14Oo1GGVGBrZ78Dekg8EKlEU36dEsk3++tL7/0kjvN/A6/pjYM5v
+          2Ya7IpXIFHicohPxChq8IXJMkGHquIWjdKkQiF0gWfmyNBA1D3csTQk65XAn/DKJ
+          A52KiFHH6slY9ir8VKsX56U=
+          -----END PRIVATE KEY-----
+    # TODO maybe no debug in not in prod?
+    enable_client_debug_messages: true
+    minimum_parameter_entropy: 8
+    enforce_pkce: 'always'
+    enable_pkce_plain_challenge: false
+    enable_jwt_access_token_stateless_introspection: false
+    require_pushed_authorization_requests: true
+    lifespans:
+      access_token: '1h'
+      authorize_code: '1m'
+      id_token: '1h'
+      refresh_token: '90m'
+    # TODO proper cors
+    cors:
+      allowed_origins: "*"
+    # https://www.authelia.com/configuration/identity-providers/openid-connect/clients/
+    clients:
+      - client_id: 'flex_oidc_client_id_value'
+        client_name: 'Flex Portal'
+        # TODO secret file
+        # This is the secret from the docker-compose.yml
+        client_secret: '$argon2id$v=19$m=16,t=2,p=1$cmFuZG9tc2FsdA$5QIrCASIDQHP8kRK4XB4eA'
+        token_endpoint_auth_method: client_secret_basic
+        authorization_policy: 'one_factor'
+        public: false
+        redirect_uris:
+          - 'https://flex.localhost:6443/auth/v0/callback'
+          - 'https://flex.localhost:5443/auth/v0/callback'
+        scopes:
+          - 'openid'
+          - 'profile' # to get preferred_username
+        grant_types:
+          - 'authorization_code'
+        response_types:
+          - 'code'
+        response_modes:
+          - 'form_post'
+          - 'query'
+notifier:
+  filesystem:
+    filename: '/config/.notification.txt'
+log:
+  level: 'debug'

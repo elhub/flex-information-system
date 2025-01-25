@@ -1,0 +1,72 @@
+@startuml login_sequence
+!theme plain
+
+title Login Sequence
+
+skinparam LifelineStrategy solid
+skinparam SequenceMessageAlign direction
+
+participant User as user
+participant "FIS" as fis
+
+== Client Credentials step ==
+
+user -> fis: ""POST /auth/v0/token (<color #d58000>client_credentials</color>)""
+activate fis #d6e4d5
+activate user #d6e4d5
+rnote right of user
+I am user <color #05677d>John Smith</color> and here is my secret.
+end note
+
+fis -> user: ""200 OK""
+deactivate fis
+rnote left of fis
+  Entity token : ""<color #05677d>x6E9g.bGEqW0.u4teR</color>""
+end note
+
+|||
+
+== Collecting information ==
+
+user -> fis:\
+""GET /auth/v0/userinfo""\n\
+""Authorization: Bearer <color #05677d>x6E9g.bGEqW0.u4teR</color>""
+activate fis #d6e4d5
+
+fis -> user: ""200 OK""
+deactivate fis
+rnote left of fis
+  This token corresponds to entity ""<color #05677d>12</color>"".
+end note
+
+|||
+
+user -> fis:\
+""GET /api/v0/party_membership?entity_id=<color #05677d>12</color>""\n\
+""Authorization: Bearer <color #05677d>x6E9g.bGEqW0.u4teR</color>""
+activate fis #d6e4d5
+
+fis -> user: ""200 OK""
+deactivate fis
+rnote left of fis
+  Entity ""<color #05677d>12</color>"" can assume parties ""<color #886599>3</color>"" and ""<color #886599>9</color>"".
+end note
+
+|||
+
+== Token Exchange step ==
+
+user -> fis: ""POST /auth/v0/token (<color #d58000>token_exchange</color>)""
+activate fis #d6e4d5
+rnote right of user
+As entity <color #05677d>12</color>, \
+I want to assume party ""<color #886599>9</color>"".
+end note
+
+fis -> user: ""200 OK""
+deactivate fis
+rnote left of fis
+  Access token : ""<color #886599>7pMlw.aFdZ8b.kJkg5</color>""
+end note
+
+@enduml

@@ -1,0 +1,58 @@
+import { fetchUtils } from "react-admin";
+
+export const serverURL = import.meta.env.VITE_FLEX_URL;
+export const apiURL = serverURL + "/api/v0";
+export const authURL = serverURL + "/auth/v0";
+
+export async function httpClient(url: string, options: any = {}) {
+  // --- workaround for array filter in the URL query --------------------------
+
+  // Suppose we want to filter a list in the UI, keeping only rows where the
+  // value of a field belongs to a fixed list of possible values.
+  // For example, let's say we want to keep only rows where field `a` has value
+  // `1` or `2`.
+
+  // We will use a React-Admin array input component for this, such as a
+  // SelectArrayInput (https://marmelab.com/react-admin/SelectArrayInput.html).
+  // If we tick boxes or select values corresponding to `1` and `2`, the input
+  // component will store `1,2` in the form state.
+
+  // When the form is turned into a network call to actually apply the filter,
+  // React-Admin will generate a URL query that looks like `?a=eq.1,2`.
+  // As we use PostgREST, we can add `@in` to the `source` property, i.e.,
+  // `a@in`, so the URL query becomes `&a=in.1,2` and performs a "contains"
+  // query instead of just an equality check that would fail here.
+  // Unfortunately, this is not sufficient because PostgREST's "contains" query
+  // syntax uses parentheses. It should look like `?a=in.(1,2)`.
+
+  // This wrong URL translation comes from a bug in the data provider:
+  // https://github.com/raphiniert-com/ra-data-postgrest/issues/173
+
+  // It is not possible to edit the input component to change the format of the
+  // stored form state, because having any other format than the comma-separated
+  // list basically breaks the UI component.
+
+  // The solution we use here is to intercept the network call and change the
+  // URL before it is sent. We find an occurrence of `=in.` meaning that we
+  // are doing this kind of "contains" query, and we add the parentheses around
+  // the value in URL-encoded format, i.e., `%28` and `%29` for `(` and `)`.
+
+  const finalUrl = url.replace(/=in\.((?!%28).*?)(&.*)?$/, "=in.%28$1%29$2");
+
+  // NB: ?! performs a negative lookahead, i.e., if a parenthesis is already
+  //     there, we must not do anything.
+  // NB: this only works for one occurrence of `=in.`. If we are in a situation
+  //     with several "contains" filters, we will need to put this line in a
+  //     loop or something similar.
+
+  // ---------------------------------------------------------------------------
+
+  if (!options.headers) {
+    options.headers = new Headers({ Accept: "application/json" });
+  }
+  const token = localStorage.getItem("token");
+  if (token) {
+    options.headers.set("Authorization", `Bearer ${token}`);
+  }
+  return fetchUtils.fetchJson(finalUrl, options);
+}

@@ -1,0 +1,11 @@
+@startgantt time_dependent_basic
+scale 500 width
+
+Project starts 2020-06-28
+[SP1] starts 2020-07-01
+[SP1] ends 2020-07-05
+[SP2] starts 2020-07-06
+[SP2] ends 2020-07-10
+[SP3] starts 2020-07-11
+[SP3] ends 2020-07-17
+@endgantt

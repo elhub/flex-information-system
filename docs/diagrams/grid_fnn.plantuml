@@ -1,0 +1,125 @@
+@startdot grid_fnn
+digraph G {
+    layout=dot;
+    compound=true;
+
+    node [shape=rect];
+    edge [dir=none];
+
+    subgraph cluster_substationA {
+        graph [label="Substation A"];
+
+
+        subgraph cluster_tranformer_A {
+            graph [label="Transformer A"];
+            style="dotted"
+
+
+            PT_A [label="PowerTransformer A"];
+            PTE_A_1 [label="PowerTransformerEnd A1"];
+            PTE_A_2 [label="PowerTransformerEnd A2"];
+
+            PTE_A_1 -> PT_A;
+            PT_A -> PTE_A_2;
+
+        }
+
+        subgraph cluster_tranformer_B {
+            graph [label="Transformer B"];
+            style="dotted"
+
+
+            PT_B [label="PowerTransformer B"];
+            PTE_B_1 [label="PowerTransformerEnd B1"];
+            PTE_B_2 [label="PowerTransformerEnd B2"];
+            PTE_B_3 [label="PowerTransformerEnd B3"];
+            PTE_B_1 -> PT_B;
+            PT_B -> PTE_B_2;
+            PT_B -> PTE_B_3;
+
+        }
+
+        {
+            rank=same;
+            VL_A [label="VoltageLevel A"];
+            C_A [label="Consessionaire(s)", shape="ellipse"];
+            VL_A -> C_A;
+        }
+        {
+            rank=same;
+            VL_B [label="VoltageLevel B"];
+            C_B [label="Consessionaire(s)", shape="ellipse"];
+            VL_B -> C_B;
+        }
+
+        {
+            rank=same;
+            VL_C [label="VoltageLevel C"];
+            C_C [label="Consessionaire(s)", shape="ellipse"];
+            VL_C -> C_C;
+        }
+
+        VL_A -> PTE_A_1;
+        VL_A -> PTE_B_1;
+
+        PTE_A_2 -> VL_B;
+        PTE_B_2 -> VL_B;
+
+        PTE_B_3 -> VL_C;
+
+        subgraph cluster_substationpart_X {
+            graph [label="SubstationPart X"];
+
+            CX [label="Consessionaire", shape="ellipse"];
+            subgraph cluster_location_X {
+                label="Location";
+                PPX [label="PositionPoint"];
+            }
+        }
+
+        subgraph cluster_substationpart_Y {
+            graph [label="SubstationPart Y"];
+
+            CY [label="Consessionaire", shape="ellipse"];
+            subgraph cluster_location_Y {
+                label="Location";
+                PPY [label="PositionPoint"];
+            }
+        }
+        VL_A -> CX [style=invis];
+        CX -> CY [style=invis];
+    }
+
+    subgraph cluster_substation_1 {
+        graph [label="Substation 1"];
+        style="dotted"
+        VL_1 [label="VoltageLevel 1", style="dotted"];
+    }
+    subgraph cluster_substation_2 {
+        graph [label="Substation 2"];
+        style="dotted"
+        VL_2 [label="VoltageLevel 2", style="dotted"];
+    }
+    subgraph cluster_substation_3 {
+        graph [label="Substation 3"];
+        style="dotted"
+        VL_3 [label="VoltageLevel 3", style="dotted"];
+    }
+    subgraph cluster_substation_4 {
+        graph [label="Substation 4"];
+        style="dotted"
+        VL_4 [label="VoltageLevel 4", style="dotted"];
+    }
+
+    L_1 [label="Line 1"];
+    L_2 [label="Line 2"];
+    L_3 [label="Line 3"];
+    L_4 [label="Line 4"];
+
+    VL_1 -> L_1 -> VL_A;
+
+    VL_B -> L_2 -> VL_2;
+    VL_B -> L_3 -> VL_3;
+    VL_C -> L_4 -> VL_4;
+}
+@enddot

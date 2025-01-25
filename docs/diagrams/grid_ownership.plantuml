@@ -1,0 +1,24 @@
+@startdot grid_ownership
+digraph G {
+    layout=dot;
+    compound=true;
+
+    node [shape=rect];
+    edge [dir=none];
+
+    SO_T [label="Transmission System Operator T"];
+
+    SO_A [label="Regional System Operator A"];
+    SO_B [label="Regional System Operator B"];
+    SO_C [label="Distribution System Operator C"];
+
+    CU [label="Controllable Unit", shape=ellipse];
+
+    SO_T -> SO_A;
+    SO_T -> SO_B;
+    SO_A -> SO_C;
+    SO_B -> SO_C;
+    SO_C -> CU;
+
+}
+@enddot

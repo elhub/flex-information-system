@@ -1,0 +1,69 @@
+import {
+  List,
+  Button,
+  ResourceContextProvider,
+  TextField,
+  TopToolbar,
+  usePermissions,
+  useRecordContext,
+} from "react-admin";
+import { Datagrid } from "../../auth";
+import AddIcon from "@mui/icons-material/Add";
+import { Link } from "react-router-dom";
+import { DateField } from "../../DateField";
+import { IdentityField } from "../../IdentityField";
+
+export const ServiceProviderProductApplicationCommentList = () => {
+  // id of the SPPA
+  const record = useRecordContext();
+  const id = record?.id;
+  const { permissions } = usePermissions();
+
+  const CreateButton = () => (
+    <Button
+      component={Link}
+      to={`/service_provider_product_application/${id}/comment/create`}
+      startIcon={<AddIcon />}
+      state={{ service_provider_product_application_id: id }}
+      label="Create"
+    />
+  );
+
+  const ListActions = () => (
+    <TopToolbar>
+      {permissions.includes(
+        "service_provider_product_application_comment.create",
+      ) && <CreateButton />}
+    </TopToolbar>
+  );
+
+  return (
+    permissions.includes(
+      "service_provider_product_application_comment.read",
+    ) && (
+      <ResourceContextProvider value="service_provider_product_application_comment">
+        <List
+          title={false}
+          perPage={10}
+          actions={<ListActions />}
+          exporter={false}
+          empty={false}
+        >
+          <Datagrid
+            bulkActionButtons={false}
+            sort={{ field: "created_at", order: "ASC" }}
+            rowClick={(_id, _res, record) =>
+              `/service_provider_product_application/${record.service_provider_product_application_id}/comment/${record.id}/show`
+            }
+          >
+            <TextField source="id" label="Comment ID" />
+            <DateField source="created_at" showTime />
+            <DateField source="recorded_at" label="Last updated" showTime />
+            <IdentityField source="created_by" />
+            <TextField source="content" component="pre" />
+          </Datagrid>
+        </List>
+      </ResourceContextProvider>
+    )
+  );
+};

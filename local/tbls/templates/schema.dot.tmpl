@@ -1,0 +1,19 @@
+digraph "{{ .Name }}" {
+  # https://github.com/k1LoW/tbls/blob/main/output/dot/templates/schema.dot.tmpl
+  // Config
+  graph [rankdir=TB, layout=dot, fontname="Arial"];
+  node [shape=record, fontsize=14, fontname="Arial"];
+  edge [fontsize=10, labelfloat=false, splines=none, fontname="Arial"];
+
+  // Tables
+  {{- range $i, $t := .Tables }}
+  {{- if eq (printf "%.4s" $t.Name) "flex" }}
+  "{{ $t.Name }}" [label="{{ $t.Name }}" ];
+  {{- end}}
+  {{- end }}
+
+  // Relations
+  {{- range $j, $r := .Relations }}
+  "{{ $r.Table.Name }}" -> "{{ $r.ParentTable.Name }}" [label="{{ $c := index $r.Columns 0 }}{{ $c.Name }}" ];
+  {{- end }}
+}

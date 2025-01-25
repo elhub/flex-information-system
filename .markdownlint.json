@@ -1,0 +1,21 @@
+{
+    "MD013": {
+        "code_block_line_length": 120,
+        "line_length": 80,
+        "tables": false
+    },
+    "MD033": {
+        "allowed_elements": [
+            "a",
+            "br",
+            "nobr",
+            "details",
+            "summary",
+            "strong"
+        ]
+    },
+    "MD046": false,
+    "MD007": {
+        "indent": 4
+    }
+}
