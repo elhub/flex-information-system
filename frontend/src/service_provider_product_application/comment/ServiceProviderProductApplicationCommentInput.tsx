@@ -9,6 +9,7 @@ import { Typography, Stack } from "@mui/material";
 import { InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../Toolbar";
+import { RichTextInput } from "ra-input-rich-text";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -55,10 +56,8 @@ export const ServiceProviderProductApplicationCommentInput = () => {
           Content
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <TextInput
+          <RichTextInput
             source="content"
-            multiline={true}
-            minRows={3}
             sx={{ minWidth: { xs: 300, md: 500 } }}
           />
         </InputStack>

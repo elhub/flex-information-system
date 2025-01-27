@@ -6,6 +6,7 @@ import {
   TopToolbar,
   usePermissions,
   useRecordContext,
+  RichTextField,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
@@ -60,7 +61,8 @@ export const ServiceProviderProductApplicationCommentList = () => {
             <DateField source="created_at" showTime />
             <DateField source="recorded_at" label="Last updated" showTime />
             <IdentityField source="created_by" />
-            <TextField source="content" component="pre" />
+            <TextField source="visibility" />
+            <RichTextField source="content" />
           </Datagrid>
         </List>
       </ResourceContextProvider>
