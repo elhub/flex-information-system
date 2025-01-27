@@ -141,13 +141,22 @@ WHERE cu.id = (
 )
 AND cu.status != 'new';
 
--- not using history because SP and SO are stable in SPPA
 -- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
 SELECT unnest(array[sppa.service_provider_id, sppa.system_operator_id])::bigint
+-- not using SPPA history because SP and SO are stable
 FROM service_provider_product_application sppa
-JOIN service_provider_product_application_comment sppac
-ON sppa.id = sppac.service_provider_product_application_id
-WHERE sppac.id = @resource_id;
+-- using SPPA comment history because the visibility can change over time
+JOIN service_provider_product_application_comment_history sppach
+ON sppa.id = sppach.service_provider_product_application_id
+WHERE sppach.service_provider_product_application_comment_id = @resource_id
+AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]') @> @recorded_at::timestamptz
+AND sppach.visibility = 'any_party';
+-- other visibilities mean no notification (empty notified parties list) :
+--   - 'same_party' leaves only the current party, removed from the list anyway
+--   - 'same_party_type' leaves only different party types :
+--       + FISO comments, SO and SP notified but they do not have the FISO type
+--       + SO comments, SP notified but they do not have the SO type
+--       + SP comments, SO notified but they do not have the SP type
 
 -- name: Notify :exec
 INSERT INTO notification (event_id, party_id)

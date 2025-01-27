@@ -110,14 +110,17 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 const getServiceProviderProductApplicationCommentNotificationRecipients = `-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
 SELECT unnest(array[sppa.service_provider_id, sppa.system_operator_id])::bigint
 FROM service_provider_product_application sppa
-JOIN service_provider_product_application_comment sppac
-ON sppa.id = sppac.service_provider_product_application_id
-WHERE sppac.id = $1
+JOIN service_provider_product_application_comment_history sppach
+ON sppa.id = sppach.service_provider_product_application_id
+WHERE sppach.service_provider_product_application_comment_id = $1
+AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]') @> $2::timestamptz
+AND sppach.visibility = 'any_party'
 `
 
-// not using history because SP and SO are stable in SPPA
-func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
-	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, resourceID)
+// not using SPPA history because SP and SO are stable
+// using SPPA comment history because the visibility can change over time
+func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, resourceID, recordedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -436,11 +439,18 @@ func (q *Queries) GetTechnicalResourceNotificationRecipients(ctx context.Context
 }
 
 const notify = `-- name: Notify :exec
+
 INSERT INTO notification (event_id, party_id)
 VALUES ($1, $2)
 ON CONFLICT DO NOTHING
 `
 
+// other visibilities mean no notification (empty notified parties list) :
+//   - 'same_party' leaves only the current party, removed from the list anyway
+//   - 'same_party_type' leaves only different party types :
+//   - FISO comments, SO and SP notified but they do not have the FISO type
+//   - SO comments, SP notified but they do not have the SO type
+//   - SP comments, SO notified but they do not have the SP type
 func (q *Queries) Notify(ctx context.Context, eventID int, partyID int) error {
 	_, err := q.db.Exec(ctx, notify, eventID, partyID)
 	return err

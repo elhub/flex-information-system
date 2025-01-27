@@ -32,7 +32,9 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop
 		return q.GetServiceProviderProductApplicationNotificationRecipients(ctx, resourceID, recordedAt)
 	case "no.elhub.flex.service_provider_product_application_comment.create",
 		"no.elhub.flex.service_provider_product_application_comment.update":
-		return q.GetServiceProviderProductApplicationCommentNotificationRecipients(ctx, resourceID)
+		return q.GetServiceProviderProductApplicationCommentNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.service_providing_group.create":
 		return q.GetServiceProvidingGroupCreateNotificationRecipients(ctx, resourceID)
 	case "no.elhub.flex.service_providing_group.update":
