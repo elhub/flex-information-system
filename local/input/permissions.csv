@@ -142,7 +142,7 @@ service_providing_group_product_application;last_prequalified;;R;R;R;RU;R;RU;R;R
 service_providing_group_product_application;last_verified;;R;R;R;RU;R;RU;R;R;;
 service_providing_group_product_application;recorded_at;;R;R;R;R;R;R;R;R;;
 service_providing_group_product_application;recorded_by;;R;R;R;R;R;R;R;R;;
-service_provider_product_application_comment;;;;;;;;;;;;
+service_provider_product_application_comment;;;;;;;;;;;;R
 service_provider_product_application_comment;id;;R;R;R;R;R;R;R;R;;
 service_provider_product_application_comment;service_provider_product_application_id;;R;R;R;RC;R;RC;RC;R;;
 service_provider_product_application_comment;created_by;;R;R;R;R;R;R;R;R;;

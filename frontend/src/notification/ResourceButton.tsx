@@ -48,6 +48,12 @@ const getSubResourceInformation = (resource: string) => {
         subResource: "product_application",
         mainIDField: "service_providing_group_id",
       };
+    case "service_provider_product_application_comment":
+      return {
+        mainResource: "service_provider_product_application",
+        subResource: "comment",
+        mainIDField: "service_provider_product_application_id",
+      };
     default:
       return null;
   }
@@ -67,7 +73,13 @@ export const ResourceButton = (props: any) => {
     data: resourceRecord,
     isPending: resourcePending,
     error: resourceError,
-  } = useGetOne(resource, { id: id });
+  } = useGetOne(
+    resource,
+    { id: id },
+    // ensure the button does not show if we cannot see the resource concerned
+    // by the notification
+    { retry: false },
+  );
   const subResourceInfo = getSubResourceInformation(resource);
   const operation = event?.type.split(".").slice(-1);
 

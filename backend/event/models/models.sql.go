@@ -107,6 +107,35 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 	return items, nil
 }
 
+const getServiceProviderProductApplicationCommentNotificationRecipients = `-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
+SELECT unnest(array[sppa.service_provider_id, sppa.system_operator_id])::bigint
+FROM service_provider_product_application sppa
+JOIN service_provider_product_application_comment sppac
+ON sppa.id = sppac.service_provider_product_application_id
+WHERE sppac.id = $1
+`
+
+// not using history because SP and SO are stable in SPPA
+func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, resourceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProviderProductApplicationNotificationRecipients = `-- name: GetServiceProviderProductApplicationNotificationRecipients :many
 SELECT unnest(array[system_operator_id, service_provider_id])::bigint
 FROM service_provider_product_application_history

@@ -141,6 +141,14 @@ WHERE cu.id = (
 )
 AND cu.status != 'new';
 
+-- not using history because SP and SO are stable in SPPA
+-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
+SELECT unnest(array[sppa.service_provider_id, sppa.system_operator_id])::bigint
+FROM service_provider_product_application sppa
+JOIN service_provider_product_application_comment sppac
+ON sppa.id = sppac.service_provider_product_application_id
+WHERE sppac.id = @resource_id;
+
 -- name: Notify :exec
 INSERT INTO notification (event_id, party_id)
 VALUES (@event_id, @party_id)

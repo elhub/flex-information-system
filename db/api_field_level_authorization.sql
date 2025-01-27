@@ -3570,6 +3570,9 @@ GRANT SELECT (
 ) ON TABLE api.service_provider_product_application_comment
 TO flex_third_party;
 
+GRANT SELECT ON TABLE api.service_provider_product_application_comment
+TO flex_internal_event_notification;
+
 GRANT SELECT (
     id,
     service_provider_product_application_comment_id,
@@ -3689,3 +3692,6 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE api.service_provider_product_application_comment_history
 TO flex_third_party;
+
+GRANT SELECT ON TABLE api.service_provider_product_application_comment_history
+TO flex_internal_event_notification;
