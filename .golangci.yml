@@ -1,0 +1,74 @@
+---
+# https://golangci-lint.run/usage/configuration/
+
+issues:
+  # don't skip warning about doc comments
+  # we can enable individual ones with
+  # https://golangci-lint.run/usage/false-positives/#default-exclusions
+  exclude-use-default: false
+  exclude:
+    - should have a package comment
+
+linters:
+  # using enable-all since it allows us to get all new linters
+  # without having to update this file
+  enable-all: true
+  disable:
+    # deprecated linters
+    - exportloopref
+    # depguard checks that package imports are in a
+    # list of acceptable packages - not applicable at the moment
+    - depguard
+    # nlreturn and wsl adds lots of whitespace rules that are annoying
+    - nlreturn
+    - wsl
+    # gci conflicts with gofumpt
+    - gci
+linters-settings:
+  ireturn:
+    allow:
+      - anon
+      - error
+      - empty
+      - stdlib
+      - github.com\/jackc\/pgx\/v5.Tx
+      - github.com\/jackc\/pgx\/v5.BatchResults
+      - github.com\/jackc\/pgx\/v5.Rows
+      - github.com\/jackc\/pgx\/v5.Row
+
+  lll:
+    line-length: 160
+  errcheck:
+    exclude-functions:
+      - (github.com/jackc/pgx/v5.Tx).Commit
+      - (github.com/jackc/pgx/v5.Tx).Rollback
+      - (io.Closer).Close
+  godox:
+    keywords:
+      - FIXME
+  tagliatelle:
+    case:
+      rules:
+        json: snake
+  mnd:
+    checks:
+      - argument
+      - case
+      - condition
+      # - operation
+      - return
+      # - assign
+  varnamelen:
+    min-name-length: 2
+  wrapcheck:
+    ignoreSigs:
+      - .Error
+      - .Errorf(
+      - errors.New(
+      - errors.Unwrap(
+      - errors.Join(
+      - .Wrap(
+      - .Wrapf(
+      - .WithMessage(
+      - .WithMessagef(
+      - .WithStack(

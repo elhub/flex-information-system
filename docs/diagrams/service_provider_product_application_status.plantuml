@@ -1,0 +1,29 @@
+@startdot service_provider_product_application_status
+digraph G {
+    layout=dot;
+    overlap=false;
+
+    node [shape=rect,width=0.1,height=0.1,margin=0.04];
+
+    start [shape=point];
+
+    // status
+    requested;
+    communication_test;
+    in_progress;
+    qualified;
+    not_qualified
+
+
+    start -> requested [label="", color="pink"];
+    requested-> communication_test [label="If already qualified\nby another SO", color="pink"];
+    requested -> in_progress [label="If not qualified\nby another SO", color="green"];
+    in_progress -> communication_test [label="Qualified but needs\ncommunication test", color="green"];
+    in_progress -> not_qualified [label="Not qualified", color="green"];
+    in_progress -> qualified [label="Qualified", color="green"];
+    communication_test -> qualified [label="Qualified", color="green"];
+    qualified -> communication_test [label="Significant changes\nin SP ICT system", color="green"];
+    not_qualified -> requested [label="SP has made\nupdates \nto comply", color="blue"];
+    qualified -> requested [label="SP adds\nproduct type(s)", color="pink"];
+}
+@enddot

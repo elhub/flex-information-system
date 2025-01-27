@@ -1,0 +1,115 @@
+@startuml service_providing_group_product_application
+
+!theme plain
+
+title Service Providing Group Product Application and Prequalification
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator" as SO
+
+== Identify relevant Service Providing Groups (SPGs) and product types approved ==
+Activate SP
+
+note over SP
+    The SP need an overview of
+    own SPGs and product types qualified for
+end note
+
+SP -> FIS: List product types approved
+activate FIS
+FIS --> SP: List of product types approved
+deactivate FIS
+
+SP -> FIS: List of SPGs
+activate FIS
+FIS --> SP: List of SPGs
+deactivate FIS
+
+== Service Providing Group product application ==
+
+SP -> FIS: Register SPG product application
+
+note left
+    Registers:
+    - SPG
+    - product type(s)
+end note
+
+Activate FIS
+FIS -> FIS: Set status to "requested"
+FIS --> SP: Registered data
+deactivate SP
+FIS --> SO: Notify PSO of new SPG product application
+deactivate FIS
+activate SO
+
+== Service Providing Group product prequalification ==
+
+note over SO
+    PSO initiates prequalification
+    without undue delay. PSO decide if
+    prequalification or verification is needed.
+    end note
+
+SO -> FIS: Get data
+activate FIS
+
+note left
+    The PSO requests necessary data from FIS
+    to perform the prequalification process.
+    Examples:
+    - CU data
+    - SPG data
+
+end note
+
+FIS --> SO: Return data
+deactivate FIS
+
+
+note over SO
+    The PSO must simplify the prequalification and
+    possibly only do a verification if:
+
+    The SPG is previously prequalified for the same
+    product type by another PSO.
+
+    OR
+
+    The SPG exclusively consists of small CUs,
+    CUs that are identical to CUs being part
+    of other SPGs previously prequalified by
+    any SP/SO for the same product type,
+    or a combination of both.
+end note
+
+loop When status changes
+    SO -> FIS: Update FIS with status
+    note left
+        Relevant statuses:
+        - in_progress
+        - temporary_qualified
+        - prequalification_pending
+        - prequalified
+        - rejected
+        - verified
+
+        The PSO should add notes and update
+        last approved time when relevant.
+    end note
+
+    activate FIS
+    FIS --> SO: OK
+    deactivate SO
+    FIS --> SP: Notify SPG product qualification status updated
+    deactivate FIS
+    activate SP
+    |||
+end
+@enduml

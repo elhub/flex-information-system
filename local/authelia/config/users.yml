@@ -1,0 +1,13 @@
+---
+users:
+  '13370000000':
+    disabled: false
+    displayname: Common Shared
+    email: common.shared@flex.test
+    # from argon2 import PasswordHasher; ph = PasswordHasher(); ph.hash("welcome")
+    password: $argon2id$v=19$m=65536,t=3,p=4$gwGspsuAbuUOhDCsgbSpqw$ihRZwb6FTICgT/8LWhQFNgmNZK/q957xQEle6R1Wsog
+  '13370000001':
+    disabled: false
+    displayname: Test Suite
+    email: test.suite@flex.test
+    password: $argon2id$v=19$m=65536,t=3,p=4$gwGspsuAbuUOhDCsgbSpqw$ihRZwb6FTICgT/8LWhQFNgmNZK/q957xQEle6R1Wsog

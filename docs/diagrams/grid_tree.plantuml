@@ -1,0 +1,27 @@
+@startdot grid_tree
+digraph FlexReg {
+    graph [direction=TD];
+    node [label="\N",
+        shape=circle,
+        style=filled
+    ];
+    edge [color=green,
+        dir=forward
+    ];
+    A -> B;
+    A -> F;
+    B -> C;
+    B -> L;
+    F -> G;
+    F -> M;
+    C -> D;
+    C -> J;
+    G -> H;
+    M -> N;
+    M -> P;
+    D -> E;
+    J -> K;
+    H -> I;
+    N -> O;
+}
+@enddot

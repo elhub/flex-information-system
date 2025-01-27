@@ -1,0 +1,75 @@
+---
+# Base template for OpenAPI document
+
+openapi: 3.1.0
+info:
+  title: Flexibility Information System Main API
+  description: Norwegian Flexibility Information System Main API
+  contact:
+    name: Elhub AS
+    url: https://elhub.no
+    email: post@elhub.no
+  version: 0.0.1
+externalDocs:
+  description: TODO
+  url: https://todo.example.com
+jsonSchemaDialect: https://spec.openapis.org/oas/3.1/dialect/base
+tags:
+  # TODO externaldocs
+  - name: introspection
+    description: Introspection
+components:
+  parameters: {}
+  schemas:
+    error_message:
+      description: Error message returned from the API.
+      type: object
+      properties:
+        code:
+          type: string
+          pattern: '^[A-Z0-9]+$'
+          description: The error code.
+          example: PT418
+        details:
+          type: [string, 'null']
+          description: Detailed information about the error.
+          example: null
+        hint:
+          type: [string, 'null']
+          description: A hint to help resolve the error.
+          example: null
+        message:
+          type: string
+          description: The error message.
+          example: error
+      required:
+        - code
+        - message
+paths:
+  /openapi.json:
+    get:
+      operationId: read_openapi_json
+      summary: Read OpenAPI JSON Document
+      description: >-
+        Introspection for the Flexibility Information System main API.
+        The document is following the OpenAPI 3.1 spec.
+      tags:
+        - introspection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+servers:
+  - url: https://flex-test.elhub.no/api/v0
+    description: External test environment
+  - url: https://flex.localhost:6443/api/v0
+    description: Local development

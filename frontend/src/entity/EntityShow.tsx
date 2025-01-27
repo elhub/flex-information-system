@@ -1,0 +1,30 @@
+import { Show, SimpleShowLayout, TextField } from "react-admin";
+import { FieldStack } from "../auth";
+import { Typography, Stack } from "@mui/material";
+
+export const EntityShow = () => (
+  <Show>
+    <SimpleShowLayout>
+      <Stack direction="column" spacing={2}>
+        <Typography variant="h6" gutterBottom>
+          Basic information
+        </Typography>
+        <FieldStack direction="row" spacing={2}>
+          <TextField source="id" label="ID" />
+          <TextField source="name" />
+          <TextField source="type" />
+          <TextField source="business_id" label="Business ID" />
+          <TextField source="business_id_type" label="Business ID type" />
+        </FieldStack>
+        <Typography variant="h6" gutterBottom>
+          Authentication
+        </Typography>
+        <FieldStack direction="row" spacing={2}>
+          <TextField source="client_id" label="Client ID" />
+          <TextField source="client_secret" />
+          <TextField source="client_public_key" />
+        </FieldStack>
+      </Stack>
+    </SimpleShowLayout>
+  </Show>
+);

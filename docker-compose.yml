@@ -1,0 +1,156 @@
+---
+name: flex
+services:
+  db:
+    build: ./local/postgres
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_pwd
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: postgres
+    command: >-
+      -c log_statement=all
+      -c log_min_messages=debug1
+      -c wal_level=logical
+  postgrest:
+    image: postgrest/postgrest:latest
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    environment:
+      # https://postgrest.org/en/latest/references/configuration.html
+      PGRST_DB_URI: >-
+        postgres://postgrest_authenticator:rest_password@db:5432/flex
+      PGRST_DB_ANON_ROLE: flex_anonymous
+      PGRST_DB_PRE_REQUEST: "flex.pre_request"
+      PGRST_DB_SCHEMAS: api
+      PGRST_DB_EXTRA_SEARCH_PATH: flex,public
+      PGRST_LOG_LEVEL: info
+      PGRST_JWT_SECRET: >-
+        rqQHuW5MppUkriINN1gr1JWjftoJYWhn1234567890ohausd987ahf8a7hsf0a7shf0ash7f
+      PGRST_APP_SETTINGS_JWT_SECRET: >-
+        rqQHuW5MppUkriINN1gr1JWjftoJYWhn1234567890ohausd987ahf8a7hsf0a7shf0ash7f
+      PGRST_JWT_SECRET_IS_BASE64: "False"
+      PGRST_OPENAPI_MODE: ignore-privileges
+      PGRST_OPENAPI_SERVER_PROXY_URI: http://localhost:3000/
+      PGRST_OPENAPI_SECURITY_ACTIVE: "True"
+    depends_on:
+      - db
+  backend:
+    image: golang:1.23.5-bullseye
+    expose:
+      - "7000"
+    ports:
+      - "7000:7000"
+    environment:
+      FLEX_LOG_LEVEL: DEBUG
+      FLEX_JWT_SECRET:
+        rqQHuW5MppUkriINN1gr1JWjftoJYWhn1234567890ohausd987ahf8a7hsf0a7shf0ash7f
+      FLEX_DB_URI: >-
+        postgres://postgrest_authenticator:rest_password@db:5432/flex?search_path=api,auth,public
+      FLEX_DB_REPLICATION_URI: >-
+        postgres://flex_replication:repl_password@db:5432/flex
+      FLEX_DB_REPLICATION_SLOT_NAME: event_slot
+      FLEX_AUTH_API_BASE_URL: https://flex.localhost:6443/auth/v0/
+      FLEX_OIDC_ISSUER: http://idp.flex.localhost:9091/
+      FLEX_OIDC_CLIENT_ID: flex_oidc_client_id_value
+      FLEX_OIDC_CLIENT_SECRET: flex_oidc_client_secret_value
+      FLEX_OIDC_REDIRECT_URL: https://flex.localhost:6443/auth/v0/callback
+      FLEX_OIDC_POST_LOGOUT_REDIRECT_URL: https://flex.localhost:6443/#/login
+    volumes:
+      - type: bind
+        source: ${PWD}/backend
+        target: /src
+    command: bash -c 'go mod download && go run main.go'
+    working_dir: /src/cmd/flex/
+    depends_on:
+      - db
+    extra_hosts:
+      - "idp.flex.localhost:host-gateway"
+  nginx:
+    image: nginx:stable
+    ports:
+      - "6080:6080"
+      - "6443:6443"
+      - "5080:5080"
+      - "5443:5443"
+    volumes:
+      - type: bind
+        source: ${PWD}/local/nginx/.html
+        target: /usr/share/nginx/html/flex
+      - type: bind
+        source: ${PWD}/local/nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+      - type: bind
+        source: ${PWD}/local/nginx/templates/flex.conf
+        target: /etc/nginx/templates/flex.conf.template
+      - type: bind
+        source: ${PWD}/local/nginx/templates/local.conf
+        target: /etc/nginx/templates/local.conf.template
+      - type: bind
+        source: ${PWD}/local/nginx/templates/default.conf
+        target: /etc/nginx/templates/default.conf.template
+      - type: bind
+        source: ${PWD}/local/nginx/dhparam
+        target: /etc/nginx/dhparam
+      - type: bind
+        source: ${HOME}/.ca/certificates/flex.localhost.fullchain.pem
+        target: /etc/oci/certificates/certificate_fullchain_pem
+      - type: bind
+        source: ${HOME}/.ca/certificates/flex.localhost.key.pem
+        target: /etc/oci/certificates/private_key_pem
+    environment:
+      NGINX_PORT_PLAIN: 6080
+      NGINX_PORT_TLS: 6443
+      NGINX_SERVER_NAME: flex.localhost
+      NGINX_UPSTREAM_POSTGREST: http://postgrest:3000
+      NGINX_UPSTREAM_BACKEND: http://backend:7000
+      NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
+      NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
+      # Local / dev mode
+      NGINX_UPSTREAM_LOCAL_FRONTEND: http://host.docker.internal:5173
+      NGINX_PORT_LOCAL_PLAIN: 5080
+      NGINX_PORT_LOCAL_TLS: 5443
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - backend
+      - postgrest
+      - swagger
+  authelia:
+    image: 'docker.io/authelia/authelia:latest'
+    restart: 'unless-stopped'
+    ports:
+      - "9091:9091"
+    environment:
+      AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE: >-
+        /secrets/IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET
+      AUTHELIA_SESSION_SECRET_FILE: >-
+        /secrets/SESSION_SECRET
+      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: >-
+        /secrets/STORAGE_ENCRYPTION_KEY
+      PUID: '1001'
+      PGID: '1001'
+    volumes:
+      - type: bind
+        source: ${PWD}/local/authelia/config
+        target: /config
+      - type: bind
+        source: ${PWD}/local/authelia/secrets
+        target: /secrets
+  swagger:
+    image: swaggerapi/swagger-ui
+    expose:
+      - "3001"
+    ports:
+      - "3001:3001"
+    environment:
+      API_URL: http://localhost:3000/
+      PORT: 3001
+    depends_on:
+      - postgrest

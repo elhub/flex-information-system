@@ -1,0 +1,30 @@
+[sqlfluff]
+dialect = postgres
+
+# don't check file size
+large_file_skip_byte_limit = 0
+
+[sqlfluff:rules:layout.long_lines]
+ignore_comment_lines = True
+ignore_comment_clauses = True
+
+[sqlfluff:indentation]
+# See https://docs.sqlfluff.com/en/stable/layout.html#configuring-indent-locations
+indent_unit = space
+tab_space_size = 4
+indented_joins = True
+indented_ctes = True
+indented_using_on = True
+indented_on_contents = True
+indented_then = True
+indented_then_contents = True
+allow_implicit_indents = True
+template_blocks_indent = True
+# This is a comma seperated list of elements to skip
+# indentation edits to.
+skip_indentation_in = script_content
+# If comments are found at the end of long lines, we default to moving
+# them to the line _before_ their current location as the convention is
+# that a comment precedes the line it describes. However if you prefer
+# comments moved _after_, this configuration setting can be set to "after".
+trailing_comments = before

@@ -4,6 +4,30 @@ This repository contains the source code and documentation for the pilot
 Flexibility Information System (FIS) developed by Elhub as part of the [EuroFlex
 project](https://www.euroflex.no/).
 
+## Documentation
+
+### Developer documentation
+
+[docs-dev/](./docs-dev/index.md) contains the developer documentation as well as
+some system documentation.
+
+### User documentation
+
+[docs/](./docs/index.md) contains our external documentation. This includes user
+documentation and some system documentation like design and technologies we use.
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## Reporting security issues
+
+Check the general Elhub
+[SECURITY.md](https://github.com/elhub/.github/blob/main/.github/SECURITY.md)
+for reporting security issues. It is also available in the
+[security tab](https://github.com/elhub/flex?tab=security-ov-file) of this
+repository.
+
 ## License
 
 Code is licensed under the [MIT License](./LICENSE-MIT).

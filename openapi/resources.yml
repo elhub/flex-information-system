@@ -1,0 +1,1209 @@
+---
+resources:
+  - id: controllable_unit
+    acronym: CU
+    name: Controllable Unit
+    summary: Controllable unit
+    description: Controllable unit
+    operations:
+      - list
+      - read
+      - create
+      - update
+    history:
+      - list
+      - read
+    audit: true
+    generate_views: false
+    properties:
+      id:
+        description: Unique surrogate key.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 12
+      business_id:
+        description: Unique business identifier for the controllable unit.
+        format: text
+        type: string
+        # yamllint disable-line rule:line-length
+        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+        readOnly: true
+        example: '53919b79-876f-4dad-8bde-b29368367604'
+      name:
+        description: Free text name of the controllable unit.
+        format: text
+        type: string
+        maxLength: 512
+        example: 'Car Charger #34'
+      start_date:
+        description: >-
+          The usage date when the controllable unit is first active.
+        format: date
+        type: string
+        nullable: true
+        example: '2024-05-17'
+      status:
+        description: The status of the controllable unit.
+        x-details: >-
+          Always `new` when created. Can then be updated to the other values.
+          Once `terminated`, only editable by a FIS operator.
+        format: text
+        type: string
+        default: new
+        enum:
+          - new
+          - active
+          - suspended
+          - terminated
+        example: active
+      regulation_direction:
+        description: >-
+          The regulation direction of the controllable unit.
+        format: text
+        type: string
+        enum:
+          - up
+          - down
+          - both
+        example: up
+      maximum_available_capacity:
+        description: >-
+          Maximum continuous active power that the controllable unit can produce
+          or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+        format: decimal
+        type: number
+        minimum: 0
+        maximum: 999999.999
+        multipleOf: 0.001
+        example: 3.5
+      is_small:
+        description: >-
+          Whether the controllable unit is small or not, following NCDR.
+        format: boolean
+        type: boolean
+        readOnly: true
+        example: true
+      minimum_duration:
+        description: >-
+          The minimum activation duration in seconds.
+        format: bigint
+        type: integer
+        minimum: 0
+        nullable: true
+        example: 30
+      maximum_duration:
+        description: >-
+          The maximum activation duration in seconds.
+        format: bigint
+        type: integer
+        minimum: 0
+        nullable: true
+        example: 1200
+      recovery_duration:
+        description: >-
+          The minimum recovery duration between activations in seconds.
+        format: bigint
+        type: integer
+        minimum: 0
+        nullable: true
+        example: 3600
+      ramp_rate:
+        description: >-
+          The rate of power per unit of time to reach empty or full power
+          for the controllable unit, in kilowatts per minute.
+        type: number
+        format: decimal
+        minimum: 0.001
+        multipleOf: 0.001
+        nullable: true
+        example: 0.1
+      accounting_point_id:
+        description: |-
+          The existing accounting point that the controllable unit is connected to.
+          `GSRN` metering point id.
+        format: text
+        type: string
+        pattern: '^[1-9][0-9]{17}$'
+        nullable: false
+        example: '709000000000000057'
+      grid_node_id:
+        description: >-
+          Reference to the node that the controllable unit is connected to.
+        format: text
+        type: string
+        # yamllint disable-line rule:line-length
+        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+        nullable: true
+        example: '53919b79-876f-4dad-8bde-b29368367604'
+      connecting_system_operator_id:
+        description: >-
+          Reference to the `party` that is the connecting system operator.
+          Derived from the `accounting_point_id`.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 5
+      grid_validation_status:
+        description: The grid validation status of the controllable unit.
+        format: text
+        type: string
+        default: pending
+        enum:
+          - pending
+          - in_progress
+          - incomplete_information
+          - validated
+          - validation_failed
+        example: validated
+      grid_validation_notes:
+        description: Free text notes on the current grid validation status.
+        format: text
+        type: string
+        maxLength: 512
+        nullable: true
+        example: null
+      last_validated:
+        description: When the controllable unit was last validated.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: 2022-08-08 12:00:00 CET
+
+  - id: controllable_unit_service_provider
+    acronym: CUSP
+    summary: Relation between controllable unit and service provider
+    description: Relation between controllable unit and service provider
+    operations:
+      - list
+      - read
+      - create
+      - update
+      - delete
+    history:
+      - list
+      - read
+    audit: true
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate key.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 7
+      controllable_unit_id:
+        description: >-
+          Reference to the controllable unit this relation links to a
+          service provider.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: controllable_unit
+          field: id
+        example: 2
+      service_provider_id:
+        description: >-
+          Reference to the `party` (service provider) this relation links to
+          a controllable unit.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 78
+      valid_from:
+        description: >-
+          The date from which the relation between the controllable unit and
+          the service provider is valid.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: 2022-08-08 12:00:00 CET
+      valid_to:
+        description: >-
+          The date until which the relation between the controllable unit and
+          the service provider is valid.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: 2022-09-10 15:30:00 CET
+
+  - id: service_providing_group
+    acronym: SPG
+    summary: Service providing group
+    description: Group of controllable units
+    operations:
+      - list
+      - read
+      - create
+      - update
+    history:
+      - list
+      - read
+    audit: true
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate key.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 4
+      name:
+        description: >-
+          Free text name of the service providing group.
+        format: text
+        type: string
+        maxLength: 128
+        example: 'Batteries #09'
+      service_provider_id:
+        description: >-
+          Reference to the `party` (service provider) managing the group.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 17
+      status:
+        description: The status of the group.
+        x-details: >-
+          Always `new` when created. Can then be updated to the other values.
+          Once `terminated`, only editable by a FIS operator.
+        format: text
+        type: string
+        default: new
+        enum:
+          - new
+          - active
+          - terminated
+        example: active
+
+  - id: service_providing_group_membership
+    acronym: SPGM
+    summary: >-
+      Membership relation of controllable unit in service providing group
+    description: >-
+      Membership relation of controllable unit in service providing group
+    operations:
+      - list
+      - read
+      - create
+      - update
+      - delete
+    history:
+      - list
+      - read
+    audit: true
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate key.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 27
+      controllable_unit_id:
+        description: >-
+          Reference to the controllable unit this relation links to a
+          service providing group.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: controllable_unit
+          field: id
+        example: 6
+      service_providing_group_id:
+        description: >-
+          Reference to the service providing group this relation links to a
+          controllable unit.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: service_providing_group
+          field: id
+        example: 55
+      valid_from:
+        description: >-
+          The date from which the relation between the controllable unit and
+          the service providing group is valid.
+        format: timestamp with time zone
+        type: string
+        example: 2022-08-08 12:00:00 CET
+      valid_to:
+        description: >-
+          The date until which the relation between the controllable unit and
+          the service providing group is valid.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: null
+
+  - id: service_providing_group_grid_prequalification
+    acronym: SPGGP
+    summary: >-
+      Grid prequalification for service providing group
+    description: >-
+      Grid prequalification for service providing group
+    operations:
+      - list
+      - read
+      - create
+      - update
+    history:
+      - list
+      - read
+    audit: true
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate key.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 27
+      service_providing_group_id:
+        description: >-
+          Reference to the service providing group whose grid prequalification
+          is tracked by the current resource.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: service_providing_group
+          field: id
+        example: 55
+      impacted_system_operator_id:
+        description: >-
+          Reference to the `party` that is the impacted system operator.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 7
+      status:
+        description: >-
+          The status of the grid prequalification for this service providing
+          group.
+        x-details: >-
+          Always `requested` when created. Can then be updated to the other
+          values.
+        format: text
+        type: string
+        default: requested
+        enum:
+          - requested
+          - in_progress
+          - conditionally_approved
+          - approved
+          - not_approved
+        example: in_progress
+      notes:
+        description: Free text notes on the current prequalification status.
+        format: text
+        type: string
+        maxLength: 512
+        nullable: true
+        example: null
+      last_prequalified:
+        description: When the current grid prequalification was last approved.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: 2023-01-08 10:00:00 CET
+
+  - id: entity
+    acronym: ENT
+    summary: Entity
+    # yamllint disable rule:line-length
+    description: |-
+      Entity - Natural or legal person
+
+      An entity is a natural or legal person that can be a party in the Flexibility Information System.
+
+      Example entity types:
+
+      * Person
+      * Organisation
+    # yamllint enable rule:line-length
+    operations:
+      - list
+      - read
+      - update
+    generate_views: false
+    properties:
+      id:
+        description: |-
+          Unique surrogate identifier.
+
+          Note:
+          This is a Primary Key.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 14
+      business_id:
+        description: >-
+          The business identifier of the entity. Format depends on
+          `business_id_type`.
+        format: text
+        type: string
+        readOnly: true
+        example: example@flex.test
+      business_id_type:
+        description: >-
+          The type of the business identifier.
+        format: text
+        type: string
+        readOnly: true
+        example: email
+      name:
+        description: Name of the entity. Maximum 128 characters.
+        format: text
+        type: string
+        readOnly: true
+        example: John Smith
+      type:
+        description: The type of the entity, e.g Person, Organisation
+        format: text
+        type: string
+        readOnly: true
+        example: person
+      client_id:
+        description: >-
+          The identifier of the entity. For use with client credentials
+          authentication method.
+        format: text
+        type: string
+        example: addr@flex.test
+      client_secret:
+        description: >-
+          The secret of the entity. For use with client credentials
+          authentication method. Input as plain text but stored encrypted.
+        format: text
+        type: string
+        minLength: 12
+        nullable: true
+        example: mysupersecretpassword
+      client_public_key:
+        description:
+          The public key of the entity (X.509 SubjectPublicKeyInfo). For use
+          with JWT grant authentication method.
+        format: text
+        type: string
+        nullable: true
+        pattern: '^-----BEGIN PUBLIC KEY-----\nMIIB[A-Za-z0-9+\/\n]*\n-----END PUBLIC KEY-----$'
+        example: |-
+          -----BEGIN PUBLIC KEY-----
+          MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
+          TozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V
+          kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
+          0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
+          -----END PUBLIC KEY-----
+
+  - id: party
+    acronym: PTY
+    summary: Party
+    # yamllint disable rule:line-length
+    description: |-
+      The body that interacts with the Flexibility Information System
+
+      A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
+
+      Example party types:
+
+      * Service Provider
+      * System Operator
+      * End User
+    # yamllint enable rule:line-length
+    operations:
+      - list
+      - read
+      - create
+      - update
+    history:
+      - list
+      - read
+    audit: true
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 11
+      business_id:
+        description: >-
+          The business identifier of the party. Format depends on
+          `business_id_type`.
+        format: text
+        type: string
+        x-no-update: true
+        required: false
+        example: '1337099000000'
+      business_id_type:
+        description: >-
+          The type of the business identifier.
+        format: text
+        type: string
+        x-no-update: true
+        default: uuid
+        enum:
+          - gln
+          - uuid
+          - eic_x
+        example: gln
+      name:
+        description: Name of the party. Maximum 128 characters.
+        format: text
+        type: string
+        example: Flex Energy Supplier
+      role:
+        description: >-
+          The role of the party. Currently maps to 1:1 to `type`.
+          E.g. system_operator, service_provider.
+        format: text
+        type: string
+        x-no-update: true
+        example: flex_energy_supplier
+      type:
+        description: >-
+          The type of the party, e.g SystemOperator, ServiceProvider
+        format: text
+        type: string
+        x-no-update: true
+        example: energy_supplier
+      status:
+        description: The status of the party.
+        format: text
+        type: string
+        default: new
+        enum:
+          - new
+          - active
+          - inactive
+          - suspended
+          - terminated
+        example: active
+
+  - id: party_membership
+    acronym: PTYM
+    summary: Party Membership
+    description: |-
+      The relation between a party and entity.
+    operations:
+      - list
+      - read
+      - create
+      - delete
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 44
+      party_id:
+        description: >-
+          Reference to the party that the membership links to an entity.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 379
+      entity_id:
+        description: >-
+          Reference to the entity that the party represents.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: entity
+          field: id
+        example: 30
+
+  - id: identity
+    acronym: ID
+    summary: Identity
+    description: >-
+      Resource uniquely identifying a user by linking its entity and the
+      potentially assumed party.
+    operations:
+      - read
+      - list
+    generate_views: false
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 44
+      entity_id:
+        description: >-
+          Reference to the entity using the identity.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-foreign-key:
+          resource: entity
+          field: id
+        example: 3
+      entity_name:
+        description: >-
+          Name of the entity using the identity.
+        format: text
+        type: string
+        readOnly: true
+        x-foreign-key:
+          resource: entity
+          field: name
+        example: Martin Andersen
+      party_id:
+        description: >-
+          Reference to the party assumed by the entity.
+        format: bigint
+        type: integer
+        readOnly: true
+        nullable: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 17
+      party_name:
+        description: >-
+          Name of the party assumed by the entity.
+        format: text
+        type: string
+        readOnly: true
+        nullable: true
+        x-foreign-key:
+          resource: party
+          field: name
+        example: Andersen SO
+
+  - id: technical_resource
+    acronym: TR
+    summary: Technical Resource
+    description: Technical unit being part of a controllable unit.
+    operations:
+      - list
+      - read
+      - create
+      - update
+      - delete
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 89
+      name:
+        description: Name of the technical resource. Maximum 128 characters.
+        format: text
+        type: string
+        example: 'Battery Unit #1'
+      controllable_unit_id:
+        description: >-
+          Reference to the controllable unit that this technical resource
+          belongs to.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: controllable_unit
+          field: id
+        example: 37
+      details:
+        description: >-
+          Free text details about the technical resource.
+        format: text
+        type: string
+        maxLength: 1024
+        nullable: true
+        example: |-
+          Make: ACME
+          Model: Car Charger 3000
+
+  - id: event
+    acronym: EVENT
+    summary: Event
+    description: Event happening in the system.
+    operations:
+      - list
+      - read
+    generate_views: false
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 89
+      specversion:
+        description: >-
+          The version of the CloudEvents specification followed by the resource.
+        format: text
+        type: string
+        readOnly: true
+        example: '1.0'
+      time:
+        description: The time at which the event was generated.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2022-08-08 12:00:00 CET
+      type:
+        description: The type of the event.
+        format: text
+        type: string
+        pattern: '^no.elhub.flex.'
+        readOnly: true
+        example: 'no.elhub.flex.service_providing_group.update'
+      source:
+        description: The URI of the resource concerned by the event.
+        format: text
+        type: string
+        pattern: '^(\/([a-z][a-z_]*|[0-9]+))+$'
+        readOnly: true
+        example: '/service_providing_group/4'
+      data:
+        description: The data of the event.
+        format: text
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+
+  - id: notification
+    acronym: NOT
+    summary: Notification
+    description: Notification about an event happening in the system.
+    operations:
+      - list
+      - read
+      - update
+    audit: true
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 89
+      acknowledged:
+        description: Whether the notification was acknowledged by the target user.
+        format: boolean
+        type: boolean
+        example: false
+      event_id:
+        description: Reference to the event notified by this resource.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: event
+          field: id
+        example: 37
+      party_id:
+        description: Reference to the party concerned by this notification.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 37
+
+  - id: accounting_point
+    acronym: AP
+    summary: Accounting Point
+    description: Accounting point for a controllable unit.
+    operations:
+      - read
+      - list
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 89
+      business_id:
+        description: >-
+          The GSRN metering point id of the accounting point.
+        format: text
+        type: string
+        pattern: '^[1-9][0-9]{17}$'
+        example: '709000000000000057'
+      system_operator_id:
+        description: >-
+          The system operator of the accounting point
+        format: text
+        type: string
+        x-foreign-key:
+          resource: party
+          field: id
+
+  - id: product_type
+    acronym: PT
+    summary: Product Type
+    description: Product type.
+    operations:
+      - read
+      - list
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 4
+      business_id:
+        description: The code for this product type.
+        format: text
+        type: string
+        readOnly: true
+        maxLength: 64
+        example: 'manual_congestion_activation'
+      category:
+        description: The category of the product type.
+        format: text
+        type: string
+        maxLength: 64
+        readOnly: true
+        example: 'congestion'
+      market:
+        description: The market which the product type belongs to.
+        format: text
+        type: string
+        maxLength: 64
+        readOnly: true
+        example: 'local'
+      market_type:
+        description: The type of market which the product type belongs to.
+        format: text
+        type: string
+        maxLength: 64
+        readOnly: true
+        example: 'activation'
+      examples:
+        description: Examples of products belonging to this product type.
+        format: text
+        type: string
+        maxLength: 128
+        readOnly: true
+        example: 'ShortFlex'
+      notes:
+        description: Additional information about a product type.
+        format: text
+        type: string
+        maxLength: 1024
+        readOnly: true
+        example: ""
+
+  - id: system_operator_product_type
+    acronym: SOPT
+    summary: System Operator Product Type
+    description: >-
+      Relation between a system operator and a product type they want to buy.
+    operations:
+      - list
+      - read
+      - create
+      - update
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 89
+      system_operator_id:
+        description: Reference to the system operator.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 37
+      product_type_id:
+        description: Reference to the product type.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: product_type
+          field: id
+        example: 8
+      status:
+        description: The status of the relation.
+        format: text
+        type: string
+        default: active
+        enum:
+          - active
+          - inactive
+        example: active
+
+  - id: service_provider_product_application
+    acronym: SPPA
+    summary: Service Provider Product Application
+    description: >-
+      Relation between a service provider and a system operator, for the SP to
+      apply for delivering the SO some of the types of product they want to buy
+      on a flexibility market.
+    operations:
+      - list
+      - read
+      - create
+      - update
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 89
+      service_provider_id:
+        description: Reference to the service provider.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 18
+      system_operator_id:
+        description: Reference to the system operator.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 39
+      product_type_ids:
+        description: References to the product types.
+        type: array
+        items:
+          format: bigint
+          type: integer
+        x-foreign-key:
+          resource: product_type
+          field: id
+        example: [2, 4, 5]
+      status:
+        description: The status of the application.
+        format: text
+        type: string
+        default: requested
+        enum:
+          - requested
+          - in_progress
+          - communication_test
+          - not_qualified
+          - qualified
+        example: in_progress
+      notes:
+        description: Free text notes on the current product application status.
+        format: text
+        type: string
+        maxLength: 512
+        nullable: true
+        example: null
+      last_qualified:
+        description: When the product application was last validated.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: 2022-08-08 12:00:00 CET
+
+  - id: service_provider_product_application_comment
+    acronym: SPPAC
+    summary: Service Provider Product Application Comment
+    description: >-
+      Comment made by a party involved in a service provider product
+      application.
+    operations:
+      - list
+      - read
+      - create
+      - update
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 9
+      service_provider_product_application_id:
+        description: Reference to the service provider product application.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: service_provider_product_application
+          field: id
+        example: 7
+      created_by:
+        description: Reference to the identity that created the comment.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 94
+      created_at:
+        description: When the comment was added to the application.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2022-08-08 12:00:00 CET
+      visibility:
+        description: The level of visibility of the comment.
+        format: text
+        type: string
+        default: same_party
+        enum:
+          - same_party
+          - same_party_type
+          - any_party
+        example: same_party
+        x-details: >-
+          Comments marked `same_party` are visible only to the party that
+          creates them, whereas comments marked `same_party_type` can be seen by
+          all parties of the same type, and comments marked `any_party` are
+          visible to all parties that can see the application.
+      content:
+        description: Free text content of the comment.
+        format: text
+        type: string
+        maxLength: 2048
+        example: Missing document.
+
+  - id: service_providing_group_product_application
+    acronym: SPGPA
+    summary: Service Providing Group Product Application
+    description: >-
+      Relation between a service providing group and a system operator for a
+      product type, for the SPG to deliver a product to the SO later.
+    operations:
+      - list
+      - read
+      - create
+      - update
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 89
+      service_providing_group_id:
+        description: Reference to the service providing group.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: service_providing_group
+          field: id
+        example: 18
+      procuring_system_operator_id:
+        description: Reference to the procuring system operator.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 39
+      product_type_id:
+        description: References to the product type.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: product_type
+          field: id
+        example: 2
+      status:
+        description: The status of the application.
+        format: text
+        type: string
+        default: requested
+        enum:
+          - requested
+          - prequalification_pending
+          - in_progress
+          - temporary_qualified
+          - prequalified
+          - verified
+          - rejected
+        example: in_progress
+      notes:
+        description: Free text notes on the current product application status.
+        format: text
+        type: string
+        maxLength: 512
+        nullable: true
+        example: null
+      last_prequalified:
+        description: When the product application was last prequalified.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: 2022-08-08 12:00:00 CET
+      last_verified:
+        description: When the product application was last verified.
+        format: timestamp with time zone
+        type: string
+        nullable: true
+        example: 2021-08-08 10:00:00 CET

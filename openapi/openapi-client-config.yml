@@ -1,0 +1,11 @@
+project_name_override: "flex"
+post_hooks:
+  # disable unused variable error
+  # why :
+  # PostgREST sometimes returns an empty object on error
+  # => empty object schema required in the OpenAPI spec for tests to go green
+  # => this schema causes a minor error in the generated API client
+  #
+  # UP006 and UP035 are deprecation warning about typing.
+  - "ruff check . --fix --ignore F841,UP006,UP035"
+  - "ruff format ."

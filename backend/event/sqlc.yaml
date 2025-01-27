@@ -1,0 +1,36 @@
+---
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "models.sql"
+    schema: "schema.sql"
+    gen:
+      go:
+        package: "models"
+        out: "models"
+        sql_package: "pgx/v5"
+        query_parameter_limit: 2
+        # we use pointers as a direct way to represent nullability
+        # instead of using pgtype wrapper types
+        emit_pointers_for_null_types: true
+        # but this seems to only work for part of the types,
+        # we still have to make sure some of the defaults are not used
+        overrides:
+          # use (*)int instead of (*)int64
+          - db_type: "pg_catalog.int8"
+            nullable: false
+            go_type: "int"
+          - db_type: "pg_catalog.int8"
+            nullable: true
+            go_type:
+              type: "int"
+              pointer: true
+          # use (*)float64 instead of the numeric wrapper type
+          - db_type: "pg_catalog.numeric"
+            nullable: false
+            go_type: "float64"
+          - db_type: "pg_catalog.numeric"
+            nullable: true
+            go_type:
+              type: "float64"
+              pointer: true

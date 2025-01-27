@@ -1,0 +1,36 @@
+{
+    "name": "flex-admin",
+    "private": true,
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "serve": "vite preview",
+        "type-check": "tsc --noEmit",
+        "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
+        "format": "prettier --write ./src"
+    },
+    "dependencies": {
+        "@raphiniert/ra-data-postgrest": "^2.4.1",
+        "@tanstack/react-query-devtools": "^5.64.2",
+        "jwt-decode": "^4.0.0",
+        "react": "^19.0.0",
+        "react-admin": "^5.5.0",
+        "react-dom": "^19.0.0",
+        "use-react-router-breadcrumbs": "^4.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.9",
+        "@types/react": "^19.0.7",
+        "@types/react-dom": "^19.0.3",
+        "@typescript-eslint/eslint-plugin": "^8.21.0",
+        "@typescript-eslint/parser": "^8.21.0",
+        "@vitejs/plugin-react": "^4.3.4",
+        "eslint": "^9.18.0",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-react": "^7.37.4",
+        "eslint-plugin-react-hooks": "^5.1.0",
+        "prettier": "^3.4.2",
+        "typescript": "^5.7.3",
+        "vite": "^6.0.11"
+    }
+}

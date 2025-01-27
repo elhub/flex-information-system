@@ -1,0 +1,28 @@
+@startdot controllable_unit_status
+digraph G {
+    layout=dot;
+    overlap=false;
+
+    node [shape=rect, width=0.1, height=0.1, margin=0.04];
+    nodesep=1;
+
+    start [shape=point];
+
+    // status
+    new;
+    {
+        rank = same;
+        suspended;
+        active;
+    }
+    terminated [shape=oval];
+
+    // transitions
+    start -> new [label="", color="pink"];
+    new -> active [label="", color="blue"];
+    active -> terminated [label="", color="black"];
+    active -> suspended [label="", color="black"];
+    suspended-> active [label="", color="black"];
+
+   }
+@enddot
