@@ -22,6 +22,7 @@ from flex.models import (
     ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupProductApplicationCreateRequest,
     ServiceProvidingGroupProductApplicationResponse,
+    ServiceProvidingGroupProductApplicationHistoryResponse,
     ServiceProvidingGroupProductApplicationUpdateRequest,
     ServiceProvidingGroupProductApplicationStatus,
     ErrorMessage,
@@ -54,6 +55,8 @@ from flex.api.service_providing_group_product_application import (
     list_service_providing_group_product_application,
     read_service_providing_group_product_application,
     update_service_providing_group_product_application,
+    list_service_providing_group_product_application_history,
+    read_service_providing_group_product_application_history,
 )
 from flex import AuthenticatedClient
 import pytest
@@ -311,35 +314,35 @@ def test_spgpa_fiso_sp_so(data):
     assert not (isinstance(d, ErrorMessage))
 
 
-# def test_spgpa_common(data):
-#     (sts, _, _, _, _, _, _) = data
+def test_spgpa_common(data):
+    (sts, _, _, _, _, _, _) = data
 
-#     for role in sts.COMMON_ROLES:
-#         client = sts.get_client(TestEntity.TEST, role)
+    for role in sts.COMMON_ROLES:
+        client = sts.get_client(TestEntity.TEST, role)
 
-#         spgpa_visible = list_service_providing_group_product_application.sync(
-#             client=client,
-#         )
-#         assert isinstance(spgpa_visible, list)
+        spgpa_visible = list_service_providing_group_product_application.sync(
+            client=client,
+        )
+        assert isinstance(spgpa_visible, list)
 
-#         # RLS: SPGPA-COM001
-#         # can read history on SPGPA they can read
-#         # only checking a few entries is sufficient
-#         for spgpa in spgpa_visible[:5]:
-#             # endpoint: GET /service_providing_group_product_application_history
-#             hist = list_service_providing_group_product_application_history.sync(
-#                 client=client,
-#                 service_providing_group_product_application_id=f"eq.{spgpa.id}",
-#             )
-#             assert isinstance(hist, list)
-#             assert len(hist) > 0
+        # RLS: SPGPA-COM001
+        # can read history on SPGPA they can read
+        # only checking a few entries is sufficient
+        for spgpa in spgpa_visible[:5]:
+            # endpoint: GET /service_providing_group_product_application_history
+            hist = list_service_providing_group_product_application_history.sync(
+                client=client,
+                service_providing_group_product_application_id=f"eq.{spgpa.id}",
+            )
+            assert isinstance(hist, list)
+            assert len(hist) > 0
 
-#             # endpoint: GET /service_providing_group_product_application_history/{id}
-#             hist_spgpa = read_service_providing_group_product_application_history.sync(
-#                 client=client,
-#                 id=cast(int, hist[0].id),
-#             )
-#             assert isinstance(
-#                 hist_spgpa,
-#                 ServiceProvidingGroupProductApplicationHistoryResponse,
-#             )
+            # endpoint: GET /service_providing_group_product_application_history/{id}
+            hist_spgpa = read_service_providing_group_product_application_history.sync(
+                client=client,
+                id=cast(int, hist[0].id),
+            )
+            assert isinstance(
+                hist_spgpa,
+                ServiceProvidingGroupProductApplicationHistoryResponse,
+            )
