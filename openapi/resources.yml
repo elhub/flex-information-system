@@ -1123,6 +1123,10 @@ resources:
         type: string
         maxLength: 2048
         example: Missing document.
+        x-details: >-
+          This field can contain rich text in raw HTML format. Its content
+          should be sanitised on the client side before being displayed, as
+          there is currently no check performed on the server.
 
   - id: service_providing_group_product_application
     acronym: SPGPA

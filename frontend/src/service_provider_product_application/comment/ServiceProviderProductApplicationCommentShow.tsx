@@ -1,5 +1,6 @@
 import {
   Button,
+  RichTextField,
   Show,
   SimpleShowLayout,
   TextField,
@@ -55,7 +56,7 @@ export const ServiceProviderProductApplicationCommentShow = () => {
             Content
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="content" component="pre" />
+            <RichTextField source="content" />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>

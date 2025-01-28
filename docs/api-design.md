@@ -259,6 +259,22 @@ value.
     to get right in situations where there could be multiple changes to the
     timeline since the point in time you want to rollback to.
 
+## Rich text fields
+
+Some text fields actually support *rich text* content. For simplicity, we chose
+HTML as the format of rich text fields, as it is a very common format readily
+available in all web browsers, which are likely to be the host of the frontend
+environments that will interact with our API.
+
+In such cases, where data stored in a system must be *interpreted* in order to
+be displayed, this data should always go through a *sanitisation* step before
+being used. This sanitisation can happen one or several times, before storing
+the data or after retrieving it. For now, rich text fields are a test feature,
+so we choose not to validate their content on the server side. It is therefore
+left to the responsibility of our users to sanitise the content of rich text
+fields before exploiting it. Note that the default user interface we offer as
+part of our test platform use components performing the expected sanitisation.
+
 ## Naming and casing
 
 Singular vs plural is basically a matter of taste. We just had to pick one. We
