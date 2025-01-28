@@ -38,6 +38,7 @@ from flex.api.service_providing_group_membership import (
     delete_service_providing_group_membership,
 )
 from flex.api.service_providing_group import (
+    read_service_providing_group,
     create_service_providing_group,
     update_service_providing_group,
 )
@@ -110,6 +111,13 @@ def data():
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
+
+    # SO cannot read the SPG yet (cf SPG RLS below)
+    err = read_service_providing_group.sync(
+        client=client_so,
+        id=cast(int, spg.id),
+    )
+    assert isinstance(err, ErrorMessage)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -207,6 +215,11 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+
+    # RLS: SPG-SO002
+    # BTW now SO can read the SPG
+    spg = read_service_providing_group.sync(client=client_so, id=spg_id)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     # other SO can read
     # RLS: SPGPA-SO001
