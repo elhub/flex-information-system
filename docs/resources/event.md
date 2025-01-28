@@ -53,7 +53,9 @@ No policies.
 
 #### Common
 
-No policies.
+| Policy key    | Policy           | Status |
+|---------------|------------------|--------|
+| EVENT-COM001  | Read all events. | DONE   |
 
 #### Balance Responsible Party
 

@@ -53,6 +53,7 @@ and support the processes in the value chain.$$;
 \i flex/controllable_unit_service_provider_rls.sql
 \i flex/entity_rls.sql
 \i flex/identity_rls.sql
+\i flex/event_rls.sql
 \i flex/notification_rls.sql
 \i flex/party_membership_rls.sql
 \i flex/party_rls.sql
