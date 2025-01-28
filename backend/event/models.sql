@@ -149,7 +149,7 @@ FROM service_provider_product_application sppa
 JOIN service_provider_product_application_comment_history sppach
 ON sppa.id = sppach.service_provider_product_application_id
 WHERE sppach.service_provider_product_application_comment_id = @resource_id
-AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]') @> @recorded_at::timestamptz
+AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[)') @> @recorded_at::timestamptz
 AND sppach.visibility = 'any_party';
 -- other visibilities mean no notification (empty notified parties list) :
 --   - 'same_party' leaves only the current party, removed from the list anyway

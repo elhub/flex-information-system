@@ -113,7 +113,7 @@ FROM service_provider_product_application sppa
 JOIN service_provider_product_application_comment_history sppach
 ON sppa.id = sppach.service_provider_product_application_id
 WHERE sppach.service_provider_product_application_comment_id = $1
-AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]') @> $2::timestamptz
+AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[)') @> $2::timestamptz
 AND sppach.visibility = 'any_party'
 `
 
