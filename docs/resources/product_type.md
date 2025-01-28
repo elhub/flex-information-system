@@ -90,7 +90,9 @@ No policies.
 
 #### Common
 
-No policies.
+| Policy key | Policy                  | Status |
+|------------|-------------------------|--------|
+| PT-COM001  | Read all product types. | DONE   |
 
 #### Balance Responsible Party
 
