@@ -4,6 +4,7 @@ from security_token_service import (
 )
 from flex.models import (
     PartyResponse,
+    PartyHistoryResponse,
     PartyCreateRequest,
     PartyUpdateRequest,
     PartyBusinessIdType,
@@ -15,6 +16,7 @@ from flex.api.party import (
     update_party,
     list_party,
     list_party_history,
+    read_party_history,
 )
 from flex.api.party_membership import (
     list_party_membership,
@@ -153,12 +155,17 @@ def test_party_common(sts):
 
         # only checking a few entries is sufficient
         for p in parties_visible[:5]:
+            # endpoint: GET /party_history
             hist = list_party_history.sync(
                 client=client,
                 party_id=f"eq.{p.id}",
             )
             assert isinstance(hist, list)
             assert len(hist) > 0
+
+            # endpoint: GET /party_history/{id}
+            h = read_party_history.sync(client=client, id=cast(int, hist[0].id))
+            assert isinstance(h, PartyHistoryResponse)
 
         # RLS: PTY-COM002
         # can read non end user parties

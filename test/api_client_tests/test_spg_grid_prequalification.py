@@ -193,6 +193,7 @@ def test_spggp_fiso(data):
     assert isinstance(spggps_spg, list)
     assert len(spggps_spg) == 0
 
+    # endpoint: POST /service_providing_group_grid_prequalification
     spggp = create_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
         body=ServiceProvidingGroupGridPrequalificationCreateRequest(
