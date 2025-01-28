@@ -52,11 +52,12 @@ and support the processes in the value chain.$$;
 \i flex/controllable_unit_rls.sql
 \i flex/controllable_unit_service_provider_rls.sql
 \i flex/entity_rls.sql
-\i flex/identity_rls.sql
 \i flex/event_rls.sql
+\i flex/identity_rls.sql
 \i flex/notification_rls.sql
 \i flex/party_membership_rls.sql
 \i flex/party_rls.sql
+\i flex/product_type_rls.sql
 \i flex/service_provider_product_application_rls.sql
 \i flex/service_provider_product_application_comment_rls.sql
 \i flex/service_providing_group_membership_rls.sql
