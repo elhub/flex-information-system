@@ -89,7 +89,7 @@ No policies.
 
 | Policy key | Policy                                 | Status |
 |------------|----------------------------------------|--------|
-| CU-COM001  | Read history on CU that they can read. | TODO   |
+| CU-COM001  | Read history on CU that they can read. | DONE   |
 
 #### Balance Responsible Party
 
@@ -123,10 +123,10 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                                       | Status  |
-|------------|--------------------------------------------------------------|---------|
-| CU-SO001   | Read and update CU that are connected to AP belonging to SO. | PARTIAL |
-| CU-SO002   | Read CU belonging to SPG that the SO can see.                | DONE    |
+| Policy key | Policy                                                       | Status |
+|------------|--------------------------------------------------------------|--------|
+| CU-SO001   | Read and update CU that are connected to AP belonging to SO. | DONE   |
+| CU-SO002   | Read CU belonging to SPG that the SO can see.                | DONE   |
 
 #### Service Provider
 

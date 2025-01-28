@@ -60,7 +60,7 @@ USING (
             AND controllable_unit_service_provider.service_provider_id
             = current_party()
     ) OR (
-        -- the SP last edited the CU (e.g., created it)
+        -- the SP created the CU
         created_by_party_id = current_party()
     )
 );
