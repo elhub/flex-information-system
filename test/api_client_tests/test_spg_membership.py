@@ -1,4 +1,8 @@
-from security_token_service import SecurityTokenService, TestEntity
+from security_token_service import (
+    SecurityTokenService,
+    TestEntity,
+    AuthenticatedClient,
+)
 from flex.models import (
     ControllableUnitResponse,
     ControllableUnitCreateRequest,
@@ -47,10 +51,10 @@ def data():
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    client_so = sts.get_client(TestEntity.TEST, "SO")
+    client_so = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SO"))
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_sp = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # Create new controllable unit and spg to play with
@@ -384,7 +388,7 @@ def test_spgm_common(data):
 
         # only checking a few entries is sufficient
         for spg in spgm_visible[:5]:
-            # endpoint: GET /service_providing_group_history
+            # endpoint: GET /service_providing_group_membership_history
             hist = list_service_providing_group_membership_history.sync(
                 client=client,
                 service_providing_group_membership_id=f"eq.{spg.id}",
@@ -392,7 +396,7 @@ def test_spgm_common(data):
             assert isinstance(hist, list)
             assert len(hist) > 0
 
-            # endpoint: GET /service_providing_group_history/{id}
+            # endpoint: GET /service_providing_group_membership_history/{id}
             hist_spg = read_service_providing_group_membership_history.sync(
                 client=client, id=cast(int, hist[0].id)
             )

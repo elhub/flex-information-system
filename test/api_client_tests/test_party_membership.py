@@ -42,6 +42,7 @@ def test_ptym_fiso(sts):
     # delete party membership if it already exists
     for pm in pms:
         if pm.entity_id == ent_id and pm.party_id == pty_id:
+            # endpoint: DELETE /party_membership/{id}
             delete_party_membership.sync(
                 client=client_fiso, id=cast(int, pm.id), body=EmptyObject()
             )
