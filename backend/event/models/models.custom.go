@@ -28,9 +28,13 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop
 		"no.elhub.flex.system_operator_product_type.delete":
 		return q.GetSystemOperatorProductTypeUpdateDeleteNotificationRecipients(ctx, resourceID)
 	case "no.elhub.flex.service_provider_product_application.create",
-		"no.elhub.flex.service_provider_product_application.update",
-		"no.elhub.flex.service_provider_product_application.delete":
+		"no.elhub.flex.service_provider_product_application.update":
 		return q.GetServiceProviderProductApplicationNotificationRecipients(ctx, resourceID, recordedAt)
+	case "no.elhub.flex.service_provider_product_application_comment.create",
+		"no.elhub.flex.service_provider_product_application_comment.update":
+		return q.GetServiceProviderProductApplicationCommentNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.service_providing_group.create":
 		return q.GetServiceProvidingGroupCreateNotificationRecipients(ctx, resourceID)
 	case "no.elhub.flex.service_providing_group.update":

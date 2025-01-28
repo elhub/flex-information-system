@@ -71,6 +71,7 @@ connect user="postgres":
 # initialize local development environment
 init: && _venv _plantuml_install _keypair
     rm -rf .venv .bin
+    pre-commit install
 
 _plantuml_install:
     #!/usr/bin/env bash

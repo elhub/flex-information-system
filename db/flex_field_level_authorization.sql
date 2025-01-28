@@ -972,6 +972,9 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.service_provider_product_application_comment
 TO flex_third_party;
 
+GRANT SELECT ON TABLE flex.service_provider_product_application_comment
+TO flex_internal_event_notification;
+
 GRANT SELECT ON TABLE flex.service_provider_product_application_comment_history
 TO flex_balance_responsible_party;
 
@@ -995,3 +998,6 @@ TO flex_service_provider;
 
 GRANT SELECT ON TABLE flex.service_provider_product_application_comment_history
 TO flex_third_party;
+
+GRANT SELECT ON TABLE flex.service_provider_product_application_comment_history
+TO flex_internal_event_notification;
