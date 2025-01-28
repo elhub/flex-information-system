@@ -73,13 +73,7 @@ export const ResourceButton = (props: any) => {
     data: resourceRecord,
     isPending: resourcePending,
     error: resourceError,
-  } = useGetOne(
-    resource,
-    { id: id },
-    // ensure the button does not show if we cannot see the resource concerned
-    // by the notification
-    { retry: false },
-  );
+  } = useGetOne(resource, { id: id });
   const subResourceInfo = getSubResourceInformation(resource);
   const operation = event?.type.split(".").slice(-1);
 
