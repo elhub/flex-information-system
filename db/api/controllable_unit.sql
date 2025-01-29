@@ -102,8 +102,21 @@ BEGIN
         where id = NEW.id;
 
         IF NOT FOUND THEN
-            RAISE sqlstate 'PT401' using
-                message = 'Unauthorized';
+            IF current_role = 'flex_service_provider'
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM flex.controllable_unit_service_provider
+                    WHERE controllable_unit_id = NEW.id
+                    AND service_provider_id = flex.current_party()
+                    AND valid_time_range @> current_timestamp
+                )
+            THEN
+                RAISE sqlstate 'PT401' using
+                    message = 'Unauthorized: service provider is not responsible for the controllable unit';
+            ELSE
+                RAISE sqlstate 'PT401' using
+                    message = 'Unauthorized';
+            END IF;
             RETURN null;
         END IF;
 
