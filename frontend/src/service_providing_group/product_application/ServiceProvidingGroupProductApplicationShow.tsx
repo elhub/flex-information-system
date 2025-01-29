@@ -5,6 +5,7 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  TopToolbar,
   usePermissions,
   useRecordContext,
   useResourceContext,
@@ -39,7 +40,18 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   const translateLabel = useTranslateLabel();
 
   return (
-    <Show>
+    <Show
+      actions={
+        !isHistory &&
+        permissions.includes(
+          "service_providing_group_product_application.update",
+        ) && (
+          <TopToolbar>
+            <EditButton />
+          </TopToolbar>
+        )
+      }
+    >
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
@@ -90,10 +102,6 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
-        {!isHistory &&
-          permissions.includes(
-            "service_providing_group_product_application.update",
-          ) && <EditButton />}
         <NestedResourceHistoryButton
           parent="service_providing_group"
           child="product_application"

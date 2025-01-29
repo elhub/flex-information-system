@@ -4,6 +4,7 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  TopToolbar,
   usePermissions,
   useRecordContext,
   useResourceContext,
@@ -36,7 +37,18 @@ export const ServiceProviderProductApplicationCommentShow = () => {
   };
 
   return (
-    <Show>
+    <Show
+      actions={
+        !isHistory &&
+        permissions.includes(
+          "service_provider_product_application_comment.update",
+        ) && (
+          <TopToolbar>
+            <EditButton />
+          </TopToolbar>
+        )
+      }
+    >
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
@@ -69,10 +81,6 @@ export const ServiceProviderProductApplicationCommentShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
-        {!isHistory &&
-          permissions.includes(
-            "service_provider_product_application_comment.update",
-          ) && <EditButton />}
         <NestedResourceHistoryButton
           parent="service_provider_product_application"
           child="comment"

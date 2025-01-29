@@ -4,6 +4,7 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  TopToolbar,
   usePermissions,
   useRecordContext,
   useResourceContext,
@@ -35,7 +36,18 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
   };
 
   return (
-    <Show>
+    <Show
+      actions={
+        !isHistory &&
+        permissions.includes(
+          "service_providing_group_grid_prequalification.update",
+        ) && (
+          <TopToolbar>
+            <EditButton />
+          </TopToolbar>
+        )
+      }
+    >
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
@@ -69,10 +81,6 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
-        {!isHistory &&
-          permissions.includes(
-            "service_providing_group_grid_prequalification.update",
-          ) && <EditButton />}
         <NestedResourceHistoryButton
           parent="service_providing_group"
           child="grid_prequalification"

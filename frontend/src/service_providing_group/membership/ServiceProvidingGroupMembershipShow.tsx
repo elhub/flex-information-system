@@ -4,6 +4,7 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  TopToolbar,
   usePermissions,
   useRecordContext,
   useResourceContext,
@@ -35,7 +36,16 @@ export const ServiceProvidingGroupMembershipShow = () => {
   };
 
   return (
-    <Show>
+    <Show
+      actions={
+        !isHistory &&
+        permissions.includes("service_providing_group_membership.update") && (
+          <TopToolbar>
+            <EditButton />
+          </TopToolbar>
+        )
+      }
+    >
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
@@ -74,10 +84,6 @@ export const ServiceProvidingGroupMembershipShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
-        {!isHistory &&
-          permissions.includes("service_providing_group_membership.update") && (
-            <EditButton />
-          )}
         <NestedResourceHistoryButton
           parent="service_providing_group"
           child="membership"
