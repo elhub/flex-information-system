@@ -54,7 +54,11 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
   productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      toolbar={<Toolbar saveAlwaysEnabled />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
