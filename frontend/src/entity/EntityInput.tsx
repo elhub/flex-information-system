@@ -4,7 +4,7 @@ import { Typography, Stack } from "@mui/material";
 import { InputStack } from "../auth";
 
 export const EntityInput = () => (
-  <SimpleForm maxWidth={1280} toolbar={<Toolbar />}>
+  <SimpleForm maxWidth={1280} toolbar={<Toolbar saveAlwaysEnabled />}>
     <Stack direction="column" spacing={1}>
       <Typography variant="h6" gutterBottom>
         Authentication

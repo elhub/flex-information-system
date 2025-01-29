@@ -33,7 +33,7 @@ export const ServiceProviderProductApplicationCommentInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled={!!overrideRecord?.id} />}
+      toolbar={<Toolbar saveAlwaysEnabled />}
     >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
