@@ -2,7 +2,7 @@ import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../history";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 
 export const SystemOperatorProductTypeHistoryList = () => {
   const { system_operator_product_type_id } = useParams();

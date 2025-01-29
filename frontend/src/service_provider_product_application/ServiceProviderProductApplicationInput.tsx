@@ -1,5 +1,4 @@
 import {
-  DateTimeInput,
   required,
   SelectArrayInput,
   SelectInput,
@@ -14,6 +13,7 @@ import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
+import { DateTimeInput } from "../datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

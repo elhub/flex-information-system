@@ -14,7 +14,7 @@ import {
   NestedResourceHistoryButton,
   RestoreButton,
 } from "../history";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 import { TechnicalResourceList } from "./technical_resource/TechnicalResourceList";
 import { UnitField } from "../unitComponents";
 import { EventButton } from "../event/EventButton";

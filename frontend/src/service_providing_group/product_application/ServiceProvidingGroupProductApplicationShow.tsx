@@ -15,7 +15,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { NestedResourceHistoryButton } from "../../history";
 import { EventButton } from "../../event/EventButton";
-import { DateField } from "../../DateField";
+import { DateField } from "../../datetime";
 import { FieldStack } from "../../auth";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {

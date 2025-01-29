@@ -12,7 +12,7 @@ import {
 import { FieldStack } from "../auth";
 import { Typography, Stack, Chip } from "@mui/material";
 import { NestedResourceHistoryButton, ResourceHistoryButton } from "../history";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 import { EventButton } from "../event/EventButton";
 import { ServiceProviderProductApplicationCommentList } from "./comment/ServiceProviderProductApplicationCommentList";
 

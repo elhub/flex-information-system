@@ -13,7 +13,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { DateField } from "../../DateField";
+import { DateField } from "../../datetime";
 
 export const PartyMembershipList = () => {
   // id of the SPG

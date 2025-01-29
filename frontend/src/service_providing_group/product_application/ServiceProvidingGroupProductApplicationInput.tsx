@@ -1,5 +1,4 @@
 import {
-  DateTimeInput,
   required,
   SelectInput,
   SimpleForm,
@@ -16,6 +15,7 @@ import {
   InputStack,
   AutocompleteReferenceInput,
 } from "../../auth";
+import { DateTimeInput } from "../../datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

@@ -1,7 +1,7 @@
 import { List, NumberInput, RichTextField, TextField } from "react-admin";
 import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
-import { DateField } from "../../DateField";
+import { DateField } from "../../datetime";
 import { IdentityField } from "../../IdentityField";
 
 export const ServiceProviderProductApplicationCommentHistoryList = () => {

@@ -8,7 +8,7 @@ import { PartyMembershipList } from "./membership/PartyMembershipList";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
 import { NestedResourceHistoryButton } from "../history";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 import { ResourceHistoryButton } from "../history";
 import { EventButton } from "../event/EventButton";
 

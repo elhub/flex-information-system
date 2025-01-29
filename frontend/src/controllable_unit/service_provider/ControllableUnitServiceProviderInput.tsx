@@ -1,9 +1,4 @@
-import {
-  DateTimeInput,
-  SimpleForm,
-  useGetIdentity,
-  useRecordContext,
-} from "react-admin";
+import { SimpleForm, useGetIdentity, useRecordContext } from "react-admin";
 import { Typography, Box, Stack } from "@mui/material";
 import {
   AutocompleteReferenceInput,
@@ -13,6 +8,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../Toolbar";
 import { ValidTimeTooltip } from "../../ValidTimeTooltip";
+import { DateTimeInput } from "../../datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

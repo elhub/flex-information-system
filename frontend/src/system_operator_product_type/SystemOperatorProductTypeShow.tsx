@@ -10,7 +10,7 @@ import {
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
 import { ResourceHistoryButton } from "../history";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 import { EventButton } from "../event/EventButton";
 
 export const SystemOperatorProductTypeShow = () => {
