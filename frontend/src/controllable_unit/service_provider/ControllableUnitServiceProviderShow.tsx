@@ -4,6 +4,7 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  TopToolbar,
   usePermissions,
   useRecordContext,
   useResourceContext,
@@ -35,7 +36,16 @@ export const ControllableUnitServiceProviderShow = () => {
   };
 
   return (
-    <Show>
+    <Show
+      actions={
+        !isHistory &&
+        permissions.includes("controllable_unit_service_provider.update") && (
+          <TopToolbar>
+            <EditButton />
+          </TopToolbar>
+        )
+      }
+    >
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
@@ -72,10 +82,6 @@ export const ControllableUnitServiceProviderShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
-        {!isHistory &&
-          permissions.includes("controllable_unit_service_provider.update") && (
-            <EditButton />
-          )}
         <NestedResourceHistoryButton
           parent="controllable_unit"
           child="service_provider"

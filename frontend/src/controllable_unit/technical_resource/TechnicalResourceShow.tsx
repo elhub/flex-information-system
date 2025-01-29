@@ -4,6 +4,7 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  TopToolbar,
   usePermissions,
   useRecordContext,
   useResourceContext,
@@ -35,7 +36,16 @@ export const TechnicalResourceShow = () => {
   };
 
   return (
-    <Show>
+    <Show
+      actions={
+        !isHistory &&
+        permissions.includes("technical_resource.update") && (
+          <TopToolbar>
+            <EditButton />
+          </TopToolbar>
+        )
+      }
+    >
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
@@ -64,9 +74,6 @@ export const TechnicalResourceShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
-        {!isHistory && permissions.includes("technical_resource.update") && (
-          <EditButton />
-        )}
         <NestedResourceHistoryButton
           parent="controllable_unit"
           child="technical_resource"
