@@ -1,4 +1,9 @@
-import { Button, useRecordContext, useResourceContext } from "react-admin";
+import {
+  Button,
+  usePermissions,
+  useRecordContext,
+  useResourceContext,
+} from "react-admin";
 import { Link } from "react-router-dom";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 
@@ -6,11 +11,13 @@ export const EventButton = (props: any) => {
   const resource = useResourceContext();
   const record = useRecordContext()!;
 
+  const { permissions } = usePermissions();
+
   const filter =
     "?filter=" +
     encodeURIComponent(`{ "source@like": "/${resource}/${record.id}" }`);
 
-  return (
+  return permissions.includes("event.read") ? (
     <Button
       component={Link}
       to={`/event${filter}`}
@@ -18,5 +25,5 @@ export const EventButton = (props: any) => {
       label="Events"
       {...props}
     />
-  );
+  ) : null;
 };
