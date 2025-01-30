@@ -197,6 +197,9 @@ DECLARE
   common_sp_id bigint;
 
   spg_id bigint;
+  spggp_id bigint;
+  sppa_id bigint;
+  spgpa_id bigint;
   cu_id bigint;
   so_id bigint;
 
@@ -353,5 +356,59 @@ BEGIN
 
   END LOOP;
 
+  -- SPG grid prequalification
+
+  UPDATE flex.service_providing_group
+  SET status = 'active'
+  WHERE id = spg_id;
+
+  -- no need to create SPGGP because activating the SP creates one automatically
+  -- we can therefore directly find it here
+  SELECT id INTO spggp_id
+  FROM flex.service_providing_group_grid_prequalification
+  WHERE service_providing_group_id = spg_id
+  AND impacted_system_operator_id = so_id;
+
+  UPDATE flex.service_providing_group_grid_prequalification
+  SET status = 'in_progress'
+  WHERE id = spggp_id;
+
+  -- SP product application + comment
+
+  INSERT INTO flex.service_provider_product_application (
+    service_provider_id, system_operator_id, product_type_ids
+  ) VALUES (
+    sp_id, so_id, array[1]
+  ) RETURNING id INTO sppa_id;
+
+  UPDATE flex.service_provider_product_application
+  SET status = 'qualified'
+  WHERE id = sppa_id;
+
+  INSERT INTO flex.service_provider_product_application_comment (
+    service_provider_product_application_id,
+    visibility,
+    content
+  ) VALUES (
+    sppa_id,
+    'any_party',
+    'Test Comment'
+  );
+
+  -- SPG product application
+
+  INSERT INTO flex.service_providing_group_product_application (
+    service_providing_group_id,
+    procuring_system_operator_id,
+    product_type_id
+  ) VALUES (
+    spg_id,
+    so_id,
+    1
+  ) RETURNING id INTO spgpa_id;
+
+  UPDATE flex.service_providing_group_product_application
+  SET status = 'in_progress'
+  WHERE service_providing_group_id = spg_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
