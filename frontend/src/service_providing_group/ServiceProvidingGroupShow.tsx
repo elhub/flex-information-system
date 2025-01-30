@@ -9,7 +9,7 @@ import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
 import { NestedResourceHistoryButton, ResourceHistoryButton } from "../history";
 import { ServiceProvidingGroupMembershipList } from "./membership/ServiceProvidingGroupMembershipList";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 import { ServiceProvidingGroupGridPrequalificationList } from "./grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
 import { EventButton } from "../event/EventButton";
 import { ServiceProvidingGroupProductApplicationList } from "./product_application/ServiceProvidingGroupProductApplicationList";

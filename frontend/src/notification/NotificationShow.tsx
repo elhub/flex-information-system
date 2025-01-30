@@ -8,7 +8,7 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../auth";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 import { AcknowledgeButton } from "./AcknowledgeButton";
 import { ResourceButton } from "./ResourceButton";
 

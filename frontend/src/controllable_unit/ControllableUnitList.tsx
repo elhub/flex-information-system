@@ -6,7 +6,7 @@ import {
   SelectArrayInput,
 } from "react-admin";
 import { Datagrid } from "../auth";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 
 export const ControllableUnitList = () => {
   const controllableUnitFilters = [

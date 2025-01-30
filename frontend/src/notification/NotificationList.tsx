@@ -6,7 +6,7 @@ import {
   useGetIdentity,
 } from "react-admin";
 import { Datagrid } from "../auth";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 import { QuickFilter } from "../QuickFilter";
 
 export const NotificationList = () => {

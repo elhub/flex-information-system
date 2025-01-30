@@ -1,6 +1,6 @@
 import { List, ReferenceField, SelectArrayInput, TextField } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 
 export const ServiceProviderProductApplicationList = () => {
   const ServiceProviderProductApplicationListFilters = [

@@ -14,7 +14,7 @@ import { FieldStack } from "../../auth";
 import { NestedResourceHistoryButton, RestoreButton } from "../../history";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { DateField } from "../../DateField";
+import { DateField } from "../../datetime";
 import { EventButton } from "../../event/EventButton";
 
 export const ControllableUnitServiceProviderShow = () => {

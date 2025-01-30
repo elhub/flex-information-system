@@ -1,6 +1,5 @@
 import {
   DateInput,
-  DateTimeInput,
   required,
   SelectInput,
   SimpleForm,
@@ -10,6 +9,7 @@ import { Typography, Stack } from "@mui/material";
 import { InputStack, useCreateOrUpdate } from "../auth";
 import { Toolbar } from "../Toolbar";
 import { UnitInput } from "../unitComponents";
+import { DateTimeInput } from "../datetime";
 
 // common layout to create and edit pages
 export const ControllableUnitInput = () => {

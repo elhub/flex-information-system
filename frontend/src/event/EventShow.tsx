@@ -1,7 +1,7 @@
 import { FunctionField, Show, SimpleShowLayout, TextField } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../auth";
-import { DateField } from "../DateField";
+import { DateField } from "../datetime";
 
 export const EventShow = () => (
   <Show>

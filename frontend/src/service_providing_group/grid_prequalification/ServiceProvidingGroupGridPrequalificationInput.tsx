@@ -1,5 +1,4 @@
 import {
-  DateTimeInput,
   required,
   SelectInput,
   SimpleForm,
@@ -15,6 +14,7 @@ import {
 } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../Toolbar";
+import { DateTimeInput } from "../../datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
