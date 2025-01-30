@@ -16,6 +16,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { DateField } from "../../datetime";
 import { EventButton } from "../../event/EventButton";
+import { IdentityField } from "../../IdentityField";
 
 export const ServiceProvidingGroupMembershipShow = () => {
   const resource = useResourceContext()!;
@@ -80,7 +81,7 @@ export const ServiceProvidingGroupMembershipShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <DateField source="recorded_at" showTime />
-            <TextField source="recorded_by" />
+            <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}

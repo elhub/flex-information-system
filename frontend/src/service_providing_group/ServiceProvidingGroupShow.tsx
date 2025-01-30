@@ -13,6 +13,7 @@ import { DateField } from "../datetime";
 import { ServiceProvidingGroupGridPrequalificationList } from "./grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
 import { EventButton } from "../event/EventButton";
 import { ServiceProvidingGroupProductApplicationList } from "./product_application/ServiceProvidingGroupProductApplicationList";
+import { IdentityField } from "../IdentityField";
 
 export const ServiceProvidingGroupShow = () => {
   const resource = useResourceContext()!;
@@ -39,9 +40,9 @@ export const ServiceProvidingGroupShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <DateField source="recorded_at" showTime />
-            <TextField source="recorded_by" />
+            <IdentityField source="recorded_by" />
             <DateField source="replaced_at" showTime />
-            <TextField source="replaced_by" />
+            <IdentityField source="replaced_by" />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

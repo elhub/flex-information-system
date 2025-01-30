@@ -77,7 +77,7 @@ export const ServiceProviderProductApplicationCommentShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <DateField source="created_at" showTime />
             <DateField source="recorded_at" label="Last updated" showTime />
-            <TextField source="recorded_by" />
+            <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}

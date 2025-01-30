@@ -12,6 +12,7 @@ import { Typography, Stack } from "@mui/material";
 import { ResourceHistoryButton } from "../history";
 import { DateField } from "../datetime";
 import { EventButton } from "../event/EventButton";
+import { IdentityField } from "../IdentityField";
 
 export const SystemOperatorProductTypeShow = () => {
   const resource = useResourceContext()!;
@@ -45,9 +46,9 @@ export const SystemOperatorProductTypeShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <DateField source="recorded_at" showTime />
-            <TextField source="recorded_by" />
+            <IdentityField source="recorded_by" />
             <DateField source="replaced_at" showTime />
-            <TextField source="replaced_by" />
+            <IdentityField source="replaced_by" />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

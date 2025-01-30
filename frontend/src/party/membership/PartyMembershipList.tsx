@@ -14,6 +14,7 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../datetime";
+import { IdentityField } from "../../IdentityField";
 
 export const PartyMembershipList = () => {
   // id of the SPG
@@ -62,7 +63,7 @@ export const PartyMembershipList = () => {
               <TextField source="name" />
             </ReferenceField>
             <DateField source="recorded_at" showTime />
-            <TextField source="recorded_by" />
+            <IdentityField source="recorded_by" />
             {permissions.includes("party_membership.delete") && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

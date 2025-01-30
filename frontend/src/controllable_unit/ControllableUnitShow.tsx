@@ -18,6 +18,7 @@ import { DateField } from "../datetime";
 import { TechnicalResourceList } from "./technical_resource/TechnicalResourceList";
 import { UnitField } from "../unitComponents";
 import { EventButton } from "../event/EventButton";
+import { IdentityField } from "../IdentityField";
 
 export const ControllableUnitShow = () => {
   const resource = useResourceContext()!;
@@ -93,9 +94,9 @@ export const ControllableUnitShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <DateField source="recorded_at" showTime />
-            <TextField source="recorded_by" />
+            <IdentityField source="recorded_by" />
             <DateField source="replaced_at" showTime />
-            <TextField source="replaced_by" />
+            <IdentityField source="replaced_by" />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

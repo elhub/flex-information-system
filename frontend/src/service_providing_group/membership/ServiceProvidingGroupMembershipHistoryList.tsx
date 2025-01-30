@@ -8,6 +8,7 @@ import {
 import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../datetime";
+import { IdentityField } from "../../IdentityField";
 
 export const ServiceProvidingGroupMembershipHistoryList = () => {
   const params = useParams();
@@ -60,9 +61,9 @@ export const ServiceProvidingGroupMembershipHistoryList = () => {
         <DateField source="valid_from" showTime />
         <DateField source="valid_to" showTime />
         <DateField source="recorded_at" showTime />
-        <TextField source="recorded_by" />
+        <IdentityField source="recorded_by" />
         <DateField source="replaced_at" showTime />
-        <TextField source="replaced_by" />
+        <IdentityField source="replaced_by" />
       </Datagrid>
     </List>
   );
