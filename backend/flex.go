@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flex/auth"
 	"flex/auth/oidc"
+	"flex/data"
 	"flex/event"
 	"flex/pgpool"
 	"flex/pgrepl"
@@ -76,6 +77,16 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	eventSlotName, exists := lookupenv("FLEX_DB_REPLICATION_SLOT_NAME")
 	if !exists {
 		return fmt.Errorf("%w: FLEX_DB_REPLICATION_SLOT_NAME", errMissingEnv)
+	}
+
+	dataAPIBaseURL, exists := lookupenv("FLEX_DATA_API_BASE_URL")
+	if !exists {
+		return fmt.Errorf("%w: FLEX_DATA_API_BASE_URL", errMissingEnv)
+	}
+
+	postgRESTUpstream, exists := lookupenv("FLEX_UPSTREAM_POSTGREST")
+	if !exists {
+		return fmt.Errorf("%w: FLEX_DATA_API_BASE_URL", errMissingEnv)
 	}
 
 	authAPIBaseURL, exists := lookupenv("FLEX_AUTH_API_BASE_URL")
@@ -151,6 +162,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	slog.Debug("Creating auth API")
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
+
+	dataAPI := data.NewAPI(dataAPIBaseURL, postgRESTUpstream, dbPool, requestDetailsContextKey)
 
 	// launch the event worker
 	go func() {
@@ -240,6 +253,10 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		router.GET("/auth/v0/callback", authAPI.GetCallbackHandler)
 		router.GET("/auth/v0/logout", authAPI.GetLogoutHandler)
 	}
+
+	// by default, for other paths the backend just acts as a reverse proxy in
+	// front of PostgREST
+	router.NoRoute(dataAPI.PostgRESTHandler)
 
 	addr := ":" + port
 	log.Println("Running server on server on", addr)

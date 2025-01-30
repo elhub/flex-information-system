@@ -275,8 +275,14 @@ openapi-to-db:
 
 sqlc:
     #!/usr/bin/env bash
-    cd backend/event
-    sqlc generate
+    cd backend
+    for module in data event; do
+        cp sqlc.yaml $module
+        cd $module
+        sqlc generate
+        rm sqlc.yaml
+        cd ..
+    done
 
 generate:
     #!/usr/bin/env bash
