@@ -6,7 +6,6 @@ import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
 import no.elhub.devxp.build.configuration.pipeline.jobs.Job
 import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
-import no.elhub.devxp.build.configuration.pipeline.jobs.ansibleSonarScan
 import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 import no.elhub.devxp.build.configuration.pipeline.jobs.settings.SonarScanSettings
 import no.elhub.devxp.build.configuration.pipeline.utils.Stage
@@ -23,29 +22,23 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             }.build()
 
-            customSonarScan(goSonarSettings)
-            customSonarScan(npmSonarSettings)
-//            customJob(AgentScope.LinuxAgentContext) {
-//                id("GoSonarScan")
-//                this.name = "Backend Sonar Scan"
-//
-//                steps {
-//                    val sonarScan = SonarScan(goSonarSettings)
-//                    sonarScan.configure { }
-//                    addJob(sonarScan)
-//                }
-//           }
-//
-//            customJob(AgentScope.LinuxAgentContext) {
-//                id("NpmSonarScan")
-//                this.name = "Frontend Sonar Scan"
-//
-//                steps {
-//                    val sonarScan = SonarScan(npmSonarSettings)
-//                    sonarScan.configure { }
-//                    addJob(sonarScan)
-//                }
-//            }
+            customJob(AgentScope.LinuxAgentContext) {
+                id("GoSonarScan")
+                this.name = "Backend Sonar Scan"
+
+                steps {
+                    customSonarScan(goSonarSettings)
+                }
+           }
+
+            customJob(AgentScope.LinuxAgentContext) {
+                id("NpmSonarScan")
+                this.name = "Frontend Sonar Scan"
+
+                steps {
+                    customSonarScan(npmSonarSettings)
+                }
+            }
         }
     }
 }
