@@ -86,7 +86,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	postgRESTUpstream, exists := lookupenv("FLEX_UPSTREAM_POSTGREST")
 	if !exists {
-		return fmt.Errorf("%w: FLEX_DATA_API_BASE_URL", errMissingEnv)
+		return fmt.Errorf("%w: FLEX_UPSTREAM_POSTGREST", errMissingEnv)
 	}
 
 	authAPIBaseURL, exists := lookupenv("FLEX_AUTH_API_BASE_URL")
