@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,35 +32,9 @@ func NewAPI(baseURL string, postgRESTUpstream string, db *pgpool.Pool, ctxKey st
 	}
 }
 
-// TODO: put in common with auth.
-type errorMessage struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
-	Detail  string `json:"details,omitempty"`
-	Hint    string `json:"hint,omitempty"`
-}
-
-func newErrorMessage(httpStatusCode int, detail string, err error) errorMessage {
-	hint := ""
-	if err != nil {
-		hint = err.Error()
-	}
-	return errorMessage{
-		Code:    "HTTP" + strconv.Itoa(httpStatusCode),
-		Message: http.StatusText(httpStatusCode),
-		Detail:  detail,
-		Hint:    hint,
-	}
-}
-
 // PostgRESTHandler forwards the request to the PostgREST API.
 func (data *API) PostgRESTHandler(ctx *gin.Context) {
-	url, hasPrefix := strings.CutPrefix(ctx.Request.URL.Path, "/api/v0")
-	if !hasPrefix {
-		ctx.AbortWithStatusJSON(http.StatusNotFound, newErrorMessage(
-			http.StatusNotFound, "Not Found", nil,
-		))
-	}
+	url := ctx.Param("url")
 
 	proxy := httputil.NewSingleHostReverseProxy(data.postgRESTURL)
 	proxy.Director = func(req *http.Request) {

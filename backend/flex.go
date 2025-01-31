@@ -245,18 +245,26 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	router.Use(cors.New(corsConfig))
 	router.Use(authAPI.TokenDecodingMiddleware())
-	router.POST("/auth/v0/token", authAPI.PostTokenHandler)
-	router.GET("/auth/v0/userinfo", authAPI.GetUserInfoHandler)
+
+	// auth API endpoints
+	authRouter := router.Group("/auth/v0")
+	authRouter.POST("/token", authAPI.PostTokenHandler)
+	authRouter.GET("/userinfo", authAPI.GetUserInfoHandler)
 	if oidcIssuer != "" {
-		router.GET("/auth/v0/session", authAPI.GetSessionHandler)
-		router.GET("/auth/v0/login", authAPI.GetLoginHandler)
-		router.GET("/auth/v0/callback", authAPI.GetCallbackHandler)
-		router.GET("/auth/v0/logout", authAPI.GetLogoutHandler)
+		authRouter.GET("/session", authAPI.GetSessionHandler)
+		authRouter.GET("/login", authAPI.GetLoginHandler)
+		authRouter.GET("/callback", authAPI.GetCallbackHandler)
+		authRouter.GET("/logout", authAPI.GetLogoutHandler)
 	}
 
-	// by default, for other paths the backend just acts as a reverse proxy in
-	// front of PostgREST
-	router.NoRoute(dataAPI.PostgRESTHandler)
+	// data API endpoints
+	// by default, just act as a reverse proxy for PostgREST
+	dataRouter := router.Group("/api/v0")
+	dataRouter.Match(
+		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		"/*url",
+		dataAPI.PostgRESTHandler,
+	)
 
 	addr := ":" + port
 	log.Println("Running server on server on", addr)
