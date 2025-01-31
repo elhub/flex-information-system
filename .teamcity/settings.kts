@@ -27,7 +27,10 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 this.name = "Backend Sonar Scan"
 
                 steps {
-                    customSonarScan(goSonarSettings)
+                    SonarScan(goSonarSettings).build(vcsSettings, teamcityProject)
+//                    step {
+//                        addJob(SonarScan(goSonarSettings))
+//                    }
                 }
            }
 
@@ -36,15 +39,11 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 this.name = "Frontend Sonar Scan"
 
                 steps {
-                    customSonarScan(npmSonarSettings)
+                    SonarScan(npmSonarSettings).build(vcsSettings, teamcityProject)
                 }
             }
         }
     }
-}
-
-fun Pipeline.customSonarScan(sonarScanSettings: SonarScanSettings): BuildType {
-    return addJob(SonarScan(sonarScanSettings))
 }
 
 fun Pipeline.addJob(job: Job): BuildType {
