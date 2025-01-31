@@ -149,8 +149,7 @@ coverage:
 # build docs and frontend for local
 build:
     #!/usr/bin/env bash
-    set -euo pipefail
-    set -x
+    set -euxo pipefail
 
     ./local/scripts/build-static.sh local
 
@@ -190,8 +189,7 @@ plantuml pattern='*':
 # vendor swagger 2 and openapi 3 specs
 openapi-postgrest:
     #!/usr/bin/env bash
-    set -euo pipefail
-    set -x
+    set -euxo pipefail
     curl --silent http://localhost:3000/ | jq -M > openapi/postgrest-swagger-2.0.json
 
     mkdir -p out
