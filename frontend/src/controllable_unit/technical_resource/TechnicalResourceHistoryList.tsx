@@ -8,6 +8,7 @@ import {
 import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../datetime";
+import { IdentityField } from "../../IdentityField";
 
 export const TechnicalResourceHistoryList = () => {
   const params = useParams();
@@ -56,9 +57,9 @@ export const TechnicalResourceHistoryList = () => {
           <TextField source="name" />
         </ReferenceField>
         <DateField source="recorded_at" showTime />
-        <TextField source="recorded_by" />
+        <IdentityField source="recorded_by" />
         <DateField source="replaced_at" showTime />
-        <TextField source="replaced_by" />
+        <IdentityField source="replaced_by" />
       </Datagrid>
     </List>
   );

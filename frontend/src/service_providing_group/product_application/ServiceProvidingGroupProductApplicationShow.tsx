@@ -18,6 +18,7 @@ import { NestedResourceHistoryButton } from "../../history";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../datetime";
 import { FieldStack } from "../../auth";
+import { IdentityField } from "../../IdentityField";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -96,9 +97,9 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <DateField source="recorded_at" showTime />
-            <TextField source="recorded_by" />
+            <IdentityField source="recorded_by" />
             <DateField source="replaced_at" showTime />
-            <TextField source="replaced_by" />
+            <IdentityField source="replaced_by" />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}

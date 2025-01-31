@@ -39,9 +39,9 @@ export const ServiceProviderProductApplicationCommentHistoryList = () => {
         <IdentityField source="created_by" />
         <RichTextField source="content" />
         <DateField source="recorded_at" showTime />
-        <TextField source="recorded_by" />
+        <IdentityField source="recorded_by" />
         <DateField source="replaced_at" showTime />
-        <TextField source="replaced_by" />
+        <IdentityField source="replaced_by" />
       </Datagrid>
     </List>
   );

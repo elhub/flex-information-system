@@ -10,6 +10,7 @@ import {
 import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../datetime";
+import { IdentityField } from "../../IdentityField";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const params = useParams();
@@ -62,9 +63,9 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
         <DateField source="last_prequalified" showTime />
         <DateField source="last_verified" showTime />
         <DateField source="recorded_at" showTime />
-        <TextField source="recorded_by" />
+        <IdentityField source="recorded_by" />
         <DateField source="replaced_at" showTime />
-        <TextField source="replaced_by" />
+        <IdentityField source="replaced_by" />
       </Datagrid>
     </List>
   );

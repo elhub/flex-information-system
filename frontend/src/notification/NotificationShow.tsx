@@ -11,6 +11,7 @@ import { FieldStack } from "../auth";
 import { DateField } from "../datetime";
 import { AcknowledgeButton } from "./AcknowledgeButton";
 import { ResourceButton } from "./ResourceButton";
+import { IdentityField } from "../IdentityField";
 
 export const NotificationShow = () => (
   <Show>
@@ -72,7 +73,7 @@ export const NotificationShow = () => (
         </Typography>
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
           <DateField source="recorded_at" showTime />
-          <TextField source="recorded_by" />
+          <IdentityField source="recorded_by" />
         </FieldStack>
       </Stack>
       <ResourceButton />

@@ -4,6 +4,7 @@ import { FieldStack } from "../../auth";
 import { DateField } from "../../datetime";
 import { NestedResourceHistoryButton } from "../../history";
 import { EventButton } from "../../event/EventButton";
+import { IdentityField } from "../../IdentityField";
 
 export const PartyMembershipShow = () => (
   <Show>
@@ -27,7 +28,7 @@ export const PartyMembershipShow = () => (
         </Typography>
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
           <DateField source="recorded_at" showTime />
-          <TextField source="recorded_by" />
+          <IdentityField source="recorded_by" />
         </FieldStack>
       </Stack>
       <EventButton />
