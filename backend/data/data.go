@@ -2,6 +2,7 @@ package data
 
 import (
 	"flex/pgpool"
+	"fmt"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -18,10 +19,15 @@ type API struct {
 }
 
 // NewAPI creates a new data.API instance.
-func NewAPI(baseURL string, postgRESTUpstream string, db *pgpool.Pool, ctxKey string) *API {
+func NewAPI(
+	baseURL string,
+	postgRESTUpstream string,
+	db *pgpool.Pool,
+	ctxKey string,
+) (*API, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("invalid PostgREST URL: %w", err)
 	}
 
 	return &API{
@@ -29,7 +35,7 @@ func NewAPI(baseURL string, postgRESTUpstream string, db *pgpool.Pool, ctxKey st
 		postgRESTURL: postgRESTURL,
 		db:           db,
 		ctxKey:       ctxKey,
-	}
+	}, nil
 }
 
 // PostgRESTHandler forwards the request to the PostgREST API.

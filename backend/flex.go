@@ -163,7 +163,16 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	slog.Debug("Creating auth API")
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
-	dataAPI := data.NewAPI(dataAPIBaseURL, postgRESTUpstream, dbPool, requestDetailsContextKey)
+	slog.Debug("Creating data API")
+	dataAPI, err := data.NewAPI(
+		dataAPIBaseURL,
+		postgRESTUpstream,
+		dbPool,
+		requestDetailsContextKey,
+	)
+	if err != nil {
+		return fmt.Errorf("could not create data API module: %w", err)
+	}
 
 	// launch the event worker
 	go func() {
