@@ -13,6 +13,8 @@ const get1 = `-- name: Get1 :one
 SELECT 1
 `
 
+// TODO: turn into a proper request once we override one endpoint
+// (this file cannot be empty for sqlc to work properly)
 func (q *Queries) Get1(ctx context.Context) (int32, error) {
 	row := q.db.QueryRow(ctx, get1)
 	var column_1 int32
