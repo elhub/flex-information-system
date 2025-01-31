@@ -1,11 +1,14 @@
+import jetbrains.buildServer.configs.kotlin.BuildType
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
+import no.elhub.devxp.build.configuration.pipeline.jobs.Job
 import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
 import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 import no.elhub.devxp.build.configuration.pipeline.jobs.settings.SonarScanSettings
+import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
 elhubProject(Group.DEVXP, "your-project-name-here") {
 
@@ -24,7 +27,7 @@ elhubProject(Group.DEVXP, "your-project-name-here") {
                 this.name = "Backend Sonar Scan"
 
                 steps {
-                    SonarScan(goSonarSettings).build(vcsSettings, teamcityProject)
+                    addJob(SonarScan(goSonarSettings))
                 }
            }
 
@@ -33,11 +36,22 @@ elhubProject(Group.DEVXP, "your-project-name-here") {
                 this.name = "Frontend Sonar Scan"
 
                 steps {
-                    SonarScan(npmSonarSettings).build(vcsSettings, teamcityProject)
+                    addJob(SonarScan(npmSonarSettings))
                 }
             }
         }
     }
+}
+
+fun Pipeline.addJob(job: Job): BuildType {
+    val buildType = job.build(vcsSettings, teamcityProject)
+
+    stages = stages.plus(Stage.Single(buildType))
+
+    // after adding the built job we can add the validation requirements
+    validations = validations.plus(job.validations)
+
+    return buildType
 }
 
 // For documentation on how to write these pipelines, see
