@@ -15,18 +15,16 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 
     pipeline {
         parallel {
+            val goSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO) {
+                workingDir = "backend"
+            }.build()
 
-            goSonarScan()
-            npmSonarScan()
+            val npmSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM) {
+                workingDir = "frontend"
+            }.build()
 
-//            val goSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO) {
-//                workingDir = "backend"
-//            }.build()
-//
-//            val npmSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM) {
-//                workingDir = "frontend"
-//            }.build()
-//
+            customSonarScan(goSonarSettings)
+            customSonarScan(npmSonarSettings)
 //            customJob(AgentScope.LinuxAgentContext) {
 //                id("GoSonarScan")
 //                this.name = "Backend Sonar Scan"
@@ -52,14 +50,9 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
     }
 }
 
-fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType =
-    sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.NPM, block).build())
-
-fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType =
-    sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build())
-
-internal fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType =
-    addJob(SonarScan(settings = settings))
+fun Pipeline.customSonarScan(sonarScanSettings: SonarScanSettings): BuildType {
+    return addJob(SonarScan(sonarScanSettings))
+}
 
 fun Pipeline.addJob(job: Job): BuildType {
     val buildType = job.build(vcsSettings, teamcityProject)
