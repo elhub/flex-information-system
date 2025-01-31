@@ -43,7 +43,7 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 		ctx, eventWorker.ctxKey, NewWorkerUserDetails(),
 	)
 
-	defer slog.Info("end of event worker")
+	defer slog.InfoContext(ctx, "end of event worker")
 	for {
 		select {
 		case <-workerCtx.Done(): // if the server closes, the worker should stop too
@@ -51,16 +51,16 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 		default:
 			msg, err := eventWorker.replConn.ReceiveMessage(workerCtx)
 			if err != nil {
-				slog.Error("could not receive message from replication connection", "error", err)
+				slog.ErrorContext(ctx, "could not receive message from replication connection", "error", err)
 				return err //nolint:wrapcheck
 			}
 			if err = eventWorker.handleMessage(workerCtx, msg); err != nil {
-				slog.Error("could not handle message in worker", "error", err)
+				slog.ErrorContext(ctx, "could not handle message in worker", "error", err)
 				return err
 			}
 			// the handler succeeded, so we can acknowledge the message
 			if err = eventWorker.replConn.Acknowledge(msg); err != nil {
-				slog.Error(
+				slog.ErrorContext(ctx,
 					"could not acknowledge message on replication connection", "error", err,
 				)
 				return err //nolint:wrapcheck
@@ -101,7 +101,7 @@ func (eventWorker *Worker) handleMessage(
 		if change.Table != "event" {
 			// This is enforced by the replication connection,
 			// but we check it here just in case.
-			slog.Warn("event worker got a change for a table that is not 'event'")
+			slog.WarnContext(ctx, "event worker got a change for a table that is not 'event'")
 			continue
 		}
 
@@ -110,7 +110,7 @@ func (eventWorker *Worker) handleMessage(
 			return fmt.Errorf("could not parse event from change: %w", err)
 		}
 
-		slog.Debug("handling event", "type", event.Type, "resource_id", event.ResourceID)
+		slog.DebugContext(ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID)
 
 		// TODO (improvement): go through the auth API instead of the models
 		eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
@@ -129,7 +129,7 @@ func (eventWorker *Worker) handleMessage(
 			return fmt.Errorf("could not get notification recipients: %w", err)
 		}
 
-		slog.Debug("notification recipients", "recipients", notificationRecipients)
+		slog.DebugContext(ctx, "notification recipients", "recipients", notificationRecipients)
 
 		// notify
 		for _, recipient := range notificationRecipients {
@@ -141,7 +141,7 @@ func (eventWorker *Worker) handleMessage(
 			if err := queries.Notify(ctx, event.ID, recipient); err != nil {
 				return fmt.Errorf("could not insert notification: %w", err)
 			}
-			slog.Info(fmt.Sprintf("notified party #%d of event #%d", recipient, event.ID))
+			slog.InfoContext(ctx, fmt.Sprintf("notified party #%d of event #%d", recipient, event.ID))
 		}
 	}
 

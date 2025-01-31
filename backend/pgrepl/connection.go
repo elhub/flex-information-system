@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"log/slog"
 	"strings"
 	"time"
@@ -124,7 +123,7 @@ func (replConn *Connection) ReceiveMessage(
 					return nil, lsnParseError(err)
 				}
 				if replConn.lsn > nextLSN {
-					slog.Info("replication skipping outdated message", "lsn", nextLSN)
+					slog.InfoContext(ctx, "replication skipping outdated message", "lsn", nextLSN)
 					continue
 				}
 				return &jsonWALMessage, nil
@@ -170,9 +169,9 @@ func (replConn *Connection) handlePrimaryKeepaliveMessage(
 		if err != nil {
 			return sendStandbyStatusUpdateError(err)
 		}
-		slog.Info("received PrimaryKeepaliveMessage and sent status update", "lsn", replConn.lsn.String())
+		slog.InfoContext(ctx, "received PrimaryKeepaliveMessage and sent status update", "lsn", replConn.lsn.String())
 	} else {
-		slog.Debug("received PrimaryKeepaliveMessage, no reply requested")
+		slog.DebugContext(ctx, "received PrimaryKeepaliveMessage, no reply requested")
 	}
 	return nil
 }
@@ -190,7 +189,7 @@ func (replConn *Connection) Acknowledge(msg *Message) error {
 
 // Close closes the replication connection.
 func (replConn *Connection) Close(ctx context.Context) error {
-	log.Printf("[%s] closing replication connection", replConn.logPrefix)
+	slog.InfoContext(ctx, "closing replication connection")
 	if err := replConn.conn.Close(ctx); err != nil {
 		return connectionCloseError(err)
 	}

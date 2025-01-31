@@ -12,7 +12,6 @@ import (
 	"flex/internal/validate"
 	"flex/pgpool"
 	"fmt"
-	"log"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -384,7 +383,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 
 	pid := oidc.GetIdentifier(token)
 
-	slog.Debug("callback", "token", idToken, "pid", pid)
+	slog.DebugContext(ctx, "callback", "token", idToken, "pid", pid)
 
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
@@ -394,7 +393,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 
 	entityID, eid, _, err := models.GetEntityOfBusinessID(ctx, tx, pid, "pid")
 	if err != nil {
-		slog.Debug("getting identity of person identifier failed", "token", idToken, "pid", pid, "error", err)
+		slog.DebugContext(ctx, "getting identity of person identifier failed", "token", idToken, "pid", pid, "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "invalid person identifier",
@@ -638,7 +637,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	ctx *gin.Context,
 	payload clientCredentialsPayload,
 ) {
-	log.Println("client credentials for client: ", payload.ClientID)
+	slog.InfoContext(ctx, "client credentials for client", "client", payload.ClientID)
 
 	err := payload.Validate()
 	if err != nil {
@@ -664,7 +663,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
 	if err != nil {
-		log.Println("getting identity of credentials failed: ", err)
+		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "Invalid client_id or client_secret",

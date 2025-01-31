@@ -10,6 +10,8 @@ with formatting and structure, so this document will be updated as we go and a
 standard emerges. We should actively consider to add our own logging package or
 interface to bake in the practices we want to follow.
 
+Use of logging library is enforced via the `golangci-lint` config.
+
 ### Use context
 
 We should always log with context. This is future-proofing our logging in case
