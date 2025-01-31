@@ -12,13 +12,10 @@ export const IdentityField = (props: any) => {
   ) : (
     <ReferenceField reference="identity" source={source} {...rest}>
       <FunctionField
-        render={(record) => {
-          console.log(JSON.stringify(record));
-          return (
-            (record.entity_name ?? "<private>") +
-            (record.party_name ? ` as ${record.party_name}` : "")
-          );
-        }}
+        render={(record) =>
+          (record.entity_name ?? "<private>") +
+          (record.party_name ? ` as ${record.party_name}` : "")
+        }
       />
     </ReferenceField>
   );
