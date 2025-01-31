@@ -10,7 +10,7 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 import no.elhub.devxp.build.configuration.pipeline.jobs.settings.SonarScanSettings
 import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
-elhubProject(Group.DEVXP, "flex-transformation-system-sandbox") {
+elhubProject(Group.DEVXP, "flex-transformation-system") {
 
     pipeline {
         parallel {
@@ -27,7 +27,9 @@ elhubProject(Group.DEVXP, "flex-transformation-system-sandbox") {
                 this.name = "Backend Sonar Scan"
 
                 steps {
-                    addJob(SonarScan(goSonarSettings))
+                    val sonarScan = SonarScan(goSonarSettings)
+                    sonarScan.configure { this }
+                    addJob(sonarScan)
                 }
            }
 
@@ -36,7 +38,9 @@ elhubProject(Group.DEVXP, "flex-transformation-system-sandbox") {
                 this.name = "Frontend Sonar Scan"
 
                 steps {
-                    addJob(SonarScan(npmSonarSettings))
+                    val sonarScan = SonarScan(npmSonarSettings)
+                    sonarScan.configure { this }
+                    addJob(sonarScan)
                 }
             }
         }
