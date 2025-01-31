@@ -54,14 +54,9 @@ We currently have two APIs:
 * **Main API** - our main API that provides access to the data in the database.
   See the [API design documentation](./api-design.md) for more details.
 
-For the Main API we use a component that generates REST APIs
-automatically from the database. [PostgREST](https://postgrest.org/) is the
-leading open-source tool for this. It provides us with a RESTish API by plugging
-into the database.
-
-The Auth API is built with go and deployed alongside PostgREST. We use the
-[**Gin**](https://gin-gonic.com/) web framework for its easy of development.
-Other popular options were:
+Both of them are served by distinct modules of a backend built with Go.
+We use the [**Gin**](https://gin-gonic.com/) web framework for its ease of
+development. Other popular options were:
 
 * **Standard library**. This implies using only the `net/http` module, which is
   a bit too low-level. Using a framework removes some of the boilerplate code
@@ -72,15 +67,19 @@ Other popular options were:
   Comparable to gin, but a bit less popular and is based on a non-standard HTTP
   server implementation, making it a slightly riskier choice than Gin.
 
+The Main API relies on a component that generates REST APIs automatically from
+the database. [PostgREST](https://postgrest.org/) is the leading open-source
+tool for this. It provides us with a RESTish API by plugging into the database.
+By default, the backend simply redirects calls on the Main API to PostgREST.
+This will allow us to eventually take over PostgREST for better control, by
+progressively writing custom implementations for the endpoints.
+
 The Go backend also includes other functionalities implemented as services
 running in the background alongside the web server.
 
 * **Notification** - The `event` module is used to start an _event worker_ in
   the background, handling events happening on the system and creating
   notifications to the users.
-
-Over time, we might also consider replacing PostgREST with a custom-built
-implementation.
 
 ### Web Server - Static assets and reverse proxy in NGINX
 

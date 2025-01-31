@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flex/auth"
 	"flex/auth/oidc"
+	"flex/data"
 	"flex/event"
 	"flex/pgpool"
 	"flex/pgrepl"
@@ -76,6 +77,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	eventSlotName, exists := lookupenv("FLEX_DB_REPLICATION_SLOT_NAME")
 	if !exists {
 		return fmt.Errorf("%w: FLEX_DB_REPLICATION_SLOT_NAME", errMissingEnv)
+	}
+
+	postgRESTUpstream, exists := lookupenv("FLEX_UPSTREAM_POSTGREST")
+	if !exists {
+		return fmt.Errorf("%w: FLEX_UPSTREAM_POSTGREST", errMissingEnv)
 	}
 
 	authAPIBaseURL, exists := lookupenv("FLEX_AUTH_API_BASE_URL")
@@ -151,6 +157,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	slog.Debug("Creating auth API")
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
+
+	slog.Debug("Creating data API")
+	dataAPI, err := data.NewAPI(postgRESTUpstream, dbPool, requestDetailsContextKey)
+	if err != nil {
+		return fmt.Errorf("could not create data API module: %w", err)
+	}
 
 	// launch the event worker
 	go func() {
@@ -232,14 +244,26 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	router.Use(cors.New(corsConfig))
 	router.Use(authAPI.TokenDecodingMiddleware())
-	router.POST("/auth/v0/token", authAPI.PostTokenHandler)
-	router.GET("/auth/v0/userinfo", authAPI.GetUserInfoHandler)
+
+	// auth API endpoints
+	authRouter := router.Group("/auth/v0")
+	authRouter.POST("/token", authAPI.PostTokenHandler)
+	authRouter.GET("/userinfo", authAPI.GetUserInfoHandler)
 	if oidcIssuer != "" {
-		router.GET("/auth/v0/session", authAPI.GetSessionHandler)
-		router.GET("/auth/v0/login", authAPI.GetLoginHandler)
-		router.GET("/auth/v0/callback", authAPI.GetCallbackHandler)
-		router.GET("/auth/v0/logout", authAPI.GetLogoutHandler)
+		authRouter.GET("/session", authAPI.GetSessionHandler)
+		authRouter.GET("/login", authAPI.GetLoginHandler)
+		authRouter.GET("/callback", authAPI.GetCallbackHandler)
+		authRouter.GET("/logout", authAPI.GetLogoutHandler)
 	}
+
+	// data API endpoints
+	// by default, just act as a reverse proxy for PostgREST
+	dataRouter := router.Group("/api/v0")
+	dataRouter.Match(
+		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		"/*url",
+		dataAPI.PostgRESTHandler,
+	)
 
 	addr := ":" + port
 	log.Println("Running server on server on", addr)

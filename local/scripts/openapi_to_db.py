@@ -11,7 +11,7 @@ risk of making a copy-paste mistake.
 
 output_folder_tables = "db/flex"
 output_folder_views = "db/api"
-output_file_backend_schema = "backend/event/schema.sql"
+output_file_backend_schema = "backend/schema.sql"
 
 
 def history_statements(base_resource):
