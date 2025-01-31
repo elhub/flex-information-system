@@ -10,7 +10,6 @@ import (
 	"flex/pgpool"
 	"flex/pgrepl"
 	"fmt"
-	"log"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -31,7 +30,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// Structured logging
 	logLevel, exists := lookupenv("FLEX_LOG_LEVEL")
 	if !exists {
-		log.Println("FLEX_LOG_LEVEL environment variable is not set, using default INFO")
 		logLevel = "INFO"
 	}
 
@@ -48,6 +46,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		ReplaceAttr: nil,
 	}))
 	slog.SetDefault(logger)
+
+	// we report missing env variable after logger has been established
+	if !exists {
+		slog.InfoContext(ctx, "FLEX_LOG_LEVEL environment variable is not set, using default INFO")
+	}
 
 	// TODO we might want to put this in the cmd/flex package
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt)
@@ -70,7 +73,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	port, exists := lookupenv("FLEX_PORT")
 	if !exists {
-		log.Println("FLEX_PORT environment variable is not set, using default port 7000")
+		slog.InfoContext(ctx, "FLEX_PORT environment variable is not set, using default port 7000")
 		port = "7000"
 	}
 
@@ -115,7 +118,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	// first instantiate the database service implementation
-	log.Println("Connecting to the database...")
+	slog.InfoContext(ctx, "Connecting to the database...")
 
 	ebo := backoff.NewExponentialBackOff()
 	ebo.InitialInterval = 1 * time.Second
@@ -129,10 +132,10 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	var dbPool *pgpool.Pool
 	err = backoff.Retry(func() error {
 		var err error
-		log.Println("Trying to connect...")
+		slog.InfoContext(ctx, "Trying to connect...")
 		dbPool, err = pgpool.New(ctx, dbURI, requestDetailsContextKey)
 		if err != nil {
-			log.Println("Failed: ", err.Error())
+			slog.InfoContext(ctx, "Failed: ", "error", err.Error())
 			return fmt.Errorf("could not connect to the database: %w", err)
 		}
 		return nil
@@ -140,14 +143,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	if err != nil {
 		return fmt.Errorf("exhausted db connection retries: %w", err)
 	}
-	log.Println("Connected!")
+	slog.InfoContext(ctx, "Connected!")
 	defer dbPool.Close()
 
 	// Using the OIDC issuer as a "feature flag" to enable/disable OIDC stuff
 	// TODO remove once in production
 	oidcProvider := &oidc.Provider{}
 	if oidcIssuer != "" {
-		slog.Debug("Creating OIDC provider for issuer " + oidcIssuer)
+		slog.DebugContext(ctx, "Creating OIDC provider for issuer "+oidcIssuer)
 
 		oidcProvider, err = oidc.NewProvider(ctx, oidcIssuer, oidcClientID, oidcClientSecret, jwtSecret, oidcRedirectURL, postLogoutRedirectURI)
 		if err != nil {
@@ -155,7 +158,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		}
 	}
 
-	slog.Debug("Creating auth API")
+	slog.DebugContext(ctx, "Creating auth API")
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
 	slog.Debug("Creating data API")
@@ -168,12 +171,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	go func() {
 		// loop in case the replication connection drops
 		for {
-			log.Println("Launching the event worker...")
+			slog.InfoContext(ctx, "Launching the event worker...")
 			backoffWithContext = backoff.WithContext(ebo, ctx)
 			var replConn *pgrepl.Connection
 			err = backoff.Retry(func() error {
 				var err error
-				log.Println("Trying to connect to the replication slot...")
+				slog.InfoContext(ctx, "Trying to connect to the replication slot...")
 				replConn, err = pgrepl.NewConnection(
 					ctx,
 					replURI,
@@ -182,35 +185,35 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 					"event-worker-replication",
 				)
 				if err != nil {
-					log.Printf("Failed: %s", err.Error())
+					slog.InfoContext(ctx, "Failed", "error", err.Error())
 					return fmt.Errorf("failed to create replication listener: %w", err)
 				}
 				return nil
 			}, backoffWithContext)
 			if err != nil {
-				log.Printf("exhausted db connection retries: %s", err.Error())
+				slog.InfoContext(ctx, "exhausted db connection retries", "error", err.Error())
 				return
 			}
-			log.Println("Connected to the replication slot!")
+			slog.InfoContext(ctx, "Connected to the replication slot!")
 			defer replConn.Close(ctx) //nolint:errcheck
 
 			eventWorker, err := event.NewWorker(
 				replConn, dbPool, requestDetailsContextKey, "event-worker",
 			)
 			if err != nil {
-				log.Printf("failed to create event worker: %s", err.Error())
+				slog.InfoContext(ctx, "failed to create event worker", "error", err.Error())
 			}
 			// this ends on error, so we loop and recreate the replication connection
 			err = eventWorker.Start(ctx)
 			if err != nil {
-				log.Printf("failure in event worker: %s", err.Error())
+				slog.InfoContext(ctx, "failure in event worker", "error", err.Error())
 
 				err = eventWorker.Stop(ctx)
 				if err != nil {
-					log.Printf("could not stop event worker: %s", err.Error())
+					slog.InfoContext(ctx, "could not stop event worker", "error", err.Error())
 				}
 
-				slog.Info("Waiting before retrying the event worker...")
+				slog.InfoContext(ctx, "Waiting before retrying the event worker...")
 				time.Sleep(15 * time.Second) //nolint:mnd
 			}
 		}
@@ -218,7 +221,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// finally the web server pointing to the handlers defined in the API service
 
-	slog.Info("Launching the web server... ")
+	slog.InfoContext(ctx, "Launching the web server... ")
 
 	router := gin.New()
 	slogginConfig := sloggin.Config{ //nolint:exhaustruct
@@ -266,7 +269,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	)
 
 	addr := ":" + port
-	log.Println("Running server on server on", addr)
+	slog.InfoContext(ctx, "Running server on server on"+addr)
 	err = router.Run(addr)
 	if err != nil {
 		return fmt.Errorf("router failed: %w", err)

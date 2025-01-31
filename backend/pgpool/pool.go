@@ -20,7 +20,7 @@ package pgpool
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -46,7 +46,7 @@ func New(ctx context.Context, connString string, ctxKey string) (*Pool, error) {
 			"reset role",
 		)
 		if err != nil {
-			log.Println("failed to reset role:", err)
+			slog.InfoContext(ctx, "failed to reset role", "error", err)
 			// destroy the connection
 			return false
 		}
@@ -77,7 +77,7 @@ func (p *Pool) Acquire(ctx context.Context) (*Conn, error) {
 
 	role := userDetails.Role()
 
-	log.Println("acquiring connection for role", role)
+	slog.InfoContext(ctx, "acquiring connection for role", "role", role)
 
 	acquireCtx, cancel := context.WithTimeout(ctx, 5*time.Second) //nolint:mnd
 	defer cancel()

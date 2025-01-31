@@ -69,7 +69,7 @@ func NewProvider( //nolint: funlen
 	issuerURL = strings.TrimSuffix(issuerURL, "/")
 	wellKnown := issuerURL + "/.well-known/openid-configuration"
 
-	slog.Debug("Fetching OIDC provider details from " + wellKnown)
+	slog.DebugContext(ctx, "Fetching OIDC provider details from "+wellKnown)
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, wellKnown, nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func NewProvider( //nolint: funlen
 	}
 	defer resp.Body.Close()
 
-	slog.Debug("OIDC provider details fetched")
+	slog.DebugContext(ctx, "OIDC provider details fetched")
 
 	oc := new(openidConfiguration)
 	err = json.NewDecoder(resp.Body).Decode(oc)
@@ -90,14 +90,14 @@ func NewProvider( //nolint: funlen
 		return nil, fmt.Errorf("could not decode OIDC provider details: %w", err)
 	}
 
-	slog.Debug("Creating JWK cache")
+	slog.DebugContext(ctx, "Creating JWK cache")
 
 	jwksCache, err := jwk.NewCache(ctx, httprc.NewClient())
 	if err != nil {
 		return nil, fmt.Errorf("could not create JWK cache: %w", err)
 	}
 
-	slog.Debug("Registering URI in JWK cache: " + oc.JWKSURI)
+	slog.DebugContext(ctx, "Registering URI in JWK cache: "+oc.JWKSURI)
 	cacheRegisterCtx, cancel := context.WithTimeout(ctx, 10*time.Second) //nolint:mnd
 	defer cancel()
 	err = jwksCache.Register(cacheRegisterCtx, oc.JWKSURI)
@@ -105,7 +105,7 @@ func NewProvider( //nolint: funlen
 		return nil, fmt.Errorf("could not register JWK URI in cache: %w", err)
 	}
 
-	slog.Debug("Cache ready")
+	slog.DebugContext(ctx, "Cache ready")
 
 	return &Provider{
 		hashKey:               []byte(hashKey),

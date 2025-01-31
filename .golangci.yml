@@ -43,6 +43,12 @@ linters-settings:
       - (github.com/jackc/pgx/v5.Tx).Commit
       - (github.com/jackc/pgx/v5.Tx).Rollback
       - (io.Closer).Close
+  forbidigo:
+    forbid:
+      - ^fmt\.Print.*$
+      - ^log\.Print.*$
+  sloglint:
+    context: "all"
   godox:
     keywords:
       - FIXME
