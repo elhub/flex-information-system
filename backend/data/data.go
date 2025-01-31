@@ -12,7 +12,6 @@ import (
 
 // API holds the data API handlers.
 type API struct {
-	baseURL      string
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
 	ctxKey       string
@@ -20,7 +19,6 @@ type API struct {
 
 // NewAPI creates a new data.API instance.
 func NewAPI(
-	baseURL string,
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
@@ -31,7 +29,6 @@ func NewAPI(
 	}
 
 	return &API{
-		baseURL:      baseURL,
 		postgRESTURL: postgRESTURL,
 		db:           db,
 		ctxKey:       ctxKey,

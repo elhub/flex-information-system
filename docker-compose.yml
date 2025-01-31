@@ -56,7 +56,6 @@ services:
       FLEX_DB_REPLICATION_URI: >-
         postgres://flex_replication:repl_password@db:5432/flex
       FLEX_DB_REPLICATION_SLOT_NAME: event_slot
-      FLEX_DATA_API_BASE_URL: https://flex.localhost:6443/api/v0/
       FLEX_UPSTREAM_POSTGREST: http://postgrest:3000
       FLEX_AUTH_API_BASE_URL: https://flex.localhost:6443/auth/v0/
       FLEX_OIDC_ISSUER: http://idp.flex.localhost:9091/

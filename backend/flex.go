@@ -79,11 +79,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_DB_REPLICATION_SLOT_NAME", errMissingEnv)
 	}
 
-	dataAPIBaseURL, exists := lookupenv("FLEX_DATA_API_BASE_URL")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_DATA_API_BASE_URL", errMissingEnv)
-	}
-
 	postgRESTUpstream, exists := lookupenv("FLEX_UPSTREAM_POSTGREST")
 	if !exists {
 		return fmt.Errorf("%w: FLEX_UPSTREAM_POSTGREST", errMissingEnv)
@@ -164,12 +159,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
 	slog.Debug("Creating data API")
-	dataAPI, err := data.NewAPI(
-		dataAPIBaseURL,
-		postgRESTUpstream,
-		dbPool,
-		requestDetailsContextKey,
-	)
+	dataAPI, err := data.NewAPI(postgRESTUpstream, dbPool, requestDetailsContextKey)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
 	}
