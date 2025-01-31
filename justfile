@@ -8,6 +8,7 @@ tbls-lint:
 
 start:
     #!/usr/bin/env bash
+    set -euo pipefail
     docker compose up -d
 
     # wait for startup
@@ -19,6 +20,7 @@ start:
 # remove data from the database
 unload:
     #!/usr/bin/env bash
+    set -euo pipefail
     export PGHOST=localhost
     ./db/unload.sh
 
@@ -95,6 +97,7 @@ _plantuml_install:
 
 _venv:
     #!/usr/bin/env bash
+    set -euo pipefail
 
     if [ ! -d '.venv' ]; then
         python3.12 -m venv .venv --prompt flex
@@ -109,12 +112,14 @@ _keypair:
 
 test-local *args: (_venv)
     #!/usr/bin/env bash
+    set -euo pipefail
     export FLEX_URL_BASE="https://flex.localhost:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
     .venv/bin/python test/test.py {{args}}
 
 test-dev *args:
     #!/usr/bin/env bash
+    set -euo pipefail
     export FLEX_URL_BASE="https://flex.localhost:6443"
     export FLEX_AUTH_BASE="http://flex.localhost:7000"
     .venv/bin/python test/test.py {{args}}
@@ -126,6 +131,7 @@ test *args:
 # e.g. just pytest test/api_client_tests/test_cu.py
 pytest *args: (_venv)
     #!/usr/bin/env bash
+    set -euo pipefail
     export FLEX_URL_BASE="https://flex.localhost:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
 
@@ -143,6 +149,7 @@ coverage:
 # build docs and frontend for local
 build:
     #!/usr/bin/env bash
+    set -euo pipefail
     set -x
 
     ./local/scripts/build-static.sh local
@@ -183,6 +190,7 @@ plantuml pattern='*':
 # vendor swagger 2 and openapi 3 specs
 openapi-postgrest:
     #!/usr/bin/env bash
+    set -euo pipefail
     set -x
     curl --silent http://localhost:3000/ | jq -M > openapi/postgrest-swagger-2.0.json
 
@@ -247,6 +255,7 @@ resources-to-diagram:
 
 openapi-to-db:
     #!/usr/bin/env bash
+    set -euo pipefail
     cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_db.py
 
     imports=$(ls db/flex | grep history_audit | sed -e 's|.*|\\i flex/&|')
@@ -275,6 +284,7 @@ openapi-to-db:
 
 sqlc:
     #!/usr/bin/env bash
+    set -euo pipefail
     cd backend
     for module in data event; do
         cp sqlc.yaml $module
@@ -286,11 +296,13 @@ sqlc:
 
 generate:
     #!/usr/bin/env bash
+    set -euo pipefail
     cd backend
     go generate ./...
 
 openapi-to-md:
     #!/usr/bin/env bash
+    set -euo pipefail
     # https://superuser.com/a/1835488
 
     echo "Generating markdown tables"
@@ -328,6 +340,7 @@ openapi-to-md:
 
 openapi-client:
     #!/usr/bin/env bash
+    set -euo pipefail
     mkdir -p ./out
     rm -rf test/flex ./out/openapi-client
 
@@ -368,6 +381,7 @@ permissions-to-db:
 
 permissions-to-md:
     #!/usr/bin/env bash
+    set -euo pipefail
     # https://superuser.com/a/1835488
 
     echo "Generating markdown tables"
@@ -395,6 +409,7 @@ permissions-to-frontend:
 
 avatar:
     #!/usr/bin/env bash
+    set -euo pipefail
     mkdir -p frontend/src/auth/avatars
     for code in ANO BRP ES EU ENT FISO MO SP SO TP;
     do
