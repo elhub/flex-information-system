@@ -10,7 +10,7 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 import no.elhub.devxp.build.configuration.pipeline.jobs.settings.SonarScanSettings
 import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
-elhubProject(Group.DEVXP, "flex-transformation-system") {
+elhubProject(Group.DEVXP, "flex-transformation-system-sandbox") {
 
     pipeline {
         parallel {
