@@ -15,32 +15,27 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
     pipeline {
         parallel {
             val goSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO) {
-                sonarProjectCoverages = "${workingDir}/backend"
-                workingDir = "${workingDir}/backend"
+                sonarProjectSources = "backend"
+                workingDir = "backend"
             }.build()
 
 
             val npmSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM) {
-                workingDir = "${workingDir}/frontend"
+                sonarProjectSources = "frontend"
+                workingDir = "frontend"
             }.build()
 
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Sonar Scan"
-                steps {
-                    println("GO workdir: " + goSonarSettings.workingDir)
-                    addJob(SonarScan(goSonarSettings))
-                }
+                addJob(SonarScan(goSonarSettings))
            }
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("NpmSonarScan")
                 this.name = "Frontend Sonar Scan"
-                steps {
-                    println("NPM workdir: " + npmSonarSettings.workingDir)
-                    addJob(SonarScan(npmSonarSettings))
-                }
+                addJob(SonarScan(npmSonarSettings))
             }
         }
     }
