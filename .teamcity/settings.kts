@@ -1,4 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
@@ -26,15 +27,14 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             }.build()
 
-            sonarScan(goSonarSettings)
-
-            sonarScan(npmSonarSettings)
-
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Build"
                 steps {
-                    sonarScan(goSonarSettings)
+                    script {
+                        workingDir = "backend"
+                        scriptContent = "sonar-scanner -Dsonar.projectKey=flex-transformation-system -Dsonar.sources=."
+                    }
                 }
            }
 
@@ -42,7 +42,10 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
                 steps {
-                    sonarScan(npmSonarSettings)
+                    script {
+                        workingDir = "frontend"
+                        scriptContent = "sonar-scanner -Dsonar.projectKey=flex-transformation-system -Dsonar.sources=."
+                    }
                 }
             }
         }
