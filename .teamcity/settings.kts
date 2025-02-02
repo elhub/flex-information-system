@@ -1,4 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
@@ -25,16 +26,16 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             } */
 
-            // goSonarScan(goSonarSettings)
+            goSonarScan(goSonarSettings)
 
-            customJob(AgentScope.LinuxAgentContext) {
+            /* customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 name = "Custom Job for Go Sonar Scan"
                 description = "This is a custom job for Go Sonar Scan"
                 steps {
                     goSonarScan(goSonarSettings)
                 }
-            }
+            } */
 
             //npmSonarScan(npmSonarSettings)
 
@@ -47,7 +48,11 @@ internal fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = 
 }
 
 internal fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
-    return addJob(SonarScan(settings))
+    val buildType = SonarScan(settings)
+    buildType.configure {
+        id("GoSonarScan")
+    }
+    return addJob(buildType)
 }
 
 internal fun Pipeline.addJob(job: Job): BuildType {
@@ -63,3 +68,7 @@ internal fun Pipeline.addJob(job: Job): BuildType {
 
 // For documentation on how to write these pipelines, see
 // https://docs.elhub.cloud/enabling-systems/devxp/devxp-build-configuration/user-guide.html
+
+fun id(id: String) {
+    id(id)
+}
