@@ -1,84 +1,48 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
-import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
-import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
 import no.elhub.devxp.build.configuration.pipeline.jobs.Job
 import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
-import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 import no.elhub.devxp.build.configuration.pipeline.jobs.settings.SonarScanSettings
 import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
 elhubProject(Group.DEVXP, "flex-transformation-system") {
 
     pipeline {
-        sequential {
+        parallel {
 
             val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "backend"
                 workingDir = "backend"
             }
 
-            val goSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO, goSonarSettings).build()
-
-            /* val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
+            val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "frontend"
                 workingDir = "frontend"
             }
 
-            val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM, npmSonarSettings).build() */
             goSonarScan(goSonarSettings)
-            /*customJob(AgentScope.LinuxAgentContext) {
-                id("GoSonarScan")
-                this.name = "Backend Build"
-                goSonarScan(goSonarSettings)
-                steps {
-                    val buildType = sonarScan(goSonarScanSettings)
-                    buildType.apply {
-                        triggers {
-                            vcs {
-                                branchFilter = """
-                                    -:*
-                                    +:testing-branch
-                                """.trimIndent()
-                            }
-                        }
-                    }
-                }
-           } */
+            npmSonarScan(npmSonarSettings)
 
-            /* customJob(AgentScope.LinuxAgentContext) {
-                id("NpmSonarScan")
-                this.name = "Frontend Build"
-                steps {
-                    val buildType = sonarScan(npmSonarScanSettings)
-                    buildType.apply {
-                        triggers {
-                            vcs {
-                                branchFilter = """
-                                    -:*
-                                    +:testing-branch
-                                """.trimIndent()
-                            }
-                        }
-                    }
-                }
-            } */
         }
     }
 }
 
-fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
+internal fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
     return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build())
 }
 
-fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
+internal fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
+    return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.NPM, block).build())
+}
+
+internal fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
     return addJob(SonarScan(settings))
 }
 
-fun Pipeline.addJob(job: Job): BuildType {
+internal fun Pipeline.addJob(job: Job): BuildType {
     val buildType = job.build(vcsSettings, teamcityProject)
 
     stages = stages.plus(Stage.Single(buildType))
