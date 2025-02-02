@@ -36,7 +36,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                     sonarScan(goSonarSettings).apply {
                         triggers {
                             finishBuildTrigger {
-                                buildType = id!!
+                                buildType = this.id!!
                                 successfulOnly = true
                             }
                         }
@@ -53,7 +53,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                     sonarScan(npmSonarSettings).apply {
                         triggers {
                             finishBuildTrigger {
-                                buildType = id!!
+                                buildType = this.id!!
                                 successfulOnly = true
                             }
                         }
