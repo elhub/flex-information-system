@@ -14,23 +14,21 @@ import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 elhubProject(Group.DEVXP, "flex-transformation-system") {
 
     pipeline {
-        parallel {
+        sequential {
 
             val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "backend"
                 workingDir = "backend"
-                additionalParams = mutableListOf("sonar.verbose=true")
             }
 
             val goSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO, goSonarSettings).build()
 
-            val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
+            /* val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "frontend"
                 workingDir = "frontend"
-                additionalParams = mutableListOf("sonar.verbose=true")
             }
 
-            val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM, npmSonarSettings).build()
+            val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM, npmSonarSettings).build() */
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
@@ -50,7 +48,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 }
            }
 
-            customJob(AgentScope.LinuxAgentContext) {
+            /* customJob(AgentScope.LinuxAgentContext) {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
                 steps {
@@ -66,18 +64,16 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                         }
                     }
                 }
-            }
+            } */
         }
     }
 }
 
 fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
-    println("Creating SonarScan job with settings: $settings")
     return addJob(SonarScan(settings))
 }
 
 fun Pipeline.addJob(job: Job): BuildType {
-    println("Adding job: ${job.validations}")
     val buildType = job.build(vcsSettings, teamcityProject)
 
     stages = stages.plus(Stage.Single(buildType))
