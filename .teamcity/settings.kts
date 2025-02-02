@@ -31,10 +31,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("GoSonarScan")
                 this.name = "Backend Build"
                 steps {
-                    script {
-                        workingDir = "backend"
-                        scriptContent = "sonar-scanner -Dsonar.projectKey=flex-transformation-system -Dsonar.sources=."
-                    }
+                    sonarScan(goSonarSettings)
                 }
            }
 
@@ -42,10 +39,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
                 steps {
-                    script {
-                        workingDir = "frontend"
-                        scriptContent = "sonar-scanner -Dsonar.projectKey=flex-transformation-system -Dsonar.sources=."
-                    }
+                    sonarScan(npmSonarSettings)
                 }
             }
         }
