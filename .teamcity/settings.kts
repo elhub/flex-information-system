@@ -1,5 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
-import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
+import jetbrains.buildServer.configs.kotlin.ui.add
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
@@ -33,9 +33,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("GoSonarScan")
                 this.name = "Backend Build"
                 steps {
-                    sonarScan(goSonarSettings).apply {
-                        addPrTrigger()
-                    }
+                    sonarScan(goSonarSettings)
                 }
            }
 
@@ -43,9 +41,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
                 steps {
-                    sonarScan(npmSonarSettings).apply {
-                        addPrTrigger()
-                    }
+                    sonarScan(npmSonarSettings)
                 }
             }
         }
