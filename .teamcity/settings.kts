@@ -1,5 +1,7 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.Id
 import jetbrains.buildServer.configs.kotlin.ui.add
+import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
@@ -28,28 +30,28 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             }.build()
 
+            sonarScan(goSonarSettings)
+
+            sonarScan(npmSonarSettings)
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Build"
-                steps {
-                    sonarScan(goSonarSettings)
-                }
+                sonarScan(goSonarSettings)
            }
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
-                steps {
-                    sonarScan(npmSonarSettings)
-                }
+                sonarScan(npmSonarSettings)
             }
         }
     }
 }
 
-fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType =
-    addJob(SonarScan(settings))
+fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
+    return addJob(SonarScan(settings))
+}
 
 fun Pipeline.addJob(job: Job): BuildType {
     val buildType = job.build(vcsSettings, teamcityProject)
