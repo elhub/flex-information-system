@@ -28,18 +28,23 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
-                this.name = "Backend Sonar Scan"
-                steps {
-                    addJob(SonarScan(goSonarSettings))
+                this.name = "Backend Build"
+                val sonarScan = SonarScan(goSonarSettings)
+                sonarScan.configure {
+                    this.name = "Sonar Scan Test"
                 }
+                addJob(sonarScan)
            }
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("NpmSonarScan")
-                this.name = "Frontend Sonar Scan"
-                steps {
-                    addJob(SonarScan(npmSonarSettings))
+                this.name = "Frontend Build"
+                val sonarScan = SonarScan(npmSonarSettings)
+                sonarScan.configure {
+                    this.name = "Sonar Scan Test"
                 }
+                addJob(sonarScan)
+
             }
         }
     }
