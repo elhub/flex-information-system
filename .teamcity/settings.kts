@@ -11,7 +11,7 @@ import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 elhubProject(Group.DEVXP, "flex-transformation-system") {
 
     pipeline {
-        parallel {
+        sequential {
 
             val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "backend"
