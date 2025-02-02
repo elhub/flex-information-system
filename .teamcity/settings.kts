@@ -1,5 +1,4 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
-import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
@@ -29,13 +28,14 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             }
 
-            val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO, npmSonarSettings).build()
+            val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM, npmSonarSettings).build()
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Build"
                 steps {
-                    sonarScan(goSonarScanSettings).apply {
+                    val buildType = sonarScan(goSonarScanSettings)
+                    buildType.apply {
                         triggers {
                             vcs {
                                 branchFilter = """
@@ -52,7 +52,8 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
                 steps {
-                    sonarScan(npmSonarScanSettings).apply {
+                    val buildType = sonarScan(npmSonarScanSettings)
+                    buildType.apply {
                         triggers {
                             vcs {
                                 branchFilter = """
