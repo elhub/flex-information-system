@@ -29,10 +29,11 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
             }
 
             val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM, npmSonarSettings).build() */
-
-            customJob(AgentScope.LinuxAgentContext) {
+            goSonarScan(goSonarSettings)
+            /*customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Build"
+                goSonarScan(goSonarSettings)
                 steps {
                     val buildType = sonarScan(goSonarScanSettings)
                     buildType.apply {
@@ -46,7 +47,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                         }
                     }
                 }
-           }
+           } */
 
             /* customJob(AgentScope.LinuxAgentContext) {
                 id("NpmSonarScan")
@@ -67,6 +68,10 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
             } */
         }
     }
+}
+
+fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
+    return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build())
 }
 
 fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
