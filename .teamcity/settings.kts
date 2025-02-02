@@ -1,9 +1,11 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
+import no.elhub.devxp.build.configuration.pipeline.extensions.addPrTrigger
 import no.elhub.devxp.build.configuration.pipeline.jobs.Job
 import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
 import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
@@ -14,6 +16,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 
     pipeline {
         parallel {
+
             val goSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO) {
                 sonarProjectSources = "backend"
                 workingDir = "backend"
@@ -29,26 +32,40 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Build"
-                val sonarScan = SonarScan(goSonarSettings)
-                sonarScan.configure {
-                    this.name = "Sonar Scan Test"
+                steps {
+                    sonarScan(goSonarSettings).apply {
+                        triggers {
+                            finishBuildTrigger {
+                                successfulOnly = true
+                            }
+                        }
+
+                        addPrTrigger()
+                    }
                 }
-                addJob(sonarScan)
            }
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
-                val sonarScan = SonarScan(npmSonarSettings)
-                sonarScan.configure {
-                    this.name = "Sonar Scan Test"
-                }
-                addJob(sonarScan)
+                steps {
+                    sonarScan(npmSonarSettings).apply {
+                        triggers {
+                            finishBuildTrigger {
+                                successfulOnly = true
+                            }
+                        }
 
+                        addPrTrigger()
+                    }
+                }
             }
         }
     }
 }
+
+fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType =
+    addJob(SonarScan(settings))
 
 fun Pipeline.addJob(job: Job): BuildType {
     val buildType = job.build(vcsSettings, teamcityProject)
