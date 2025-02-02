@@ -19,18 +19,17 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "${workingDir}/backend"
             }.build()
 
-            println("GO workdir: " + goSonarSettings.workingDir)
 
             val npmSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM) {
                 workingDir = "${workingDir}/frontend"
             }.build()
 
-            println("NPM workdir: " + npmSonarSettings.workingDir)
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Sonar Scan"
                 steps {
+                    println("GO workdir: " + goSonarSettings.workingDir)
                     addJob(SonarScan(goSonarSettings))
                 }
            }
@@ -39,6 +38,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("NpmSonarScan")
                 this.name = "Frontend Sonar Scan"
                 steps {
+                    println("NPM workdir: " + npmSonarSettings.workingDir)
                     addJob(SonarScan(npmSonarSettings))
                 }
             }
