@@ -34,13 +34,6 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 this.name = "Backend Build"
                 steps {
                     sonarScan(goSonarSettings).apply {
-                        triggers {
-                            finishBuildTrigger {
-                                buildType = this.id!!
-                                successfulOnly = true
-                            }
-                        }
-
                         addPrTrigger()
                     }
                 }
@@ -51,13 +44,6 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 this.name = "Frontend Build"
                 steps {
                     sonarScan(npmSonarSettings).apply {
-                        triggers {
-                            finishBuildTrigger {
-                                buildType = this.id!!
-                                successfulOnly = true
-                            }
-                        }
-
                         addPrTrigger()
                     }
                 }
