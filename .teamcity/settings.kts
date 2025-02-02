@@ -1,10 +1,12 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
+import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
 import no.elhub.devxp.build.configuration.pipeline.jobs.Job
 import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
+import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 import no.elhub.devxp.build.configuration.pipeline.jobs.settings.SonarScanSettings
 import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
@@ -23,7 +25,17 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             } */
 
-            goSonarScan(goSonarSettings)
+            // goSonarScan(goSonarSettings)
+
+            customJob(AgentScope.LinuxAgentContext) {
+                id("GoSonarScan")
+                name = "Custom Job for Go Sonar Scan"
+                description = "This is a custom job for Go Sonar Scan"
+                steps {
+                    goSonarScan(goSonarSettings)
+                }
+            }
+
             //npmSonarScan(npmSonarSettings)
 
         }
@@ -32,10 +44,6 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 
 internal fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
     return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build())
-}
-
-internal fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
-    return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.NPM, block).build())
 }
 
 internal fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
