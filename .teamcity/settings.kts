@@ -29,13 +29,17 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Sonar Scan"
-                addJob(SonarScan(goSonarSettings))
+                steps {
+                    addJob(SonarScan(goSonarSettings))
+                }
            }
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("NpmSonarScan")
                 this.name = "Frontend Sonar Scan"
-                addJob(SonarScan(npmSonarSettings))
+                steps {
+                    addJob(SonarScan(npmSonarSettings))
+                }
             }
         }
     }
