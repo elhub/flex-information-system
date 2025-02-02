@@ -23,36 +23,32 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             }.build()
 
-            customJob(AgentScope.LinuxAgentContext) {
-                id("GoSonarScan")
-                this.name = "Backend Sonar Scan"
-
-                steps {
-                    script {
-                        scriptContent = """
-                            echo "Running Sonar Scan for Go"
-                        """.trimIndent()
+            customJob(
+                AgentScope.LinuxAgentContext,
+                buildArtifactRules = emptyList(),
+                outputArtifactRules = emptyList(),
+                block = {
+                    id("GoBuild")
+                    this.name = "Backend Build"
+                    steps {
+                        addJob(SonarScan(goSonarSettings))
                     }
-//                    SonarScan(goSonarSettings).build(vcsSettings, teamcityProject)
-//                    step {
-//                        addJob(SonarScan(goSonarSettings))
-//                    }
                 }
-           }
+            )
 
-            customJob(AgentScope.LinuxAgentContext) {
-                id("NpmSonarScan")
-                this.name = "Frontend Sonar Scan"
-
-                steps {
-                    script {
-                        scriptContent = """
-                            echo "Running Sonar Scan for Npm"
-                        """.trimIndent()
+            customJob(
+                AgentScope.LinuxAgentContext,
+                buildArtifactRules = emptyList(),
+                outputArtifactRules = emptyList(),
+                block = {
+                    id("NpmBuild")
+                    this.name = "Frontend Build"
+                    steps {
+                        addJob(SonarScan(npmSonarSettings))
                     }
-//                    SonarScan(goSonarSettings).build(vcsSettings, teamcityProject)
                 }
-            }
+            )
+
         }
     }
 }
