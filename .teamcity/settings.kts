@@ -19,6 +19,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
             val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "backend"
                 workingDir = "backend"
+                additionalParams = mutableListOf("sonar.verbose=true")
             }
 
             val goSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO, goSonarSettings).build()
@@ -26,6 +27,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
             val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "frontend"
                 workingDir = "frontend"
+                additionalParams = mutableListOf("sonar.verbose=true")
             }
 
             val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM, npmSonarSettings).build()
@@ -70,10 +72,12 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 }
 
 fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
+    println("Creating SonarScan job with settings: $settings")
     return addJob(SonarScan(settings))
 }
 
 fun Pipeline.addJob(job: Job): BuildType {
+    println("Adding job: ${job.validations}")
     val buildType = job.build(vcsSettings, teamcityProject)
 
     stages = stages.plus(Stage.Single(buildType))
