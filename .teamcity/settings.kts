@@ -1,5 +1,4 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
-import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
@@ -23,32 +22,17 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             }.build()
 
-            customJob(
-                AgentScope.LinuxAgentContext,
-                buildArtifactRules = emptyList(),
-                outputArtifactRules = emptyList(),
-                block = {
-                    id("GoBuild")
-                    this.name = "Backend Build"
-                    steps {
-                        addJob(SonarScan(goSonarSettings))
-                    }
-                }
-            )
+            customJob(AgentScope.LinuxAgentContext) {
+                id("GoSonarScan")
+                this.name = "Backend Sonar Scan"
+                SonarScan(goSonarSettings).configure { this@parallel }
+           }
 
-            customJob(
-                AgentScope.LinuxAgentContext,
-                buildArtifactRules = emptyList(),
-                outputArtifactRules = emptyList(),
-                block = {
-                    id("NpmBuild")
-                    this.name = "Frontend Build"
-                    steps {
-                        addJob(SonarScan(npmSonarSettings))
-                    }
-                }
-            )
-
+            customJob(AgentScope.LinuxAgentContext) {
+                id("NpmSonarScan")
+                this.name = "Frontend Sonar Scan"
+                SonarScan(npmSonarSettings).configure { this@parallel }
+            }
         }
     }
 }
