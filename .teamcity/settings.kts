@@ -1,5 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
@@ -16,22 +17,34 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
     pipeline {
         parallel {
 
-            val goSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO) {
+            val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "backend"
                 workingDir = "backend"
-            }.build()
+            }
 
+            val goSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO, goSonarSettings).build()
 
-            val npmSonarSettings : SonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.NPM) {
+            val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "frontend"
                 workingDir = "frontend"
-            }.build()
+            }
+
+            val npmSonarScanSettings = SonarScanSettings.Builder(this.projectContext, ProjectType.GO, npmSonarSettings).build()
 
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 this.name = "Backend Build"
                 steps {
-                    sonarScan(goSonarSettings)
+                    sonarScan(goSonarScanSettings).apply {
+                        triggers {
+                            vcs {
+                                branchFilter = """
+                                    -:*
+                                    +:testing-branch
+                                """.trimIndent()
+                            }
+                        }
+                    }
                 }
            }
 
@@ -39,7 +52,16 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 id("NpmSonarScan")
                 this.name = "Frontend Build"
                 steps {
-                    sonarScan(npmSonarSettings)
+                    sonarScan(npmSonarScanSettings).apply {
+                        triggers {
+                            vcs {
+                                branchFilter = """
+                                    -:*
+                                    +:testing-branch
+                                """.trimIndent()
+                            }
+                        }
+                    }
                 }
             }
         }
