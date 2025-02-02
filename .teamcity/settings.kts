@@ -1,13 +1,9 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
-import jetbrains.buildServer.configs.kotlin.Id
-import jetbrains.buildServer.configs.kotlin.ui.add
-import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
-import no.elhub.devxp.build.configuration.pipeline.extensions.addPrTrigger
 import no.elhub.devxp.build.configuration.pipeline.jobs.Job
 import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
 import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
