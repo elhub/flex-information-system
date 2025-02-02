@@ -48,10 +48,8 @@ internal fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = 
 }
 
 internal fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
+
     val buildType = SonarScan(settings)
-    buildType.configure {
-        id("GoSonarScan")
-    }
     return addJob(buildType)
 }
 
@@ -68,7 +66,3 @@ internal fun Pipeline.addJob(job: Job): BuildType {
 
 // For documentation on how to write these pipelines, see
 // https://docs.elhub.cloud/enabling-systems/devxp/devxp-build-configuration/user-guide.html
-
-fun id(id: String) {
-    id(id)
-}
