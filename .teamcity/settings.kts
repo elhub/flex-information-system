@@ -9,8 +9,10 @@ import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
+import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.extensions.subProject
+import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 
 //elhubProject(Group.DEVXP, "flex-transformation-system") {
 //
@@ -84,18 +86,34 @@ fun ElhubProject.customProject(projectName: String) {
     val subProject = subProject(projectName)
 
     subProject.sequential {
+
         pipeline {
-            val jobSettings: SonarScanSettings.Builder.() -> Unit = {
-                sonarProjectSources = projectName
-                workingDir = projectName
+
+            customJob(AgentScope.LinuxAgentContext) {
+                id("SonarScan $projectName")
+                name = "SonarScan $projectName"
+                steps {
+                    val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO) {
+                        sonarProjectSources = projectName
+                        workingDir = projectName
+                    }.build()
+                    val sonarScanJob = SonarScan(settings)
+                    addJob(sonarScanJob)
+                }
             }
 
-            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, jobSettings).build()
-            val sonarScan = SonarScan(sonarScanSettings)
-            val buildType = sonarScan.build(vcsSettings, subProject)
-            stages = stages.plus(Stage.Single(buildType))
-            validations = validations.plus(sonarScan.validations)
-            return@pipeline
+//            val jobSettings: SonarScanSettings.Builder.() -> Unit = {
+//                sonarProjectSources = projectName
+//                workingDir = projectName
+//            }
+//
+//            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, jobSettings).build()
+//            val sonarScan = SonarScan(sonarScanSettings)
+//            val buildType = sonarScan.build(vcsSettings, subProject)
+//
+//            stages = stages.plus(Stage.Single(buildType))
+//            validations = validations.plus(sonarScan.validations)
+
         }
     }
 
