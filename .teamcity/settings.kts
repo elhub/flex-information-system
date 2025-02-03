@@ -10,7 +10,7 @@ import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
-import no.elhub.devxp.build.configuration.pipeline.extensions.subSystem
+import no.elhub.devxp.build.configuration.pipeline.extensions.subProject
 
 //elhubProject(Group.DEVXP, "flex-transformation-system") {
 //
@@ -81,15 +81,21 @@ fun ElhubProject.customProject(projectName: String) {
 //        }
 //    }
 
-    val subSystem = subSystem(projectName)
+    val subProject = subProject(projectName)
 
-    subSystem.sequential {
+    subProject.sequential {
         pipeline {
             val jobSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = projectName
                 workingDir = projectName
             }
-            goSonarScan(jobSettings)
+
+            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, jobSettings).build()
+            val sonarScan = SonarScan(sonarScanSettings)
+            val buildType = sonarScan.build(vcsSettings, subProject)
+            stages = stages.plus(Stage.Single(buildType))
+            validations = validations.plus(sonarScan.validations)
+            return@pipeline
         }
     }
 
