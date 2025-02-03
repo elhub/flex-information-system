@@ -1,12 +1,9 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
-import jetbrains.buildServer.configs.kotlin.Id
-import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
-import jetbrains.buildServer.configs.kotlin.ui.EntityLocator
-import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
+import no.elhub.devxp.build.configuration.pipeline.constants.JavaVersion.VERSION_17
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
 import no.elhub.devxp.build.configuration.pipeline.jobs.Job
 import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
@@ -29,16 +26,19 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             }
 
-            goSonarScan(goSonarSettings)
+//            goSonarScan(goSonarSettings)
 //            npmSonarScan(npmSonarSettings)
 
-//            customJob(AgentScope.LinuxAgentContext) {
-//                id("GoSonarScan")
-//                name = "GoSonarScan"
-//                steps {
+            customJob(AgentScope.LinuxAgentContext) {
+                id("GoSonarScan")
+                name = "GoSonarScan"
+                steps {
+                    val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, goSonarSettings).build()
+                    val sonarScanJob = SonarScan(settings)
+                    addJob(sonarScanJob)
 //                    goSonarScan(goSonarSettings)
-//                }
-//            }
+                }
+            }
 
             //npmSonarScan(npmSonarSettings)
 
@@ -48,8 +48,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 
 internal fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
     val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build()
-    val buildType = SonarScan(settings)
-    return sonarScan(buildType)
+    return sonarScan(SonarScan(settings))
 }
 
 //internal fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
