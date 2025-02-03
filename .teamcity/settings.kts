@@ -14,7 +14,7 @@ import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 elhubProject(Group.DEVXP, "flex-transformation-system") {
 
     pipeline {
-        sequential {
+        parallel {
 
             val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "backend"
@@ -26,16 +26,33 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             } */
 
-            // goSonarScan(goSonarSettings)
+            //goSonarScan(goSonarSettings)
 
-            customJob(AgentScope.LinuxAgentContext) {
+            customJob(AgentScope.LinuxAgentContext,
+                block = {
+                    id("GoSonarScan")
+                    name = "GoSonarScan"
+                    steps {
+                        goSonarScan(goSonarSettings)
+                    }
+                }
+            )
+
+            /* customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
-                name = "Custom Job for Go Sonar Scan"
-                description = "This is a custom job for Go Sonar Scan"
+                name = "GoSonarScan"
                 steps {
                     goSonarScan(goSonarSettings)
                 }
-            }
+            }*/
+
+//            customJob(AgentScope.LinuxAgentContext) {
+//                id("GoSonarScan")
+//                name = "GoSonarScan"
+//                steps {
+//                    goSonarScan(goSonarSettings)
+//                }
+//            }
 
             //npmSonarScan(npmSonarSettings)
 
