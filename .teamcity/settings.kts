@@ -115,16 +115,15 @@ fun ElhubProject.customSubProject(projectName: String) {
 }
 
 elhubProject(Group.DEVXP, "flex-transformation-system", withUiDisabled = false) {
-    subProject("backend")
-//    subProject("frontend")
-
     pipeline {
         sequential {
-            val jobSettings: SonarScanSettings.Builder.() -> Unit = {
-                sonarProjectSources = "backend"
-                workingDir = "backend"
+            subProject("backend").sequential {
+                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
+                    sonarProjectSources = "backend"
+                    workingDir = "backend"
+                }
+                goSonarScan(jobSettings)
             }
-            goSonarScan(jobSettings)
         }
     }
 }
