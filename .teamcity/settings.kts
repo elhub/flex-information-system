@@ -86,6 +86,7 @@ fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.
             addJob(sonarScan)
         }
     }
+
 //    subProject(projectName).subProject {
 //        id("CustomProject")
 //        name = "SonarScan"
@@ -118,7 +119,13 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
         workingDir = "backend"
     }
 
-    customProject("backend", goSonarSettings)
+    val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
+        sonarProjectSources = "frontend"
+        workingDir = "frontend"
+    }
+
+    customProject("flex-transformation-system-backend", goSonarSettings)
+//    customProject("frontend", npmSonarSettings)
 //    customProject("frontend")
 }
 
