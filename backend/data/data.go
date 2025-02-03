@@ -1,8 +1,10 @@
 package data
 
 import (
+	"bytes"
 	"flex/pgpool"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -49,4 +51,38 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	}
 
 	proxy.ServeHTTP(ctx.Writer, ctx.Request)
+}
+
+// Custom implementation of ResponseWriter keeping a copy of the response body.
+type responseWriterWithBody struct {
+	gin.ResponseWriter
+	body *bytes.Buffer
+}
+
+func (rw responseWriterWithBody) Write(b []byte) (int, error) {
+	rw.body.Write(b)
+	return rw.ResponseWriter.Write(b) //nolint:wrapcheck
+}
+
+// ErrorMessageMiddleware returns a middleware that logs the error messages, and
+// possibly rewrites them when not informative enough.
+func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		// change the writer to capture the response body while the handler runs
+		rwb := &responseWriterWithBody{
+			body:           bytes.NewBufferString(""),
+			ResponseWriter: ctx.Writer,
+		}
+		ctx.Writer = rwb
+
+		// ↑ before the handler
+
+		ctx.Next()
+
+		// ↓ after the handler
+
+		if ctx.Writer.Status() >= http.StatusBadRequest { // 400+
+			slog.InfoContext(ctx, "data API failure: "+rwb.body.String())
+		}
+	}
 }
