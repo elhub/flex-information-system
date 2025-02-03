@@ -1,4 +1,6 @@
+import jetbrains.buildServer.configs.kotlin.ArtifactRule
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
@@ -26,33 +28,17 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
                 workingDir = "frontend"
             } */
 
-            //goSonarScan(goSonarSettings)
+            goSonarScan(goSonarSettings)
 
             customJob(AgentScope.LinuxAgentContext,
-                block = {
-                    id("GoSonarScan")
-                    name = "GoSonarScan"
-                    steps {
-                        goSonarScan(goSonarSettings)
-                    }
-                }
-            )
-
-            /* customJob(AgentScope.LinuxAgentContext) {
+                buildArtifactRules = listOf(ArtifactRule.include("backend/*", "build.zip")),
+                outputArtifactRules = listOf(ArtifactRule.include("build.zip!**", "backend"))) {
                 id("GoSonarScan")
                 name = "GoSonarScan"
                 steps {
                     goSonarScan(goSonarSettings)
                 }
-            }*/
-
-//            customJob(AgentScope.LinuxAgentContext) {
-//                id("GoSonarScan")
-//                name = "GoSonarScan"
-//                steps {
-//                    goSonarScan(goSonarSettings)
-//                }
-//            }
+            }
 
             //npmSonarScan(npmSonarSettings)
 
