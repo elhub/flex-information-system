@@ -83,11 +83,12 @@ fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.
         name = "Custom Project"
         pipeline {
             sequential {
-                if (projectName == "backend") {
-                    goSonarScan(settings)
-                } else if (projectName == "frontend") {
-                    npmSonarScan(settings)
-                }
+                goSonarScan(settings)
+//                if (projectName == "backend") {
+//                    goSonarScan(settings)
+//                } else if (projectName == "frontend") {
+//                    npmSonarScan(settings)
+//                }
             }
         }
     }
