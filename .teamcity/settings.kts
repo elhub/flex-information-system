@@ -1,6 +1,7 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.Id
 import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
+import jetbrains.buildServer.configs.kotlin.ui.EntityLocator
 import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
@@ -48,9 +49,6 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 internal fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
     val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build()
     val buildType = SonarScan(settings)
-    buildType.configure {
-        goSonarScan().id("GoSonarScan")
-    }
     return sonarScan(buildType)
 }
 
