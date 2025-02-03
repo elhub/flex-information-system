@@ -83,49 +83,23 @@ fun ElhubProject.customSubProject(projectName: String) {
 //    }
 
     val subProject = subProject(projectName)
-    subProject.sequential {
+    subProject.subProject {
         pipeline {
             sequential {
                 val jobSettings: SonarScanSettings.Builder.() -> Unit = {
                     sonarProjectSources = projectName
                     workingDir = projectName
                 }
-                if (projectName == "backend") {
-                    goSonarScan(jobSettings)
-                } else if (projectName == "frontend") {
-                    npmSonarScan(jobSettings)
-                }
+                goSonarScan(jobSettings)
             }
-
-//            val jobSettings: SonarScanSettings.Builder.() -> Unit = {
-//                sonarProjectSources = projectName
-//                workingDir = projectName
-//            }
-//
-//            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, jobSettings).build()
-//            val sonarScan = SonarScan(sonarScanSettings)
-//            val buildType = sonarScan.build(vcsSettings, subProject)
-//
-//            stages = stages.plus(Stage.Single(buildType))
-//            validations = validations.plus(sonarScan.validations)
-
         }
     }
 
 }
 
 elhubProject(Group.DEVXP, "flex-transformation-system", withUiDisabled = false) {
-    pipeline {
-        sequential {
-            subProject("backend").sequential {
-                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
-                    sonarProjectSources = "backend"
-                    workingDir = "backend"
-                }
-                goSonarScan(jobSettings)
-            }
-        }
-    }
+    customSubProject("backend")
+//    customSubProject("frontend")
 }
 
 // For documentation on how to write these pipelines, see
