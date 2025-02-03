@@ -82,10 +82,8 @@ fun ElhubProject.customSubProject(projectName: String) {
 //        }
 //    }
 
-    val subProject = subProject(projectName)
-    subProject.subProject {
-        id("SonarScan2")
-        name = "SonarScan2"
+    val subProject = subProject(projectName, repositoryNameOverride = "flex-information-system", branchName = "testing-branch")
+    subProject.sequential {
         pipeline {
             sequential {
                 val jobSettings: SonarScanSettings.Builder.() -> Unit = {
@@ -99,7 +97,7 @@ fun ElhubProject.customSubProject(projectName: String) {
 
 }
 
-elhubProject(Group.DEVXP, "flex-transformation-system", withUiDisabled = false) {
+elhubProject(Group.DEVXP, "flex-information-system") {
     customSubProject("backend")
 //    customSubProject("frontend")
 }
