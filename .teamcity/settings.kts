@@ -16,6 +16,7 @@ import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.constants.DeployEnvironment
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
+import no.elhub.devxp.build.configuration.pipeline.extensions.subSystem
 
 //elhubProject(Group.DEVXP, "flex-transformation-system") {
 //
@@ -82,7 +83,12 @@ fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.
         id("CustomProject")
         name = "SonarScan"
         pipeline {
-            goSonarScan(settings)
+            sequential {
+                val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, settings).build()
+                val sonarScan = SonarScan(sonarScanSettings)
+                addJob(sonarScan)
+//                goSonarScan(settings)
+            }
 //            sequential {
 //                val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
 //                    sonarProjectSources = "backend"
