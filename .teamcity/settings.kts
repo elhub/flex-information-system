@@ -9,10 +9,8 @@ import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
-import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.extensions.subProject
-import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 
 //elhubProject(Group.DEVXP, "flex-transformation-system") {
 //
@@ -74,7 +72,7 @@ internal fun Pipeline.addJob(job: Job): BuildType {
     return buildType
 }
 
-fun ElhubProject.customProject(projectName: String) {
+fun ElhubProject.customSubProject(projectName: String) {
 //    pipeline { TODO this pipeline works, but only for backend
 //        sequential {
 //            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, settings).build()
@@ -84,7 +82,6 @@ fun ElhubProject.customProject(projectName: String) {
 //    }
 
     val subProject = subProject(projectName)
-
     subProject.sequential {
         pipeline {
             sequential {
@@ -117,10 +114,30 @@ fun ElhubProject.customProject(projectName: String) {
 }
 
 elhubProject(Group.DEVXP, "flex-transformation-system") {
-    customProject("backend")
-    customProject("frontend")
-//    customProject("frontend", npmSonarSettings)
-//    customProject("frontend")
+
+    subProject("backend").sequential {
+        pipeline {
+            sequential {
+                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
+                    sonarProjectSources = "backend"
+                    workingDir = "backend"
+                }
+                goSonarScan(jobSettings)
+            }
+        }
+    }
+
+    subProject("frontend").sequential {
+        pipeline {
+            sequential {
+                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
+                    sonarProjectSources = "frontend"
+                    workingDir = "frontend"
+                }
+                npmSonarScan(jobSettings)
+            }
+        }
+    }
 
 }
 
