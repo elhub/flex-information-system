@@ -79,6 +79,8 @@ internal fun Pipeline.addJob(job: Job): BuildType {
 
 fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.Builder.() -> Unit) {
     subProject(projectName).subProject {
+        id("CustomProject")
+        name = "Custom Project"
         pipeline {
             sequential {
                 if (projectName == "backend") {
