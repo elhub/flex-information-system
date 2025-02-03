@@ -11,9 +11,8 @@ import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.extensions.subProject
-import no.elhub.devxp.build.configuration.pipeline.jobs.subsystemAutoRelease
 
-//elhubProject(Group.DEVXP, "flex-transformation-system") {
+//elhubProject(Group.DEVXP, "flex-information-system") {
 //
 //    pipeline {
 //        sequential {
@@ -35,14 +34,13 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.subsystemAutoRelease
 //                id("GoSonarScan")
 //                name = "GoSonarScan"
 //                steps {
-//                    val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, goSonarSettings).build()
-//                    val sonarScanJob = SonarScan(settings)
-//                    addJob(sonarScanJob)
 ////                    goSonarScan(goSonarSettings)
+//                    val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, goSonarSettings).build()
+//                    val sonarScan = SonarScan(settings)
+//                    val buildType = sonarScan.build(vcsSettings, teamcityProject.)
 //                }
 //            }
 //
-//            //npmSonarScan(npmSonarSettings)
 //
 //        }
 //    }
@@ -74,7 +72,7 @@ internal fun Pipeline.addJob(job: Job): BuildType {
 }
 
 fun ElhubProject.customSubProject(projectName: String) {
-//    pipeline { TODO this pipeline works, but only for backend
+//    pipeline { this pipeline works, but only for backend
 //        sequential {
 //            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, settings).build()
 //            val sonarScan = SonarScan(sonarScanSettings)
@@ -82,15 +80,21 @@ fun ElhubProject.customSubProject(projectName: String) {
 //        }
 //    }
 
-    val subProject = subProject(projectName, repositoryNameOverride = "flex-information-system", branchName = "testing-branch")
+    val subProject = subProject(projectName)
     subProject.sequential {
         pipeline {
             sequential {
-                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
+                val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                     sonarProjectSources = projectName
                     workingDir = projectName
                 }
-                goSonarScan(jobSettings)
+                val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, goSonarSettings).build()
+                val sonarScanJob = SonarScan(settings)
+                val buildType = sonarScanJob.build(vcsSettings, subProject)
+                stages = stages.plus(Stage.Single(buildType))
+
+                // after adding the built job we can add the validation requirements
+                validations = validations.plus(sonarScanJob.validations)
             }
         }
     }
