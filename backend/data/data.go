@@ -69,6 +69,14 @@ func (brw bodyResponseWriter) Write(b []byte) (int, error) {
 	return brw.body.Write(b) //nolint:wrapcheck
 }
 
+// errorMessage is the format of PostgREST error messages.
+type errorMessage struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+	Detail  string `json:"details,omitempty"`
+	Hint    string `json:"hint,omitempty"`
+}
+
 // ErrorMessageMiddleware returns a middleware that logs the error messages, and
 // possibly rewrites them when not informative enough.
 func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
@@ -92,31 +100,43 @@ func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 
 		if ctx.Writer.Status() >= http.StatusBadRequest { //nolint:nestif
 			// error => parse the body, modify it, and write it to the actual response
-			var jsonBody gin.H
-			if err := json.Unmarshal(brw.body.Bytes(), &jsonBody); err != nil {
-				slog.InfoContext(ctx, "data API failure (not a JSON): "+brw.body.String())
+			var errorBody errorMessage
+			if err := json.Unmarshal(brw.body.Bytes(), &errorBody); err != nil {
+				slog.InfoContext(
+					ctx,
+					"data API failure (not in PostgREST format)",
+					"error", brw.body.String(),
+				)
 				ctx.Writer.Write(brw.body.Bytes()) //nolint:errcheck,gosec
 				return
 			}
 
 			// general error message rewrites to hide the default PostgREST ones
-			errorMessage, _ := jsonBody["message"].(string)
 			switch ctx.Request.Method {
 			case http.MethodPatch:
-				if strings.HasPrefix(errorMessage, "JSON object requested") {
-					errorMessage = "User cannot update this resource"
+				if strings.HasPrefix(errorBody.Message, "JSON object requested") {
+					errorBody.Message = "User cannot update this resource"
 				}
 			case http.MethodPost:
-				if strings.HasPrefix(errorMessage, "new row violates row-level security") {
-					errorMessage = "User cannot create this resource"
-				} else if strings.HasPrefix(errorMessage, "duplicate key value") {
-					errorMessage = "Duplicate found, please try to update the existing resource instead"
+				if strings.HasPrefix(
+					errorBody.Message, "new row violates row-level security",
+				) {
+					errorBody.Message = "User cannot create this resource"
+				} else if strings.HasPrefix(errorBody.Message, "duplicate key value") {
+					errorBody.Message = "Duplicate found, " +
+						"please try to update the existing resource instead"
 				}
 			}
 
-			jsonBody["message"] = errorMessage
-			ctx.JSON(ctx.Writer.Status(), jsonBody)
-			slog.InfoContext(ctx, "data API failure: "+errorMessage)
+			ctx.JSON(ctx.Writer.Status(), errorBody)
+			slog.InfoContext(
+				ctx,
+				"data API failure",
+				"code", errorBody.Code,
+				"message", errorBody.Message,
+				"detail", errorBody.Detail,
+				"hint", errorBody.Hint,
+			)
 		} else {
 			// no error => just write the body to the actual response
 			ctx.Writer.Write(brw.body.Bytes()) //nolint:errcheck,gosec
