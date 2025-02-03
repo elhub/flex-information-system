@@ -11,6 +11,7 @@ import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.extensions.subProject
+import no.elhub.devxp.build.configuration.pipeline.jobs.subsystemAutoRelease
 
 //elhubProject(Group.DEVXP, "flex-transformation-system") {
 //
@@ -113,32 +114,19 @@ fun ElhubProject.customSubProject(projectName: String) {
 
 }
 
-elhubProject(Group.DEVXP, "flex-transformation-system") {
+elhubProject(Group.DEVXP, "flex-transformation-system", withUiDisabled = false) {
+    subProject("backend")
+//    subProject("frontend")
 
-    subProject("backend").sequential {
-        pipeline {
-            sequential {
-                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
-                    sonarProjectSources = "backend"
-                    workingDir = "backend"
-                }
-                goSonarScan(jobSettings)
+    pipeline {
+        sequential {
+            val jobSettings: SonarScanSettings.Builder.() -> Unit = {
+                sonarProjectSources = "backend"
+                workingDir = "backend"
             }
+            goSonarScan(jobSettings)
         }
     }
-
-    subProject("frontend").sequential {
-        pipeline {
-            sequential {
-                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
-                    sonarProjectSources = "frontend"
-                    workingDir = "frontend"
-                }
-                npmSonarScan(jobSettings)
-            }
-        }
-    }
-
 }
 
 // For documentation on how to write these pipelines, see
