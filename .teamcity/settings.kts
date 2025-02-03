@@ -79,11 +79,23 @@ internal fun Pipeline.addJob(job: Job): BuildType {
 }
 
 fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.Builder.() -> Unit) {
-    pipeline {
-        sequential {
-            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, settings).build()
-            val sonarScan = SonarScan(sonarScanSettings)
-            addJob(sonarScan)
+//    pipeline { TODO this pipeline works, but only for backend
+//        sequential {
+//            val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, settings).build()
+//            val sonarScan = SonarScan(sonarScanSettings)
+//            addJob(sonarScan)
+//        }
+//    }
+
+    subProject(projectName).subProject {
+        id("CustomProject")
+        name = "SonarScan"
+        pipeline {
+            sequential {
+                val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, settings).build()
+                val sonarScan = SonarScan(sonarScanSettings)
+                addJob(sonarScan)
+            }
         }
     }
 
