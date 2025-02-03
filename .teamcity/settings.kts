@@ -83,7 +83,11 @@ fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.
         name = "Custom Project"
         pipeline {
             sequential {
-                goSonarScan(settings)
+                val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
+                    sonarProjectSources = "backend"
+                    workingDir = "backend"
+                }
+                goSonarScan(goSonarSettings)
 //                if (projectName == "backend") {
 //                    goSonarScan(settings)
 //                } else if (projectName == "frontend") {
