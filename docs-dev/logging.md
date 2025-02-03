@@ -15,10 +15,18 @@ Use of logging library is enforced via the `golangci-lint` config.
 ### Use context
 
 We should always log with context. This is future-proofing our logging in case
-we want to pull out different things from the context as part of logs. Examples
-are trace IDs or current user.
+we want to pull out different things from the context as part of logs. We also
+have current use for pulling out trace and span IDs from the context.
 
 This means: Use `slog.InfoContext()` instead of `slog.Info()` and pass the context.
+
+### Tracing
+
+We are looking at and inspired by OpenTelemetry for tracing.
+[go.opentelemetry.io/otel](https://pkg.go.dev/go.opentelemetry.io/otel) is the
+go-to for this. We are using the pattern of
+[tracer per package](https://github.com/open-telemetry/opentelemetry-go/pull/1674#issuecomment-793558199),
+but hiding some of the otel stuff in our own `internal/trace` package.
 
 ### Levels
 

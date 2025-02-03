@@ -47,8 +47,7 @@ linters-settings:
     forbid:
       - ^fmt\.Print.*$
       - ^log\.Print.*$
-  sloglint:
-    context: "all"
+      - ^slog\.(Debug|Warn|Info|Error)$
   godox:
     keywords:
       - FIXME

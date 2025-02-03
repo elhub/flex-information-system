@@ -7,6 +7,7 @@ import (
 	"flex/auth/oidc"
 	"flex/data"
 	"flex/event"
+	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
 	"fmt"
@@ -18,6 +19,7 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
 	sloggin "github.com/samber/slog-gin"
 )
 
@@ -27,11 +29,18 @@ const requestDetailsContextKey = "_flex/auth"
 
 // Run is the main entry point for the application.
 func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx
+	// Sets the global TracerProvider.
+	trace.Init()
+
 	// Structured logging
 	logLevel, exists := lookupenv("FLEX_LOG_LEVEL")
 	if !exists {
 		logLevel = "INFO"
 	}
+
+	tracer := trace.Tracer("flex")
+	ctx, span := tracer.Start(ctx, "flex")
+	defer span.End()
 
 	var slogLevel slog.Level
 	err := slogLevel.UnmarshalText([]byte(logLevel))
@@ -39,12 +48,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("could not parse log level: %w", err)
 	}
 
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+	logger := slog.New(trace.SlogHandler{Handler: slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 		// TODO make levels configurable in dev vs test
 		Level:       slogLevel,
 		AddSource:   slogLevel == slog.LevelDebug,
 		ReplaceAttr: nil,
-	}))
+	})})
 	slog.SetDefault(logger)
 
 	// we report missing env variable after logger has been established
@@ -161,7 +170,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	slog.DebugContext(ctx, "Creating auth API")
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
-	slog.Debug("Creating data API")
+	slog.DebugContext(ctx, "Creating data API")
 	dataAPI, err := data.NewAPI(postgRESTUpstream, dbPool, requestDetailsContextKey)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
@@ -224,9 +233,16 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	slog.InfoContext(ctx, "Launching the web server... ")
 
 	router := gin.New()
+
+	// Enabling the fallback context ensures that gin falls back to the underlying context.Context.
+	// It must be set e.g. for otel tracing to work.
+	router.ContextWithFallback = true
+	router.Use(trace.Middleware()) //nolint:contextcheck
+
 	slogginConfig := sloggin.Config{ //nolint:exhaustruct
-		WithSpanID:  true,
-		WithTraceID: true,
+		// We are providing our own trace.SlogHandler, so we don't need to log trace IDs here.
+		WithSpanID:  false,
+		WithTraceID: false,
 	}
 	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
 
