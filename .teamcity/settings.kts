@@ -86,19 +86,16 @@ fun ElhubProject.customProject(projectName: String) {
     val subProject = subProject(projectName)
 
     subProject.sequential {
-
         pipeline {
-
-            customJob(AgentScope.LinuxAgentContext) {
-                id("SonarScan $projectName")
-                name = "SonarScan $projectName"
-                steps {
-                    val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO) {
-                        sonarProjectSources = projectName
-                        workingDir = projectName
-                    }.build()
-                    val sonarScanJob = SonarScan(settings)
-                    addJob(sonarScanJob)
+            sequential {
+                val jobSettings: SonarScanSettings.Builder.() -> Unit = {
+                    sonarProjectSources = projectName
+                    workingDir = projectName
+                }
+                if (projectName == "backend") {
+                    goSonarScan(jobSettings)
+                } else if (projectName == "frontend") {
+                    npmSonarScan(jobSettings)
                 }
             }
 
@@ -121,6 +118,7 @@ fun ElhubProject.customProject(projectName: String) {
 
 elhubProject(Group.DEVXP, "flex-transformation-system") {
     customProject("backend")
+    customProject("frontend")
 //    customProject("frontend", npmSonarSettings)
 //    customProject("frontend")
 
