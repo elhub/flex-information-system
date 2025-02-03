@@ -1,5 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.project
+import jetbrains.buildServer.configs.kotlin.sequential
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.JavaVersion.VERSION_17
@@ -87,17 +88,24 @@ fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.
 //        }
 //    }
 
-    subProject(projectName).subProject {
-        id("CustomProject")
-        name = "SonarScan"
+    val sp = subProject(projectName)
+    sp.sequential {
         pipeline {
             sequential {
-                val sonarScanSettings = SonarScanSettings.Builder(projectContext, ProjectType.GO, settings).build()
-                val sonarScan = SonarScan(sonarScanSettings)
-                addJob(sonarScan)
+                goSonarScan(settings)
             }
         }
     }
+
+//    subProject(projectName).subProject {
+//        id("CustomProject")
+//        name = "SonarScan"
+//        pipeline {
+//            sequential {
+//                goSonarScan(settings)
+//            }
+//        }
+//    }
 
 //    subProject(projectName).subProject {
 //        id("CustomProject")
