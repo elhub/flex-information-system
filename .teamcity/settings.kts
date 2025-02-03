@@ -1,4 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.Id
 import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
@@ -28,7 +29,7 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
             }
 
             goSonarScan(goSonarSettings)
-            npmSonarScan(npmSonarSettings)
+//            npmSonarScan(npmSonarSettings)
 
 //            customJob(AgentScope.LinuxAgentContext) {
 //                id("GoSonarScan")
@@ -45,16 +46,20 @@ elhubProject(Group.DEVXP, "flex-transformation-system") {
 }
 
 internal fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
-    return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build())
-}
-
-internal fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
-    return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.NPM, block).build())
-}
-
-internal fun Pipeline.sonarScan(settings: SonarScanSettings): BuildType {
+    val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build()
     val buildType = SonarScan(settings)
-    return addJob(buildType)
+    buildType.configure {
+        goSonarScan().id("GoSonarScan")
+    }
+    return sonarScan(buildType)
+}
+
+//internal fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
+//    return sonarScan(SonarScanSettings.Builder(projectContext, ProjectType.NPM, block).build())
+//}
+
+internal fun Pipeline.sonarScan(sonarScan: SonarScan): BuildType {
+    return addJob(sonarScan)
 }
 
 internal fun Pipeline.addJob(job: Job): BuildType {
