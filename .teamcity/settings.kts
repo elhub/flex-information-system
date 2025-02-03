@@ -91,9 +91,7 @@ fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.
     val sp = subProject(projectName)
     sp.sequential {
         pipeline {
-            sequential {
-                goSonarScan(settings)
-            }
+            goSonarScan(settings)
         }
     }
 
