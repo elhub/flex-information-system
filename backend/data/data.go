@@ -90,7 +90,7 @@ func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 		ctx.Writer = rw
 		// NB: so far, the actual response body is still empty
 
-		if ctx.Writer.Status() >= http.StatusBadRequest { // 400+
+		if ctx.Writer.Status() >= http.StatusBadRequest { //nolint:nestif
 			// error => parse the body, modify it, and write it to the actual response
 			var jsonBody gin.H
 			if err := json.Unmarshal(brw.body.Bytes(), &jsonBody); err != nil {
@@ -101,9 +101,17 @@ func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 
 			// general error message rewrites to hide the default PostgREST ones
 			errorMessage, _ := jsonBody["message"].(string)
-			if ctx.Request.Method == http.MethodPatch &&
-				strings.HasPrefix(errorMessage, "JSON object requested") {
-				errorMessage = "User cannot update this resource"
+			switch ctx.Request.Method {
+			case http.MethodPatch:
+				if strings.HasPrefix(errorMessage, "JSON object requested") {
+					errorMessage = "User cannot update this resource"
+				}
+			case http.MethodPost:
+				if strings.HasPrefix(errorMessage, "new row violates row-level security") {
+					errorMessage = "User cannot create this resource"
+				} else if strings.HasPrefix(errorMessage, "duplicate key value") {
+					errorMessage = "Duplicate found, please try to update the existing resource instead"
+				}
 			}
 
 			jsonBody["message"] = errorMessage
