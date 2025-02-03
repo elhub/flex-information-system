@@ -46,5 +46,6 @@ USING (
         FROM controllable_unit_service_provider cusp -- noqa
         WHERE cusp.controllable_unit_id = technical_resource.controllable_unit_id -- noqa
             AND cusp.service_provider_id = current_party()
+            AND cusp.valid_time_range @> current_timestamp
     )
 );
