@@ -1,6 +1,9 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.Id
 import jetbrains.buildServer.configs.kotlin.Project
 import jetbrains.buildServer.configs.kotlin.sequential
+import jetbrains.buildServer.configs.kotlin.toId
+import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
 import no.elhub.devxp.build.configuration.pipeline.jobs.Job
@@ -12,6 +15,7 @@ import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
+import no.elhub.devxp.build.configuration.pipeline.context.ElhubProjectContext
 import no.elhub.devxp.build.configuration.pipeline.extensions.subProject
 import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 
@@ -19,21 +23,20 @@ elhubProject(Group.DEVXP, "flex-information-system") {
 
     pipeline {
         sequential {
+            val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
+                sonarProjectSources = "backend"
+                workingDir = "backend"
+            }
 
-//            val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
-//                sonarProjectSources = "backend"
-//                workingDir = "backend"
-//            }
-//
-//            val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
-//                sonarProjectSources = "frontend"
-//                workingDir = "frontend"
-//            }
+            val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
+                sonarProjectSources = "frontend"
+                workingDir = "frontend"
+            }
 
-//            goSonarScan(goSonarSettings)
-//            npmSonarScan(npmSonarSettings)
+            goSonarScan(goSonarSettings) // triggers backend, but cannot run sonar scan on frontend due to id conflict (SonarScan)
+            npmSonarScan(npmSonarSettings)
 
-
+            /* This customJob does not trigger SonarScan ......
             customJob(AgentScope.LinuxAgentContext) {
                 id("GoSonarScan")
                 name = "GoSonarScan"
@@ -54,7 +57,7 @@ elhubProject(Group.DEVXP, "flex-information-system") {
                     validations = validations.plus(sonarScan.validations)
 
                 }
-            }
+            } */
 
 
         }
@@ -68,6 +71,7 @@ fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): Buil
 
 internal fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
     val settings = SonarScanSettings.Builder(projectContext, ProjectType.NPM, block).build()
+    val sonarScan = SonarScan(settings)
     return sonarScan(SonarScan(settings))
 }
 
