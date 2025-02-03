@@ -2,12 +2,14 @@ package data
 
 import (
 	"bytes"
+	"encoding/json"
 	"flex/pgpool"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,15 +55,18 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	proxy.ServeHTTP(ctx.Writer, ctx.Request)
 }
 
-// Custom implementation of ResponseWriter keeping a copy of the response body.
-type responseWriterWithBody struct {
+// Custom implementation of ResponseWriter. This allows us to have access to the
+// response body before it is written, and possibly change it.
+type bodyResponseWriter struct {
 	gin.ResponseWriter
 	body *bytes.Buffer
 }
 
-func (rw responseWriterWithBody) Write(b []byte) (int, error) {
-	rw.body.Write(b)
-	return rw.ResponseWriter.Write(b) //nolint:wrapcheck
+// This override writes the body to the buffer instead of the response. All the
+// other methods are left untouched, so the other parts of the response are
+// written normally.
+func (brw bodyResponseWriter) Write(b []byte) (int, error) {
+	return brw.body.Write(b) //nolint:wrapcheck
 }
 
 // ErrorMessageMiddleware returns a middleware that logs the error messages, and
@@ -69,11 +74,12 @@ func (rw responseWriterWithBody) Write(b []byte) (int, error) {
 func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// change the writer to capture the response body while the handler runs
-		rwb := &responseWriterWithBody{
+		rw := ctx.Writer
+		brw := &bodyResponseWriter{
 			body:           bytes.NewBufferString(""),
-			ResponseWriter: ctx.Writer,
+			ResponseWriter: rw,
 		}
-		ctx.Writer = rwb
+		ctx.Writer = brw
 
 		// ↑ before the handler
 
@@ -81,8 +87,31 @@ func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 
 		// ↓ after the handler
 
+		ctx.Writer = rw
+		// NB: so far, the actual response body is still empty
+
 		if ctx.Writer.Status() >= http.StatusBadRequest { // 400+
-			slog.InfoContext(ctx, "data API failure: "+rwb.body.String())
+			// error => parse the body, modify it, and write it to the actual response
+			var jsonBody gin.H
+			if err := json.Unmarshal(brw.body.Bytes(), &jsonBody); err != nil {
+				slog.InfoContext(ctx, "data API failure (not a JSON): "+brw.body.String())
+				ctx.Writer.Write(brw.body.Bytes()) //nolint:errcheck,gosec
+				return
+			}
+
+			// general error message rewrites to hide the default PostgREST ones
+			errorMessage, _ := jsonBody["message"].(string)
+			if ctx.Request.Method == http.MethodPatch &&
+				strings.HasPrefix(errorMessage, "JSON object requested") {
+				errorMessage = "User cannot update this resource"
+			}
+
+			jsonBody["message"] = errorMessage
+			ctx.JSON(ctx.Writer.Status(), jsonBody)
+			slog.InfoContext(ctx, "data API failure: "+errorMessage)
+		} else {
+			// no error => just write the body to the actual response
+			ctx.Writer.Write(brw.body.Bytes()) //nolint:errcheck,gosec
 		}
 	}
 }
