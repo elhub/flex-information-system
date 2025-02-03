@@ -80,14 +80,18 @@ internal fun Pipeline.addJob(job: Job): BuildType {
 fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.Builder.() -> Unit) {
     subProject(projectName).subProject {
         id("CustomProject")
-        name = "Custom Project"
         pipeline {
             sequential {
-                val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
-                    sonarProjectSources = "backend"
-                    workingDir = "backend"
-                }
-                goSonarScan(goSonarSettings)
+                customJob(
+                    AgentScope.LinuxAgentContext,
+                    block = {
+                        id("SonarScan")
+                        name = "SonarScan"
+                        steps {
+                            goSonarScan(settings)
+                        }
+                    }
+                )
 //                if (projectName == "backend") {
 //                    goSonarScan(settings)
 //                } else if (projectName == "frontend") {
