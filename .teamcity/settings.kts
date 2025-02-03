@@ -80,13 +80,12 @@ internal fun Pipeline.addJob(job: Job): BuildType {
 fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.Builder.() -> Unit) {
     subProject(projectName).subProject {
         id("CustomProject")
+        name = "SonarScan"
         pipeline {
             sequential {
                 customJob(
                     AgentScope.LinuxAgentContext,
                     block = {
-                        id("SonarScan")
-                        name = "SonarScan"
                         steps {
                             goSonarScan(settings)
                         }
