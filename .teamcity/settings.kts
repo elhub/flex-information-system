@@ -83,14 +83,11 @@ fun ElhubProject.customProject(projectName: String, settings: SonarScanSettings.
         name = "SonarScan"
         pipeline {
             sequential {
-                customJob(
-                    AgentScope.LinuxAgentContext,
-                    block = {
-                        steps {
-                            goSonarScan(settings)
-                        }
-                    }
-                )
+                val goSonarSettings: SonarScanSettings.Builder.() -> Unit = {
+                    sonarProjectSources = "backend"
+                    workingDir = "backend"
+                }
+                goSonarScan(goSonarSettings)
 //                if (projectName == "backend") {
 //                    goSonarScan(settings)
 //                } else if (projectName == "frontend") {
