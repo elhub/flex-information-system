@@ -84,6 +84,8 @@ fun ElhubProject.customSubProject(projectName: String) {
 
     val subProject = subProject(projectName)
     subProject.subProject {
+        id("SonarScan2")
+        name = "SonarScan2"
         pipeline {
             sequential {
                 val jobSettings: SonarScanSettings.Builder.() -> Unit = {
