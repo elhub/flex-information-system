@@ -14,6 +14,7 @@ import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import { DateTimeInput } from "../datetime";
+import { Toolbar } from "../Toolbar";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -98,7 +99,11 @@ export const ServiceProviderProductApplicationInput = () => {
   });
 
   return (
-    <SimpleForm record={record} maxWidth={1280}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      toolbar={<Toolbar saveAlwaysEnabled />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
