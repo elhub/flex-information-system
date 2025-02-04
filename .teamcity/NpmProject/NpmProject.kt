@@ -21,9 +21,9 @@ object Project : TeamcityProject({
         pipeline {
             sequential {
                 npmVerify {
+                    workingDir = "frontend"
                     sonarScanSettings = {
                         sonarProjectSources = "frontend"
-                        workingDir = "frontend"
                         sonarProjectTests = null // no tests in npm
                     }
                 }
