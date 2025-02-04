@@ -12,7 +12,7 @@ import {
 import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
 import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DateTimeInput } from "../datetime";
 
 // keep only the fields that map to the UI
@@ -40,13 +40,23 @@ const ProductTypesInput = (props: any) => {
 
   const systemOperatorID = formContext.watch("system_operator_id");
 
+  // The useEffect block below will be executed once when the page is loaded,
+  // then only when the SO changes. We use a flag here so that the first run of
+  // the block has no effect, so this component can be used in an Edit page
+  // without the list being emptied from the existing value.
+  const [freshPage, setFreshPage] = useState(true);
+
   // reset product types when system operator changes
+  //   This reset is needed because the former list may contain product types
+  //   the new SO is not asking for, which will hide them from the UI but keep
+  //   them in the form value, thus potentially leading to an API error that is
+  //   hard to fix in the UI.
   useEffect(() => {
-    // This is needed because the former list may contain product types the new
-    // SO is not asking for, which will hide them from the UI but keep them in
-    // the form value, thus potentially leading to an API error that is hard to
-    // fix in the UI.
-    formContext.setValue("product_type_ids", []);
+    if (freshPage) {
+      setFreshPage(false);
+    } else {
+      formContext.setValue("product_type_ids", []);
+    }
   }, [systemOperatorID]);
 
   const { data: allProductTypes } = useGetList("product_type");
