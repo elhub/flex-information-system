@@ -1,8 +1,4 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
-import jetbrains.buildServer.configs.kotlin.Id
-import jetbrains.buildServer.configs.kotlin.Project
-import jetbrains.buildServer.configs.kotlin.sequential
-import jetbrains.buildServer.configs.kotlin.toId
 import jetbrains.buildServer.configs.kotlin.ui.id
 import no.elhub.devxp.build.configuration.pipeline.Pipeline
 import no.elhub.devxp.build.configuration.pipeline.constants.ProjectType
@@ -11,13 +7,8 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.SonarScan
 import no.elhub.devxp.build.configuration.pipeline.jobs.settings.SonarScanSettings
 import no.elhub.devxp.build.configuration.pipeline.utils.Stage
 
-import no.elhub.devxp.build.configuration.pipeline.ElhubProject
 import no.elhub.devxp.build.configuration.pipeline.ElhubProject.Companion.elhubProject
-import no.elhub.devxp.build.configuration.pipeline.constants.AgentScope
 import no.elhub.devxp.build.configuration.pipeline.constants.Group
-import no.elhub.devxp.build.configuration.pipeline.context.ElhubProjectContext
-import no.elhub.devxp.build.configuration.pipeline.extensions.subProject
-import no.elhub.devxp.build.configuration.pipeline.jobs.customJob
 
 elhubProject(Group.DEVXP, "flex-information-system") {
 
@@ -66,20 +57,20 @@ elhubProject(Group.DEVXP, "flex-information-system") {
 
 fun Pipeline.goSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
     val settings = SonarScanSettings.Builder(projectContext, ProjectType.GO, block).build()
-    return sonarScan(SonarScan(settings))
+    return sonarScan(SonarScan(settings), "Sandbox_FlexInformationSystemSandbox_SonarScan_go", "Sonar Scan GO Backend")
 }
 
 internal fun Pipeline.npmSonarScan(block: SonarScanSettings.Builder.() -> Unit = {}): BuildType {
     val settings = SonarScanSettings.Builder(projectContext, ProjectType.NPM, block).build()
     val sonarScan = SonarScan(settings)
-    return sonarScan(SonarScan(settings))
+    return sonarScan(sonarScan,"Sandbox_FlexInformationSystemSandbox_SonarScan_npm", "Sonar Scan NPM Frontend")
 }
 
-internal fun Pipeline.sonarScan(sonarScan: SonarScan): BuildType {
-    return addJob(sonarScan)
+internal fun Pipeline.sonarScan(sonarScan: SonarScan, buildTypeId: String, buildTypeName: String): BuildType {
+    return addJob(sonarScan, buildTypeId, buildTypeName)
 }
 
-internal fun Pipeline.addJob(job: Job): BuildType {
+internal fun Pipeline.addJob(job: Job, buildTypeId: String, buildTypeName: String): BuildType {
     val buildType = job.build(vcsSettings, teamcityProject)
 
     stages = stages.plus(Stage.Single(buildType))
@@ -87,7 +78,10 @@ internal fun Pipeline.addJob(job: Job): BuildType {
     // after adding the built job we can add the validation requirements
     validations = validations.plus(job.validations)
 
-    return buildType
+    return buildType.apply {
+        id(buildTypeId)
+        name = buildTypeName
+    }
 }
 
 //fun ElhubProject.customSubProject(projectName: String) {
