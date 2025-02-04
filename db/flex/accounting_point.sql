@@ -11,10 +11,6 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     system_operator_party_type text GENERATED ALWAYS AS (
         'system_operator'
     ) STORED,
-    end_user_party_id bigint NULL,
-    end_user_party_type text GENERATED ALWAYS AS (
-        'end_user'
-    ) STORED,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -24,9 +20,6 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     ) REFERENCES party (id, type),
     CONSTRAINT fk_accounting_point_system_operator FOREIGN KEY (
         system_operator_id, system_operator_party_type
-    ) REFERENCES party (id, type),
-    CONSTRAINT fk_accounting_point_end_user FOREIGN KEY (
-        end_user_party_id, end_user_party_type
     ) REFERENCES party (id, type),
     CONSTRAINT check_accounting_point_business_id_length CHECK (
         (char_length(business_id) = 18)

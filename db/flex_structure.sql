@@ -16,6 +16,7 @@ and support the processes in the value chain.$$;
 \i flex/grid_node.sql
 \i flex/grid_edge.sql
 \i flex/accounting_point.sql
+\i flex/accounting_point_end_user.sql
 \i flex/controllable_unit.sql
 \i flex/controllable_unit_service_provider.sql
 \i flex/notification.sql
@@ -32,6 +33,7 @@ and support the processes in the value chain.$$;
 -- history and audit
 
 \i flex/accounting_point_history_audit.sql
+\i flex/accounting_point_end_user_history_audit.sql
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
 \i flex/notification_history_audit.sql
@@ -66,3 +68,13 @@ and support the processes in the value chain.$$;
 \i flex/service_providing_group_product_application_rls.sql
 \i flex/system_operator_product_type_rls.sql
 \i flex/technical_resource_rls.sql
+
+CREATE OR REPLACE TRIGGER accounting_point_end_user_upsert_timeline
+INSTEAD OF INSERT OR UPDATE
+ON flex.accounting_point_end_user
+FOR EACH ROW
+EXECUTE PROCEDURE flex.timeline_no_overlap(
+    'flex.accounting_point_end_user',
+    'accounting_point_id',
+    'end_user_id'
+);
