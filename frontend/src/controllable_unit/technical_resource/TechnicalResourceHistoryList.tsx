@@ -12,7 +12,7 @@ import { IdentityField } from "../../IdentityField";
 
 export const TechnicalResourceHistoryList = () => {
   const params = useParams();
-  var filter: any = {
+  let filter: any = {
     controllable_unit_id: params.controllable_unit_id,
   };
 

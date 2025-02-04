@@ -153,7 +153,7 @@ export function authProvider(): AuthProvider {
     },
     getIdentity: getIdentity,
     checkAuth: async () => {
-      var token = localStorage.getItem("token");
+      let token = localStorage.getItem("token");
       if (!token) {
         // we are not logged in so we are going to try to get a token from the session
         const { status, json } = await fetchUtils.fetchJson(

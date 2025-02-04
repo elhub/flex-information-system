@@ -14,7 +14,7 @@ import { IdentityField } from "../../IdentityField";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const params = useParams();
-  var filter: any = {
+  let filter: any = {
     service_providing_group_id: params.service_providing_group_id,
   };
 
