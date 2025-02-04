@@ -161,7 +161,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	slog.DebugContext(ctx, "Creating auth API")
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
-	slog.Debug("Creating data API")
+	slog.DebugContext(ctx, "Creating data API")
 	dataAPI, err := data.NewAPI(postgRESTUpstream, dbPool, requestDetailsContextKey)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
@@ -262,6 +262,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// data API endpoints
 	// by default, just act as a reverse proxy for PostgREST
 	dataRouter := router.Group("/api/v0")
+	dataRouter.Use(dataAPI.ErrorMessageMiddleware())
 	dataRouter.Match(
 		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		"/*url",
