@@ -5,6 +5,7 @@ import (
 	"errors"
 	authModels "flex/auth/models"
 	"flex/event/models"
+	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
 	"fmt"
@@ -12,6 +13,8 @@ import (
 )
 
 var errNilArguments = errors.New("arguments must not be nil")
+
+var tracer = trace.Tracer("flex/event/worker") //nolint:gochecknoglobals
 
 // Worker holds a connection to a replication slot dedicated to event handling.
 type Worker struct {
@@ -39,22 +42,25 @@ func NewWorker(
 func (eventWorker *Worker) Start(ctx context.Context) error {
 	// give a role to the worker so that the database methods can be used
 	//nolint:revive,staticcheck
-	workerCtx := context.WithValue(
+	ctx = context.WithValue(
 		ctx, eventWorker.ctxKey, NewWorkerUserDetails(),
 	)
 
 	defer slog.InfoContext(ctx, "end of event worker")
 	for {
 		select {
-		case <-workerCtx.Done(): // if the server closes, the worker should stop too
+		case <-ctx.Done(): // if the server closes, the worker should stop too
 			return errEndContext
 		default:
-			msg, err := eventWorker.replConn.ReceiveMessage(workerCtx)
+			ctx, span := tracer.Start(ctx, "eventWorker.handleMessage", trace.WithNewRoot())
+			defer span.End()
+
+			msg, err := eventWorker.replConn.ReceiveMessage(ctx)
 			if err != nil {
 				slog.ErrorContext(ctx, "could not receive message from replication connection", "error", err)
 				return err //nolint:wrapcheck
 			}
-			if err = eventWorker.handleMessage(workerCtx, msg); err != nil {
+			if err = eventWorker.handleMessage(ctx, msg); err != nil {
 				slog.ErrorContext(ctx, "could not handle message in worker", "error", err)
 				return err
 			}

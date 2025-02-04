@@ -24,6 +24,12 @@ func Tracer(name string) trace.Tracer {
 	return otel.Tracer(name)
 }
 
+// WithNewRoot specifies that the Span should be treated as a root Span.
+// Any existing parent span context will be ignored when defining the Span's trace identifiers.
+//
+//nolint:gochecknoglobals
+var WithNewRoot = trace.WithNewRoot
+
 // Middleware returns a gin middleware that adds trace/span context to the request context.
 //
 // This is a barebones implementation of
