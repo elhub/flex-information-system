@@ -174,7 +174,6 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 				ErrorDescription: "bad token exchange request: " + err.Error(),
 			})
 		} else {
-			slog.InfoContext(ctx, "token exchange request")
 			auth.tokenExchangeHandler(ctx, tePayload)
 		}
 	case grantTypeJWTBearer:
