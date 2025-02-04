@@ -4,7 +4,6 @@ import { Form, useRedirect } from "react-admin";
 import { authURL } from "./httpConfig";
 
 import Box from "@mui/material/Box";
-import logo from "/euroflex_logo.png";
 
 export const LoginPage = () => {
   const redirect = useRedirect();
@@ -35,7 +34,11 @@ export const LoginPage = () => {
               justifyContent: "center",
             }}
           >
-            <img src={logo} style={{ width: 150 }} />
+            <img
+              alt="EuroFlex logo"
+              src="/euroflex_logo.png"
+              style={{ width: 150 }}
+            />
           </Box>
           <Box
             sx={{
