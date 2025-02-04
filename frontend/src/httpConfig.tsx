@@ -35,17 +35,14 @@ export async function httpClient(url: string, options: any = {}) {
   // The solution we use here is to intercept the network call and change the
   // URL before it is sent. We find an occurrence of `=in.` meaning that we
   // are doing this kind of "contains" query, and we add the parentheses around
-  // the value in URL-encoded format, i.e., `%28` and `%29` for `(` and `)`.
+  // the values.
+  const u = new URL(url);
 
-  const finalUrl = url.replace(/=in\.((?!%28).*?)(&.*)?$/, "=in.%28$1%29$2");
-
-  // NB: ?! performs a negative lookahead, i.e., if a parenthesis is already
-  //     there, we must not do anything.
-  // NB: this only works for one occurrence of `=in.`. If we are in a situation
-  //     with several "contains" filters, we will need to put this line in a
-  //     loop or something similar.
-
-  // ---------------------------------------------------------------------------
+  u.searchParams.forEach((value, key) => {
+    if (value.startsWith("in") && !value.startsWith("in.(")) {
+      u.searchParams.set(key, value.replace("in.", "in.(") + ")");
+    }
+  });
 
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
@@ -54,5 +51,5 @@ export async function httpClient(url: string, options: any = {}) {
   if (token) {
     options.headers.set("Authorization", `Bearer ${token}`);
   }
-  return fetchUtils.fetchJson(finalUrl, options);
+  return fetchUtils.fetchJson(u.href, options);
 }
