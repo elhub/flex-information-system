@@ -22,6 +22,7 @@ elhubProject(Group.DEVXP, "flex-information-system") {
             val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                 sonarProjectSources = "frontend"
                 workingDir = "frontend"
+                sonarProjectTests = null // no tests in npm
             }
 
             goSonarScan(goSonarSettings) // triggers backend, but cannot run sonar scan on frontend due to id conflict (SonarScan)
