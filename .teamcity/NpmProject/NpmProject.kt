@@ -26,11 +26,6 @@ object Project : TeamcityProject({
     ElhubProject(projectContext, this).apply {
         pipeline {
             sequential {
-                npmVerify {
-                    sonarScanSettings {
-                        sonarProjectTests = null // no tests in frontend
-                    }
-                }
                 val npmSonarSettings: SonarScanSettings.Builder.() -> Unit = {
                     sonarProjectSources = "frontend"
                     workingDir = "frontend"
