@@ -101,7 +101,7 @@ No policies.
 | Policy key | Policy                                                                                              | Status |
 |------------|-----------------------------------------------------------------------------------------------------|--------|
 | CU-EU001   | Read CU that are connected to AP where they are EU. Only for the contract period.                   | DONE   |
-| CU-EU002   | Read history on CU that are connected to AP where they are EU. Only history on the contract period. | TODO   |
+| CU-EU002   | Read history on CU that are connected to AP where they are EU. Only history on the contract period. | DONE   |
 
 #### Energy Supplier
 
@@ -115,7 +115,7 @@ No policies.
 | Policy key | Policy                          | Status |
 |------------|---------------------------------|--------|
 | CU-FISO001 | Read, create and update all CU. | DONE   |
-| CU-FISO002 | Read all CU history.            | TODO   |
+| CU-FISO002 | Read all CU history.            | DONE   |
 
 #### Market Operator
 

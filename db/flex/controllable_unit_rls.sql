@@ -107,15 +107,61 @@ USING (
 ALTER TABLE IF EXISTS controllable_unit_history
 ENABLE ROW LEVEL SECURITY;
 
--- RLS: CU-COM001
-GRANT SELECT ON controllable_unit_history
-TO flex_common;
-CREATE POLICY "CU_COM001"
+-- RLS: CU-EU002
+GRANT SELECT ON controllable_unit_history TO flex_end_user;
+CREATE POLICY "CU_EU002"
 ON controllable_unit_history
 FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM controllable_unit
-    WHERE controllable_unit_history.id = controllable_unit.id -- noqa
-));
+TO flex_end_user
+USING (
+    EXISTS (
+        SELECT 1
+            FROM accounting_point AS ap -- noqa
+            INNER JOIN accounting_point_end_user AS apeu
+                ON apeu.accounting_point_id = ap.id
+        WHERE ap.business_id = controllable_unit_history.accounting_point_id -- noqa
+            -- this version of the CU in the history was in effect
+            -- when the current party was the end user of its AP
+            AND apeu.end_user_id = current_party()
+            AND apeu.valid_time_range && controllable_unit_history.record_time_range -- noqa
+    )
+);
+
+-- RLS: CU-FISO002
+GRANT SELECT ON controllable_unit_history
+TO flex_flexibility_information_system_operator;
+CREATE POLICY "CU_FISO002"
+ON controllable_unit_history
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
+
+-- RLS: CU-SO003
+GRANT SELECT ON controllable_unit_history
+TO flex_system_operator;
+CREATE POLICY "CU_SO003"
+ON controllable_unit_history
+FOR SELECT
+TO flex_system_operator
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit
+        WHERE controllable_unit_history.id = controllable_unit.id -- noqa
+    )
+);
+
+-- RLS: CU-SP004
+GRANT SELECT ON controllable_unit_history
+TO flex_service_provider;
+CREATE POLICY "CU_SP004"
+ON controllable_unit_history
+FOR SELECT
+TO flex_service_provider
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit
+        WHERE controllable_unit_history.id = controllable_unit.id -- noqa
+    )
+);
