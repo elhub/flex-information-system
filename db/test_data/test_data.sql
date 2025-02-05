@@ -146,34 +146,49 @@ $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 -- Add accounting point mapping
 CREATE OR REPLACE FUNCTION add_accounting_points(
     accounting_point_prefix text,
+    eu_id bigint,
     so_id bigint
 )
 RETURNS void
 SECURITY DEFINER VOLATILE
-LANGUAGE sql
+LANGUAGE plpgsql
 AS $$
-
-  with gsrn as (
-      -- This generates a series of GSRNs with the given prefix
-      -- By padding the prefix with zeros and nines to 17 digits total we can generate a series
-      -- that "fills" the whole prefix.
-      -- The the prefix is 1234 we generate GSRNs from 12340000000000000 to 12349999999999999.
-      -- The check digit is then added to make the GSRN comlete.
-      select generate_series(
+DECLARE
+  ap_id bigint;
+  partial_gsrn text;
+BEGIN
+  FOR partial_gsrn IN
+    -- This generates a series of GSRNs with the given prefix.
+    -- By padding the prefix with zeros and nines to 17 digits total we can
+    -- generate a series that "fills" the whole prefix.
+    -- If the prefix is 1234 we generate GSRNs
+    -- from 12340000000000000 to 12349999999999999.
+    -- The check digit is then added to make the GSRN complete.
+      SELECT generate_series(
         rpad(accounting_point_prefix,17,'0')::bigint,
         rpad(accounting_point_prefix,17,'9')::bigint,
         1 --step
-      ) as partial
-  )
-  insert into flex.accounting_point (
-    business_id,
-    system_operator_id
-  )
-  select
-    add_check_digit(gsrn.partial::text) as business_id,
-    so_id as system_operator_id
-  from gsrn
+      )
+  LOOP
+    INSERT INTO flex.accounting_point (
+      business_id,
+      system_operator_id
+    ) VALUES (
+      add_check_digit(partial_gsrn::text),
+      so_id
+    ) RETURNING id INTO ap_id;
 
+    INSERT INTO flex.accounting_point_end_user (
+      accounting_point_id,
+      end_user_id,
+      valid_time_range
+    ) VALUES (
+      ap_id,
+      eu_id,
+      tstzrange(current_timestamp, null, '[)')
+    );
+  END LOOP;
+END
 $$;
 
 -- Add a test account with parties and controllable units
@@ -195,6 +210,7 @@ DECLARE
   entity_id bigint;
   sp_id bigint;
   common_sp_id bigint;
+  eu_id bigint;
 
   spg_id bigint;
   spggp_id bigint;
@@ -230,7 +246,7 @@ BEGIN
     'gln'
   );
 
-  PERFORM add_party_for_entity(
+  eu_id := add_party_for_entity(
     entity_id,
     entity_first_name || ' EU',
    'end_user',
@@ -289,7 +305,7 @@ BEGIN
   end if;
 
   -- Add accounting points
-  PERFORM add_accounting_points(accounting_point_prefix, so_id);
+  PERFORM add_accounting_points(accounting_point_prefix, eu_id, so_id);
 
   -- Product type
   INSERT INTO flex.system_operator_product_type (
