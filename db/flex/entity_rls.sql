@@ -15,13 +15,18 @@ TO flex_entity
 USING (id = flex.current_entity());
 
 -- RLS: ENT-COM002
-CREATE POLICY "ENT_COM002" ON entity
+-- RLS: ENT-COM003
+CREATE POLICY "ENT_COM002_COM003" ON entity
 FOR SELECT
 TO flex_common
 USING (EXISTS (
     SELECT 1
-    FROM party_membership pm -- noqa
+    FROM party_membership AS pm
     WHERE pm.entity_id = entity.id AND pm.party_id = flex.current_party() -- noqa
+    UNION ALL
+    SELECT 1
+    FROM party AS p
+    WHERE p.id = flex.current_party() AND p.entity_id = entity.id -- noqa
 ));
 
 -- RLS: ENT-FISO001

@@ -565,6 +565,16 @@ resources:
           - uuid
           - eic_x
         example: gln
+      entity_id:
+        description: >-
+          Reference to the entity that is the parent of the party.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: entity
+          field: id
+        example: 30
       name:
         description: Name of the party. Maximum 128 characters.
         format: text

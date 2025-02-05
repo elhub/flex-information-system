@@ -2,6 +2,7 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
 )
+from flex import AuthenticatedClient
 from flex.models import (
     PartyResponse,
     PartyHistoryResponse,
@@ -73,7 +74,12 @@ def sts():
 
 # RLS: PTY-FISO001
 def test_party_fiso(sts):
+    client_entity = sts.get_client(TestEntity.TEST)
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    ent_id = sts.get_userinfo(
+        cast(AuthenticatedClient, client_entity),
+    )["entity_id"]
 
     # FISO can do everything on parties
 
@@ -89,6 +95,7 @@ def test_party_fiso(sts):
             name="New End User",
             role="flex_end_user",
             type="end_user",
+            entity_id=ent_id,
         ),
     )
     assert isinstance(p, PartyResponse)
@@ -104,6 +111,7 @@ def test_party_fiso(sts):
             business_id_type=PartyBusinessIdType.EIC_X,
             role="flex_service_provider",
             type="service_provider",
+            entity_id=ent_id,
         ),
     )
     assert isinstance(p, PartyResponse)
@@ -117,6 +125,7 @@ def test_party_fiso(sts):
             business_id_type=PartyBusinessIdType.GLN,
             role="flex_flexibility_information_system_operator",
             type="flexibility_information_system_operator",
+            entity_id=ent_id,
         ),
     )
     assert isinstance(p, PartyResponse)

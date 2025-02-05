@@ -139,6 +139,7 @@ type Party struct {
 	ID             int
 	BusinessID     string
 	BusinessIDType string
+	EntityID       int
 	Name           string
 	Role           string
 	Type           string
@@ -152,6 +153,7 @@ type PartyHistory struct {
 	ID             int
 	BusinessID     string
 	BusinessIDType string
+	EntityID       int
 	Name           string
 	Role           string
 	Type           string

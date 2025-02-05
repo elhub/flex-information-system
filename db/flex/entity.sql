@@ -4,9 +4,9 @@ CREATE TABLE IF NOT EXISTS entity (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
     type text NOT NULL,
-    business_id text NOT NULL,
+    business_id text NOT NULL UNIQUE,
     business_id_type text NOT NULL REFERENCES business_id_type (name),
-    client_id text NOT NULL,
+    client_id text NOT NULL UNIQUE,
     client_secret text NULL,
     client_public_key text NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(

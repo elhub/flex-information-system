@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS party (
     business_id text UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()),
     business_id_type text NOT NULL
     REFERENCES business_id_type (name) DEFAULT 'uuid',
+    entity_id bigint NOT NULL
+    REFERENCES entity (id),
     name text NOT NULL,
     type text NOT NULL,
     role name NOT NULL,
@@ -55,6 +57,9 @@ CREATE TABLE IF NOT EXISTS party (
     ),
     CONSTRAINT uk_party_id_type UNIQUE (id, type)
 );
+
+-- only one end_user party per entity
+CREATE INDEX uk_entity_end_user ON party (entity_id) WHERE (type = 'end_user');
 
 DROP TRIGGER IF EXISTS party_role_exists ON party;
 CREATE CONSTRAINT TRIGGER party_role_exists

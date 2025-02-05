@@ -922,6 +922,12 @@
                                 "type": "string",
                                 "example": "1337099000000"
                             },
+                            "entity_id": {
+                                "description": "Reference to the entity that is the parent of the party.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 30
+                            },
                             "role": {
                                 "description": "The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.",
                                 "format": "text",
@@ -939,6 +945,7 @@
                     {
                         "required": [
                             "business_id_type",
+                            "entity_id",
                             "name",
                             "role",
                             "type",
@@ -6581,6 +6588,16 @@
                     },
                     {
                         "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the entity that is the parent of the party.",
+                        "name": "entity_id"
+                    },
+                    {
+                        "in": "query",
                         "name": "name",
                         "schema": {
                             "type": "string"
@@ -6895,7 +6912,16 @@
                                 }
                             }
                         },
-                        "description": "OK"
+                        "description": "OK",
+                        "links": {
+                            "entity_id": {
+                                "operationId": "read_entity",
+                                "parameters": {
+                                    "path.id": "$response.body#/entity_id"
+                                },
+                                "description": "The `entity_id` value returned in the response can be used as the `id` parameter in `GET /entity/{id}`."
+                            }
+                        }
                     },
                     "400": {
                         "content": {
