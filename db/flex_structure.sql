@@ -32,8 +32,8 @@ and support the processes in the value chain.$$;
 
 -- history and audit
 
-\i flex/accounting_point_history_audit.sql
 \i flex/accounting_point_end_user_history_audit.sql
+\i flex/accounting_point_history_audit.sql
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
 \i flex/notification_history_audit.sql

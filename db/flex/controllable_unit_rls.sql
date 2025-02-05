@@ -103,3 +103,19 @@ USING (
             AND apeu.valid_time_range @> current_timestamp
     )
 );
+
+ALTER TABLE IF EXISTS controllable_unit_history
+ENABLE ROW LEVEL SECURITY;
+
+-- RLS: CU-COM001
+GRANT SELECT ON controllable_unit_history
+TO flex_common;
+CREATE POLICY "CU_COM001"
+ON controllable_unit_history
+FOR SELECT
+TO flex_common
+USING (EXISTS (
+    SELECT 1
+    FROM controllable_unit
+    WHERE controllable_unit_history.id = controllable_unit.id -- noqa
+));

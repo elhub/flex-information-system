@@ -72,3 +72,19 @@ USING (
             AND controllable_unit_service_provider.valid_time_range && apeu.valid_time_range -- noqa
     )
 );
+
+ALTER TABLE IF EXISTS controllable_unit_service_provider_history
+ENABLE ROW LEVEL SECURITY;
+
+-- RLS: CUSP-COM001
+GRANT SELECT ON controllable_unit_service_provider_history
+TO flex_common;
+CREATE POLICY "CUSP_COM001"
+ON controllable_unit_service_provider_history
+FOR SELECT
+TO flex_common
+USING (EXISTS (
+    SELECT 1
+    FROM controllable_unit_service_provider
+    WHERE controllable_unit_service_provider_history.id = controllable_unit_service_provider.id -- noqa
+));

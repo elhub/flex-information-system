@@ -28,22 +28,6 @@ controllable_unit_service_provider_replaced_by
 BEFORE INSERT ON controllable_unit_service_provider_history
 FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
 
-ALTER TABLE IF EXISTS controllable_unit_service_provider_history
-ENABLE ROW LEVEL SECURITY;
-
--- RLS: CUSP-COM001
-GRANT SELECT ON controllable_unit_service_provider_history
-TO flex_common;
-CREATE POLICY "CUSP_COM001"
-ON controllable_unit_service_provider_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM controllable_unit_service_provider
-    WHERE controllable_unit_service_provider_history.id = controllable_unit_service_provider.id -- noqa
-));
-
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_recorded_by
 BEFORE INSERT OR UPDATE ON controllable_unit_service_provider

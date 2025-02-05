@@ -264,14 +264,15 @@ with open(output_file_backend_schema, "w") as backend_schema_f:
                 if "history" in resource:
                     print(history_statements(resource["id"]), file=f)
                     print(file=f)
-                    print(
-                        history_rls_statements(
-                            resource["id"],
-                            resource["acronym"],
-                        ),
-                        file=f,
-                    )
-                    space_needed = True
+                    if resource.get("history_rls"):
+                        print(
+                            history_rls_statements(
+                                resource["id"],
+                                resource["acronym"],
+                            ),
+                            file=f,
+                        )
+                        space_needed = True
                 if resource.get("audit"):
                     if space_needed:
                         print(file=f)
