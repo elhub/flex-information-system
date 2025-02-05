@@ -68,13 +68,3 @@ and support the processes in the value chain.$$;
 \i flex/service_providing_group_product_application_rls.sql
 \i flex/system_operator_product_type_rls.sql
 \i flex/technical_resource_rls.sql
-
-CREATE OR REPLACE TRIGGER accounting_point_end_user_upsert_timeline
-INSTEAD OF INSERT OR UPDATE
-ON flex.accounting_point_end_user
-FOR EACH ROW
-EXECUTE PROCEDURE flex.timeline_no_overlap(
-    'flex.accounting_point_end_user',
-    'accounting_point_id',
-    'end_user_id'
-);
