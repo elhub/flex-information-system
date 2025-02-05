@@ -18,6 +18,7 @@ digraph flex {
     service_providing_group_grid_prequalification -> party     [label=impacted_system_operator_id]
     entity    [label="{entity}|{Entity - Natural or\nlegal person}" shape=record style=solid]
     party    [label="{party}|{The body that\ninteracts with the\nFlexibility\nInformation System}|{🕰️}" shape=record style=solid]
+    party -> entity     [label=entity_id]
     party_membership    [label="{party_membership}|{The relation between\na party and entity.}|{🕰️}" shape=record style=solid]
     party_membership -> party     [label=party_id]
     party_membership -> entity     [label=entity_id]

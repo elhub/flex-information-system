@@ -1,6 +1,7 @@
 NAME,DESCRIPTION
 email,Email
 pid,Personal ID
+org,Oranisation Number
 gsrn,Global Service Relation Number
 gln,Global Location Number
 uuid,Universally Unique IDentifier

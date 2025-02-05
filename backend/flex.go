@@ -241,8 +241,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	slogginConfig := sloggin.Config{ //nolint:exhaustruct
 		// We are providing our own trace.SlogHandler, so we don't need to log trace IDs here.
-		WithSpanID:  false,
-		WithTraceID: false,
+		WithSpanID:        false,
+		WithTraceID:       false,
+		WithRequestBody:   slogLevel == slog.LevelDebug,
+		WithResponseBody:  slogLevel == slog.LevelDebug,
+		WithRequestHeader: slogLevel == slog.LevelDebug,
 	}
 	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
 

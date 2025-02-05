@@ -12,6 +12,7 @@ party;id;;R;R;R;R;R;R;R;R;R;
 party;name;;R;R;R;RCU;R;R;R;R;R;
 party;business_id;;R;R;R;RC;R;R;R;R;R;
 party;business_id_type;;R;R;R;RC;R;R;R;R;R;
+party;entity_id;;R;R;R;RC;R;R;R;R;R;
 party;type;;R;R;R;RC;R;R;R;R;R;
 party;role;;R;R;R;RC;R;R;R;R;R;
 party;status;;R;R;R;RU;R;R;R;R;R;

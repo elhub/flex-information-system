@@ -29,7 +29,8 @@ $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 
 -- Add a party for an entity based on name and type
 CREATE OR REPLACE FUNCTION add_party_for_entity(
-    entity_id bigint,
+    parent_entity_id bigint,
+    member_entity_id bigint,
     party_name text,
     party_type text,
     party_business_id text,
@@ -41,19 +42,19 @@ DECLARE
   party_id bigint;
 BEGIN
   IF party_business_id IS NULL THEN
-      INSERT INTO flex.party (name, type, role, status)
-      VALUES (party_name, party_type, 'flex_' || party_type, 'active')
+      INSERT INTO flex.party (name, type, role, status, entity_id)
+      VALUES (party_name, party_type, 'flex_' || party_type, 'active', parent_entity_id)
       RETURNING id INTO party_id;
   ELSE
-      INSERT INTO flex.party (name, type, role, status, business_id, business_id_type)
+      INSERT INTO flex.party (name, type, role, status, business_id, business_id_type, entity_id)
       VALUES (
           party_name, party_type, 'flex_' || party_type, 'active',
-          party_business_id, party_business_id_type
+          party_business_id, party_business_id_type, parent_entity_id
       )
       RETURNING id INTO party_id;
   END IF;
 
-  INSERT INTO flex.party_membership (entity_id, party_id) VALUES (entity_id, party_id);
+  INSERT INTO flex.party_membership (entity_id, party_id) VALUES (member_entity_id, party_id);
 
   RETURN party_id;
 END;
@@ -179,20 +180,23 @@ $$;
 -- Add a test account with parties and controllable units
 DROP FUNCTION IF EXISTS add_test_account;
 CREATE OR REPLACE FUNCTION add_test_account(
-    in_business_id text,
-    email text,
-    accounting_point_prefix text,
-    party_business_id_prefix text,
-    add_fiso boolean,
-    add_data boolean,
-    common_party_first_name text
+    in_user_seq_id bigint,
+    in_email text,
+    in_add_fiso boolean,
+    in_add_data boolean,
+    in_common_party_first_name text
 ) RETURNS void
 AS $$
 DECLARE
-  entity_name text := email_to_name(email);
+  user_seq_id_text text := lpad(in_user_seq_id::text, 4, '0');
+  entity_name text := email_to_name(in_email);
+  entity_name_org text := entity_name || ' AS';
   entity_first_name text := split_part(entity_name, ' ', 1);
+  entity_org_business_id text := '13370' || user_seq_id_text;
+  entity_person_business_id text := '1337000' || user_seq_id_text;
 
-  entity_id bigint;
+  entity_id_org bigint;
+  entity_id_person bigint;
   sp_id bigint;
   common_sp_id bigint;
 
@@ -204,26 +208,54 @@ DECLARE
   so_id bigint;
 
   asset_type text;
+  accounting_point_prefix text := '1337000000' || user_seq_id_text;
   accounting_point_seq bigint := rpad(accounting_point_prefix, 17, '0')::bigint;
+
+  party_business_id_prefix text := '1337' || user_seq_id_text;
   party_business_id_seq bigint :=
       rpad(party_business_id_prefix, 12, '0')::bigint;
 BEGIN
   -- return early if the entity buiness id is already in use
-  PERFORM id FROM flex.entity e WHERE e.business_id = in_business_id;
+  PERFORM id FROM flex.entity e WHERE e.business_id = entity_org_business_id;
   IF FOUND THEN
     RETURN;
   END IF;
 
-  -- add entity
+  -- add entities
 
   INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
-  VALUES (entity_name, 'person', in_business_id, 'pid', email)
-  RETURNING id INTO entity_id;
+  VALUES (entity_name, 'person', entity_person_business_id, 'pid', in_email)
+  RETURNING id INTO entity_id_person;
+
+  INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
+  VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org', public.uuid_generate_v4())
+  RETURNING id INTO entity_id_org;
+
+  -- end user parties
+
+  PERFORM add_party_for_entity(
+    entity_id_org,
+    entity_id_org,
+    entity_first_name || ' AS EU',
+   'end_user',
+   null,
+   null
+  );
+
+  PERFORM add_party_for_entity(
+    entity_id_person,
+    entity_id_person,
+    entity_first_name || ' EU',
+   'end_user',
+   null,
+   null
+  );
 
   -- add parties
 
   PERFORM add_party_for_entity(
-    entity_id,
+    entity_id_org,
+    entity_id_person,
     entity_first_name || ' BRP',
    'balance_responsible_party',
     add_check_digit(party_business_id_seq::text),
@@ -231,15 +263,8 @@ BEGIN
   );
 
   PERFORM add_party_for_entity(
-    entity_id,
-    entity_first_name || ' EU',
-   'end_user',
-   null,
-   null
-  );
-
-  PERFORM add_party_for_entity(
-    entity_id,
+    entity_id_org,
+    entity_id_person,
     entity_first_name || ' ES',
    'energy_supplier',
     add_check_digit((party_business_id_seq + 2)::text),
@@ -247,7 +272,8 @@ BEGIN
   );
 
   PERFORM add_party_for_entity(
-    entity_id,
+    entity_id_org,
+    entity_id_person,
     entity_first_name || ' MO',
    'market_operator',
     add_check_digit((party_business_id_seq + 3)::text),
@@ -255,7 +281,8 @@ BEGIN
   );
 
   so_id := add_party_for_entity(
-    entity_id,
+    entity_id_org,
+    entity_id_person,
     entity_first_name || ' SO',
    'system_operator',
     add_check_digit((party_business_id_seq + 4)::text),
@@ -263,7 +290,8 @@ BEGIN
   );
 
   sp_id := add_party_for_entity(
-    entity_id,
+    entity_id_org,
+    entity_id_person,
     entity_first_name || ' SP',
    'service_provider',
     add_check_digit((party_business_id_seq + 5)::text),
@@ -271,16 +299,18 @@ BEGIN
   );
 
   PERFORM add_party_for_entity(
-    entity_id,
+    entity_id_org,
+    entity_id_person,
     entity_first_name || ' TP',
    'third_party',
     add_check_digit((party_business_id_seq + 6)::text),
     'gln'
   );
 
-  if add_fiso then
+  if in_add_fiso then
     PERFORM add_party_for_entity(
-      entity_id,
+      entity_id_org,
+      entity_id_person,
       entity_first_name || ' FISO',
       'flexibility_information_system_operator',
       add_check_digit((party_business_id_seq + 7)::text),
@@ -299,17 +329,17 @@ BEGIN
   FROM flex.product_type pt
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
-  if not add_data then
+  if not in_add_data then
     return;
   end if;
 
-  PERFORM add_party_to_entity(entity_id, common_party_first_name || ' BRP');
-  PERFORM add_party_to_entity(entity_id, common_party_first_name || ' EU');
-  PERFORM add_party_to_entity(entity_id, common_party_first_name || ' ES');
-  PERFORM add_party_to_entity(entity_id, common_party_first_name || ' MO');
-  PERFORM add_party_to_entity(entity_id, common_party_first_name || ' SO');
-  common_sp_id := add_party_to_entity(entity_id, common_party_first_name || ' SP');
-  PERFORM add_party_to_entity(entity_id, common_party_first_name || ' TP');
+  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
+  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
+  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
+  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' MO');
+  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' SO');
+  common_sp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' SP');
+  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' TP');
 
   INSERT INTO flex.service_providing_group (
     name, service_provider_id

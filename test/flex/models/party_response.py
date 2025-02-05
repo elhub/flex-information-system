@@ -23,6 +23,7 @@ class PartyResponse:
     * End User
 
         Attributes:
+            entity_id (int): Reference to the entity that is the parent of the party. Example: 30.
             role (str): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
                 Example: flex_energy_supplier.
             type (str): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
@@ -37,6 +38,7 @@ class PartyResponse:
             recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
+    entity_id: int
     role: str
     type: str
     business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
@@ -49,6 +51,8 @@ class PartyResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        entity_id = self.entity_id
+
         role = self.role
 
         type = self.type
@@ -75,6 +79,7 @@ class PartyResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "entity_id": entity_id,
                 "role": role,
                 "type": type,
             }
@@ -99,6 +104,8 @@ class PartyResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        entity_id = d.pop("entity_id")
+
         role = d.pop("role")
 
         type = d.pop("type")
@@ -128,6 +135,7 @@ class PartyResponse:
         recorded_by = d.pop("recorded_by", UNSET)
 
         party_response = cls(
+            entity_id=entity_id,
             role=role,
             type=type,
             business_id_type=business_id_type,

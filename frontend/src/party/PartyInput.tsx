@@ -1,6 +1,10 @@
 import { required, SelectInput, SimpleForm, TextInput } from "react-admin";
 import { Typography, Stack } from "@mui/material";
-import { InputStack, useCreateOrUpdate } from "../auth";
+import {
+  InputStack,
+  AutocompleteReferenceInput,
+  useCreateOrUpdate,
+} from "../auth";
 import { Toolbar } from "../Toolbar";
 import { useFormContext } from "react-hook-form";
 import { roleNames } from "../roles";
@@ -92,6 +96,7 @@ export const PartyInput = () => {
             readOnly // see comment in PartyTypeInput
             defaultValue="flex_balance_responsible_party"
           />
+          <AutocompleteReferenceInput source="entity_id" reference="entity" />
           <SelectInput
             source="status"
             validate={createOrUpdate == "update" ? required() : undefined}
