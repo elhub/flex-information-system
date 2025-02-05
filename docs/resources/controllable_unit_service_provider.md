@@ -55,7 +55,9 @@ No policies.
 
 #### End User
 
-No policies.
+| Policy key | Policy                                                        | Status |
+|------------|---------------------------------------------------------------|--------|
+| CUSP-EU001 | Read CUSP that overlap with the period where they own the AP. | DONE   |
 
 #### Energy Supplier
 

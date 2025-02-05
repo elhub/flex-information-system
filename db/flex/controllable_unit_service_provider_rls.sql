@@ -52,3 +52,23 @@ ON controllable_unit_service_provider
 FOR ALL
 TO flex_service_provider
 USING (service_provider_id = current_party());
+
+-- RLS: CUSP-EU001
+GRANT SELECT ON controllable_unit_service_provider TO flex_end_user;
+CREATE POLICY "CUSP_EU001"
+ON controllable_unit_service_provider
+FOR SELECT
+TO flex_end_user
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit AS cu
+            INNER JOIN accounting_point AS ap
+                ON cu.accounting_point_id = ap.business_id
+            INNER JOIN accounting_point_end_user AS apeu
+                ON ap.id = apeu.accounting_point_id
+        WHERE apeu.end_user_id = current_party()
+            AND cu.id = controllable_unit_service_provider.controllable_unit_id -- noqa
+            AND controllable_unit_service_provider.valid_time_range && apeu.valid_time_range -- noqa
+    )
+);
