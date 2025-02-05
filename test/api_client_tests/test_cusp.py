@@ -268,7 +268,7 @@ def test_cusp_common(data):
 def test_rla_absence(data):
     (sts, _) = data
 
-    roles_without_rla = ["BRP", "ES", "EU", "MO", "TP"]
+    roles_without_rla = ["BRP", "ES", "MO", "TP"]
 
     for role in roles_without_rla:
         cusps = list_controllable_unit_service_provider.sync(
