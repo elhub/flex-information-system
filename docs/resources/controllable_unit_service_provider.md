@@ -45,9 +45,7 @@ No policies.
 
 #### Common
 
-| Policy key  | Policy                                   | Status |
-|-------------|------------------------------------------|--------|
-| CUSP-COM001 | Read history on CUSP that they can read. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
@@ -58,6 +56,7 @@ No policies.
 | Policy key | Policy                                                        | Status |
 |------------|---------------------------------------------------------------|--------|
 | CUSP-EU001 | Read CUSP that overlap with the period where they own the AP. | DONE   |
+| CUSP-EU002 | Read history on CUSP on periods where they owned the AP.      | TODO   |
 
 #### Energy Supplier
 
@@ -68,6 +67,7 @@ No policies.
 | Policy key   | Policy                                    | Status |
 |--------------|-------------------------------------------|--------|
 | CUSP-FISO001 | Read, create, update and delete all CUSP. | DONE   |
+| CUSP-FISO002 | Read history on CUSP that they can read.  | TODO   |
 
 #### Market Operator
 
@@ -75,15 +75,17 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                         | Status |
-|------------|--------------------------------|--------|
-| CUSP-SO001 | Read CUSP on CU they can read. | DONE   |
+| Policy key | Policy                                   | Status |
+|------------|------------------------------------------|--------|
+| CUSP-SO001 | Read CUSP on CU they can read.           | DONE   |
+| CUSP-SO002 | Read history on CUSP that they can read. | TODO   |
 
 #### Service Provider
 
 | Policy key | Policy                                                  | Status |
 |------------|---------------------------------------------------------|--------|
 | CUSP-SP001 | Create, read, update and delete CUSP where they are SP. | DONE   |
+| CUSP-SP002 | Read history on CUSP that they can read.                | TODO   |
 
 #### Third Party
 
