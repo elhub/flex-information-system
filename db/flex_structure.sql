@@ -51,6 +51,7 @@ and support the processes in the value chain.$$;
 -- RLS
 
 \i flex/accounting_point_rls.sql
+\i flex/accounting_point_end_user_rls.sql
 \i flex/controllable_unit_rls.sql
 \i flex/controllable_unit_service_provider_rls.sql
 \i flex/entity_rls.sql

@@ -101,7 +101,7 @@ No policies.
 
 | Policy key | Policy                                                                            | Status |
 |------------|-----------------------------------------------------------------------------------|--------|
-| CU-EU001   | Read CU that are connected to AP where they are EU. Only for the contract period. | TODO   |
+| CU-EU001   | Read CU that are connected to AP where they are EU. Only for the contract period. | DONE   |
 
 #### Energy Supplier
 
