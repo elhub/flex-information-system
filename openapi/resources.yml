@@ -246,6 +246,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -301,6 +302,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -362,6 +364,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -535,6 +538,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -613,6 +617,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -716,6 +721,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -945,6 +951,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -997,6 +1004,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -1074,6 +1082,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -1144,6 +1153,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
