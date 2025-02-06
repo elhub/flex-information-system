@@ -27,10 +27,19 @@ WHERE spg.id = (
 );
 
 -- name: GetControllableUnitCreateNotificationRecipients :many
-SELECT connecting_system_operator_id
--- not using _history because CUO ID is stable and actually from accounting_point
-FROM controllable_unit cu
-WHERE cu.id = @resource_id;
+SELECT cu.connecting_system_operator_id
+FROM controllable_unit cu WHERE cu.id = @resource_id
+UNION
+SELECT apeu.end_user_id
+FROM accounting_point_end_user AS apeu
+INNER JOIN accounting_point AS ap ON ap.id = apeu.accounting_point_id
+INNER JOIN controllable_unit AS cu ON cu.accounting_point_id = ap.business_id
+WHERE cu.id = @resource_id
+AND apeu.valid_time_range @> @recorded_at::timestamptz;
+-- not using history on CU because AP ID is stable
+-- not using history on AP because business ID is stable
+-- not using history on APEU because we take the latest knowledge we have to
+--   identify who to notify
 
 -- name: GetControllableUnitUpdateNotificationRecipients :many
 SELECT connecting_system_operator_id
@@ -44,20 +53,39 @@ WHERE cusph.controllable_unit_id = @resource_id
 AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> @recorded_at::timestamptz
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> @recorded_at::timestamptz;
 
--- name: GetControllableUnitServiceProviderNotificationRecipients :many
-SELECT service_provider_id
--- we do not need to check for history since changing the service provider in the cusp is not allowed
-FROM controllable_unit_service_provider cusph
-WHERE cusph.id = @resource_id
+-- name: GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients :many
+SELECT unnest(
+    array[cusp.service_provider_id, cu.connecting_system_operator_id]
+)::bigint
+FROM controllable_unit_service_provider cusp
+INNER JOIN controllable_unit cu ON cu.id = cusp.controllable_unit_id
+WHERE cusp.id = @resource_id;
+-- not using history on CU-SP for CU ID and SP ID because they are stable
+-- not using history on CU because AP ID is stable
+
+-- name: GetControllableUnitServiceProviderCreateNotificationRecipients :many
+SELECT unnest(
+    array[cusp.service_provider_id, cu.connecting_system_operator_id]
+)::bigint
+FROM controllable_unit_service_provider cusp
+INNER JOIN controllable_unit cu ON cu.id = cusp.controllable_unit_id
+WHERE cusp.id = @resource_id
 UNION
-SELECT connecting_system_operator_id
--- not using _history because CUO ID is stable and actually from accounting_point
-FROM controllable_unit cu
-WHERE cu.id = (
-    SELECT controllable_unit_id
-    FROM controllable_unit_service_provider
-    WHERE id = @resource_id
-);
+SELECT apeu.end_user_id
+FROM accounting_point_end_user AS apeu
+INNER JOIN accounting_point AS ap ON ap.id = apeu.accounting_point_id
+INNER JOIN controllable_unit AS cu ON cu.accounting_point_id = ap.business_id
+INNER JOIN controllable_unit_service_provider AS cusp
+ON cusp.controllable_unit_id = cu.id
+WHERE cusp.id = @resource_id
+AND apeu.valid_time_range @> @recorded_at::timestamptz
+AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)');
+-- not using history on CU-SP for CU ID and SP ID because they are stable
+-- not using history on CU because AP ID is stable
+-- not using history on AP because business ID is stable
+-- not using history on APEU or CU-SP for end user ID because we take the
+--   latest knowledge we have to identify who to notify and if it still
+--   makes sense
 
 -- name: GetServiceProviderProductApplicationNotificationRecipients :many
 SELECT unnest(array[system_operator_id, service_provider_id])::bigint

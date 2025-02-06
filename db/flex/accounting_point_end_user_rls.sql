@@ -1,2 +1,11 @@
--- We shouldn't really need RLS, but keeping the filename consistent with the other tables
-GRANT SELECT ON flex.accounting_point_end_user TO flex_common;
+ALTER TABLE IF EXISTS accounting_point_end_user
+ENABLE ROW LEVEL SECURITY;
+
+-- internal
+GRANT SELECT ON accounting_point_end_user
+TO flex_internal_event_notification;
+CREATE POLICY "APEU_INTERNAL_EVENT_NOTIFICATION"
+ON accounting_point_end_user
+FOR SELECT
+TO flex_internal_event_notification
+USING (true);
