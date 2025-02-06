@@ -1,0 +1,21 @@
+@startuml service_provider_switching
+!theme plain
+
+title Service Provider Switching
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "End User (EU)" AS EU
+actor "New Service Provider (SP)" as SP_NEW
+actor "Old Service Provider (SP)" as SP_OLD
+participant "Flexibility Information System (FIS)" as FIS
+actor "System Operator (SO)" as SO
+
+== Initiate Switching ==
+
+EU <-> SP_NEW: Contractual agreement
+
+@enduml
