@@ -53,10 +53,10 @@ No policies.
 
 #### End User
 
-| Policy key | Policy                                                        | Status |
-|------------|---------------------------------------------------------------|--------|
-| CUSP-EU001 | Read CUSP that overlap with the period where they own the AP. | DONE   |
-| CUSP-EU002 | Read history on CUSP on periods where they owned the AP.      | TODO   |
+| Policy key | Policy                                                                          | Status |
+|------------|---------------------------------------------------------------------------------|--------|
+| CUSP-EU001 | Read CUSP that overlap with the period where they own the AP.                   | DONE   |
+| CUSP-EU002 | Read CUSP history records that overlap with the period where they owned the AP. | DONE   |
 
 #### Energy Supplier
 
@@ -67,7 +67,7 @@ No policies.
 | Policy key   | Policy                                    | Status |
 |--------------|-------------------------------------------|--------|
 | CUSP-FISO001 | Read, create, update and delete all CUSP. | DONE   |
-| CUSP-FISO002 | Read history on CUSP that they can read.  | TODO   |
+| CUSP-FISO002 | Read history on CUSP that they can read.  | DONE   |
 
 #### Market Operator
 
@@ -78,14 +78,14 @@ No policies.
 | Policy key | Policy                                   | Status |
 |------------|------------------------------------------|--------|
 | CUSP-SO001 | Read CUSP on CU they can read.           | DONE   |
-| CUSP-SO002 | Read history on CUSP that they can read. | TODO   |
+| CUSP-SO002 | Read history on CUSP that they can read. | DONE   |
 
 #### Service Provider
 
 | Policy key | Policy                                                  | Status |
 |------------|---------------------------------------------------------|--------|
 | CUSP-SP001 | Create, read, update and delete CUSP where they are SP. | DONE   |
-| CUSP-SP002 | Read history on CUSP that they can read.                | TODO   |
+| CUSP-SP002 | Read history on CUSP that they can read.                | DONE   |
 
 #### Third Party
 
