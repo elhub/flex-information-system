@@ -136,7 +136,7 @@ Update of controllable unit information from service provider and/or system
 user. Includes steps for connecting system operators to validate the information
 provided (CU grid validation).
 
-#### Switching of controllable unit between service providers
+#### [Service provider switching initiated by the new service provider](service-provider-switching.md)
 
 Switching of a controllable unit between service providers. Initiated by new
 service provider.
