@@ -1,3 +1,4 @@
+import { useState, ReactNode } from "react";
 import {
   Admin,
   Resource,
@@ -9,6 +10,7 @@ import {
   LayoutProps,
   AppBar as RaAppBar,
   TitlePortal,
+  Menu,
   UserMenu,
   useGetIdentity,
   useRedirect,
@@ -23,6 +25,15 @@ import {
   ListItemText,
   Box,
 } from "@mui/material";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import Collapse from "@mui/material/Collapse";
+
 import { Route, Navigate } from "react-router-dom";
 import { apiURL, serverURL, httpClient, authURL } from "./httpConfig";
 
@@ -77,7 +88,7 @@ import {
   ServiceProvidingGroupProductApplicationHistoryList,
   ServiceProvidingGroupProductApplicationList,
 } from "./service_providing_group";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+
 import { roleNames } from "./roles";
 import { TechnicalResourceShow } from "./controllable_unit/technical_resource/TechnicalResourceShow";
 import { TechnicalResourceInput } from "./controllable_unit/technical_resource/TechnicalResourceInput";
@@ -182,6 +193,73 @@ const AppBar = () => {
   );
 };
 
+const SubMenu = ({
+  text,
+  defaultOpen,
+  children,
+}: {
+  text: string;
+  children: ReactNode;
+  defaultOpen?: boolean;
+}) => {
+  const [open, setOpen] = useState(defaultOpen);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  return (
+    <>
+      <MenuItem onClick={handleClick}>
+        <ListItemIcon>
+          {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        </ListItemIcon>
+        <ListItemText primary={text} />
+      </MenuItem>
+      <Collapse
+        in={open}
+        timeout="auto"
+        unmountOnExit
+        sx={{
+          "& .RaMenuItemLink-icon": {
+            paddingLeft: 1,
+          },
+        }}
+      >
+        {children}
+      </Collapse>
+    </>
+  );
+};
+
+const MainMenu = () => (
+  <Menu>
+    <Menu.DashboardItem />
+    <SubMenu text="Basic resources" defaultOpen>
+      <Menu.ResourceItem name="controllable_unit" />
+      <Menu.ResourceItem name="service_providing_group" />
+      <Menu.ResourceItem name="service_providing_group_membership" />
+      <Menu.ResourceItem name="service_providing_group_grid_prequalification" />
+    </SubMenu>
+    <SubMenu text="Product application" defaultOpen>
+      <Menu.ResourceItem name="service_provider_product_application" />
+      <Menu.ResourceItem name="service_providing_group_product_application" />
+    </SubMenu>
+    <SubMenu text="Product type">
+      <Menu.ResourceItem name="product_type" />
+      <Menu.ResourceItem name="system_operator_product_type" />
+    </SubMenu>
+    <SubMenu text="Identity">
+      <Menu.ResourceItem name="entity" />
+      <Menu.ResourceItem name="party" />
+    </SubMenu>
+    <SubMenu text="System">
+      <Menu.ResourceItem name="event" />
+      <Menu.ResourceItem name="notification" />
+    </SubMenu>
+  </Menu>
+);
+
 const FooterButton = ({ href, label }: any) => (
   <a
     style={{
@@ -200,7 +278,7 @@ const FooterButton = ({ href, label }: any) => (
 
 const Layout = ({ children }: LayoutProps) => (
   <>
-    <RaLayout appBar={AppBar}>
+    <RaLayout menu={MainMenu} appBar={AppBar}>
       <Breadcrumbs />
       {children}
       <Box m={3} />
@@ -348,6 +426,7 @@ export const App = () => (
             name="controllable_unit"
             list={ControllableUnitList}
             show={ControllableUnitShow}
+            icon={BookmarkIcon}
             edit={
               permissions.includes("controllable_unit.update") ? (
                 <Edit mutationMode="pessimistic">
@@ -500,6 +579,7 @@ export const App = () => (
         {permissions.includes("service_providing_group.read") ? (
           <Resource
             name="service_providing_group"
+            icon={BookmarksIcon}
             list={ServiceProvidingGroupList}
             show={ServiceProvidingGroupShow}
             edit={
@@ -698,6 +778,7 @@ export const App = () => (
         ) ? (
           <Resource
             name="service_providing_group_grid_prequalification"
+            icon={BookmarkAddedIcon}
             list={ServiceProvidingGroupGridPrequalificationList}
             show={ServiceProvidingGroupGridPrequalificationShow}
             edit={
@@ -727,6 +808,7 @@ export const App = () => (
         {permissions.includes("service_providing_group_membership.read") ? (
           <Resource
             name="service_providing_group_membership"
+            icon={BookmarkAddIcon}
             list={ServiceProvidingGroupMembershipList}
             show={ServiceProvidingGroupMembershipShow}
             edit={

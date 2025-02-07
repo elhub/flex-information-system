@@ -46,7 +46,8 @@ def _find_party_id(entity_client, party_name) -> int:
         list_party.sync(
             client=entity_client,
             name=f"ilike.{party_name.replace(' ', '*')}",
-            range_unit="UNSET",
+            range_unit=UNSET,
+            entity_id=UNSET,
         ),
     )[0]
 
@@ -146,7 +147,7 @@ class SecurityTokenService:
             return userinfo
 
     # network call for authentication
-    def _get_client(self, entity, party_name=None):
+    def _get_client(self, entity: TestEntity, party_name=None):
         entity_token = self._client_credentials(entity.email(), "87h87hijhulO")
         entity_client = AuthenticatedClient(
             base_url=self.api_url, token=entity_token, verify_ssl=False
@@ -213,6 +214,10 @@ class SecurityTokenService:
             check_digit = (10 - (check_digit_sum % 10)) % 10
             business_id = "".join(base_gln) + str(check_digit)
 
+        ent_id = self.get_userinfo(
+            cast(AuthenticatedClient, self.get_client(entity)),
+        )["entity_id"]
+
         party = create_party.sync(
             client=client_fiso,
             body=PartyCreateRequest(
@@ -230,13 +235,10 @@ class SecurityTokenService:
                 }",
                 business_id_type=business_id_type,
                 business_id=business_id,
+                entity_id=ent_id,
             ),
         )
         assert isinstance(party, PartyResponse)
-
-        ent_id = self.get_userinfo(
-            cast(AuthenticatedClient, self.get_client(entity)),
-        )["entity_id"]
 
         pm = create_party_membership.sync(
             client=client_fiso,

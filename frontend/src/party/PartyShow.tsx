@@ -1,4 +1,5 @@
 import {
+  ReferenceField,
   Show,
   SimpleShowLayout,
   TextField,
@@ -7,9 +8,8 @@ import {
 import { PartyMembershipList } from "./membership/PartyMembershipList";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
-import { NestedResourceHistoryButton } from "../history";
+import { NestedResourceHistoryButton, ResourceHistoryButton } from "../history";
 import { DateField } from "../datetime";
-import { ResourceHistoryButton } from "../history";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../IdentityField";
 
@@ -29,6 +29,9 @@ export const PartyShow = () => {
             <TextField source="id" label="ID" />
             <TextField source="business_id" label="Business ID" />
             <TextField source="business_id_type" label="Business ID type" />
+            <ReferenceField source="entity_id" reference="entity">
+              <TextField source="name" />
+            </ReferenceField>
             <TextField source="name" />
             <TextField source="type" />
             <TextField source="role" />

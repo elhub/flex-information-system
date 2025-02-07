@@ -1,4 +1,4 @@
-import { List, TextField } from "react-admin";
+import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../auth";
 import { DateField } from "../datetime";
 
@@ -7,6 +7,9 @@ export const PartyList = () => (
     <Datagrid>
       <TextField source="id" label="ID" />
       <TextField source="business_id" label="Business ID" />
+      <ReferenceField source="entity_id" reference="entity">
+        <TextField source="name" />
+      </ReferenceField>
       <TextField source="name" />
       <TextField source="type" />
       <TextField source="role" />

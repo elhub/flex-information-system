@@ -63,6 +63,7 @@ No policies.
 |------------|----------------------------------------------------------|--------|
 | ENT-COM001 | Read all organisation ENT                                | DONE   |
 | ENT-COM002 | Read all entities that are members of the current party. | DONE   |
+| ENT-COM003 | Read parent entity of current party.                     | DONE   |
 
 #### Balance Responsible Party
 

@@ -6,7 +6,7 @@ import { IdentityField } from "../../IdentityField";
 
 export const PartyMembershipHistoryList = () => {
   const params = useParams();
-  var filter: any = {
+  let filter: any = {
     party_id: params.party_id,
   };
 

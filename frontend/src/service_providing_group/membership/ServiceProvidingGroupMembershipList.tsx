@@ -31,7 +31,7 @@ export const ServiceProvidingGroupMembershipList = () => {
   });
 
   const CreateButton = () => {
-    var createUrl = "/service_providing_group_membership/create";
+    let createUrl = "/service_providing_group_membership/create";
     if (id) createUrl = `/service_providing_group/${id}/membership/create`;
 
     return (

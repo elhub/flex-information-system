@@ -1,4 +1,4 @@
-import { List, TextField } from "react-admin";
+import { List, TextField, ReferenceField } from "react-admin";
 import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../history";
@@ -18,6 +18,9 @@ export const PartyHistoryList = () => {
         <TextField source="id" label="ID" />
         <TextField source="party_id" />
         <TextField source="business_id" label="Business ID" />
+        <ReferenceField source="entity_id" reference="entity">
+          <TextField source="name" />
+        </ReferenceField>
         <TextField source="name" />
         <TextField source="type" />
         <TextField source="role" />
