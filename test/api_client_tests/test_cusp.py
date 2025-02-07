@@ -244,11 +244,13 @@ def test_cusp_so(data):
         assert isinstance(cu, ControllableUnitResponse)
 
 
-# RLS: CUSP-COM001
-def test_cusp_common(data):
+# RLS: CUSP-FISO002
+# RLS: CUSP-SO002
+# RLS: CUSP-SP002
+def test_cusp_history(data):
     (sts, _) = data
 
-    for role in sts.COMMON_ROLES:
+    for role in ["FISO", "SO", "SP"]:
         client = sts.get_client(TestEntity.TEST, role)
 
         # check a role can see the history for CUs they can see

@@ -99,7 +99,7 @@ USING (
     )
 );
 
--- RLS: CUSP-FISO001
+-- RLS: CUSP-FISO002
 GRANT SELECT ON controllable_unit_service_provider_history
 TO flex_flexibility_information_system_operator;
 CREATE POLICY "CUSP_FISO001"
