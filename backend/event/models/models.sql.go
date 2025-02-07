@@ -12,30 +12,31 @@ import (
 )
 
 const getControllableUnitCreateNotificationRecipients = `-- name: GetControllableUnitCreateNotificationRecipients :many
-SELECT cu.connecting_system_operator_id
-FROM controllable_unit cu WHERE cu.id = $1
-UNION
-SELECT apeu.end_user_id
-FROM accounting_point_end_user AS apeu
-INNER JOIN accounting_point AS ap ON ap.id = apeu.accounting_point_id
-INNER JOIN controllable_unit AS cu ON cu.accounting_point_id = ap.business_id
+SELECT unnest(
+    array_remove(
+        array[cu.connecting_system_operator_id, apeu.end_user_id], null
+    )
+)::bigint
+FROM controllable_unit AS cu
+INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
+LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
 WHERE cu.id = $1
-AND apeu.valid_time_range @> $2::timestamptz
+AND apeu.valid_time_range @> current_timestamp
 `
 
-func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
-	rows, err := q.db.Query(ctx, getControllableUnitCreateNotificationRecipients, resourceID, recordedAt)
+func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitCreateNotificationRecipients, resourceID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 	var items []int
 	for rows.Next() {
-		var connecting_system_operator_id int
-		if err := rows.Scan(&connecting_system_operator_id); err != nil {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
 			return nil, err
 		}
-		items = append(items, connecting_system_operator_id)
+		items = append(items, column_1)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -46,27 +47,27 @@ func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Co
 const getControllableUnitServiceProviderCreateNotificationRecipients = `-- name: GetControllableUnitServiceProviderCreateNotificationRecipients :many
 
 SELECT unnest(
-    array[cusp.service_provider_id, cu.connecting_system_operator_id]
+    array_remove(
+        array[
+            cusp.service_provider_id,
+            cu.connecting_system_operator_id,
+            apeu.end_user_id
+        ],
+        null
+    )
 )::bigint
-FROM controllable_unit_service_provider cusp
-INNER JOIN controllable_unit cu ON cu.id = cusp.controllable_unit_id
+FROM controllable_unit_service_provider AS cusp
+INNER JOIN controllable_unit AS cu ON cu.id = cusp.controllable_unit_id
+INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
+LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
 WHERE cusp.id = $1
-UNION
-SELECT apeu.end_user_id
-FROM accounting_point_end_user AS apeu
-INNER JOIN accounting_point AS ap ON ap.id = apeu.accounting_point_id
-INNER JOIN controllable_unit AS cu ON cu.accounting_point_id = ap.business_id
-INNER JOIN controllable_unit_service_provider AS cusp
-ON cusp.controllable_unit_id = cu.id
-WHERE cusp.id = $1
-AND apeu.valid_time_range @> $2::timestamptz
 AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
 `
 
 // not using history on CU-SP for CU ID and SP ID because they are stable
 // not using history on CU because AP ID is stable
-func (q *Queries) GetControllableUnitServiceProviderCreateNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
-	rows, err := q.db.Query(ctx, getControllableUnitServiceProviderCreateNotificationRecipients, resourceID, recordedAt)
+func (q *Queries) GetControllableUnitServiceProviderCreateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitServiceProviderCreateNotificationRecipients, resourceID)
 	if err != nil {
 		return nil, err
 	}
@@ -133,6 +134,9 @@ AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> $2::timestamptz
 // not using history on APEU because we take the latest knowledge we have to
 //
 //	identify who to notify
+//
+// current timestamp because we take the relevant end user at the moment the
+// event is processed
 func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
 	rows, err := q.db.Query(ctx, getControllableUnitUpdateNotificationRecipients, resourceID, recordedAt)
 	if err != nil {
@@ -200,6 +204,10 @@ AND tstzrange(recorded_at, replaced_at, '[)') @> $2::timestamptz
 //
 //	latest knowledge we have to identify who to notify and if it still
 //	makes sense
+//
+// valid time check : notifying all end users that (up to the latest knowledge)
+//
+//	are in charge of the AP during at least a part of the CU-SP validity period
 func (q *Queries) GetServiceProviderProductApplicationNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
 	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationNotificationRecipients, resourceID, recordedAt)
 	if err != nil {

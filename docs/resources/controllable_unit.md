@@ -68,11 +68,12 @@ No validation rules.
 
 ## Notifications
 
-| Action | Recipient     | Comment                  |
-|--------|---------------|--------------------------|
-| create | Connecting SO |                          |
-| update | Active SP     |                          |
-| update | Connecting SO | When status is not `new` |
+| Action | Recipient                        | Comment                  |
+|--------|----------------------------------|--------------------------|
+| create | Connecting SO                    |                          |
+| create | End user of the accounting point |                          |
+| update | Active SP                        |                          |
+| update | Connecting SO                    | When status is not `new` |
 
 ## Authorization
 

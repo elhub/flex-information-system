@@ -27,10 +27,11 @@ No validation rules.
 
 ## Notifications
 
-| Action                 | Recipient     | Comment |
-|------------------------|---------------|---------|
-| create, update, delete | SP            |         |
-| create, update, delete | Connecting SO |         |
+| Action                 | Recipient                                                 | Comment |
+|------------------------|-----------------------------------------------------------|---------|
+| create, update, delete | SP                                                        |         |
+| create, update, delete | Connecting SO                                             |         |
+| create                 | End user(s) in charge of the AP during the CU-SP contract |         |
 
 ## Authorization
 
