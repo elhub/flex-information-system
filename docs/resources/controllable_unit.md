@@ -131,7 +131,7 @@ No policies.
 |------------|--------------------------------------------------------------|--------|
 | CU-SO001   | Read and update CU that are connected to AP belonging to SO. | DONE   |
 | CU-SO002   | Read CU belonging to SPG that the SO can see.                | DONE   |
-| CU-SO003   | Read history on CU that they can read.                       | TODO   |
+| CU-SO003   | Read history on CU that they can read.                       | DONE   |
 
 #### Service Provider
 
@@ -140,7 +140,7 @@ No policies.
 | CU-SP001   | Read CU where they are SP (only for the contract period) or the ones they created. | PARTIAL |
 | CU-SP002   | Create new CU.                                                                     | DONE    |
 | CU-SP003   | Update CU where they are current SP.                                               | DONE    |
-| CU-SP004   | Read history on CU that they can read.                                             | TODO    |
+| CU-SP004   | Read history on CU that they can read.                                             | DONE    |
 
 #### Third Party
 
