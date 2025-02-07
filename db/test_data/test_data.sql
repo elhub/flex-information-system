@@ -185,7 +185,7 @@ BEGIN
     ) VALUES (
       ap_id,
       eu_id,
-      tstzrange(current_timestamp, null, '[)')
+      tstzrange('2024-01-01 00:00:00+1', null, '[)')
     );
   END LOOP;
 END
