@@ -17,5 +17,5 @@ actor "System Operator (SO)" as SO
 == Initiate Switching ==
 
 EU <-> SP_NEW: Contractual agreement
-
+SP_NEW -> FIS: Test
 @enduml
