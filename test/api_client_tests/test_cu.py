@@ -258,6 +258,55 @@ def test_controllable_unit_so(sts):
         assert len(hist_iso) > 0
 
 
+# RLS: CU-EU001
+# RLS: CU-EU002
+def test_controllable_unit_eu(sts):
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
+
+    # former AP end user can see the old version of the CUs in the test data,
+    # but not the current record
+
+    cuhs_former_eu = list_controllable_unit_history.sync(client=client_former_eu)
+    assert isinstance(cuhs_former_eu, list)
+
+    assert len(cuhs_former_eu) > 0
+
+    old_cuhs = list(
+        filter(
+            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            cuhs_former_eu,
+        )
+    )
+    assert len(old_cuhs) > 0
+
+    cu = read_controllable_unit.sync(
+        client=client_former_eu,
+        id=cast(int, old_cuhs[0].controllable_unit_id),
+    )
+    assert isinstance(cu, ErrorMessage)
+
+    # current AP end user can see the current version of the CU,
+    # but not the old records
+
+    cu = read_controllable_unit.sync(
+        client=client_eu,
+        id=cast(int, old_cuhs[0].controllable_unit_id),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    cuhs_eu = list_controllable_unit_history.sync(client=client_former_eu)
+    assert isinstance(cuhs_eu, list)
+
+    old_cuhs = list(
+        filter(
+            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            cuhs_eu,
+        )
+    )
+    assert len(old_cuhs) > 0
+
+
 def test_controllable_unit_sp(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
