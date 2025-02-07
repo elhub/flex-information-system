@@ -16,3 +16,8 @@ WITH (security_invoker = true) AS (
 -- this view is internal, just for the event worker
 GRANT SELECT ON TABLE accounting_point_end_user
 TO flex_internal_event_notification;
+
+-- needed for the RLS checks on other resources joining this table to work
+-- (but we do not define policies, so selects will yield 0 rows anyway)
+GRANT SELECT ON TABLE accounting_point_end_user
+TO flex_common;
