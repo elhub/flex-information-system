@@ -286,9 +286,10 @@ sqlc:
     cd backend
     for module in data event; do
         cp sqlc.yaml $module
+        cat schema.sql $module/schema.sql 2>/dev/null > $module/tmp_schema.sql || true
         cd $module
         sqlc generate
-        rm sqlc.yaml
+        rm sqlc.yaml tmp_schema.sql
         cd ..
     done
 

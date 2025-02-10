@@ -16,6 +16,7 @@ and support the processes in the value chain.$$;
 \i flex/grid_node.sql
 \i flex/grid_edge.sql
 \i flex/accounting_point.sql
+\i flex/accounting_point_end_user.sql
 \i flex/controllable_unit.sql
 \i flex/controllable_unit_service_provider.sql
 \i flex/notification.sql
@@ -31,6 +32,7 @@ and support the processes in the value chain.$$;
 
 -- history and audit
 
+\i flex/accounting_point_end_user_history_audit.sql
 \i flex/accounting_point_history_audit.sql
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
@@ -49,6 +51,7 @@ and support the processes in the value chain.$$;
 -- RLS
 
 \i flex/accounting_point_rls.sql
+\i flex/accounting_point_end_user_rls.sql
 \i flex/controllable_unit_rls.sql
 \i flex/controllable_unit_service_provider_rls.sql
 \i flex/entity_rls.sql

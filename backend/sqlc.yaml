@@ -3,7 +3,8 @@ version: "2"
 sql:
   - engine: "postgresql"
     queries: "models.sql"
-    schema: "../schema.sql"
+    # tmp_schema = base schema [+ additional schema in subfolder]
+    schema: "tmp_schema.sql"
     gen:
       go:
         package: "models"

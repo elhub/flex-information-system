@@ -28,22 +28,6 @@ controllable_unit_replaced_by
 BEFORE INSERT ON controllable_unit_history
 FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
 
-ALTER TABLE IF EXISTS controllable_unit_history
-ENABLE ROW LEVEL SECURITY;
-
--- RLS: CU-COM001
-GRANT SELECT ON controllable_unit_history
-TO flex_common;
-CREATE POLICY "CU_COM001"
-ON controllable_unit_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM controllable_unit
-    WHERE controllable_unit_history.id = controllable_unit.id -- noqa
-));
-
 CREATE OR REPLACE TRIGGER
 controllable_unit_recorded_by
 BEFORE INSERT OR UPDATE ON controllable_unit

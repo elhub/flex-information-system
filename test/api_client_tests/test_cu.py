@@ -83,6 +83,7 @@ def test_controllable_unit_fiso(sts):
 
     # update the CU and check the history is one record longer
 
+    # RLS: CU-FISO002
     # endpoint: GET /controllable_unit_history
     hist = list_controllable_unit_history.sync(
         client=client_fiso,
@@ -246,25 +247,15 @@ def test_controllable_unit_so(sts):
     cu = read_controllable_unit.sync(client=client_iso, id=cast(int, cu.id))
     assert isinstance(cu, ControllableUnitResponse)
 
-
-# RLS: CU-COM001
-def test_controllable_unit_common(sts):
-    for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
-
-        # check a role can see the history for CUs they can see
-        visible_cus = list_controllable_unit.sync(client=client)
-        assert isinstance(visible_cus, list)
-
-        # NB: here checking on a few CUs is sufficient, it does not make sense
-        # to check the whole list
-        for cu in visible_cus[:5]:
-            hist_so = list_controllable_unit_history.sync(
-                client=client,
-                controllable_unit_id=f"eq.{cu.id}",
-            )
-            assert isinstance(hist_so, list)
-            assert len(hist_so) > 0
+    # RLS: CU-SO003
+    # NB: here checking on a few rows is sufficient
+    for cu in cus_iso2[:5]:
+        hist_iso = list_controllable_unit_history.sync(
+            client=client_iso,
+            controllable_unit_id=f"eq.{cu.id}",
+        )
+        assert isinstance(hist_iso, list)
+        assert len(hist_iso) > 0
 
 
 def test_controllable_unit_sp(sts):
@@ -411,6 +402,20 @@ def test_controllable_unit_sp(sts):
         ),
     )
     assert isinstance(u, ErrorMessage)
+
+    # RLS: CU-SP004
+    cus_sp1 = list_controllable_unit.sync(client=client_sp1)
+    assert isinstance(cus_sp1, list)
+    assert len(cus_sp1) > 0
+
+    # NB: here checking on a few rows is sufficient
+    for cu in cus_sp1[:5]:
+        hist_sp1 = list_controllable_unit_history.sync(
+            client=client_sp1,
+            controllable_unit_id=f"eq.{cu.id}",
+        )
+        assert isinstance(hist_sp1, list)
+        assert len(hist_sp1) > 0
 
 
 def test_rla_absence(sts):

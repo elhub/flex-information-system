@@ -4,6 +4,7 @@ SET search_path TO api;
 -- views
 
 \i api/accounting_point.sql
+\i api/accounting_point_end_user.sql
 \i api/controllable_unit.sql
 \i api/controllable_unit_service_provider.sql
 \i api/entity.sql
