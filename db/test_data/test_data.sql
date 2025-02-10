@@ -248,20 +248,22 @@ BEGIN
       so_id
     ) RETURNING id INTO ap_id;
 
-    -- insert 2 end users for each accounting point
-    INSERT INTO flex.accounting_point_end_user (
-      accounting_point_id,
-      end_user_id,
-      valid_time_range
-    ) VALUES (
-      ap_id,
-      former_eu_id,
-      tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
-    ), (
-      ap_id,
-      eu_id,
-      tstzrange('2024-01-01 00:00:00+1', null, '[)')
-    );
+    IF former_eu_id IS NOT NULL AND eu_id IS NOT NULL THEN
+      -- insert 2 end users for each accounting point
+      INSERT INTO flex.accounting_point_end_user (
+        accounting_point_id,
+        end_user_id,
+        valid_time_range
+      ) VALUES (
+        ap_id,
+        former_eu_id,
+        tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
+      ), (
+        ap_id,
+        eu_id,
+        tstzrange('2024-01-01 00:00:00+1', null, '[)')
+      );
+    END IF;
   END LOOP;
 END
 $$;
@@ -418,6 +420,7 @@ BEGIN
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
   if not in_add_data then
+    PERFORM add_accounting_points(accounting_point_prefix, null, null, so_id);
     return;
   end if;
 
@@ -429,7 +432,6 @@ BEGIN
   common_sp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' SP');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' TP');
 
-  -- Add accounting points
   PERFORM add_accounting_points(accounting_point_prefix, common_eu_id, eu_id, so_id);
 
   INSERT INTO flex.service_providing_group (
