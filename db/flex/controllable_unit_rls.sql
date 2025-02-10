@@ -117,15 +117,6 @@ USING (
         current_party(),
         controllable_unit.accounting_point_id
     )
-    -- EXISTS (
-    --     SELECT 1
-    --         FROM accounting_point AS ap -- noqa
-    --         INNER JOIN accounting_point_end_user AS apeu
-    --             ON apeu.accounting_point_id = ap.id
-    --     WHERE ap.business_id = controllable_unit.accounting_point_id -- noqa
-    --         AND apeu.end_user_id = current_party()
-    --         AND apeu.valid_time_range @> current_timestamp
-    -- )
 );
 
 ALTER TABLE IF EXISTS controllable_unit_history

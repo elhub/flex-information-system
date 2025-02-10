@@ -83,28 +83,6 @@ BEGIN
       sp_id bigint,
       valid_time_range tstzrange
   );
-  CREATE TYPE cu AS (
-      id bigint,
-      business_id uuid,
-      name text,
-      start_date date,
-      status text,
-      regulation_direction text,
-      maximum_available_capacity decimal(9, 3),
-      is_small boolean,
-      minimum_duration bigint,
-      maximum_duration bigint,
-      recovery_duration bigint,
-      ramp_rate decimal(9, 3),
-      accounting_point_id text,
-      grid_node_id uuid,
-      grid_validation_status text,
-      grid_validation_notes text,
-      last_validated timestamp with time zone,
-      created_by_party_id bigint,
-      record_time_range tstzrange,
-      recorded_by bigint
-  );
 EXCEPTION
   WHEN duplicate_object THEN null;
 END
@@ -120,8 +98,9 @@ CREATE OR REPLACE FUNCTION add_controllable_unit(
 RETURNS bigint
 AS $$
 DECLARE
-  cu cu;
   sp cu_sp;
+  cu record;
+  cusp record;
 BEGIN
   INSERT INTO flex.controllable_unit (
     name,
@@ -206,6 +185,26 @@ BEGIN
       controllable_unit_id, service_provider_id, valid_time_range
     ) VALUES (
       cu.id, sp.sp_id, sp.valid_time_range
+    ) RETURNING * INTO cusp;
+
+    -- insert a previous version of that CUSP valid for the previous end user
+    -- (related to end user testing)
+    INSERT INTO flex.controllable_unit_service_provider_history (
+      id,
+      controllable_unit_id,
+      service_provider_id,
+      valid_time_range,
+      record_time_range,
+      recorded_by,
+      replaced_by
+    ) VALUES (
+      cusp.id,
+      cusp.controllable_unit_id,
+      cusp.service_provider_id,
+      tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
+      tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
+      cusp.recorded_by,
+      0
     );
   END LOOP;
 
