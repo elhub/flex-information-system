@@ -2,6 +2,7 @@ import { Children, cloneElement } from "react";
 import { useResourceContext, usePermissions } from "react-admin";
 import { Stack as MUIStack, StackProps } from "@mui/material";
 import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
+import { FieldTooltip } from "../tooltip/FieldTooltip";
 
 // custom Stack component disabling the underlying inputs based on permissions
 export const InputStack = (props: StackProps) => {
@@ -10,14 +11,18 @@ export const InputStack = (props: StackProps) => {
   const { permissions } = usePermissions();
   const createOrUpdate = useCreateOrUpdate();
 
-  const addPermissionToInput = (input: any) =>
-    cloneElement(input, {
-      disabled:
-        input.props.disabled ||
-        !permissions.includes(
-          `${resource}.${input.props.source}.${createOrUpdate}`,
-        ),
-    });
+  const addPermissionToInput = (input: any) => (
+    <>
+      <FieldTooltip resource={resource} field={input.props.source} />
+      {cloneElement(input, {
+        disabled:
+          input.props.disabled ||
+          !permissions.includes(
+            `${resource}.${input.props.source}.${createOrUpdate}`,
+          ),
+      })}
+    </>
+  );
 
   return (
     <MUIStack {...rest}>

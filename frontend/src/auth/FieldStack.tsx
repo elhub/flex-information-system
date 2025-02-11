@@ -1,6 +1,6 @@
 import { Children } from "react";
 import { useResourceContext, usePermissions, Labeled } from "react-admin";
-import { Stack as MUIStack, StackProps } from "@mui/material";
+import { Divider, Stack as MUIStack, StackProps } from "@mui/material";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 
 // custom Stack component forcing label display and hiding the underlying
@@ -19,7 +19,7 @@ export const FieldStack = (props: StackProps) => {
     );
 
   return (
-    <MUIStack {...rest}>
+    <MUIStack divider={<Divider flexItem orientation="vertical" />} {...rest}>
       {Children.map(children, (child: any) =>
         child.props.source ? addPermissionToField(child) : child,
       )}
