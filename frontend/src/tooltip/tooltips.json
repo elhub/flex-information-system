@@ -1,0 +1,149 @@
+{
+    "controllable_unit": {
+        "id": "Unique surrogate key.",
+        "business_id": "Unique business identifier for the controllable unit.",
+        "name": "Free text name of the controllable unit.",
+        "start_date": "The usage date when the controllable unit is first active.",
+        "status": "The status of the controllable unit.",
+        "regulation_direction": "The regulation direction of the controllable unit.",
+        "maximum_available_capacity": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+        "is_small": "Whether the controllable unit is small or not, following NCDR.",
+        "minimum_duration": "The minimum activation duration in seconds.",
+        "maximum_duration": "The maximum activation duration in seconds.",
+        "recovery_duration": "The minimum recovery duration between activations in seconds.",
+        "ramp_rate": "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
+        "accounting_point_id": "The existing accounting point that the controllable unit is connected to.\n`GSRN` metering point id.",
+        "grid_node_id": "Reference to the node that the controllable unit is connected to.",
+        "connecting_system_operator_id": "Reference to the `party` that is the connecting system operator. Derived from the `accounting_point_id`.",
+        "grid_validation_status": "The grid validation status of the controllable unit.",
+        "grid_validation_notes": "Free text notes on the current grid validation status.",
+        "last_validated": "When the controllable unit was last validated."
+    },
+    "controllable_unit_service_provider": {
+        "id": "Unique surrogate key.",
+        "controllable_unit_id": "Reference to the controllable unit this relation links to a service provider.",
+        "service_provider_id": "Reference to the `party` (service provider) this relation links to a controllable unit.",
+        "valid_from": "The date from which the relation between the controllable unit and the service provider is valid.",
+        "valid_to": "The date until which the relation between the controllable unit and the service provider is valid."
+    },
+    "service_providing_group": {
+        "id": "Unique surrogate key.",
+        "name": "Free text name of the service providing group.",
+        "service_provider_id": "Reference to the `party` (service provider) managing the group.",
+        "status": "The status of the group."
+    },
+    "service_providing_group_membership": {
+        "id": "Unique surrogate key.",
+        "controllable_unit_id": "Reference to the controllable unit this relation links to a service providing group.",
+        "service_providing_group_id": "Reference to the service providing group this relation links to a controllable unit.",
+        "valid_from": "The date from which the relation between the controllable unit and the service providing group is valid.",
+        "valid_to": "The date until which the relation between the controllable unit and the service providing group is valid."
+    },
+    "service_providing_group_grid_prequalification": {
+        "id": "Unique surrogate key.",
+        "service_providing_group_id": "Reference to the service providing group whose grid prequalification is tracked by the current resource.",
+        "impacted_system_operator_id": "Reference to the `party` that is the impacted system operator.",
+        "status": "The status of the grid prequalification for this service providing group.",
+        "notes": "Free text notes on the current prequalification status.",
+        "last_prequalified": "When the current grid prequalification was last approved."
+    },
+    "entity": {
+        "id": "Unique surrogate identifier.\n\nNote:\nThis is a Primary Key.",
+        "business_id": "The business identifier of the entity. Format depends on `business_id_type`.",
+        "business_id_type": "The type of the business identifier.",
+        "name": "Name of the entity. Maximum 128 characters.",
+        "type": "The type of the entity, e.g Person, Organisation",
+        "client_id": "The identifier of the entity. For use with client credentials authentication method.",
+        "client_secret": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
+        "client_public_key": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method."
+    },
+    "party": {
+        "id": "Unique surrogate identifier.",
+        "business_id": "The business identifier of the party. Format depends on `business_id_type`.",
+        "business_id_type": "The type of the business identifier.",
+        "entity_id": "Reference to the entity that is the parent of the party.",
+        "name": "Name of the party. Maximum 128 characters.",
+        "role": "The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.",
+        "type": "The type of the party, e.g SystemOperator, ServiceProvider",
+        "status": "The status of the party."
+    },
+    "party_membership": {
+        "id": "Unique surrogate identifier.",
+        "party_id": "Reference to the party that the membership links to an entity.",
+        "entity_id": "Reference to the entity that the party represents."
+    },
+    "identity": {
+        "id": "Unique surrogate identifier.",
+        "entity_id": "Reference to the entity using the identity.",
+        "entity_name": "Name of the entity using the identity.",
+        "party_id": "Reference to the party assumed by the entity.",
+        "party_name": "Name of the party assumed by the entity."
+    },
+    "technical_resource": {
+        "id": "Unique surrogate identifier.",
+        "name": "Name of the technical resource. Maximum 128 characters.",
+        "controllable_unit_id": "Reference to the controllable unit that this technical resource belongs to.",
+        "details": "Free text details about the technical resource."
+    },
+    "event": {
+        "id": "Unique surrogate identifier.",
+        "specversion": "The version of the CloudEvents specification followed by the resource.",
+        "time": "The time at which the event was generated.",
+        "type": "The type of the event.",
+        "source": "The URI of the resource concerned by the event.",
+        "data": "The data of the event."
+    },
+    "notification": {
+        "id": "Unique surrogate identifier.",
+        "acknowledged": "Whether the notification was acknowledged by the target user.",
+        "event_id": "Reference to the event notified by this resource.",
+        "party_id": "Reference to the party concerned by this notification."
+    },
+    "accounting_point": {
+        "id": "Unique surrogate identifier.",
+        "business_id": "The GSRN metering point id of the accounting point.",
+        "system_operator_id": "The system operator of the accounting point"
+    },
+    "product_type": {
+        "id": "Unique surrogate identifier.",
+        "business_id": "The code for this product type.",
+        "category": "The category of the product type.",
+        "market": "The market which the product type belongs to.",
+        "market_type": "The type of market which the product type belongs to.",
+        "examples": "Examples of products belonging to this product type.",
+        "notes": "Additional information about a product type."
+    },
+    "system_operator_product_type": {
+        "id": "Unique surrogate identifier.",
+        "system_operator_id": "Reference to the system operator.",
+        "product_type_id": "Reference to the product type.",
+        "status": "The status of the relation."
+    },
+    "service_provider_product_application": {
+        "id": "Unique surrogate identifier.",
+        "service_provider_id": "Reference to the service provider.",
+        "system_operator_id": "Reference to the system operator.",
+        "product_type_ids": "References to the product types.",
+        "status": "The status of the application.",
+        "notes": "Free text notes on the current product application status.",
+        "last_qualified": "When the product application was last validated."
+    },
+    "service_provider_product_application_comment": {
+        "id": "Unique surrogate identifier.",
+        "service_provider_product_application_id": "Reference to the service provider product application.",
+        "created_by": "Reference to the identity that created the comment.",
+        "created_at": "When the comment was added to the application.",
+        "visibility": "The level of visibility of the comment.",
+        "content": "Free text content of the comment."
+    },
+    "service_providing_group_product_application": {
+        "id": "Unique surrogate identifier.",
+        "service_providing_group_id": "Reference to the service providing group.",
+        "procuring_system_operator_id": "Reference to the procuring system operator.",
+        "product_type_id": "References to the product type.",
+        "status": "The status of the application.",
+        "notes": "Free text notes on the current product application status.",
+        "last_prequalified": "When the product application was last prequalified.",
+        "last_verified": "When the product application was last verified."
+    }
+}

@@ -210,7 +210,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client openapi-to-tooltips
 
 template-to-openapi:
     #!/usr/bin/env bash
@@ -359,6 +359,15 @@ openapi-client:
         --output-path ./out/openapi-client \
         --config ./openapi/openapi-client-config.yml
     mv ./out/openapi-client/flex test/flex
+
+openapi-to-tooltips:
+    #!/usr/bin/env bash
+    cat openapi/resources.yml \
+        | yq '.resources[] as $res ireduce ({};
+            .[$res.id] = ($res.properties | map_values (.description)))' \
+            -o json \
+            --indent 4 \
+            > frontend/src/tooltip/tooltips.json
 
 permissions: permissions-to-frontend permissions-to-md permissions-to-db
 
