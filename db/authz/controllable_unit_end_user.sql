@@ -1,8 +1,6 @@
-CREATE OR REPLACE VIEW controllable_unit_accounting_point_end_user AS (
+CREATE OR REPLACE VIEW controllable_unit_end_user AS (
     SELECT
         cu.id AS controllable_unit_id,
-        ap.id AS accounting_point_id,
-        ap.system_operator_id AS connecting_system_operator_id,
         apeu.end_user_id,
         apeu.valid_time_range AS end_user_valid_time_range
     FROM flex.controllable_unit AS cu
@@ -12,8 +10,8 @@ CREATE OR REPLACE VIEW controllable_unit_accounting_point_end_user AS (
             ON ap.id = apeu.accounting_point_id
 );
 
-GRANT SELECT ON TABLE controllable_unit_accounting_point_end_user
+GRANT SELECT ON TABLE controllable_unit_end_user
 TO flex_common;
 
-GRANT SELECT ON TABLE controllable_unit_accounting_point_end_user
+GRANT SELECT ON TABLE controllable_unit_end_user
 TO flex_internal_event_notification;

@@ -28,10 +28,10 @@ FOR ALL
 TO flex_system_operator
 USING (
     EXISTS (
-        SELECT 1
-        FROM controllable_unit_accounting_point_end_user AS cuapeu
-        WHERE cuapeu.controllable_unit_id = controllable_unit.id -- noqa
-            AND cuapeu.connecting_system_operator_id = current_party()
+        SELECT 1 FROM
+            accounting_point
+        WHERE accounting_point.business_id = controllable_unit.accounting_point_id --noqa
+            AND accounting_point.system_operator_id = current_party()
     )
 );
 
@@ -95,10 +95,10 @@ TO flex_end_user
 USING (
     EXISTS (
         SELECT 1
-        FROM controllable_unit_accounting_point_end_user AS cuapeu
-        WHERE cuapeu.controllable_unit_id = controllable_unit.id -- noqa
-            AND cuapeu.end_user_id = current_party()
-            AND cuapeu.end_user_valid_time_range @> current_timestamp
+        FROM controllable_unit_end_user AS cueu
+        WHERE cueu.controllable_unit_id = controllable_unit.id -- noqa
+            AND cueu.end_user_id = current_party()
+            AND cueu.end_user_valid_time_range @> current_timestamp
     )
 );
 
@@ -114,12 +114,12 @@ TO flex_end_user
 USING (
     EXISTS (
         SELECT 1
-        FROM controllable_unit_accounting_point_end_user AS cuapeu
-        WHERE cuapeu.controllable_unit_id = controllable_unit_history.id -- noqa
+        FROM controllable_unit_end_user AS cueu
+        WHERE cueu.controllable_unit_id = controllable_unit_history.id -- noqa
             -- this version of the CU in the history was in effect
             -- when the current party was the end user of its AP
-            AND cuapeu.end_user_id = current_party()
-            AND cuapeu.end_user_valid_time_range && controllable_unit_history.record_time_range -- noqa
+            AND cueu.end_user_id = current_party()
+            AND cueu.end_user_valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 

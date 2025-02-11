@@ -50,7 +50,7 @@ and support the processes in the value chain.$$;
 
 -- security definer views for RLS
 
-\i authz/controllable_unit_accounting_point_end_user.sql
+\i authz/controllable_unit_end_user.sql
 
 -- RLS
 
