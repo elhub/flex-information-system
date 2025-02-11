@@ -48,6 +48,10 @@ and support the processes in the value chain.$$;
 \i flex/system_operator_product_type_history_audit.sql
 \i flex/technical_resource_history_audit.sql
 
+-- security definer views for RLS
+
+\i authz/controllable_unit_end_user.sql
+
 -- RLS
 
 \i flex/accounting_point_rls.sql

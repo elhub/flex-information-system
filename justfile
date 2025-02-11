@@ -259,8 +259,20 @@ openapi-to-db:
     imports=$(ls db/flex | grep history_audit | sed -e 's|.*|\\i flex/&|')
 
     ed -s "./db/flex_structure.sql" <<EOF
-    /-- history and audit/+,/-- RLS/-d
+    /-- history and audit/+,/-- security/-d
     /-- history and audit/a
+
+    ${imports}
+
+    .
+    wq
+    EOF
+
+    imports=$(ls db/authz | sed -e 's|.*|\\i authz/&|')
+
+    ed -s "./db/flex_structure.sql" <<EOF
+    /-- security/+,/-- RLS/-d
+    /-- security/a
 
     ${imports}
 
