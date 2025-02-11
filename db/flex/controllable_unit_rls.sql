@@ -88,19 +88,34 @@ USING (
 );
 
 -- RLS: CU-EU001
+
+-- check as a SECURITY DEFINER function because AP/APEU have restricted access
+CREATE OR REPLACE FUNCTION check_cu_eu001(
+    eu_id bigint, cu_ap_id text
+)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+SELECT EXISTS (
+    SELECT 1
+        FROM accounting_point AS ap
+        INNER JOIN accounting_point_end_user AS apeu
+            ON apeu.accounting_point_id = ap.id
+    WHERE ap.business_id = cu_ap_id
+        AND apeu.end_user_id = eu_id
+        AND apeu.valid_time_range @> current_timestamp
+);
+$$;
+
 GRANT SELECT ON controllable_unit TO flex_end_user;
 CREATE POLICY "CU_EU001" ON controllable_unit
 FOR SELECT
 TO flex_end_user
 USING (
-    EXISTS (
-        SELECT 1
-            FROM accounting_point AS ap -- noqa
-            INNER JOIN accounting_point_end_user AS apeu
-                ON apeu.accounting_point_id = ap.id
-        WHERE ap.business_id = controllable_unit.accounting_point_id -- noqa
-            AND apeu.end_user_id = current_party()
-            AND apeu.valid_time_range @> current_timestamp
+    check_cu_eu001(
+        current_party(),
+        controllable_unit.accounting_point_id
     )
 );
 
@@ -108,22 +123,38 @@ ALTER TABLE IF EXISTS controllable_unit_history
 ENABLE ROW LEVEL SECURITY;
 
 -- RLS: CU-EU002
+
+-- check as a SECURITY DEFINER function because AP/APEU have restricted access
+CREATE OR REPLACE FUNCTION check_cu_eu002(
+    eu_id bigint, cuh_ap_id text, cuh_record_time_range tstzrange
+)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+SELECT EXISTS (
+    SELECT 1
+        FROM accounting_point AS ap
+        INNER JOIN accounting_point_end_user AS apeu
+            ON apeu.accounting_point_id = ap.id
+    WHERE ap.business_id = cuh_ap_id
+        -- this version of the CU in the history was in effect
+        -- when the current party was the end user of its AP
+        AND apeu.end_user_id = eu_id
+        AND apeu.valid_time_range && cuh_record_time_range
+);
+$$;
+
 GRANT SELECT ON controllable_unit_history TO flex_end_user;
 CREATE POLICY "CU_EU002"
 ON controllable_unit_history
 FOR SELECT
 TO flex_end_user
 USING (
-    EXISTS (
-        SELECT 1
-            FROM accounting_point AS ap -- noqa
-            INNER JOIN accounting_point_end_user AS apeu
-                ON apeu.accounting_point_id = ap.id
-        WHERE ap.business_id = controllable_unit_history.accounting_point_id -- noqa
-            -- this version of the CU in the history was in effect
-            -- when the current party was the end user of its AP
-            AND apeu.end_user_id = current_party()
-            AND apeu.valid_time_range && controllable_unit_history.record_time_range -- noqa
+    check_cu_eu002(
+        current_party(),
+        controllable_unit_history.accounting_point_id,
+        controllable_unit_history.record_time_range
     )
 );
 

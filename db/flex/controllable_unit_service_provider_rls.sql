@@ -54,22 +54,38 @@ TO flex_service_provider
 USING (service_provider_id = current_party());
 
 -- RLS: CUSP-EU001
+
+-- check as a SECURITY DEFINER function because AP/APEU have restricted access
+CREATE OR REPLACE FUNCTION check_cusp_eu001(
+    eu_id bigint, cusp_cu_id bigint, cusp_valid_time_range tstzrange
+)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+SELECT EXISTS (
+    SELECT 1
+    FROM controllable_unit AS cu
+        INNER JOIN accounting_point AS ap
+            ON cu.accounting_point_id = ap.business_id
+        INNER JOIN accounting_point_end_user AS apeu
+            ON ap.id = apeu.accounting_point_id
+    WHERE apeu.end_user_id = eu_id
+        AND cu.id = cusp_cu_id
+        AND cusp_valid_time_range && apeu.valid_time_range
+);
+$$;
+
 GRANT SELECT ON controllable_unit_service_provider TO flex_end_user;
 CREATE POLICY "CUSP_EU001"
 ON controllable_unit_service_provider
 FOR SELECT
 TO flex_end_user
 USING (
-    EXISTS (
-        SELECT 1
-        FROM controllable_unit AS cu
-            INNER JOIN accounting_point AS ap
-                ON cu.accounting_point_id = ap.business_id
-            INNER JOIN accounting_point_end_user AS apeu
-                ON ap.id = apeu.accounting_point_id
-        WHERE apeu.end_user_id = current_party()
-            AND cu.id = controllable_unit_service_provider.controllable_unit_id -- noqa
-            AND controllable_unit_service_provider.valid_time_range && apeu.valid_time_range -- noqa
+    check_cusp_eu001(
+        current_party(),
+        controllable_unit_service_provider.controllable_unit_id,
+        controllable_unit_service_provider.valid_time_range
     )
 );
 
@@ -77,6 +93,30 @@ ALTER TABLE IF EXISTS controllable_unit_service_provider_history
 ENABLE ROW LEVEL SECURITY;
 
 -- RLS: CUSP-EU002
+
+-- check as a SECURITY DEFINER function because AP/APEU have restricted access
+CREATE OR REPLACE FUNCTION check_cusp_eu002(
+    eu_id bigint, cusph_cu_id bigint, cusph_valid_time_range tstzrange
+)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+SELECT EXISTS (
+    SELECT 1
+    FROM controllable_unit AS cu
+        INNER JOIN accounting_point AS ap
+            ON cu.accounting_point_id = ap.business_id
+        INNER JOIN accounting_point_end_user AS apeu
+            ON ap.id = apeu.accounting_point_id
+    WHERE cu.id = cusph_cu_id
+        -- this version of the CUSP in the history puts the contract in the
+        -- period when the current party is the end user of the AP
+        AND apeu.end_user_id = eu_id
+        AND cusph_valid_time_range && apeu.valid_time_range
+);
+$$;
+
 GRANT SELECT ON controllable_unit_service_provider_history
 TO flex_end_user;
 CREATE POLICY "CUSP_EU002"
@@ -84,18 +124,10 @@ ON controllable_unit_service_provider_history
 FOR SELECT
 TO flex_end_user
 USING (
-    EXISTS (
-        SELECT 1
-        FROM controllable_unit AS cu
-            INNER JOIN accounting_point AS ap
-                ON cu.accounting_point_id = ap.business_id
-            INNER JOIN accounting_point_end_user AS apeu
-                ON ap.id = apeu.accounting_point_id
-        WHERE cu.id = controllable_unit_service_provider_history.controllable_unit_id -- noqa
-            -- this version of the CUSP in the history puts the contract in the
-            -- period when the current party is the end user of the AP
-            AND apeu.end_user_id = current_party()
-            AND controllable_unit_service_provider_history.valid_time_range && apeu.valid_time_range -- noqa
+    check_cusp_eu002(
+        current_party(),
+        controllable_unit_service_provider_history.controllable_unit_id,
+        controllable_unit_service_provider_history.valid_time_range
     )
 );
 

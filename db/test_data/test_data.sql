@@ -75,7 +75,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
--- Input type for add_controllable_unit
+-- Types for add_controllable_unit
 DO
 $$
 BEGIN
@@ -98,8 +98,9 @@ CREATE OR REPLACE FUNCTION add_controllable_unit(
 RETURNS bigint
 AS $$
 DECLARE
-  cu_id bigint;
   sp cu_sp;
+  cu record;
+  cusp record;
 BEGIN
   INSERT INTO flex.controllable_unit (
     name,
@@ -129,24 +130,92 @@ BEGIN
     'validated',
     'pqnotes',
     current_timestamp
-  ) RETURNING id INTO cu_id;
+  ) RETURNING * INTO cu;
+
+  -- insert a previous version of that CU long ago (related to end user testing)
+  INSERT INTO flex.controllable_unit_history (
+    id,
+    business_id,
+    name,
+    start_date,
+    regulation_direction,
+    maximum_available_capacity,
+    minimum_duration,
+    maximum_duration,
+    recovery_duration,
+    ramp_rate,
+    status,
+    accounting_point_id,
+    grid_node_id,
+    grid_validation_status,
+    grid_validation_notes,
+    last_validated,
+    created_by_party_id,
+    recorded_by,
+    record_time_range,
+    replaced_by
+  ) VALUES (
+    cu.id,
+    cu.business_id,
+    cu.name || ' FORMER NAME', -- this string will be searched in tests
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record must exist fully during the contract of the former end user
+    -- on the AP
+    tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
+    0
+  );
 
   FOREACH sp IN ARRAY service_providers
   LOOP
     INSERT INTO flex.controllable_unit_service_provider (
       controllable_unit_id, service_provider_id, valid_time_range
     ) VALUES (
-      cu_id, sp.sp_id, sp.valid_time_range
+      cu.id, sp.sp_id, sp.valid_time_range
+    ) RETURNING * INTO cusp;
+
+    -- insert a previous version of that CUSP valid for the previous end user
+    -- (related to end user testing)
+    INSERT INTO flex.controllable_unit_service_provider_history (
+      id,
+      controllable_unit_id,
+      service_provider_id,
+      valid_time_range,
+      record_time_range,
+      recorded_by,
+      replaced_by
+    ) VALUES (
+      cusp.id,
+      cusp.controllable_unit_id,
+      cusp.service_provider_id,
+      tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
+      tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
+      cusp.recorded_by,
+      0
     );
   END LOOP;
 
-  RETURN cu_id;
+  RETURN cu.id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
 -- Add accounting point mapping
 CREATE OR REPLACE FUNCTION add_accounting_points(
     accounting_point_prefix text,
+    former_eu_id bigint,
     eu_id bigint,
     so_id bigint
 )
@@ -179,15 +248,22 @@ BEGIN
       so_id
     ) RETURNING id INTO ap_id;
 
-    INSERT INTO flex.accounting_point_end_user (
-      accounting_point_id,
-      end_user_id,
-      valid_time_range
-    ) VALUES (
-      ap_id,
-      eu_id,
-      tstzrange('2024-01-01 00:00:00+1', null, '[)')
-    );
+    IF former_eu_id IS NOT NULL AND eu_id IS NOT NULL THEN
+      -- insert 2 end users for each accounting point
+      INSERT INTO flex.accounting_point_end_user (
+        accounting_point_id,
+        end_user_id,
+        valid_time_range
+      ) VALUES (
+        ap_id,
+        former_eu_id,
+        tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
+      ), (
+        ap_id,
+        eu_id,
+        tstzrange('2024-01-01 00:00:00+1', null, '[)')
+      );
+    END IF;
   END LOOP;
 END
 $$;
@@ -215,6 +291,7 @@ DECLARE
   sp_id bigint;
   common_sp_id bigint;
   eu_id bigint;
+  common_eu_id bigint;
 
   spg_id bigint;
   spggp_id bigint;
@@ -334,9 +411,6 @@ BEGIN
     );
   end if;
 
-  -- Add accounting points
-  PERFORM add_accounting_points(accounting_point_prefix, eu_id, so_id);
-
   -- Product type
   INSERT INTO flex.system_operator_product_type (
     system_operator_id,
@@ -346,16 +420,19 @@ BEGIN
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
   if not in_add_data then
+    PERFORM add_accounting_points(accounting_point_prefix, null, null, so_id);
     return;
   end if;
 
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
+  common_eu_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' MO');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' SO');
   common_sp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' SP');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' TP');
+
+  PERFORM add_accounting_points(accounting_point_prefix, common_eu_id, eu_id, so_id);
 
   INSERT INTO flex.service_providing_group (
     name, service_provider_id

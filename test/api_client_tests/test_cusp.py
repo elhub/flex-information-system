@@ -267,6 +267,63 @@ def test_cusp_history(data):
             assert len(hist) > 0
 
 
+# RLS: CU-EU001
+# RLS: CU-EU002
+def test_cusp_eu(data):
+    (sts, _) = data
+
+    # former AP end user can see the old version of the CU-SPs in the test data,
+    # but not the current contracts
+
+    client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
+
+    cusphs_former_eu = list_controllable_unit_service_provider_history.sync(
+        client=client_former_eu,
+    )
+    assert isinstance(cusphs_former_eu, list)
+
+    assert len(cusphs_former_eu) > 0
+
+    old_cusphs = list(
+        filter(
+            lambda cusph: str(cusph.valid_to).startswith("2023"),
+            cusphs_former_eu,
+        )
+    )
+
+    assert len(old_cusphs) > 0
+
+    cusp = read_controllable_unit_service_provider.sync(
+        client=client_former_eu,
+        id=cast(int, old_cusphs[0].controllable_unit_service_provider_id),
+    )
+    assert isinstance(cusp, ErrorMessage)
+
+    # current AP end user can see the current version of the CU-SP contract,
+    # but not the old records
+
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+
+    cusp = read_controllable_unit_service_provider.sync(
+        client=client_eu,
+        id=cast(int, old_cusphs[0].controllable_unit_service_provider_id),
+    )
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
+    cusphs_eu = list_controllable_unit_service_provider_history.sync(
+        client=client_eu,
+    )
+    assert isinstance(cusphs_eu, list)
+
+    old_cusphs = list(
+        filter(
+            lambda cusph: str(cusph.valid_to).startswith("2023"),
+            cusphs_eu,
+        )
+    )
+    assert len(old_cusphs) == 0
+
+
 def test_rla_absence(data):
     (sts, _) = data
 
