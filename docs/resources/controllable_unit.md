@@ -94,8 +94,8 @@ No policies.
 
 | Policy key | Policy                                                                                               | Status |
 |------------|------------------------------------------------------------------------------------------------------|--------|
-| CU-BRP001  | Read active CU that are connected to AP where they are BRP. Only for the contract period.            | TODO   |
-| CU-BRP002  | Read history on CU that are connected to AP where they are BRP. Only history on the contract period. | TODO   |
+| CU-BRP001  | Read active CU that are connected to AP where they are BRP. Only for the contract period.            | DONE   |
+| CU-BRP002  | Read history on CU that are connected to AP where they are BRP. Only history on the contract period. | DONE   |
 
 #### End User
 
@@ -108,8 +108,8 @@ No policies.
 
 | Policy key | Policy                                                                                                     | Status |
 |------------|------------------------------------------------------------------------------------------------------------|--------|
-| CU-ES001   | Read active CU that are connected to AP where they are ES. Only for the contract period.                   | TODO   |
-| CU-ES002   | Read history on active CU that are connected to AP where they are ES. Only history on the contract period. | TODO   |
+| CU-ES001   | Read active CU that are connected to AP where they are ES. Only for the contract period.                   | DONE   |
+| CU-ES002   | Read history on active CU that are connected to AP where they are ES. Only history on the contract period. | DONE   |
 
 #### Flexibility Information System Operator
 

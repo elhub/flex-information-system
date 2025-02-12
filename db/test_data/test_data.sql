@@ -212,11 +212,25 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- Types for add_accounting_points
+DO
+$$
+BEGIN
+  CREATE TYPE contract_parties AS (
+      former_id bigint,
+      new_id bigint
+  );
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END
+$$;
+
 -- Add accounting point mapping
 CREATE OR REPLACE FUNCTION add_accounting_points(
     accounting_point_prefix text,
-    former_eu_id bigint,
-    eu_id bigint,
+    end_user contract_parties,
+    energy_supplier contract_parties,
+    balance_responsible_party contract_parties,
     so_id bigint
 )
 RETURNS void
@@ -248,7 +262,7 @@ BEGIN
       so_id
     ) RETURNING id INTO ap_id;
 
-    IF former_eu_id IS NOT NULL AND eu_id IS NOT NULL THEN
+    IF end_user IS NOT NULL THEN
       -- insert 2 end users for each accounting point
       INSERT INTO flex.accounting_point_end_user (
         accounting_point_id,
@@ -256,11 +270,45 @@ BEGIN
         valid_time_range
       ) VALUES (
         ap_id,
-        former_eu_id,
+        end_user.former_id,
         tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
       ), (
         ap_id,
-        eu_id,
+        end_user.new_id,
+        tstzrange('2024-01-01 00:00:00+1', null, '[)')
+      );
+    END IF;
+
+    IF energy_supplier IS NOT NULL THEN
+      -- insert 2 energy suppliers for each accounting point
+      INSERT INTO flex.accounting_point_energy_supplier (
+        accounting_point_id,
+        energy_supplier_id,
+        valid_time_range
+      ) VALUES (
+        ap_id,
+        energy_supplier.former_id,
+        tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
+      ), (
+        ap_id,
+        energy_supplier.new_id,
+        tstzrange('2024-01-01 00:00:00+1', null, '[)')
+      );
+    END IF;
+
+    IF balance_responsible_party IS NOT NULL THEN
+      -- insert 2 balance responsible parties for each accounting point
+      INSERT INTO flex.accounting_point_balance_responsible_party (
+        accounting_point_id,
+        balance_responsible_party_id,
+        valid_time_range
+      ) VALUES (
+        ap_id,
+        balance_responsible_party.former_id,
+        tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
+      ), (
+        ap_id,
+        balance_responsible_party.new_id,
         tstzrange('2024-01-01 00:00:00+1', null, '[)')
       );
     END IF;
@@ -292,6 +340,10 @@ DECLARE
   common_sp_id bigint;
   eu_id bigint;
   common_eu_id bigint;
+  es_id bigint;
+  common_es_id bigint;
+  brp_id bigint;
+  common_brp_id bigint;
 
   spg_id bigint;
   spggp_id bigint;
@@ -346,7 +398,7 @@ BEGIN
 
   -- add parties
 
-  PERFORM add_party_for_entity(
+  brp_id := add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' BRP',
@@ -355,7 +407,7 @@ BEGIN
     'gln'
   );
 
-  PERFORM add_party_for_entity(
+  es_id := add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' ES',
@@ -420,19 +472,31 @@ BEGIN
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
   if not in_add_data then
-    PERFORM add_accounting_points(accounting_point_prefix, null, null, so_id);
+    PERFORM add_accounting_points(
+      accounting_point_prefix,
+      null,
+      null,
+      null,
+      so_id
+    );
     return;
   end if;
 
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
+  common_brp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
   common_eu_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
+  common_es_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' MO');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' SO');
   common_sp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' SP');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' TP');
 
-  PERFORM add_accounting_points(accounting_point_prefix, common_eu_id, eu_id, so_id);
+  PERFORM add_accounting_points(
+    accounting_point_prefix,
+    (common_eu_id, eu_id),
+    (common_es_id, es_id),
+    (common_brp_id, brp_id),
+    so_id
+  );
 
   INSERT INTO flex.service_providing_group (
     name, service_provider_id

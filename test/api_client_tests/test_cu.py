@@ -308,6 +308,108 @@ def test_controllable_unit_eu(sts):
     assert len(old_cuhs) == 0
 
 
+# RLS: CU-ES001
+# RLS: CU-ES002
+def test_controllable_unit_es(sts):
+    # former AP energy supplier can see the old version of the CUs in the test
+    # data, but not the current record
+
+    client_former_es = sts.get_client(TestEntity.COMMON, "ES")
+
+    cuhs_former_es = list_controllable_unit_history.sync(client=client_former_es)
+    assert isinstance(cuhs_former_es, list)
+
+    assert len(cuhs_former_es) > 0
+
+    old_cuhs = list(
+        filter(
+            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            cuhs_former_es,
+        )
+    )
+    assert len(old_cuhs) > 0
+
+    cu = read_controllable_unit.sync(
+        client=client_former_es,
+        id=cast(int, old_cuhs[0].controllable_unit_id),
+    )
+    assert isinstance(cu, ErrorMessage)
+
+    # current AP energy supplier can see the current version of the CU,
+    # but not the old records
+
+    client_es = sts.get_client(TestEntity.TEST, "ES")
+
+    cu = read_controllable_unit.sync(
+        client=client_es,
+        id=cast(int, old_cuhs[0].controllable_unit_id),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    cuhs_eu = list_controllable_unit_history.sync(client=client_es)
+    assert isinstance(cuhs_eu, list)
+
+    old_cuhs = list(
+        filter(
+            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            cuhs_eu,
+        )
+    )
+    assert len(old_cuhs) == 0
+
+
+# RLS: CU-BRP001
+# RLS: CU-BRP002
+def test_controllable_unit_brp(sts):
+    # former AP BRP can see the old version of the CUs in the test data,
+    # but not the current record
+
+    client_former_brp = sts.get_client(TestEntity.COMMON, "BRP")
+
+    cuhs_former_brp = list_controllable_unit_history.sync(
+        client=client_former_brp,
+    )
+    assert isinstance(cuhs_former_brp, list)
+
+    assert len(cuhs_former_brp) > 0
+
+    old_cuhs = list(
+        filter(
+            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            cuhs_former_brp,
+        )
+    )
+    assert len(old_cuhs) > 0
+
+    cu = read_controllable_unit.sync(
+        client=client_former_brp,
+        id=cast(int, old_cuhs[0].controllable_unit_id),
+    )
+    assert isinstance(cu, ErrorMessage)
+
+    # current AP BRP can see the current version of the CU,
+    # but not the old records
+
+    client_brp = sts.get_client(TestEntity.TEST, "BRP")
+
+    cu = read_controllable_unit.sync(
+        client=client_brp,
+        id=cast(int, old_cuhs[0].controllable_unit_id),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    cuhs_eu = list_controllable_unit_history.sync(client=client_brp)
+    assert isinstance(cuhs_eu, list)
+
+    old_cuhs = list(
+        filter(
+            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            cuhs_eu,
+        )
+    )
+    assert len(old_cuhs) == 0
+
+
 def test_controllable_unit_sp(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 

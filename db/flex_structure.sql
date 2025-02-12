@@ -16,7 +16,9 @@ and support the processes in the value chain.$$;
 \i flex/grid_node.sql
 \i flex/grid_edge.sql
 \i flex/accounting_point.sql
+\i flex/accounting_point_balance_responsible_party.sql
 \i flex/accounting_point_end_user.sql
+\i flex/accounting_point_energy_supplier.sql
 \i flex/controllable_unit.sql
 \i flex/controllable_unit_service_provider.sql
 \i flex/notification.sql
@@ -32,7 +34,9 @@ and support the processes in the value chain.$$;
 
 -- history and audit
 
+\i flex/accounting_point_balance_responsible_party_history_audit.sql
 \i flex/accounting_point_end_user_history_audit.sql
+\i flex/accounting_point_energy_supplier_history_audit.sql
 \i flex/accounting_point_history_audit.sql
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
@@ -50,12 +54,16 @@ and support the processes in the value chain.$$;
 
 -- security definer views for RLS
 
+\i authz/controllable_unit_balance_responsible_party.sql
 \i authz/controllable_unit_end_user.sql
+\i authz/controllable_unit_energy_supplier.sql
 
 -- RLS
 
 \i flex/accounting_point_rls.sql
+\i flex/accounting_point_balance_responsible_party_rls.sql
 \i flex/accounting_point_end_user_rls.sql
+\i flex/accounting_point_energy_supplier_rls.sql
 \i flex/controllable_unit_rls.sql
 \i flex/controllable_unit_service_provider_rls.sql
 \i flex/entity_rls.sql
