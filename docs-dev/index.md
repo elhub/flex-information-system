@@ -16,6 +16,8 @@ users/contributors.
 Some additional tools are required:
 
 ```bash
+# golangci-lint is used to lint go code
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 # go-licenses is used to vet go licenses
 go install github.com/google/go-licenses@latest
 #  govulncheck is used to check for vulnerabilities in go dependencies

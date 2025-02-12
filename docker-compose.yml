@@ -42,7 +42,7 @@ services:
     depends_on:
       - db
   backend:
-    image: golang:1.23.5-bullseye
+    image: golang:1.24.0-bullseye
     expose:
       - "7000"
     ports:
