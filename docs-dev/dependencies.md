@@ -48,8 +48,11 @@ Check the latest release at the [Go download page](https://go.dev/dl/).
 First upgrade your go version using `devxp-wsl`.
 
 Then change the go version in [go.mod](../backend/go.mod) and
-[docker-compose.yml](../docker-compose.yml). You can also use
-`go get go@latest` for the go.mod one.
+[docker-compose.yml](../docker-compose.yml). You can also use `go get go@latest`
+for the go.mod one.
+
+Also remember to update/re-install go tools. Check
+[the main dev docs](./index.md).
 
 ### Go dependencies
 

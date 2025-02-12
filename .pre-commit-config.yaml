@@ -58,7 +58,7 @@ repos:
         entry: Only files that have formatters/linters configured are allowed
         language: fail
         # yamllint disable-line rule:line-length
-        exclude: ^(.*ignore|.gitattributes|CODEOWNERS|LICENSE.*|.*justfile|.sqlfluff|.yamlfmt|.*\.tmpl|.*\.ico|.*\.dot|.*\.conf|.*\.cfg|.*\.ini|.*/dhparam|.*Makefile.*|.*Dockerfile.*|.*.docx|.*\.psql|.*\.hurl|.*\.plantuml|.*\.env(\..*)?|.*\.service|.*py.typed|.*.mod|.*.sum|.*authelia/secrets/.*)$
+        exclude: ^(.*ignore|.gitattributes|CODEOWNERS|LICENSE.*|.*justfile|\.teamcity.*|.sqlfluff|.yamlfmt|.*\.tmpl|.*\.ico|.*\.dot|.*\.conf|.*\.cfg|.*\.ini|.*/dhparam|.*Makefile.*|.*Dockerfile.*|.*.docx|.*\.psql|.*\.hurl|.*\.plantuml|.*\.env(\..*)?|.*\.service|.*py.typed|.*.mod|.*.sum|.*authelia/secrets/.*)$
         # https://github.com/pre-commit/identify/blob/main/identify/extensions.py
         exclude_types:
           - json
@@ -103,7 +103,7 @@ repos:
   ## Markdown
   #
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.1
+    rev: v0.17.2
     hooks:
       - id: markdownlint-cli2
         language_version: lts
@@ -112,7 +112,7 @@ repos:
   ## SQL
   #
   - repo: https://github.com/sqlfluff/sqlfluff
-    rev: 3.3.0
+    rev: 3.3.1
     hooks:
       - id: sqlfluff-fix
         exclude: ^backend/event/.*$
@@ -196,7 +196,7 @@ repos:
         exclude: "local/mkdocs/.*"
 
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.18.0
+    rev: v9.20.1
     hooks:
       - id: eslint
         additional_dependencies:
@@ -228,16 +228,19 @@ repos:
   #
   ## Go
   #
-  - repo: https://github.com/golangci/golangci-lint
-    rev: v1.63.4
-    hooks:
-      - id: golangci-lint-config-verify
-
   - repo: local
     hooks:
+      - id: golangci-lint-config-verify
+        name: golangci-lint config verify
+        entry: /usr/bin/bash
+        args: ['-c', 'cd backend && golangci-lint config verify']
+        files: '\.golangci\.(?:yml|yaml|toml|json)'
+        pass_filenames: false
+        language: script
       - id: golangci-lint
         name: golangci-lint
         entry: /usr/bin/bash
+        pass_filenames: false
         args: ['-c', 'cd backend && golangci-lint run --fix']
         types: [go]
         language: script
@@ -265,7 +268,7 @@ repos:
   ## Python
   #
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.9.1"
+    rev: "v0.9.6"
     hooks:
       - id: ruff-format
         exclude: "test/flex/.*"
@@ -274,7 +277,7 @@ repos:
         # test/flex is excluded because it is a generated directory
         exclude: "test/flex/.*"
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.392
+    rev: v1.1.394
     hooks:
       - id: pyright
         # test/flex is excluded because it is a generated directory
@@ -315,7 +318,7 @@ repos:
   ## MegaLinter
   #
   - repo: https://github.com/oxsecurity/megalinter
-    rev: v8.3.0
+    rev: v8.4.2
     hooks:
       - id: megalinter-full
         stages:

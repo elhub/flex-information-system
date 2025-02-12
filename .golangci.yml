@@ -15,7 +15,7 @@ linters:
   enable-all: true
   disable:
     # deprecated linters
-    - exportloopref
+    - tenv
     # depguard checks that package imports are in a
     # list of acceptable packages - not applicable at the moment
     - depguard
