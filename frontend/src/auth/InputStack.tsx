@@ -1,6 +1,6 @@
 import { Children, cloneElement } from "react";
 import { useResourceContext, usePermissions } from "react-admin";
-import { Stack as MUIStack, StackProps } from "@mui/material";
+import { Stack as MUIStack, StackProps, InputAdornment } from "@mui/material";
 import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 
@@ -11,18 +11,24 @@ export const InputStack = (props: StackProps) => {
   const { permissions } = usePermissions();
   const createOrUpdate = useCreateOrUpdate();
 
-  const addPermissionToInput = (input: any) => (
-    <>
-      <FieldTooltip resource={resource} field={input.props.source} />
-      {cloneElement(input, {
-        disabled:
-          input.props.disabled ||
-          !permissions.includes(
-            `${resource}.${input.props.source}.${createOrUpdate}`,
+  const addPermissionToInput = (input: any) =>
+    cloneElement(input, {
+      margin: "none",
+      disabled:
+        input.props.disabled ||
+        !permissions.includes(
+          `${resource}.${input.props.source}.${createOrUpdate}`,
+        ),
+      slotProps: {
+        input: {
+          startAdornment: (
+            <InputAdornment position="start">
+              <FieldTooltip resource={resource} field={input.props.source} />
+            </InputAdornment>
           ),
-      })}
-    </>
-  );
+        },
+      },
+    });
 
   return (
     <MUIStack {...rest}>
