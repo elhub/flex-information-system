@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -39,22 +40,6 @@ func NewAPI(
 	}, nil
 }
 
-// PostgRESTHandler forwards the request to the PostgREST API.
-func (data *API) PostgRESTHandler(ctx *gin.Context) {
-	url := ctx.Param("url")
-
-	proxy := httputil.NewSingleHostReverseProxy(data.postgRESTURL)
-	proxy.Director = func(req *http.Request) {
-		req.Header = ctx.Request.Header
-		req.Host = data.postgRESTURL.Host
-		req.URL.Scheme = data.postgRESTURL.Scheme
-		req.URL.Host = data.postgRESTURL.Host
-		req.URL.Path = url
-	}
-
-	proxy.ServeHTTP(ctx.Writer, ctx.Request)
-}
-
 // Custom implementation of ResponseWriter. This allows us to have access to the
 // response body before it is written, and possibly change it.
 type bodyResponseWriter struct {
@@ -67,6 +52,91 @@ type bodyResponseWriter struct {
 // written normally.
 func (brw bodyResponseWriter) Write(b []byte) (int, error) {
 	return brw.body.Write(b) //nolint:wrapcheck
+}
+
+// PostgRESTHandler forwards the request to the PostgREST API.
+func (data *API) PostgRESTHandler(ctx *gin.Context) { //nolint:funlen
+	// regexes for calls targeting a single ID and history pages, which are not
+	// valid formats in PostgREST
+	regexID := regexp.MustCompile("^/([a-z_]+)/([0-9]+)$")
+	regexHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)/history$")
+
+	url := ctx.Param("url")
+	query := ctx.Request.URL.Query()
+
+	// rewrite the URL and query to match the PostgREST format
+	matchID := regexID.FindStringSubmatch(url)
+	if matchID != nil {
+		url = "/" + matchID[1]
+		query.Set("id", "eq."+matchID[2])
+		slog.InfoContext(
+			ctx,
+			"API call targeting a single-ID record. Rewriting into PostgREST format.",
+			"new url", url, "new query", query.Encode(),
+		)
+	} else {
+		matchHistory := regexHistory.FindStringSubmatch(url)
+		if matchHistory != nil {
+			url = "/" + matchHistory[1] + "_history"
+			query.Set(matchHistory[1]+"_id", "eq."+matchHistory[2])
+			slog.InfoContext(
+				ctx,
+				"API call targeting a history resource. Rewriting into PostgREST format.",
+				"new url", url, "new query", query.Encode(),
+			)
+		}
+	}
+
+	proxy := httputil.NewSingleHostReverseProxy(data.postgRESTURL)
+	proxy.Director = func(req *http.Request) {
+		req.Header = ctx.Request.Header
+		req.Host = data.postgRESTURL.Host
+		req.URL.Scheme = data.postgRESTURL.Scheme
+		req.URL.Host = data.postgRESTURL.Host
+		req.URL.Path = url
+		req.URL.RawQuery = query.Encode()
+	}
+
+	/*
+		Single-ID calls are supposed to return only one record, but the rewrites
+		done above turn them into list calls returning this single record in a list.
+		To fix this, in this specific case, we catch the body returned by PostgREST
+		and extract the single record.
+
+		We could have used proxy.ModifyResponse but the Gin way is arguably easier
+		than having to replace the body in an stdlib http.Response.
+	*/
+
+	// change the writer to capture the response body from PostgREST
+	rw := ctx.Writer
+	brw := &bodyResponseWriter{
+		body:           bytes.NewBufferString(""),
+		ResponseWriter: rw,
+	}
+	ctx.Writer = brw
+
+	// ↑ before PostgREST
+
+	proxy.ServeHTTP(ctx.Writer, ctx.Request)
+
+	// ↓ after PostgREST
+
+	body := brw.body.Bytes()
+
+	// do this rewrite only for initially single-ID calls returning a list
+	if matchID != nil {
+		if isListBody, _ := regexp.Match("\\[.*\\]", body); isListBody {
+			slog.InfoContext(
+				ctx,
+				"Rewritten single-ID call returned a list. Extracting the record.",
+				"body", body,
+			)
+			body = body[1 : len(body)-1]
+		}
+	}
+
+	ctx.Writer = rw
+	ctx.Writer.Write(body) //nolint:errcheck,gosec
 }
 
 // errorMessage is the format of PostgREST error messages.
