@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -41,15 +42,45 @@ func NewAPI(
 
 // PostgRESTHandler forwards the request to the PostgREST API.
 func (data *API) PostgRESTHandler(ctx *gin.Context) {
+	// regex for calls targeting a single ID and history pages, which are not
+	// valid formats in PostgREST
+	regexIDHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)(/history)?$")
+
 	url := ctx.Param("url")
+	query := ctx.Request.URL.Query()
+	header := ctx.Request.Header
+
+	// rewrite the URL and query to match the PostgREST format
+	if match := regexIDHistory.FindStringSubmatch(url); match != nil {
+		if match[3] != "" { // history
+			url = "/" + match[1] + "_history"
+			query.Set(match[1]+"_id", "eq."+match[2])
+			slog.InfoContext(
+				ctx,
+				"API call targeting a history resource. Rewriting into PostgREST format.",
+				"new url", url, "new query", query.Encode(),
+			)
+		} else { // single ID
+			url = "/" + match[1]
+			query.Set("id", "eq."+match[2])
+			// force PostgREST to return a single object
+			header.Set("Accept", "application/vnd.pgrst.object+json")
+			slog.InfoContext(
+				ctx,
+				"API call targeting a single-ID record. Rewriting into PostgREST format.",
+				"new url", url, "new query", query.Encode(),
+			)
+		}
+	}
 
 	proxy := httputil.NewSingleHostReverseProxy(data.postgRESTURL)
 	proxy.Director = func(req *http.Request) {
-		req.Header = ctx.Request.Header
+		req.Header = header
 		req.Host = data.postgRESTURL.Host
 		req.URL.Scheme = data.postgRESTURL.Scheme
 		req.URL.Host = data.postgRESTURL.Host
 		req.URL.Path = url
+		req.URL.RawQuery = query.Encode()
 	}
 
 	proxy.ServeHTTP(ctx.Writer, ctx.Request)
