@@ -15,7 +15,7 @@ with open(sys.argv[1], "r") as f:
 # Define the payload
 payload = {
     # Audience
-    "aud": "https://flex.localhost:6443/auth/v0/",
+    "aud": "https://test.flex.internal:6443/auth/v0/",
     # Issuer
     "iss": "no:entity:pid:13370000001",  # Test Suite
     # JWT ID

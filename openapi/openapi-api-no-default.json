@@ -13539,7 +13539,7 @@
     },
     "servers": [
         {
-            "url": "https://flex.localhost:6443/api/v0",
+            "url": "https://test.flex.internal:6443/api/v0",
             "description": "Development"
         }
     ]

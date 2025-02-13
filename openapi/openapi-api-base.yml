@@ -71,5 +71,5 @@ paths:
 servers:
   - url: https://flex-test.elhub.no/api/v0
     description: External test environment
-  - url: https://flex.localhost:6443/api/v0
+  - url: https://test.flex.internal:6443/api/v0
     description: Local development

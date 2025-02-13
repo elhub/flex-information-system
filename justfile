@@ -48,7 +48,9 @@ load:
     docker compose restart backend
 
     echo Loaded!
-    echo Hit https://flex.localhost:6443/ to log in
+    echo Hit one of the following to log in:
+    echo ' - TEST : https://test.flex.internal:6443/'
+    echo ' - DEV : https://dev.flex.internal:5443/'
 
 # reload the database
 reload: unload load
@@ -65,6 +67,14 @@ down:
 
 # stop (remove) and start the local database
 reset: down pull build start load
+
+# start backend in dev mode
+backend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    set -a; source ./local/backend/dev.env; set +a
+    cd backend
+    go run ./cmd/flex
 
 # connect to local database (no password required)
 connect user="postgres":
@@ -113,15 +123,15 @@ _keypair:
 test-local *args: (_venv)
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://flex.localhost:6443"
+    export FLEX_URL_BASE="https://test.flex.internal:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
     .venv/bin/python test/test.py {{args}}
 
 test-dev *args:
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://flex.localhost:6443"
-    export FLEX_AUTH_BASE="http://flex.localhost:7000"
+    export FLEX_URL_BASE="https://test.flex.internal:6443"
+    export FLEX_AUTH_BASE="http://test.flex.internal:7000"
     .venv/bin/python test/test.py {{args}}
 
 test *args:
@@ -132,7 +142,7 @@ test *args:
 pytest *args: (_venv)
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://flex.localhost:6443"
+    export FLEX_URL_BASE="https://test.flex.internal:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
 
     .venv/bin/python \
