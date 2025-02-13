@@ -17,6 +17,7 @@
 !.spectral.yaml
 !.eslintrc.js
 *.dot
+!.air.toml
 # draw.io
 *:PG$Secure
 *:Zone.Identifier
