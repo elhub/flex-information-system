@@ -51,20 +51,19 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	header := ctx.Request.Header
 
 	// rewrite the URL and query to match the PostgREST format
-	matchIDHistory := regexIDHistory.FindStringSubmatch(url)
-	if matchIDHistory != nil {
-		slog.InfoContext(ctx, "sor", "url", url, "match", matchIDHistory)
-		if matchIDHistory[3] != "" { // history
-			url = "/" + matchIDHistory[1] + "_history"
-			query.Set(matchIDHistory[1]+"_id", "eq."+matchIDHistory[2])
+	if match := regexIDHistory.FindStringSubmatch(url); match != nil {
+		if match[3] != "" { // history
+			url = "/" + match[1] + "_history"
+			query.Set(match[1]+"_id", "eq."+match[2])
 			slog.InfoContext(
 				ctx,
 				"API call targeting a history resource. Rewriting into PostgREST format.",
 				"new url", url, "new query", query.Encode(),
 			)
 		} else { // single ID
-			url = "/" + matchIDHistory[1]
-			query.Set("id", "eq."+matchIDHistory[2])
+			url = "/" + match[1]
+			query.Set("id", "eq."+match[2])
+			// force PostgREST to return a single object
 			header.Set("Accept", "application/vnd.pgrst.object+json")
 			slog.InfoContext(
 				ctx,
