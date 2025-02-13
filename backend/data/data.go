@@ -50,6 +50,16 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	query := ctx.Request.URL.Query()
 	header := ctx.Request.Header
 
+	if ctx.Request.Method == http.MethodPost {
+		// ensure singular when object is created
+		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
+		header.Set("Accept", "application/vnd.pgrst.object+json")
+
+		// ensure that object is returned on insert and update
+		// https://postgrest.org/en/latest/references/preferences.html#prefer-return
+		header.Set("Prefer", "return=representation")
+	}
+
 	// rewrite the URL and query to match the PostgREST format
 	if match := regexIDHistory.FindStringSubmatch(url); match != nil {
 		if match[3] != "" { // history
