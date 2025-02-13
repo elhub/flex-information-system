@@ -267,8 +267,8 @@ def test_cusp_history(data):
             assert len(hist) > 0
 
 
-# RLS: CU-EU001
-# RLS: CU-EU002
+# RLS: CUSP-EU001
+# RLS: CUSP-EU002
 def test_cusp_eu(data):
     (sts, _) = data
 

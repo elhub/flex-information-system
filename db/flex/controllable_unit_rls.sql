@@ -102,6 +102,36 @@ USING (
     )
 );
 
+-- RLS: CU-ES001
+GRANT SELECT ON controllable_unit TO flex_energy_supplier;
+CREATE POLICY "CU_ES001" ON controllable_unit
+FOR SELECT
+TO flex_energy_supplier
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit_energy_supplier AS cues
+        WHERE cues.controllable_unit_id = controllable_unit.id -- noqa
+            AND cues.energy_supplier_id = current_party()
+            AND cues.energy_supplier_valid_time_range @> current_timestamp
+    )
+);
+
+-- RLS: CU-BRP001
+GRANT SELECT ON controllable_unit TO flex_balance_responsible_party;
+CREATE POLICY "CU_BRP001" ON controllable_unit
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit_balance_responsible_party AS cubrp
+        WHERE cubrp.controllable_unit_id = controllable_unit.id -- noqa
+            AND cubrp.balance_responsible_party_id = current_party()
+            AND cubrp.balance_responsible_party_valid_time_range @> current_timestamp -- noqa
+    )
+);
+
 ALTER TABLE IF EXISTS controllable_unit_history
 ENABLE ROW LEVEL SECURITY;
 
@@ -120,6 +150,42 @@ USING (
             -- when the current party was the end user of its AP
             AND cueu.end_user_id = current_party()
             AND cueu.end_user_valid_time_range && controllable_unit_history.record_time_range -- noqa
+    )
+);
+
+-- RLS: CU-ES002
+GRANT SELECT ON controllable_unit_history TO flex_energy_supplier;
+CREATE POLICY "CU_ES002"
+ON controllable_unit_history
+FOR SELECT
+TO flex_energy_supplier
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit_energy_supplier AS cues
+        WHERE cues.controllable_unit_id = controllable_unit_history.id -- noqa
+            -- this version of the CU in the history was in effect
+            -- when the current party was the energy supplier of its AP
+            AND cues.energy_supplier_id = current_party()
+            AND cues.energy_supplier_valid_time_range && controllable_unit_history.record_time_range -- noqa
+    )
+);
+
+-- RLS: CU-BRP002
+GRANT SELECT ON controllable_unit_history TO flex_balance_responsible_party;
+CREATE POLICY "CU_BRP002"
+ON controllable_unit_history
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit_balance_responsible_party AS cubrp
+        WHERE cubrp.controllable_unit_id = controllable_unit_history.id -- noqa
+            -- this version of the CU in the history was in effect when
+            -- the current party was the balance responsible party of its AP
+            AND cubrp.balance_responsible_party_id = current_party()
+            AND cubrp.balance_responsible_party_valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 
