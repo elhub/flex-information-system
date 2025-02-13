@@ -50,6 +50,8 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	query := ctx.Request.URL.Query()
 	header := ctx.Request.Header
 
+	header.Set("Content-Type", "application/json")
+
 	if ctx.Request.Method == http.MethodPost {
 		// ensure singular when object is created
 		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
