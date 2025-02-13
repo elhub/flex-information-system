@@ -42,34 +42,33 @@ func NewAPI(
 
 // PostgRESTHandler forwards the request to the PostgREST API.
 func (data *API) PostgRESTHandler(ctx *gin.Context) {
-	// regexes for calls targeting a single ID and history pages, which are not
+	// regex for calls targeting a single ID and history pages, which are not
 	// valid formats in PostgREST
-	regexID := regexp.MustCompile("^/([a-z_]+)/([0-9]+)$")
-	regexHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)/history$")
+	regexIDHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)(/history)?$")
 
 	url := ctx.Param("url")
 	query := ctx.Request.URL.Query()
 	header := ctx.Request.Header
 
 	// rewrite the URL and query to match the PostgREST format
-	matchID := regexID.FindStringSubmatch(url)
-	if matchID != nil {
-		url = "/" + matchID[1]
-		query.Set("id", "eq."+matchID[2])
-		header.Set("Accept", "application/vnd.pgrst.object+json")
-		slog.InfoContext(
-			ctx,
-			"API call targeting a single-ID record. Rewriting into PostgREST format.",
-			"new url", url, "new query", query.Encode(),
-		)
-	} else {
-		matchHistory := regexHistory.FindStringSubmatch(url)
-		if matchHistory != nil {
-			url = "/" + matchHistory[1] + "_history"
-			query.Set(matchHistory[1]+"_id", "eq."+matchHistory[2])
+	matchIDHistory := regexIDHistory.FindStringSubmatch(url)
+	if matchIDHistory != nil {
+		slog.InfoContext(ctx, "sor", "url", url, "match", matchIDHistory)
+		if matchIDHistory[3] != "" { // history
+			url = "/" + matchIDHistory[1] + "_history"
+			query.Set(matchIDHistory[1]+"_id", "eq."+matchIDHistory[2])
 			slog.InfoContext(
 				ctx,
 				"API call targeting a history resource. Rewriting into PostgREST format.",
+				"new url", url, "new query", query.Encode(),
+			)
+		} else { // single ID
+			url = "/" + matchIDHistory[1]
+			query.Set("id", "eq."+matchIDHistory[2])
+			header.Set("Accept", "application/vnd.pgrst.object+json")
+			slog.InfoContext(
+				ctx,
+				"API call targeting a single-ID record. Rewriting into PostgREST format.",
 				"new url", url, "new query", query.Encode(),
 			)
 		}
