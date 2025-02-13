@@ -18,6 +18,7 @@ import (
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/graceful"
 	"github.com/gin-gonic/gin"
 
 	sloggin "github.com/samber/slog-gin"
@@ -28,6 +29,8 @@ var errMissingEnv = errors.New("environment variable not set")
 const requestDetailsContextKey = "_flex/auth"
 
 // Run is the main entry point for the application.
+//
+//nolint:gocyclo
 func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx
 	// Sets the global TracerProvider.
 	trace.Init()
@@ -180,50 +183,56 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	go func() {
 		// loop in case the replication connection drops
 		for {
-			slog.InfoContext(ctx, "Launching the event worker...")
-			backoffWithContext = backoff.WithContext(ebo, ctx)
-			var replConn *pgrepl.Connection
-			err = backoff.Retry(func() error {
-				var err error
-				slog.InfoContext(ctx, "Trying to connect to the replication slot...")
-				replConn, err = pgrepl.NewConnection(
-					ctx,
-					replURI,
-					eventSlotName,
-					[]string{"flex.event"},
-					"event-worker-replication",
+			select {
+			case <-ctx.Done():
+				slog.InfoContext(ctx, "context canceled, stopping event worker")
+				return
+			default:
+				slog.InfoContext(ctx, "Launching the event worker...")
+				backoffWithContext = backoff.WithContext(ebo, ctx)
+				var replConn *pgrepl.Connection
+				err = backoff.Retry(func() error {
+					var err error
+					slog.InfoContext(ctx, "Trying to connect to the replication slot...")
+					replConn, err = pgrepl.NewConnection(
+						ctx,
+						replURI,
+						eventSlotName,
+						[]string{"flex.event"},
+						"event-worker-replication",
+					)
+					if err != nil {
+						slog.InfoContext(ctx, "Failed", "error", err.Error())
+						return fmt.Errorf("failed to create replication listener: %w", err)
+					}
+					return nil
+				}, backoffWithContext)
+				if err != nil {
+					slog.InfoContext(ctx, "exhausted db connection retries", "error", err.Error())
+					return
+				}
+				slog.InfoContext(ctx, "Connected to the replication slot!")
+				defer replConn.Close(ctx) //nolint:errcheck
+
+				eventWorker, err := event.NewWorker(
+					replConn, dbPool, requestDetailsContextKey, "event-worker",
 				)
 				if err != nil {
-					slog.InfoContext(ctx, "Failed", "error", err.Error())
-					return fmt.Errorf("failed to create replication listener: %w", err)
+					slog.InfoContext(ctx, "failed to create event worker", "error", err.Error())
 				}
-				return nil
-			}, backoffWithContext)
-			if err != nil {
-				slog.InfoContext(ctx, "exhausted db connection retries", "error", err.Error())
-				return
-			}
-			slog.InfoContext(ctx, "Connected to the replication slot!")
-			defer replConn.Close(ctx) //nolint:errcheck
-
-			eventWorker, err := event.NewWorker(
-				replConn, dbPool, requestDetailsContextKey, "event-worker",
-			)
-			if err != nil {
-				slog.InfoContext(ctx, "failed to create event worker", "error", err.Error())
-			}
-			// this ends on error, so we loop and recreate the replication connection
-			err = eventWorker.Start(ctx)
-			if err != nil {
-				slog.InfoContext(ctx, "failure in event worker", "error", err.Error())
-
-				err = eventWorker.Stop(ctx)
+				// this ends on error, so we loop and recreate the replication connection
+				err = eventWorker.Start(ctx)
 				if err != nil {
-					slog.InfoContext(ctx, "could not stop event worker", "error", err.Error())
-				}
+					slog.InfoContext(ctx, "failure in event worker", "error", err.Error())
 
-				slog.InfoContext(ctx, "Waiting before retrying the event worker...")
-				time.Sleep(15 * time.Second) //nolint:mnd
+					err = eventWorker.Stop(ctx)
+					if err != nil {
+						slog.InfoContext(ctx, "could not stop event worker", "error", err.Error())
+					}
+
+					slog.InfoContext(ctx, "Waiting before retrying the event worker...")
+					time.Sleep(15 * time.Second) //nolint:mnd
+				}
 			}
 		}
 	}()
@@ -231,8 +240,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// finally the web server pointing to the handlers defined in the API service
 
 	slog.InfoContext(ctx, "Launching the web server... ")
+	addr := ":" + port
 
-	router := gin.New()
+	router, err := graceful.Default(graceful.WithAddr(addr))
+	if err != nil {
+		return fmt.Errorf("could not create router: %w", err)
+	}
 
 	// Enabling the fallback context ensures that gin falls back to the underlying context.Context.
 	// It must be set e.g. for otel tracing to work.
@@ -288,9 +301,9 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		dataAPI.PostgRESTHandler,
 	)
 
-	addr := ":" + port
 	slog.InfoContext(ctx, "Running server on server on"+addr)
-	err = router.Run(addr)
+
+	err = router.RunWithContext(ctx)
 	if err != nil {
 		return fmt.Errorf("router failed: %w", err)
 	}

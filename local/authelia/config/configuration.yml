@@ -1,6 +1,10 @@
 ---
 # https://www.authelia.com/configuration/prologue/introduction/
 # secretlint-disable
+server:
+  tls:
+    key: '/key.pem'
+    certificate: '/certificate.pem'
 storage:
   local:
     path: '/config/.db.sqlite3'
@@ -8,8 +12,8 @@ access_control:
   default_policy: 'one_factor'
 session:
   cookies:
-    - domain: 'idp.flex.localhost'
-      authelia_url: 'https://idp.flex.localhost:9091/'
+    - domain: 'idp.flex.internal'
+      authelia_url: 'https://idp.flex.internal:9091/'
       name: 'flex_session'
       same_site: 'lax'
       inactivity: '5m'
@@ -17,8 +21,10 @@ session:
       remember_me: '1d'
     # This cookie is just a workaround for logout redirect to work
     # https://github.com/authelia/authelia/issues/5368#issuecomment-1654481662
-    - domain: 'flex.localhost'
-      authelia_url: 'https://idp.flex.localhost:9091/'
+    - domain: 'test.flex.internal'
+      authelia_url: 'https://idp.test.flex.internal:9091/'
+    - domain: 'dev.flex.internal'
+      authelia_url: 'https://idp.dev.flex.internal:9091/'
 authentication_backend:
   file:
     path: '/config/users.yml'
@@ -102,8 +108,8 @@ identity_providers:
         authorization_policy: 'one_factor'
         public: false
         redirect_uris:
-          - 'https://flex.localhost:6443/auth/v0/callback'
-          - 'https://flex.localhost:5443/auth/v0/callback'
+          - 'https://test.flex.internal:6443/auth/v0/callback'
+          - 'https://dev.flex.internal:5443/auth/v0/callback'
         scopes:
           - 'openid'
           - 'profile' # to get preferred_username

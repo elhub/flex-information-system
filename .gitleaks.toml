@@ -5,6 +5,7 @@ description = "Allowlisted files"
 paths = [
   '''docker-compose.yml''',
   '''local/authelia''',
+  '''local/backend''',
   '''test''',
   '''megalinter-reports''',
   '''.github/linters''',
