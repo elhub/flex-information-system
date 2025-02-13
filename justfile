@@ -74,7 +74,14 @@ backend:
     set -euo pipefail
     set -a; source ./local/backend/dev.env; set +a
     cd backend
-    go run ./cmd/flex
+    air
+
+# start frontend in dev mode
+frontend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd frontend
+    npm run dev
 
 # connect to local database (no password required)
 connect user="postgres":

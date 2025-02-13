@@ -26,6 +26,8 @@ go install golang.org/x/vuln/cmd/govulncheck@latest
 go install golang.org/x/tools/cmd/stringer@latest
 # enumer is similar to stringer, but generates string to enum-method as well
 go install github.com/PotatoesFall/enumer@latest
+# air is used to hot reload the go backend
+go install github.com/air-verse/air@latest
 ```
 
 ```bash
@@ -88,6 +90,6 @@ This starts the `test` environment at
 [https://test.flex.internal:6443](https://test.flex.internal:6443).
 
 To start the `dev` environment, first stop the backend container with
-`docker compose stop backend` and run `npm run dev` for frontend and
+`docker compose stop backend` and run `just frontend` for frontend and
 `just backend` for the backend (in separate terminals). The dev environment is
 available at [https://dev.flex.internal:5443](https://dev.flex.internal:5443).
