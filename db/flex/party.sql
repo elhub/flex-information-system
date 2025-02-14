@@ -59,7 +59,9 @@ CREATE TABLE IF NOT EXISTS party (
 );
 
 -- only one end_user party per entity
-CREATE INDEX uk_entity_end_user ON party (entity_id) WHERE (type = 'end_user');
+CREATE INDEX IF NOT EXISTS uk_entity_end_user ON party (entity_id) WHERE (
+    type = 'end_user'
+);
 
 DROP TRIGGER IF EXISTS party_role_exists ON party;
 CREATE CONSTRAINT TRIGGER party_role_exists
