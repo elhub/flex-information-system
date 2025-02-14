@@ -208,31 +208,75 @@ BEGIN
 END;
 $$;
 
--- restrict edits to a 'valid time' timeline
--- to a fixed interval back in time before the insert/update operation
-CREATE OR REPLACE FUNCTION timeline_restrict()
+DO
+$$
+BEGIN
+  CREATE TYPE time_update AS (
+      value_before timestamptz,
+      value_after timestamptz
+  );
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END
+$$;
+
+-- freeze a 'valid time' timeline before a certain date :
+--   no date can be inserted or updated before the limit
+CREATE OR REPLACE FUNCTION timeline_freeze()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
 AS $$
 DECLARE
     -- interval allowed back in time
-    tl_interval text := TG_ARGV[0];
-    tl_valid_time_start timestamptz;
+    tl_freeze_interval text := TG_ARGV[0];
+    -- time field updates
+    tl_time_updates time_update[] := ARRAY[]::time_update[];
+    tl_update time_update;
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        tl_valid_time_start = lower(NEW.valid_time_range);
-    ELSE
-        tl_valid_time_start = lower(OLD.valid_time_range);
+        tl_time_updates := ARRAY[
+            (null, lower(NEW.valid_time_range)),
+            (null, upper(NEW.valid_time_range))
+        ]::time_update[];
+    ELSIF TG_OP = 'UPDATE' THEN
+        tl_time_updates := ARRAY[
+            (lower(OLD.valid_time_range), lower(NEW.valid_time_range)),
+            (upper(OLD.valid_time_range), upper(NEW.valid_time_range))
+        ]::time_update[];
     END IF;
 
-    IF tl_valid_time_start < current_timestamp - tl_interval::interval
-    THEN
-        RAISE sqlstate 'PT400' using
-            message = 'Cannot set valid time on contract '
-                || 'more than ' || tl_interval || ' back in time';
-        RETURN null;
-    END IF;
+    FOREACH tl_update IN ARRAY tl_time_updates LOOP
+        IF
+            -- the value is new or changed
+            (
+                tl_update.value_before IS NULL
+                OR tl_update.value_after != tl_update.value_before
+            )
+            AND
+            (
+                -- the former value was in the frozen past
+                (
+                    tl_update.value_before IS NOT NULL
+                    AND tl_update.value_before
+                            < current_timestamp - tl_freeze_interval::interval
+                )
+                OR
+                -- the new value is in the frozen past
+                (
+                    tl_update.value_after IS NOT NULL
+                    AND tl_update.value_after
+                            < current_timestamp - tl_freeze_interval::interval
+                )
+            )
+        THEN
+            RAISE sqlstate 'PT400' using
+                message = 'Cannot set valid time on contract '
+                    || 'more than ' || tl_freeze_interval || ' back in time';
+            RETURN null;
+        END IF;
+        RAISE NOTICE 'ok';
+    END LOOP;
 
     IF TG_OP = 'DELETE' THEN
         RETURN null;
