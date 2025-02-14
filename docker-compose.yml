@@ -46,7 +46,7 @@ services:
     expose:
       - "7000"
     ports:
-      - "7000:7000"
+      - "7001:7000"
     env_file: "./local/backend/test.env"
     volumes:
       - type: bind
