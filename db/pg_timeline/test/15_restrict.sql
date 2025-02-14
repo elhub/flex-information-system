@@ -29,7 +29,7 @@ end;
 $$ language plpgsql;
 
 begin;
-select plan(1);
+select plan(4);
 
 insert into pgtl_restrict (tl_id, value, valid_time_range)
 values
@@ -58,27 +58,7 @@ values
         current_timestamp + '3 days'::interval,
         current_timestamp + '5 days'::interval
     )
-),
--- starting before the limit : KO
-(
-    1,
-    'e',
-    tstzrange(
-        current_timestamp - '9 days'::interval,
-        current_timestamp - '7 days'::interval
-    )
-),
-(
-    1,
-    'f',
-    tstzrange(
-        current_timestamp - '9 days'::interval,
-        current_timestamp - '3 days'::interval
-    )
-),
-(1, 'g', tstzrange(current_timestamp - '9 days'::interval, null))
-on conflict do nothing;
-
+);
 select bag_eq(
     'SELECT v from pgtl_restrict_actual()',
     $$VALUES
@@ -89,6 +69,43 @@ select bag_eq(
         $$,
     'Insert restricted contract'
 );
+
+-- starting before the limit : KO
+
+-- noqa: disable=all
+prepare try_insert_e as
+insert into pgtl_restrict (tl_id, value, valid_time_range)
+values
+(
+    1,
+    'e',
+    tstzrange(
+        current_timestamp - '9 days'::interval,
+        current_timestamp - '7 days'::interval
+    )
+);
+
+prepare try_insert_f as
+insert into pgtl_restrict (tl_id, value, valid_time_range)
+values
+(
+    1,
+    'f',
+    tstzrange(
+        current_timestamp - '9 days'::interval,
+        current_timestamp - '3 days'::interval
+    )
+);
+
+prepare try_insert_g as
+insert into pgtl_restrict (tl_id, value, valid_time_range)
+values
+(1, 'g', tstzrange(current_timestamp - '9 days'::interval, null));
+-- noqa: enable=all
+
+select throws_ok('try_insert_e');
+select throws_ok('try_insert_f');
+select throws_ok('try_insert_g');
 
 select finish();
 
