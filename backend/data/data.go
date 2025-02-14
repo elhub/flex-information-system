@@ -50,6 +50,8 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	query := ctx.Request.URL.Query()
 	header := ctx.Request.Header
 
+	header.Set("Content-Type", "application/json")
+
 	if ctx.Request.Method == http.MethodPost {
 		// ensure singular when object is created
 		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
@@ -142,14 +144,14 @@ func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 		if ctx.Writer.Status() >= http.StatusBadRequest { //nolint:nestif
 			// error => parse the body, modify it, and write it to the actual response
 			var errorBody errorMessage
-			if err := json.Unmarshal(brw.body.Bytes(), &errorBody); err != nil {
+			if err := json.Unmarshal(brw.body.Bytes(), &errorBody); err != nil || errorBody.Code == "" {
 				slog.InfoContext(
 					ctx,
 					"data API failure (not in PostgREST format)",
 					"error", brw.body.String(),
 				)
-				ctx.Writer.Write(brw.body.Bytes()) //nolint:errcheck,gosec
-				return
+				errorBody.Code = fmt.Sprintf("HTTP%d", ctx.Writer.Status())
+				errorBody.Message = http.StatusText(ctx.Writer.Status())
 			}
 
 			// general error message rewrites to hide the default PostgREST ones
