@@ -219,11 +219,8 @@ DECLARE
     -- interval allowed back in time
     tl_interval text := TG_ARGV[0];
 BEGIN
-    IF (
-        upper(OLD.valid_time_range) IS NOT NULL
-        AND upper(OLD.valid_time_range)
-            < current_timestamp - tl_interval::interval
-    ) THEN
+    IF lower(OLD.valid_time_range) < current_timestamp - tl_interval::interval
+    THEN
         RAISE sqlstate 'PT400' using
             message = 'Cannot set valid time on contract '
                 || 'more than ' || tl_interval || ' back in time';
