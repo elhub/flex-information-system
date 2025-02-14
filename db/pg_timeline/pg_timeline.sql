@@ -207,3 +207,37 @@ BEGIN
     RETURN l_new;
 END;
 $$;
+
+-- restrict edits to a 'valid time' timeline
+-- to a fixed interval back in time before the insert/update operation
+CREATE OR REPLACE FUNCTION timeline_restrict()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    -- interval allowed back in time
+    tl_interval text := TG_ARGV[0];
+    tl_valid_time_start timestamptz;
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        tl_valid_time_start = lower(NEW.valid_time_range);
+    ELSE
+        tl_valid_time_start = lower(OLD.valid_time_range);
+    END IF;
+
+    IF tl_valid_time_start < current_timestamp - tl_interval::interval
+    THEN
+        RAISE sqlstate 'PT400' using
+            message = 'Cannot set valid time on contract '
+                || 'more than ' || tl_interval || ' back in time';
+        RETURN null;
+    END IF;
+
+    IF TG_OP = 'DELETE' THEN
+        RETURN null;
+    ELSE
+        RETURN NEW;
+    END IF;
+END;
+$$;

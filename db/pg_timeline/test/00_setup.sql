@@ -13,4 +13,4 @@ select finish();
 rollback;
 
 -- load our functions
-\i /pg_timeline/pg_timeline.sql
+\i /db/pg_timeline/pg_timeline.sql
