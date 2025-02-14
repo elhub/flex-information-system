@@ -23,6 +23,18 @@ of one service provider per activation period.
 
 ## Validation Rules
 
+### Inter-Field Validation
+
+| Validation rule key | Validation rule                                        | Status |
+|---------------------|--------------------------------------------------------|--------|
+| CUSP-IFV001         | Valid time older than 2 weeks can only be set by FISO. | DONE   |
+
+### Resource-Level Validation
+
+No validation rules
+
+### Process-Level Validation
+
 No validation rules.
 
 ## Notifications
