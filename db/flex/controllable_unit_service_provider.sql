@@ -48,31 +48,9 @@ AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('controllable_unit_service_provider');
 
-CREATE OR REPLACE FUNCTION controllable_unit_service_provider_sp_time_limit()
-RETURNS trigger
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    IF (
-        upper(OLD.valid_time_range) IS NOT NULL
-        AND upper(OLD.valid_time_range) < current_timestamp - '2 weeks'::interval
-    ) THEN
-        RAISE sqlstate 'PT400' using
-            message = 'The contract is too old and cannot be modified';
-        RETURN null;
-    END IF;
-
-    IF TG_OP = 'DELETE' THEN
-        RETURN null;
-    ELSE
-        RETURN NEW;
-    END IF;
-END;
-$$;
-
+-- IFV: CUSP-IFV001
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_sp_time_limit
-AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_service_provider
+AFTER INSERT OR UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
-EXECUTE FUNCTION controllable_unit_service_provider_sp_time_limit();
+EXECUTE FUNCTION timeline_restrict('2 weeks');
