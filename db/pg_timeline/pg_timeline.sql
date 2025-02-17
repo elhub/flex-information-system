@@ -229,54 +229,63 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
     -- interval allowed back in time
-    tl_freeze_interval text := TG_ARGV[0];
-    -- time field updates
-    tl_time_updates time_update[] := ARRAY[]::time_update[];
+    tl_freeze_after_interval text := TG_ARGV[0];
+    -- time field update
     tl_update time_update;
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        tl_time_updates := ARRAY[
-            (null, lower(NEW.valid_time_range)),
-            (null, upper(NEW.valid_time_range))
-        ]::time_update[];
-    ELSIF TG_OP = 'UPDATE' THEN
-        tl_time_updates := ARRAY[
-            (lower(OLD.valid_time_range), lower(NEW.valid_time_range)),
-            (upper(OLD.valid_time_range), upper(NEW.valid_time_range))
-        ]::time_update[];
-    END IF;
-
-    FOREACH tl_update IN ARRAY tl_time_updates LOOP
-        IF
-            -- the value is new or changed
-            (
-                tl_update.value_before IS NULL
-                OR tl_update.value_after != tl_update.value_before
-            )
-            AND
-            (
-                -- the former value was in the frozen past
-                (
-                    tl_update.value_before IS NOT NULL
-                    AND tl_update.value_before
-                            < current_timestamp - tl_freeze_interval::interval
-                )
-                OR
-                -- the new value is in the frozen past
-                (
-                    tl_update.value_after IS NOT NULL
-                    AND tl_update.value_after
-                            < current_timestamp - tl_freeze_interval::interval
-                )
-            )
+        -- new record must not be in the frozen past
+        IF lower(NEW.valid_time_range)
+            < current_timestamp - tl_freeze_after_interval::interval
         THEN
             RAISE sqlstate 'PT400' using
-                message = 'Cannot set valid time on contract '
-                    || 'more than ' || tl_freeze_interval || ' back in time';
+                message = 'Cannot create new contract '
+                    || 'more than ' || tl_freeze_after_interval
+                    || ' back in time';
             RETURN null;
         END IF;
-        RAISE NOTICE 'ok';
-    END LOOP;
+    END IF;
+
+    IF TG_OP = 'UPDATE' THEN
+        FOREACH tl_update IN ARRAY
+            ARRAY[
+                (lower(OLD.valid_time_range), lower(NEW.valid_time_range)),
+                (upper(OLD.valid_time_range), upper(NEW.valid_time_range))
+            ]::time_update[]
+        LOOP
+            IF (
+                -- the value is new or changed
+                tl_update.value_before IS NULL
+                OR tl_update.value_after != tl_update.value_before
+            ) THEN
+                -- the old value must not be in the frozen past
+                IF (
+                    tl_update.value_before IS NOT NULL
+                    AND tl_update.value_before
+                        < current_timestamp - tl_freeze_after_interval::interval
+                ) THEN
+                    RAISE sqlstate 'PT400' using
+                        message = 'Cannot update valid time on a contract '
+                            || 'more than ' || tl_freeze_after_interval
+                            || ' old';
+                    RETURN null;
+                END IF;
+
+                -- the new value must not be in the frozen past
+                IF (
+                    tl_update.value_after IS NOT NULL
+                    AND tl_update.value_after
+                        < current_timestamp - tl_freeze_after_interval::interval
+                ) THEN
+                    RAISE sqlstate 'PT400' using
+                        message = 'Cannot set new valid time on contract '
+                            || 'more than ' || tl_freeze_after_interval
+                            || ' back in time';
+                    RETURN null;
+                END IF;
+            END IF;
+        END LOOP;
+    END IF;
 
     IF TG_OP = 'DELETE' THEN
         RETURN null;
