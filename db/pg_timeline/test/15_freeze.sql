@@ -119,6 +119,7 @@ values
         current_timestamp - '7 days'::interval
     )
 );
+select throws_ok('try_insert_e');
 
 prepare try_insert_f as
 insert into pgtl_freeze (tl_id, value, valid_time_range)
@@ -131,11 +132,13 @@ values
         current_timestamp - '3 days'::interval
     )
 );
+select throws_ok('try_insert_f');
 
 prepare try_insert_g as
 insert into pgtl_freeze (tl_id, value, valid_time_range)
 values
 (1, 'g', tstzrange(current_timestamp - '9 days'::interval, null));
+select throws_ok('try_insert_g');
 
 -- update a fully frozen contract : KO
 
@@ -146,6 +149,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '2 days'::interval
 )
 where value = 'j';
+select throws_ok('try_update_j1');
 
 prepare try_update_j2 as
 update pgtl_freeze
@@ -154,6 +158,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '2 days'::interval
 )
 where value = 'j';
+select throws_ok('try_update_j2');
 
 -- update a partially frozen contract :
 --   OK if start does not move and end stays after the limit
@@ -165,6 +170,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '2 days'::interval
 )
 where value = 'k';
+select throws_ok('try_update_k1');
 
 prepare try_update_k2 as
 update pgtl_freeze
@@ -173,6 +179,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '6 days'::interval
 )
 where value = 'k';
+select throws_ok('try_update_k2');
 
 prepare try_update_k3 as
 update pgtl_freeze
@@ -181,6 +188,7 @@ set valid_time_range = tstzrange(
     null
 )
 where value = 'k';
+select lives_ok('try_update_k3');
 
 prepare try_update_k4 as
 update pgtl_freeze
@@ -189,6 +197,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '2 days'::interval
 )
 where value = 'k';
+select lives_ok('try_update_k4');
 
 -- update a partially frozen non-ending contract :
 --   OK if start does not move and end stays after the limit
@@ -200,6 +209,7 @@ set valid_time_range = tstzrange(
     null
 )
 where value = 'l';
+select throws_ok('try_update_l1');
 
 prepare try_update_l2 as
 update pgtl_freeze
@@ -208,6 +218,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '6 days'::interval
 )
 where value = 'l';
+select throws_ok('try_update_l2');
 
 prepare try_update_l3 as
 update pgtl_freeze
@@ -216,6 +227,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '2 days'::interval
 )
 where value = 'l';
+select lives_ok('try_update_l3');
 
 -- update non-frozen contract : OK if new range is not frozen
 
@@ -226,6 +238,7 @@ set valid_time_range = tstzrange(
     current_timestamp - '1 days'::interval
 )
 where value = 'm';
+select lives_ok('try_update_m1');
 
 prepare try_update_m2 as
 update pgtl_freeze
@@ -234,27 +247,9 @@ set valid_time_range = tstzrange(
     current_timestamp - '1 days'::interval
 )
 where value = 'm';
+select throws_ok('try_update_m2');
 
 -- noqa: enable=all
-
-select throws_ok('try_insert_e');
-select throws_ok('try_insert_f');
-select throws_ok('try_insert_g');
-
-select throws_ok('try_update_j1');
-select throws_ok('try_update_j2');
-
-select throws_ok('try_update_k1');
-select throws_ok('try_update_k2');
-select lives_ok('try_update_k3');
-select lives_ok('try_update_k4');
-
-select throws_ok('try_update_l1');
-select throws_ok('try_update_l2');
-select lives_ok('try_update_l3');
-
-select lives_ok('try_update_m1');
-select throws_ok('try_update_m2');
 
 select finish();
 
