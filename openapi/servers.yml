@@ -2,7 +2,7 @@
 # Lists servers for the APIs for all environments
 auth:
   dev:
-    url: https://localhost:7000/auth/v0
+    url: https://localhost:7001/auth/v0
     description: Development
   local:
     url: https://test.flex.internal:6443/auth/v0
