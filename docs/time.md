@@ -72,6 +72,31 @@ Record time is typically implemented using a time range.
 | Lower | Inclusive | Valid time start | Valid from |
 | Upper | Exclusive | Valid time end   | Valid to   |
 
+### Frozen timeline
+
+The timeline of some contracts can be _frozen_ for some roles in the system.
+This means that the part of the past that is older than a given _time interval_
+from now is a _frozen past_ where nothing can be _added or edited_.
+
+The diagram below shows the example of a contract resource whose timeline is
+frozen after a week. Frozen contracts or parts of contracts are shown in blue,
+and non-frozen in green. Orange is used for errors / unacceptable contracts.
+
+![valid_time_freeze](diagrams/valid_time_freeze.png)
+
+Creating a new contract (number `4`) in the past can only be done in the
+non-frozen past. In the diagram, only the second proposal (`4''`) is acceptable,
+both others overlapping with frozen time partially or fully.
+
+The frozen past cannot be edited, meaning that updating a contract (number `5`)
+cannot change its start date if it is already in this frozen past. The two first
+updates in the diagram (`5'` and `5''`) are therefore invalid, even though the
+second one puts the contract in the non-frozen past. The start date of contract
+`5` is simply frozen and cannot move.
+
+The end date of this partially frozen contract can be moved anywhere in the
+non-frozen past, so the third update (`5'''`) is invalid, but the last one is.
+
 ## Timezones
 
 In the context of storing datetime-related information, a timestamp only has

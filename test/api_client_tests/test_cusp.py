@@ -28,6 +28,7 @@ from flex.api.controllable_unit_service_provider import (
 )
 import pytest
 from typing import cast
+from datetime import date, timedelta
 
 
 @pytest.fixture
@@ -179,11 +180,10 @@ def test_cusp_fiso(data):
 def test_cusp_sp(data):
     (sts, cu_id) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_sp = sts.get_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    # check SP can CRUD the CU-SP relations they are responsible for
+    # check SP can read the CU-SP relations they are responsible for
 
     cusps_sp = list_controllable_unit_service_provider.sync(
         client=client_sp,
@@ -191,30 +191,48 @@ def test_cusp_sp(data):
     assert isinstance(cusps_sp, list)
     assert len(cusps_sp) > 0
 
+    # SP can perform stateful operations in the window of the 2 last weeks
+
+    today = date.today()
+
     cusp = create_controllable_unit_service_provider.sync(
         client=client_sp,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2010-01-01T10:00:00+00:00",
-            valid_to="2010-01-01T10:10:00+00:00",
+            valid_from=f"{today - timedelta(days=10)}T00:00:00+00:00",
+            valid_to=f"{today - timedelta(days=7)}T00:00:00+00:00",
         ),
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     u = update_controllable_unit_service_provider.sync(
-        client=client_fiso,
+        client=client_sp,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to="2010-01-01T14:00:00+00:00",
+            valid_to=f"{today - timedelta(days=5)}T00:00:00+00:00",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
 
     d = delete_controllable_unit_service_provider.sync(
-        client=client_fiso, id=cast(int, cusp.id), body=EmptyObject()
+        client=client_sp, id=cast(int, cusp.id), body=EmptyObject()
     )
     assert not (isinstance(d, ErrorMessage))
+
+    # but they cannot touch the old records
+
+    cusp = cusps_sp[0]
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
+    u = update_controllable_unit_service_provider.sync(
+        client=client_sp,
+        id=cast(int, cusp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_to=f"{today}T00:00:00+00:00",
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
 
 
 # RLS: CUSP-SO001

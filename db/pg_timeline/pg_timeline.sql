@@ -207,3 +207,80 @@ BEGIN
     RETURN l_new;
 END;
 $$;
+
+-- freeze a 'valid time' timeline before a certain date :
+--   no date can be inserted or updated before the limit
+CREATE OR REPLACE FUNCTION timeline_freeze()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    -- interval allowed back in time
+    tl_freeze_after_interval text := TG_ARGV[0];
+    -- time when the freeze is applied
+    tl_freeze_time timestamptz
+        := current_timestamp - tl_freeze_after_interval::interval;
+    -- time field update
+    tl_update record;
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        -- new record must not be in the frozen past
+        IF lower(NEW.valid_time_range) < tl_freeze_time
+        THEN
+            RAISE sqlstate 'PT400' using
+                message = 'Cannot create new contract '
+                    || 'more than ' || tl_freeze_after_interval
+                    || ' back in time';
+            RETURN null;
+        END IF;
+    END IF;
+
+    IF TG_OP = 'UPDATE' THEN
+        FOR tl_update IN
+            SELECT
+                lower(OLD.valid_time_range) as value_before,
+                lower(NEW.valid_time_range) as value_after
+            UNION ALL SELECT
+                upper(OLD.valid_time_range) as value_before,
+                upper(NEW.valid_time_range) as value_after
+        LOOP
+            IF (
+                -- the value is new or changed
+                tl_update.value_before IS NULL
+                OR tl_update.value_after != tl_update.value_before
+            ) THEN
+                -- the old value must not be in the frozen past
+                IF (
+                    tl_update.value_before IS NOT NULL
+                    AND tl_update.value_before < tl_freeze_time
+                ) THEN
+                    RAISE sqlstate 'PT400' using
+                        message = 'Cannot update valid time on a contract '
+                            || 'more than ' || tl_freeze_after_interval
+                            || ' old';
+                    RETURN null;
+                END IF;
+
+                -- the new value must not be in the frozen past
+                IF (
+                    tl_update.value_after IS NOT NULL
+                    AND tl_update.value_after < tl_freeze_time
+                ) THEN
+                    RAISE sqlstate 'PT400' using
+                        message = 'Cannot set new valid time on contract '
+                            || 'more than ' || tl_freeze_after_interval
+                            || ' back in time';
+                    RETURN null;
+                END IF;
+            END IF;
+        END LOOP;
+    END IF;
+
+    IF TG_OP = 'DELETE' THEN
+        RETURN null;
+    ELSE
+        RETURN NEW;
+    END IF;
+END;
+$$;
