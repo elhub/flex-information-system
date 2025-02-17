@@ -44,9 +44,9 @@ services:
   backend:
     image: golang:1.24.0-bullseye
     expose:
-      - "7000"
+      - "7001"
     ports:
-      - "7000:7000"
+      - "7001:7001"
     env_file: "./local/backend/test.env"
     volumes:
       - type: bind
@@ -94,7 +94,7 @@ services:
       NGINX_PORT_TLS: 6443
       NGINX_SERVER_NAME: test.flex.internal
       NGINX_UPSTREAM_POSTGREST: http://postgrest:3000
-      NGINX_UPSTREAM_BACKEND: http://backend:7000
+      NGINX_UPSTREAM_BACKEND: http://backend:7001
       NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
       NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
     extra_hosts:

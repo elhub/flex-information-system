@@ -85,8 +85,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	port, exists := lookupenv("FLEX_PORT")
 	if !exists {
-		slog.InfoContext(ctx, "FLEX_PORT environment variable is not set, using default port 7000")
-		port = "7000"
+		slog.InfoContext(ctx, "FLEX_PORT environment variable is not set, using default port 7001")
+		port = "7001"
 	}
 
 	eventSlotName, exists := lookupenv("FLEX_DB_REPLICATION_SLOT_NAME")
