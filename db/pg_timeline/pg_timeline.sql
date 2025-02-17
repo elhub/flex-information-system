@@ -208,18 +208,6 @@ BEGIN
 END;
 $$;
 
-DO
-$$
-BEGIN
-  CREATE TYPE time_update AS (
-      value_before timestamptz,
-      value_after timestamptz
-  );
-EXCEPTION
-  WHEN duplicate_object THEN null;
-END
-$$;
-
 -- freeze a 'valid time' timeline before a certain date :
 --   no date can be inserted or updated before the limit
 CREATE OR REPLACE FUNCTION timeline_freeze()
@@ -230,13 +218,15 @@ AS $$
 DECLARE
     -- interval allowed back in time
     tl_freeze_after_interval text := TG_ARGV[0];
+    -- time when the freeze is applied
+    tl_freeze_time timestamptz
+        := current_timestamp - tl_freeze_after_interval::interval;
     -- time field update
-    tl_update time_update;
+    tl_update record;
 BEGIN
     IF TG_OP = 'INSERT' THEN
         -- new record must not be in the frozen past
-        IF lower(NEW.valid_time_range)
-            < current_timestamp - tl_freeze_after_interval::interval
+        IF lower(NEW.valid_time_range) < tl_freeze_time
         THEN
             RAISE sqlstate 'PT400' using
                 message = 'Cannot create new contract '
@@ -247,11 +237,13 @@ BEGIN
     END IF;
 
     IF TG_OP = 'UPDATE' THEN
-        FOREACH tl_update IN ARRAY
-            ARRAY[
-                (lower(OLD.valid_time_range), lower(NEW.valid_time_range)),
-                (upper(OLD.valid_time_range), upper(NEW.valid_time_range))
-            ]::time_update[]
+        FOR tl_update IN
+            SELECT
+                lower(OLD.valid_time_range) as value_before,
+                lower(NEW.valid_time_range) as value_after
+            UNION ALL SELECT
+                upper(OLD.valid_time_range) as value_before,
+                upper(NEW.valid_time_range) as value_after
         LOOP
             IF (
                 -- the value is new or changed
@@ -261,8 +253,7 @@ BEGIN
                 -- the old value must not be in the frozen past
                 IF (
                     tl_update.value_before IS NOT NULL
-                    AND tl_update.value_before
-                        < current_timestamp - tl_freeze_after_interval::interval
+                    AND tl_update.value_before < tl_freeze_time
                 ) THEN
                     RAISE sqlstate 'PT400' using
                         message = 'Cannot update valid time on a contract '
@@ -274,8 +265,7 @@ BEGIN
                 -- the new value must not be in the frozen past
                 IF (
                     tl_update.value_after IS NOT NULL
-                    AND tl_update.value_after
-                        < current_timestamp - tl_freeze_after_interval::interval
+                    AND tl_update.value_after < tl_freeze_time
                 ) THEN
                     RAISE sqlstate 'PT400' using
                         message = 'Cannot set new valid time on contract '
