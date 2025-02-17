@@ -25,9 +25,9 @@ of one service provider per activation period.
 
 ### Inter-Field Validation
 
-| Validation rule key | Validation rule                     | Status |
-|---------------------|-------------------------------------|--------|
-| CUSP-IFV001         | Valid time is frozen after 2 weeks. | DONE   |
+| Validation rule key | Validation rule                            | Status |
+|---------------------|--------------------------------------------|--------|
+| CUSP-IFV001         | Valid time is frozen after 2 weeks for SP. | DONE   |
 
 ### Resource-Level Validation
 
