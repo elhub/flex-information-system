@@ -1,0 +1,22 @@
+@startgantt time_dependent_authorization
+scale 500 width
+Project starts 2020-06-28
+
+-- Controllable Unit History (record time) --
+
+[1] as [E1] starts 2020-07-01
+[E1] ends 2020-07-05
+[2] as [E2] starts 2020-07-06
+[E2] ends 2020-07-10
+[3] as [E3] starts 2020-07-11
+[E3] ends 2020-07-17
+
+-- Controllable Unit Service provider (valid time) --
+
+[A] as [A] starts 2020-07-03
+[A] ends 2020-07-07
+
+[B] as [B] starts 2020-07-08
+[B] ends 2020-07-17
+
+@endgantt

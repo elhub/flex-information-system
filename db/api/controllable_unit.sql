@@ -1,9 +1,11 @@
 -- Manually managed file
 
-CREATE OR REPLACE VIEW controllable_unit
-WITH (security_invoker = true) AS (
+CREATE OR REPLACE VIEW controllable_unit_history WITH (
+    security_invoker = true
+) AS (
     SELECT
         cu.id,
+        cu.id AS controllable_unit_id,
         cu.accounting_point_id,
         cu.business_id,
         cu.grid_node_id,
@@ -22,10 +24,83 @@ WITH (security_invoker = true) AS (
         cu.status,
         apt.system_operator_id AS connecting_system_operator_id,
         cu.recorded_by,
-        lower(cu.record_time_range) AS recorded_at
+        lower(cu.record_time_range) AS recorded_at,
+        null AS replaced_by,
+        null AS replaced_at
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.accounting_point AS apt
             ON cu.accounting_point_id = apt.business_id
+    UNION ALL
+    SELECT
+        cu.history_id AS id,
+        cu.id AS controllable_unit_id,
+        cu.accounting_point_id,
+        cu.business_id,
+        cu.grid_node_id,
+        cu.grid_validation_notes,
+        cu.grid_validation_status,
+        cu.last_validated,
+        cu.maximum_available_capacity,
+        cu.is_small,
+        cu.maximum_duration,
+        cu.minimum_duration,
+        cu.name,
+        cu.ramp_rate,
+        cu.recovery_duration,
+        cu.regulation_direction,
+        cu.start_date,
+        cu.status,
+        apt.system_operator_id AS connecting_system_operator_id,
+        cu.recorded_by,
+        lower(cu.record_time_range) AS recorded_at,
+        cu.replaced_by,
+        upper(cu.record_time_range) AS replaced_at
+    FROM flex.controllable_unit_history AS cu
+        INNER JOIN flex.accounting_point AS apt
+            ON cu.accounting_point_id = apt.business_id
+);
+
+CREATE OR REPLACE VIEW controllable_unit
+WITH (security_invoker = true) AS (
+    SELECT
+        cu.controllable_unit_id AS id,
+        cu.accounting_point_id,
+        cu.business_id,
+        cu.grid_node_id,
+        cu.grid_validation_notes,
+        cu.grid_validation_status,
+        cu.last_validated,
+        cu.maximum_available_capacity,
+        cu.is_small,
+        cu.maximum_duration,
+        cu.minimum_duration,
+        cu.name,
+        cu.ramp_rate,
+        cu.recovery_duration,
+        cu.regulation_direction,
+        cu.start_date,
+        cu.status,
+        cu.connecting_system_operator_id,
+        cu.recorded_by,
+        cu.recorded_at
+    FROM (
+
+        /* Since data access on CU is time-dependent, we need to pick the latest
+        version that the user has access to. RLA policies on _history tables
+        will ensure that the user only sees what they are allowed to see. The
+        window function will then show the latest. */
+
+        SELECT
+            cuh.*, -- noqa
+            row_number()
+                OVER (
+                    PARTITION BY cuh.controllable_unit_id
+                    ORDER BY cuh.recorded_at DESC
+                )
+            AS rn
+        FROM api.controllable_unit_history AS cuh
+    ) AS cu
+    WHERE cu.rn = 1
 );
 
 ALTER VIEW IF EXISTS controllable_unit
@@ -147,63 +222,3 @@ INSTEAD OF INSERT OR UPDATE OR DELETE
 ON controllable_unit
 FOR EACH ROW
 EXECUTE FUNCTION controllable_unit_modify();
-
-CREATE OR REPLACE VIEW controllable_unit_history WITH (
-    security_invoker = true
-) AS (
-    SELECT
-        cu.id,
-        cu.id AS controllable_unit_id,
-        cu.accounting_point_id,
-        cu.business_id,
-        cu.grid_node_id,
-        cu.grid_validation_notes,
-        cu.grid_validation_status,
-        cu.last_validated,
-        cu.maximum_available_capacity,
-        cu.is_small,
-        cu.maximum_duration,
-        cu.minimum_duration,
-        cu.name,
-        cu.ramp_rate,
-        cu.recovery_duration,
-        cu.regulation_direction,
-        cu.start_date,
-        cu.status,
-        apt.system_operator_id AS connecting_system_operator_id,
-        cu.recorded_by,
-        lower(cu.record_time_range) AS recorded_at,
-        null AS replaced_by,
-        null AS replaced_at
-    FROM flex.controllable_unit AS cu
-        INNER JOIN flex.accounting_point AS apt
-            ON cu.accounting_point_id = apt.business_id
-    UNION ALL
-    SELECT
-        cu.history_id AS id,
-        cu.id AS controllable_unit_id,
-        cu.accounting_point_id,
-        cu.business_id,
-        cu.grid_node_id,
-        cu.grid_validation_notes,
-        cu.grid_validation_status,
-        cu.last_validated,
-        cu.maximum_available_capacity,
-        cu.is_small,
-        cu.maximum_duration,
-        cu.minimum_duration,
-        cu.name,
-        cu.ramp_rate,
-        cu.recovery_duration,
-        cu.regulation_direction,
-        cu.start_date,
-        cu.status,
-        apt.system_operator_id AS connecting_system_operator_id,
-        cu.recorded_by,
-        lower(cu.record_time_range) AS recorded_at,
-        cu.replaced_by,
-        upper(cu.record_time_range) AS replaced_at
-    FROM flex.controllable_unit_history AS cu
-        INNER JOIN flex.accounting_point AS apt
-            ON cu.accounting_point_id = apt.business_id
-);
