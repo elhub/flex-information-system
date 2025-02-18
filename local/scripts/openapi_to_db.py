@@ -29,6 +29,10 @@ CREATE TABLE IF NOT EXISTS
     replaced_by bigint NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS
+{base_resource}_history_id_idx
+ON {base_resource}_history (id);
+
 CREATE OR REPLACE TRIGGER
 {base_resource}_history
 BEFORE INSERT OR UPDATE OR DELETE
