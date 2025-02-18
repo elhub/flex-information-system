@@ -97,39 +97,39 @@ def test_cusp_spgm_consistency_not_ok(data):
 
     # Create a contract
     #   between the CU and the SP
-    #   on 01.01.2024, from 08.00 to 10.00
+    #   from 08.01.2024 to 12.01.2024
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
-            valid_to="2024-01-01T10:00:00+00:00",
+            valid_from="2024-01-08T00:00:00+1",
+            valid_to="2024-01-12T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
-    # Put the CU into the SPG, that same day from 07.59 to 09.59
+    # Put the CU into the SPG from 07.01.2024 to 11.01.2024
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-01T07:59:00+00:00",
-            valid_to="2024-01-01T09:59:00+00:00",
+            valid_from="2024-01-07T00:00:00+1",
+            valid_to="2024-01-11T00:00:00+1",
         ),
     )
     # should fail (begins before the CU is linked to the SP)
     assert isinstance(spgm, ErrorMessage)
 
-    # Put the CU into the SPG, that same day from 08.01 to 10.01
+    # Put the CU into the SPG from 09.01.2024 to 13.01.2024
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-01T08:01:00+00:00",
-            valid_to="2024-01-01T10:01:00+00:00",
+            valid_from="2024-01-09T00:00:00+1",
+            valid_to="2024-01-13T00:00:00+1",
         ),
     )
     # should fail (finishes after the CU is linked to the SP)
@@ -160,19 +160,19 @@ def test_spgm_sp002(data):
 
     # Create a contract
     #   between the CU and the SP
-    #   on 01.01.2024, from 08.00 to 10.00
+    #   from 08.01.2024 to 12.01.2024
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
-            valid_to="2024-01-01T10:00:00+00:00",
+            valid_from="2024-01-08T00:00:00+1",
+            valid_to="2024-01-12T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
-    # Put the CU into the SPG, that same day from 08.01 to 09.59
+    # Put the CU into the SPG from 09.01.2024 to 11.01.2024
     # (fully in the validity of the CU-SP contract)
     # after the CU-SP link
     # endpoint: POST /service_providing_group_membership
@@ -181,8 +181,8 @@ def test_spgm_sp002(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-01T08:01:00+00:00",
-            valid_to="2024-01-01T09:59:00+00:00",
+            valid_from="2024-01-09T00:00:00+1",
+            valid_to="2024-01-11T00:00:00+1",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -193,7 +193,7 @@ def test_spgm_sp002(data):
         client=client_sp2,
         id=cast(int, spgm.id),
         body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to="2024-01-01T09:45:00+00:00",
+            valid_to="2024-01-10T00:00:00+1",
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -203,7 +203,7 @@ def test_spgm_sp002(data):
         client=client_sp,
         id=cast(int, spgm.id),
         body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to="2024-01-01T09:45:00+00:00",
+            valid_to="2024-01-10T00:00:00+1",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -219,14 +219,14 @@ def test_spgm(data):
 
     # Create a contract
     #   between the CU and the SP
-    #   on 01.01.2024, from 08.00 to 10.00
+    #   from 08.01.2024 to 12.01.2024
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
-            valid_to="2024-01-01T10:00:00+00:00",
+            valid_from="2024-01-08T00:00:00+1",
+            valid_to="2024-01-12T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -246,8 +246,8 @@ def test_spgm(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-01T08:01:00+00:00",
-            valid_to="2024-01-01T09:59:00+00:00",
+            valid_from="2024-01-09T00:00:00+1",
+            valid_to="2024-01-11T00:00:00+1",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -278,7 +278,7 @@ def test_spgm(data):
         client=client_fiso,
         id=cast(int, spgm.id),
         body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to="2024-01-01T09:00:00+00:00",
+            valid_to="2024-01-10T00:00:00+1",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -298,8 +298,8 @@ def test_spgm(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-01T08:01:00+00:00",
-            valid_to="2024-01-01T09:59:00+00:00",
+            valid_from="2024-01-09T00:00:00+1",
+            valid_to="2024-01-11T00:00:00+1",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -324,7 +324,7 @@ def test_spgm_so(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
+            valid_from="2024-01-09T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -334,7 +334,7 @@ def test_spgm_so(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-01T08:01:00+00:00",
+            valid_from="2024-01-10T00:00:00+1",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
