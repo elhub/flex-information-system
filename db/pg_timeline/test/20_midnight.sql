@@ -22,7 +22,7 @@ select plan(7);
 
 -- insert midnight values in both UTC and Norwegian timezones : OK
 
-prepare try_insert_abcdef as
+prepare try_insert_abcdefgh as
 insert into pgtl_midnight (tl_id, value, valid_time_range)
 values
 (1, 'a', tstzrange('2025-01-01 23:00:00+0', '2025-01-05 23:00:00+0')),
@@ -30,8 +30,10 @@ values
 (1, 'c', tstzrange('2025-01-01 23:00:00+0', '2025-01-05 00:00:00+1')),
 (1, 'd', tstzrange('2025-07-01 22:00:00+0', '2025-07-05 22:00:00+0')),
 (1, 'e', tstzrange('2025-07-01 22:00:00+0', '2025-07-05 00:00:00+2')),
-(1, 'f', tstzrange('2025-07-01 00:00:00+2', '2025-07-05 22:00:00+0'));
-select lives_ok('try_insert_abcdef');
+(1, 'f', tstzrange('2025-07-01 00:00:00+2', '2025-07-05 22:00:00+0')),
+(1, 'g', tstzrange('2025-07-01 00:00:00+2', null)),
+(1, 'h', tstzrange(null, null));
+select lives_ok('try_insert_abcdefgh');
 
 -- just change the day, staying at midnight,
 -- in both UTC and Norwegian timezones : OK
