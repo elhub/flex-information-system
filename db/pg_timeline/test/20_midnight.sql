@@ -48,8 +48,8 @@ select lives_ok('try_update_a1');
 prepare try_update_a2 as
 update pgtl_midnight
 set valid_time_range = tstzrange(
-    '2024-11-27 00:00:00+1'
-    upper(valid_time_range),
+    '2024-11-27 00:00:00+1',
+    upper(valid_time_range)
 )
 where value = 'a';
 select lives_ok('try_update_a2');
@@ -57,7 +57,7 @@ select lives_ok('try_update_a2');
 prepare try_update_a3 as
 update pgtl_midnight
 set valid_time_range = tstzrange(
-    '2024-07-01 00:00:00+2'
+    '2024-07-01 00:00:00+2',
     '2024-07-05 22:00:00+0'
 )
 where value = 'a';
@@ -77,8 +77,8 @@ select throws_ok('try_update_b1');
 prepare try_update_b2 as
 update pgtl_midnight
 set valid_time_range = tstzrange(
-    '2024-12-20 00:00:00+0'
-    upper(valid_time_range),
+    '2024-12-20 00:00:00+0',
+    upper(valid_time_range)
 )
 where value = 'b';
 select throws_ok('try_update_b2');
@@ -86,7 +86,7 @@ select throws_ok('try_update_b2');
 prepare try_update_b3 as
 update pgtl_midnight
 set valid_time_range = tstzrange(
-    '2024-07-01 00:00:00+1'
+    '2024-07-01 00:00:00+1',
     '2024-07-05 22:00:00+2'
 )
 where value = 'b';
