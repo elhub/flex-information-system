@@ -65,12 +65,20 @@ related to the **timeline** of the data itself. When we say that something is
 
     This time axis is also commonly referred to as _application_, _actual_, _business_ or _effective_ time.
 
-Record time is typically implemented using a time range.
+Valid time is typically implemented using a time range.
 
 | Bound | Clusivity | Name             | Alt name   |
 |-------|-----------|------------------|------------|
 | Lower | Inclusive | Valid time start | Valid from |
 | Upper | Exclusive | Valid time end   | Valid to   |
+
+!!! note "Midnight alignment"
+
+    We represent valid time as _midnight-aligned_. This constraint allows
+    planning and performing operations more easily. However, we still store full
+    timestamps for uniformity and to allow exceptional updates. This means that
+    insert/update operations on the API should always have their valid time
+    values aligned with the Norwegian midnight.
 
 ### Frozen timeline
 
