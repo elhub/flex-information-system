@@ -215,7 +215,7 @@ def test_controllable_unit_so(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -225,7 +225,7 @@ def test_controllable_unit_so(sts):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T08:01:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -441,7 +441,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp1_id,
-            valid_from="2099-01-01T10:00:00+00:00",
+            valid_from="2099-01-01T00:00:00+1",
             valid_to=None,
         ),
     )
@@ -480,7 +480,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp1_id,
-            valid_from="2099-01-01T10:00:00+00:00",
+            valid_from="2099-01-01T00:00:00+1",
             valid_to=None,
         ),
     )
@@ -492,8 +492,8 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp2_id,
-            valid_from="2000-01-01T10:00:00+00:00",
-            valid_to="2090-01-01T10:00:00+00:00",
+            valid_from="2000-01-01T00:00:00+1",
+            valid_to="2090-01-01T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)

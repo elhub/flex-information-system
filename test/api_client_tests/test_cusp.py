@@ -28,7 +28,7 @@ from flex.api.controllable_unit_service_provider import (
 )
 import pytest
 from typing import cast
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, time, timezone
 
 
 @pytest.fixture
@@ -76,7 +76,7 @@ def test_cusp_fiso(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2020-01-01T10:00:00+00:00",
+            valid_from="2020-01-01T00:00:00+1",
             valid_to=None,
         ),
     )
@@ -130,7 +130,7 @@ def test_cusp_fiso(data):
         client=client_fiso,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to="2020-01-01T14:00:00+00:00",
+            valid_to="2020-01-02T00:00:00+1",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -193,15 +193,20 @@ def test_cusp_sp(data):
 
     # SP can perform stateful operations in the window of the 2 last weeks
 
-    today = date.today()
+    def midnight_n_days_ago(n):
+        return (
+            datetime.combine(date.today() - timedelta(days=n), time.min)
+            .astimezone(tz=timezone.utc)
+            .isoformat()
+        )
 
     cusp = create_controllable_unit_service_provider.sync(
         client=client_sp,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from=f"{today - timedelta(days=10)}T00:00:00+00:00",
-            valid_to=f"{today - timedelta(days=7)}T00:00:00+00:00",
+            valid_from=midnight_n_days_ago(10),
+            valid_to=midnight_n_days_ago(7),
         ),
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
@@ -210,7 +215,7 @@ def test_cusp_sp(data):
         client=client_sp,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to=f"{today - timedelta(days=5)}T00:00:00+00:00",
+            valid_to=midnight_n_days_ago(5),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -229,7 +234,7 @@ def test_cusp_sp(data):
         client=client_sp,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to=f"{today}T00:00:00+00:00",
+            valid_to=midnight_n_days_ago(0),
         ),
     )
     assert isinstance(u, ErrorMessage)

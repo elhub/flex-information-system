@@ -116,7 +116,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu1.id),
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp1, ControllableUnitServiceProviderResponse)
@@ -126,7 +126,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu2.id),
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp2, ControllableUnitServiceProviderResponse)
@@ -136,7 +136,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu3.id),
             service_provider_id=sp_id,
-            valid_from="2024-01-01T08:00:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp3, ControllableUnitServiceProviderResponse)
@@ -148,7 +148,7 @@ def data():
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu1.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T08:01:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(spgm1, ServiceProvidingGroupMembershipResponse)
@@ -158,7 +158,7 @@ def data():
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu2.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T08:01:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(spgm2, ServiceProvidingGroupMembershipResponse)
@@ -168,7 +168,7 @@ def data():
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu3.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T08:01:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(spgm3, ServiceProvidingGroupMembershipResponse)
