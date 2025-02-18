@@ -175,7 +175,10 @@ BEGIN
     cu.recorded_by,
     -- the record must exist fully during the contract of the former end user
     -- on the AP
-    tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
+    tstzrange(
+      '2023-10-01 00:00:00 Europe/Oslo',
+      '2023-11-01 00:00:00 Europe/Oslo',
+      '[)'),
     0
   );
 
@@ -201,8 +204,16 @@ BEGIN
       cusp.id,
       cusp.controllable_unit_id,
       cusp.service_provider_id,
-      tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
-      tstzrange('2023-10-01 00:00:00+1', '2023-11-01 00:00:00+1', '[)'),
+      tstzrange(
+        '2023-10-01 00:00:00 Europe/Oslo',
+        '2023-11-01 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      tstzrange(
+        '2023-10-01 00:00:00 Europe/Oslo',
+        '2023-11-01 00:00:00 Europe/Oslo',
+        '[)'
+      ),
       cusp.recorded_by,
       0
     );
@@ -271,11 +282,15 @@ BEGIN
       ) VALUES (
         ap_id,
         end_user.former_id,
-        tstzrange('2023-05-01 00:00:00+2', '2024-01-01 00:00:00+1', '[)')
+        tstzrange(
+          '2023-05-01 00:00:00 Europe/Oslo',
+          '2024-01-01 00:00:00 Europe/Oslo',
+          '[)'
+        )
       ), (
         ap_id,
         end_user.new_id,
-        tstzrange('2024-01-01 00:00:00+1', null, '[)')
+        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );
     END IF;
 
@@ -288,11 +303,15 @@ BEGIN
       ) VALUES (
         ap_id,
         energy_supplier.former_id,
-        tstzrange('2023-05-01 00:00:00+2', '2024-01-01 00:00:00+1', '[)')
+        tstzrange(
+          '2023-05-01 00:00:00 Europe/Oslo',
+          '2024-01-01 00:00:00 Europe/Oslo',
+          '[)'
+        )
       ), (
         ap_id,
         energy_supplier.new_id,
-        tstzrange('2024-01-01 00:00:00+1', null, '[)')
+        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );
     END IF;
 
@@ -305,11 +324,15 @@ BEGIN
       ) VALUES (
         ap_id,
         balance_responsible_party.former_id,
-        tstzrange('2023-05-01 00:00:00+2', '2024-01-01 00:00:00+1', '[)')
+        tstzrange(
+          '2023-05-01 00:00:00 Europe/Oslo',
+          '2024-01-01 00:00:00 Europe/Oslo',
+          '[)'
+        )
       ), (
         ap_id,
         balance_responsible_party.new_id,
-        tstzrange('2024-01-01 00:00:00+1', null, '[)')
+        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );
     END IF;
   END LOOP;
@@ -512,9 +535,9 @@ BEGIN
       so_id,
       add_check_digit(accounting_point_seq::text),
       ARRAY[
-          (sp_id, '[2024-07-01 00:00:00 CEST,2024-08-01 00:00:00 CEST)'::tstzrange),
-          (common_sp_id, '[2024-08-01 00:00:00 CEST,2024-09-01 00:00:00 CEST)'::tstzrange),
-          (sp_id, '[2024-09-01 00:00:00 CEST,)'::tstzrange)
+          (sp_id, '[2024-07-01 00:00:00 Europe/Oslo,2024-08-01 00:00:00 Europe/Oslo)'::tstzrange),
+          (common_sp_id, '[2024-08-01 00:00:00 Europe/Oslo,2024-09-01 00:00:00 Europe/Oslo)'::tstzrange),
+          (sp_id, '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange)
       ]::cu_sp[]
     ) INTO cu_id;
 
@@ -523,7 +546,7 @@ BEGIN
     ) VALUES (
         cu_id,
         spg_id,
-        '[2024-09-01 00:00:00 CEST,)'::tstzrange
+        '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange
     );
 
     INSERT INTO flex.technical_resource (name, controllable_unit_id, details)
