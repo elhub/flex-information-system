@@ -76,6 +76,7 @@ def test_cusp_fiso(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
             valid_from="2020-01-01T00:00:00+1",
             valid_to=None,
         ),
@@ -205,6 +206,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_ago(10),
             valid_to=midnight_n_days_ago(7),
         ),

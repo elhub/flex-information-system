@@ -109,6 +109,7 @@ def test_spg_fiso_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),
     )

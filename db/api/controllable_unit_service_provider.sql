@@ -4,6 +4,7 @@ CREATE OR REPLACE VIEW controllable_unit_service_provider
 WITH (security_invoker = true) AS (
     SELECT
         id,
+        contract_reference,
         controllable_unit_id,
         service_provider_id,
         recorded_by,
@@ -20,6 +21,7 @@ WITH (
     SELECT
         id,
         id AS controllable_unit_service_provider_id,
+        contract_reference,
         controllable_unit_id,
         service_provider_id,
         recorded_by,
@@ -33,6 +35,7 @@ WITH (
     SELECT
         history_id AS id,
         id AS controllable_unit_service_provider_id,
+        contract_reference,
         controllable_unit_id,
         service_provider_id,
         recorded_by,

@@ -6,6 +6,9 @@ CREATE TABLE IF NOT EXISTS controllable_unit_service_provider (
     service_provider_party_type text GENERATED ALWAYS AS (
         'service_provider'
     ) STORED,
+    contract_reference text NOT NULL CHECK (
+        char_length(contract_reference) <= 128
+    ),
     valid_time_range tstzrange CHECK (
         valid_time_range IS null OR (
             lower(valid_time_range) IS NOT null

@@ -1,4 +1,10 @@
-import { SimpleForm, useGetIdentity, useRecordContext } from "react-admin";
+import {
+  required,
+  SimpleForm,
+  TextInput,
+  useGetIdentity,
+  useRecordContext,
+} from "react-admin";
 import { Typography, Box, Stack } from "@mui/material";
 import {
   AutocompleteReferenceInput,
@@ -14,11 +20,13 @@ import { MidnightDateInput } from "../../datetime";
 const filterRecord = ({
   controllable_unit_id,
   service_provider_id,
+  contract_reference,
   valid_from,
   valid_to,
 }: any) => ({
   controllable_unit_id,
   service_provider_id,
+  contract_reference,
   valid_from,
   valid_to,
 });
@@ -66,7 +74,9 @@ export const ControllableUnitServiceProviderInput = () => {
             readOnly={isServiceProvider}
           />
         </InputStack>
-
+        <InputStack direction="row" flexWrap="wrap">
+          <TextInput source="contract_reference" validate={required()} />
+        </InputStack>
         <Stack direction="row" flexWrap="wrap">
           <Typography variant="h6" gutterBottom>
             Valid time

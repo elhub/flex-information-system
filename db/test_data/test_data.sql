@@ -185,9 +185,9 @@ BEGIN
   FOREACH sp IN ARRAY service_providers
   LOOP
     INSERT INTO flex.controllable_unit_service_provider (
-      controllable_unit_id, service_provider_id, valid_time_range
+      controllable_unit_id, service_provider_id, contract_reference, valid_time_range
     ) VALUES (
-      cu.id, sp.sp_id, sp.valid_time_range
+      cu.id, sp.sp_id, uuid_generate_v4(), sp.valid_time_range
     ) RETURNING * INTO cusp;
 
     -- insert a previous version of that CUSP valid for the previous end user
@@ -196,6 +196,7 @@ BEGIN
       id,
       controllable_unit_id,
       service_provider_id,
+      contract_reference,
       valid_time_range,
       record_time_range,
       recorded_by,
@@ -204,6 +205,7 @@ BEGIN
       cusp.id,
       cusp.controllable_unit_id,
       cusp.service_provider_id,
+      uuid_generate_v4(),
       tstzrange(
         '2023-10-01 00:00:00 Europe/Oslo',
         '2023-11-01 00:00:00 Europe/Oslo',

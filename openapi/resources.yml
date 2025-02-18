@@ -217,6 +217,20 @@ resources:
           resource: party
           field: id
         example: 78
+      contract_reference:
+        description: >-
+          The service providers internal reference to the contract with the
+          end user. Typically an internal identifier to a stored document or
+          consent record.
+        x-details: >-
+          The content of this field will not be checked by the system, but is
+          intended to make sure that the service has a digitally stored proof
+          of their contract with the end user on the controllable unit.
+        format: text
+        type: string
+        maxLength: 128
+        nullable: false
+        example: '123e4567-e89b-12d3-a456-426614174000'
       valid_from:
         description: >-
           The date from which the relation between the controllable unit and

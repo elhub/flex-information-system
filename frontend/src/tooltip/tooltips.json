@@ -23,6 +23,7 @@
         "id": "Unique surrogate key.",
         "controllable_unit_id": "Reference to the controllable unit this relation links to a service provider.",
         "service_provider_id": "Reference to the `party` (service provider) this relation links to a controllable unit.",
+        "contract_reference": "The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.",
         "valid_from": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
         "valid_to": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
     },

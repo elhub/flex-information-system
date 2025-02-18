@@ -1183,6 +1183,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1194,6 +1195,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1205,6 +1207,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1215,6 +1218,7 @@ TO flex_end_user;
 GRANT INSERT (
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to
 ) ON TABLE api.controllable_unit_service_provider
@@ -1224,6 +1228,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1232,6 +1237,7 @@ GRANT SELECT (
 TO flex_flexibility_information_system_operator;
 
 GRANT UPDATE (
+    contract_reference,
     valid_from,
     valid_to
 ) ON TABLE api.controllable_unit_service_provider
@@ -1244,6 +1250,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1255,6 +1262,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1265,6 +1273,7 @@ TO flex_system_operator;
 GRANT INSERT (
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to
 ) ON TABLE api.controllable_unit_service_provider
@@ -1274,6 +1283,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1282,6 +1292,7 @@ GRANT SELECT (
 TO flex_service_provider;
 
 GRANT UPDATE (
+    contract_reference,
     valid_from,
     valid_to
 ) ON TABLE api.controllable_unit_service_provider
@@ -1294,6 +1305,7 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1309,6 +1321,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1323,6 +1336,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1337,6 +1351,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1351,6 +1366,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1365,6 +1381,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1379,6 +1396,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1393,6 +1411,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
@@ -1407,6 +1426,7 @@ GRANT SELECT (
     controllable_unit_service_provider_id,
     controllable_unit_id,
     service_provider_id,
+    contract_reference,
     valid_from,
     valid_to,
     recorded_at,
