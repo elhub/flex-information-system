@@ -6,7 +6,7 @@ of this page is to help developers for that.
 
 Here is the general flow of automation:
 
-![generation dependencies](../diagrams/generation_dependencies.drawio.png)
+![generation dependencies](./diagrams/generation_dependencies.drawio.png)
 
 The blue boxes are the parts that should be edited by hand, and everything white
 is handled by the scripts and/or `just` recipes. The rest of this page explains

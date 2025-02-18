@@ -65,6 +65,9 @@ export const ControllableUnitServiceProviderShow = () => {
               <TextField source="name" />
             </ReferenceField>
           </FieldStack>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
+            <TextField source="contract_reference" />
+          </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Valid time

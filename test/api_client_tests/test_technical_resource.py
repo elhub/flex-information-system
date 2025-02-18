@@ -121,6 +121,7 @@ def test_tr(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
             valid_from="2020-01-01T10:00:00+00:00",
             valid_to=None,
         ),
