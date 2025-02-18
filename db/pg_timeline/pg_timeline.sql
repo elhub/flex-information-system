@@ -300,11 +300,9 @@ BEGIN
         ARRAY[lower(NEW.valid_time_range), upper(NEW.valid_time_range)]
     LOOP
         tl_norwegian_timestamp := tl_timestamp at time zone 'Europe/Oslo';
-        IF (
-            extract(hour from tl_norwegian_timestamp) != 0
-            OR extract(minute from tl_norwegian_timestamp) != 0
-            OR extract(second from tl_norwegian_timestamp) != 0
-        ) THEN
+        IF tl_norwegian_timestamp IS NOT null
+            AND date_trunc('day', tl_norwegian_timestamp) != tl_norwegian_timestamp
+        THEN
             RAISE sqlstate 'PT400' using
                 message = 'Valid time is not midnight-aligned';
             RETURN null;
