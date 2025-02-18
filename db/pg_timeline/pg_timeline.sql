@@ -299,9 +299,9 @@ BEGIN
     FOREACH tl_timestamp IN ARRAY
         ARRAY[lower(NEW.valid_time_range), upper(NEW.valid_time_range)]
     LOOP
+        CONTINUE WHEN tl_timestamp IS NULL;
         tl_norwegian_timestamp := tl_timestamp at time zone 'Europe/Oslo';
-        IF tl_norwegian_timestamp IS NOT null
-            AND date_trunc('day', tl_norwegian_timestamp) != tl_norwegian_timestamp
+        IF date_trunc('day', tl_norwegian_timestamp) != tl_norwegian_timestamp
         THEN
             RAISE sqlstate 'PT400' using
                 message = 'Valid time is not midnight-aligned';
