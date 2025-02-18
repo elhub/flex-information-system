@@ -9,13 +9,59 @@ skinparam note {
 }
 
 actor "End User (EU)" AS EU
-actor "New Service Provider (SP)" as SP_NEW
-actor "Old Service Provider (SP)" as SP_OLD
+actor "New Service Provider (SP_NEW)" as SP_NEW
+actor "Old Service Provider (SP_OLD)" as SP_OLD
 participant "Flexibility Information System (FIS)" as FIS
 actor "System Operator (SO)" as SO
 
 == Initiate Switching ==
 
+
 EU <-> SP_NEW: Contractual agreement
-SP_NEW -> FIS: Test
+Note right SP_NEW
+    The end user contacts new service provider 
+    in order to obtain new contract and ending of 
+    the contract with the present service provider
+end note
+
+== Switching ==
+Note left SP_NEW
+    Data: SP_ID, CU_ID
+    Consent_ID and Switching date
+end note
+SP_NEW -> FIS: Request switch of Controllable Unit 
+Note right FIS
+    The new service provider requests to be 
+    registered in CU module as the new s
+    ervice provider for the controllable unit 
+    per requested date. Included in the request
+    a consent_ID form End User.
+end note
+
+FIS --> FIS: Check switch of service provider request
+FIS -> SP_NEW: Send switch of service provider request results
+Note right FIS
+    FIS notifies all affected parties directly
+    after positive validation of the switch
+    of service provider request and switcing date
+end note
+FIS --> SO: Notify
+FIS --> SP_OLD: Notify
+FIS -> FIS: Necessary updates on CU, \nready for swiching at switching date
+FIS -> FIS: Neceserry updates on old SP's SPG(s), \nready for removal of CU at switcing date
+
+Note right FIS
+    At switcing date etiteled parties
+    get notifications. SO=CSO, ISO and PSO
+end note
+FIS --> SO: Notify
+FIS --> SP_OLD: Notify
+FIS --> SP_NEW: Notify
+== Post Switching ==
+Note right SP_NEW
+    New Service Provider then updates CU characterisitcs
+    if needed using dedicated process.
+    New Service Provder assigning CU to SPG using dedicated process.
+end note
+
 @enduml
