@@ -17,6 +17,9 @@ class ControllableUnitServiceProviderCreateRequest:
             Example: 2.
         service_provider_id (int): Reference to the `party` (service provider) this relation links to a controllable
             unit. Example: 78.
+        contract_reference (Union[Unset, str]): The service providers internal reference to the contract with the end
+            user. Typically an internal identifier to a stored document or consent record. Example:
+            123e4567-e89b-12d3-a456-426614174000.
         valid_from (Union[None, Unset, str]): The date from which the relation between the controllable unit and the
             service provider is valid. Example: 2022-08-08 12:00:00 CET.
         valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
@@ -25,6 +28,7 @@ class ControllableUnitServiceProviderCreateRequest:
 
     controllable_unit_id: int
     service_provider_id: int
+    contract_reference: Union[Unset, str] = UNSET
     valid_from: Union[None, Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -33,6 +37,8 @@ class ControllableUnitServiceProviderCreateRequest:
         controllable_unit_id = self.controllable_unit_id
 
         service_provider_id = self.service_provider_id
+
+        contract_reference = self.contract_reference
 
         valid_from: Union[None, Unset, str]
         if isinstance(self.valid_from, Unset):
@@ -54,6 +60,8 @@ class ControllableUnitServiceProviderCreateRequest:
                 "service_provider_id": service_provider_id,
             }
         )
+        if contract_reference is not UNSET:
+            field_dict["contract_reference"] = contract_reference
         if valid_from is not UNSET:
             field_dict["valid_from"] = valid_from
         if valid_to is not UNSET:
@@ -67,6 +75,8 @@ class ControllableUnitServiceProviderCreateRequest:
         controllable_unit_id = d.pop("controllable_unit_id")
 
         service_provider_id = d.pop("service_provider_id")
+
+        contract_reference = d.pop("contract_reference", UNSET)
 
         def _parse_valid_from(data: object) -> Union[None, Unset, str]:
             if data is None:
@@ -89,6 +99,7 @@ class ControllableUnitServiceProviderCreateRequest:
         controllable_unit_service_provider_create_request = cls(
             controllable_unit_id=controllable_unit_id,
             service_provider_id=service_provider_id,
+            contract_reference=contract_reference,
             valid_from=valid_from,
             valid_to=valid_to,
         )

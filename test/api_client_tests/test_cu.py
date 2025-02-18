@@ -215,6 +215,7 @@ def test_controllable_unit_so(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T08:00:00+00:00",
         ),
     )
@@ -441,6 +442,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp1_id,
+            contract_reference="TEST-CONTRACT",
             valid_from="2099-01-01T10:00:00+00:00",
             valid_to=None,
         ),
@@ -480,6 +482,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp1_id,
+            contract_reference="TEST-CONTRACT",
             valid_from="2099-01-01T10:00:00+00:00",
             valid_to=None,
         ),
@@ -492,6 +495,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp2_id,
+            contract_reference="TEST-CONTRACT",
             valid_from="2000-01-01T10:00:00+00:00",
             valid_to="2090-01-01T10:00:00+00:00",
         ),

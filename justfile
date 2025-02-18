@@ -72,6 +72,7 @@ reset: down pull build start load
 backend:
     #!/usr/bin/env bash
     set -euo pipefail
+    docker compose stop backend || true
     set -a; source ./local/backend/dev.env; set +a
     cd backend
     air
@@ -426,7 +427,7 @@ permissions-to-md:
     for resource in $(find docs/resources/ -type f -not -name "index.md" -exec basename {} \; | cut -d. -f1); do
         echo ".. ${resource}"
 
-        sed -i '' '/^For party type abbreviations/,$d' docs/resources/${resource}.md
+        sed -i '/^For party type abbreviations/,$d' docs/resources/${resource}.md
 
         echo "For party type abbreviations, check [the auth docs](../auth.md#party)" >> docs/resources/${resource}.md
         echo "" >> docs/resources/${resource}.md
