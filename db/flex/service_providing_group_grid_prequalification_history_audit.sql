@@ -13,6 +13,10 @@ service_providing_group_grid_prequalification_history (
     replaced_by bigint NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS
+service_providing_group_grid_prequalification_history_id_idx
+ON service_providing_group_grid_prequalification_history (id);
+
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_history
 BEFORE INSERT OR UPDATE OR DELETE

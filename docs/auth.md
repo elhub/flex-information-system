@@ -499,3 +499,31 @@ Status can be one of:
 Policies can be in `TODO` or `PARTIAL` state either if we have not gotten to it
 yet or the current platform does not support it (e.g. we are missing a
 relation/entity).
+
+#### Time-dependent RLA
+
+Some combinations of party type and resource have time-dependent access
+policies. A typical example is the service provider (SP) on a controllable unit
+(CU). The SPs contract on the CU is time-dependent, with a valid from an to
+date. This in turn means that the SP should only have update privileges to the
+CU during the contract period, but should see the CU even after the contract has
+ended. However, an old SP should not be able to see updates to the CU fields
+done by a new SP, after their contract has ended.
+
+When fields on the resource are _not_ time-dependent, we must use audit history
+to provide access when doing _read_ operations on the main collection/resource.
+This means that we authorize data stored with record time based on the valid
+time. Lets look at an example.
+
+![Time-dependent RLA](diagrams/time_dependent_authorization.png)
+
+In this example we have 3 records in the data history for the CU. `3` is the
+current record. Two service providers, `A` and `B`, have had contracts on the
+CU. `B` is the current SP. Each of the service providers will see the latest
+record that _overlaps with the end date on their latest contract_.
+
+So, when each of the service providers does a `GET /controllable_unit/{id}` they
+will see different records.
+
+* `A` will see record `2`.
+* `B` will see record `3`.

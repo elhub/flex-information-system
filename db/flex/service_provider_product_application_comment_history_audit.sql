@@ -13,6 +13,10 @@ service_provider_product_application_comment_history (
     replaced_by bigint NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS
+service_provider_product_application_comment_history_id_idx
+ON service_provider_product_application_comment_history (id);
+
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_comment_history
 BEFORE INSERT OR UPDATE OR DELETE

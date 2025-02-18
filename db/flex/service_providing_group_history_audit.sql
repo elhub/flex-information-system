@@ -13,6 +13,10 @@ service_providing_group_history (
     replaced_by bigint NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS
+service_providing_group_history_id_idx
+ON service_providing_group_history (id);
+
 CREATE OR REPLACE TRIGGER
 service_providing_group_history
 BEFORE INSERT OR UPDATE OR DELETE

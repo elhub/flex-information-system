@@ -13,6 +13,10 @@ controllable_unit_history (
     replaced_by bigint NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS
+controllable_unit_history_id_idx
+ON controllable_unit_history (id);
+
 CREATE OR REPLACE TRIGGER
 controllable_unit_history
 BEFORE INSERT OR UPDATE OR DELETE
