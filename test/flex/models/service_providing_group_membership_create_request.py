@@ -18,9 +18,9 @@ class ServiceProvidingGroupMembershipCreateRequest:
         service_providing_group_id (int): Reference to the service providing group this relation links to a controllable
             unit. Example: 55.
         valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
-            providing group is valid. Example: 2022-08-08 12:00:00 CET.
+            providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
-            service providing group is valid.
+            service providing group is valid. Midnight aligned on Norwegian timezone.
     """
 
     controllable_unit_id: int

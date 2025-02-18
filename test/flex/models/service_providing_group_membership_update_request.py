@@ -14,9 +14,9 @@ class ServiceProvidingGroupMembershipUpdateRequest:
 
     Attributes:
         valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
-            providing group is valid. Example: 2022-08-08 12:00:00 CET.
+            providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
-            service providing group is valid.
+            service providing group is valid. Midnight aligned on Norwegian timezone.
     """
 
     valid_from: Union[Unset, str] = UNSET

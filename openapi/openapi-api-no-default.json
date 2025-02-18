@@ -458,18 +458,18 @@
                 "type": "object",
                 "properties": {
                     "valid_from": {
-                        "description": "The date from which the relation between the controllable unit and the service provider is valid.",
+                        "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 00:00:00 CET"
                     },
                     "valid_to": {
-                        "description": "The date until which the relation between the controllable unit and the service provider is valid.",
+                        "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-09-10 15:30:00 CET"
+                        "example": "2022-09-10 00:00:00 CET"
                     }
                 }
             },
@@ -625,13 +625,13 @@
                 "type": "object",
                 "properties": {
                     "valid_from": {
-                        "description": "The date from which the relation between the controllable unit and the service providing group is valid.",
+                        "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 00:00:00 CET"
                     },
                     "valid_to": {
-                        "description": "The date until which the relation between the controllable unit and the service providing group is valid.",
+                        "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,

@@ -271,7 +271,7 @@ BEGIN
       ) VALUES (
         ap_id,
         end_user.former_id,
-        tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
+        tstzrange('2023-05-01 00:00:00+2', '2024-01-01 00:00:00+1', '[)')
       ), (
         ap_id,
         end_user.new_id,
@@ -288,7 +288,7 @@ BEGIN
       ) VALUES (
         ap_id,
         energy_supplier.former_id,
-        tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
+        tstzrange('2023-05-01 00:00:00+2', '2024-01-01 00:00:00+1', '[)')
       ), (
         ap_id,
         energy_supplier.new_id,
@@ -305,7 +305,7 @@ BEGIN
       ) VALUES (
         ap_id,
         balance_responsible_party.former_id,
-        tstzrange('2023-05-01 00:00:00+1', '2024-01-01 00:00:00+1', '[)')
+        tstzrange('2023-05-01 00:00:00+2', '2024-01-01 00:00:00+1', '[)')
       ), (
         ap_id,
         balance_responsible_party.new_id,
@@ -512,9 +512,9 @@ BEGIN
       so_id,
       add_check_digit(accounting_point_seq::text),
       ARRAY[
-          (sp_id, '[2024-07-01 09:00:00 CET,2024-08-01 09:00:00 CET)'::tstzrange),
-          (common_sp_id, '[2024-08-01 09:00:00 CET,2024-09-01 09:00:00 CET)'::tstzrange),
-          (sp_id, '[2024-09-01 09:00:00 CET,)'::tstzrange)
+          (sp_id, '[2024-07-01 00:00:00 CEST,2024-08-01 00:00:00 CEST)'::tstzrange),
+          (common_sp_id, '[2024-08-01 00:00:00 CEST,2024-09-01 00:00:00 CEST)'::tstzrange),
+          (sp_id, '[2024-09-01 00:00:00 CEST,)'::tstzrange)
       ]::cu_sp[]
     ) INTO cu_id;
 
@@ -523,7 +523,7 @@ BEGIN
     ) VALUES (
         cu_id,
         spg_id,
-        '[2024-09-01 09:00:00 CET,)'::tstzrange
+        '[2024-09-01 00:00:00 CEST,)'::tstzrange
     );
 
     INSERT INTO flex.technical_resource (name, controllable_unit_id, details)

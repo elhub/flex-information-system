@@ -18,9 +18,9 @@ class ControllableUnitServiceProviderResponse:
         service_provider_id (int): Reference to the `party` (service provider) this relation links to a controllable
             unit. Example: 78.
         valid_from (Union[None, Unset, str]): The date from which the relation between the controllable unit and the
-            service provider is valid. Example: 2022-08-08 12:00:00 CET.
+            service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
-            service provider is valid. Example: 2022-09-10 15:30:00 CET.
+            service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10 00:00:00 CET.
         id (Union[Unset, int]): Unique surrogate key. Example: 7.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
