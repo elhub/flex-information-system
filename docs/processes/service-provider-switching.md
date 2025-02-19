@@ -1,24 +1,19 @@
 # Service provider switching initiated by the new service provider
 
-The final customer contacts a potential new service provider in order to obtain an offer which may lead to a new contract for CU services and the possible ending of the contract with the present service provider
+The end user contacts a new service provider in order to obtain a new contract for controllable unit services and ending of the contract with the present service provider
 
 ## Prerequisites
 
 
-- There exists a valid contract between the new service provider and the final customer, and all switching deadlines from the old contract have been met. 
+- There exists a valid contract between the new service provider and the end user, and all contract requirements from the old contract have been met. 
 
-- The Service Provider acts on behalf of, and has consent from the Final Customer. 
+- The service provider acts on behalf of, and has consent from the end user. 
 
-- The resource will remain with the old Service Provider’s control and useable for operations until the intended switching date.  
+- The contrallable unit business ID is known by new service provider
 
-- The Flexible Information System will arrange for the swiching of Service Provder on the CU and perform the switcing at switcing date (midning allinged) and remove CU from old Sercice Providers SPG(s).
+- The controllable unit will remain with the old service provider’s control and useable for operations until the contract start date for new service provider.
 
-- Further update of CU characteristics and assignment of CU to SPG(s) will be done using dedicated processes
-
-## Application status transitions
-Decitions to be made:
-- Do we set statuses on CU validation, grid prequalification or SPG Product prequalification depending of Articles, e.g. 22.2?
-
+- Further update of CU characteristics and assignment of controllable unit to service providing group(s) will be done using dedicated processes.
 
 
 

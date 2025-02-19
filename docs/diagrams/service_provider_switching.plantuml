@@ -1,7 +1,7 @@
 @startuml service_provider_switching
 !theme plain
 
-title Service Provider Switching
+title Service provider switching
 
 autonumber
 skinparam note {
@@ -19,49 +19,51 @@ actor "System Operator (SO)" as SO
 
 EU <-> SP_NEW: Contractual agreement
 Note right SP_NEW
-    The end user contacts new service provider 
-    in order to obtain new contract and ending of 
-    the contract with the present service provider
+    The end user contacts a new service provider in order 
+    to obtain a new contract for controllable unit services 
+    and ending of the contract with the present service provider
 end note
+== Verification of controllable unit ==
+
+Note left SP_NEW
+    The new servive provider will verify the
+    controllable unit by using contrallable unit business id
+end note
+
+SP_NEW -> FIS: Verification of controllable unit
+FIS --> SP_NEW: Return with controllable unit data or a negitive response
 
 == Switching ==
+
 Note left SP_NEW
-    Data: SP_ID, CU_ID
-    Consent_ID and Switching date
+    Data: service provider business id,
+          controllable unit business id,
+          contract reference and contract start date
 end note
-SP_NEW -> FIS: Request switch of Controllable Unit 
+SP_NEW -> FIS: Request switch of controllable unit 
 Note right FIS
     The new service provider requests to be 
-    registered in CU module as the new s
-    ervice provider for the controllable unit 
-    per requested date. Included in the request
-    a consent_ID form End User.
+    registered in FIS as the new service provider
+    for the controllable unit  
 end note
 
-FIS --> FIS: Check switch of service provider request
-FIS -> SP_NEW: Send switch of service provider request results
+FIS -> FIS: Future contract updates
+FIS --> SP_NEW: Return switch of service provider request results
 Note right FIS
     FIS notifies all affected parties directly
     after positive validation of the switch
-    of service provider request and switcing date
+    of service provider request and contract start date
 end note
-FIS --> SO: Notify
-FIS --> SP_OLD: Notify
-FIS -> FIS: Necessary updates on CU, \nready for swiching at switching date
-FIS -> FIS: Neceserry updates on old SP's SPG(s), \nready for removal of CU at switcing date
 
-Note right FIS
-    At switcing date etiteled parties
-    get notifications. SO=CSO, ISO and PSO
-end note
-FIS --> SO: Notify
-FIS --> SP_OLD: Notify
-FIS --> SP_NEW: Notify
+FIS --> SO: Notify with controllable unit business id \nand new service providers contract start date
+FIS --> SP_OLD: Notify with controllable unit business id \nand new service providers contract start date
+
+
 == Post Switching ==
 Note right SP_NEW
-    New Service Provider then updates CU characterisitcs
-    if needed using dedicated process.
-    New Service Provder assigning CU to SPG using dedicated process.
+    New service provider will use dedicated process
+    updating controllable unit characterisitcs and assigning
+    new controllable unit to service providing group(s)
 end note
 
 @enduml
