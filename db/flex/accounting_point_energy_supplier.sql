@@ -30,3 +30,9 @@ CREATE TABLE IF NOT EXISTS accounting_point_energy_supplier (
         accounting_point_id WITH =, valid_time_range WITH &&
     ) WHERE (valid_time_range IS NOT null)
 );
+
+CREATE OR REPLACE TRIGGER
+accounting_point_energy_supplier_timeline_midnight_aligned
+AFTER INSERT OR UPDATE ON accounting_point_energy_supplier
+FOR EACH ROW
+EXECUTE FUNCTION timeline_midnight_aligned();

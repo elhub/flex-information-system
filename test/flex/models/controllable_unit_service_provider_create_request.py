@@ -21,9 +21,9 @@ class ControllableUnitServiceProviderCreateRequest:
             user. Typically an internal identifier to a stored document or consent record. Example:
             123e4567-e89b-12d3-a456-426614174000.
         valid_from (Union[None, Unset, str]): The date from which the relation between the controllable unit and the
-            service provider is valid. Example: 2022-08-08 12:00:00 CET.
+            service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
-            service provider is valid. Example: 2022-09-10 15:30:00 CET.
+            service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10 00:00:00 CET.
     """
 
     controllable_unit_id: int

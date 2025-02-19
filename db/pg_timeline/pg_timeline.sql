@@ -284,3 +284,31 @@ BEGIN
     END IF;
 END;
 $$;
+
+CREATE OR REPLACE FUNCTION timeline_midnight_aligned()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    -- the timestamp to check
+    tl_timestamp timestamptz;
+    -- the same timestamp in Norwegian timezone
+    tl_norwegian_timestamp timestamptz;
+BEGIN
+    FOREACH tl_timestamp IN ARRAY
+        ARRAY[lower(NEW.valid_time_range), upper(NEW.valid_time_range)]
+    LOOP
+        CONTINUE WHEN tl_timestamp IS NULL;
+        tl_norwegian_timestamp := tl_timestamp at time zone 'Europe/Oslo';
+        IF date_trunc('day', tl_norwegian_timestamp) != tl_norwegian_timestamp
+        THEN
+            RAISE sqlstate 'PT400' using
+                message = 'Valid time is not midnight-aligned';
+            RETURN null;
+        END IF;
+    END LOOP;
+
+    RETURN NEW;
+END;
+$$;

@@ -29,3 +29,8 @@ CREATE TABLE IF NOT EXISTS accounting_point_end_user (
         accounting_point_id WITH =, valid_time_range WITH &&
     ) WHERE (valid_time_range IS NOT null)
 );
+
+CREATE OR REPLACE TRIGGER accounting_point_end_user_timeline_midnight_aligned
+AFTER INSERT OR UPDATE ON accounting_point_end_user
+FOR EACH ROW
+EXECUTE FUNCTION timeline_midnight_aligned();

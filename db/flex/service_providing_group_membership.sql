@@ -71,3 +71,9 @@ CREATE OR REPLACE TRIGGER service_providing_group_membership_event
 AFTER INSERT OR UPDATE OR DELETE ON service_providing_group_membership
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_providing_group_membership');
+
+CREATE OR REPLACE TRIGGER
+service_providing_group_membership_timeline_midnight_aligned
+AFTER INSERT OR UPDATE ON service_providing_group_membership
+FOR EACH ROW
+EXECUTE FUNCTION timeline_midnight_aligned();
