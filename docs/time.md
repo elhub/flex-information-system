@@ -105,6 +105,20 @@ second one puts the contract in the non-frozen past. The start date of contract
 The end date of this partially frozen contract can be moved anywhere in the
 non-frozen past, so the third update (`5'''`) is invalid, but the last one is.
 
+### Timeline window
+
+For some contracts, _insertion_ can be restricted to a fixed _window_ from the
+current time. This means that new contracts can only _start_ in this interval.
+
+The diagram below shows the example of a contract resource with a timeline
+window of one week placed one week ahead of time.
+
+![valid_time_window](diagrams/valid_time_window.png)
+
+In this example, all contracts created on 30.06 must start between 07.07 and
+13.07. The two first contracts are invalid, but the three last ones are valid,
+regardless of their end date.
+
 ## Timezones
 
 In the context of storing datetime-related information, a timestamp only has
