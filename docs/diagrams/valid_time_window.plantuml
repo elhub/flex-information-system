@@ -1,0 +1,30 @@
+@startgantt valid_time_window
+scale 500 width
+Project starts 2020-06-28
+2020-06-28 to 2020-07-06 are colored in Bisque
+2020-07-14 to 2020-07-17 are colored in Bisque
+2020-06-30 is colored in Beige
+
+-- New contracts must start in the window --
+
+[1] as [EC1] starts 2020-06-29
+[EC1] ends 2020-07-02
+[EC1] is colored in Coral/black
+
+[2] as [EC2] starts 2020-07-05
+[EC2] ends 2020-07-09
+[EC2] is colored in Coral/black
+
+[3] as [EC3] starts 2020-07-13
+[EC3] ends 2020-07-15
+[EC3] is colored in YellowGreen/black
+
+[4] as [EC4] starts 2020-07-08
+[EC4] ends 2020-07-11
+[EC4] is colored in YellowGreen/black
+
+[5] as [EC5] starts 2020-07-12
+[EC5] ends 2020-07-17
+[EC5] is colored in YellowGreen/black
+
+@endgantt
