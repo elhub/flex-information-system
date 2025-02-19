@@ -362,7 +362,8 @@ BEGIN
         RAISE sqlstate 'PT400' using
             message = 'Cannot create new future contract more than '
                 || justify_interval(
-                       tl_window_start_interval + tl_window_duration_interval
+                       tl_window_start_interval::interval +
+                       tl_window_duration_interval::interval
                    )::text
                 || ' ahead of time (latest '
                 || to_char(
