@@ -13,7 +13,7 @@ create trigger pgtl_window_upsert
 before insert
 on pgtl_window
 for each row
-execute function timeline_window('2 days', '1 week');
+execute function timeline_valid_start_window('2 days', '1 week');
 
 begin;
 select plan(5);

@@ -66,8 +66,8 @@ EXECUTE FUNCTION timeline_midnight_aligned();
 
 -- IFV: CUSP-IFV002
 CREATE OR REPLACE TRIGGER
-controllable_unit_service_provider_timeline_window
+controllable_unit_service_provider_timeline_valid_start_window
 BEFORE INSERT ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
-EXECUTE FUNCTION timeline_window('2 weeks', '2 weeks');
+EXECUTE FUNCTION timeline_valid_start_window('2 weeks', '2 weeks');
