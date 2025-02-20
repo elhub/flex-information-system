@@ -230,12 +230,12 @@ BEGIN
         THEN
             RAISE sqlstate 'PT400' using
                 message = 'Cannot create new contract more than '
-                    || tl_freeze_after_interval || ' back in time (latest '
+                    || tl_freeze_after_interval || ' back in time',
+                detail = 'Valid time is frozen before '
                     || to_char(
                            tl_freeze_time at time zone 'Europe/Oslo',
                            'DD.MM.YYYY kl. HH24:MI'
-                       )
-                    || ')';
+                       );
             RETURN null;
         END IF;
     END IF;
@@ -262,12 +262,12 @@ BEGIN
                     RAISE sqlstate 'PT400' using
                         message = 'Cannot update valid time on a contract '
                             || 'more than ' || tl_freeze_after_interval
-                            || ' old (latest '
+                            || ' old',
+                        detail = 'Valid time is frozen before '
                             || to_char(
                                    tl_freeze_time at time zone 'Europe/Oslo',
                                    'DD.MM.YYYY kl. HH24:MI'
-                               )
-                            || ')';
+                               );
                     RETURN null;
                 END IF;
 
@@ -279,12 +279,12 @@ BEGIN
                     RAISE sqlstate 'PT400' using
                         message = 'Cannot set new valid time on contract '
                             || 'more than ' || tl_freeze_after_interval
-                            || ' back in time (latest '
+                            || ' back in time',
+                        detail = 'Valid time is frozen before '
                             || to_char(
                                    tl_freeze_time at time zone 'Europe/Oslo',
                                    'DD.MM.YYYY kl. HH24:MI'
-                               )
-                            || ')';
+                               );
                     RETURN null;
                 END IF;
             END IF;
@@ -363,9 +363,9 @@ BEGIN
         RAISE sqlstate 'PT400' using
             message = 'Cannot create new contract '
                 || 'less than ' || tl_window_start_after_interval
-                || ' ahead of time (earliest '
-                || to_char(tl_window_start_day_incl 'DD.MM.YYYY')
-                || ')';
+                || ' ahead of time',
+            detail = 'Valid time window starts on '
+                || to_char(tl_window_start_day_incl, 'DD.MM.YYYY');
         RETURN null;
     END IF;
 
@@ -376,9 +376,10 @@ BEGIN
                        tl_window_start_after_interval::interval +
                        tl_window_interval::interval
                    )::text
-                || ' ahead of time (must be before '
+                || ' ahead of time',
+            detail = 'Valid time window lasts until '
                 || to_char(tl_window_end_day_excl, 'DD.MM.YYYY')
-                || ')';
+                || ' (excluded)';
         RETURN null;
     END IF;
 
