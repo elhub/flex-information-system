@@ -208,8 +208,38 @@ BEGIN
 END;
 $$;
 
+-- compute the nearest previous midnight in the Norwegian timezone
+CREATE OR REPLACE FUNCTION norwegian_midnight(t timestamptz)
+RETURNS timestamptz
+SECURITY INVOKER
+LANGUAGE sql
+AS $$ SELECT
+    -- convert to timestamp in Norwegian timezone to get the right day
+    ((t at time zone 'Europe/Oslo')
+    -- ignore the time and switch to text format
+    ::date::text
+    -- add the Norwegian midnight time
+    || ' Europe/Oslo')
+    -- switch back to timestamp with timezone
+    ::timestamptz
+$$;
+
+-- convert a timestamp to an ISO 8601 string
+--   UTC timezone for simplicity (writing Z instead of computing an offset)
+CREATE OR REPLACE FUNCTION to_iso_string(t timestamptz)
+RETURNS text
+SECURITY INVOKER
+LANGUAGE sql
+AS $$ SELECT
+    to_char(t at time zone 'UTC', 'YYYY-MM-DD')
+    || 'T'
+    || to_char(t at time zone 'UTC', 'HH24:MI:SS')
+    || 'Z'
+$$;
+
 -- freeze a 'valid time' timeline before a certain date :
 --   no date can be inserted or updated before the limit
+-- (limit aligned to the nearest previous midnight in the Norwegian timezone)
 CREATE OR REPLACE FUNCTION timeline_freeze()
 RETURNS trigger
 SECURITY INVOKER
@@ -219,8 +249,9 @@ DECLARE
     -- interval allowed back in time
     tl_freeze_after_interval text := TG_ARGV[0];
     -- time when the freeze is applied
-    tl_freeze_time timestamptz
-        := current_timestamp - tl_freeze_after_interval::interval;
+    tl_freeze_time timestamptz := norwegian_midnight(
+        current_timestamp - tl_freeze_after_interval::interval
+    );
     -- time field update
     tl_update record;
 BEGIN
@@ -229,9 +260,10 @@ BEGIN
         IF lower(NEW.valid_time_range) < tl_freeze_time
         THEN
             RAISE sqlstate 'PT400' using
-                message = 'Cannot create new contract '
-                    || 'more than ' || tl_freeze_after_interval
-                    || ' back in time';
+                message = 'Cannot create new contract more than '
+                    || tl_freeze_after_interval || ' back in time',
+                detail = 'Valid time is frozen before '
+                    || to_iso_string(tl_freeze_time);
             RETURN null;
         END IF;
     END IF;
@@ -258,7 +290,9 @@ BEGIN
                     RAISE sqlstate 'PT400' using
                         message = 'Cannot update valid time on a contract '
                             || 'more than ' || tl_freeze_after_interval
-                            || ' old';
+                            || ' old',
+                        detail = 'Valid time is frozen before '
+                            || to_iso_string(tl_freeze_time);
                     RETURN null;
                 END IF;
 
@@ -270,7 +304,9 @@ BEGIN
                     RAISE sqlstate 'PT400' using
                         message = 'Cannot set new valid time on contract '
                             || 'more than ' || tl_freeze_after_interval
-                            || ' back in time';
+                            || ' back in time',
+                        detail = 'Valid time is frozen before '
+                            || to_iso_string(tl_freeze_time);
                     RETURN null;
                 END IF;
             END IF;
@@ -293,21 +329,68 @@ AS $$
 DECLARE
     -- the timestamp to check
     tl_timestamp timestamptz;
-    -- the same timestamp in Norwegian timezone
-    tl_norwegian_timestamp timestamptz;
 BEGIN
     FOREACH tl_timestamp IN ARRAY
         ARRAY[lower(NEW.valid_time_range), upper(NEW.valid_time_range)]
     LOOP
         CONTINUE WHEN tl_timestamp IS NULL;
-        tl_norwegian_timestamp := tl_timestamp at time zone 'Europe/Oslo';
-        IF date_trunc('day', tl_norwegian_timestamp) != tl_norwegian_timestamp
-        THEN
+        IF tl_timestamp != norwegian_midnight(tl_timestamp) THEN
             RAISE sqlstate 'PT400' using
                 message = 'Valid time is not midnight-aligned';
             RETURN null;
         END IF;
     END LOOP;
+
+    RETURN NEW;
+END;
+$$;
+
+-- set a window for new entries in the 'valid time' timeline :
+--   a contract can neither be created too short or too long in advance
+--   (i.e., only after a first interval has passed and during a second interval)
+-- the window is :
+--   - midnight-aligned in the Norwegian timezone
+--   - inclusive at the start, exclusive at the end
+CREATE OR REPLACE FUNCTION timeline_valid_start_window()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    -- using start + duration ensures the end of the window is after its start
+    tl_window_start_after_interval text := TG_ARGV[0];
+    tl_window_interval text := TG_ARGV[1];
+
+    -- window bounds
+    tl_window_start timestamptz := norwegian_midnight(
+        current_timestamp + tl_window_start_after_interval::interval
+    );
+    tl_window_end timestamptz := norwegian_midnight(
+        tl_window_start + tl_window_interval::interval
+    );
+BEGIN
+    IF NOT lower(NEW.valid_time_range) >= tl_window_start THEN
+        RAISE sqlstate 'PT400' using
+            message = 'Cannot create new contract '
+                || 'less than ' || tl_window_start_after_interval
+                || ' ahead of time',
+            detail = 'Valid time window starts on '
+                || to_iso_string(tl_window_start);
+        RETURN null;
+    END IF;
+
+    IF NOT lower(NEW.valid_time_range) < tl_window_end THEN
+        RAISE sqlstate 'PT400' using
+            message = 'Cannot create new contract more than '
+                || justify_interval(
+                       tl_window_start_after_interval::interval +
+                       tl_window_interval::interval
+                   )::text
+                || ' ahead of time',
+            detail = 'Valid time window lasts until '
+                || to_iso_string(tl_window_end) || ' (excluded)';
+        RETURN null;
+    END IF;
 
     RETURN NEW;
 END;

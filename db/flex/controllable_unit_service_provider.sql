@@ -53,13 +53,21 @@ EXECUTE FUNCTION capture_event('controllable_unit_service_provider');
 
 -- IFV: CUSP-IFV001
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_valid_time_freeze
-AFTER INSERT OR UPDATE ON controllable_unit_service_provider
+BEFORE UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
 EXECUTE FUNCTION timeline_freeze('2 weeks');
 
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_timeline_midnight_aligned
-AFTER INSERT OR UPDATE ON controllable_unit_service_provider
+BEFORE INSERT OR UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION timeline_midnight_aligned();
+
+-- IFV: CUSP-IFV002
+CREATE OR REPLACE TRIGGER
+controllable_unit_service_provider_timeline_valid_start_window
+BEFORE INSERT ON controllable_unit_service_provider
+FOR EACH ROW
+WHEN (current_role = 'flex_service_provider')
+EXECUTE FUNCTION timeline_valid_start_window('2 weeks', '2 weeks');
