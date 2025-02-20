@@ -110,14 +110,22 @@ non-frozen past, so the third update (`5'''`) is invalid, but the last one is.
 For some contracts, _insertion_ can be restricted to a fixed _window_ from the
 current time. This means that new contracts can only _start_ in this interval.
 
+The window is _midnight-aligned_, meaning that start and end _days_ are computed
+and the new contract should start between these days, _including_ the start day
+but _excluding_ the end day. We do not check the _time_ of the contract, as this
+is a separate constraint. The window check should work with all kinds of
+contracts, midnight-aligned or not.
+
 The diagram below shows the example of a contract resource with a timeline
 window of one week placed one week ahead of time.
 
 ![valid_time_window](diagrams/valid_time_window.png)
 
-In this example, all contracts created on 30.06 must start between 07.07 and
-13.07. The two first contracts are invalid, but the three last ones are valid,
-regardless of their end date.
+In this example, all contracts created on 30.06 must start _at least_ on 07.07
+_included_ and _strictly before_ 14.07.
+The three first contracts are therefore invalid, even if number `2` starts at
+midnight on 14.07, and the three last ones are valid, and number `5` can start
+as soon as midnight on 07.07. The end date is not checked at all.
 
 ## Timezones
 
