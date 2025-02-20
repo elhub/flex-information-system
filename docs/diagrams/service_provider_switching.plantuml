@@ -16,7 +16,6 @@ actor "System Operator (SO)" as SO
 
 == Initiate Switching ==
 
-
 EU <-> SP_NEW: Contractual agreement
 Note right SP_NEW
     The end user contacts a new service provider in order 
@@ -31,8 +30,11 @@ Note left SP_NEW
 end note
 
 SP_NEW -> FIS: Verification of controllable unit
+Activate SP_NEW
+Activate FIS
 FIS --> SP_NEW: Return with controllable unit data or a negitive response
-
+deactivate SP_NEW
+deactivate FIS
 == Switching ==
 
 Note left SP_NEW
@@ -40,7 +42,10 @@ Note left SP_NEW
           controllable unit business id,
           contract reference and contract start date
 end note
+
 SP_NEW -> FIS: Request switch of controllable unit 
+Activate SP_NEW
+Activate FIS
 Note right FIS
     The new service provider requests to be 
     registered in FIS as the new service provider
@@ -49,6 +54,7 @@ end note
 
 FIS -> FIS: Future contract updates
 FIS --> SP_NEW: Return switch of service provider request results
+deactivate SP_NEW
 Note right FIS
     FIS notifies all affected parties directly
     after positive validation of the switch
@@ -57,7 +63,7 @@ end note
 
 FIS --> SO: Notify with controllable unit business id \nand new service providers contract start date
 FIS --> SP_OLD: Notify with controllable unit business id \nand new service providers contract start date
-
+deactivate FIS
 
 == Post Switching ==
 Note right SP_NEW
