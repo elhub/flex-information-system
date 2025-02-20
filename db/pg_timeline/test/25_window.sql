@@ -35,7 +35,9 @@ values
   1,
   'b',
   tstzrange(
-    current_timestamp + '2 days'::interval,
+    -- Norwegian midnight in 2 days should be included in the window
+    --   (cut time, append Norwegian midnight, convert to timestamptz)
+    ((current_date + '2 days'::interval)::date::text || ' Europe/Oslo')::timestamptz,
     current_timestamp + '12 days'::interval
   )
 ),
@@ -90,7 +92,8 @@ values
   1,
   'g',
   tstzrange(
-    current_timestamp + '9 days 1 microsecond'::interval, -- after the limit
+    -- Norwegian midnight in 2+7 days should NOT be included in the window
+    ((current_date + '9 days'::interval)::date::text || ' Europe/Oslo')::timestamptz,
     current_timestamp + '12 days'::interval
   )
 );

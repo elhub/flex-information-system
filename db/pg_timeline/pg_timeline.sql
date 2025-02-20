@@ -330,6 +330,9 @@ $$;
 -- set a window for new entries in the 'valid time' timeline :
 --   a contract can neither be created too short or too long in advance
 --   (i.e., only after a first interval has passed and during a second interval)
+-- the window is :
+--   - midnight-aligned in the Norwegian timezone
+--   - inclusive at the start, exclusive at the end
 CREATE OR REPLACE FUNCTION timeline_valid_start_window()
 RETURNS trigger
 SECURITY INVOKER
@@ -339,37 +342,42 @@ DECLARE
     -- using start + duration ensures the end of the window is after its start
     tl_window_start_after_interval text := TG_ARGV[0];
     tl_window_interval text := TG_ARGV[1];
-    -- window bounds
+
+    -- raw window bounds
     tl_window_start timestamptz :=
         current_timestamp + tl_window_start_after_interval::interval;
     tl_window_end timestamptz :=
         tl_window_start + tl_window_interval::interval;
+
+    -- window bounds and contract start as days
+    --   (timezone switch used to make sure we point to the right day in the
+    --   Norwegian timezone)
+    tl_window_start_day_incl date :=
+        (tl_window_start at time zone 'Europe/Oslo')::date;
+    tl_window_end_day_excl date :=
+        (tl_window_end at time zone 'Europe/Oslo')::date;
+    tl_contract_start_day date :=
+        (lower(NEW.valid_time_range) at time zone 'Europe/Oslo')::date;
 BEGIN
-    IF lower(NEW.valid_time_range) < tl_window_start THEN
+    IF NOT tl_contract_start_day >= tl_window_start_day_incl THEN
         RAISE sqlstate 'PT400' using
             message = 'Cannot create new contract '
                 || 'less than ' || tl_window_start_after_interval
                 || ' ahead of time (earliest '
-                || to_char(
-                       tl_window_start at time zone 'Europe/Oslo',
-                       'DD.MM.YYYY kl. HH24:MI'
-                   )
+                || to_char(tl_window_start_day_incl 'DD.MM.YYYY')
                 || ')';
         RETURN null;
     END IF;
 
-    IF lower(NEW.valid_time_range) > tl_window_end THEN
+    IF NOT tl_contract_start_day < tl_window_end_day_excl THEN
         RAISE sqlstate 'PT400' using
             message = 'Cannot create new contract more than '
                 || justify_interval(
                        tl_window_start_after_interval::interval +
                        tl_window_interval::interval
                    )::text
-                || ' ahead of time (latest '
-                || to_char(
-                       tl_window_end at time zone 'Europe/Oslo',
-                       'DD.MM.YYYY kl. HH24:MI'
-                   )
+                || ' ahead of time (must be before '
+                || to_char(tl_window_end_day_excl, 'DD.MM.YYYY')
                 || ')';
         RETURN null;
     END IF;
