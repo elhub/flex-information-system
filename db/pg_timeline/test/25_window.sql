@@ -70,7 +70,7 @@ values
     current_timestamp + '4 days'::interval
   )
 );
-select throws_ok('try_insert_e');
+select throws_like('try_insert_e', 'Cannot%');
 
 prepare try_insert_f as
 insert into pgtl_window (tl_id, value, valid_time_range)
@@ -83,7 +83,7 @@ values
     null
   )
 );
-select throws_ok('try_insert_f');
+select throws_like('try_insert_f', 'Cannot%');
 
 prepare try_insert_g as
 insert into pgtl_window (tl_id, value, valid_time_range)
@@ -97,7 +97,7 @@ values
     current_timestamp + '12 days'::interval
   )
 );
-select throws_ok('try_insert_g');
+select throws_like('try_insert_g', 'Cannot%');
 
 prepare try_insert_h as
 insert into pgtl_window (tl_id, value, valid_time_range)
@@ -110,7 +110,7 @@ values
     current_timestamp + '14 days'::interval
   )
 );
-select throws_ok('try_insert_h');
+select throws_like('try_insert_h', 'Cannot%');
 
 -- noqa: enable=all
 

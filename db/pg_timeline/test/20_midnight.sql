@@ -74,7 +74,7 @@ set valid_time_range = tstzrange(
     '2025-01-09 23:00:00+1'
 )
 where value = 'b';
-select throws_ok('try_update_b1');
+select throws_like('try_update_b1', 'Valid time%');
 
 prepare try_update_b2 as
 update pgtl_midnight
@@ -83,7 +83,7 @@ set valid_time_range = tstzrange(
     upper(valid_time_range)
 )
 where value = 'b';
-select throws_ok('try_update_b2');
+select throws_like('try_update_b2', 'Valid time%');
 
 prepare try_update_b3 as
 update pgtl_midnight
@@ -92,7 +92,7 @@ set valid_time_range = tstzrange(
     '2024-07-05 22:00:00+2'
 )
 where value = 'b';
-select throws_ok('try_update_b3');
+select throws_like('try_update_b3', 'Valid time%');
 
 -- noqa: enable=all
 
