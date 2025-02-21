@@ -208,33 +208,12 @@ BEGIN
 END;
 $$;
 
--- compute the nearest previous midnight in the Norwegian timezone
-CREATE OR REPLACE FUNCTION norwegian_midnight(t timestamptz)
-RETURNS timestamptz
-SECURITY INVOKER
-LANGUAGE sql
-AS $$ SELECT
-    -- convert to timestamp in Norwegian timezone to get the right day
-    ((t at time zone 'Europe/Oslo')
-    -- ignore the time and switch to text format
-    ::date::text
-    -- add the Norwegian midnight time
-    || ' Europe/Oslo')
-    -- switch back to timestamp with timezone
-    ::timestamptz
-$$;
-
--- convert a timestamp to an ISO 8601 string
---   UTC timezone for simplicity (writing Z instead of computing an offset)
-CREATE OR REPLACE FUNCTION to_iso_string(t timestamptz)
+CREATE OR REPLACE FUNCTION timestamp_to_string(t timestamptz)
 RETURNS text
 SECURITY INVOKER
 LANGUAGE sql
 AS $$ SELECT
-    to_char(t at time zone 'UTC', 'YYYY-MM-DD')
-    || 'T'
-    || to_char(t at time zone 'UTC', 'HH24:MI:SS')
-    || 'Z'
+    to_char(t at time zone 'Europe/Oslo', 'YYYY-MM-DD HH24:MI:SS "Europe/Oslo"')
 $$;
 
 -- freeze a 'valid time' timeline before a certain date :
@@ -249,8 +228,10 @@ DECLARE
     -- interval allowed back in time
     tl_freeze_after_interval text := TG_ARGV[0];
     -- time when the freeze is applied
-    tl_freeze_time timestamptz := norwegian_midnight(
-        current_timestamp - tl_freeze_after_interval::interval
+    tl_freeze_time timestamptz := date_trunc(
+        'day',
+        current_timestamp - tl_freeze_after_interval::interval,
+        'Europe/Oslo'
     );
     -- time field update
     tl_update record;
@@ -263,7 +244,7 @@ BEGIN
                 message = 'Cannot create new contract more than '
                     || tl_freeze_after_interval || ' back in time',
                 detail = 'Valid time is frozen before '
-                    || to_iso_string(tl_freeze_time);
+                    || timestamp_to_string(tl_freeze_time);
             RETURN null;
         END IF;
     END IF;
@@ -292,7 +273,7 @@ BEGIN
                             || 'more than ' || tl_freeze_after_interval
                             || ' old',
                         detail = 'Valid time is frozen before '
-                            || to_iso_string(tl_freeze_time);
+                            || timestamp_to_string(tl_freeze_time);
                     RETURN null;
                 END IF;
 
@@ -306,7 +287,7 @@ BEGIN
                             || 'more than ' || tl_freeze_after_interval
                             || ' back in time',
                         detail = 'Valid time is frozen before '
-                            || to_iso_string(tl_freeze_time);
+                            || timestamp_to_string(tl_freeze_time);
                     RETURN null;
                 END IF;
             END IF;
@@ -334,7 +315,7 @@ BEGIN
         ARRAY[lower(NEW.valid_time_range), upper(NEW.valid_time_range)]
     LOOP
         CONTINUE WHEN tl_timestamp IS NULL;
-        IF tl_timestamp != norwegian_midnight(tl_timestamp) THEN
+        IF tl_timestamp != date_trunc('day', tl_timestamp, 'Europe/Oslo') THEN
             RAISE sqlstate 'PT400' using
                 message = 'Valid time is not midnight-aligned';
             RETURN null;
@@ -362,11 +343,15 @@ DECLARE
     tl_window_interval text := TG_ARGV[1];
 
     -- window bounds
-    tl_window_start timestamptz := norwegian_midnight(
-        current_timestamp + tl_window_start_after_interval::interval
+    tl_window_start timestamptz := date_trunc(
+        'day',
+        current_timestamp + tl_window_start_after_interval::interval,
+        'Europe/Oslo'
     );
-    tl_window_end timestamptz := norwegian_midnight(
-        tl_window_start + tl_window_interval::interval
+    tl_window_end timestamptz := date_trunc(
+        'day',
+        tl_window_start + tl_window_interval::interval,
+        'Europe/Oslo'
     );
 BEGIN
     IF NOT lower(NEW.valid_time_range) >= tl_window_start THEN
@@ -375,7 +360,7 @@ BEGIN
                 || 'less than ' || tl_window_start_after_interval
                 || ' ahead of time',
             detail = 'Valid time window starts on '
-                || to_iso_string(tl_window_start);
+                || timestamp_to_string(tl_window_start);
         RETURN null;
     END IF;
 
@@ -388,7 +373,7 @@ BEGIN
                    )::text
                 || ' ahead of time',
             detail = 'Valid time window lasts until '
-                || to_iso_string(tl_window_end) || ' (excluded)';
+                || timestamp_to_string(tl_window_end) || ' (excluded)';
         RETURN null;
     END IF;
 
