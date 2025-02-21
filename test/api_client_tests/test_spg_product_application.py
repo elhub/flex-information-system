@@ -102,7 +102,7 @@ def data():
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-01T08:00:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -128,7 +128,7 @@ def data():
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T08:01:00+00:00",
+            valid_from="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)

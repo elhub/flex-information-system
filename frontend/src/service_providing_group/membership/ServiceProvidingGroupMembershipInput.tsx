@@ -4,7 +4,7 @@ import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../Toolbar";
 import { ValidTimeTooltip } from "../../ValidTimeTooltip";
-import { DateTimeInput } from "../../datetime";
+import { MidnightDateInput } from "../../datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -55,8 +55,8 @@ export const ServiceProvidingGroupMembershipInput = () => {
           <ValidTimeTooltip />
         </Stack>
         <InputStack direction="row" flexWrap="wrap">
-          <DateTimeInput source="valid_from" />
-          <DateTimeInput source="valid_to" />
+          <MidnightDateInput source="valid_from" />
+          <MidnightDateInput source="valid_to" />
         </InputStack>
       </Stack>
     </SimpleForm>

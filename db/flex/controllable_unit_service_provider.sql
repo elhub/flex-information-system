@@ -57,3 +57,9 @@ AFTER INSERT OR UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
 EXECUTE FUNCTION timeline_freeze('2 weeks');
+
+CREATE OR REPLACE TRIGGER
+controllable_unit_service_provider_timeline_midnight_aligned
+AFTER INSERT OR UPDATE ON controllable_unit_service_provider
+FOR EACH ROW
+EXECUTE FUNCTION timeline_midnight_aligned();
