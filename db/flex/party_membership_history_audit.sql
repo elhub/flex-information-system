@@ -13,6 +13,10 @@ party_membership_history (
     replaced_by bigint NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS
+party_membership_history_id_idx
+ON party_membership_history (id);
+
 CREATE OR REPLACE TRIGGER
 party_membership_history
 BEFORE INSERT OR UPDATE OR DELETE

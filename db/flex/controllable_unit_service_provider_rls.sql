@@ -64,7 +64,7 @@ USING (
         FROM controllable_unit_end_user AS cueu
         WHERE cueu.controllable_unit_id = controllable_unit_service_provider.controllable_unit_id -- noqa
             AND cueu.end_user_id = current_party()
-            AND cueu.end_user_valid_time_range && controllable_unit_service_provider.valid_time_range -- noqa
+            AND cueu.valid_time_range && controllable_unit_service_provider.valid_time_range -- noqa
     )
 );
 
@@ -86,7 +86,7 @@ USING (
             -- this version of the CUSP in the history puts the contract in the
             -- period when the current party is the end user of the AP
             AND cueu.end_user_id = current_party()
-            AND cueu.end_user_valid_time_range && controllable_unit_service_provider_history.valid_time_range -- noqa
+            AND cueu.valid_time_range && controllable_unit_service_provider_history.valid_time_range -- noqa
     )
 );
 

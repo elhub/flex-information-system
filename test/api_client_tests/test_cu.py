@@ -284,7 +284,8 @@ def test_controllable_unit_eu(sts):
         client=client_former_eu,
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
-    assert isinstance(cu, ErrorMessage)
+    assert isinstance(cu, ControllableUnitResponse)
+    assert "FORMER NAME" in cast(str, cu.name)
 
     # current AP end user can see the current version of the CU,
     # but not the old records
@@ -334,7 +335,8 @@ def test_controllable_unit_es(sts):
         client=client_former_es,
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
-    assert isinstance(cu, ErrorMessage)
+    assert isinstance(cu, ControllableUnitResponse)
+    assert "FORMER NAME" in cast(str, cu.name)
 
     # current AP energy supplier can see the current version of the CU,
     # but not the old records
@@ -386,7 +388,8 @@ def test_controllable_unit_brp(sts):
         client=client_former_brp,
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
-    assert isinstance(cu, ErrorMessage)
+    assert isinstance(cu, ControllableUnitResponse)
+    assert "FORMER NAME" in cast(str, cu.name)
 
     # current AP BRP can see the current version of the CU,
     # but not the old records

@@ -2,7 +2,7 @@ CREATE OR REPLACE VIEW controllable_unit_end_user AS (
     SELECT
         cu.id AS controllable_unit_id,
         apeu.end_user_id,
-        apeu.valid_time_range AS end_user_valid_time_range
+        apeu.valid_time_range
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.accounting_point AS ap
             ON cu.accounting_point_id = ap.business_id

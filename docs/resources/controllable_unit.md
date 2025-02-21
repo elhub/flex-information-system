@@ -92,24 +92,24 @@ No policies.
 
 #### Balance Responsible Party
 
-| Policy key | Policy                                                                                               | Status |
-|------------|------------------------------------------------------------------------------------------------------|--------|
-| CU-BRP001  | Read active CU that are connected to AP where they are BRP. Only for the contract period.            | DONE   |
-| CU-BRP002  | Read history on CU that are connected to AP where they are BRP. Only history on the contract period. | DONE   |
+| Policy key | Policy                                                                                     | Status |
+|------------|--------------------------------------------------------------------------------------------|--------|
+| CU-BRP001  | Read CU data that are connected to AP where they are BRP. Only for the contract period.    | DONE   |
+| CU-BRP002  | Read CU history that are connected to AP where they are BRP. Only for the contract period. | DONE   |
 
 #### End User
 
-| Policy key | Policy                                                                                              | Status |
-|------------|-----------------------------------------------------------------------------------------------------|--------|
-| CU-EU001   | Read CU that are connected to AP where they are EU. Only for the contract period.                   | DONE   |
-| CU-EU002   | Read history on CU that are connected to AP where they are EU. Only history on the contract period. | DONE   |
+| Policy key | Policy                                                                                            | Status |
+|------------|---------------------------------------------------------------------------------------------------|--------|
+| CU-EU001   | Read CU data that are connected to AP where they are EU. Only for when they are EU on the AP.     | DONE   |
+| CU-EU002   | RRead CU history that are connected to AP where they are EU. Only for when they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
-| Policy key | Policy                                                                                                     | Status |
-|------------|------------------------------------------------------------------------------------------------------------|--------|
-| CU-ES001   | Read active CU that are connected to AP where they are ES. Only for the contract period.                   | DONE   |
-| CU-ES002   | Read history on active CU that are connected to AP where they are ES. Only history on the contract period. | DONE   |
+| Policy key | Policy                                                                                    | Status |
+|------------|-------------------------------------------------------------------------------------------|--------|
+| CU-ES001   | Read CU data that are connected to AP where they are ES. Only for the contract period.    | DONE   |
+| CU-ES002   | Read CU history that are connected to AP where they are ES. Only for the contract period. | DONE   |
 
 #### Flexibility Information System Operator
 
@@ -135,12 +135,13 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                                                             | Status  |
-|------------|------------------------------------------------------------------------------------|---------|
-| CU-SP001   | Read CU where they are SP (only for the contract period) or the ones they created. | PARTIAL |
-| CU-SP002   | Create new CU.                                                                     | DONE    |
-| CU-SP003   | Update CU where they are current SP.                                               | DONE    |
-| CU-SP004   | Read history on CU that they can read.                                             | DONE    |
+| Policy key | Policy                                      | Status |
+|------------|---------------------------------------------|--------|
+| CU-SP001   | Read CU data for the period they are SP.    | DONE   |
+| CU-SP002   | Create new CU.                              | DONE   |
+| CU-SP003   | Update CU where they are current SP.        | DONE   |
+| CU-SP004   | Read CU history for the period they are SP. | DONE   |
+| CU-SP005   | Read CU they created.                       | DONE   |
 
 #### Third Party
 

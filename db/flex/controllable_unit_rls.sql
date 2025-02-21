@@ -48,17 +48,21 @@ USING (
 
 GRANT SELECT, INSERT, UPDATE ON controllable_unit TO flex_service_provider;
 -- RLS: CU-SP001
-CREATE POLICY "CU_SP001" ON controllable_unit
+-- RLS: CU-SP005
+CREATE POLICY "CU_SP001_SP005" ON controllable_unit
 FOR SELECT
 TO flex_service_provider
 USING (
-    -- the SP is or has been in charge of the CU
+    -- SP should see that current data only if their
+    -- contract overlaps with the record time
     EXISTS (
         SELECT 1
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit.id -- noqa
             AND controllable_unit_service_provider.service_provider_id
             = current_party()
+            AND controllable_unit_service_provider.valid_time_range
+            && controllable_unit.record_time_range -- noqa
     ) OR (
         -- the SP created the CU
         created_by_party_id = current_party()
@@ -98,7 +102,7 @@ USING (
         FROM controllable_unit_end_user AS cueu
         WHERE cueu.controllable_unit_id = controllable_unit.id -- noqa
             AND cueu.end_user_id = current_party()
-            AND cueu.end_user_valid_time_range @> current_timestamp
+            AND cueu.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
 
@@ -113,7 +117,7 @@ USING (
         FROM controllable_unit_energy_supplier AS cues
         WHERE cues.controllable_unit_id = controllable_unit.id -- noqa
             AND cues.energy_supplier_id = current_party()
-            AND cues.energy_supplier_valid_time_range @> current_timestamp
+            AND cues.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
 
@@ -128,7 +132,7 @@ USING (
         FROM controllable_unit_balance_responsible_party AS cubrp
         WHERE cubrp.controllable_unit_id = controllable_unit.id -- noqa
             AND cubrp.balance_responsible_party_id = current_party()
-            AND cubrp.balance_responsible_party_valid_time_range @> current_timestamp -- noqa
+            AND cubrp.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
 
@@ -149,7 +153,7 @@ USING (
             -- this version of the CU in the history was in effect
             -- when the current party was the end user of its AP
             AND cueu.end_user_id = current_party()
-            AND cueu.end_user_valid_time_range && controllable_unit_history.record_time_range -- noqa
+            AND cueu.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 
@@ -167,7 +171,7 @@ USING (
             -- this version of the CU in the history was in effect
             -- when the current party was the energy supplier of its AP
             AND cues.energy_supplier_id = current_party()
-            AND cues.energy_supplier_valid_time_range && controllable_unit_history.record_time_range -- noqa
+            AND cues.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 
@@ -185,7 +189,7 @@ USING (
             -- this version of the CU in the history was in effect when
             -- the current party was the balance responsible party of its AP
             AND cubrp.balance_responsible_party_id = current_party()
-            AND cubrp.balance_responsible_party_valid_time_range && controllable_unit_history.record_time_range -- noqa
+            AND cubrp.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 
@@ -223,7 +227,11 @@ TO flex_service_provider
 USING (
     EXISTS (
         SELECT 1
-        FROM controllable_unit
-        WHERE controllable_unit_history.id = controllable_unit.id -- noqa
+        FROM controllable_unit_service_provider
+        WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit_history.id -- noqa
+            AND controllable_unit_service_provider.service_provider_id
+            = current_party()
+            AND controllable_unit_service_provider.valid_time_range
+            && controllable_unit_history.record_time_range -- noqa
     )
 );
