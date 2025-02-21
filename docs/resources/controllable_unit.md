@@ -135,12 +135,13 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                                                             | Status  |
-|------------|------------------------------------------------------------------------------------|---------|
-| CU-SP001   | Read CU where they are SP (only for the contract period) or the ones they created. | PARTIAL |
-| CU-SP002   | Create new CU.                                                                     | DONE    |
-| CU-SP003   | Update CU where they are current SP.                                               | DONE    |
-| CU-SP004   | Read history on CU that they can read.                                             | DONE    |
+| Policy key | Policy                                      | Status |
+|------------|---------------------------------------------|--------|
+| CU-SP001   | Read CU data for the period they are SP.    | DONE   |
+| CU-SP002   | Create new CU.                              | DONE   |
+| CU-SP003   | Update CU where they are current SP.        | DONE   |
+| CU-SP004   | Read CU history for the period they are SP. | DONE   |
+| CU-SP005   | Read CU they created.                       | DONE   |
 
 #### Third Party
 

@@ -48,17 +48,21 @@ USING (
 
 GRANT SELECT, INSERT, UPDATE ON controllable_unit TO flex_service_provider;
 -- RLS: CU-SP001
-CREATE POLICY "CU_SP001" ON controllable_unit
+-- RLS: CU-SP005
+CREATE POLICY "CU_SP001_SP005" ON controllable_unit
 FOR SELECT
 TO flex_service_provider
 USING (
-    -- the SP is or has been in charge of the CU
+    -- SP should see that current data only if their
+    -- contract overlaps with the record time
     EXISTS (
         SELECT 1
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit.id -- noqa
             AND controllable_unit_service_provider.service_provider_id
             = current_party()
+            AND controllable_unit_service_provider.valid_time_range
+            && controllable_unit.record_time_range -- noqa
     ) OR (
         -- the SP created the CU
         created_by_party_id = current_party()
@@ -223,7 +227,11 @@ TO flex_service_provider
 USING (
     EXISTS (
         SELECT 1
-        FROM controllable_unit
-        WHERE controllable_unit_history.id = controllable_unit.id -- noqa
+        FROM controllable_unit_service_provider
+        WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit_history.id -- noqa
+            AND controllable_unit_service_provider.service_provider_id
+            = current_party()
+            AND controllable_unit_service_provider.valid_time_range
+            && controllable_unit_history.record_time_range -- noqa
     )
 );
