@@ -208,7 +208,7 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION timestamp_to_string(t timestamptz)
+CREATE OR REPLACE FUNCTION timeline_timestamptz_to_text(t timestamptz)
 RETURNS text
 SECURITY INVOKER
 LANGUAGE sql
@@ -244,7 +244,7 @@ BEGIN
                 message = 'Cannot create new contract more than '
                     || tl_freeze_after_interval || ' back in time',
                 detail = 'Valid time is frozen before '
-                    || timestamp_to_string(tl_freeze_time);
+                    || timeline_timestamptz_to_text(tl_freeze_time);
             RETURN null;
         END IF;
     END IF;
@@ -273,7 +273,7 @@ BEGIN
                             || 'more than ' || tl_freeze_after_interval
                             || ' old',
                         detail = 'Valid time is frozen before '
-                            || timestamp_to_string(tl_freeze_time);
+                            || timeline_timestamptz_to_text(tl_freeze_time);
                     RETURN null;
                 END IF;
 
@@ -287,7 +287,7 @@ BEGIN
                             || 'more than ' || tl_freeze_after_interval
                             || ' back in time',
                         detail = 'Valid time is frozen before '
-                            || timestamp_to_string(tl_freeze_time);
+                            || timeline_timestamptz_to_text(tl_freeze_time);
                     RETURN null;
                 END IF;
             END IF;
@@ -360,7 +360,7 @@ BEGIN
                 || 'less than ' || tl_window_start_after_interval
                 || ' ahead of time',
             detail = 'Valid time window starts on '
-                || timestamp_to_string(tl_window_start);
+                || timeline_timestamptz_to_text(tl_window_start);
         RETURN null;
     END IF;
 
@@ -373,7 +373,7 @@ BEGIN
                    )::text
                 || ' ahead of time',
             detail = 'Valid time window lasts until '
-                || timestamp_to_string(tl_window_end) || ' (excluded)';
+                || timeline_timestamptz_to_text(tl_window_end) || ' (excluded)';
         RETURN null;
     END IF;
 
