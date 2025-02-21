@@ -118,6 +118,7 @@ $$
 DECLARE
     l_id bigint;
     l_new record;
+    l_old record;
 BEGIN
     IF TG_OP = 'INSERT' THEN
         INSERT INTO flex.controllable_unit(
@@ -158,23 +159,65 @@ BEGIN
 
     ELSIF TG_OP = 'UPDATE' THEN
 
+        -- according to https://www.postgresql.org/message-id/20110509131717.1370e36f%40dick.coachhouse
+        -- PostgreSQL might be clever and not do any update when there is no change in NEW
+        -- This means that using FOUND is unreliable and we need to handle this case ourselves
+        SELECT
+            cu.id,
+            cu.accounting_point_id,
+            cu.business_id,
+            cu.grid_node_id,
+            cu.grid_validation_notes,
+            cu.grid_validation_status,
+            cu.last_validated,
+            cu.maximum_available_capacity,
+            cu.is_small,
+            cu.maximum_duration,
+            cu.minimum_duration,
+            cu.name,
+            cu.ramp_rate,
+            cu.recovery_duration,
+            cu.regulation_direction,
+            cu.start_date,
+            cu.status,
+            apt.system_operator_id AS connecting_system_operator_id,
+            cu.recorded_by,
+            lower(cu.record_time_range) AS recorded_at
+        FROM flex.controllable_unit INTO l_old AS cu
+        INNER JOIN flex.accounting_point AS apt
+            ON cu.accounting_point_id = apt.business_id
+            WHERE cu.id = NEW.id;
+
+        IF NOT FOUND THEN
+            RAISE sqlstate 'PT401' using
+                    message = 'Unauthorized';
+            RETURN null;
+        END IF;
+
+        IF l_old is not distinct from NEW THEN
+            RETURN l_old;
+        END IF;
+
+        -- check done - we should try an update
+
         UPDATE flex.controllable_unit SET
-            accounting_point_id= NEW.accounting_point_id,
-            business_id= NEW.business_id,
-            grid_node_id= NEW.grid_node_id,
-            grid_validation_notes= NEW.grid_validation_notes,
-            grid_validation_status= NEW.grid_validation_status,
-            last_validated= NEW.last_validated,
-            maximum_available_capacity= NEW.maximum_available_capacity,
-            maximum_duration= NEW.maximum_duration,
-            minimum_duration= NEW.minimum_duration,
-            name= NEW.name,
-            ramp_rate= NEW.ramp_rate,
-            recovery_duration= NEW.recovery_duration,
-            regulation_direction= NEW.regulation_direction,
+            accounting_point_id = NEW.accounting_point_id,
+            business_id = NEW.business_id,
+            grid_node_id = NEW.grid_node_id,
+            grid_validation_notes = NEW.grid_validation_notes,
+            grid_validation_status = NEW.grid_validation_status,
+            last_validated = NEW.last_validated,
+            maximum_available_capacity = NEW.maximum_available_capacity,
+            maximum_duration = NEW.maximum_duration,
+            minimum_duration = NEW.minimum_duration,
+            name = NEW.name,
+            ramp_rate = NEW.ramp_rate,
+            recovery_duration = NEW.recovery_duration,
+            regulation_direction = NEW.regulation_direction,
             start_date = NEW.start_date,
             status = NEW.status
         where id = NEW.id;
+
 
         IF NOT FOUND THEN
             IF current_role = 'flex_service_provider'
