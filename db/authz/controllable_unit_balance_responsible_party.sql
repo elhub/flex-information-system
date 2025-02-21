@@ -2,7 +2,7 @@ CREATE OR REPLACE VIEW controllable_unit_balance_responsible_party AS (
     SELECT
         cu.id AS controllable_unit_id,
         apbrp.balance_responsible_party_id,
-        apbrp.valid_time_range AS balance_responsible_party_valid_time_range
+        apbrp.valid_time_range
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.accounting_point AS ap
             ON cu.accounting_point_id = ap.business_id

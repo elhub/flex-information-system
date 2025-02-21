@@ -92,10 +92,10 @@ No policies.
 
 #### Balance Responsible Party
 
-| Policy key | Policy                                                                                               | Status |
-|------------|------------------------------------------------------------------------------------------------------|--------|
-| CU-BRP001  | Read active CU that are connected to AP where they are BRP. Only for the contract period.            | DONE   |
-| CU-BRP002  | Read history on CU that are connected to AP where they are BRP. Only history on the contract period. | DONE   |
+| Policy key | Policy                                                                                     | Status |
+|------------|--------------------------------------------------------------------------------------------|--------|
+| CU-BRP001  | Read CU data that are connected to AP where they are BRP. Only for the contract period.    | DONE   |
+| CU-BRP002  | Read CU history that are connected to AP where they are BRP. Only for the contract period. | DONE   |
 
 #### End User
 

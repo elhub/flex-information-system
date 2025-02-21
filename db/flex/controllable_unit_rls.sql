@@ -132,7 +132,7 @@ USING (
         FROM controllable_unit_balance_responsible_party AS cubrp
         WHERE cubrp.controllable_unit_id = controllable_unit.id -- noqa
             AND cubrp.balance_responsible_party_id = current_party()
-            AND cubrp.balance_responsible_party_valid_time_range @> current_timestamp -- noqa
+            AND cubrp.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
 
@@ -189,7 +189,7 @@ USING (
             -- this version of the CU in the history was in effect when
             -- the current party was the balance responsible party of its AP
             AND cubrp.balance_responsible_party_id = current_party()
-            AND cubrp.balance_responsible_party_valid_time_range && controllable_unit_history.record_time_range -- noqa
+            AND cubrp.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 
