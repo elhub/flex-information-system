@@ -184,6 +184,10 @@ def test_cusp_sp(data):
     client_sp = sts.get_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
+    # SP can do CU-SP without seeing the CU, they just need the ID
+    cu = read_controllable_unit.sync(client=client_sp, id=cu_id)
+    assert isinstance(cu, ErrorMessage)
+
     # check SP can read the CU-SP relations they are responsible for
 
     cusps_sp = list_controllable_unit_service_provider.sync(
