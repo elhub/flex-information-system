@@ -192,11 +192,11 @@ def test_cusp_sp(data):
     assert isinstance(cusps_sp, list)
     assert len(cusps_sp) > 0
 
-    # SP can perform stateful operations in the window of the 2 last weeks
+    # SP cannot insert too soon
 
-    def midnight_n_days_ago(n):
+    def midnight_n_days_diff(n):
         return (
-            datetime.combine(date.today() - timedelta(days=n), time.min)
+            datetime.combine(date.today() + timedelta(days=n), time.min)
             .astimezone(tz=timezone.utc)
             .isoformat()
         )
@@ -207,20 +207,47 @@ def test_cusp_sp(data):
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
             contract_reference="TEST-CONTRACT",
-            valid_from=midnight_n_days_ago(10),
-            valid_to=midnight_n_days_ago(7),
+            valid_from=midnight_n_days_diff(-3),
+            valid_to=midnight_n_days_diff(2),
+        ),
+    )
+    assert isinstance(cusp, ErrorMessage)
+
+    # but they can insert in a 2-4 weeks window ahead of time
+
+    cusp = create_controllable_unit_service_provider.sync(
+        client=client_sp,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
+            valid_from=midnight_n_days_diff(16),
         ),
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
+    # they can update in a 2-week window
 
     u = update_controllable_unit_service_provider.sync(
         client=client_sp,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to=midnight_n_days_ago(5),
+            valid_from=midnight_n_days_diff(-10),
+            valid_to=midnight_n_days_diff(-7),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
+
+    # but not too far in the past
+
+    u = update_controllable_unit_service_provider.sync(
+        client=client_sp,
+        id=cast(int, cusp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_from=midnight_n_days_diff(-17),
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
 
     d = delete_controllable_unit_service_provider.sync(
         client=client_sp, id=cast(int, cusp.id), body=EmptyObject()
@@ -236,7 +263,7 @@ def test_cusp_sp(data):
         client=client_sp,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to=midnight_n_days_ago(0),
+            valid_to=midnight_n_days_diff(0),
         ),
     )
     assert isinstance(u, ErrorMessage)
