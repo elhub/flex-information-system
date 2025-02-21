@@ -99,17 +99,17 @@ No policies.
 
 #### End User
 
-| Policy key | Policy                                                                                              | Status |
-|------------|-----------------------------------------------------------------------------------------------------|--------|
-| CU-EU001   | Read CU that are connected to AP where they are EU. Only for the contract period.                   | DONE   |
-| CU-EU002   | Read history on CU that are connected to AP where they are EU. Only history on the contract period. | DONE   |
+| Policy key | Policy                                                                                            | Status |
+|------------|---------------------------------------------------------------------------------------------------|--------|
+| CU-EU001   | Read CU data that are connected to AP where they are EU. Only for when they are EU on the AP.     | DONE   |
+| CU-EU002   | RRead CU history that are connected to AP where they are EU. Only for when they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
-| Policy key | Policy                                                                                                     | Status |
-|------------|------------------------------------------------------------------------------------------------------------|--------|
-| CU-ES001   | Read active CU that are connected to AP where they are ES. Only for the contract period.                   | DONE   |
-| CU-ES002   | Read history on active CU that are connected to AP where they are ES. Only history on the contract period. | DONE   |
+| Policy key | Policy                                                                                    | Status |
+|------------|-------------------------------------------------------------------------------------------|--------|
+| CU-ES001   | Read CU data that are connected to AP where they are ES. Only for the contract period.    | DONE   |
+| CU-ES002   | Read CU history that are connected to AP where they are ES. Only for the contract period. | DONE   |
 
 #### Flexibility Information System Operator
 

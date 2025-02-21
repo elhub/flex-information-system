@@ -102,7 +102,7 @@ USING (
         FROM controllable_unit_end_user AS cueu
         WHERE cueu.controllable_unit_id = controllable_unit.id -- noqa
             AND cueu.end_user_id = current_party()
-            AND cueu.end_user_valid_time_range @> current_timestamp
+            AND cueu.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
 
@@ -117,7 +117,7 @@ USING (
         FROM controllable_unit_energy_supplier AS cues
         WHERE cues.controllable_unit_id = controllable_unit.id -- noqa
             AND cues.energy_supplier_id = current_party()
-            AND cues.energy_supplier_valid_time_range @> current_timestamp
+            AND cues.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
 
@@ -153,7 +153,7 @@ USING (
             -- this version of the CU in the history was in effect
             -- when the current party was the end user of its AP
             AND cueu.end_user_id = current_party()
-            AND cueu.end_user_valid_time_range && controllable_unit_history.record_time_range -- noqa
+            AND cueu.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 
@@ -171,7 +171,7 @@ USING (
             -- this version of the CU in the history was in effect
             -- when the current party was the energy supplier of its AP
             AND cues.energy_supplier_id = current_party()
-            AND cues.energy_supplier_valid_time_range && controllable_unit_history.record_time_range -- noqa
+            AND cues.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
 
