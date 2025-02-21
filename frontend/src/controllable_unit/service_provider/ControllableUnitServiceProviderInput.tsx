@@ -1,4 +1,5 @@
 import {
+  NumberInput,
   required,
   SimpleForm,
   TextInput,
@@ -39,6 +40,10 @@ export const ControllableUnitServiceProviderInput = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   if (identityLoading) return <>Loading...</>;
 
+  // if we came to this page from the CU list, we want to input a CU ID,
+  // instead of selecting it from a list of already readable CUs
+  const isCreateFromCUList: boolean = !!overrideRecord?.fromCUList;
+
   // priority to the restored values if they exist, otherwise normal edit mode
   const record = filterRecord({ ...actualRecord, ...overrideRecord });
 
@@ -64,11 +69,15 @@ export const ControllableUnitServiceProviderInput = () => {
           Basic information
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <AutocompleteReferenceInput
-            source="controllable_unit_id"
-            reference="controllable_unit"
-            readOnly
-          />
+          {isCreateFromCUList ? (
+            <NumberInput source="controllable_unit_id" />
+          ) : (
+            <AutocompleteReferenceInput
+              source="controllable_unit_id"
+              reference="controllable_unit"
+              readOnly
+            />
+          )}
           <PartyReferenceInput
             source="service_provider_id"
             readOnly={isServiceProvider}

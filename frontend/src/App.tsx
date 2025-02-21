@@ -576,6 +576,22 @@ export const App = () => (
             />
           </Resource>
         ) : null}
+        {permissions.includes("controllable_unit_service_provider.read") ? (
+          <Resource
+            name="controllable_unit_service_provider"
+            create={
+              permissions.includes(
+                "controllable_unit_service_provider.create",
+              ) ? (
+                <Create redirect={() => `controllable_unit`}>
+                  <ControllableUnitServiceProviderInput />
+                </Create>
+              ) : (
+                (null as any)
+              )
+            }
+          />
+        ) : null}
         {permissions.includes("service_providing_group.read") ? (
           <Resource
             name="service_providing_group"
