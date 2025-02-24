@@ -54,6 +54,18 @@ WITH CHECK (
             AND controllable_unit_service_provider.service_provider_id
             = current_party()
     )
+    -- timeline_valid_time_subtract_loop(
+    --     service_providing_group_membership.valid_time_range, -- noqa
+    --     (
+    --         SELECT array_agg(cusp.valid_time_range)
+    --         FROM controllable_unit_service_provider AS cusp
+    --             INNER JOIN service_providing_group AS spg
+    --                 ON cusp.service_provider_id = spg.service_provider_id
+    --         WHERE spg.service_provider_id = current_party()
+    --             AND cusp.controllable_unit_id = service_providing_group_membership.controllable_unit_id -- noqa
+    --             AND spg.id = service_providing_group_membership.service_providing_group_id -- noqa
+    --     )
+    -- )
 );
 
 -- RLS: SPGM-SO001

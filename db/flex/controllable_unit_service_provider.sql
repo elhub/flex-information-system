@@ -71,3 +71,68 @@ BEFORE INSERT ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
 EXECUTE FUNCTION timeline_valid_start_window('2 weeks', '2 weeks');
+
+CREATE OR REPLACE FUNCTION
+controllable_unit_service_provider_spg_membership_consistency()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    -- ranges removed in the update operation, see comment below
+    l_removed_valid_time_ranges tstzrange[];
+    l_removed tstzrange;
+
+    -- loop variable for each concerned SPGM
+    l_spgm record;
+    -- remaining valid time range of each SPGM after CUSP update
+    l_valid_range_remaining tstzrange;
+BEGIN
+    -- delete CUSP -> delete SPGM on that period
+    IF TG_OP = 'DELETE' THEN
+        DELETE FROM service_providing_group_membership
+        WHERE controllable_unit_id = OLD.controllable_unit_id
+            AND service_provider_id = OLD.service_provider_id
+            AND valid_time_range && OLD.valid_time_range;
+        RETURN null;
+    END IF;
+
+    -- update CUSP -> restrict SPGM of the former period based on the new period
+
+    -- compute the amount of valid time that was removed in the update operation
+    l_removed_valid_time_ranges := timeline_valid_time_subtract(
+        OLD.valid_time_range,
+        NEW.valid_time_range
+    );
+
+    -- remove it from the valid time range of the affected SPGMs
+    FOR l_spgm IN
+        SELECT spgm.id, spgm.valid_time_range
+        FROM service_providing_group_membership AS spgm
+        INNER JOIN service_providing_group AS spg
+            ON spgm.service_providing_group_id = spg.id
+        WHERE spgm.controllable_unit_id = NEW.controllable_unit_id
+            AND spg.service_provider_id = NEW.service_provider_id
+            AND spgm.valid_time_range && OLD.valid_time_range
+    LOOP
+        l_valid_range_remaining := l_spgm.valid_time_range;
+        FOREACH l_removed IN ARRAY l_removed_valid_time_ranges LOOP
+            l_valid_range_remaining := l_valid_range_remaining - l_removed;
+        END LOOP;
+
+        UPDATE service_providing_group_membership
+        SET valid_time_range = l_valid_range_remaining
+        WHERE id = l_spgm.id;
+    END LOOP;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER
+controllable_unit_service_provider_spg_membership_consistency
+BEFORE UPDATE OR DELETE ON controllable_unit_service_provider
+FOR EACH ROW
+EXECUTE FUNCTION
+controllable_unit_service_provider_spg_membership_consistency();

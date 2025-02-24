@@ -380,3 +380,50 @@ BEGIN
     RETURN NEW;
 END;
 $$;
+
+-- subtraction on valid time ranges
+-- basically, this is just a subtraction, but there is one special case :
+--   A strictly includes B (starts before and ends after)
+--
+--   example :             A-----------A
+--                              B---B
+--
+--   expected result :     |----| U |--|
+--   actual result with simple subtraction : SQL error (non continuous range)
+
+-- IMPORTANT: we assume '[)' ranges everywhere
+CREATE OR REPLACE FUNCTION timeline_valid_time_subtract(
+    l_valid_time_range_a tstzrange,
+    l_valid_time_range_b tstzrange
+)
+RETURNS tstzrange []
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF (
+        -- A starts before B
+        lower(l_valid_time_range_a) IS NOT NULL
+        AND lower(l_valid_time_range_b) IS NOT NULL
+        AND lower(l_valid_time_range_a) < lower(l_valid_time_range_b)
+
+        -- A ends after B
+        AND upper(l_valid_time_range_b) IS NOT NULL
+        AND (
+            upper(l_valid_time_range_a) IS NULL
+            OR upper(l_valid_time_range_a) > upper(l_valid_time_range_b)
+        )
+    ) THEN
+        RETURN array[
+            tstzrange(
+                lower(l_valid_time_range_a), lower(l_valid_time_range_b), '[)'
+            ),
+            tstzrange(
+                upper(l_valid_time_range_b), upper(l_valid_time_range_a), '[)'
+            )
+        ];
+    ELSE
+        RETURN array[l_valid_time_range_a - l_valid_time_range_b];
+    END IF;
+END
+$$;
