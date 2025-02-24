@@ -124,6 +124,11 @@ also use the menu to find process details.
 
 ### Controllable unit
 
+### [Controllable Unit Lookup](controllable-unit-lookup.md)
+
+Before a service provider registers or switch a controllable unit, they must
+look up the controllable unit to see if it is already registered in the system.
+
 #### [Controllable unit registration](controllable-unit-registration.md)
 
 Register of a CU and data from a service provider and/or system user. Includes
