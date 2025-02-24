@@ -28,6 +28,7 @@ from flex.api.controllable_unit_service_provider import (
 )
 import pytest
 from typing import cast
+from datetime import date, datetime, timedelta, time, timezone
 
 
 @pytest.fixture
@@ -75,7 +76,8 @@ def test_cusp_fiso(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2020-01-01T10:00:00+00:00",
+            contract_reference="TEST-CONTRACT",
+            valid_from="2020-01-01T00:00:00+1",
             valid_to=None,
         ),
     )
@@ -129,7 +131,7 @@ def test_cusp_fiso(data):
         client=client_fiso,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to="2020-01-01T14:00:00+00:00",
+            valid_to="2020-01-02T00:00:00+1",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -179,11 +181,14 @@ def test_cusp_fiso(data):
 def test_cusp_sp(data):
     (sts, cu_id) = data
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_sp = sts.get_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    # check SP can CRUD the CU-SP relations they are responsible for
+    # SP can do CU-SP without seeing the CU, they just need the ID
+    cu = read_controllable_unit.sync(client=client_sp, id=cu_id)
+    assert isinstance(cu, ErrorMessage)
+
+    # check SP can read the CU-SP relations they are responsible for
 
     cusps_sp = list_controllable_unit_service_provider.sync(
         client=client_sp,
@@ -191,30 +196,81 @@ def test_cusp_sp(data):
     assert isinstance(cusps_sp, list)
     assert len(cusps_sp) > 0
 
+    # SP cannot insert too soon
+
+    def midnight_n_days_diff(n):
+        return (
+            datetime.combine(date.today() + timedelta(days=n), time.min)
+            .astimezone(tz=timezone.utc)
+            .isoformat()
+        )
+
     cusp = create_controllable_unit_service_provider.sync(
         client=client_sp,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            valid_from="2010-01-01T10:00:00+00:00",
-            valid_to="2010-01-01T10:10:00+00:00",
+            contract_reference="TEST-CONTRACT",
+            valid_from=midnight_n_days_diff(-3),
+            valid_to=midnight_n_days_diff(2),
+        ),
+    )
+    assert isinstance(cusp, ErrorMessage)
+
+    # but they can insert in a 2-4 weeks window ahead of time
+
+    cusp = create_controllable_unit_service_provider.sync(
+        client=client_sp,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
+            valid_from=midnight_n_days_diff(16),
         ),
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
+    # they can update in a 2-week window
+
     u = update_controllable_unit_service_provider.sync(
-        client=client_fiso,
+        client=client_sp,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to="2010-01-01T14:00:00+00:00",
+            valid_from=midnight_n_days_diff(-10),
+            valid_to=midnight_n_days_diff(-7),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
 
+    # but not too far in the past
+
+    u = update_controllable_unit_service_provider.sync(
+        client=client_sp,
+        id=cast(int, cusp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_from=midnight_n_days_diff(-17),
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
     d = delete_controllable_unit_service_provider.sync(
-        client=client_fiso, id=cast(int, cusp.id), body=EmptyObject()
+        client=client_sp, id=cast(int, cusp.id), body=EmptyObject()
     )
     assert not (isinstance(d, ErrorMessage))
+
+    # but they cannot touch the old records
+
+    cusp = cusps_sp[0]
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
+    u = update_controllable_unit_service_provider.sync(
+        client=client_sp,
+        id=cast(int, cusp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_to=midnight_n_days_diff(0),
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
 
 
 # RLS: CUSP-SO001
@@ -244,11 +300,13 @@ def test_cusp_so(data):
         assert isinstance(cu, ControllableUnitResponse)
 
 
-# RLS: CUSP-COM001
-def test_cusp_common(data):
+# RLS: CUSP-FISO002
+# RLS: CUSP-SO002
+# RLS: CUSP-SP002
+def test_cusp_history(data):
     (sts, _) = data
 
-    for role in sts.COMMON_ROLES:
+    for role in ["FISO", "SO", "SP"]:
         client = sts.get_client(TestEntity.TEST, role)
 
         # check a role can see the history for CUs they can see
@@ -265,10 +323,67 @@ def test_cusp_common(data):
             assert len(hist) > 0
 
 
+# RLS: CUSP-EU001
+# RLS: CUSP-EU002
+def test_cusp_eu(data):
+    (sts, _) = data
+
+    # former AP end user can see the old version of the CU-SPs in the test data,
+    # but not the current contracts
+
+    client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
+
+    cusphs_former_eu = list_controllable_unit_service_provider_history.sync(
+        client=client_former_eu,
+    )
+    assert isinstance(cusphs_former_eu, list)
+
+    assert len(cusphs_former_eu) > 0
+
+    old_cusphs = list(
+        filter(
+            lambda cusph: str(cusph.valid_to).startswith("2023"),
+            cusphs_former_eu,
+        )
+    )
+
+    assert len(old_cusphs) > 0
+
+    cusp = read_controllable_unit_service_provider.sync(
+        client=client_former_eu,
+        id=cast(int, old_cusphs[0].controllable_unit_service_provider_id),
+    )
+    assert isinstance(cusp, ErrorMessage)
+
+    # current AP end user can see the current version of the CU-SP contract,
+    # but not the old records
+
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+
+    cusp = read_controllable_unit_service_provider.sync(
+        client=client_eu,
+        id=cast(int, old_cusphs[0].controllable_unit_service_provider_id),
+    )
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
+    cusphs_eu = list_controllable_unit_service_provider_history.sync(
+        client=client_eu,
+    )
+    assert isinstance(cusphs_eu, list)
+
+    old_cusphs = list(
+        filter(
+            lambda cusph: str(cusph.valid_to).startswith("2023"),
+            cusphs_eu,
+        )
+    )
+    assert len(old_cusphs) == 0
+
+
 def test_rla_absence(data):
     (sts, _) = data
 
-    roles_without_rla = ["BRP", "ES", "EU", "MO", "TP"]
+    roles_without_rla = ["BRP", "ES", "MO", "TP"]
 
     for role in roles_without_rla:
         cusps = list_controllable_unit_service_provider.sync(

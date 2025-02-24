@@ -9,15 +9,15 @@ The relation that links a controllable unit to a service providing group.
 
 ## Fields
 
-| Name                                                                                                               | Description                                                                                               | Format                                 | Reference                                                         |
-|--------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------|-------------------------------------------------------------------|
-| <a name="field-id" href="#field-id">id</a>                                                                         | Unique surrogate key.                                                                                     | bigint<br/>Read only                   |                                                                   |
-| <a name="field-controllable_unit_id" href="#field-controllable_unit_id">controllable_unit_id</a>                   | Reference to the controllable unit this relation links to a service providing group.                      | bigint<br/>Required<br/>Non-updatable  | [controllable_unit.id](controllable_unit.md#field-id)             |
-| <a name="field-service_providing_group_id" href="#field-service_providing_group_id">service_providing_group_id</a> | Reference to the service providing group this relation links to a controllable unit.                      | bigint<br/>Required<br/>Non-updatable  | [service_providing_group.id](service_providing_group.md#field-id) |
-| <a name="field-valid_from" href="#field-valid_from">valid_from</a>                                                 | The date from which the relation between the controllable unit and the service providing group is valid.  | timestamp with time zone<br/>Required  |                                                                   |
-| <a name="field-valid_to" href="#field-valid_to">valid_to</a>                                                       | The date until which the relation between the controllable unit and the service providing group is valid. | timestamp with time zone               |                                                                   |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                              | When the resource was recorded (created or updated) in the system.                                        | timestamp with time zone<br/>Read only |                                                                   |
-| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                              | The identity that recorded the resource.                                                                  | bigint<br/>Read only                   |                                                                   |
+| Name                                                                                                               | Description                                                                                                                                       | Format                                 | Reference                                                         |
+|--------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|-------------------------------------------------------------------|
+| <a name="field-id" href="#field-id">id</a>                                                                         | Unique surrogate key.                                                                                                                             | bigint<br/>Read only                   |                                                                   |
+| <a name="field-controllable_unit_id" href="#field-controllable_unit_id">controllable_unit_id</a>                   | Reference to the controllable unit this relation links to a service providing group.                                                              | bigint<br/>Required<br/>Non-updatable  | [controllable_unit.id](controllable_unit.md#field-id)             |
+| <a name="field-service_providing_group_id" href="#field-service_providing_group_id">service_providing_group_id</a> | Reference to the service providing group this relation links to a controllable unit.                                                              | bigint<br/>Required<br/>Non-updatable  | [service_providing_group.id](service_providing_group.md#field-id) |
+| <a name="field-valid_from" href="#field-valid_from">valid_from</a>                                                 | The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.  | timestamp with time zone<br/>Required  |                                                                   |
+| <a name="field-valid_to" href="#field-valid_to">valid_to</a>                                                       | The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone. | timestamp with time zone               |                                                                   |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                              | When the resource was recorded (created or updated) in the system.                                                                                | timestamp with time zone<br/>Read only |                                                                   |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                              | The identity that recorded the resource.                                                                                                          | bigint<br/>Read only                   |                                                                   |
 
 ## Validation Rules
 
@@ -86,10 +86,10 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                                                                      | Status |
-|------------|---------------------------------------------------------------------------------------------|--------|
-| SPGM-SP001 | Create and update SPGM for SPGS that belongs to them and CU where they are or have been SP. | DONE   |
-| SPGM-SP002 | Read, delete SPGM for SPGS that belongs to them.                                            | DONE   |
+| Policy key | Policy                                                                                         | Status |
+|------------|------------------------------------------------------------------------------------------------|--------|
+| SPGM-SP001 | Create and update SPGM for SPGS that belongs to them, on periods where they are SP for the CU. | DONE   |
+| SPGM-SP002 | Read, delete SPGM for SPGS that belongs to them.                                               | DONE   |
 
 #### Third Party
 

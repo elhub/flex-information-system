@@ -217,22 +217,36 @@ resources:
           resource: party
           field: id
         example: 78
+      contract_reference:
+        description: >-
+          The service providers internal reference to the contract with the
+          end user. Typically an internal identifier to a stored document or
+          consent record.
+        x-details: >-
+          The content of this field will not be checked by the system, but is
+          intended to make sure that the service has a digitally stored proof
+          of their contract with the end user on the controllable unit.
+        format: text
+        type: string
+        maxLength: 128
+        nullable: false
+        example: '123e4567-e89b-12d3-a456-426614174000'
       valid_from:
         description: >-
           The date from which the relation between the controllable unit and
-          the service provider is valid.
+          the service provider is valid. Midnight aligned on Norwegian timezone.
         format: timestamp with time zone
         type: string
         nullable: true
-        example: 2022-08-08 12:00:00 CET
+        example: 2022-08-08 00:00:00 CET
       valid_to:
         description: >-
           The date until which the relation between the controllable unit and
-          the service provider is valid.
+          the service provider is valid. Midnight aligned on Norwegian timezone.
         format: timestamp with time zone
         type: string
         nullable: true
-        example: 2022-09-10 15:30:00 CET
+        example: 2022-09-10 00:00:00 CET
 
   - id: service_providing_group
     acronym: SPG
@@ -246,6 +260,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -301,6 +316,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -335,14 +351,16 @@ resources:
       valid_from:
         description: >-
           The date from which the relation between the controllable unit and
-          the service providing group is valid.
+          the service providing group is valid. Midnight aligned on Norwegian
+          timezone.
         format: timestamp with time zone
         type: string
-        example: 2022-08-08 12:00:00 CET
+        example: 2022-08-08 00:00:00 CET
       valid_to:
         description: >-
           The date until which the relation between the controllable unit and
-          the service providing group is valid.
+          the service providing group is valid. Midnight aligned on Norwegian
+          timezone.
         format: timestamp with time zone
         type: string
         nullable: true
@@ -362,6 +380,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -535,6 +554,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     audit: true
     generate_views: true
     properties:
@@ -623,6 +643,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -726,6 +747,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -955,6 +977,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -1007,6 +1030,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -1084,6 +1108,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -1154,6 +1179,7 @@ resources:
     history:
       - list
       - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.

@@ -1,14 +1,34 @@
 import {
   List,
+  Button,
   BooleanField,
   ReferenceField,
   TextField,
   SelectArrayInput,
+  ExportButton,
+  CreateButton,
+  usePermissions,
+  TopToolbar,
 } from "react-admin";
 import { Datagrid } from "../auth";
 import { DateField } from "../datetime";
+import { Link } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+
+const CreateCUSPButton = () => (
+  <Button
+    component={Link}
+    to={`/controllable_unit_service_provider/create`}
+    startIcon={<AddIcon />}
+    // used to be able to input a CU ID instead of picking from the known CUs
+    state={{ fromCUList: true }}
+    label="Manage another controllable unit"
+  />
+);
 
 export const ControllableUnitList = () => {
+  const { permissions } = usePermissions();
+
   const controllableUnitFilters = [
     <SelectArrayInput
       key="status"
@@ -19,12 +39,23 @@ export const ControllableUnitList = () => {
     />,
   ];
 
+  const ListActions = () => (
+    <TopToolbar>
+      {permissions.includes("controllable_unit_service_provider.create") && (
+        <CreateCUSPButton />
+      )}
+      {permissions.includes("controllable_unit.create") && <CreateButton />}
+      <ExportButton />
+    </TopToolbar>
+  );
+
   return (
     <List
       perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={controllableUnitFilters}
+      actions={<ListActions />}
     >
       <Datagrid>
         <TextField source="id" label="ID" />

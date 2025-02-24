@@ -1,4 +1,11 @@
-import { SimpleForm, useGetIdentity, useRecordContext } from "react-admin";
+import {
+  NumberInput,
+  required,
+  SimpleForm,
+  TextInput,
+  useGetIdentity,
+  useRecordContext,
+} from "react-admin";
 import { Typography, Box, Stack } from "@mui/material";
 import {
   AutocompleteReferenceInput,
@@ -8,17 +15,19 @@ import {
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../Toolbar";
 import { ValidTimeTooltip } from "../../ValidTimeTooltip";
-import { DateTimeInput } from "../../datetime";
+import { MidnightDateInput } from "../../datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
   controllable_unit_id,
   service_provider_id,
+  contract_reference,
   valid_from,
   valid_to,
 }: any) => ({
   controllable_unit_id,
   service_provider_id,
+  contract_reference,
   valid_from,
   valid_to,
 });
@@ -30,6 +39,10 @@ export const ControllableUnitServiceProviderInput = () => {
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   if (identityLoading) return <>Loading...</>;
+
+  // if we came to this page from the CU list, we want to input a CU ID,
+  // instead of selecting it from a list of already readable CUs
+  const isCreateFromCUList: boolean = !!overrideRecord?.fromCUList;
 
   // priority to the restored values if they exist, otherwise normal edit mode
   const record = filterRecord({ ...actualRecord, ...overrideRecord });
@@ -56,17 +69,23 @@ export const ControllableUnitServiceProviderInput = () => {
           Basic information
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <AutocompleteReferenceInput
-            source="controllable_unit_id"
-            reference="controllable_unit"
-            readOnly
-          />
+          {isCreateFromCUList ? (
+            <NumberInput source="controllable_unit_id" />
+          ) : (
+            <AutocompleteReferenceInput
+              source="controllable_unit_id"
+              reference="controllable_unit"
+              readOnly
+            />
+          )}
           <PartyReferenceInput
             source="service_provider_id"
             readOnly={isServiceProvider}
           />
         </InputStack>
-
+        <InputStack direction="row" flexWrap="wrap">
+          <TextInput source="contract_reference" validate={required()} />
+        </InputStack>
         <Stack direction="row" flexWrap="wrap">
           <Typography variant="h6" gutterBottom>
             Valid time
@@ -75,8 +94,8 @@ export const ControllableUnitServiceProviderInput = () => {
           <ValidTimeTooltip />
         </Stack>
         <InputStack direction="row" flexWrap="wrap">
-          <DateTimeInput source="valid_from" />
-          <DateTimeInput source="valid_to" />
+          <MidnightDateInput source="valid_from" />
+          <MidnightDateInput source="valid_to" />
         </InputStack>
       </Stack>
     </SimpleForm>

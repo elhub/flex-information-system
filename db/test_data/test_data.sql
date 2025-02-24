@@ -75,7 +75,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
--- Input type for add_controllable_unit
+-- Types for add_controllable_unit
 DO
 $$
 BEGIN
@@ -98,8 +98,9 @@ CREATE OR REPLACE FUNCTION add_controllable_unit(
 RETURNS bigint
 AS $$
 DECLARE
-  cu_id bigint;
   sp cu_sp;
+  cu record;
+  cusp record;
 BEGIN
   INSERT INTO flex.controllable_unit (
     name,
@@ -129,52 +130,215 @@ BEGIN
     'validated',
     'pqnotes',
     current_timestamp
-  ) RETURNING id INTO cu_id;
+  ) RETURNING * INTO cu;
+
+  -- insert a previous version of that CU long ago (related to end user testing)
+  INSERT INTO flex.controllable_unit_history (
+    id,
+    business_id,
+    name,
+    start_date,
+    regulation_direction,
+    maximum_available_capacity,
+    minimum_duration,
+    maximum_duration,
+    recovery_duration,
+    ramp_rate,
+    status,
+    accounting_point_id,
+    grid_node_id,
+    grid_validation_status,
+    grid_validation_notes,
+    last_validated,
+    created_by_party_id,
+    recorded_by,
+    record_time_range,
+    replaced_by
+  ) VALUES (
+    cu.id,
+    cu.business_id,
+    cu.name || ' FORMER NAME', -- this string will be searched in tests
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record must exist fully during the contract of the former end user
+    -- on the AP
+    tstzrange(
+      '2023-10-01 00:00:00 Europe/Oslo',
+      '2023-11-01 00:00:00 Europe/Oslo',
+      '[)'),
+    0
+  );
 
   FOREACH sp IN ARRAY service_providers
   LOOP
     INSERT INTO flex.controllable_unit_service_provider (
-      controllable_unit_id, service_provider_id, valid_time_range
+      controllable_unit_id, service_provider_id, contract_reference, valid_time_range
     ) VALUES (
-      cu_id, sp.sp_id, sp.valid_time_range
+      cu.id, sp.sp_id, uuid_generate_v4(), sp.valid_time_range
+    ) RETURNING * INTO cusp;
+
+    -- insert a previous version of that CUSP valid for the previous end user
+    -- (related to end user testing)
+    INSERT INTO flex.controllable_unit_service_provider_history (
+      id,
+      controllable_unit_id,
+      service_provider_id,
+      contract_reference,
+      valid_time_range,
+      record_time_range,
+      recorded_by,
+      replaced_by
+    ) VALUES (
+      cusp.id,
+      cusp.controllable_unit_id,
+      cusp.service_provider_id,
+      uuid_generate_v4(),
+      tstzrange(
+        '2023-10-01 00:00:00 Europe/Oslo',
+        '2023-11-01 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      tstzrange(
+        '2023-10-01 00:00:00 Europe/Oslo',
+        '2023-11-01 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      cusp.recorded_by,
+      0
     );
   END LOOP;
 
-  RETURN cu_id;
+  RETURN cu.id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
+
+-- Types for add_accounting_points
+DO
+$$
+BEGIN
+  CREATE TYPE contract_parties AS (
+      former_id bigint,
+      new_id bigint
+  );
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END
+$$;
 
 -- Add accounting point mapping
 CREATE OR REPLACE FUNCTION add_accounting_points(
     accounting_point_prefix text,
+    end_user contract_parties,
+    energy_supplier contract_parties,
+    balance_responsible_party contract_parties,
     so_id bigint
 )
 RETURNS void
 SECURITY DEFINER VOLATILE
-LANGUAGE sql
+LANGUAGE plpgsql
 AS $$
-
-  with gsrn as (
-      -- This generates a series of GSRNs with the given prefix
-      -- By padding the prefix with zeros and nines to 17 digits total we can generate a series
-      -- that "fills" the whole prefix.
-      -- The the prefix is 1234 we generate GSRNs from 12340000000000000 to 12349999999999999.
-      -- The check digit is then added to make the GSRN comlete.
-      select generate_series(
+DECLARE
+  ap_id bigint;
+  partial_gsrn text;
+BEGIN
+  FOR partial_gsrn IN
+    -- This generates a series of GSRNs with the given prefix.
+    -- By padding the prefix with zeros and nines to 17 digits total we can
+    -- generate a series that "fills" the whole prefix.
+    -- If the prefix is 1234 we generate GSRNs
+    -- from 12340000000000000 to 12349999999999999.
+    -- The check digit is then added to make the GSRN complete.
+      SELECT generate_series(
         rpad(accounting_point_prefix,17,'0')::bigint,
         rpad(accounting_point_prefix,17,'9')::bigint,
         1 --step
-      ) as partial
-  )
-  insert into flex.accounting_point (
-    business_id,
-    system_operator_id
-  )
-  select
-    add_check_digit(gsrn.partial::text) as business_id,
-    so_id as system_operator_id
-  from gsrn
+      )
+  LOOP
+    INSERT INTO flex.accounting_point (
+      business_id,
+      system_operator_id
+    ) VALUES (
+      add_check_digit(partial_gsrn::text),
+      so_id
+    ) RETURNING id INTO ap_id;
 
+    IF end_user IS NOT NULL THEN
+      -- insert 2 end users for each accounting point
+      INSERT INTO flex.accounting_point_end_user (
+        accounting_point_id,
+        end_user_id,
+        valid_time_range
+      ) VALUES (
+        ap_id,
+        end_user.former_id,
+        tstzrange(
+          '2023-05-01 00:00:00 Europe/Oslo',
+          '2024-01-01 00:00:00 Europe/Oslo',
+          '[)'
+        )
+      ), (
+        ap_id,
+        end_user.new_id,
+        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
+      );
+    END IF;
+
+    IF energy_supplier IS NOT NULL THEN
+      -- insert 2 energy suppliers for each accounting point
+      INSERT INTO flex.accounting_point_energy_supplier (
+        accounting_point_id,
+        energy_supplier_id,
+        valid_time_range
+      ) VALUES (
+        ap_id,
+        energy_supplier.former_id,
+        tstzrange(
+          '2023-05-01 00:00:00 Europe/Oslo',
+          '2024-01-01 00:00:00 Europe/Oslo',
+          '[)'
+        )
+      ), (
+        ap_id,
+        energy_supplier.new_id,
+        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
+      );
+    END IF;
+
+    IF balance_responsible_party IS NOT NULL THEN
+      -- insert 2 balance responsible parties for each accounting point
+      INSERT INTO flex.accounting_point_balance_responsible_party (
+        accounting_point_id,
+        balance_responsible_party_id,
+        valid_time_range
+      ) VALUES (
+        ap_id,
+        balance_responsible_party.former_id,
+        tstzrange(
+          '2023-05-01 00:00:00 Europe/Oslo',
+          '2024-01-01 00:00:00 Europe/Oslo',
+          '[)'
+        )
+      ), (
+        ap_id,
+        balance_responsible_party.new_id,
+        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
+      );
+    END IF;
+  END LOOP;
+END
 $$;
 
 -- Add a test account with parties and controllable units
@@ -199,6 +363,12 @@ DECLARE
   entity_id_person bigint;
   sp_id bigint;
   common_sp_id bigint;
+  eu_id bigint;
+  common_eu_id bigint;
+  es_id bigint;
+  common_es_id bigint;
+  brp_id bigint;
+  common_brp_id bigint;
 
   spg_id bigint;
   spggp_id bigint;
@@ -242,7 +412,7 @@ BEGIN
    null
   );
 
-  PERFORM add_party_for_entity(
+  eu_id := add_party_for_entity(
     entity_id_person,
     entity_id_person,
     entity_first_name || ' EU',
@@ -253,7 +423,7 @@ BEGIN
 
   -- add parties
 
-  PERFORM add_party_for_entity(
+  brp_id := add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' BRP',
@@ -262,7 +432,7 @@ BEGIN
     'gln'
   );
 
-  PERFORM add_party_for_entity(
+  es_id := add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' ES',
@@ -318,9 +488,6 @@ BEGIN
     );
   end if;
 
-  -- Add accounting points
-  PERFORM add_accounting_points(accounting_point_prefix, so_id);
-
   -- Product type
   INSERT INTO flex.system_operator_product_type (
     system_operator_id,
@@ -330,16 +497,31 @@ BEGIN
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
   if not in_add_data then
+    PERFORM add_accounting_points(
+      accounting_point_prefix,
+      null,
+      null,
+      null,
+      so_id
+    );
     return;
   end if;
 
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
+  common_brp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
+  common_eu_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
+  common_es_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' MO');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' SO');
   common_sp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' SP');
   PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' TP');
+
+  PERFORM add_accounting_points(
+    accounting_point_prefix,
+    (common_eu_id, eu_id),
+    (common_es_id, es_id),
+    (common_brp_id, brp_id),
+    so_id
+  );
 
   INSERT INTO flex.service_providing_group (
     name, service_provider_id
@@ -355,9 +537,9 @@ BEGIN
       so_id,
       add_check_digit(accounting_point_seq::text),
       ARRAY[
-          (sp_id, '[2024-07-01 09:00:00 CET,2024-08-01 09:00:00 CET)'::tstzrange),
-          (common_sp_id, '[2024-08-01 09:00:00 CET,2024-09-01 09:00:00 CET)'::tstzrange),
-          (sp_id, '[2024-09-01 09:00:00 CET,)'::tstzrange)
+          (sp_id, '[2024-07-01 00:00:00 Europe/Oslo,2024-08-01 00:00:00 Europe/Oslo)'::tstzrange),
+          (common_sp_id, '[2024-08-01 00:00:00 Europe/Oslo,2024-09-01 00:00:00 Europe/Oslo)'::tstzrange),
+          (sp_id, '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange)
       ]::cu_sp[]
     ) INTO cu_id;
 
@@ -366,7 +548,7 @@ BEGIN
     ) VALUES (
         cu_id,
         spg_id,
-        '[2024-09-01 09:00:00 CET,)'::tstzrange
+        '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange
     );
 
     INSERT INTO flex.technical_resource (name, controllable_unit_id, details)

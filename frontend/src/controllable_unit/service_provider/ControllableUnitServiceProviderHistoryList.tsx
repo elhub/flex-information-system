@@ -49,6 +49,7 @@ export const ControllableUnitServiceProviderHistoryList = () => {
         <ReferenceField source="service_provider_id" reference="party">
           <TextField source="name" />
         </ReferenceField>
+        <TextField source="contract_reference" />
         <DateField source="valid_from" showTime />
         <DateField source="valid_to" showTime />
         <DateField source="recorded_at" showTime />

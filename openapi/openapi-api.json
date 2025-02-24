@@ -467,19 +467,27 @@
                 "description": "Request schema for update operations - Relation between controllable unit and service provider",
                 "type": "object",
                 "properties": {
+                    "contract_reference": {
+                        "description": "The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 128,
+                        "nullable": false,
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
                     "valid_from": {
-                        "description": "The date from which the relation between the controllable unit and the service provider is valid.",
+                        "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 00:00:00 CET"
                     },
                     "valid_to": {
-                        "description": "The date until which the relation between the controllable unit and the service provider is valid.",
+                        "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-09-10 15:30:00 CET"
+                        "example": "2022-09-10 00:00:00 CET"
                     }
                 }
             },
@@ -509,7 +517,8 @@
                     {
                         "required": [
                             "controllable_unit_id",
-                            "service_provider_id"
+                            "service_provider_id",
+                            "contract_reference"
                         ]
                     }
                 ],
@@ -635,13 +644,13 @@
                 "type": "object",
                 "properties": {
                     "valid_from": {
-                        "description": "The date from which the relation between the controllable unit and the service providing group is valid.",
+                        "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 00:00:00 CET"
                     },
                     "valid_to": {
-                        "description": "The date until which the relation between the controllable unit and the service providing group is valid.",
+                        "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
@@ -13567,7 +13576,7 @@
     },
     "servers": [
         {
-            "url": "https://flex.localhost:6443/api/v0",
+            "url": "https://test.flex.internal:6443/api/v0",
             "description": "Development"
         }
     ]

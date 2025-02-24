@@ -36,7 +36,7 @@ grant_type_bearer = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 def test_entity(keys, key, pid, expected_status, error):
     payload = {
         # Audience
-        "aud": "https://flex.localhost:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v0/",
         # Issuer
         "iss": f"no:entity:pid:{pid}",  # Test Suite
         # JWT ID
@@ -93,7 +93,7 @@ def test_entity(keys, key, pid, expected_status, error):
 def test_party(keys, key, pid, gln, expected_status, error):
     payload = {
         # Audience
-        "aud": "https://flex.localhost:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v0/",
         # Issuer
         "iss": f"no:entity:pid:{pid}",  # Test Suite
         # JWT ID
@@ -126,14 +126,14 @@ def test_party(keys, key, pid, gln, expected_status, error):
     [
         # The only valid case
         (
-            "https://flex.localhost:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v0/",
             "no:entity:pid:13370000001",
             "no:party:gln:1337000100058",
             200,
         ),
         # Invalid audience
         (
-            "https://flex.localhost:6443/auth/v0",
+            "https://test.flex.internal:6443/auth/v0",
             "no:entity:pid:13370000001",
             "no:party:gln:1337000100058",
             400,
@@ -146,32 +146,32 @@ def test_party(keys, key, pid, gln, expected_status, error):
         ),
         # Invalid issuer
         (
-            "https://flex.localhost:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v0/",
             "no:entity:13370000001",
             "no:party:gln:1337000100058",
             400,
         ),
         (
-            "https://flex.localhost:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v0/",
             "no:party:pid:13370000001",
             "no:party:gln:1337000100058",
             400,
         ),
         # Invalid subject
         (
-            "https://flex.localhost:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v0/",
             "no:entity:pid:13370000001",
             "no:entity:gln:1337000100058",
             400,
         ),
         (
-            "https://flex.localhost:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v0/",
             "no:entity:pid:13370000001",
             "party:gln:1337000100058",
             400,
         ),
         (
-            "https://flex.localhost:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v0/",
             "no:entity:pid:13370000001",
             "no:party:gln:337000100058",
             400,
@@ -235,7 +235,7 @@ def test_malformed(keys, aud, iss, sub, expected_status):
 def test_timing(keys, expected_status, iat, exp):
     payload = {
         # Audience
-        "aud": "https://flex.localhost:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v0/",
         # Issuer
         "iss": "no:entity:pid:13370000001",  # Test Suite
         # Subject

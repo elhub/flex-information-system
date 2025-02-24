@@ -65,12 +65,77 @@ related to the **timeline** of the data itself. When we say that something is
 
     This time axis is also commonly referred to as _application_, _actual_, _business_ or _effective_ time.
 
-Record time is typically implemented using a time range.
+Valid time is typically implemented using a time range.
 
 | Bound | Clusivity | Name             | Alt name   |
 |-------|-----------|------------------|------------|
 | Lower | Inclusive | Valid time start | Valid from |
 | Upper | Exclusive | Valid time end   | Valid to   |
+
+!!! note "Midnight alignment"
+
+    We represent valid time as _midnight-aligned_. This constraint allows
+    planning and performing operations more easily. However, we still store full
+    timestamps for uniformity and to allow exceptional updates. This means that
+    insert/update operations on the API should always have their valid time
+    values aligned with the Norwegian midnight.
+
+### Frozen timeline
+
+The timeline of some contracts can be _frozen_ for some roles in the system.
+This means that the part of the past that is older than a given _time interval_
+from now is a _frozen past_ where nothing can be _added or edited_.
+
+The diagram below shows the example of a contract resource whose timeline is
+frozen after 6 days. Frozen contracts or parts of contracts are shown in blue,
+and non-frozen in green. Orange is used for errors / unacceptable contracts.
+
+![valid_time_freeze](diagrams/valid_time_freeze.png)
+
+The freeze time is _midnight-aligned_, meaning that the exact freeze time is the
+_nearest Norwegian midnight_ before the freeze interval computed from now.
+If we consider an operation being made on 17.07 (highlighted in green in the
+diagram), the freeze time will be 6 days before, that is 11.07, at Norwegian
+midnight. The exact freeze time is _not frozen_, so contracts can start there.
+
+Creating a new contract (number `4`) in the past can only be done in the
+non-frozen past. In the diagram, only the second proposal (`4''`) is acceptable,
+both others overlapping with frozen time partially or fully.
+
+The frozen past cannot be edited, meaning that updating a contract (number `5`)
+cannot change its start date if it is already in this frozen past. The two first
+updates in the diagram (`5'` and `5''`) are therefore invalid, even though the
+second one puts the contract in the non-frozen past. The start date of contract
+`5` is simply frozen and cannot move.
+
+The end date of this partially frozen contract can be moved anywhere in the
+non-frozen past, so the third update (`5'''`) is invalid, but the last one is.
+
+### Timeline window
+
+For some contracts, _insertion_ can be restricted to a fixed _window_ from the
+current time. This means that new contracts can start _only_ in this interval.
+
+The window is _midnight-aligned_, meaning that start and end times for the
+window are aligned to the _nearest previous Norwegian midnight_. The start time
+is _inclusive_ but the end time is _exclusive_. The timeline window check only
+makes sure the contract starts between those bounds, but does not check the
+exact _time_ of the contract, as this is a separate constraint. The current
+check should work with all kinds of contracts, midnight-aligned or not.
+
+The diagram below shows the example of a contract resource with a timeline
+window of one week placed one week ahead of time.
+
+![valid_time_window](diagrams/valid_time_window.png)
+
+In this example, we consider operations made on 30.06. This means the window
+starts on 07.07 Norwegian midnight and lasts for one week, that is, it ends on
+14.07 Norwegian midnight. The start date is inclusive so contracts can start on
+07.07, but the end date is exclusive, so no contract can start on 14.07.
+
+The three first contracts are therefore invalid, even if number `2` starts at
+midnight on 14.07, and the three last ones are valid, and number `5` can start
+as soon as midnight on 07.07. The end date of these contracts does not matter.
 
 ## Timezones
 

@@ -4,6 +4,9 @@ SET search_path TO api;
 -- views
 
 \i api/accounting_point.sql
+\i api/accounting_point_balance_responsible_party.sql
+\i api/accounting_point_end_user.sql
+\i api/accounting_point_energy_supplier.sql
 \i api/controllable_unit.sql
 \i api/controllable_unit_service_provider.sql
 \i api/entity.sql
@@ -31,7 +34,7 @@ FOR EACH ROW
 EXECUTE PROCEDURE flex.timeline_no_overlap(
     'flex.controllable_unit_service_provider',
     'controllable_unit_id',
-    'service_provider_id'
+    'service_provider_id,contract_reference'
 );
 
 CREATE OR REPLACE TRIGGER service_providing_group_membership_upsert_timeline

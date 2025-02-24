@@ -48,7 +48,9 @@ load:
     docker compose restart backend
 
     echo Loaded!
-    echo Hit https://flex.localhost:6443/ to log in
+    echo Hit one of the following to log in:
+    echo ' - TEST : https://test.flex.internal:6443/'
+    echo ' - DEV : https://dev.flex.internal:5443/'
 
 # reload the database
 reload: unload load
@@ -65,6 +67,22 @@ down:
 
 # stop (remove) and start the local database
 reset: down pull build start load
+
+# start backend in dev mode
+backend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    docker compose stop backend || true
+    set -a; source ./local/backend/dev.env; set +a
+    cd backend
+    air
+
+# start frontend in dev mode
+frontend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd frontend
+    npm run dev
 
 # connect to local database (no password required)
 connect user="postgres":
@@ -113,15 +131,15 @@ _keypair:
 test-local *args: (_venv)
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://flex.localhost:6443"
+    export FLEX_URL_BASE="https://test.flex.internal:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
     .venv/bin/python test/test.py {{args}}
 
 test-dev *args:
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://flex.localhost:6443"
-    export FLEX_AUTH_BASE="http://flex.localhost:7000"
+    export FLEX_URL_BASE="https://test.flex.internal:6443"
+    export FLEX_AUTH_BASE="http://test.flex.internal:7001"
     .venv/bin/python test/test.py {{args}}
 
 test *args:
@@ -132,7 +150,7 @@ test *args:
 pytest *args: (_venv)
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://flex.localhost:6443"
+    export FLEX_URL_BASE="https://test.flex.internal:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
 
     .venv/bin/python \
@@ -210,7 +228,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client openapi-to-tooltips
 
 template-to-openapi:
     #!/usr/bin/env bash
@@ -259,8 +277,20 @@ openapi-to-db:
     imports=$(ls db/flex | grep history_audit | sed -e 's|.*|\\i flex/&|')
 
     ed -s "./db/flex_structure.sql" <<EOF
-    /-- history and audit/+,/-- RLS/-d
+    /-- history and audit/+,/-- security/-d
     /-- history and audit/a
+
+    ${imports}
+
+    .
+    wq
+    EOF
+
+    imports=$(ls db/authz | sed -e 's|.*|\\i authz/&|')
+
+    ed -s "./db/flex_structure.sql" <<EOF
+    /-- security/+,/-- RLS/-d
+    /-- security/a
 
     ${imports}
 
@@ -286,9 +316,10 @@ sqlc:
     cd backend
     for module in data event; do
         cp sqlc.yaml $module
+        cat schema.sql $module/schema.sql 2>/dev/null > $module/tmp_schema.sql || true
         cd $module
         sqlc generate
-        rm sqlc.yaml
+        rm sqlc.yaml tmp_schema.sql
         cd ..
     done
 
@@ -358,6 +389,15 @@ openapi-client:
         --output-path ./out/openapi-client \
         --config ./openapi/openapi-client-config.yml
     mv ./out/openapi-client/flex test/flex
+
+openapi-to-tooltips:
+    #!/usr/bin/env bash
+    cat openapi/resources.yml \
+        | yq '.resources[] as $res ireduce ({};
+            .[$res.id] = ($res.properties | map_values (.description)))' \
+            -o json \
+            --indent 4 \
+            > frontend/src/tooltip/tooltips.json
 
 permissions: permissions-to-frontend permissions-to-md permissions-to-db
 

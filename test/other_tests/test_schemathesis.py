@@ -49,5 +49,4 @@ def test_schemathesis(case):
     response = case.call(headers={"Authorization": f"Bearer {token}"})
 
     # When the OpenAPI spec includes a cookie securityScheme, then we get some 500s
-    # case.validate_response(response)
     case.validate_response(response, excluded_checks=(not_a_server_error,))

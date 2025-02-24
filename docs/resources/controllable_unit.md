@@ -68,11 +68,12 @@ No validation rules.
 
 ## Notifications
 
-| Action | Recipient     | Comment                  |
-|--------|---------------|--------------------------|
-| create | Connecting SO |                          |
-| update | Active SP     |                          |
-| update | Connecting SO | When status is not `new` |
+| Action | Recipient                        | Comment                  |
+|--------|----------------------------------|--------------------------|
+| create | Connecting SO                    |                          |
+| create | End user of the accounting point |                          |
+| update | Active SP                        |                          |
+| update | Connecting SO                    | When status is not `new` |
 
 ## Authorization
 
@@ -87,39 +88,42 @@ No policies.
 
 #### Common
 
-| Policy key | Policy                                 | Status |
-|------------|----------------------------------------|--------|
-| CU-COM001  | Read history on CU that they can read. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
-| Policy key | Policy                                                                                    | Status |
-|------------|-------------------------------------------------------------------------------------------|--------|
-| CU-BRP001  | Read active CU that are connected to AP where they are BRP. Only for the contract period. | TODO   |
+| Policy key | Policy                                                                                     | Status |
+|------------|--------------------------------------------------------------------------------------------|--------|
+| CU-BRP001  | Read CU data that are connected to AP where they are BRP. Only for the contract period.    | DONE   |
+| CU-BRP002  | Read CU history that are connected to AP where they are BRP. Only for the contract period. | DONE   |
 
 #### End User
 
-| Policy key | Policy                                                                            | Status |
-|------------|-----------------------------------------------------------------------------------|--------|
-| CU-EU001   | Read CU that are connected to AP where they are EU. Only for the contract period. | TODO   |
+| Policy key | Policy                                                                                            | Status |
+|------------|---------------------------------------------------------------------------------------------------|--------|
+| CU-EU001   | Read CU data that are connected to AP where they are EU. Only for when they are EU on the AP.     | DONE   |
+| CU-EU002   | RRead CU history that are connected to AP where they are EU. Only for when they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
-| Policy key | Policy                                                                                   | Status |
-|------------|------------------------------------------------------------------------------------------|--------|
-| CU-ES001   | Read active CU that are connected to AP where they are ES. Only for the contract period. | TODO   |
+| Policy key | Policy                                                                                    | Status |
+|------------|-------------------------------------------------------------------------------------------|--------|
+| CU-ES001   | Read CU data that are connected to AP where they are ES. Only for the contract period.    | DONE   |
+| CU-ES002   | Read CU history that are connected to AP where they are ES. Only for the contract period. | DONE   |
 
 #### Flexibility Information System Operator
 
 | Policy key | Policy                          | Status |
 |------------|---------------------------------|--------|
 | CU-FISO001 | Read, create and update all CU. | DONE   |
+| CU-FISO002 | Read all CU history.            | DONE   |
 
 #### Market Operator
 
-| Policy key | Policy                                                                                      | Status |
-|------------|---------------------------------------------------------------------------------------------|--------|
-| CU-MO001   | Read CU that are connected to their market. Only for the period CU is active in the market. | TODO   |
+| Policy key | Policy                                                                                                            | Status |
+|------------|-------------------------------------------------------------------------------------------------------------------|--------|
+| CU-MO001   | Read CU that are connected to their market. Only for the period CU is active in the market.                       | TODO   |
+| CU-MO002   | Read history on CU that are connected to their market. Only history on the period the CU is active in the market. | TODO   |
 
 #### System Operator
 
@@ -127,14 +131,17 @@ No policies.
 |------------|--------------------------------------------------------------|--------|
 | CU-SO001   | Read and update CU that are connected to AP belonging to SO. | DONE   |
 | CU-SO002   | Read CU belonging to SPG that the SO can see.                | DONE   |
+| CU-SO003   | Read history on CU that they can read.                       | DONE   |
 
 #### Service Provider
 
-| Policy key | Policy                                                                             | Status  |
-|------------|------------------------------------------------------------------------------------|---------|
-| CU-SP001   | Read CU where they are SP (only for the contract period) or the ones they created. | PARTIAL |
-| CU-SP002   | Create new CU.                                                                     | DONE    |
-| CU-SP003   | Update CU where they are current SP.                                               | DONE    |
+| Policy key | Policy                                      | Status |
+|------------|---------------------------------------------|--------|
+| CU-SP001   | Read CU data for the period they are SP.    | DONE   |
+| CU-SP002   | Create new CU.                              | DONE   |
+| CU-SP003   | Update CU where they are current SP.        | DONE   |
+| CU-SP004   | Read CU history for the period they are SP. | DONE   |
+| CU-SP005   | Read CU they created.                       | DONE   |
 
 #### Third Party
 

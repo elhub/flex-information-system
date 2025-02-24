@@ -13,6 +13,10 @@ system_operator_product_type_history (
     replaced_by bigint NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS
+system_operator_product_type_history_id_idx
+ON system_operator_product_type_history (id);
+
 CREATE OR REPLACE TRIGGER
 system_operator_product_type_history
 BEFORE INSERT OR UPDATE OR DELETE

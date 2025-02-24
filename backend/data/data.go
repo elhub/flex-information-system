@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -41,15 +42,58 @@ func NewAPI(
 
 // PostgRESTHandler forwards the request to the PostgREST API.
 func (data *API) PostgRESTHandler(ctx *gin.Context) {
+	// regex for calls targeting a single ID and subresource/history pages,
+	// which are not valid formats in PostgREST
+	regexIDSubHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)(/[a-z_]+)?$")
+
 	url := ctx.Param("url")
+	query := ctx.Request.URL.Query()
+	header := ctx.Request.Header
+
+	header.Set("Content-Type", "application/json")
+
+	if ctx.Request.Method == http.MethodPost {
+		// ensure singular when object is created
+		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
+		header.Set("Accept", "application/vnd.pgrst.object+json")
+
+		// ensure that object is returned on insert and update
+		// https://postgrest.org/en/latest/references/preferences.html#prefer-return
+		header.Set("Prefer", "return=representation")
+	}
+
+	// rewrite the URL and query to match the PostgREST format
+	if match := regexIDSubHistory.FindStringSubmatch(url); match != nil {
+		if match[3] != "" { // subresource or history
+			url = fmt.Sprintf("/%s_%s", match[1], match[3][1:])
+			query.Set(match[1]+"_id", "eq."+match[2])
+			slog.InfoContext(
+				ctx,
+				"API call targeting a subresource or history resource. "+
+					"Rewriting into PostgREST format.",
+				"new url", url, "new query", query.Encode(),
+			)
+		} else { // single ID
+			url = "/" + match[1]
+			query.Set("id", "eq."+match[2])
+			// force PostgREST to return a single object
+			header.Set("Accept", "application/vnd.pgrst.object+json")
+			slog.InfoContext(
+				ctx,
+				"API call targeting a single-ID record. Rewriting into PostgREST format.",
+				"new url", url, "new query", query.Encode(),
+			)
+		}
+	}
 
 	proxy := httputil.NewSingleHostReverseProxy(data.postgRESTURL)
 	proxy.Director = func(req *http.Request) {
-		req.Header = ctx.Request.Header
+		req.Header = header
 		req.Host = data.postgRESTURL.Host
 		req.URL.Scheme = data.postgRESTURL.Scheme
 		req.URL.Host = data.postgRESTURL.Host
 		req.URL.Path = url
+		req.URL.RawQuery = query.Encode()
 	}
 
 	proxy.ServeHTTP(ctx.Writer, ctx.Request)
@@ -101,14 +145,14 @@ func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 		if ctx.Writer.Status() >= http.StatusBadRequest { //nolint:nestif
 			// error => parse the body, modify it, and write it to the actual response
 			var errorBody errorMessage
-			if err := json.Unmarshal(brw.body.Bytes(), &errorBody); err != nil {
+			if err := json.Unmarshal(brw.body.Bytes(), &errorBody); err != nil || errorBody.Code == "" {
 				slog.InfoContext(
 					ctx,
 					"data API failure (not in PostgREST format)",
 					"error", brw.body.String(),
 				)
-				ctx.Writer.Write(brw.body.Bytes()) //nolint:errcheck,gosec
-				return
+				errorBody.Code = fmt.Sprintf("HTTP%d", ctx.Writer.Status())
+				errorBody.Message = http.StatusText(ctx.Writer.Status())
 			}
 
 			// general error message rewrites to hide the default PostgREST ones

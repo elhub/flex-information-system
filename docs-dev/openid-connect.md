@@ -64,7 +64,7 @@ One way to check the support of a given OpenID Connect provider is to check its
 IDporten endpoints are:
 
 <!-- markdownlint-disable no-bare-urls -->
-* http://idp.flex.localhost:9091/.well-known/openid-configuration
+* https://idp.flex.internal:9091/.well-known/openid-configuration
 * https://idporten.no/.well-known/openid-configuration
 * https://auth.bankid.no/auth/realms/prod/.well-known/openid-configuration
 * https://idcs-64b43b9cb198438ca17360d2c5bd4b9f.identity.oraclecloud.com/.well-known/openid-configuration

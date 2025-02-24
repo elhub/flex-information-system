@@ -1,0 +1,90 @@
+@startgantt valid_time_freeze
+scale 500 width
+Project starts 2020-06-28
+2020-06-28 to 2020-07-10 are colored in Azure
+2020-07-17 is colored in Beige
+
+-- Old contracts are frozen --
+
+<style>
+ganttDiagram {
+  task {
+    BackgroundColor LightBlue
+  }
+  undone {
+    BackgroundColor YellowGreen
+  }
+}
+</style>
+
+[1] as [EF1] starts 2020-06-30
+[EF1] ends 2020-07-06
+[EF1] is 100% complete
+
+[2] as [EF2] starts 2020-07-07
+[EF2] ends 2020-07-11
+[EF2] is 80% complete
+
+[3] as [EF3] starts 2020-07-12
+[EF3] ends 2020-07-17
+[EF3] is 0% complete
+
+-- Creation must not overlap with frozen past --
+
+<style>
+ganttDiagram {
+  task {
+    BackgroundColor Coral
+  }
+  undone {
+    BackgroundColor YellowGreen
+  }
+}
+</style>
+
+[4'] as [EC1] starts 2020-07-03
+[EC1] ends 2020-07-06
+[EC1] is 100% complete
+
+[4''] as [EC2] starts 2020-07-13
+[EC2] ends 2020-07-15
+[EC2] is 0% complete
+
+[4'''] as [EC3] starts 2020-07-08
+[EC3] ends 2020-07-11
+[EC3] is 75% complete
+
+-- Update must not overlap/modify frozen past --
+
+<style>
+ganttDiagram {
+  task {
+    BackgroundColor LightBlue
+  }
+  undone {
+    BackgroundColor YellowGreen
+  }
+}
+</style>
+
+[5] as [EU] starts 2020-07-07
+[EU] ends 2020-07-12
+[EU] is 65% complete
+
+[5'] as [EU1] starts 2020-07-06
+[EU1] ends 2020-07-12
+[EU1] is colored in Coral/black
+
+[5''] as [EU2] starts 2020-07-14
+[EU2] ends 2020-07-17
+[EU2] is colored in Coral/black
+
+[5'''] as [EU3] starts 2020-07-07
+[EU3] ends 2020-07-09
+[EU3] is colored in Coral/black
+
+[5''''] as [EU4] starts 2020-07-07
+[EU4] ends 2020-07-14
+[EU4] is 50% complete
+
+@endgantt

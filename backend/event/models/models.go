@@ -14,6 +14,15 @@ type AccountingPoint struct {
 	SystemOperatorID string
 }
 
+type AccountingPointEndUser struct {
+	ID                int
+	AccountingPointID int
+	EndUserID         int
+	ValidTimeRange    pgtype.Range[pgtype.Timestamptz]
+	RecordTimeRange   pgtype.Range[pgtype.Timestamptz]
+	RecordedBy        int
+}
+
 type ControllableUnit struct {
 	ID                         int
 	BusinessID                 string
@@ -67,6 +76,7 @@ type ControllableUnitServiceProvider struct {
 	ID                 int
 	ControllableUnitID int
 	ServiceProviderID  int
+	ContractReference  string
 	ValidFrom          pgtype.Timestamptz
 	ValidTo            pgtype.Timestamptz
 	RecordedBy         int
@@ -78,6 +88,7 @@ type ControllableUnitServiceProviderHistory struct {
 	ID                                int
 	ControllableUnitID                int
 	ServiceProviderID                 int
+	ContractReference                 string
 	ValidFrom                         pgtype.Timestamptz
 	ValidTo                           pgtype.Timestamptz
 	RecordedBy                        int
