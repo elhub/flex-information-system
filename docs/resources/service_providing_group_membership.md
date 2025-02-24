@@ -86,10 +86,10 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                                                                      | Status |
-|------------|---------------------------------------------------------------------------------------------|--------|
-| SPGM-SP001 | Create and update SPGM for SPGS that belongs to them and CU where they are or have been SP. | DONE   |
-| SPGM-SP002 | Read, delete SPGM for SPGS that belongs to them.                                            | DONE   |
+| Policy key | Policy                                                                                         | Status |
+|------------|------------------------------------------------------------------------------------------------|--------|
+| SPGM-SP001 | Create and update SPGM for SPGS that belongs to them, on periods where they are SP for the CU. | DONE   |
+| SPGM-SP002 | Read, delete SPGM for SPGS that belongs to them.                                               | DONE   |
 
 #### Third Party
 
