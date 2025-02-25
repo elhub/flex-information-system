@@ -94,7 +94,7 @@ BEGIN
         DELETE FROM service_providing_group_membership
         WHERE controllable_unit_id = OLD.controllable_unit_id
             AND service_provider_id = OLD.service_provider_id
-            AND valid_time_range && OLD.valid_time_range;
+            AND OLD.valid_time_range @> valid_time_range;
         RETURN null;
     END IF;
 
