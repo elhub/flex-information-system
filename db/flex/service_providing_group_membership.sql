@@ -56,7 +56,8 @@ BEGIN
 
     IF lv_match_count = 0 THEN
       RAISE 'The CU must be managed by the SP from % to %',
-        lower(NEW.valid_time_range), upper(NEW.valid_time_range);
+        timeline_timestamptz_to_text(lower(NEW.valid_time_range)),
+        timeline_timestamptz_to_text(upper(NEW.valid_time_range));
     END IF;
 
     RETURN NEW;
