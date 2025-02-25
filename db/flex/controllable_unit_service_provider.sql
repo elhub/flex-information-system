@@ -75,19 +75,17 @@ EXECUTE FUNCTION timeline_valid_start_window('2 weeks', '2 weeks');
 CREATE OR REPLACE FUNCTION
 controllable_unit_service_provider_spg_membership_consistency()
 RETURNS trigger
-SECURITY INVOKER
+SECURITY DEFINER
+-- DEFINER because of cascading operations on different resource (SPGM) being
+-- independent of the current user
 LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    -- ranges removed in the update operation, see comment below
-    l_removed_valid_time_ranges tstzrange[];
-    l_removed tstzrange;
-
-    -- loop variable for each concerned SPGM
+    -- loop variable for each concerned SPGM on CUSP update
     l_spgm record;
-    -- remaining valid time range of each SPGM after CUSP update
-    l_valid_range_remaining tstzrange;
+    -- new valid time range for these SPGMs
+    l_new_spgm_valid_time_range tstzrange;
 BEGIN
     -- delete CUSP -> delete SPGM on that period
     IF TG_OP = 'DELETE' THEN
