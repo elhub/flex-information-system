@@ -8,6 +8,7 @@ from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitServiceProviderResponse,
     ControllableUnitServiceProviderCreateRequest,
+    ControllableUnitServiceProviderUpdateRequest,
     ControllableUnitRegulationDirection,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupCreateRequest,
@@ -25,6 +26,8 @@ from flex.api.controllable_unit import (
 )
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
+    update_controllable_unit_service_provider,
+    delete_controllable_unit_service_provider,
 )
 from flex.api.service_providing_group import (
     create_service_providing_group,
@@ -43,6 +46,7 @@ from flex.api.service_providing_group_grid_prequalification import (
 )
 import pytest
 from typing import cast
+from datetime import datetime
 
 
 @pytest.fixture
@@ -88,7 +92,7 @@ def data():
 # ---- ---- ---- ---- ----
 
 
-def test_cusp_spgm_consistency_not_ok(data):
+def test_cusp_spgm_consistency(data):
     (sts, cu_id, spg_id) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -135,6 +139,85 @@ def test_cusp_spgm_consistency_not_ok(data):
     )
     # should fail (finishes after the CU is linked to the SP)
     assert isinstance(spgm, ErrorMessage)
+
+    # Put the CU into the SPG from 08.01.2024 to 10.01.2024
+    #                     and from 11.01.2024 to 12.01.2024
+    spgm1 = create_service_providing_group_membership.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupMembershipCreateRequest(
+            controllable_unit_id=cu_id,
+            service_providing_group_id=spg_id,
+            valid_from="2024-01-08T00:00:00+1",
+            valid_to="2024-01-10T00:00:00+1",
+        ),
+    )
+    assert isinstance(spgm1, ServiceProvidingGroupMembershipResponse)
+    spgm2 = create_service_providing_group_membership.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupMembershipCreateRequest(
+            controllable_unit_id=cu_id,
+            service_providing_group_id=spg_id,
+            valid_from="2024-01-11T00:00:00+1",
+            valid_to="2024-01-12T00:00:00+1",
+        ),
+    )
+    assert isinstance(spgm2, ServiceProvidingGroupMembershipResponse)
+
+    # reduce the CU-SP on the right and check SPGM 2 was deleted
+
+    u = update_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        id=cast(int, cu_sp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_to="2024-01-11T00:00:00+1",
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    spgm2 = read_service_providing_group_membership.sync(
+        client=client_fiso,
+        id=cast(int, spgm2.id),
+    )
+    assert isinstance(spgm2, ErrorMessage)
+
+    # reduce the CU-SP further (on the left) and check SPGM 1 was adjusted
+
+    u = update_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        id=cast(int, cu_sp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_from="2024-01-09T00:00:00+1",
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    spgm1 = read_service_providing_group_membership.sync(
+        client=client_fiso,
+        id=cast(int, spgm1.id),
+    )
+    assert isinstance(spgm1, ServiceProvidingGroupMembershipResponse)
+
+    assert datetime.fromisoformat(str(spgm1.valid_from)) == datetime.fromisoformat(
+        "2024-01-09T00:00:00+01:00"
+    )
+    assert datetime.fromisoformat(str(spgm1.valid_to)) == datetime.fromisoformat(
+        "2024-01-10T00:00:00+01:00"
+    )
+
+    # delete the CU-SP and check SPGM 1 disappeared as well
+
+    d = delete_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        id=cast(int, cu_sp.id),
+        body=EmptyObject(),
+    )
+    assert not (isinstance(d, ErrorMessage))
+
+    spgm1 = read_service_providing_group_membership.sync(
+        client=client_fiso,
+        id=cast(int, spgm1.id),
+    )
+    assert isinstance(spgm1, ErrorMessage)
 
 
 # RLS: SPGM-SP002

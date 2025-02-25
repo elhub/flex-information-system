@@ -115,7 +115,10 @@ BEGIN
     LOOP
         l_new_spgm_valid_time_range :=
             l_spgm.valid_time_range * NEW.valid_time_range;
-        IF isempty(l_new_spgm_valid_time_range) THEN
+        IF (
+            l_new_spgm_valid_time_range IS NULL
+            OR isempty(l_new_spgm_valid_time_range)
+        ) THEN
             DELETE FROM service_providing_group_membership
             WHERE id = l_spgm.id;
         ELSE
