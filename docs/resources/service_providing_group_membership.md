@@ -27,7 +27,9 @@ No validation rules.
 
 ### Resource-Level Validation
 
-No validation rules
+| Policy key  | Policy                                                                  | Status |
+|-------------|-------------------------------------------------------------------------|--------|
+| SPGM-RLV001 | Valid time range is always included in a single CU-SP valid time range. | DONE   |
 
 ### Process-Level Validation
 
