@@ -100,13 +100,12 @@ BEGIN
 
     -- update CUSP -> restrict SPGM of the former period based on the new period
 
-    -- compute the amount of valid time that was removed in the update operation
-    l_removed_valid_time_ranges := timeline_valid_time_subtract(
-        OLD.valid_time_range,
-        NEW.valid_time_range
-    );
+    -- By hypothesis, SPGMs are all fully included in one CUSP. When this CUSP
+    -- is updated, we just have to restrict the SPGM to its part that is still
+    -- included in the new CUSP. We do this with intersection with the new valid
+    -- time range. If the intersection is empty (SPGM now 0% covered by the new
+    -- CUSP), we delete the SPGM.
 
-    -- remove it from the valid time range of the affected SPGMs
     FOR l_spgm IN
         SELECT spgm.id, spgm.valid_time_range
         FROM service_providing_group_membership AS spgm
@@ -114,16 +113,18 @@ BEGIN
             ON spgm.service_providing_group_id = spg.id
         WHERE spgm.controllable_unit_id = NEW.controllable_unit_id
             AND spg.service_provider_id = NEW.service_provider_id
-            AND spgm.valid_time_range && OLD.valid_time_range
+            AND OLD.valid_time_range @> spgm.valid_time_range
     LOOP
-        l_valid_range_remaining := l_spgm.valid_time_range;
-        FOREACH l_removed IN ARRAY l_removed_valid_time_ranges LOOP
-            l_valid_range_remaining := l_valid_range_remaining - l_removed;
-        END LOOP;
-
-        UPDATE service_providing_group_membership
-        SET valid_time_range = l_valid_range_remaining
-        WHERE id = l_spgm.id;
+        l_new_spgm_valid_time_range :=
+            l_spgm.valid_time_range * NEW.valid_time_range;
+        IF isempty(l_new_spgm_valid_time_range) THEN
+            DELETE FROM service_providing_group_membership
+            WHERE id = l_spgm.id;
+        ELSE
+            UPDATE service_providing_group_membership
+            SET valid_time_range = l_new_spgm_valid_time_range
+            WHERE id = l_spgm.id;
+        END IF;
     END LOOP;
 
     RETURN NEW;
