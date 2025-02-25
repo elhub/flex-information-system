@@ -163,6 +163,17 @@ def test_cusp_spgm_consistency(data):
     )
     assert isinstance(spgm2, ServiceProvidingGroupMembershipResponse)
 
+    # try to move SPGM 2 to an invalid date (should fail)
+
+    u = update_service_providing_group_membership.sync(
+        client=client_fiso,
+        id=cast(int, spgm2.id),
+        body=ServiceProvidingGroupMembershipUpdateRequest(
+            valid_from="2024-01-20T00:00:00+1",
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
     # reduce the CU-SP on the right and check SPGM 2 was deleted
 
     u = update_controllable_unit_service_provider.sync(
