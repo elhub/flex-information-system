@@ -71,3 +71,70 @@ BEFORE INSERT ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
 EXECUTE FUNCTION timeline_valid_start_window('2 weeks', '2 weeks');
+
+CREATE OR REPLACE FUNCTION
+controllable_unit_service_provider_spg_membership_consistency()
+RETURNS trigger
+SECURITY DEFINER
+-- DEFINER because of cascading operations on different resource (SPGM) being
+-- independent of the current user
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    -- loop variable for each concerned SPGM on CUSP update
+    l_spgm record;
+    -- new valid time range for these SPGMs
+    l_new_spgm_valid_time_range tstzrange;
+BEGIN
+    -- delete CUSP -> delete SPGM on that period
+    IF TG_OP = 'DELETE' THEN
+        DELETE FROM service_providing_group_membership
+        WHERE controllable_unit_id = OLD.controllable_unit_id
+            AND service_provider_id = OLD.service_provider_id
+            AND OLD.valid_time_range @> valid_time_range;
+        RETURN null;
+    END IF;
+
+    -- update CUSP -> restrict SPGM of the former period based on the new period
+
+    -- By hypothesis, SPGMs are all fully included in one CUSP. When this CUSP
+    -- is updated, we just have to restrict the SPGM to its part that is still
+    -- included in the new CUSP. We do this with intersection with the new valid
+    -- time range. If the intersection is empty (SPGM now 0% covered by the new
+    -- CUSP), we delete the SPGM.
+
+    FOR l_spgm IN
+        SELECT spgm.id, spgm.valid_time_range
+        FROM service_providing_group_membership AS spgm
+        INNER JOIN service_providing_group AS spg
+            ON spgm.service_providing_group_id = spg.id
+        WHERE spgm.controllable_unit_id = NEW.controllable_unit_id
+            AND spg.service_provider_id = NEW.service_provider_id
+            AND OLD.valid_time_range @> spgm.valid_time_range
+    LOOP
+        l_new_spgm_valid_time_range :=
+            l_spgm.valid_time_range * NEW.valid_time_range;
+        IF (
+            l_new_spgm_valid_time_range IS NULL
+            OR isempty(l_new_spgm_valid_time_range)
+        ) THEN
+            DELETE FROM service_providing_group_membership
+            WHERE id = l_spgm.id;
+        ELSE
+            UPDATE service_providing_group_membership
+            SET valid_time_range = l_new_spgm_valid_time_range
+            WHERE id = l_spgm.id;
+        END IF;
+    END LOOP;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER
+controllable_unit_service_provider_spg_membership_consistency
+BEFORE UPDATE OR DELETE ON controllable_unit_service_provider
+FOR EACH ROW
+EXECUTE FUNCTION
+controllable_unit_service_provider_spg_membership_consistency();
