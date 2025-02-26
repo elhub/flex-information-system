@@ -79,11 +79,15 @@ FROM (
 INNER JOIN controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
 INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
 LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
-WHERE apeu.valid_time_range && tstzrange(cusph.valid_from, cusph.valid_to, '[)');
+WHERE apeu.valid_time_range @> cusph.valid_from;
 -- using history on CU-SP because EU depends on valid time
 --   the subquery allows us to get only the 2 latest versions of CU-SP at the
 --   time of the event (i.e., both versions before and after the update)
 -- not using history on CU because AP ID is stable
+-- just checking the start of the CU-SP valid time because functionally
+--   speaking, this valid time should actually be aligned with the end user
+--   valid time, so it is a way to avoid notifying people that are not really
+--   concerned when we just correct a mistake
 
 -- name: GetControllableUnitServiceProviderCreateNotificationRecipients :many
 SELECT unnest(
