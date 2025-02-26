@@ -64,7 +64,11 @@ WHERE cusp.id = $1
 AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
 `
 
-// not using history on CU-SP for CU ID and SP ID because they are stable
+// using history on CU-SP because EU depends on valid time
+//
+//	the subquery allows us to get only the 2 latest versions of CU-SP at the
+//	time of the event (i.e., both versions before and after the update)
+//
 // not using history on CU because AP ID is stable
 func (q *Queries) GetControllableUnitServiceProviderCreateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
 	rows, err := q.db.Query(ctx, getControllableUnitServiceProviderCreateNotificationRecipients, resourceID)
@@ -87,16 +91,33 @@ func (q *Queries) GetControllableUnitServiceProviderCreateNotificationRecipients
 }
 
 const getControllableUnitServiceProviderUpdateDeleteNotificationRecipients = `-- name: GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients :many
-SELECT unnest(
-    array[cusp.service_provider_id, cu.connecting_system_operator_id]
+SELECT DISTINCT unnest(
+    array_remove(
+        array[
+            cusph.service_provider_id,
+            cu.connecting_system_operator_id,
+            apeu.end_user_id
+        ],
+        null
+    )
 )::bigint
-FROM controllable_unit_service_provider cusp
-INNER JOIN controllable_unit cu ON cu.id = cusp.controllable_unit_id
-WHERE cusp.id = $1
+FROM (
+    SELECT
+        cusph.service_provider_id, cusph.controllable_unit_id,
+        cusph.valid_from, cusph.valid_to
+    FROM controllable_unit_service_provider_history AS cusph
+    WHERE cusph.controllable_unit_service_provider_id = $1
+    AND cusph.recorded_at <= $2
+    ORDER BY cusph.recorded_at DESC LIMIT 2
+) AS cusph
+INNER JOIN controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
+INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
+LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+WHERE apeu.valid_time_range && tstzrange(cusph.valid_from, cusph.valid_to, '[)')
 `
 
-func (q *Queries) GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
-	rows, err := q.db.Query(ctx, getControllableUnitServiceProviderUpdateDeleteNotificationRecipients, resourceID)
+func (q *Queries) GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitServiceProviderUpdateDeleteNotificationRecipients, resourceID, recordedAt)
 	if err != nil {
 		return nil, err
 	}

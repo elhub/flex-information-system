@@ -45,7 +45,7 @@ No validation rules.
 |------------------------|-----------------------------------------------------------|---------|
 | create, update, delete | SP                                                        |         |
 | create, update, delete | Connecting SO                                             |         |
-| create                 | End user(s) in charge of the AP during the CU-SP contract |         |
+| create, update, delete | End user(s) in charge of the AP during the CU-SP contract |         |
 
 ## Authorization
 
