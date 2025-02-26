@@ -54,6 +54,7 @@ SELECT service_provider_id
 FROM controllable_unit_service_provider_history cusph
 WHERE cusph.controllable_unit_id = @resource_id
 AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> @recorded_at::timestamptz
+AND cusph.valid_from IS NOT NULL
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> @recorded_at::timestamptz;
 
 -- name: GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients :many
@@ -162,6 +163,7 @@ WHERE cusph.controllable_unit_id = (
     LIMIT 1
 )
 AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> @recorded_at::timestamptz
+AND cusph.valid_from IS NOT NULL
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> @recorded_at::timestamptz
 UNION
 SELECT connecting_system_operator_id
