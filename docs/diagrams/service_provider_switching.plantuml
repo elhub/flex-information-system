@@ -17,19 +17,6 @@ actor "Connecting System Operator (CSO)" as CSO
 EU <-> SP_NEW: Contractual agreement
 activate SP_NEW
 
-== Verification of Controllable Unit (CU) ==
-
-
-SP_NEW -> FIS: Request data for controllable unit
-note left
-    The new service provider will verify
-    that they have gotten the correct
-    controllable unit business id
-    from the end user.
-end note
-activate FIS
-FIS --> SP_NEW: Return w/ controllable unit id
-deactivate FIS
 
 == Switching ==
 
@@ -49,17 +36,17 @@ activate FIS
 
 FIS -> FIS: Update existing\ncontracts on controllable unit
 note left
-    FIS will end and update existing
-    contracts to make room for the new
-    one in the timeline.
+    FIS will end existing contract
+    and create contract with new service
+    provider for the requested start date
 end note
 
 FIS --> SP_NEW: OK
 deactivate SP_NEW
 
-FIS --> CSO: Notify new and updated CU SP contracts
+FIS --> CSO: Notify updated CU SP contracts
 FIS --> SP_OLD: Notify updated CU SP contracts
-FIS --> EU : Notify new and updated CU SP contracts
+FIS --> EU : Notify updated CU SP contracts
 
 deactivate FIS
 

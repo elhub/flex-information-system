@@ -9,13 +9,15 @@ service provider
 - There exists a valid contract between the new service provider and the end
   user, and all contract requirements from the old contract have been met.
 - The service provider acts on behalf of the end user.
-- The contrallable unit business ID is known by new service provider. This ID
-  must be provided by the end user.
+- The service provider gets necessary information to perform the switch by requesting controllable unit lookup.
 - The controllable unit will remain with the old service provider’s control and
   useable for operations until the contract start date for new service provider.
-- Further update of CU data and assignment/removal of controllable
-  unit to/from service providing group(s) is documented in dedicated
-  processes.
+
+
+## Postrequisites
+
+- The old service provider must update effected service providing groups.
+
 
 ## Sequence
 
@@ -23,3 +25,4 @@ service provider
 [PlantUML description](../diagrams/service_provider_switching.plantuml)
 
 ![Service Provider Registration](../diagrams/service_provider_switching.png)
+
