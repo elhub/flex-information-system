@@ -37,7 +37,8 @@ LANGUAGE plpgsql
 SECURITY INVOKER
 AS $$
 DECLARE
-  lv_match_count INTEGER;
+  -- the new SPGM is covered by the CU-SP valid timeline
+  lv_covered boolean;
   lv_service_provider_id INTEGER;
 BEGIN
 
@@ -45,16 +46,14 @@ BEGIN
     from flex.service_providing_group spg
     where spg.id = NEW.service_providing_group_id;
 
-    select count(1) into lv_match_count
+    select range_agg(cusp.valid_time_range) @> NEW.valid_time_range
+    into lv_covered
     from flex.controllable_unit_service_provider as cusp
     where cusp.controllable_unit_id = NEW.controllable_unit_id
     and cusp.service_provider_id = lv_service_provider_id
-    and cusp.valid_time_range @> NEW.valid_time_range;
-    -- TODO : We are just checking for containment,
-    -- but we should check for scenario
-    -- where multiple ranges in cusp covers the new range.
+    and cusp.valid_time_range && NEW.valid_time_range;
 
-    IF lv_match_count = 0 THEN
+    IF NOT lv_covered THEN
       RAISE 'The CU must be managed by the SP from % to %',
         timeline_timestamptz_to_text(lower(NEW.valid_time_range)),
         timeline_timestamptz_to_text(upper(NEW.valid_time_range));

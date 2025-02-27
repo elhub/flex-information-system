@@ -46,10 +46,8 @@ USING (EXISTS (
 WITH CHECK (
     EXISTS (
         SELECT
-            timeline_includes(
-                array_agg(cusp.valid_time_range),
-                service_providing_group_membership.valid_time_range -- noqa
-            )
+            range_agg(cusp.valid_time_range)
+                @> service_providing_group_membership.valid_time_range -- noqa
         FROM controllable_unit_service_provider AS cusp
             INNER JOIN service_providing_group AS spg
                 ON cusp.service_provider_id = spg.service_provider_id

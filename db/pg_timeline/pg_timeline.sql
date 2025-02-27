@@ -380,26 +380,3 @@ BEGIN
     RETURN NEW;
 END;
 $$;
-
-CREATE OR REPLACE FUNCTION timeline_includes(
-    tl_timeline tstzrange [],
-    tl_range tstzrange
-)
-RETURNS boolean
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    -- each range in the timeline
-    tl_timeline_range tstzrange;
-    -- timeline as multirange to check inclusion in one go
-    tl_timeline_as_multirange tstzmultirange := multirange('empty'::tstzrange);
-BEGIN
-    FOREACH tl_timeline_range IN ARRAY tl_timeline LOOP
-        tl_timeline_as_multirange :=
-            tl_timeline_as_multirange + tl_timeline_range;
-    END LOOP;
-
-    RETURN tl_timeline_as_multirange @> tl_range;
-END;
-$$;
