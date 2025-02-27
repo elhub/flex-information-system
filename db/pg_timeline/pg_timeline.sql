@@ -213,7 +213,13 @@ RETURNS text
 SECURITY INVOKER
 LANGUAGE sql
 AS $$ SELECT
-    to_char(t at time zone 'Europe/Oslo', 'YYYY-MM-DD HH24:MI:SS "Europe/Oslo"')
+    coalesce(
+        to_char(
+            t at time zone 'Europe/Oslo',
+            'YYYY-MM-DD HH24:MI:SS "Europe/Oslo"'
+        ),
+        '--'
+    )
 $$;
 
 -- freeze a 'valid time' timeline before a certain date :
