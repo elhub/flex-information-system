@@ -146,5 +146,12 @@
         "notes": "Free text notes on the current product application status.",
         "last_prequalified": "When the product application was last prequalified.",
         "last_verified": "When the product application was last verified."
+    },
+    "notice": {
+        "id": "NON-STABLE unique identifier.",
+        "party_id": "Reference to the party targeted by the notice.",
+        "type": "The type of the notice.",
+        "source": "The URI of the resource concerned by the event.",
+        "data": "The data of the notice."
     }
 }

@@ -12,6 +12,7 @@ SET search_path TO api;
 \i api/entity.sql
 \i api/event.sql
 \i api/identity.sql
+\i api/notice.sql
 \i api/notification.sql
 \i api/party.sql
 \i api/party_membership.sql
