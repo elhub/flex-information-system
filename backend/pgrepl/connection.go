@@ -169,6 +169,9 @@ func (replConn *Connection) handlePrimaryKeepaliveMessage(
 		if err != nil {
 			return sendStandbyStatusUpdateError(err)
 		}
+		slog.InfoContext(ctx, "received PrimaryKeepaliveMessage and sent status update", "lsn", replConn.lsn.String())
+	} else {
+		slog.DebugContext(ctx, "received PrimaryKeepaliveMessage, no reply requested")
 	}
 	return nil
 }
