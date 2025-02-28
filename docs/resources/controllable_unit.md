@@ -99,10 +99,10 @@ No policies.
 
 #### End User
 
-| Policy key | Policy                                                                                            | Status |
-|------------|---------------------------------------------------------------------------------------------------|--------|
-| CU-EU001   | Read CU data that are connected to AP where they are EU. Only for when they are EU on the AP.     | DONE   |
-| CU-EU002   | RRead CU history that are connected to AP where they are EU. Only for when they are EU on the AP. | DONE   |
+| Policy key | Policy                                                                                           | Status |
+|------------|--------------------------------------------------------------------------------------------------|--------|
+| CU-EU001   | Read CU data that are connected to AP where they are EU. Only for when they are EU on the AP.    | DONE   |
+| CU-EU002   | Read CU history that are connected to AP where they are EU. Only for when they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 

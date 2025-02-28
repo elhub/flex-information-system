@@ -60,42 +60,57 @@ No policies.
 
 #### Common
 
-| Policy key | Policy                                      | Status |
-|------------|---------------------------------------------|--------|
-| TR-COM001  | Read history on TR that they can read.      | DONE   |
-| TR-COM002  | Read TR belonging to CU that they can read. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key | Policy                                                                     | Status |
+|------------|----------------------------------------------------------------------------|--------|
+| TR-BRP001  | Read TR data when they are BRP on the AP. Only for the contract period.    | DONE   |
+| TR-BRP002  | Read TR history when they are BRP on the AP. Only for the contract period. | DONE   |
 
 #### End User
 
-No policies.
+| Policy key | Policy                                                                           | Status |
+|------------|----------------------------------------------------------------------------------|--------|
+| TR-EU001   | Read TR data when they are EU on the AP. Only for when they are EU on the AP.    | DONE   |
+| TR-EU002   | Read TR history when they are EU on the AP. Only for when they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
-No policies.
+| Policy key | Policy                                                                    | Status |
+|------------|---------------------------------------------------------------------------|--------|
+| TR-ES001   | Read TR data when they are ES on the AP. Only for the contract period.    | DONE   |
+| TR-ES002   | Read TR history when they are ES on the AP. Only for the contract period. | DONE   |
 
 #### Flexibility Information System Operator
 
 | Policy key | Policy                                  | Status |
 |------------|-----------------------------------------|--------|
 | TR-FISO001 | Read, create, update and delete all TR. | DONE   |
+| TR-FISO002 | Read all TR history.                    | DONE   |
 
 #### Market Operator
 
-No policies.
+| Policy key | Policy                                                                                                               | Status |
+|------------|----------------------------------------------------------------------------------------------------------------------|--------|
+| TR-MO001   | Read TR data on CU that are connected to their market. Only for the period CU is active in the market.               | TODO   |
+| TR-MO002   | Read TR history on CU that are connected to their market. Only history on the period the CU is active in the market. | TODO   |
 
 #### System Operator
 
-No policies.
+| Policy key | Policy                                       | Status |
+|------------|----------------------------------------------|--------|
+| TR-SO001   | Read TR belonging to CU that the SO can see. | DONE   |
+| TR-SO002   | Read history on TR that they can read.       | DONE   |
 
 #### Service Provider
 
 | Policy key | Policy                                                        | Status |
 |------------|---------------------------------------------------------------|--------|
 | TR-SP001   | Create, update and delete TR on CU where they are current SP. | DONE   |
+| TR-SP002   | Read TR data for the period they are SP on the CU.            | DONE   |
+| TR-SP003   | Read TR history for the period they are SP on the CU.         | DONE   |
 
 #### Third Party
 
