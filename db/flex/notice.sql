@@ -9,20 +9,18 @@ CREATE OR REPLACE VIEW notice AS (
     FROM service_providing_group_membership AS spgm -- noqa
         INNER JOIN service_providing_group AS spg
             ON spg.id = spgm.service_providing_group_id
-    WHERE
-        NOT (
-            SELECT
-                -- aggregate returns null if no overlapping range is found
-                --   null propagates to WHERE through range_agg, @> and NOT,
-                --   whereas we want true in this case, hence coalesce
-                coalesce(
-                    range_agg(cusp.valid_time_range) @> spgm.valid_time_range,
-                    false
-                )
-            FROM controllable_unit_service_provider AS cusp
-            WHERE
-                cusp.controllable_unit_id = spgm.controllable_unit_id
-                AND cusp.service_provider_id = spg.service_provider_id
-                AND cusp.valid_time_range && spgm.valid_time_range
+    WHERE NOT EXISTS (
+            SELECT 1 FROM (
+                SELECT
+                    controllable_unit_id,
+                    service_provider_id,
+                    range_agg(valid_time_range) AS valid_timeline
+                FROM controllable_unit_service_provider
+                WHERE lower(valid_time_range) IS NOT null
+                GROUP BY controllable_unit_id, service_provider_id
+            ) AS cusp
+            WHERE spgm.controllable_unit_id = cusp.controllable_unit_id
+                AND spg.service_provider_id = cusp.service_provider_id
+                AND cusp.valid_timeline @> spgm.valid_time_range
         )
 );
