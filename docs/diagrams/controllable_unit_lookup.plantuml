@@ -1,7 +1,7 @@
 @startuml controllable_unit_lookup
 !theme plain
 
-title Controllable Unit (CU) Registration
+title Controllable Unit (CU) Lookup
 
 autonumber
 skinparam note {
@@ -13,18 +13,69 @@ actor "Service Provider (SP)" as SP
 participant "Flexibility Information System (FIS)" as FIS
 
 EU <-> SP: Contractual agreement
-activate SP
+
 
 == Controllable Unit (CU) Lookup ==
 
-SP -> FIS: Lookup existing CU on accounting point
-note left
-    Data required:
-    - metering point id (MPID)
-    - end user id
+Note over SP
+The SP needs to verify information 
+given by end user to know which 
+processes to run.
+
+CU lookup can be used for different 
+scenarios. 
+
 end note
 
-activate FIS
+alt "Verify business id on CU from end user"
+    |||
+    SP -> FIS: Get CU data
+    activate SP
+    note left 
+        Data required:
+        - business id
+    end note
+    activate FIS
+    FIS --> SP: CU data
+    deactivate SP
+    FIS --> EU: Notify
+    deactivate FIS
+    |||
+
+    note right
+        Data returned:
+        - cu id
+        - business id
+        - name
+        - metering point id 
+    end note 
+
+else "Lookup controllable unit(s) on metering point"
+    |||
+    SP -> FIS: Get list of CU(s) on a metering point
+    note left 
+        Data required:
+        - metering point id
+        - end user id
+    end note
+    activate FIS
+    activate SP
+    FIS --> SP: List of CU(s) on metering point
+    deactivate SP
+    FIS --> EU: Notify
+    deactivate FIS
+
+    |||
+    note right
+        Data returned (for each relevant CU):
+        - cu id
+        - business id
+        - name
+        - metering point id 
+    end note 
+    
+end
 
 
+ 
 @enduml

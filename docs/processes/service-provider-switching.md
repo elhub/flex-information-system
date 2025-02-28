@@ -9,13 +9,9 @@ service provider
 - There exists a valid contract between the new service provider and the end
   user, and all contract requirements from the old contract have been met.
 - The service provider acts on behalf of the end user.
-- The service provider gets necessary information to perform the switch by requesting controllable unit lookup.
+- The service provider gets necessary information to perform the switch by doing controllable unit lookup.
 - The controllable unit will remain with the old service provider’s control and
   useable for operations until the contract start date for new service provider.
-
-
-## Postrequisites
-
 - The old service provider must update effected service providing groups.
 
 
