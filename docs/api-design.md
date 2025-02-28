@@ -141,6 +141,26 @@ System.
 reachable in the API as regular resources like the others, *i.e.*, through the
 `/event` and `/notification` endpoint families.
 
+## Notices
+
+Strongly enforcing consistency and closely following processes is a *hard* task
+in a system that is optimised for change and where users can make *mistakes*.
+
+In order to store decently reliable data while still keeping a maintainable
+system in the long run, we generally make sure that *new* data entering the
+system are consistent with existing data, but we tolerate some level of
+*temporary* inconsistency or invalidity for some resources. This has several
+advantages, such as *sparing* us the need for advanced *rollback* mechanisms.
+
+However, even if we do not enforce it as strictly in the database, we consider
+that such issues *should* be fixed eventually. This is the purpose of the
+[*notice*](resources/notice.md) resource. It detects inconsistencies or invalid
+states in ongoing processes and exposes them through the API for each user to
+see what actions on the system are expected from them. This allows making
+mistakes but also detecting and fixing them in a decent time, ensuring
+*eventually strong* consistency between the resources in the system in a
+flexible way.
+
 ## Time dependent resources and fields
 
 Some resources or fields are [time dependent](time.md). We model timelines as a
