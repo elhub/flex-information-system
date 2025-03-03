@@ -37,8 +37,7 @@ activate FIS
 FIS -> FIS: Update existing\ncontracts on controllable unit
 note left
     FIS will end and update existing
-    contracts to make room for the new
-    one in the timeline.
+    contracts
 end note
 
 FIS --> SP_NEW: OK

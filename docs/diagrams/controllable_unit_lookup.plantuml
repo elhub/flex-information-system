@@ -12,7 +12,7 @@ actor "End User (EU)" AS EU
 actor "Service Provider (SP)" as SP
 participant "Flexibility Information System (FIS)" as FIS
 
-EU <-> SP: Contractual agreement
+EU <- SP: Obtain consent to request CU data
 
 == Controllable Unit (CU) Lookup ==
 
@@ -32,12 +32,11 @@ deactivate FIS
 
 note right
     Data returned (for each relevant CU):
-    - cu id
+    - id
     - business id
-    - cu name
+    - name
     - metering point id 
-    - Technical resource name
-    - Technical resource details
+    - list of technical resources 
 end note 
 
 @enduml
