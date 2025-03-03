@@ -29,7 +29,7 @@ note left
     - start date
 
     Contract start date must be
-    2-4 weeks in the future
+    2-4 weeks in the future.
 end note
 
 activate FIS
@@ -37,16 +37,16 @@ activate FIS
 FIS -> FIS: Update existing\ncontracts on controllable unit
 note left
     FIS will end and update existing
-    contracts
+    contracts.
 end note
 
 FIS --> SP_NEW: OK
 deactivate SP_NEW
 
-FIS --> CSO: Notify new and updated CU SP contracts
+FIS --> CSO: Notify new and updated\nCU SP contracts
 FIS --> SP_OLD: Notify updated CU SP contracts
 FIS --> EU: Notify new and updated CU SP contracts
 
 deactivate FIS
-
+|||
 @enduml
