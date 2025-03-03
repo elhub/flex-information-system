@@ -140,7 +140,7 @@ BEGIN
             RETURN null;
         END IF;
 
-        RETURN NULL;
+        RETURN OLD;
 
     END IF;
 
