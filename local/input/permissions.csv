@@ -153,3 +153,8 @@ service_provider_product_application_comment;visibility;;R;R;R;RCU;R;RCU;RCU;R;;
 service_provider_product_application_comment;content;;R;R;R;RCU;R;RCU;RCU;R;;
 service_provider_product_application_comment;recorded_at;;R;R;R;R;R;R;R;R;;
 service_provider_product_application_comment;recorded_by;;R;R;R;R;R;R;R;R;;
+notice;id;;R;R;R;R;R;R;R;R;;
+notice;party_id;;R;R;R;R;R;R;R;R;;
+notice;type;;R;R;R;R;R;R;R;R;;
+notice;source;;R;R;R;R;R;R;R;R;;
+notice;data;;R;R;R;R;R;R;R;R;;

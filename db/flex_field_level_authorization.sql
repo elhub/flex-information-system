@@ -1001,3 +1001,27 @@ TO flex_third_party;
 
 GRANT SELECT ON TABLE flex.service_provider_product_application_comment_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_balance_responsible_party;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_energy_supplier;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_end_user;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_market_operator;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE flex.notice
+TO flex_third_party;

@@ -31,6 +31,8 @@ and support the processes in the value chain.$$;
 \i flex/service_providing_group_grid_prequalification.sql
 \i flex/service_providing_group_product_application.sql
 \i flex/service_provider_product_application_comment.sql
+-- loaded last because it is built from the others
+\i flex/notice.sql
 
 -- history and audit
 

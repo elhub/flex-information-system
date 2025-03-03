@@ -49,5 +49,7 @@ digraph flex {
     service_providing_group_product_application -> service_providing_group     [label=service_providing_group_id]
     service_providing_group_product_application -> party     [label=procuring_system_operator_id]
     service_providing_group_product_application -> product_type     [label=product_type_id]
+    notice    [label="{notice}|{Notice to users\nabout various issues\nor actions expected\nfrom them.}" shape=record style=solid]
+    notice -> party     [label=party_id]
 }
 @enddot

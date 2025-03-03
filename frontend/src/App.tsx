@@ -113,6 +113,7 @@ import { EntityInput } from "./entity/EntityInput";
 import { ServiceProviderProductApplicationCommentInput } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentInput";
 import { ServiceProviderProductApplicationCommentShow } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentShow";
 import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
+import { NoticeList } from "./notice/NoticeList";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -256,6 +257,7 @@ const MainMenu = () => (
     <SubMenu text="System">
       <Menu.ResourceItem name="event" />
       <Menu.ResourceItem name="notification" />
+      <Menu.ResourceItem name="notice" />
     </SubMenu>
   </Menu>
 );
@@ -1032,6 +1034,9 @@ export const App = () => (
             list={NotificationList}
             show={NotificationShow}
           />
+        ) : null}
+        {permissions.includes("notice.read") ? (
+          <Resource name="notice" list={NoticeList} />
         ) : null}
         <CustomRoutes>
           <Route

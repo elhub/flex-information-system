@@ -116,6 +116,14 @@ type Identity struct {
 	PartyName  *string
 }
 
+type Notice struct {
+	ID      int
+	PartyID int
+	Type    string
+	Source  string
+	Data    *string
+}
+
 type Notification struct {
 	ID           int
 	Acknowledged bool

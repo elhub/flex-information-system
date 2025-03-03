@@ -348,3 +348,10 @@ CREATE TABLE service_providing_group_product_application_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE notice (
+    id bigint NOT NULL,
+    party_id bigint NOT NULL,
+    type text NOT NULL,
+    source text NOT NULL,
+    data text NULL
+);
