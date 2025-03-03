@@ -1,11 +1,12 @@
-import { Button, useGetOne, useRecordContext } from "react-admin";
+import { Button, useGetOne } from "react-admin";
 import { Link } from "react-router-dom";
 import DataObjectIcon from "@mui/icons-material/DataObject";
 import { CircularProgress } from "@mui/material";
 
-// Helper to build UI paths to subresource pages.
-// We need this because events follow the flat hierarchy of the database where
-// everything is a resource (subresources are only in the UI as a way to
+// Helper to build UI paths to subresource pages based on `source` fields in
+// events and notices, i.e., `resource/id` formats.
+// We need this because such fields follow the flat hierarchy of the database
+// where everything is a resource (subresources are only in the UI as a way to
 // organise and group pages together).
 const getSubResourceInformation = (resource: string) => {
   switch (resource) {
@@ -59,29 +60,24 @@ const getSubResourceInformation = (resource: string) => {
   }
 };
 
+// button to use as a link to a resource based on a source format (see above)
 export const ResourceButton = (props: any) => {
-  const eventRecord = useRecordContext()!;
+  const { source, ...rest } = props;
 
-  const {
-    data: event,
-    isPending: eventPending,
-    error: eventError,
-  } = useGetOne("event", { id: eventRecord.event_id });
-  const resource = event?.source.split("/")[1];
-  const id = event?.source.split("/")[2];
+  const resource = source.split("/")[1];
+  const id = source.split("/")[2];
   const {
     data: resourceRecord,
     isPending: resourcePending,
     error: resourceError,
   } = useGetOne(resource, { id: id });
   const subResourceInfo = getSubResourceInformation(resource);
-  const operation = event?.type.split(".").slice(-1);
 
-  if (eventPending || resourcePending) {
+  if (resourcePending) {
     return <CircularProgress size={25} thickness={2} />;
   }
 
-  if (eventError || resourceError) {
+  if (resourceError) {
     return null;
   }
 
@@ -97,8 +93,7 @@ export const ResourceButton = (props: any) => {
       }
       label="Go to resource"
       startIcon={<DataObjectIcon />}
-      disabled={operation == "delete"}
-      {...props}
+      {...rest}
     />
   );
 };
