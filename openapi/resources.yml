@@ -1247,3 +1247,53 @@ resources:
         type: string
         nullable: true
         example: 2021-08-08 10:00:00 CET
+
+  - id: notice
+    acronym: NOTICE
+    summary: Notice
+    description: >-
+      Notice to users about various issues or actions expected from them.
+    operations:
+      - list
+    generate_views: false
+    properties:
+      id:
+        description: NON-STABLE unique identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 8
+        x-details: >-
+          This identifier is there for uniformity reasons, but it is not tied to
+          an actual notice. Therefore, a notice is not guaranteed to be attached
+          to the same identifier across several requests.
+      party_id:
+        description: Reference to the party targeted by the notice.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 18
+      type:
+        description: The type of the notice.
+        format: text
+        type: string
+        pattern: '^no.elhub.flex.'
+        readOnly: true
+        example: 'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract'
+      source:
+        description: The URI of the resource concerned by the event.
+        format: text
+        type: string
+        pattern: '^(\/([a-z][a-z_]*|[0-9]+))+$'
+        readOnly: true
+        example: '/service_providing_group_membership/4'
+      data:
+        description: The data of the notice.
+        format: text
+        type: string
+        readOnly: true
+        nullable: true
+        example: null

@@ -70,6 +70,11 @@ AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
 //	time of the event (i.e., both versions before and after the update)
 //
 // not using history on CU because AP ID is stable
+// just checking the start of the CU-SP valid time because functionally
+//
+//	speaking, this valid time should actually be aligned with the end user
+//	valid time, so it is a way to avoid notifying people that are not really
+//	concerned when we just correct a mistake
 func (q *Queries) GetControllableUnitServiceProviderCreateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
 	rows, err := q.db.Query(ctx, getControllableUnitServiceProviderCreateNotificationRecipients, resourceID)
 	if err != nil {
@@ -113,7 +118,7 @@ FROM (
 INNER JOIN controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
 INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
 LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
-WHERE apeu.valid_time_range && tstzrange(cusph.valid_from, cusph.valid_to, '[)')
+WHERE apeu.valid_time_range @> cusph.valid_from
 `
 
 func (q *Queries) GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
@@ -147,6 +152,7 @@ SELECT service_provider_id
 FROM controllable_unit_service_provider_history cusph
 WHERE cusph.controllable_unit_id = $1
 AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> $2::timestamptz
+AND cusph.valid_from IS NOT NULL
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> $2::timestamptz
 `
 
@@ -488,6 +494,7 @@ WHERE cusph.controllable_unit_id = (
     LIMIT 1
 )
 AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> $2::timestamptz
+AND cusph.valid_from IS NOT NULL
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> $2::timestamptz
 UNION
 SELECT connecting_system_operator_id

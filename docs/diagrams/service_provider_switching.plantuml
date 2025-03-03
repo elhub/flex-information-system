@@ -1,0 +1,52 @@
+@startuml service_provider_switching
+!theme plain
+
+title Service provider switching
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "End User (EU)" AS EU
+actor "New Service Provider (New SP)" as SP_NEW
+actor "Old Service Provider (Old SP)" as SP_OLD
+participant "Flexibility Information System (FIS)" as FIS
+actor "Connecting System Operator (CSO)" as CSO
+
+EU <-> SP_NEW: Contractual agreement
+activate SP_NEW
+
+
+== Switching ==
+
+SP_NEW -> FIS: Register CU service provider contract
+note left
+    Data:
+    - service provider id
+    - controllable unit id
+    - contract reference
+    - start date
+
+    Contract start date must be
+    2-4 weeks in the future.
+end note
+
+activate FIS
+
+FIS -> FIS: Update existing\ncontracts on controllable unit
+note left
+    FIS will end and update existing
+    contracts.
+end note
+
+FIS --> SP_NEW: OK
+deactivate SP_NEW
+
+FIS --> CSO: Notify new and updated\nCU SP contracts
+FIS --> SP_OLD: Notify updated CU SP contracts
+FIS --> EU: Notify new and updated CU SP contracts
+
+deactivate FIS
+|||
+@enduml

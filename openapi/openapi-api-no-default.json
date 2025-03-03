@@ -91,6 +91,10 @@
         {
             "name": "service_providing_group_product_application",
             "description": "Service Providing Group Product Application"
+        },
+        {
+            "name": "notice",
+            "description": "Notice"
         }
     ],
     "components": {
@@ -1816,6 +1820,63 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 145
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "notice_update_request": {
+                "summary": "Update - Notice",
+                "description": "Request schema for update operations - Notice to users about various issues or actions expected from them.",
+                "type": "object"
+            },
+            "notice_response": {
+                "summary": "Response - Notice",
+                "description": "Response schema for operations with return values - Notice to users about various issues or actions expected from them.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/notice_update_request"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "NON-STABLE unique identifier.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 8
+                            },
+                            "party_id": {
+                                "description": "Reference to the party targeted by the notice.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 18
+                            },
+                            "type": {
+                                "description": "The type of the notice.",
+                                "format": "text",
+                                "type": "string",
+                                "pattern": "^no.elhub.flex.",
+                                "readOnly": true,
+                                "example": "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract"
+                            },
+                            "source": {
+                                "description": "The URI of the resource concerned by the event.",
+                                "format": "text",
+                                "type": "string",
+                                "pattern": "^(\\/([a-z][a-z_]*|[0-9]+))+$",
+                                "readOnly": true,
+                                "example": "/service_providing_group_membership/4"
+                            },
+                            "data": {
+                                "description": "The data of the notice.",
+                                "format": "text",
+                                "type": "string",
+                                "readOnly": true,
+                                "nullable": true,
+                                "example": null
                             }
                         }
                     }
@@ -13531,6 +13592,195 @@
                             }
                         },
                         "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/notice": {
+            "summary": "Notice",
+            "description": "",
+            "get": {
+                "operationId": "list_notice",
+                "summary": "List Notice",
+                "description": "",
+                "tags": [
+                    "notice"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "NON-STABLE unique identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the party targeted by the notice.",
+                        "name": "party_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/notice_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
                     },
                     "500": {
                         "content": {

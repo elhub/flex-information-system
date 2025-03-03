@@ -5,13 +5,38 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  useGetOne,
+  useRecordContext,
 } from "react-admin";
-import { Typography, Stack } from "@mui/material";
+import { Typography, Stack, CircularProgress } from "@mui/material";
 import { FieldStack } from "../auth";
 import { DateField } from "../datetime";
 import { AcknowledgeButton } from "./AcknowledgeButton";
-import { ResourceButton } from "./ResourceButton";
+import { ResourceButton } from "../ResourceButton";
 import { IdentityField } from "../IdentityField";
+
+export const EventResourceButton = () => {
+  const eventRecord = useRecordContext()!;
+  const {
+    data: event,
+    isPending: eventPending,
+    error: eventError,
+  } = useGetOne("event", { id: eventRecord.event_id });
+
+  if (eventPending) {
+    return <CircularProgress size={25} thickness={2} />;
+  }
+
+  if (eventError) {
+    return null;
+  }
+
+  const operation = event?.type.split(".").slice(-1);
+
+  return (
+    <ResourceButton source={event?.source} disabled={operation == "delete"} />
+  );
+};
 
 export const NotificationShow = () => (
   <Show>
@@ -76,7 +101,7 @@ export const NotificationShow = () => (
           <IdentityField source="recorded_by" />
         </FieldStack>
       </Stack>
-      <ResourceButton />
+      <EventResourceButton />
       <AcknowledgeButton />
     </SimpleShowLayout>
   </Show>
