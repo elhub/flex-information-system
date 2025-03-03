@@ -1,5 +1,17 @@
-import { FunctionField, List, ReferenceField, TextField } from "react-admin";
+import {
+  FunctionField,
+  List,
+  ReferenceField,
+  TextField,
+  useRecordContext,
+} from "react-admin";
 import { Datagrid } from "../auth";
+import { ResourceButton } from "../ResourceButton";
+
+export const NoticeResourceButton = () => {
+  const noticeRecord = useRecordContext()!;
+  return <ResourceButton source={noticeRecord.source} />;
+};
 
 export const NoticeList = () => (
   <List perPage={25} sort={{ field: "id", order: "DESC" }} empty={false}>
@@ -14,6 +26,7 @@ export const NoticeList = () => (
         source="data"
         render={(record) => (record.data ? JSON.stringify(record.data) : "{}")}
       />
+      <NoticeResourceButton />
     </Datagrid>
   </List>
 );
