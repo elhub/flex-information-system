@@ -1,4 +1,6 @@
 ALTER TABLE IF EXISTS technical_resource ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS technical_resource_history ENABLE ROW LEVEL SECURITY;
+
 -- internal
 GRANT SELECT ON technical_resource TO flex_internal_event_notification;
 CREATE POLICY "TRG_INTERNAL_EVENT_NOTIFICATION" ON technical_resource
