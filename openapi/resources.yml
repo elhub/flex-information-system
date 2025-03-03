@@ -1263,6 +1263,10 @@ resources:
         type: integer
         readOnly: true
         example: 8
+        x-details: >-
+          This identifier is there for uniformity reasons, but it is not tied to
+          an actual notice. Therefore, a notice is not guaranteed to be attached
+          to the same identifier across several requests.
       party_id:
         description: Reference to the party targeted by the notice.
         format: bigint
