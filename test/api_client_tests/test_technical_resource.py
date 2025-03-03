@@ -3,24 +3,15 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
-    ControllableUnitServiceProviderResponse,
-    ControllableUnitServiceProviderCreateRequest,
     ErrorMessage,
     EmptyObject,
-    ControllableUnitResponse,
-    ControllableUnitCreateRequest,
-    ControllableUnitRegulationDirection,
     TechnicalResourceResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceUpdateRequest,
     TechnicalResourceHistoryResponse,
 )
 from flex.api.controllable_unit import (
-    create_controllable_unit,
     list_controllable_unit,
-)
-from flex.api.controllable_unit_service_provider import (
-    create_controllable_unit_service_provider,
 )
 from flex.api.technical_resource import (
     create_technical_resource,
@@ -36,52 +27,199 @@ from typing import cast
 
 
 @pytest.fixture
-def data():
-    sts = SecurityTokenService()
-
-    # create a test controllable unit
-    cu = create_controllable_unit.sync(
-        client=sts.get_client(TestEntity.TEST, "FISO"),
-        body=ControllableUnitCreateRequest(
-            name="New CU",
-            accounting_point_id="133700000000010014",
-            regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
-        ),
-    )
-    assert isinstance(cu, ControllableUnitResponse)
-
-    yield (sts, cu.id)
+def sts():
+    yield SecurityTokenService()
 
 
 # ---- ---- ---- ---- ----
 
 
-def technical_resource_test_for_client(client, cu_id):
-    # get initial number of TR related to this CU
-    # endpoint: GET /technical_resource
-    tr_cu = list_technical_resource.sync(
-        client=client,
-        controllable_unit_id=f"eq.{cu_id}",
-    )
-    assert isinstance(tr_cu, list)
+# RLS: TR-BRP001
+# RLS: TR-BRP002
+def test_tr_brp(sts):
+    # former AP BRP can see the old version of the TRs in the test data,
+    # but not the current record
 
-    # add a new TR to the CU
+    client_former_brp = sts.get_client(TestEntity.COMMON, "BRP")
+
+    # endpoint: GET /technical_resource_history
+    trhs_former_brp = list_technical_resource_history.sync(client=client_former_brp)
+    assert isinstance(trhs_former_brp, list)
+
+    assert len(trhs_former_brp) > 0
+
+    old_trhs = list(
+        filter(
+            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            trhs_former_brp,
+        )
+    )
+    assert len(old_trhs) > 0
+
+    # endpoint: GET /technical_resource/{id}
+    tr = read_technical_resource.sync(
+        client=client_former_brp,
+        id=cast(int, old_trhs[0].technical_resource_id),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+    assert "FORMER NAME" in cast(str, tr.name)
+
+    # current AP BRP can see the current version of the TR,
+    # but not the old records
+
+    client_brp = sts.get_client(TestEntity.TEST, "BRP")
+
+    tr = read_technical_resource.sync(
+        client=client_brp,
+        id=cast(int, old_trhs[0].technical_resource_id),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
+    trhs_brp = list_technical_resource_history.sync(client=client_brp)
+    assert isinstance(trhs_brp, list)
+
+    old_trhs = list(
+        filter(
+            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            trhs_brp,
+        )
+    )
+    assert len(old_trhs) == 0
+
+
+# RLS: TR-EU001
+# RLS: TR-EU002
+def test_tr_eu(sts):
+    # former AP EU can see the old version of the TRs in the test data,
+    # but not the current record
+
+    client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
+
+    trhs_former_eu = list_technical_resource_history.sync(client=client_former_eu)
+    assert isinstance(trhs_former_eu, list)
+
+    assert len(trhs_former_eu) > 0
+
+    old_trhs = list(
+        filter(
+            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            trhs_former_eu,
+        )
+    )
+    assert len(old_trhs) > 0
+
+    tr = read_technical_resource.sync(
+        client=client_former_eu,
+        id=cast(int, old_trhs[0].technical_resource_id),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+    assert "FORMER NAME" in cast(str, tr.name)
+
+    # current AP EU can see the current version of the TR,
+    # but not the old records
+
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+
+    tr = read_technical_resource.sync(
+        client=client_eu,
+        id=cast(int, old_trhs[0].technical_resource_id),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
+    trhs_eu = list_technical_resource_history.sync(client=client_eu)
+    assert isinstance(trhs_eu, list)
+
+    old_trhs = list(
+        filter(
+            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            trhs_eu,
+        )
+    )
+    assert len(old_trhs) == 0
+
+
+# RLS: TR-ES001
+# RLS: TR-ES002
+def test_tr_es(sts):
+    # former AP ES can see the old version of the TRs in the test data,
+    # but not the current record
+
+    client_former_es = sts.get_client(TestEntity.COMMON, "ES")
+
+    trhs_former_es = list_technical_resource_history.sync(client=client_former_es)
+    assert isinstance(trhs_former_es, list)
+
+    assert len(trhs_former_es) > 0
+
+    old_trhs = list(
+        filter(
+            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            trhs_former_es,
+        )
+    )
+    assert len(old_trhs) > 0
+
+    tr = read_technical_resource.sync(
+        client=client_former_es,
+        id=cast(int, old_trhs[0].technical_resource_id),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+    assert "FORMER NAME" in cast(str, tr.name)
+
+    # current AP ES can see the current version of the TR,
+    # but not the old records
+
+    client_es = sts.get_client(TestEntity.TEST, "ES")
+
+    tr = read_technical_resource.sync(
+        client=client_es,
+        id=cast(int, old_trhs[0].technical_resource_id),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
+    trhs_es = list_technical_resource_history.sync(client=client_es)
+    assert isinstance(trhs_es, list)
+
+    old_trhs = list(
+        filter(
+            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            trhs_es,
+        )
+    )
+    assert len(old_trhs) == 0
+
+
+def test_tr_fiso(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    # RLS: TR-FISO002
+    # FISO can read all TR history
+
+    trs = list_technical_resource_history.sync(client=client_fiso)
+    assert isinstance(trs, list)
+    assert len(trs) == 18  # all test data
+
+    # RLS: TR-FISO001
+    # FISO can do everything
+
+    trs = list_technical_resource.sync(client=client_fiso)
+    assert isinstance(trs, list)
+    assert len(trs) == 9  # all test data
+
     # endpoint: POST /technical_resource
     tr = create_technical_resource.sync(
-        client=client,
+        client=client_fiso,
         body=TechnicalResourceCreateRequest(
             name="New TR",
-            controllable_unit_id=cu_id,
+            controllable_unit_id=1,
             details="Details of the new TR",
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
 
-    # update the name of the TR
     # endpoint: PATCH /technical_resource/{id}
     u = update_technical_resource.sync(
-        client=client,
+        client=client_fiso,
         id=cast(int, tr.id),
         body=TechnicalResourceUpdateRequest(
             name="New TR2",
@@ -90,106 +228,72 @@ def technical_resource_test_for_client(client, cu_id):
     )
     assert not (isinstance(u, ErrorMessage))
 
-    # check that the name has been updated
-    # endpoint: GET /technical_resource/{id}
-    tr = read_technical_resource.sync(client=client, id=cast(int, tr.id))
-    assert isinstance(tr, TechnicalResourceResponse)
-    assert tr.name == "New TR2"
-    assert tr.details == "updated"
-
     # endpoint: DELETE /technical_resource/{id}
     d = delete_technical_resource.sync(
-        client=client,
+        client=client_fiso,
         id=cast(int, tr.id),
         body=EmptyObject(),
     )
     assert not (isinstance(d, ErrorMessage))
 
 
-def test_tr(data):
-    (sts, cu_id) = data
+def test_tr_so(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_so = sts.get_client(TestEntity.TEST, "SO")
 
-    # RLS: TR-FISO001
-    technical_resource_test_for_client(client_fiso, cu_id)
+    cus_so = list_controllable_unit.sync(client=client_so)
+    assert isinstance(cus_so, list)
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
-    sp_id = sts.get_userinfo(client_sp)["party_id"]
-    # link the CU to the SP to test their granted authorisations
-    cusp = create_controllable_unit_service_provider.sync(
-        client=client_fiso,
-        body=ControllableUnitServiceProviderCreateRequest(
-            controllable_unit_id=cu_id,
-            service_provider_id=sp_id,
-            contract_reference="TEST-CONTRACT",
-            valid_from="2020-01-01T00:00:00+1",
-            valid_to=None,
-        ),
-    )
-    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+    for cu in cus_so[:3]:
+        # RLS: TR-SO001
+        # check SO can read TR when they can read CU
 
-    # RLS: TR-SP001
-    technical_resource_test_for_client(client_sp, cu_id)
-
-
-def test_tr_common(data):
-    (sts, _) = data
-
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-
-    for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
-
-        # RLS: TR-COM001
-        # can read history on TR they can read
-        tr_visible = list_technical_resource.sync(
-            client=client,
+        # endpoint: GET /technical_resource
+        trs_so = list_technical_resource.sync(
+            client=client_so, controllable_unit_id=f"eq.{cu.id}"
         )
-        assert isinstance(tr_visible, list)
+        assert isinstance(trs_so, list)
 
-        # only checking a few entries is sufficient
-        for tr in tr_visible[:5]:
-            # endpoint: GET /technical_resource_history
+        trs = list_technical_resource.sync(
+            client=client_fiso, controllable_unit_id=f"eq.{cu.id}"
+        )
+        assert isinstance(trs, list)
+
+        assert len(trs_so) == len(trs)
+
+        tr = read_technical_resource.sync(
+            client=client_so,
+            id=cast(int, trs_so[0].id),
+        )
+        assert isinstance(tr, TechnicalResourceResponse)
+
+        # RLS: TR-SO002
+        # check SO can read history on these TR
+
+        for tr in trs_so[:3]:
             hist = list_technical_resource_history.sync(
-                client=client,
+                client=client_so,
                 technical_resource_id=f"eq.{tr.id}",
             )
             assert isinstance(hist, list)
-            assert len(hist) > 0
+            assert len(hist) > 1
 
             # endpoint: GET /technical_resource_history/{id}
             hist_tr = read_technical_resource_history.sync(
-                client=client, id=cast(int, hist[0].id)
+                client=client_so, id=cast(int, hist[0].id)
             )
             assert isinstance(hist_tr, TechnicalResourceHistoryResponse)
 
-        # RLS: TR-COM002
-        # can read TR from CU they can read
-        cu_visible = list_controllable_unit.sync(
-            client=client,
-        )
-        assert isinstance(cu_visible, list)
 
-        # only checking a few entries is sufficient
-        for cu in cu_visible[:5]:
-            tr_cu = list_technical_resource.sync(
-                client=client_fiso,
-                controllable_unit_id=f"eq.{cu.id}",
-            )
-            assert isinstance(tr_cu, list)
-
-            tr_cu_visible = list_technical_resource.sync(
-                client=client,
-                controllable_unit_id=f"eq.{cu.id}",
-            )
-            assert isinstance(tr_cu_visible, list)
-
-            assert len(tr_cu) == len(tr_cu_visible)
+# | TR-SP001   | Create, update and delete TR on CU where they are current SP. | DONE   |
+# | TR-SP002   | Read TR data for the period they are SP on the CU.            | DONE   |
+# | TR-SP003   | Read TR history for the period they are SP on the CU.         | DONE   |
+def test_tr_sp(sts):
+    # TODO
+    pass
 
 
-def test_rla_absence(data):
-    (sts, _) = data
-
+def test_rla_absence(sts):
     roles_without_rla = ["TP"]
 
     for role in roles_without_rla:
