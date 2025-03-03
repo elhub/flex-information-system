@@ -1,0 +1,43 @@
+@startuml controllable_unit_lookup
+!theme plain
+
+title Controllable Unit (CU) Lookup
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "End User (EU)" AS EU
+actor "Service Provider (SP)" as SP
+participant "Flexibility Information System (FIS)" as FIS
+
+EU <- SP: Obtain consent to request CU data
+activate SP
+
+== Controllable Unit (CU) Lookup ==
+
+SP -> FIS: Lookup CU data
+note left
+    Data Required:
+    - end user id and metering point id
+    or
+    - end user id and business id
+end note
+activate FIS
+FIS --> SP: CU data
+deactivate SP
+
+note right
+    Data returned (for each relevant CU):
+    - id
+    - business id
+    - name
+    - metering point id
+    - list of technical resources
+end note
+
+FIS --> EU: Notify
+deactivate FIS
+|||
+@enduml
