@@ -225,6 +225,68 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+CREATE OR REPLACE FUNCTION add_technical_resource(
+    l_name text,
+    l_controllable_unit_id bigint,
+    l_details text,
+    l_former_record_time_range tstzrange
+)
+RETURNS void
+AS $$
+DECLARE
+    l_tr record;
+BEGIN
+    INSERT INTO flex.technical_resource (name, controllable_unit_id, details)
+    VALUES (l_name, l_controllable_unit_id, l_details)
+    RETURNING * INTO l_tr;
+
+    -- insert a previous version of that TR valid for the previous EU/BRP/ES
+    -- (related to testing of these roles)
+    INSERT INTO flex.technical_resource_history (
+      id,
+      name,
+      controllable_unit_id,
+      details,
+      record_time_range,
+      recorded_by,
+      replaced_by
+    ) VALUES (
+      l_tr.id,
+      l_tr.name || ' FORMER NAME', -- this string will be searched in tests
+      l_tr.controllable_unit_id,
+      l_tr.details,
+    -- the record must exist fully during the contract of the former end user
+    -- on the AP
+      tstzrange(
+        '2023-10-01 00:00:00 Europe/Oslo',
+        '2023-11-01 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      l_tr.recorded_by,
+      0
+    );
+
+    -- insert a previous version of that TR valid at the given time range
+    INSERT INTO flex.technical_resource_history (
+      id,
+      name,
+      controllable_unit_id,
+      details,
+      record_time_range,
+      recorded_by,
+      replaced_by
+    ) VALUES (
+      l_tr.id,
+      l_tr.name || ' CUSTOM FORMER TR', -- this string will be searched in tests
+      l_tr.controllable_unit_id,
+      l_tr.details,
+      l_former_record_time_range,
+      l_tr.recorded_by,
+      0
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
+
 -- Types for add_accounting_points
 DO
 $$
@@ -551,18 +613,24 @@ BEGIN
         '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange
     );
 
-    INSERT INTO flex.technical_resource (name, controllable_unit_id, details)
-    VALUES (
-      entity_first_name || ' ' || asset_type || ' Unit #1', cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000'
-    ), (
-      entity_first_name || ' ' || asset_type || ' Unit #2', cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000'
-    ), (
-      entity_first_name || ' ' || asset_type || ' Unit #3', cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000'
+    PERFORM add_technical_resource(
+      entity_first_name || ' ' || asset_type || ' Unit #1',
+      cu_id,
+      E'Make: ACME\nModel: ' || asset_type || ' 2000',
+      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
     );
-    -- char(13)
+    PERFORM add_technical_resource(
+      entity_first_name || ' ' || asset_type || ' Unit #2',
+      cu_id,
+      E'Make: ACME\nModel: ' || asset_type || ' 2000',
+      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+    );
+    PERFORM add_technical_resource(
+      entity_first_name || ' ' || asset_type || ' Unit #3',
+      cu_id,
+      E'Make: ACME\nModel: ' || asset_type || ' 2000',
+      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+    );
 
     accounting_point_seq := accounting_point_seq + 1;
 

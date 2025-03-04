@@ -32,22 +32,6 @@ technical_resource_replaced_by
 BEFORE INSERT ON technical_resource_history
 FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
 
-ALTER TABLE IF EXISTS technical_resource_history
-ENABLE ROW LEVEL SECURITY;
-
--- RLS: TR-COM001
-GRANT SELECT ON technical_resource_history
-TO flex_common;
-CREATE POLICY "TR_COM001"
-ON technical_resource_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM technical_resource
-    WHERE technical_resource_history.id = technical_resource.id -- noqa
-));
-
 CREATE OR REPLACE TRIGGER
 technical_resource_recorded_by
 BEFORE INSERT OR UPDATE ON technical_resource
