@@ -5,6 +5,8 @@ from security_token_service import (
 from flex.models import (
     ErrorMessage,
     EmptyObject,
+    ControllableUnitServiceProviderCreateRequest,
+    ControllableUnitServiceProviderResponse,
     TechnicalResourceResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceUpdateRequest,
@@ -12,6 +14,9 @@ from flex.models import (
 )
 from flex.api.controllable_unit import (
     list_controllable_unit,
+)
+from flex.api.controllable_unit_service_provider import (
+    create_controllable_unit_service_provider,
 )
 from flex.api.technical_resource import (
     create_technical_resource,
@@ -24,6 +29,7 @@ from flex.api.technical_resource import (
 )
 import pytest
 from typing import cast
+from datetime import date
 
 
 @pytest.fixture
@@ -197,14 +203,14 @@ def test_tr_fiso(sts):
 
     trs = list_technical_resource_history.sync(client=client_fiso)
     assert isinstance(trs, list)
-    assert len(trs) == 18  # all test data
+    assert len(trs) >= 27
 
     # RLS: TR-FISO001
     # FISO can do everything
 
     trs = list_technical_resource.sync(client=client_fiso)
     assert isinstance(trs, list)
-    assert len(trs) == 9  # all test data
+    assert len(trs) >= 9
 
     # endpoint: POST /technical_resource
     tr = create_technical_resource.sync(
@@ -285,12 +291,125 @@ def test_tr_so(sts):
             assert isinstance(hist_tr, TechnicalResourceHistoryResponse)
 
 
-# | TR-SP001   | Create, update and delete TR on CU where they are current SP. | DONE   |
-# | TR-SP002   | Read TR data for the period they are SP on the CU.            | DONE   |
-# | TR-SP003   | Read TR history for the period they are SP on the CU.         | DONE   |
+# RLS: TR-SP001
+# RLS: TR-SP002
+# RLS: TR-SP003
 def test_tr_sp(sts):
-    # TODO
-    pass
+    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    client_common_sp = sts.get_client(TestEntity.COMMON, "SP")
+
+    # Test SP cannot see CUSTOM FORMER TR, but Common SP can because the update
+    # happened during their contract
+
+    trs_sp = list_technical_resource.sync(client=client_sp)
+    assert isinstance(trs_sp, list)
+    trhs_sp = list_technical_resource_history.sync(client=client_sp)
+    assert isinstance(trhs_sp, list)
+
+    trs_common_sp = list_technical_resource.sync(client=client_common_sp)
+    assert isinstance(trs_common_sp, list)
+    trhs_common_sp = list_technical_resource_history.sync(client=client_common_sp)
+    assert isinstance(trhs_common_sp, list)
+
+    assert any("CUSTOM FORMER TR" in cast(str, tr.name) for tr in trs_common_sp)
+    assert not any("CUSTOM FORMER TR" in cast(str, tr.name) for tr in trs_sp)
+
+    assert any("CUSTOM FORMER TR" in cast(str, trh.name) for trh in trhs_common_sp)
+    assert not any("CUSTOM FORMER TR" in cast(str, trh.name) for trh in trhs_sp)
+
+    cu_id = trs_sp[0].controllable_unit_id
+
+    # Common SP cannot create or update TR
+
+    tr = create_technical_resource.sync(
+        client=client_common_sp,
+        body=TechnicalResourceCreateRequest(
+            name="New TR",
+            controllable_unit_id=cu_id,
+            details="Details of the new TR",
+        ),
+    )
+    assert isinstance(tr, ErrorMessage)
+
+    u = update_technical_resource.sync(
+        client=client_common_sp,
+        id=cast(int, trs_common_sp[0].id),
+        body=TechnicalResourceUpdateRequest(
+            details="updated",
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    # Test SP can update
+
+    u = update_technical_resource.sync(
+        client=client_sp,
+        id=cast(int, trs_sp[0].id),
+        body=TechnicalResourceUpdateRequest(
+            details="updated",
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    # add common CUSP from today midnight
+
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    common_sp_id = sts.get_userinfo(client_common_sp)["party_id"]
+    cusp_common = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=common_sp_id,
+            contract_reference="1111r4128",
+            valid_from=f"{date.today().isoformat()} Europe/Oslo",
+        ),
+    )
+    assert isinstance(cusp_common, ControllableUnitServiceProviderResponse)
+
+    # now Common SP can create/update TR
+
+    tr = create_technical_resource.sync(
+        client=client_common_sp,
+        body=TechnicalResourceCreateRequest(
+            name="TRSP45",
+            controllable_unit_id=cu_id,
+            details="Details of the new TR",
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
+    u = update_technical_resource.sync(
+        client=client_common_sp,
+        id=cast(int, tr.id),
+        body=TechnicalResourceUpdateRequest(
+            details="updated TRSP45",
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    # Test SP cannot, and cannot see the changes
+
+    trs_sp = list_technical_resource.sync(client=client_sp)
+    assert isinstance(trs_sp, list)
+    assert not (any("TRSP45" in cast(str, tr.name) for tr in trs_sp))
+
+    failtr = create_technical_resource.sync(
+        client=client_sp,
+        body=TechnicalResourceCreateRequest(
+            name="fail",
+            controllable_unit_id=cu_id,
+        ),
+    )
+    assert isinstance(failtr, ErrorMessage)
+
+    u = update_technical_resource.sync(
+        client=client_sp,
+        id=cast(int, tr.id),
+        body=TechnicalResourceUpdateRequest(
+            details="fail update",
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
 
 
 def test_rla_absence(sts):

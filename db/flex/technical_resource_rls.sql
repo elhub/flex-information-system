@@ -153,8 +153,8 @@ FOR SELECT
 TO flex_system_operator
 USING (EXISTS (
     SELECT 1
-    FROM technical_resource
-    WHERE technical_resource_history.id = technical_resource.id -- noqa
+    FROM controllable_unit
+    WHERE controllable_unit.id = technical_resource_history.controllable_unit_id -- noqa
 ));
 
 -- RLS: TR-SP001
