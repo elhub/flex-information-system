@@ -33,6 +33,26 @@ func GetEntityOfCredentials(
 	return entityID, eid, nil
 }
 
+// GetExternalIDByEntityID gets the external ID of an entity.
+func GetExternalIDByEntityID(
+	ctx context.Context,
+	tx pgx.Tx,
+	entityID int,
+) (string, error) {
+	var eid string
+
+	err := tx.QueryRow(
+		ctx,
+		"select flex.identity_external_id($1, null)",
+		entityID,
+	).Scan(&eid)
+	if err != nil {
+		return "", fmt.Errorf("failed to get external ID by entity ID: %w", err)
+	}
+
+	return eid, nil
+}
+
 // GetEntityOfBusinessID gets the entity, external ID and PEM public key of a entity business id.
 func GetEntityOfBusinessID(
 	ctx context.Context,

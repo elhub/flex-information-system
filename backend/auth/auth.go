@@ -26,7 +26,6 @@ import (
 )
 
 const (
-	sessionPath  = "/auth/v0/session"
 	callbackPath = "/auth/v0/callback"
 )
 
@@ -72,33 +71,47 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 }
 
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
+//
+//nolint:funlen
 func (auth *API) TokenDecodingMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
-		if authHeader == "" {
-			// Empty auth header means anonymous user.
+		slog.DebugContext(ctx, "authorization header", "header", authHeader)
+
+		cookie, err := ctx.Cookie("__Host-flex_session")
+		slog.DebugContext(ctx, "session cookie", "cookie", cookie, "error", err)
+
+		if authHeader == "" && err != nil {
+			// Empty auth header and missing cookie means anonymous user.
 			rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
 			ctx.Set(auth.ctxKey, rd)
 			return
 		}
 
-		tokenStr, found := strings.CutPrefix(authHeader, "Bearer ")
-		if !found {
-			ctx.Header(
-				wwwAuthenticateKey,
-				wwwAuthenticate{
-					Error:            wwwInvalidRequest,
-					ErrorDescription: "missing Bearer in Authorization header",
-				}.String(),
-			)
-			ctx.AbortWithStatusJSON(
-				http.StatusBadRequest,
-				oauthErrorMessage{
-					Error:            oauthErrorInvalidRequest,
-					ErrorDescription: "missing Bearer in Authorization header",
-				},
-			)
-			return
+		// the authorization header takes presedence over the cookie
+		var tokenStr string
+		if authHeader != "" {
+			var found bool
+			tokenStr, found = strings.CutPrefix(authHeader, "Bearer ")
+			if !found {
+				ctx.Header(
+					wwwAuthenticateKey,
+					wwwAuthenticate{
+						Error:            wwwInvalidRequest,
+						ErrorDescription: "missing Bearer in Authorization header",
+					}.String(),
+				)
+				ctx.AbortWithStatusJSON(
+					http.StatusBadRequest,
+					oauthErrorMessage{
+						Error:            oauthErrorInvalidRequest,
+						ErrorDescription: "missing Bearer in Authorization header",
+					},
+				)
+				return
+			}
+		} else { // no authorization header means we must use the cookie
+			tokenStr = cookie
 		}
 
 		token, err := auth.decodeTokenString(tokenStr)
@@ -106,7 +119,8 @@ func (auth *API) TokenDecodingMiddleware() gin.HandlerFunc {
 			ctx.Header(
 				wwwAuthenticateKey,
 				wwwAuthenticate{
-					Error:            wwwInvalidToken,
+					Error: wwwInvalidToken,
+					// TODO the error messages here is incorrect if we are using a session
 					ErrorDescription: "invalid bearer token",
 				}.String(),
 			)
@@ -197,7 +211,7 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 
 // GetSessionHandler checks the session cookie and returns the session information including the access_token if the session is valid.
 func (auth *API) GetSessionHandler(ctx *gin.Context) {
-	accessTokenString, err := ctx.Cookie("flex_session")
+	accessTokenString, err := ctx.Cookie("__Host-flex_session")
 
 	ctx.SetSameSite(http.SameSiteStrictMode)
 
@@ -217,7 +231,7 @@ func (auth *API) GetSessionHandler(ctx *gin.Context) {
 	accessToken, err := auth.decodeTokenString(accessTokenString)
 	if err != nil {
 		// Unset the session cookie
-		ctx.SetCookie("flex_session", "not.a.session", -1, sessionPath, "", true, true)
+		ctx.SetCookie("__Host-flex_session", "not.a.session", -1, "/", "", true, true)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "invalid session cookie", err))
 		return
 	}
@@ -258,11 +272,8 @@ func (auth *API) GetLoginHandler(ctx *gin.Context) {
 		authDetails,
 	}
 
-	loginCookiePayload, err := json.Marshal(loginCookie)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not marshal login cookie", err))
-		return
-	}
+	loginCookiePayload, _ := json.Marshal(loginCookie)
+
 	// we don't really need to sign the cookie, but we are doing it just to make sure that there is no tampering
 	signedLoginCookie, err := jws.Sign(loginCookiePayload, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
@@ -416,16 +427,16 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 
 	ctx.SetSameSite(http.SameSiteStrictMode)
-	ctx.SetCookie("flex_session", string(signedAccessToken), auth.tokenDurationSeconds, sessionPath, "", true, true)
+	ctx.SetCookie("__Host-flex_session", string(signedAccessToken), auth.tokenDurationSeconds, "/", "", true, true)
 	ctx.SetCookie("flex_login", "not.a.login", -1, callbackPath, "", true, true)
 
 	ctx.Redirect(http.StatusFound, loginCookie.ReturnURL)
 }
 
-// GetLogoutHandler unsets the flex_session cookie.
+// GetLogoutHandler unsets the __Host-flex_session cookie.
 func (auth *API) GetLogoutHandler(ctx *gin.Context) {
 	ctx.SetSameSite(http.SameSiteStrictMode)
-	ctx.SetCookie("flex_session", "not.a.session", -1, sessionPath, "", true, true)
+	ctx.SetCookie("__Host-flex_session", "not.a.session", -1, "/", "", true, true)
 	endSessionURL := auth.oidcProvider.EndSessionURL()
 	ctx.Redirect(http.StatusFound, endSessionURL)
 }
@@ -443,6 +454,233 @@ func (j jwtBearerPayload) Validate() error {
 	val.Check(len(strings.Split(j.Assertion, ".")) != 4, "assertion does not look like a jwt") //nolint:mnd
 
 	return val.Error()
+}
+
+type assumeResponse struct {
+	EntityID int    `json:"entity_id"`
+	PartyID  int    `json:"party_id"`
+	Role     string `json:"role"`
+}
+
+// PostAssumeHandler handles the assume role in the BFF.
+//
+//nolint:funlen
+func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if r.Header.Get("Content-Type") != "application/x-www-form-urlencoded" {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid content type",
+		})
+		w.Write(body)
+		return
+	}
+	ctx := r.Context()
+	tx, err := auth.db.Begin(ctx)
+	if err != nil {
+		slog.WarnContext(ctx, "error in begin tx in assume role handler", "error", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not begin tx",
+		})
+		w.Write(body)
+		return
+	}
+	defer tx.Commit(ctx)
+
+	partyIDstr := r.FormValue("party_id")
+	if partyIDstr == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "party_id is required",
+		})
+		w.Write(body)
+		return
+	}
+
+	partyID, err := strconv.Atoi(partyIDstr)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "party_id must be an integer",
+		})
+		w.Write(body)
+		return
+	}
+
+	eid, role, entityID, err := models.AssumeParty(ctx, tx, partyID)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidTarget,
+			ErrorDescription: "cannot assume requested party",
+		})
+		w.Write(body)
+	}
+
+	accessTokenCookie, err := r.Cookie("__Host-flex_session")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "missing session cookie",
+		})
+		w.Write(body)
+		return
+	}
+
+	entityToken := new(accessToken)
+	err = verifyTokenString(accessTokenCookie.Value, entityToken, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid session cookie",
+		})
+		w.Write(body)
+		return
+	}
+
+	partyToken := accessToken{
+		ExpirationTime: entityToken.ExpirationTime,
+		Role:           role,
+		PartyID:        partyID,
+		EntityID:       entityID,
+		ExternalID:     eid,
+	}
+
+	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not sign party token",
+		})
+		w.Write(body)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
+		Name:     "__Host-flex_session",
+		Value:    string(signedPartyToken),
+		Path:     "/",
+		MaxAge:   auth.tokenDurationSeconds,
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	})
+
+	w.WriteHeader(http.StatusOK)
+	body, _ := json.Marshal(assumeResponse{
+		EntityID: entityID,
+		PartyID:  partyID,
+		Role:     role,
+	})
+	w.Write(body)
+}
+
+// DeleteAssumeHandler handles the unassuming of a party.
+//
+//nolint:funlen
+func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	accessTokenCookie, err := r.Cookie("__Host-flex_session")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "missing session cookie",
+		})
+		w.Write(body)
+		return
+	}
+
+	recievedToken := new(accessToken)
+	err = verifyTokenString(accessTokenCookie.Value, recievedToken, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid session cookie",
+		})
+		w.Write(body)
+		return
+	}
+
+	if recievedToken.Role == "flex_entity" {
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid role in session cookie",
+		})
+		w.Write(body)
+		return
+	}
+
+	tx, err := auth.db.Begin(r.Context())
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not begin tx",
+		})
+		w.Write(body)
+		return
+	}
+	defer tx.Commit(r.Context())
+
+	externalID, err := models.GetExternalIDByEntityID(r.Context(), tx, recievedToken.EntityID)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not get external ID",
+		})
+		w.Write(body)
+		return
+	}
+
+	entityToken := accessToken{
+		ExpirationTime: recievedToken.ExpirationTime,
+		Role:           "flex_entity",
+		PartyID:        0,
+		EntityID:       recievedToken.EntityID,
+		ExternalID:     externalID,
+	}
+
+	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not sign party token",
+		})
+		w.Write(body)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
+		Name:     "__Host-flex_session",
+		Value:    string(signedEntityToken),
+		Path:     "/",
+		MaxAge:   auth.tokenDurationSeconds,
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	})
+
+	w.WriteHeader(http.StatusOK)
+	body, _ := json.Marshal(assumeResponse{
+		EntityID: recievedToken.EntityID,
+		PartyID:  0,
+		Role:     "flex_entity",
+	})
+	w.Write(body)
 }
 
 // jwtBearerHandler handles the jwt-bearer grant type.

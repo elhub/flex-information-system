@@ -477,7 +477,7 @@
             "get": {
                 "operationId": "call_logout",
                 "summary": "Call logout",
-                "description": "Unsets the flex_session cookie.",
+                "description": "Unsets the __Host-flex_session cookie.",
                 "tags": [
                     "authentication"
                 ],

@@ -12,6 +12,7 @@ import (
 	"flex/pgrepl"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"os"
 	"os/signal"
 	"time"
@@ -28,9 +29,18 @@ var errMissingEnv = errors.New("environment variable not set")
 
 const requestDetailsContextKey = "_flex/auth"
 
+// WrapHandlerFunc is a helper function for wrapping http.HandlerFunc and returns a Gin middleware.
+// Is is basically gin.WrapF but explicitly passing the full gin.Context.
+// This is necessary because we are using gin.Contexts in our middleware.
+// The intended use of this function is to allow us to move away fron gin-gonic/gin,
+// by (slowly?) rewriting our handlers to use the standard http.HandlerFunc signature.
+func WrapHandlerFunc(f http.HandlerFunc) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		f(ctx.Writer, ctx.Request.WithContext(ctx))
+	}
+}
+
 // Run is the main entry point for the application.
-//
-//nolint:gocyclo
 func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx
 	// Sets the global TracerProvider.
 	trace.Init()
@@ -278,18 +288,18 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
-	router.Use(authAPI.TokenDecodingMiddleware())
+	router.Use(authAPI.TokenDecodingMiddleware()) //nolint:contextcheck
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
 	authRouter.POST("/token", authAPI.PostTokenHandler)
 	authRouter.GET("/userinfo", authAPI.GetUserInfoHandler)
-	if oidcIssuer != "" {
-		authRouter.GET("/session", authAPI.GetSessionHandler)
-		authRouter.GET("/login", authAPI.GetLoginHandler)
-		authRouter.GET("/callback", authAPI.GetCallbackHandler)
-		authRouter.GET("/logout", authAPI.GetLogoutHandler)
-	}
+	authRouter.GET("/session", authAPI.GetSessionHandler)
+	authRouter.POST("/assume", WrapHandlerFunc(authAPI.PostAssumeHandler))     //nolint:contextcheck
+	authRouter.DELETE("/assume", WrapHandlerFunc(authAPI.DeleteAssumeHandler)) //nolint:contextcheck
+	authRouter.GET("/login", authAPI.GetLoginHandler)
+	authRouter.GET("/callback", authAPI.GetCallbackHandler)
+	authRouter.GET("/logout", authAPI.GetLogoutHandler)
 
 	// data API endpoints
 	// by default, just act as a reverse proxy for PostgREST

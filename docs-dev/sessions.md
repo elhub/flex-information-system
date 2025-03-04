@@ -1,7 +1,7 @@
-# OpenID Connect
+# Sessions
 
-This document contains some information about how we deal with and implement the
-OpenID Connect protocol for login in portal.
+This document contains some information about how we deal with sessions and
+implement the OpenID Connect protocol for login in portal.
 
 ## Overview
 
@@ -18,24 +18,21 @@ are using
 
 In this diagram with refer to these solutions as the _Identity Provider_ (IDp).
 
-## Token-Mediating Backend pattern
+## Backend For Frontend (BFF)
 
 We are following the pattern known as
-[Token-Mediating Backend](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-token-mediating-backend),
-where our backend acts as a mediator between the frontend and IDPorten, but
-compared to the
 [Backend For Frontend](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-backend-for-frontend-bff)
-(BFF) the frontend will exchange the session cookie for an access token and use
-that towards the API. We might consider using the BFF pattern in the future, but
-since we are using PostgREST to serve our APIs its easier for us to deal with
-actual access tokens rather than opaque session cookies as the moment.
+(BFF). To avoid having to deal with "sticky sessions", we are implementing using
+"client-side sessions" as described. The cookie setting following the cookie
+security recommendations, inlcuding the
+[`__Host-` prefix.](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-19#name-the-__host-prefix).
 
 We are using the OpenID Connect Authorization Code Flow with Proof Key for Code
 Exchange (PKCE) and
 [Pushed Authorization Requests](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-par-06)
 (PAR).
 
-The folloing diagram shows the sequence of OIDC login and the token mediating backend.
+The following diagram shows the sequence of OIDC login and the BFF.
 
 ![OIDC login sequence](diagrams/oidc_login_sequence.png)
 
@@ -46,6 +43,12 @@ Logout is also done via redirects between the Identity provider and the frontend
 The following diagram shows the sequence of OIDC logout.
 
 ![OIDC logout sequence](diagrams/oidc_logout_sequence.png)
+
+## Assuming party
+
+After the user has logged in, the user must
+[assume a party](../docs/auth.md#assuming-party). The `/assume` endpoint is used
+by the frontend for this purpose.
 
 ## Ensuring compatibility between IDPorten and our mock/test IDP
 
