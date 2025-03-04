@@ -127,7 +127,7 @@ BEGIN
         END IF;
 
         SELECT * INTO l_new FROM api.technical_resource WHERE id = NEW.id;
-        return l_new;
+        RETURN l_new;
 
 	ELSIF TG_OP = 'DELETE' THEN
 
