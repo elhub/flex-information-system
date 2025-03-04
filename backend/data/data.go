@@ -183,7 +183,7 @@ func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
 			)
 		} else {
 			// no error => just write the body to the actual response
-			ctx.Writer.Write(brw.body.Bytes()) //nolint:errcheck,gosec
+			ctx.Writer.Write(brw.body.Bytes())
 		}
 	}
 }

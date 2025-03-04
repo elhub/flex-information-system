@@ -25,7 +25,7 @@ return Go to /auth/v0/login
 UA -> AUTH: Navigate to /auth/v0/login?return_url=<referer>
 AUTH -> IDP: Push authorization request to /par
 return Return request_uri
-return HTTP 302 Redirect to Identity Provider\nSet <:fortune_cookie:> __Host-flex_login w/ nonce, state and return_url
+return HTTP 302 Redirect to Identity Provider\nSet <:fortune_cookie:> flex_login w/ nonce, state and return_url
 
 UA -> IDP: Follow redirect\n/authorize?request_uri=<uri>&client_id=<client_id>
 note over IDP
@@ -33,7 +33,7 @@ note over IDP
 end note
 return HTTP 302 Redirect to callback url
 
-UA -> AUTH: Follow redirect\n/auth/v0/callback?code=<code>&state=<state>\nInclude <:fortune_cookie:> __Host-flex_login
+UA -> AUTH: Follow redirect\n/auth/v0/callback?code=<code>&state=<state>\nInclude <:fortune_cookie:> flex_login
 AUTH -> IDP: Request /token\nusing code and code_verifier
 return Return access, id and refresh tokens
 note over AUTH
@@ -50,7 +50,7 @@ note over AUTH
 
 end note
 
-return HTTP 302 Redirect to return_url\nSet <:cookie:> __Host-flex_session\nUnset <:fortune_cookie:> __Host-flex_login
+return HTTP 302 Redirect to return_url\nSet <:cookie:> __Host-flex_session\nUnset <:fortune_cookie:> flex_login
 
 UA -> PORTAL: Follow redirect to portal
 PORTAL -> AUTH: Check active sessions\nGET /auth/v0/session\n<:cookie:> __Host-flex_session

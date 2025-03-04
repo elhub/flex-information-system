@@ -43,6 +43,10 @@ linters-settings:
       - (github.com/jackc/pgx/v5.Tx).Commit
       - (github.com/jackc/pgx/v5.Tx).Rollback
       - (io.Closer).Close
+      - (net/http.ResponseWriter).Write
+      - encoding/json.Marshal
+  errchkjson:
+    check-error-free-encoding: true
   forbidigo:
     forbid:
       - ^fmt\.Print.*$
@@ -51,6 +55,9 @@ linters-settings:
   godox:
     keywords:
       - FIXME
+  gosec:
+    excludes:
+      - G104 # Audit errors not checked
   tagliatelle:
     case:
       rules:
@@ -65,6 +72,9 @@ linters-settings:
       # - assign
   varnamelen:
     min-name-length: 2
+    ignore-decls:
+      - w http.ResponseWriter
+      - r *http.Request
   wrapcheck:
     ignoreSigs:
       - .Error
