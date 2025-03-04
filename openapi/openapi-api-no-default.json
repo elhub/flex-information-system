@@ -837,7 +837,7 @@
                         "format": "text",
                         "type": "string",
                         "nullable": true,
-                        "pattern": "^-----BEGIN PUBLIC KEY-----\\nMIIB[A-Za-z0-9+\\/\\n]*\\n-----END PUBLIC KEY-----$",
+                        "pattern": "^-----BEGIN PUBLIC KEY-----\\nMIIB[-A-Za-z0-9+/\\n]*={0,3}\\n-----END PUBLIC KEY-----$",
                         "example": "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA\nTozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V\nkbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5\n0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu\n-----END PUBLIC KEY-----"
                     }
                 }
