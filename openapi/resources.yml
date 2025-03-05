@@ -522,7 +522,7 @@ resources:
         format: text
         type: string
         nullable: true
-        pattern: '^-----BEGIN PUBLIC KEY-----\nMIIB[A-Za-z0-9+\/\n]*\n-----END PUBLIC KEY-----$'
+        pattern: '^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+/\n]*={0,3}\n-----END PUBLIC KEY-----$'
         example: |-
           -----BEGIN PUBLIC KEY-----
           MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
