@@ -8,6 +8,7 @@ import {
   ResourceContextProvider,
   Layout as RaLayout,
   LayoutProps,
+  localStorageStore,
   AppBar as RaAppBar,
   TitlePortal,
   Menu,
@@ -156,7 +157,6 @@ const Logout = () => {
   return (
     <MenuItem
       onClick={() => {
-        localStorage.clear();
         userMenu?.onClose();
         redirect(`${authURL}/logout`);
       }}
@@ -321,14 +321,15 @@ const Layout = ({ children }: LayoutProps) => (
 
 export const App = () => (
   <Admin
-    dashboard={Dashboard}
-    loginPage={LoginPage}
-    dataProvider={dataProvider}
     authProvider={authProvider()}
-    theme={elhubTheme}
-    layout={Layout}
-    requireAuth={true}
+    dashboard={Dashboard}
+    dataProvider={dataProvider}
     disableTelemetry
+    layout={Layout}
+    loginPage={LoginPage}
+    requireAuth={true}
+    store={localStorageStore(undefined, "Flex")}
+    theme={elhubTheme}
   >
     {(permissions) => (
       <>

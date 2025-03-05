@@ -210,38 +210,56 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 }
 
 // GetSessionHandler checks the session cookie and returns the session information including the access_token if the session is valid.
-func (auth *API) GetSessionHandler(ctx *gin.Context) {
-	accessTokenString, err := ctx.Cookie("__Host-flex_session")
-
-	ctx.SetSameSite(http.SameSiteStrictMode)
-
+func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
+	sessionCookie, err := r.Cookie("__Host-flex_session")
 	if err != nil {
 		if errors.Is(err, http.ErrNoCookie) {
 			// Missing cookie just means that there is no session,
 			// so returning empty response with 204 No Content makes sense.
-			ctx.JSON(http.StatusNoContent, nil)
+			w.WriteHeader(http.StatusNoContent)
 		} else {
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "unknown error when getting cookie", err))
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusInternalServerError)
+			body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "unknown error when getting cookie", err))
+			w.Write(body)
 		}
 		return
 	}
 
+	accessTokenString := sessionCookie.Value
+
 	// TODO actually implement a opaque session cookie that is backed by a (unlogged) database table or something.
+
+	w.Header().Set("Content-Type", "application/json")
 
 	accessToken, err := auth.decodeTokenString(accessTokenString)
 	if err != nil {
 		// Unset the session cookie
-		ctx.SetCookie("__Host-flex_session", "not.a.session", -1, "/", "", true, true)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "invalid session cookie", err))
+		http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
+			Name:     "__Host-flex_session",
+			Value:    "not.a.session",
+			MaxAge:   -1,
+			Path:     "/",
+			Secure:   true,
+			HttpOnly: true,
+			SameSite: http.SameSiteStrictMode,
+		})
+		w.WriteHeader(http.StatusBadRequest)
+		body, _ := json.Marshal(newErrorMessage(http.StatusBadRequest, "invalid session cookie", err))
+		w.Write(body)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, tokenResponse{
-		AccessToken:     accessTokenString,
-		IssuedTokenType: tokenTypeAccess,
-		TokenType:       accessTokenTypeBearer,
-		ExpiresIn:       accessToken.ExpiresIn(),
+	w.WriteHeader(http.StatusOK)
+	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
+		EntityID:       accessToken.EntityID,
+		EntityName:     "TODO",
+		ExpirationTime: accessToken.ExpirationTime,
+		PartyID:        accessToken.PartyID,
+		PartyName:      "TODO",
+		Role:           accessToken.Role,
 	})
+	w.Write(body)
 }
 
 type loginCookie struct {
@@ -456,10 +474,15 @@ func (j jwtBearerPayload) Validate() error {
 	return val.Error()
 }
 
-type assumeResponse struct {
-	EntityID int    `json:"entity_id"`
-	PartyID  int    `json:"party_id"`
-	Role     string `json:"role"`
+// sessionInfo is the response from assume and session.
+type sessionInfo struct {
+	EntityID       int      `json:"entity_id"`
+	EntityName     string   `json:"entity_name"`
+	ExpirationTime unixTime `json:"exp"`
+	PartyID        int      `json:"party_id,omitempty"`
+	PartyName      string   `json:"party_name,omitempty"`
+	Role           string   `json:"role"`
+	Subject        string   `json:"sub"`
 }
 
 // PostAssumeHandler handles the assume role in the BFF.
@@ -576,10 +599,13 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	w.WriteHeader(http.StatusOK)
-	body, _ := json.Marshal(assumeResponse{
-		EntityID: entityID,
-		PartyID:  partyID,
-		Role:     role,
+	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
+		EntityID:       entityID,
+		EntityName:     "TODO",
+		ExpirationTime: entityToken.ExpirationTime,
+		PartyID:        partyID,
+		PartyName:      "TODO",
+		Role:           role,
 	})
 	w.Write(body)
 }
@@ -675,7 +701,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	w.WriteHeader(http.StatusOK)
-	body, _ := json.Marshal(assumeResponse{
+	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
 		EntityID: recievedToken.EntityID,
 		PartyID:  0,
 		Role:     "flex_entity",

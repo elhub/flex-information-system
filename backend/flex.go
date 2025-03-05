@@ -294,7 +294,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authRouter := router.Group("/auth/v0")
 	authRouter.POST("/token", authAPI.PostTokenHandler)
 	authRouter.GET("/userinfo", authAPI.GetUserInfoHandler)
-	authRouter.GET("/session", authAPI.GetSessionHandler)
+	authRouter.GET("/session", WrapHandlerFunc(authAPI.GetSessionHandler))     //nolint:contextcheck
 	authRouter.POST("/assume", WrapHandlerFunc(authAPI.PostAssumeHandler))     //nolint:contextcheck
 	authRouter.DELETE("/assume", WrapHandlerFunc(authAPI.DeleteAssumeHandler)) //nolint:contextcheck
 	authRouter.GET("/login", authAPI.GetLoginHandler)
