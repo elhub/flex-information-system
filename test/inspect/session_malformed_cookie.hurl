@@ -1,5 +1,5 @@
 GET {{ auth_url }}/session
-Cookie: flex_session=malformed
+Cookie: __Host-flex_session=malformed
 Content-Type: application/json
 Accept: application/json
 

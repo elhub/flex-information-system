@@ -10,7 +10,8 @@ HTTP 200
 [Captures]
 access_token: jsonpath "$.access_token"
 
-GET {{ auth_url }}/session
+POST {{ auth_url }}/assume
+Content-Type: application/x-www-form-urlencoded
 Cookie: __Host-flex_session={{ access_token }}
 
-HTTP 200
+HTTP 400

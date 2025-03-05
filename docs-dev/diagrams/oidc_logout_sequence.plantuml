@@ -16,14 +16,11 @@ activate UA
 participant "Frontend Portal" as PORTAL
 participant "Identity Provider" as IDP
 participant "Flexibility\nInformation System (FIS)\nAuth API" as AUTH
-participant "Database" as DB
 
 UA -> PORTAL: Click logout
 return Go to /auth/v0/logout
 UA -> AUTH: Navigate to /auth/v0/logout
-AUTH -> DB: Invalidate session
-return
-return HTTP 302 Redirect to Identity Provider\nUnset <:cookie:> flex_session
+return HTTP 302 Redirect to Identity Provider\nUnset <:cookie:> __Host-flex_session
 
 UA -> IDP: Follow redirect\nGET /logout?post_logout_redirect_uri=<login url>
 note over IDP

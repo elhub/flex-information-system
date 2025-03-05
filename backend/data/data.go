@@ -195,6 +195,6 @@ func (data *API) PostgRESTResponseMiddleware(ctx *gin.Context) {
 	} else {
 		// no error => just write the body to the actual response
 		ctx.Writer.WriteHeaderNow()
-		ctx.Writer.Write(crw.body.Bytes()) //nolint:errcheck,gosec
+		ctx.Writer.Write(crw.body.Bytes())
 	}
 }

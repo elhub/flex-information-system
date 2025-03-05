@@ -8,9 +8,8 @@ client_secret: 87h87hijhulO
 HTTP 200
 
 [Captures]
-access_token: jsonpath "$.access_token"
+entity_token: jsonpath "$.access_token"
 
-GET {{ auth_url }}/session
-Cookie: __Host-flex_session={{ access_token }}
-
-HTTP 200
+DELETE {{ auth_url }}/assume
+Cookie: __Host-flex_session={{ entity_token }}
+HTTP 400
