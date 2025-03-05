@@ -1,7 +1,6 @@
-import { AuthProvider as RAAuthProvider, fetchUtils } from "react-admin";
-import { jwtDecode } from "jwt-decode";
+import { AuthProvider, fetchUtils, getStorage } from "react-admin";
 import permissions from "./permissions.json";
-import { httpClient, authURL } from "../httpConfig";
+import { authURL } from "../httpConfig";
 
 import anonymous_avatar from "./avatars/ANO.png";
 import balance_responsible_party_avatar from "./avatars/BRP.png";
@@ -13,11 +12,6 @@ import market_operator_avatar from "./avatars/MO.png";
 import service_provider_avatar from "./avatars/SP.png";
 import system_operator_avatar from "./avatars/SO.png";
 import third_party_avatar from "./avatars/TP.png";
-
-export enum GrantType {
-  ClientCredentials,
-  TokenExchange,
-}
 
 const toDataURL = (url: string) =>
   fetch(url)
@@ -46,144 +40,126 @@ const roleAvatars: any = {
   flex_third_party: third_party_avatar,
 };
 
-export type AuthProvider = RAAuthProvider & {
-  dropParty: () => boolean;
-};
+export const sessionInfoKey = "flexSession";
 
 export function authProvider(): AuthProvider {
   const getIdentity = async () => {
-    if (!localStorage.getItem("token")) return Promise.reject();
+    const sessionInfoString = getStorage().getItem(sessionInfoKey);
+    if (!sessionInfoString) return Promise.reject();
 
-    const { json } = await httpClient(`${authURL}/userinfo`).catch(() => {
-      localStorage.removeItem("token");
-      return Promise.reject();
-    });
+    const sessionInfo = JSON.parse(sessionInfoString);
 
-    const role = json["current_role"];
-    const entity_name = json["entity_name"];
-    const party_name = json["party_name"];
+    const role = sessionInfo["role"];
+    const entity_name = sessionInfo["entity_name"];
+    const party_name = sessionInfo["party_name"];
 
     const avatar = await toDataURL(roleAvatars[role]);
 
     return Promise.resolve<any>({
-      id: json["sub"],
-      entity_id: json["entity_id"],
-      entity_name,
-      party_id: json["party_id"],
-      party_name,
+      id: sessionInfo["sub"],
+      entityID: sessionInfo["entity_id"],
+      entityName: entity_name,
+      partyID: sessionInfo["party_id"],
+      partyName: party_name,
       fullName: party_name ? `${entity_name} as ${party_name}` : entity_name,
       role: role,
       avatar,
     });
   };
 
-  const clientCredentials = ({ email, password }: any) =>
-    fetchUtils
-      .fetchJson(`${authURL}/token`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/x-www-form-urlencoded",
-        }),
-        body: new URLSearchParams({
-          grant_type: "client_credentials",
-          client_id: email,
-          client_secret: password,
-        } as any).toString(),
-      })
-      .then(({ status, json }) => {
-        // TODO: change when error is the body itself
-        if (status != 200) return Promise.reject(json.message);
-
-        localStorage.setItem("entity_token", json.access_token);
-        localStorage.setItem("token", json.access_token);
-        const decodedToken = jwtDecode<any>(json.access_token);
-        localStorage.setItem("role", decodedToken.role);
-      });
-
-  const tokenExchange = ({ party_id }: any) =>
-    fetchUtils
-      .fetchJson(`${authURL}/token`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }),
-        body: new URLSearchParams({
-          grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
-          actor_token: localStorage.getItem("token"),
-          actor_token_type: "urn:ietf:params:oauth:token-type:jwt",
-          scope: `assume:party:${party_id}`,
-        } as any).toString(),
-      })
-      .then(({ status, json }) => {
-        // TODO: change when error is the body itself
-        if (status != 200) return Promise.reject(json.message);
-
-        localStorage.setItem("token", json.access_token);
-        const decodedToken = jwtDecode<any>(json.access_token);
-        localStorage.setItem("role", decodedToken.role);
-      });
-
   return {
-    login: ({ grantType, auth }) => {
-      switch (grantType as GrantType) {
-        case GrantType.ClientCredentials:
-          return clientCredentials(auth);
-        case GrantType.TokenExchange:
-          return tokenExchange(auth);
+    login: async ({ party_id }) => {
+      // we are abusing the login function to assume a party
+      // if party_id is null, we are resetting the assumed party
+      const sessionInfoString = getStorage().getItem(sessionInfoKey);
+      if (!sessionInfoString) return Promise.reject();
+      const sessionInfo = JSON.parse(sessionInfoString);
+
+      if (
+        party_id !== null &&
+        (sessionInfo["role"] || "flex_entity") != "flex_entity"
+      ) {
+        // we are assuming a party, so we have to be entity
+        return Promise.reject("must be entity when assuming party");
       }
+
+      if (
+        party_id === null &&
+        (sessionInfo["role"] || "flex_entity") == "flex_entity"
+      ) {
+        // we are entity, so nothing to unassume
+        return Promise.resolve({ redirectTo: false });
+      }
+
+      if (party_id !== null) {
+        // assume party
+        const { status, body } = await fetchUtils.fetchJson(
+          `${authURL}/assume`,
+          {
+            method: "POST",
+            headers: new Headers({
+              "Content-Type": "application/x-www-form-urlencoded",
+            }),
+            body: "party_id=" + party_id,
+          },
+        );
+
+        if (status !== 200) {
+          return Promise.reject();
+        }
+
+        getStorage().setItem(sessionInfoKey, body);
+      } else {
+        // unassume party
+        const { status, body } = await fetchUtils.fetchJson(
+          `${authURL}/assume`,
+          {
+            method: "DELETE",
+          },
+        );
+
+        if (status !== 200) {
+          return Promise.reject();
+        }
+
+        getStorage().setItem(sessionInfoKey, body);
+      }
+
+      return Promise.resolve({ redirectTo: false });
     },
     logout: async () => {
-      localStorage.clear();
+      getStorage().clear();
       return Promise.resolve();
-    },
-    dropParty: () => {
-      const entityToken = localStorage.getItem("entity_token")!;
-      const token = localStorage.getItem("token")!;
-      if (token != entityToken) {
-        // party assumed
-        const decodedEntityToken = jwtDecode<any>(entityToken);
-        localStorage.setItem("token", entityToken);
-        localStorage.setItem("role", decodedEntityToken.role);
-        return true;
-      } else {
-        // nothing to drop
-        return false;
-      }
     },
     getIdentity: getIdentity,
     checkAuth: async () => {
-      let token = localStorage.getItem("token");
-      if (!token) {
-        // we are not logged in so we are going to try to get a token from the session
-        const { status, json } = await fetchUtils.fetchJson(
+      let sessionInfoString = getStorage().getItem(sessionInfoKey);
+      let sessionInfo = null;
+      if (!sessionInfoString) {
+        const { status, body, json } = await fetchUtils.fetchJson(
           `${authURL}/session`,
         );
+
         if (status == 200) {
-          token = json["access_token"];
+          sessionInfo = json;
+          getStorage().setItem(sessionInfoKey, body);
         }
+      } else {
+        sessionInfo = JSON.parse(sessionInfoString);
       }
-      if (token) {
-        // we now have a token, let's check if it is expired
-        const decodedToken = jwtDecode<any>(token);
-        if (decodedToken.exp * 1000 < Date.now()) {
-          // token is expired lets clear it
-          token = null;
-        } else {
-          // token is valid, lets update localstorage
-          localStorage.setItem("token", token);
-          const role = decodedToken.role;
-          if (role == "flex_entity") {
-            localStorage.setItem("entity_token", token);
-          }
-          localStorage.setItem("role", role);
-        }
-      }
-      if (!token) {
-        // still no token means we are not logged in and we did not get a token from the session
+
+      if (!sessionInfo) {
+        // still no session means that we are not logged in and must reject
         // returning reject will call logout and redirect to the login page
         return Promise.reject();
       }
+
+      if (sessionInfo["exp"] * 1000 < Date.now()) {
+        // session expired
+        getStorage().removeItem(sessionInfoKey);
+        return Promise.reject();
+      }
+
       return Promise.resolve();
     },
     checkError: async (error) => {
@@ -191,29 +167,27 @@ export function authProvider(): AuthProvider {
       if (status === 401 || status === 403) {
         // a 401/403 can mean that the token has expired
         // if it has, then we want to force login again
-        const token = localStorage.getItem("token");
-        if (token == null) {
+        const sessionInfoString = getStorage().getItem(sessionInfoKey);
+        if (!sessionInfoString) {
           return Promise.reject();
-        } else {
-          const decodedToken = jwtDecode<any>(token);
-          const clockSkew = 300000; // ...it happens. 5 mins for good measure
-          if (decodedToken.exp * 1000 - clockSkew < Date.now()) {
-            localStorage.removeItem("token");
+        }
 
-            // if entity token is there, it means the expired token is just
-            // the party token, so we can go back to being just logged in
-            // as an entity
-            const entity_token = localStorage.getItem("entity_token");
-            if (entity_token) localStorage.setItem("token", entity_token);
+        const sessionInfo = JSON.parse(sessionInfoString);
+        const clockSkew = 300000; // ...it happens. 5 mins for good measure
 
-            return Promise.reject();
-          }
+        if (sessionInfo["exp"] * 1000 - clockSkew < Date.now()) {
+          getStorage().removeItem(sessionInfoKey);
+
+          return Promise.reject();
         }
       }
       return Promise.resolve();
     },
     getPermissions: () => {
-      const role = localStorage.getItem("role");
+      const sessionInfoString = getStorage().getItem(sessionInfoKey);
+      if (!sessionInfoString) return Promise.reject();
+      const sessionInfo = JSON.parse(sessionInfoString);
+      const role = sessionInfo["role"];
       const perms = permissions as any;
       return Promise.resolve(role ? perms[role] : perms["flex_entity"]);
     },

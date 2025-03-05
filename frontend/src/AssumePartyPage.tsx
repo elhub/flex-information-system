@@ -4,51 +4,63 @@ import {
   List,
   ReferenceField,
   TextField,
-  useAuthProvider,
   useGetIdentity,
   useLogin,
   useNotify,
   usePermissions,
   useRecordContext,
   useRedirect,
+  useRefresh,
   useResetStore,
 } from "react-admin";
 import Box from "@mui/material/Box";
-import { Typography, CircularProgress } from "@mui/material";
+import {
+  Typography,
+  CircularProgress,
+  Card,
+  CardContent,
+  CardHeader,
+} from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { useState } from "react";
-import { AuthProvider, GrantType } from "./auth";
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { useState, useEffect } from "react";
 import { serverURL } from "./httpConfig";
 
 export const AssumePartyPage = () => {
   const [loading, setLoading] = useState(false);
+  const [unAssumed, setUnAssumed] = useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
+  const refresh = useRefresh();
   const login = useLogin();
   const identity = useGetIdentity();
   const permissions = usePermissions();
-  const authProvider: AuthProvider = useAuthProvider()!;
 
   // refresh pagination information in resources after assuming a party
   const resetStore = useResetStore();
 
-  if (authProvider.dropParty()) {
-    if (identity.refetch) identity.refetch!();
-    if (permissions.refetch) permissions.refetch!();
-    resetStore();
-  }
+  useEffect(() => {
+    if (identity.isPending) return;
+    if (!unAssumed && identity.data!.role !== "flex_entity") {
+      login({ party_id: null })
+        .then(() => {
+          setUnAssumed(true);
+          return identity.refetch();
+        })
+        .then(() => {
+          resetStore();
+          refresh();
+        });
+    }
+  }, [identity.isPending]);
 
   const AssumePartyButton = () => {
     const { party_id } = useRecordContext()!;
     const assumeParty = async () => {
       setLoading(true);
-      return login({ grantType: GrantType.TokenExchange, auth: { party_id } })
+      return login({ party_id })
         .then(() => {
-          if (identity.refetch) identity.refetch!();
-        })
-        .then(() => {
-          if (permissions.refetch) permissions.refetch!();
+          identity?.refetch();
+          permissions.refetch();
         })
         .then(() => {
           setLoading(false);
@@ -107,7 +119,7 @@ export const AssumePartyPage = () => {
           actions={false}
           perPage={25}
           sort={{ field: "id", order: "ASC" }}
-          filter={{ entity_id: identity.data!.entity_id }}
+          filter={{ entity_id: identity.data!.entityID }}
           empty={
             <Box textAlign="center" m={1}>
               <Typography variant="h4" paragraph>

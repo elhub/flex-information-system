@@ -20,6 +20,22 @@ tags:
 components:
   parameters: {}
   schemas:
+    flex_role:
+      description: The auth role in the Flexibility Information System
+      format: "text"
+      type: "string"
+      enum:
+        - flex_anonymous
+        - flex_balance_responsible_party
+        - flex_end_user
+        - flex_energy_supplier
+        - flex_entity
+        - flex_flexibility_information_system_operator
+        - flex_market_operator
+        - flex_system_operator
+        - flex_service_provider
+        - flex_third_party
+      example: flex_system_operator
     oauth_error_message:
       description: Error message returned from the API for oAuth errors.
       type: object
@@ -191,56 +207,40 @@ components:
             field: name
           example: Flex System Operator
         current_role:
-          description: The current role of the user in the system.
-          format: text
-          type: string
-          enum:
-            - flex_anonymous
-            - flex_balance_responsible_party
-            - flex_end_user
-            - flex_energy_supplier
-            - flex_entity
-            - flex_flexibility_information_system_operator
-            - flex_market_operator
-            - flex_system_operator
-            - flex_service_provider
-            - flex_third_party
-          example: flex_system_operator
+          $ref: "#/components/schemas/flex_role"
     session_response:
       description: Session response
       type: object
       required:
-        - access_token
-        - issued_token_type
-        - token_type
-        - expires_in
+        - entity_id
+        - entity_name
+        - exp
+        - role
       properties:
-        access_token:
-          type: string
-          format: jwt
-          description: >-
-            The JWT token associated to the session for use in subsequent
-            requests.
-          # yamllint disable-line rule:line-length
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleGFtcGxlIjoiZXhhbXBsZSJ9.SpEIIhfG-3SD21BJqf3NFK0kPz2p3xOppnbRkFYBLWE
-        issued_token_type:
-          type: string
-          enum:
-            - urn:ietf:params:oauth:token-type:jwt
-          description: >-
-            The format of the generated token. Always JWT.
-          example: urn:ietf:params:oauth:token-type:jwt
-        token_type:
-          type: string
-          enum:
-            - Bearer
-          description: The type of the token. Always `Bearer`.
-          example: Bearer
-        expires_in:
+        entity_id:
           type: integer
-          description: >-
-            The time in seconds until the token expires.
-          example: 3600
+          description: The entity associated to the user.
+          example: 13
+        entity_name:
+          type: string
+          description: The name of the entity associated to the user.
+          example: Austin Mason
+        exp:
+          type: integer
+          description: The expiration time of the session in Unix time.
+          example: 1617187200
+        party_id:
+          type: integer
+          description: The party assumed by the user.
+          example: 99
+          nullable: true
+        party_name:
+          type: string
+          description: The name of the party assumed by the user.
+          example: Flex System Operator
+          nullable: true
+        role:
+          $ref: "#/components/schemas/flex_role"
   securitySchemes:
     JWT:
       description: >-
@@ -294,6 +294,78 @@ paths:
             Returned when no session cookie is present.
         '500':
           description: Internal Server Error
+  /assume:
+    post:
+      operationId: call_assume
+      summary: Call assume
+      description: >-
+        As an entity, assume a party by ID.
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-url-encoded:
+            schema:
+              type: object
+              properties:
+                party_id:
+                  type: integer
+                  description: The party the user wants to assume.
+                  example: 1
+              required:
+                - party_id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+    delete:
+      operationId: delete_assume
+      summary: Delete assume
+      description: >-
+        Stop assuming a party and return to the entity's own party.
+      tags:
+        - authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session_response'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
   /login:
     get:
       operationId: call_login

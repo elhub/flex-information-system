@@ -288,13 +288,13 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
-	router.Use(authAPI.TokenDecodingMiddleware()) //nolint:contextcheck
+	router.Use(authAPI.TokenDecodingMiddleware())
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
 	authRouter.POST("/token", authAPI.PostTokenHandler)
 	authRouter.GET("/userinfo", authAPI.GetUserInfoHandler)
-	authRouter.GET("/session", authAPI.GetSessionHandler)
+	authRouter.GET("/session", WrapHandlerFunc(authAPI.GetSessionHandler))     //nolint:contextcheck
 	authRouter.POST("/assume", WrapHandlerFunc(authAPI.PostAssumeHandler))     //nolint:contextcheck
 	authRouter.DELETE("/assume", WrapHandlerFunc(authAPI.DeleteAssumeHandler)) //nolint:contextcheck
 	authRouter.GET("/login", authAPI.GetLoginHandler)
