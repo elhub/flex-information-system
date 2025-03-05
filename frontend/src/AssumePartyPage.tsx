@@ -43,10 +43,10 @@ export const AssumePartyPage = () => {
     if (!unAssumed && identity.data!.role !== "flex_entity") {
       login({ party_id: null })
         .then(() => {
+          setUnAssumed(true);
           return identity.refetch();
         })
         .then(() => {
-          setUnAssumed(true);
           resetStore();
           refresh();
         });

@@ -23,6 +23,7 @@ import (
 	"github.com/lestrrat-go/jwx/v3/jws"
 	"github.com/lestrrat-go/jwx/v3/jwt"
 	"github.com/lestrrat-go/jwx/v3/jwt/openid"
+	"golang.org/x/net/context"
 )
 
 const (
@@ -71,15 +72,10 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 }
 
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
-//
-//nolint:funlen
 func (auth *API) TokenDecodingMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authHeader := ctx.GetHeader("Authorization")
-		slog.DebugContext(ctx, "authorization header", "header", authHeader)
-
-		cookie, err := ctx.Cookie("__Host-flex_session")
-		slog.DebugContext(ctx, "session cookie", "cookie", cookie, "error", err)
+		sessionCookie, err := ctx.Cookie("__Host-flex_session")
 
 		if authHeader == "" && err != nil {
 			// Empty auth header and missing cookie means anonymous user.
@@ -111,7 +107,7 @@ func (auth *API) TokenDecodingMiddleware() gin.HandlerFunc {
 				return
 			}
 		} else { // no authorization header means we must use the cookie
-			tokenStr = cookie
+			tokenStr = sessionCookie
 		}
 
 		token, err := auth.decodeTokenString(tokenStr)
@@ -210,6 +206,8 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 }
 
 // GetSessionHandler checks the session cookie and returns the session information including the access_token if the session is valid.
+//
+//nolint:funlen
 func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 	sessionCookie, err := r.Cookie("__Host-flex_session")
 	if err != nil {
@@ -250,13 +248,35 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	tx, err := auth.db.Begin(r.Context())
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not begin tx", err))
+		w.Write(body)
+		return
+	}
+
+	ui, err := models.GetCurrentUserInfo(r.Context(), tx)
+	if err != nil {
+		slog.WarnContext(r.Context(), "error in get current user info", "error", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not get current user info", err))
+		w.Write(body)
+		return
+	}
+
+	partyName := ""
+	if ui.PartyName != nil {
+		partyName = *ui.PartyName
+	}
+
 	w.WriteHeader(http.StatusOK)
-	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
+	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson
 		EntityID:       accessToken.EntityID,
-		EntityName:     "TODO",
+		EntityName:     ui.EntityName,
 		ExpirationTime: accessToken.ExpirationTime,
 		PartyID:        accessToken.PartyID,
-		PartyName:      "TODO",
+		PartyName:      partyName,
 		Role:           accessToken.Role,
 	})
 	w.Write(body)
@@ -482,12 +502,11 @@ type sessionInfo struct {
 	PartyID        int      `json:"party_id,omitempty"`
 	PartyName      string   `json:"party_name,omitempty"`
 	Role           string   `json:"role"`
-	Subject        string   `json:"sub"`
 }
 
 // PostAssumeHandler handles the assume role in the BFF.
 //
-//nolint:funlen
+//nolint:funlen,cyclop
 func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -598,13 +617,44 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteStrictMode,
 	})
 
+	// assuming party is done, so we can "log in"
+	rd := &RequestDetails{role: role, externalID: eid}
+	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive
+
+	tx, err = auth.db.Begin(ctx)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not begin tx",
+		})
+		w.Write(body)
+		return
+	}
+
+	ui, err := models.GetCurrentUserInfo(ctx, tx)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not get current user info",
+		})
+		w.Write(body)
+		return
+	}
+
+	partyName := ""
+	if ui.PartyName != nil {
+		partyName = *ui.PartyName
+	}
+
 	w.WriteHeader(http.StatusOK)
-	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
+	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson
 		EntityID:       entityID,
-		EntityName:     "TODO",
+		EntityName:     ui.EntityName,
 		ExpirationTime: entityToken.ExpirationTime,
 		PartyID:        partyID,
-		PartyName:      "TODO",
+		PartyName:      partyName,
 		Role:           role,
 	})
 	w.Write(body)
@@ -671,6 +721,17 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ui, err := models.GetCurrentUserInfo(r.Context(), tx)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not get current user info",
+		})
+		w.Write(body)
+		return
+	}
+
 	entityToken := accessToken{
 		ExpirationTime: recievedToken.ExpirationTime,
 		Role:           "flex_entity",
@@ -702,9 +763,10 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
-		EntityID: recievedToken.EntityID,
-		PartyID:  0,
-		Role:     "flex_entity",
+		EntityID:       recievedToken.EntityID,
+		EntityName:     ui.EntityName,
+		ExpirationTime: entityToken.ExpirationTime,
+		Role:           "flex_entity",
 	})
 	w.Write(body)
 }
