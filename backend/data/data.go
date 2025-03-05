@@ -100,17 +100,29 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 }
 
 // Custom implementation of ResponseWriter. This allows us to have access to the
-// response body before it is written, and possibly change it.
-type bodyResponseWriter struct {
+// headers and response body before they are written, and possibly change them.
+type captureResponseWriter struct {
 	gin.ResponseWriter
 	body *bytes.Buffer
+}
+
+func newCaptureResponseWriter(w gin.ResponseWriter) captureResponseWriter {
+	return captureResponseWriter{
+		ResponseWriter: w,
+		body:           bytes.NewBufferString(""),
+	}
 }
 
 // This override writes the body to the buffer instead of the response. All the
 // other methods are left untouched, so the other parts of the response are
 // written normally.
-func (brw bodyResponseWriter) Write(b []byte) (int, error) {
-	return brw.body.Write(b) //nolint:wrapcheck
+func (crw captureResponseWriter) Write(b []byte) (int, error) {
+	return crw.body.Write(b) //nolint:wrapcheck
+}
+
+func (crw captureResponseWriter) WriteHeaderNow() {
+	// turn WriteHeaderNow into a no-op so that headers remain changeable until
+	// the end of the middleware where the body is ready to be written
 }
 
 // errorMessage is the format of PostgREST error messages.
@@ -121,69 +133,68 @@ type errorMessage struct {
 	Hint    string `json:"hint,omitempty"`
 }
 
-// ErrorMessageMiddleware returns a middleware that logs the error messages, and
-// possibly rewrites them when not informative enough.
-func (data *API) ErrorMessageMiddleware() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		// change the writer to capture the response body while the handler runs
-		rw := ctx.Writer
-		brw := &bodyResponseWriter{
-			body:           bytes.NewBufferString(""),
-			ResponseWriter: rw,
-		}
-		ctx.Writer = brw
+// PostgRESTResponseMiddleware returns a middleware that logs the error
+// messages, and possibly rewrites them when not informative enough. It also
+// makes sure the responses abide by our OpenAPI specification.
+func (data *API) PostgRESTResponseMiddleware(ctx *gin.Context) {
+	// change the writer to capture the response body while the handler runs
+	rw := ctx.Writer
+	crw := newCaptureResponseWriter(rw)
+	ctx.Writer = crw
 
-		// ↑ before the handler
+	ctx.Header("Content-Type", "application/json")
 
-		ctx.Next()
+	// ↑ before the handler
 
-		// ↓ after the handler
+	ctx.Next()
 
-		ctx.Writer = rw
-		// NB: so far, the actual response body is still empty
+	// ↓ after the handler
 
-		if ctx.Writer.Status() >= http.StatusBadRequest { //nolint:nestif
-			// error => parse the body, modify it, and write it to the actual response
-			var errorBody errorMessage
-			if err := json.Unmarshal(brw.body.Bytes(), &errorBody); err != nil || errorBody.Code == "" {
-				slog.InfoContext(
-					ctx,
-					"data API failure (not in PostgREST format)",
-					"error", brw.body.String(),
-				)
-				errorBody.Code = fmt.Sprintf("HTTP%d", ctx.Writer.Status())
-				errorBody.Message = http.StatusText(ctx.Writer.Status())
-			}
+	ctx.Writer = rw
+	// NB: so far, the actual response body is still empty
 
-			// general error message rewrites to hide the default PostgREST ones
-			switch ctx.Request.Method {
-			case http.MethodPatch:
-				if strings.HasPrefix(errorBody.Message, "JSON object requested") {
-					errorBody.Message = "User cannot update this resource"
-				}
-			case http.MethodPost:
-				if strings.HasPrefix(
-					errorBody.Message, "new row violates row-level security",
-				) {
-					errorBody.Message = "User cannot create this resource"
-				} else if strings.HasPrefix(errorBody.Message, "duplicate key value") {
-					errorBody.Message = "Duplicate found, " +
-						"please try to update the existing resource instead"
-				}
-			}
-
-			ctx.JSON(ctx.Writer.Status(), errorBody)
+	if ctx.Writer.Status() >= http.StatusBadRequest { //nolint:nestif
+		// error => parse the body, modify it, and write it to the actual response
+		var errorBody errorMessage
+		if err := json.Unmarshal(crw.body.Bytes(), &errorBody); err != nil || errorBody.Code == "" {
 			slog.InfoContext(
 				ctx,
-				"data API failure",
-				"code", errorBody.Code,
-				"message", errorBody.Message,
-				"detail", errorBody.Detail,
-				"hint", errorBody.Hint,
+				"data API failure (not in PostgREST format)",
+				"error", crw.body.String(),
 			)
-		} else {
-			// no error => just write the body to the actual response
-			ctx.Writer.Write(brw.body.Bytes())
+			errorBody.Code = fmt.Sprintf("HTTP%d", ctx.Writer.Status())
+			errorBody.Message = http.StatusText(ctx.Writer.Status())
 		}
+
+		// general error message rewrites to hide the default PostgREST ones
+		switch ctx.Request.Method {
+		case http.MethodPatch:
+			if strings.HasPrefix(errorBody.Message, "JSON object requested") {
+				errorBody.Message = "User cannot update this resource"
+			}
+		case http.MethodPost:
+			if strings.HasPrefix(
+				errorBody.Message, "new row violates row-level security",
+			) {
+				errorBody.Message = "User cannot create this resource"
+			} else if strings.HasPrefix(errorBody.Message, "duplicate key value") {
+				errorBody.Message = "Duplicate found, " +
+					"please try to update the existing resource instead"
+			}
+		}
+
+		ctx.JSON(ctx.Writer.Status(), errorBody)
+		slog.InfoContext(
+			ctx,
+			"data API failure",
+			"code", errorBody.Code,
+			"message", errorBody.Message,
+			"detail", errorBody.Detail,
+			"hint", errorBody.Hint,
+		)
+	} else {
+		// no error => just write the body to the actual response
+		ctx.Writer.WriteHeaderNow()
+		ctx.Writer.Write(crw.body.Bytes())
 	}
 }
