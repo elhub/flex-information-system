@@ -397,6 +397,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	keySet, err := auth.oidcProvider.GetKeySet(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not get key set", err))
+		return
 	}
 
 	token := openid.New()
@@ -437,6 +438,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not begin tx in callback handler", err))
+		return
 	}
 	defer tx.Commit(ctx)
 
@@ -563,6 +565,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 			ErrorDescription: "cannot assume requested party",
 		})
 		w.Write(body)
+		return
 	}
 
 	accessTokenCookie, err := r.Cookie("__Host-flex_session")
