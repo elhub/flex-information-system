@@ -22,7 +22,7 @@ import {
   CardHeader,
 } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { serverURL } from "./httpConfig";
 
 export const AssumePartyPage = () => {
@@ -38,19 +38,20 @@ export const AssumePartyPage = () => {
   // refresh pagination information in resources after assuming a party
   const resetStore = useResetStore();
 
-  if (identity.isPending) return <>Loading..</>;
-
-  if (!unAssumed && identity.data!.role !== "flex_entity") {
-    login({ party_id: null })
-      .then(() => {
-        return identity.refetch();
-      })
-      .then(() => {
-        setUnAssumed(true);
-        resetStore();
-        refresh();
-      });
-  }
+  useEffect(() => {
+    if (identity.isPending) return;
+    if (!unAssumed && identity.data!.role !== "flex_entity") {
+      login({ party_id: null })
+        .then(() => {
+          return identity.refetch();
+        })
+        .then(() => {
+          setUnAssumed(true);
+          resetStore();
+          refresh();
+        });
+    }
+  }, [identity.isPending]);
 
   const AssumePartyButton = () => {
     const { party_id } = useRecordContext()!;

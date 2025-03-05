@@ -5,6 +5,7 @@ import {
   Create,
   CustomRoutes,
   Edit,
+  getStorage,
   ResourceContextProvider,
   Layout as RaLayout,
   LayoutProps,
@@ -38,7 +39,7 @@ import Collapse from "@mui/material/Collapse";
 import { Route, Navigate } from "react-router-dom";
 import { apiURL, serverURL, httpClient, authURL } from "./httpConfig";
 
-import { authProvider } from "./auth";
+import { authProvider, sessionInfoKey } from "./auth";
 
 import { Dashboard } from "./Dashboard";
 import { Breadcrumbs } from "./Breadcrumbs";
@@ -157,6 +158,7 @@ const Logout = () => {
   return (
     <MenuItem
       onClick={() => {
+        getStorage().removeItem(sessionInfoKey);
         userMenu?.onClose();
         redirect(`${authURL}/logout`);
       }}
@@ -331,7 +333,7 @@ export const App = () => (
     store={localStorageStore(undefined, "Flex")}
     theme={elhubTheme}
   >
-    {(permissions) => (
+    {(permissions = []) => (
       <>
         {permissions.includes("entity.read") ? (
           <Resource
