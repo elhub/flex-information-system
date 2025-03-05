@@ -106,9 +106,7 @@ type captureResponseWriter struct {
 	body *bytes.Buffer
 }
 
-// NewCaptureResponseWriter creates a new captureResponseWriter instance
-// wrapping a ResponseWriter that actually has side effects.
-func NewCaptureResponseWriter(w gin.ResponseWriter) captureResponseWriter {
+func newCaptureResponseWriter(w gin.ResponseWriter) captureResponseWriter {
 	return captureResponseWriter{
 		ResponseWriter: w,
 		body:           bytes.NewBufferString(""),
@@ -135,13 +133,16 @@ type errorMessage struct {
 	Hint    string `json:"hint,omitempty"`
 }
 
-// ErrorMessageMiddleware returns a middleware that logs the error messages, and
-// possibly rewrites them when not informative enough.
-func (data *API) ErrorMessageMiddleware(ctx *gin.Context) {
+// PostgRESTResponseMiddleware returns a middleware that logs the error
+// messages, and possibly rewrites them when not informative enough. It also
+// makes sure the responses abide by our OpenAPI specification.
+func (data *API) PostgRESTResponseMiddleware(ctx *gin.Context) {
 	// change the writer to capture the response body while the handler runs
 	rw := ctx.Writer
-	crw := NewCaptureResponseWriter(rw)
+	crw := newCaptureResponseWriter(rw)
 	ctx.Writer = crw
+
+	ctx.Header("Content-Type", "application/json")
 
 	// ↑ before the handler
 
@@ -196,20 +197,4 @@ func (data *API) ErrorMessageMiddleware(ctx *gin.Context) {
 		ctx.Writer.WriteHeaderNow()
 		ctx.Writer.Write(crw.body.Bytes()) //nolint:errcheck,gosec
 	}
-}
-
-// ContentTypeMiddleware forces the Content-Type header to be application/json.
-func (data *API) ContentTypeMiddleware(ctx *gin.Context) {
-	rw := ctx.Writer
-	crw := NewCaptureResponseWriter(rw)
-	ctx.Writer = crw
-
-	ctx.Header("Content-Type", "application/json")
-
-	ctx.Next()
-
-	ctx.Writer = rw
-
-	ctx.Writer.WriteHeaderNow()
-	ctx.Writer.Write(crw.body.Bytes()) //nolint:errcheck,gosec
 }
