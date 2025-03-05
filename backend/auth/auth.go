@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/base64"
@@ -23,7 +24,6 @@ import (
 	"github.com/lestrrat-go/jwx/v3/jws"
 	"github.com/lestrrat-go/jwx/v3/jwt"
 	"github.com/lestrrat-go/jwx/v3/jwt/openid"
-	"golang.org/x/net/context"
 )
 
 const (
@@ -619,7 +619,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 	// assuming party is done, so we can "log in"
 	rd := &RequestDetails{role: role, externalID: eid}
-	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive
+	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 
 	tx, err = auth.db.Begin(ctx)
 	if err != nil {
