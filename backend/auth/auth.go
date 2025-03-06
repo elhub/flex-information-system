@@ -522,18 +522,6 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ctx := r.Context()
-	tx, err := auth.db.Begin(ctx)
-	if err != nil {
-		slog.WarnContext(ctx, "error in begin tx in assume role handler", "error", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		body, _ := json.Marshal(oauthErrorMessage{
-			Error:            oauthErrorServerError,
-			ErrorDescription: "could not begin tx",
-		})
-		w.Write(body)
-		return
-	}
-	defer tx.Commit(ctx)
 
 	partyIDstr := r.FormValue("party_id")
 	if partyIDstr == "" {
@@ -557,7 +545,21 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	tx, err := auth.db.Begin(ctx)
+	if err != nil {
+		slog.WarnContext(ctx, "error in begin tx in assume role handler", "error", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(oauthErrorMessage{
+			Error:            oauthErrorServerError,
+			ErrorDescription: "could not begin tx",
+		})
+		w.Write(body)
+		return
+	}
+
 	eid, role, entityID, err := models.AssumeParty(ctx, tx, partyID)
+	tx.Commit(ctx)
+
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -634,6 +636,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write(body)
 		return
 	}
+	defer tx.Commit(ctx)
 
 	ui, err := models.GetCurrentUserInfo(ctx, tx)
 	if err != nil {
