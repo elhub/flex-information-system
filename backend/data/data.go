@@ -59,9 +59,41 @@ func (data *API) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func (data *API) controllableUnitLookupHandler(
-	w http.ResponseWriter, _ *http.Request,
+	w http.ResponseWriter, req *http.Request,
 ) {
+	endUserID := req.FormValue("end_user_id")
+	if endUserID == "" {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "missing end user id",
+		})
+		return
+	}
+
+	accountingPointID := req.FormValue("accounting_point_id")
+	businessID := req.FormValue("business_id")
+
+	if accountingPointID == "" && businessID == "" {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "missing accounting point ID or business ID",
+		})
+		return
+	}
+
 	http.Error(w, "Not implemented: CU lookup", http.StatusNotImplemented)
+}
+
+// writeErrorToResponseWriter writes an error message as JSON in the response
+// writer.
+func writeErrorToResponseWriter(
+	w http.ResponseWriter, statusCode int, msg errorMessage,
+) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	if msg.Code == "" {
+		msg.Code = fmt.Sprintf("HTTP%d", statusCode)
+	}
+	body, _ := json.Marshal(msg)
+	w.Write(body)
 }
 
 // postgRESTHandler forwards the request to the PostgREST API.
@@ -152,7 +184,7 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 	// error => parse the body, modify it, and write it to the actual response
 	body, err := io.ReadAll(rsp.Body)
 	if err != nil {
-		writeErrorResponse(rsp, errorMessage{ //nolint:exhaustruct
+		writeErrorToResponse(rsp, errorMessage{ //nolint:exhaustruct
 			Code:    fmt.Sprintf("HTTP%d", http.StatusInternalServerError),
 			Message: "could not read PostgREST response body",
 		})
@@ -188,7 +220,7 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 		}
 	}
 
-	writeErrorResponse(rsp, errorBody)
+	writeErrorToResponse(rsp, errorBody)
 	slog.InfoContext(
 		rsp.Request.Context(),
 		"data API failure",
@@ -200,8 +232,8 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 	return nil
 }
 
-// writeErrorResponse writes an error message as JSON in the response body.
-func writeErrorResponse(rsp *http.Response, msg errorMessage) {
+// writeErrorToResponse writes an error message as JSON in the response body.
+func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 	body, _ := json.Marshal(msg)
 	rsp.Body = io.NopCloser(bytes.NewReader(body))
 	rsp.ContentLength = int64(len(body))
