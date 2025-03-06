@@ -13,12 +13,11 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
 // API holds the data API handlers.
 type API struct {
+	PathPrefix   string
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
 	ctxKey       string
@@ -26,6 +25,7 @@ type API struct {
 
 // NewAPI creates a new data.API instance.
 func NewAPI(
+	pathPrefix string,
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
@@ -36,23 +36,46 @@ func NewAPI(
 	}
 
 	return &API{
+		PathPrefix:   pathPrefix,
 		postgRESTURL: postgRESTURL,
 		db:           db,
 		ctxKey:       ctxKey,
 	}, nil
 }
 
-// PostgRESTHandler forwards the request to the PostgREST API.
-func (data *API) PostgRESTHandler(ctx *gin.Context) {
+// ServeHTTP regroups all data API handlers into one, while implementing the
+// http.Handler interface.
+func (data *API) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	req.URL.Path = strings.TrimPrefix(req.URL.Path, data.PathPrefix)
+
+	if req.URL.Path == "/controllable_unit" &&
+		req.Method == http.MethodPost &&
+		req.Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+		data.controllableUnitLookupHandler(w, req)
+		return
+	}
+
+	data.postgRESTHandler(w, req)
+}
+
+func (data *API) controllableUnitLookupHandler(
+	w http.ResponseWriter, _ *http.Request,
+) {
+	http.Error(w, "Not implemented: CU lookup", http.StatusNotImplemented)
+}
+
+// postgRESTHandler forwards the request to the PostgREST API.
+func (data *API) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting a single ID and subresource/history pages,
 	// which are not valid formats in PostgREST
 	regexIDSubHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)(/[a-z_]+)?$")
 
-	url := ctx.Param("url")
-	query := ctx.Request.URL.Query()
-	header := ctx.Request.Header
+	ctx := req.Context()
+	url := req.URL.Path
+	query := req.URL.Query()
+	header := req.Header
 	authorizationHeader := header.Get("Authorization")
-	sessionCookie, err := ctx.Request.Cookie("__Host-flex_session")
+	sessionCookie, err := req.Cookie("__Host-flex_session")
 
 	if authorizationHeader == "" && err == nil {
 		header.Set("Authorization", "Bearer "+sessionCookie.Value)
@@ -60,7 +83,7 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 
 	header.Set("Content-Type", "application/json")
 
-	if ctx.Request.Method == http.MethodPost {
+	if req.Method == http.MethodPost {
 		// ensure singular when object is created
 		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
 		header.Set("Accept", "application/vnd.pgrst.object+json")
@@ -105,7 +128,7 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	}
 	proxy.ModifyResponse = fixPostgRESTResponse
 
-	proxy.ServeHTTP(ctx.Writer, ctx.Request)
+	proxy.ServeHTTP(w, req)
 }
 
 // errorMessage is the format of PostgREST error messages.

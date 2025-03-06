@@ -40,6 +40,14 @@ func WrapHandlerFunc(f http.HandlerFunc) gin.HandlerFunc {
 	}
 }
 
+// WrapHandler adapts WrapHandlerFunc so that it works on general http.Handler
+// instead of only functions.
+func WrapHandler(f http.Handler) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		f.ServeHTTP(ctx.Writer, ctx.Request.WithContext(ctx))
+	}
+}
+
 // Run is the main entry point for the application.
 func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx
 	// Sets the global TracerProvider.
@@ -184,7 +192,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
 	slog.DebugContext(ctx, "Creating data API")
-	dataAPI, err := data.NewAPI(postgRESTUpstream, dbPool, requestDetailsContextKey)
+	dataAPI, err := data.NewAPI("/api/v0", postgRESTUpstream, dbPool, requestDetailsContextKey)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
 	}
@@ -301,13 +309,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authRouter.GET("/callback", authAPI.GetCallbackHandler)
 	authRouter.GET("/logout", authAPI.GetLogoutHandler)
 
-	// data API endpoints
-	// by default, just act as a reverse proxy for PostgREST
-	dataRouter := router.Group("/api/v0")
-	dataRouter.Match(
+	// data API endpoint
+	router.Match(
 		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		"/*url",
-		dataAPI.PostgRESTHandler,
+		dataAPI.PathPrefix+"/*url",
+		WrapHandler(dataAPI), //nolint:contextcheck
 	)
 
 	slog.InfoContext(ctx, "Running server on server on"+addr)
