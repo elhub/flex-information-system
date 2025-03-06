@@ -49,6 +49,12 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	url := ctx.Param("url")
 	query := ctx.Request.URL.Query()
 	header := ctx.Request.Header
+	authorizationHeader := header.Get("Authorization")
+	sessionCookie, err := ctx.Request.Cookie("__Host-flex_session")
+
+	if authorizationHeader == "" && err == nil {
+		header.Set("Authorization", "Bearer "+sessionCookie.Value)
+	}
 
 	header.Set("Content-Type", "application/json")
 

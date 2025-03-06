@@ -48,9 +48,8 @@ load:
     docker compose restart backend
 
     echo Loaded!
-    echo Hit one of the following to log in:
+    echo Hit this url to log in:
     echo ' - TEST : https://test.flex.internal:6443/'
-    echo ' - DEV : https://dev.flex.internal:5443/'
 
 # reload the database
 reload: unload load
