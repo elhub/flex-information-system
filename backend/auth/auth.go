@@ -27,7 +27,8 @@ import (
 )
 
 const (
-	callbackPath = "/auth/v0/callback"
+	callbackPath     = "/auth/v0/callback"
+	sessionCookieKey = "__Host-flex_session"
 )
 
 // API holds the authentication API handlers.
@@ -72,70 +73,74 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 }
 
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
-func (auth *API) TokenDecodingMiddleware() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		authHeader := ctx.GetHeader("Authorization")
-		sessionCookie, err := ctx.Cookie("__Host-flex_session")
+func (auth *API) TokenDecodingMiddleware(w http.ResponseWriter, req *http.Request) {
+	authHeader := req.Header.Get("Authorization")
+	sessionCookie, err := req.Cookie(sessionCookieKey)
 
-		if authHeader == "" && err != nil {
-			// Empty auth header and missing cookie means anonymous user.
-			rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
-			ctx.Set(auth.ctxKey, rd)
-			return
-		}
+	ctx := req.Context().(*gin.Context) //nolint:forcetypeassert
 
-		// the authorization header takes presedence over the cookie
-		var tokenStr string
-		if authHeader != "" {
-			var found bool
-			tokenStr, found = strings.CutPrefix(authHeader, "Bearer ")
-			if !found {
-				ctx.Header(
-					wwwAuthenticateKey,
-					wwwAuthenticate{
-						Error:            wwwInvalidRequest,
-						ErrorDescription: "missing Bearer in Authorization header",
-					}.String(),
-				)
-				ctx.AbortWithStatusJSON(
-					http.StatusBadRequest,
-					oauthErrorMessage{
-						Error:            oauthErrorInvalidRequest,
-						ErrorDescription: "missing Bearer in Authorization header",
-					},
-				)
-				return
-			}
-		} else { // no authorization header means we must use the cookie
-			tokenStr = sessionCookie
-		}
+	if authHeader == "" && err != nil {
+		// Empty auth header and missing cookie means anonymous user.
+		rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
+		ctx.Set(auth.ctxKey, rd)
+		return
+	}
 
-		token, err := auth.decodeTokenString(tokenStr)
-		if err != nil {
-			ctx.Header(
+	// the authorization header takes presedence over the cookie
+	var tokenStr string
+	if authHeader != "" {
+		var found bool
+		tokenStr, found = strings.CutPrefix(authHeader, "Bearer ")
+		if !found {
+			w.Header().Set(
 				wwwAuthenticateKey,
 				wwwAuthenticate{
-					Error: wwwInvalidToken,
-					// TODO the error messages here is incorrect if we are using a session
-					ErrorDescription: "invalid bearer token",
+					Error:            wwwInvalidRequest,
+					ErrorDescription: "missing Bearer in Authorization header",
 				}.String(),
 			)
-			ctx.AbortWithStatusJSON(
-				http.StatusBadRequest,
-				oauthErrorMessage{
-					Error:            oauthErrorInvalidRequest,
-					ErrorDescription: "unable to verify and validate token",
-				},
-			)
+			ctx.Abort()
+			writeJSON(w, http.StatusBadRequest, oauthErrorMessage{
+				Error:            oauthErrorInvalidRequest,
+				ErrorDescription: "missing Bearer in Authorization header",
+			})
 			return
 		}
-
-		rd := &RequestDetails{
-			role:       token.Role,
-			externalID: token.ExternalID,
-		}
-		ctx.Set(auth.ctxKey, rd)
+	} else { // no authorization header means we must use the cookie
+		tokenStr = sessionCookie.Value
 	}
+
+	token, err := auth.decodeTokenString(tokenStr)
+	if err != nil {
+		w.Header().Set(
+			wwwAuthenticateKey,
+			wwwAuthenticate{
+				Error: wwwInvalidToken,
+				// TODO the error messages here is incorrect if we are using a session
+				ErrorDescription: "invalid bearer token",
+			}.String(),
+		)
+		ctx.Abort()
+		writeJSON(w, http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "unable to verify and validate token",
+		})
+		return
+	}
+
+	rd := &RequestDetails{
+		role:       token.Role,
+		externalID: token.ExternalID,
+	}
+	ctx.Set(auth.ctxKey, rd)
+}
+
+// writeJSON writes a JSON response with the given object as body.
+func writeJSON(w http.ResponseWriter, statusCode int, obj any) {
+	w.Header().Set("Content-Type", "application/json")
+	body, _ := json.Marshal(obj) //nolint:errchkjson
+	w.WriteHeader(statusCode)
+	w.Write(body)
 }
 
 // tokenPayload is used to inspect the grant type in the token request.
@@ -209,7 +214,7 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 //
 //nolint:funlen
 func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
-	sessionCookie, err := r.Cookie("__Host-flex_session")
+	sessionCookie, err := r.Cookie(sessionCookieKey)
 	if err != nil {
 		if errors.Is(err, http.ErrNoCookie) {
 			// Missing cookie just means that there is no session,
@@ -234,7 +239,7 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// Unset the session cookie
 		http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
-			Name:     "__Host-flex_session",
+			Name:     sessionCookieKey,
 			Value:    "not.a.session",
 			MaxAge:   -1,
 			Path:     "/",
@@ -467,7 +472,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 
 	ctx.SetSameSite(http.SameSiteStrictMode)
-	ctx.SetCookie("__Host-flex_session", string(signedAccessToken), auth.tokenDurationSeconds, "/", "", true, true)
+	ctx.SetCookie(sessionCookieKey, string(signedAccessToken), auth.tokenDurationSeconds, "/", "", true, true)
 	ctx.SetCookie("flex_login", "not.a.login", -1, callbackPath, "", true, true)
 
 	ctx.Redirect(http.StatusFound, loginCookie.ReturnURL)
@@ -476,7 +481,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 // GetLogoutHandler unsets the __Host-flex_session cookie.
 func (auth *API) GetLogoutHandler(ctx *gin.Context) {
 	ctx.SetSameSite(http.SameSiteStrictMode)
-	ctx.SetCookie("__Host-flex_session", "not.a.session", -1, "/", "", true, true)
+	ctx.SetCookie(sessionCookieKey, "not.a.session", -1, "/", "", true, true)
 	endSessionURL := auth.oidcProvider.EndSessionURL()
 	ctx.Redirect(http.StatusFound, endSessionURL)
 }
@@ -570,7 +575,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	accessTokenCookie, err := r.Cookie("__Host-flex_session")
+	accessTokenCookie, err := r.Cookie(sessionCookieKey)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -645,7 +650,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
-		Name:     "__Host-flex_session",
+		Name:     sessionCookieKey,
 		Value:    string(signedPartyToken),
 		Path:     "/",
 		MaxAge:   auth.tokenDurationSeconds,
@@ -670,7 +675,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 //nolint:funlen
 func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	accessTokenCookie, err := r.Cookie("__Host-flex_session")
+	accessTokenCookie, err := r.Cookie(sessionCookieKey)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -757,7 +762,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
-		Name:     "__Host-flex_session",
+		Name:     sessionCookieKey,
 		Value:    string(signedEntityToken),
 		Path:     "/",
 		MaxAge:   auth.tokenDurationSeconds,

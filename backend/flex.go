@@ -288,7 +288,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
-	router.Use(authAPI.TokenDecodingMiddleware())
+	router.Use(WrapHandlerFunc(authAPI.TokenDecodingMiddleware)) //nolint:contextcheck
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
