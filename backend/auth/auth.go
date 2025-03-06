@@ -612,16 +612,6 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
-		Name:     "__Host-flex_session",
-		Value:    string(signedPartyToken),
-		Path:     "/",
-		MaxAge:   auth.tokenDurationSeconds,
-		Secure:   true,
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-	})
-
 	// assuming party is done, so we can "log in"
 	rd := &RequestDetails{role: role, externalID: eid}
 	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
@@ -654,6 +644,15 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		partyName = *ui.PartyName
 	}
 
+	http.SetCookie(w, &http.Cookie{ //nolint:exhaustruct
+		Name:     "__Host-flex_session",
+		Value:    string(signedPartyToken),
+		Path:     "/",
+		MaxAge:   auth.tokenDurationSeconds,
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	})
 	w.WriteHeader(http.StatusOK)
 	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson
 		EntityID:       entityID,
@@ -766,7 +765,6 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
 	})
-
 	w.WriteHeader(http.StatusOK)
 	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
 		EntityID:       recievedToken.EntityID,
