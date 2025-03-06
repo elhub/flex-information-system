@@ -171,6 +171,7 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 	return nil
 }
 
+// writeErrorResponse writes an error message as JSON in the response body.
 func writeErrorResponse(rsp *http.Response, msg errorMessage) {
 	body, _ := json.Marshal(msg)
 	rsp.Body = io.NopCloser(bytes.NewReader(body))
