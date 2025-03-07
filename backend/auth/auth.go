@@ -80,13 +80,13 @@ func (auth *API) TokenDecodingMiddleware(
 		authHeader := req.Header.Get("Authorization")
 		sessionCookie, err := req.Cookie(sessionCookieKey)
 
-		ctx := req.Context().(*gin.Context) //nolint:forcetypeassert
+		ctx := req.Context()
 
 		if authHeader == "" && err != nil {
 			// Empty auth header and missing cookie means anonymous user.
 			rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
-			ctx.Set(auth.ctxKey, rd)
-			next.ServeHTTP(w, req)
+			authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
+			next.ServeHTTP(w, req.WithContext(authenticatedCtx))
 			return
 		}
 
@@ -134,8 +134,8 @@ func (auth *API) TokenDecodingMiddleware(
 			role:       token.Role,
 			externalID: token.ExternalID,
 		}
-		ctx.Set(auth.ctxKey, rd)
-		next.ServeHTTP(w, req)
+		authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
+		next.ServeHTTP(w, req.WithContext(authenticatedCtx))
 	})
 }
 

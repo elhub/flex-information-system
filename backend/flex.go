@@ -59,27 +59,20 @@ func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
 	// wrapping-based design, stopping the loop is the default and we need to be
 	// explicit if we want to continue it (call the next handler).
 
-	// We do this by storing this information in a boolean.
+	// We do this by checking if the response has been written, which means either
+	// the middleware errored or the next handler was called.
 
 	return func(ctx *gin.Context) {
-		// flag to know whether the next handlers were called (default false).
-		nextCalled := new(bool)
-		*nextCalled = false
-
-		// NB: we ignore the arguments because we know f is going to be called with
-		// request and writer from ctx below, so we are sure ctx.Next will also
-		// apply to them.
-		next := http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {
-			// when the next handler is called, we set the flag
-			*nextCalled = true
+		// If the middleware sets things in the request context, then the request
+		// value changes, which must be reflected in the Gin context.
+		next := http.HandlerFunc(func(_ http.ResponseWriter, req *http.Request) {
+			ctx.Request = req
 			ctx.Next()
 		})
 
-		// run the wrapped handler
-		mid(next).ServeHTTP(ctx.Writer, ctx.Request.WithContext(ctx))
+		mid(next).ServeHTTP(ctx.Writer, ctx.Request)
 
-		// if next was called, we now know it and can stop the Gin loop
-		if !*nextCalled {
+		if ctx.Writer.Written() {
 			ctx.Abort()
 		}
 	}
@@ -333,7 +326,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
-	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware)) //nolint:contextcheck
+	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
