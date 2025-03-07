@@ -27,8 +27,7 @@ they just hold logic such as views, functions and triggers. If we need to change
 an actual data table (alter a column name or table name), then we bite the
 bullet, wipe the database and recreate it.
 
-On local, this can be achieved by running the `just reload` command. For
-deployment, it's `just deploy test --tags all,db_reload`.
+On local, this can be achieved by running the `just reload` command.
 
 Our next step for schema maintenance is to start tracking changes in the data
 tables using a schema migration tool. The
