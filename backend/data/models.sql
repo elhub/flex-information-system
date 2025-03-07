@@ -1,4 +1,4 @@
--- TODO: turn into a proper request once we override one endpoint
--- (this file cannot be empty for sqlc to work properly)
--- name: Get1 :one
-SELECT 1;
+-- name: ControllableUnitLookup :one
+SELECT controllable_unit_lookup(
+  @end_user_id, @business_id, @accounting_point_id
+);

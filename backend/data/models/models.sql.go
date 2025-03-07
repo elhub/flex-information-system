@@ -9,15 +9,15 @@ import (
 	"context"
 )
 
-const get1 = `-- name: Get1 :one
-SELECT 1
+const controllableUnitLookup = `-- name: ControllableUnitLookup :one
+SELECT controllable_unit_lookup(
+  $1, $2, $3
+)
 `
 
-// TODO: turn into a proper request once we override one endpoint
-// (this file cannot be empty for sqlc to work properly)
-func (q *Queries) Get1(ctx context.Context) (int32, error) {
-	row := q.db.QueryRow(ctx, get1)
-	var column_1 int32
-	err := row.Scan(&column_1)
-	return column_1, err
+func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserID int, businessID string, accountingPointID string) (interface{}, error) {
+	row := q.db.QueryRow(ctx, controllableUnitLookup, endUserID, businessID, accountingPointID)
+	var controllable_unit_lookup interface{}
+	err := row.Scan(&controllable_unit_lookup)
+	return controllable_unit_lookup, err
 }

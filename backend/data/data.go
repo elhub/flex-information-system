@@ -3,6 +3,7 @@ package data
 import (
 	"bytes"
 	"encoding/json"
+	"flex/data/models"
 	"flex/pgpool"
 	"fmt"
 	"io"
@@ -72,10 +73,17 @@ func (data *API) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 func (data *API) controllableUnitLookupHandler(
 	w http.ResponseWriter, req *http.Request,
 ) {
-	endUserID := req.FormValue("end_user_id")
-	if endUserID == "" {
+	endUserIDStr := req.FormValue("end_user_id")
+	if endUserIDStr == "" {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "missing end user id",
+		})
+		return
+	}
+	endUserID, err := strconv.Atoi(endUserIDStr)
+	if err != nil {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "invalid end user id",
 		})
 		return
 	}
@@ -89,6 +97,39 @@ func (data *API) controllableUnitLookupHandler(
 		})
 		return
 	}
+
+	ctx := req.Context()
+
+	conn, err := data.db.Acquire(ctx)
+	if err != nil {
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "could not acquire system connection",
+		})
+		slog.ErrorContext(ctx, "could not acquire system connection", "error", err)
+		return
+	}
+	defer conn.Release()
+	tx, err := conn.Begin(ctx)
+	if err != nil {
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "could not start transaction",
+		})
+		slog.ErrorContext(ctx, "could not start transaction", "error", err)
+		return
+	}
+	queries := models.New(tx)
+
+	cuLookup, err := queries.ControllableUnitLookup(
+		ctx, endUserID, businessID, accountingPointID,
+	)
+	if err != nil {
+		writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+			Message: "controllable unit not found",
+		})
+		return
+	}
+
+	slog.InfoContext(ctx, "controllable unit found", "controllable_unit", cuLookup)
 
 	http.Error(w, "Not implemented: CU lookup", http.StatusNotImplemented)
 }

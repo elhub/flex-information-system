@@ -115,9 +115,9 @@ repos:
     rev: 3.3.1
     hooks:
       - id: sqlfluff-fix
-        exclude: ^backend/event/.*$
+        exclude: ^(backend/event/.*)|(backend/data/.*)$
       - id: sqlfluff-lint
-        exclude: ^backend/event/.*$
+        exclude: ^(backend/event/.*)|(backend/data/.*)$
 
   # squawk errors on CREATE TABLE LIKE clauses had to be disabled
   # TODO - report bug to squawk and update this
