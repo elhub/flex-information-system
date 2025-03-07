@@ -14,6 +14,7 @@ import { Datagrid } from "../auth";
 import { DateField } from "../datetime";
 import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 
 const CreateCUSPButton = () => (
   <Button
@@ -23,6 +24,15 @@ const CreateCUSPButton = () => (
     // used to be able to input a CU ID instead of picking from the known CUs
     state={{ fromCUList: true }}
     label="Manage another controllable unit"
+  />
+);
+
+const CULookupButton = () => (
+  <Button
+    component={Link}
+    to="/controllable_unit_lookup"
+    startIcon={<TravelExploreIcon />}
+    label="Lookup a controllable unit"
   />
 );
 
@@ -41,6 +51,7 @@ export const ControllableUnitList = () => {
 
   const ListActions = () => (
     <TopToolbar>
+      <CULookupButton />
       {permissions.includes("controllable_unit_service_provider.create") && (
         <CreateCUSPButton />
       )}

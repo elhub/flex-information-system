@@ -116,6 +116,7 @@ import { ServiceProviderProductApplicationCommentInput } from "./service_provide
 import { ServiceProviderProductApplicationCommentShow } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentShow";
 import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
 import { NoticeList } from "./notice/NoticeList";
+import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1049,6 +1050,10 @@ export const App = () => (
                 <AssumePartyPage />
               </ResourceContextProvider>
             }
+          />
+          <Route
+            path="/controllable_unit_lookup"
+            element={<ControllableUnitLookupInput />}
           />
         </CustomRoutes>
       </>
