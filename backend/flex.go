@@ -29,7 +29,7 @@ var errMissingEnv = errors.New("environment variable not set")
 
 const requestDetailsContextKey = "_flex/auth"
 
-// WrapHandlerFunc is a helper function for wrapping http.HandlerFunc and returns a Gin middleware.
+// WrapHandlerFunc is a helper function for wrapping http.HandlerFunc and returns a Gin handler.
 // Is is basically gin.WrapF but explicitly passing the full gin.Context.
 // This is necessary because we are using gin.Contexts in our middleware.
 // The intended use of this function is to allow us to move away fron gin-gonic/gin,
@@ -37,6 +37,44 @@ const requestDetailsContextKey = "_flex/auth"
 func WrapHandlerFunc(f http.HandlerFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		f(ctx.Writer, ctx.Request.WithContext(ctx))
+	}
+}
+
+// WrapMiddleware takes a standard library function-based middleware and turns
+// it into a Gin middleware.
+func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
+	// The Gin engine finds the list of handlers corresponding to the request and
+	// calls ctx.Next to execute them all in a loop.
+	// cf https://github.com/gin-gonic/gin/blob/75ccf94d605a05fe24817fc2f166f6f2959d5cea/gin.go#L630-L636
+
+	// By default, this loop runs automatically until the last handler is called,
+	// unless we stop the loop manually by calling ctx.Abort.
+	// cf https://github.com/gin-gonic/gin/blob/75ccf94d605a05fe24817fc2f166f6f2959d5cea/context.go#L182-L188
+
+	// We need to turn this logic of iteration into a logic of wrapping,
+	// where the remaining handlers are represented as a function passed to the
+	// outermost (earliest running) middleware, that can choose to call them or
+	// discard them. In iteration-based design, continuing the loop is the default
+	// and we need to be explicit if we want to stop it (ctx.Abort), whereas in
+	// wrapping-based design, stopping the loop is the default and we need to be
+	// explicit if we want to continue it (call the next handler).
+
+	// We do this by checking if the response has been written, which means either
+	// the middleware errored or the next handler was called.
+
+	return func(ctx *gin.Context) {
+		// If the middleware sets things in the request context, then the request
+		// value changes, which must be reflected in the Gin context.
+		next := http.HandlerFunc(func(_ http.ResponseWriter, req *http.Request) {
+			ctx.Request = req
+			ctx.Next()
+		})
+
+		mid(next).ServeHTTP(ctx.Writer, ctx.Request)
+
+		if ctx.Writer.Written() {
+			ctx.Abort()
+		}
 	}
 }
 
@@ -288,7 +326,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
-	router.Use(authAPI.TokenDecodingMiddleware())
+	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
