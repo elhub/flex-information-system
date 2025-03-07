@@ -313,7 +313,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Match(
 		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		dataAPI.PathPrefix+"/*url",
-		WrapHandler(dataAPI), //nolint:contextcheck
+		WrapHandler(http.StripPrefix(dataAPI.PathPrefix, dataAPI)), //nolint:contextcheck
 	)
 
 	slog.InfoContext(ctx, "Running server on server on"+addr)

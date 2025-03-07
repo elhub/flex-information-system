@@ -21,7 +21,10 @@ type API struct {
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
 	ctxKey       string
+	mux          *http.ServeMux
 }
+
+var _ http.Handler = &API{} //nolint:exhaustruct
 
 // NewAPI creates a new data.API instance.
 func NewAPI(
@@ -35,27 +38,35 @@ func NewAPI(
 		return nil, fmt.Errorf("invalid PostgREST URL: %w", err)
 	}
 
-	return &API{
+	mux := http.NewServeMux()
+
+	data := &API{
 		PathPrefix:   pathPrefix,
 		postgRESTURL: postgRESTURL,
 		db:           db,
 		ctxKey:       ctxKey,
-	}, nil
-}
-
-// ServeHTTP regroups all data API handlers into one, while implementing the
-// http.Handler interface.
-func (data *API) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	req.URL.Path = strings.TrimPrefix(req.URL.Path, data.PathPrefix)
-
-	if req.URL.Path == "/controllable_unit" &&
-		req.Method == http.MethodPost &&
-		req.Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
-		data.controllableUnitLookupHandler(w, req)
-		return
+		mux:          mux,
 	}
 
-	data.postgRESTHandler(w, req)
+	// check for controllable unit lookup
+	mux.HandleFunc(
+		"POST /controllable_unit",
+		func(w http.ResponseWriter, req *http.Request) {
+			if req.Header.Get("Content-Type") == "application/x-www-form-urlencoded" {
+				data.controllableUnitLookupHandler(w, req)
+			} else {
+				data.postgRESTHandler(w, req)
+			}
+		},
+	)
+	// all other requests are forwarded to PostgREST
+	mux.HandleFunc("/", data.postgRESTHandler)
+
+	return data, nil
+}
+
+func (data *API) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	data.mux.ServeHTTP(w, req)
 }
 
 func (data *API) controllableUnitLookupHandler(
