@@ -66,6 +66,16 @@ export const LoginPage = () => {
               Sign in
             </Button>
           </CardActions>
+          <Box
+            sx={{
+              margin: "1em",
+              display: "flex",
+              justifyContent: "center",
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <a href={`/docs/privacy/`}>Privacy and cookies</a>
+          </Box>
         </Card>
       </Box>
     </Form>
