@@ -73,66 +73,70 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 }
 
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
-func (auth *API) TokenDecodingMiddleware(w http.ResponseWriter, req *http.Request) {
-	authHeader := req.Header.Get("Authorization")
-	sessionCookie, err := req.Cookie(sessionCookieKey)
+func (auth *API) TokenDecodingMiddleware(
+	next http.Handler,
+) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		authHeader := req.Header.Get("Authorization")
+		sessionCookie, err := req.Cookie(sessionCookieKey)
 
-	ctx := req.Context().(*gin.Context) //nolint:forcetypeassert
+		ctx := req.Context().(*gin.Context) //nolint:forcetypeassert
 
-	if authHeader == "" && err != nil {
-		// Empty auth header and missing cookie means anonymous user.
-		rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
-		ctx.Set(auth.ctxKey, rd)
-		return
-	}
+		if authHeader == "" && err != nil {
+			// Empty auth header and missing cookie means anonymous user.
+			rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
+			ctx.Set(auth.ctxKey, rd)
+			next.ServeHTTP(w, req)
+			return
+		}
 
-	// the authorization header takes presedence over the cookie
-	var tokenStr string
-	if authHeader != "" {
-		var found bool
-		tokenStr, found = strings.CutPrefix(authHeader, "Bearer ")
-		if !found {
+		// the authorization header takes precedence over the cookie
+		var tokenStr string
+		if authHeader != "" {
+			var found bool
+			tokenStr, found = strings.CutPrefix(authHeader, "Bearer ")
+			if !found {
+				w.Header().Set(
+					wwwAuthenticateKey,
+					wwwAuthenticate{
+						Error:            wwwInvalidRequest,
+						ErrorDescription: "missing Bearer in Authorization header",
+					}.String(),
+				)
+				writeJSON(w, http.StatusBadRequest, oauthErrorMessage{
+					Error:            oauthErrorInvalidRequest,
+					ErrorDescription: "missing Bearer in Authorization header",
+				})
+				return
+			}
+		} else { // no authorization header means we must use the cookie
+			tokenStr = sessionCookie.Value
+		}
+
+		token, err := auth.decodeTokenString(tokenStr)
+		if err != nil {
 			w.Header().Set(
 				wwwAuthenticateKey,
 				wwwAuthenticate{
-					Error:            wwwInvalidRequest,
-					ErrorDescription: "missing Bearer in Authorization header",
+					Error: wwwInvalidToken,
+					// TODO the error messages here is incorrect if we are using a session
+					ErrorDescription: "invalid bearer token",
 				}.String(),
 			)
-			ctx.Abort()
 			writeJSON(w, http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidRequest,
-				ErrorDescription: "missing Bearer in Authorization header",
+				ErrorDescription: "unable to verify and validate token",
 			})
 			return
 		}
-	} else { // no authorization header means we must use the cookie
-		tokenStr = sessionCookie.Value
-	}
 
-	token, err := auth.decodeTokenString(tokenStr)
-	if err != nil {
-		w.Header().Set(
-			wwwAuthenticateKey,
-			wwwAuthenticate{
-				Error: wwwInvalidToken,
-				// TODO the error messages here is incorrect if we are using a session
-				ErrorDescription: "invalid bearer token",
-			}.String(),
-		)
-		ctx.Abort()
-		writeJSON(w, http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "unable to verify and validate token",
-		})
-		return
-	}
-
-	rd := &RequestDetails{
-		role:       token.Role,
-		externalID: token.ExternalID,
-	}
-	ctx.Set(auth.ctxKey, rd)
+		rd := &RequestDetails{
+			role:       token.Role,
+			externalID: token.ExternalID,
+		}
+		ctx.Set(auth.ctxKey, rd)
+		next.ServeHTTP(w, req)
+	})
 }
 
 // writeJSON writes a JSON response with the given object as body.
