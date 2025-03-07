@@ -83,3 +83,6 @@ and support the processes in the value chain.$$;
 \i flex/service_providing_group_product_application_rls.sql
 \i flex/system_operator_product_type_rls.sql
 \i flex/technical_resource_rls.sql
+
+-- special operations
+\i flex/controllable_unit_lookup.sql
