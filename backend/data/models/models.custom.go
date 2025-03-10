@@ -47,11 +47,15 @@ func (q *Queries) ControllableUnitLookup(
 
 	for _, cuLookupInternal := range cuLookupInternalResult {
 		var technicalResources []MarshallableTechnicalResource
-		err = json.Unmarshal(
-			cuLookupInternal.TechnicalResources, &technicalResources,
-		)
-		if err != nil {
-			return nil, err //nolint:wrapcheck
+		if len(cuLookupInternal.TechnicalResources) == 0 { // no TR for this CU
+			technicalResources = []MarshallableTechnicalResource{}
+		} else {
+			err = json.Unmarshal(
+				cuLookupInternal.TechnicalResources, &technicalResources,
+			)
+			if err != nil {
+				return nil, err //nolint:wrapcheck
+			}
 		}
 
 		cuLookupResult = append(cuLookupResult, ControllableUnitLookup{
