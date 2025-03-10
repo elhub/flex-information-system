@@ -16,24 +16,22 @@ import (
 	"strings"
 )
 
-// API holds the data API handlers.
-type API struct {
-	PathPrefix   string
+// api gathers handlers for all endpoints of the data API.
+type api struct {
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
 	ctxKey       string
 	mux          *http.ServeMux
 }
 
-var _ http.Handler = &API{} //nolint:exhaustruct
+var _ http.Handler = &api{} //nolint:exhaustruct
 
-// NewAPI creates a new data.API instance.
-func NewAPI(
-	pathPrefix string,
+// NewAPIHandler returns a handler for all the data API endpoints.
+func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
-) (*API, error) {
+) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
 		return nil, fmt.Errorf("invalid PostgREST URL: %w", err)
@@ -41,8 +39,7 @@ func NewAPI(
 
 	mux := http.NewServeMux()
 
-	data := &API{
-		PathPrefix:   pathPrefix,
+	data := &api{
 		postgRESTURL: postgRESTURL,
 		db:           db,
 		ctxKey:       ctxKey,
@@ -66,12 +63,12 @@ func NewAPI(
 	return data, nil
 }
 
-func (data *API) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
 }
 
 //nolint:funlen
-func (data *API) controllableUnitLookupHandler(
+func (data *api) controllableUnitLookupHandler(
 	w http.ResponseWriter, req *http.Request,
 ) {
 	endUserIDStr := req.FormValue("end_user_id")
@@ -81,8 +78,12 @@ func (data *API) controllableUnitLookupHandler(
 		})
 		return
 	}
+
+	ctx := req.Context()
+
 	endUserID, err := strconv.Atoi(endUserIDStr)
 	if err != nil {
+		slog.InfoContext(ctx, "invalid end user id", "end_user_id", endUserIDStr, "error", err)
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "invalid end user id",
 		})
@@ -99,8 +100,6 @@ func (data *API) controllableUnitLookupHandler(
 		return
 	}
 
-	ctx := req.Context()
-
 	slog.InfoContext(
 		ctx, "will lookup controllable unit",
 		"end_user_id", endUserID,
@@ -110,6 +109,7 @@ func (data *API) controllableUnitLookupHandler(
 
 	conn, err := data.db.Acquire(ctx)
 	if err != nil {
+		slog.InfoContext(ctx, "could not acquire system connection", "error", err)
 		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
 			Message: "could not acquire system connection",
 		})
@@ -119,6 +119,7 @@ func (data *API) controllableUnitLookupHandler(
 	defer conn.Release()
 	tx, err := conn.Begin(ctx)
 	if err != nil {
+		slog.InfoContext(ctx, "could not start transaction", "error", err)
 		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
 			Message: "could not start transaction",
 		})
@@ -131,13 +132,12 @@ func (data *API) controllableUnitLookupHandler(
 		ctx, endUserID, businessID, accountingPointID,
 	)
 	if err != nil {
+		slog.InfoContext(ctx, "CU lookup query failed", "error", err)
 		writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 			Message: "controllable unit not found",
 		})
 		return
 	}
-
-	slog.InfoContext(ctx, "controllable unit found", "lookup_result", cuLookup)
 
 	w.Header().Set("Content-Type", "application/json")
 	body, _ := json.Marshal(cuLookup)
@@ -159,7 +159,7 @@ func writeErrorToResponseWriter(
 }
 
 // postgRESTHandler forwards the request to the PostgREST API.
-func (data *API) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
+func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting a single ID and subresource/history pages,
 	// which are not valid formats in PostgREST
 	regexIDSubHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)(/[a-z_]+)?$")

@@ -230,7 +230,9 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
 	slog.DebugContext(ctx, "Creating data API")
-	dataAPI, err := data.NewAPI("/api/v0", postgRESTUpstream, dbPool, requestDetailsContextKey)
+	dataAPIHandler, err := data.NewAPIHandler(
+		postgRESTUpstream, dbPool, requestDetailsContextKey,
+	)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
 	}
@@ -350,8 +352,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// data API endpoint
 	router.Match(
 		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		dataAPI.PathPrefix+"/*url",
-		WrapHandler(http.StripPrefix(dataAPI.PathPrefix, dataAPI)), //nolint:contextcheck
+		"/api/v0/*url",
+		WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
 	)
 
 	slog.InfoContext(ctx, "Running server on server on"+addr)
