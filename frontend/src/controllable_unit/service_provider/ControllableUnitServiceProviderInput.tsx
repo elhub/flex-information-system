@@ -40,9 +40,10 @@ export const ControllableUnitServiceProviderInput = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   if (identityLoading) return <>Loading...</>;
 
-  // if we came to this page from the CU list, we want to input a CU ID,
-  // instead of selecting it from a list of already readable CUs
-  const isCreateFromCUList: boolean = !!overrideRecord?.fromCUList;
+  // if we came to this page as a user who cannot see the CU, we want to input a
+  // CU ID, instead of using the autocomplete component that works from the list
+  // of readable CUs
+  const cuIDAsNumber: boolean = !!overrideRecord?.cuIDAsNumber;
 
   // priority to the restored values if they exist, otherwise normal edit mode
   const record = filterRecord({ ...actualRecord, ...overrideRecord });
@@ -69,7 +70,7 @@ export const ControllableUnitServiceProviderInput = () => {
           Basic information
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          {isCreateFromCUList ? (
+          {cuIDAsNumber ? (
             <NumberInput source="controllable_unit_id" />
           ) : (
             <AutocompleteReferenceInput
