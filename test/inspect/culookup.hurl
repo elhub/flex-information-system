@@ -71,32 +71,21 @@ HTTP 200
 [Asserts]
 jsonpath "$" count >= 1
 
-# create 2 other CUs and change to SP user
+# create another CU and change to SP user
 
 POST {{ api_url }}/controllable_unit
 Content-Type: application/json
 Cookie: __Host-flex_session={{ session }}
 {
-    "name": "TEST-CU-LOOKUP-1",
-    "accounting_point_id": "133700000000010007",
-    "regulation_direction": "both",
-    "maximum_available_capacity": 3.5
-}
-HTTP 201
-
-POST {{ api_url }}/controllable_unit
-Content-Type: application/json
-Cookie: __Host-flex_session={{ session }}
-{
-    "name": "TEST-CU-LOOKUP-2",
+    "name": "TEST-CU-LOOKUP",
     "accounting_point_id": "133700000000010007",
     "regulation_direction": "both",
     "maximum_available_capacity": 3.5
 }
 HTTP 201
 [Captures]
-cu2_id: jsonpath "$.id"
-cu2_business_id: jsonpath "$.business_id"
+cu_id: jsonpath "$.id"
+cu_business_id: jsonpath "$.business_id"
 
 DELETE {{ auth_url }}/assume
 Cookie: __Host-flex_session={{ session }}
@@ -113,7 +102,7 @@ session_sp: cookie "__Host-flex_session"
 
 # check SP cannot read CU yet, but can lookup and add a contract
 
-GET {{ api_url }}/controllable_unit/{{ cu2_id }}
+GET {{ api_url }}/controllable_unit/{{ cu_id }}
 Cookie: __Host-flex_session={{ session_sp }}
 HTTP 406
 
@@ -122,19 +111,19 @@ Content-Type: application/x-www-form-urlencoded
 Cookie: __Host-flex_session={{ session_sp }}
 [FormParams]
 end_user_id: 11
-business_id: {{ cu2_business_id }}
+business_id: {{ cu_business_id }}
 HTTP 200
 [Captures]
-cu2_id_by_lookup: jsonpath "$[0].id"
+cu_id_by_lookup: jsonpath "$[0].id"
 [Asserts]
 jsonpath "$" count == 1
-variable "cu2_id_by_lookup" == {{ cu2_id }}
+variable "cu_id_by_lookup" == {{ cu_id }}
 
 POST {{ api_url }}/controllable_unit_service_provider
 Content-Type: application/json
 Cookie: __Host-flex_session={{ session_sp }}
 {
-    "controllable_unit_id": {{ cu2_id_by_lookup }},
+    "controllable_unit_id": {{ cu_id_by_lookup }},
     "service_provider_id": 16,
     "contract_reference": "TEST-CONTRACT",
     "valid_from": "{{ window_ok_valid_from }}",
