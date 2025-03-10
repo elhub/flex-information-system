@@ -1,3 +1,5 @@
+LIQUIBASE_VERSION := "4.31.1"
+
 lint: pre-commit tbls-lint
 
 pre-commit:
@@ -88,11 +90,11 @@ connect user="postgres":
     pgcli -h localhost -p 5432 -d flex -u {{ user }}
 
 # initialize local development environment
-init: && _venv _plantuml_install _keypair
+init: && _venv _java_install _plantuml_install _liquibase_install _keypair
     rm -rf .venv .bin
     pre-commit install
 
-_plantuml_install:
+_java_install:
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -100,10 +102,32 @@ _plantuml_install:
     cd .bin
 
     # java
-    curl -L https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.13%2B11/OpenJDK17U-jre_x64_linux_hotspot_17.0.13_11.tar.gz | \
+    curl -L https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.14+7/OpenJDK17U-jre_x64_linux_hotspot_17.0.14_7.tar.gz | \
     tar --strip-components=1 --gzip --extract --directory=java
 
-    # plantuml
+_liquibase_install:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # if .bin/liquibase does not exist, download it
+    if [ ! -f .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase ]
+    then
+        mkdir -p \
+            .bin/liquibase-{{ LIQUIBASE_VERSION }} \
+            local/.bin
+
+        wget -c https://github.com/liquibase/liquibase/releases/download/v{{ LIQUIBASE_VERSION }}/liquibase-{{ LIQUIBASE_VERSION }}.tar.gz  -O - |
+            tar -xz -C .bin/liquibase-{{ LIQUIBASE_VERSION }}
+
+    else
+        echo "Liquibase {{ LIQUIBASE_VERSION }} already installed at .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase"
+    fi
+
+_plantuml_install:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    cd .bin
+
     PLANTUML_VERSION='1.2024.7'
     PLANTUML_JAR="plantuml-${PLANTUML_VERSION}.jar"
     if [ ! -d "${PLANTUML_JAR}" ]; then
@@ -173,6 +197,20 @@ build:
     rm -rf local/nginx/.html/*
     mkdir -p local/nginx/.html
     tar -xzf ./dist/dist.tar.gz -C ./local/nginx/.html/
+
+liquibase action='update':
+    #!/usr/bin/env bash
+    set -euo pipefail
+    JAVA_HOME=.bin/java \
+    LIQUIBASE_COMMAND_URL=jdbc:postgresql://localhost:5432/flex \
+    LIQUIBASE_COMMAND_USERNAME=postgres \
+    .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase \
+    --contexts=local \
+    --liquibaseSchemaName=flex \
+    --defaultSchemaName=flex \
+    --changeLogFile=db/changelog.sql \
+    --log-level=warning \
+    {{ action }}
 
 # generate documentation using mkdocs
 mkdocs: _venv _mkdocs
