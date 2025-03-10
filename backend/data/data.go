@@ -133,6 +133,8 @@ func (data *api) controllableUnitLookupHandler(
 	)
 	if err != nil {
 		slog.InfoContext(ctx, "CU lookup query failed", "error", err)
+	}
+	if err != nil || len(cuLookup) == 0 {
 		writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 			Message: "controllable unit not found",
 		})
