@@ -19,14 +19,22 @@ const Toolbar = () => {
 
   // launch lookup request
   const lookup = async () => {
+    const form = new URLSearchParams();
     const values = getValues();
+
+    // do not put undefined/null into the request body
+    for (const key in values) {
+      if (values[key]) {
+        form.append(key, values[key]);
+      }
+    }
 
     const response = await fetch(apiURL + "/controllable_unit", {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/x-www-form-urlencoded",
       }),
-      body: new URLSearchParams(values).toString(),
+      body: form.toString(),
     });
     const lookupResult = await response.json();
 
@@ -35,7 +43,9 @@ const Toolbar = () => {
       notify(lookupResult.message, { type: "error" });
     } else {
       // navigate to the dedicated show page for the result
-      // TODO
+      navigate("/controllable_unit_lookup_result", {
+        state: { result: lookupResult },
+      });
     }
   };
 

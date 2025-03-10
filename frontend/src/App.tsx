@@ -117,6 +117,7 @@ import { ServiceProviderProductApplicationCommentShow } from "./service_provider
 import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
 import { NoticeList } from "./notice/NoticeList";
 import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
+import { ControllableUnitLookupResult } from "./controllable_unit/lookup/ControllableUnitLookupResult";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1054,6 +1055,10 @@ export const App = () => (
           <Route
             path="/controllable_unit_lookup"
             element={<ControllableUnitLookupInput />}
+          />
+          <Route
+            path="/controllable_unit_lookup_result"
+            element={<ControllableUnitLookupResult />}
           />
         </CustomRoutes>
       </>

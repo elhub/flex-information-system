@@ -70,6 +70,7 @@ func (data *API) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
 }
 
+//nolint:funlen
 func (data *API) controllableUnitLookupHandler(
 	w http.ResponseWriter, req *http.Request,
 ) {
@@ -100,6 +101,13 @@ func (data *API) controllableUnitLookupHandler(
 
 	ctx := req.Context()
 
+	slog.InfoContext(
+		ctx, "will lookup controllable unit",
+		"end_user_id", endUserID,
+		"accounting_point_id", accountingPointID,
+		"business_id", businessID,
+	)
+
 	conn, err := data.db.Acquire(ctx)
 	if err != nil {
 		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
@@ -129,9 +137,11 @@ func (data *API) controllableUnitLookupHandler(
 		return
 	}
 
-	slog.InfoContext(ctx, "controllable unit found", "controllable_unit", cuLookup)
+	slog.InfoContext(ctx, "controllable unit found", "lookup_result", cuLookup)
 
-	http.Error(w, "Not implemented: CU lookup", http.StatusNotImplemented)
+	w.Header().Set("Content-Type", "application/json")
+	body, _ := json.Marshal(cuLookup)
+	w.Write(body)
 }
 
 // writeErrorToResponseWriter writes an error message as JSON in the response
