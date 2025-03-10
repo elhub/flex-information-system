@@ -17,7 +17,7 @@ The party names are set using the test user's first name and just appends
 the party abbreviation to it. For example, if the test user's first name is
 `John`, the party names will be `John SP`, `John SO`, etc.
 
-For the common test user, the party names are `Common SP`, `Common SO`, etc.
+For the common test user, the party names are `Felles SP`, `Felles SO`, etc.
 
 ## Generated GLN and GSRN
 
@@ -37,7 +37,7 @@ based on the last three digits of the SSN.
 
 The format of the GLN and GSRN is as follows:
 
-* **GLN** - `1337` + 3-digit SSN suffix + 5-digit increment + check digit
+* **GLN** - `13370` + 3-digit SSN suffix + 4-digit increment + check digit
 * **GSRN** - `13370000000` + 3-digit SSN suffix + 3-digit increment + check digit
 
 Use the input boxes to change the SSN suffix and the user's first name.
@@ -60,7 +60,7 @@ Your test data will show up below.
         return checkDigit;
     }
     function generateGLN(ssnSuffix, index) {
-        const base = '1337' + ssnSuffix.toString().padStart(3, '0') + index.toString().padStart(5, '0');
+        const base = '13370' + ssnSuffix.toString().padStart(3, '0') + index.toString().padStart(4, '0');
         return base + calculateCheckDigit(base);
     }
     function generateGSRN(ssnSuffix, index) {
@@ -68,7 +68,7 @@ Your test data will show up below.
         return base + calculateCheckDigit(base);
     }
 </script>
-<div id="testdata-gen" x-data="{ ssnSuffix: 0, userFirstname: 'Common', parties: ['BRP','EU','ES','MO','SO','SP','TP','FISO'] }">
+<div id="testdata-gen" x-data="{ ssnSuffix: 0, userFirstname: 'Felles', parties: ['BRP','EU','ES','MO','SO','SP','TP','FISO'] }">
     <style type="text/css">
         #testdata-gen input{
             background: transparent;
