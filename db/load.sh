@@ -14,7 +14,7 @@ fi
 db_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$db_dir"
 
-psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres -f pre.psql
+psql -X -v ON_ERROR_STOP=1 -d flex -U postgres -f pre.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_base.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_auth.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_structure.sql

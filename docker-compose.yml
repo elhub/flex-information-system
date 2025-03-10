@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres_pwd
       POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_DB: postgres
+      POSTGRES_DB: flex
     command: >-
       -c log_statement=all
       -c log_min_messages=debug1
