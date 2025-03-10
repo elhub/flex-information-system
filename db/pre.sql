@@ -1,8 +1,4 @@
 -- extensions
--- https://stackoverflow.com/questions/18389124/simulate-create-database-if-not-exists-for-postgresql
-SELECT 'CREATE DATABASE flex'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'flex')\gexec
-
 \connect flex
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -118,7 +114,7 @@ flex_third_party;
 -- https://postgrest.org/en/v12/how-tos/sql-user-management.html#sql-user-management
 -- authenticator is used by PostgREST to connect to the database
 DROP ROLE IF EXISTS postgrest_authenticator;
-CREATE ROLE postgrest_authenticator NOINHERIT LOGIN PASSWORD null;
+CREATE ROLE postgrest_authenticator NOINHERIT LOGIN PASSWORD NULL;
 
 GRANT flex_anonymous TO postgrest_authenticator;
 GRANT flex_balance_responsible_party TO postgrest_authenticator;
@@ -140,10 +136,10 @@ GRANT flex_internal_event_notification TO postgrest_authenticator;
 
 -- Replication user used by event worker
 DROP ROLE IF EXISTS flex_replication;
-CREATE ROLE flex_replication REPLICATION NOINHERIT LOGIN PASSWORD null;
+CREATE ROLE flex_replication REPLICATION NOINHERIT LOGIN PASSWORD NULL;
 
 -- migration user
-CREATE ROLE flex_migrator WITH NOINHERIT CREATEROLE LOGIN PASSWORD null;
+CREATE ROLE flex_migrator WITH NOINHERIT CREATEROLE LOGIN PASSWORD NULL;
 
 GRANT flex TO flex_migrator;
 GRANT api TO flex_migrator;
