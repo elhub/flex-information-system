@@ -23,7 +23,7 @@ export const NotificationList = () => {
       key="party_id"
       source="party_id"
       label="Current party only"
-      defaultValue={identity?.party_id}
+      defaultValue={identity?.partyID}
     />,
   ];
 
@@ -35,7 +35,7 @@ export const NotificationList = () => {
       filters={notificationFilters}
       filterDefaultValues={{
         acknowledged: false,
-        party_id: identity?.party_id,
+        party_id: identity?.partyID,
       }}
     >
       <Datagrid>

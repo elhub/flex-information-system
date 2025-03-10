@@ -50,7 +50,7 @@ export const ControllableUnitServiceProviderInput = () => {
 
   const isServiceProvider = identity?.role == "flex_service_provider";
   if (isServiceProvider) {
-    record["service_provider_id"] = identity?.party_id;
+    record.service_provider_id = identity?.partyID;
   }
 
   return (
