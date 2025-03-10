@@ -257,15 +257,18 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, err := auth.db.Begin(r.Context())
+	ctx := r.Context()
+
+	tx, err := auth.db.Begin(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not begin tx", err))
 		w.Write(body)
 		return
 	}
+	defer tx.Commit(ctx)
 
-	ui, err := models.GetCurrentUserInfo(r.Context(), tx)
+	ui, err := models.GetCurrentUserInfo(ctx, tx)
 	if err != nil {
 		slog.WarnContext(r.Context(), "error in get current user info", "error", err)
 		w.WriteHeader(http.StatusInternalServerError)
