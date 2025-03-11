@@ -20,7 +20,6 @@ import (
 type api struct {
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
-	ctxKey       string
 	mux          *http.ServeMux
 }
 
@@ -30,7 +29,6 @@ var _ http.Handler = &api{} //nolint:exhaustruct
 func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
-	ctxKey string,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -42,7 +40,6 @@ func NewAPIHandler(
 	data := &api{
 		postgRESTURL: postgRESTURL,
 		db:           db,
-		ctxKey:       ctxKey,
 		mux:          mux,
 	}
 

@@ -230,9 +230,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
 	slog.DebugContext(ctx, "Creating data API")
-	dataAPIHandler, err := data.NewAPIHandler(
-		postgRESTUpstream, dbPool, requestDetailsContextKey,
-	)
+	dataAPIHandler, err := data.NewAPIHandler(postgRESTUpstream, dbPool)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
 	}
