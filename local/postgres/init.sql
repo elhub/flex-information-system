@@ -3,7 +3,9 @@
 
 -- flex is the main role for the application
 -- it owns all the schemas and objects in the database
-CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD NULL;
+CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';
+-- the main schema must exist for liquibase to add its changelog tables
+CREATE SCHEMA flex AUTHORIZATION flex;
 
 -- authenticator is used by backend/postgREST to connect to the database
 CREATE ROLE flex_authenticator

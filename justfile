@@ -203,7 +203,8 @@ liquibase action='update':
     set -euo pipefail
     JAVA_HOME=.bin/java \
     LIQUIBASE_COMMAND_URL=jdbc:postgresql://localhost:5432/flex \
-    LIQUIBASE_COMMAND_USERNAME=postgres \
+    LIQUIBASE_COMMAND_USERNAME=flex \
+    LIQUIBASE_COMMAND_PASSWORD=flex_password \
     .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase \
     --contexts=local \
     --liquibaseSchemaName=flex \
