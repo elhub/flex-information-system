@@ -29,6 +29,8 @@ type api struct {
 var _ http.Handler = &api{} //nolint:exhaustruct
 
 // NewAPIHandler returns a handler for all the data API endpoints.
+//
+//nolint:funlen
 func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
@@ -59,8 +61,71 @@ func NewAPIHandler(
 			}
 		},
 	)
+
 	// all other requests are forwarded to PostgREST
-	mux.HandleFunc("/", data.postgRESTHandler)
+	mux.HandleFunc("/accounting_point", data.postgRESTHandler)
+	mux.HandleFunc("/accounting_point/", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit/", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_history", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_history/", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider/", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider_history", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider_history/", data.postgRESTHandler)
+	mux.HandleFunc("/entity", data.postgRESTHandler)
+	mux.HandleFunc("/entity/", data.postgRESTHandler)
+	mux.HandleFunc("/event", data.postgRESTHandler)
+	mux.HandleFunc("/event/", data.postgRESTHandler)
+	mux.HandleFunc("/identity", data.postgRESTHandler)
+	mux.HandleFunc("/identity/", data.postgRESTHandler)
+	mux.HandleFunc("/notice", data.postgRESTHandler)
+	mux.HandleFunc("/notice/", data.postgRESTHandler)
+	mux.HandleFunc("/notification", data.postgRESTHandler)
+	mux.HandleFunc("/notification/", data.postgRESTHandler)
+	mux.HandleFunc("/party", data.postgRESTHandler)
+	mux.HandleFunc("/party/", data.postgRESTHandler)
+	mux.HandleFunc("/party_history", data.postgRESTHandler)
+	mux.HandleFunc("/party_history/", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership/", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership_history", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership_history/", data.postgRESTHandler)
+	mux.HandleFunc("/product_type", data.postgRESTHandler)
+	mux.HandleFunc("/product_type/", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application/", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_history/", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment/", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment_history/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_history/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification_history/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership_history/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application/", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application_history/", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type/", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type_history", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type_history/", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource/", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource_history", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource_history/", data.postgRESTHandler)
+	mux.HandleFunc("/", data.notFoundHandler)
 
 	return data, nil
 }
@@ -329,4 +394,10 @@ func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 	rsp.Body = io.NopCloser(bytes.NewReader(body))
 	rsp.ContentLength = int64(len(body))
 	rsp.Header.Set("Content-Length", strconv.Itoa(len(body)))
+}
+
+func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
+	writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+		Message: "Not Found" + req.URL.Path,
+	})
 }
