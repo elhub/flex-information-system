@@ -64,7 +64,7 @@ func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
 }
 
-//nolint:funlen
+//nolint:funlen,cyclop
 func (data *api) controllableUnitLookupHandler(
 	w http.ResponseWriter, req *http.Request,
 ) {
@@ -80,7 +80,9 @@ func (data *api) controllableUnitLookupHandler(
 
 	endUserID, err := strconv.Atoi(endUserIDStr)
 	if err != nil {
-		slog.InfoContext(ctx, "invalid end user id", "end_user_id", endUserIDStr, "error", err)
+		slog.ErrorContext(
+			ctx, "invalid end user id", "end_user_id", endUserIDStr, "error", err,
+		)
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "invalid end user id",
 		})
@@ -106,21 +108,19 @@ func (data *api) controllableUnitLookupHandler(
 
 	conn, err := data.db.Acquire(ctx)
 	if err != nil {
-		slog.InfoContext(ctx, "could not acquire system connection", "error", err)
+		slog.ErrorContext(ctx, "could not acquire system connection", "error", err)
 		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
 			Message: "could not acquire system connection",
 		})
-		slog.ErrorContext(ctx, "could not acquire system connection", "error", err)
 		return
 	}
 	defer conn.Release()
 	tx, err := conn.Begin(ctx)
 	if err != nil {
-		slog.InfoContext(ctx, "could not start transaction", "error", err)
+		slog.ErrorContext(ctx, "could not start transaction", "error", err)
 		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
 			Message: "could not start transaction",
 		})
-		slog.ErrorContext(ctx, "could not start transaction", "error", err)
 		return
 	}
 	queries := models.New(tx)
@@ -129,7 +129,7 @@ func (data *api) controllableUnitLookupHandler(
 		ctx, endUserID, businessID, accountingPointID,
 	)
 	if err != nil {
-		slog.InfoContext(ctx, "CU lookup query failed", "error", err)
+		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
 	}
 	if err != nil || len(cuLookup) == 0 {
 		writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
@@ -138,8 +138,18 @@ func (data *api) controllableUnitLookupHandler(
 		return
 	}
 
+	body, err := MarshalControllableUnitLookupResult(cuLookup)
+	if err != nil {
+		slog.ErrorContext(
+			ctx, "could not marshal controllable unit lookup result", "error", err,
+		)
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "ill formed controllable unit lookup result",
+		})
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	body, _ := json.Marshal(cuLookup)
 	w.Write(body)
 }
 

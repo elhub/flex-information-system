@@ -9,7 +9,7 @@ import (
 	"context"
 )
 
-const controllableUnitLookupInternal = `-- name: ControllableUnitLookupInternal :many
+const controllableUnitLookup = `-- name: ControllableUnitLookup :many
 SELECT
     id::bigint,
     business_id::text,
@@ -22,7 +22,7 @@ FROM controllable_unit_lookup(
 )
 `
 
-type ControllableUnitLookupInternalRow struct {
+type ControllableUnitLookupRow struct {
 	ID                 int
 	BusinessID         string
 	Name               string
@@ -31,15 +31,15 @@ type ControllableUnitLookupInternalRow struct {
 	TechnicalResources []byte
 }
 
-func (q *Queries) ControllableUnitLookupInternal(ctx context.Context, endUserID int, businessID string, accountingPointID string) ([]ControllableUnitLookupInternalRow, error) {
-	rows, err := q.db.Query(ctx, controllableUnitLookupInternal, endUserID, businessID, accountingPointID)
+func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserID int, businessID string, accountingPointID string) ([]ControllableUnitLookupRow, error) {
+	rows, err := q.db.Query(ctx, controllableUnitLookup, endUserID, businessID, accountingPointID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ControllableUnitLookupInternalRow
+	var items []ControllableUnitLookupRow
 	for rows.Next() {
-		var i ControllableUnitLookupInternalRow
+		var i ControllableUnitLookupRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.BusinessID,

@@ -1,4 +1,4 @@
--- name: ControllableUnitLookupInternal :many
+-- name: ControllableUnitLookup :many
 SELECT
     id::bigint,
     business_id::text,
