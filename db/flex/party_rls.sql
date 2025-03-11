@@ -39,10 +39,3 @@ CREATE POLICY "PTY_FISO001" ON party
 FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
-
--- For security definer stuff in the auth schema
-GRANT SELECT ON party TO auth;
-CREATE POLICY party_auth ON party
-FOR SELECT
-TO auth
-USING (true);

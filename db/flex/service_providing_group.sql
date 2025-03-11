@@ -49,15 +49,15 @@ BEGIN
         -- TODO: update when a grid model is implemented
         -- ISO are currently the CSO of the CUs currently in the updated SPG
         SELECT DISTINCT ap.system_operator_id
-        FROM service_providing_group_membership spgm
-        INNER JOIN controllable_unit cu
+        FROM flex.service_providing_group_membership spgm
+        INNER JOIN flex.controllable_unit cu
         ON spgm.controllable_unit_id = cu.id
-        INNER JOIN accounting_point ap
+        INNER JOIN flex.accounting_point ap
         ON ap.business_id = cu.accounting_point_id
         WHERE spgm.service_providing_group_id = NEW.id
         AND spgm.valid_time_range @> current_timestamp
     LOOP
-        INSERT INTO service_providing_group_grid_prequalification (
+        INSERT INTO flex.service_providing_group_grid_prequalification (
             service_providing_group_id,
             impacted_system_operator_id,
             recorded_by
@@ -96,7 +96,7 @@ DECLARE
     system_operator_id bigint;
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM service_providing_group_membership spgm
+        SELECT 1 FROM flex.service_providing_group_membership spgm
         WHERE spgm.service_providing_group_id = NEW.id
         AND spgm.valid_time_range @> current_timestamp
     ) THEN

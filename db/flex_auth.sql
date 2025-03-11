@@ -1,13 +1,5 @@
 -- authn
-SET role TO flex;
 SET search_path TO flex, public;
-
--- allow "interface schemas" to use the "flex" schema
-GRANT USAGE ON SCHEMA flex TO api;
-GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA flex TO api; -- for security definer functions
-
-GRANT USAGE ON SCHEMA flex TO auth;
-GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA flex TO auth; -- for security definer functions
 
 -- grants for application roles
 GRANT USAGE ON SCHEMA flex TO flex_anonymous;

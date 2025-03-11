@@ -34,10 +34,3 @@ CREATE POLICY "ENT_FISO001" ON entity
 FOR SELECT
 TO flex_flexibility_information_system_operator
 USING (true);
-
--- For "security definer" functions
-GRANT SELECT ON entity TO auth;
-CREATE POLICY entity_auth ON entity
-FOR SELECT
-TO auth
-USING (true);

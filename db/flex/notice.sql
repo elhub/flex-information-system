@@ -56,8 +56,8 @@ CREATE OR REPLACE VIEW notice AS (
             'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract' AS type, -- noqa
             '/service_providing_group_membership/' || spgm.id AS source,
             null AS data -- noqa
-        FROM service_providing_group_membership AS spgm -- noqa
-            INNER JOIN service_providing_group AS spg
+        FROM flex.service_providing_group_membership AS spgm -- noqa
+            INNER JOIN flex.service_providing_group AS spg
                 ON spg.id = spgm.service_providing_group_id
         WHERE NOT EXISTS (
                 SELECT 1 FROM (
@@ -65,7 +65,7 @@ CREATE OR REPLACE VIEW notice AS (
                         controllable_unit_id,
                         service_provider_id,
                         range_agg(valid_time_range) AS valid_timeline
-                    FROM controllable_unit_service_provider
+                    FROM flex.controllable_unit_service_provider
                     WHERE lower(valid_time_range) IS NOT null
                     GROUP BY controllable_unit_id, service_provider_id
                 ) AS cusp

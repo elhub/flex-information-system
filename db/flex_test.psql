@@ -1,4 +1,3 @@
-SET role TO flex;
 SET search_path TO flex, public;
 
 \i test_data/test_data.sql

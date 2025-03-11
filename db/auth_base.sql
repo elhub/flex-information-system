@@ -1,5 +1,4 @@
 -- The auth schema is for the auth module
-SET role TO auth;
 SET search_path TO auth;
 
 -- grants for application roles
