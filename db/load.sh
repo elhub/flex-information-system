@@ -15,21 +15,21 @@ db_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$db_dir"
 
 psql -X -v ON_ERROR_STOP=1 -d flex -U postgres -f pre.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_base.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_auth.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_structure.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_field_level_authorization.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_reference_data.psql || true
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_test.psql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f flex_users.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_base.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_auth.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_structure.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_field_level_authorization.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_reference_data.psql || true
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_test.psql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_users.sql
 
 # api module
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f api_auth.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f api_structure.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f api_field_level_authorization.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_auth.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_structure.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_field_level_authorization.sql
 
 # auth module
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex_migrator -f auth_base.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f auth_base.sql
 
 # logical replication
 psql -X -v ON_ERROR_STOP=1 -d flex -U postgres -f replication.sql

@@ -1,4 +1,3 @@
-SET role TO flex;
 SET search_path TO flex, public;
 
 -- Set system identity

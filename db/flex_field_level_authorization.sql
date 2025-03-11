@@ -1,6 +1,5 @@
 -- AUTO-GENERATED FILE (just permissions-to-db)
 
-SET role TO flex;
 SET search_path TO flex, public;
 
 GRANT SELECT ON TABLE flex.entity

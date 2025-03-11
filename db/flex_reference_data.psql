@@ -1,7 +1,6 @@
 -- this file is just for copying data
 -- it will fail on consecutive runs
 -- TODO proper handling of data
-SET role TO flex;
 SET search_path TO flex, public;
 
 \COPY flex.business_id_type FROM './data/business_id_type.csv' WITH CSV HEADER;

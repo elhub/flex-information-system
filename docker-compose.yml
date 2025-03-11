@@ -12,6 +12,10 @@ services:
       POSTGRES_PASSWORD: postgres_pwd
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_DB: flex
+    volumes:
+      - type: bind
+        source: ${PWD}/local/postgres/init.sql
+        target: /docker-entrypoint-initdb.d/init.sql
     command: >-
       -c log_statement=all
       -c log_min_messages=debug1
@@ -25,7 +29,7 @@ services:
     environment:
       # https://postgrest.org/en/latest/references/configuration.html
       PGRST_DB_URI: >-
-        postgres://postgrest_authenticator:rest_password@db:5432/flex
+        postgres://flex_authenticator:authenticator_password@db:5432/flex
       PGRST_DB_ANON_ROLE: flex_anonymous
       PGRST_DB_PRE_REQUEST: "flex.pre_request"
       PGRST_DB_SCHEMAS: api

@@ -1,5 +1,4 @@
 SET search_path TO api;
-SET role TO api;
 
 GRANT USAGE ON SCHEMA api TO flex_anonymous;
 GRANT USAGE ON SCHEMA api TO flex_balance_responsible_party;

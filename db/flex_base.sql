@@ -4,7 +4,6 @@
 -- public
 \i pgjwt/pgjwt.sql
 
-SET role TO flex;
 SET search_path TO flex, public;
 
 \i temporal_tables/temporal_tables.sql

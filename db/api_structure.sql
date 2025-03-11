@@ -1,4 +1,3 @@
-SET role TO api;
 SET search_path TO api;
 
 -- views

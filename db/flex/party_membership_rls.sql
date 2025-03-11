@@ -36,10 +36,3 @@ CREATE POLICY "PTYM_COM003" ON party_membership_history
 FOR SELECT
 TO flex_common
 USING (party_id = current_party());
-
--- For "security definer" functions
-GRANT SELECT ON party_membership TO auth;
-CREATE POLICY party_membership_api ON party_membership
-FOR SELECT
-TO auth
-USING (true);

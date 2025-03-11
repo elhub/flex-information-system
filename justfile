@@ -35,9 +35,9 @@ load:
     ./db/load.sh
 
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
-        -c "ALTER USER postgrest_authenticator PASSWORD 'rest_password';"
+        -c "ALTER USER flex_authenticator PASSWORD 'authenticator_password';"
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
-        -c "ALTER USER flex_replication PASSWORD 'repl_password';"
+        -c "ALTER USER flex_replication PASSWORD 'replication_password';"
 
     for entity in test common;
     do
@@ -442,10 +442,8 @@ permissions-to-db:
     echo "-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
         | tee db/api_field_level_authorization.sql > db/flex_field_level_authorization.sql
 
-    echo "SET role TO api;" >> db/api_field_level_authorization.sql
     echo "SET search_path TO api;" >> db/api_field_level_authorization.sql
 
-    echo "SET role TO flex;" >> db/flex_field_level_authorization.sql
     echo "SET search_path TO flex, public;" >> db/flex_field_level_authorization.sql
 
 

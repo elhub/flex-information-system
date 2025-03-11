@@ -1,6 +1,5 @@
 -- AUTO-GENERATED FILE (just permissions-to-db)
 
-SET role TO api;
 SET search_path TO api;
 
 GRANT SELECT (
