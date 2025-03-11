@@ -3,6 +3,7 @@ package data
 import (
 	"bytes"
 	"encoding/json"
+	"flex/auth"
 	"flex/data/models"
 	"flex/pgpool"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -20,6 +22,7 @@ import (
 type api struct {
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
+	authCtxKey   string
 	mux          *http.ServeMux
 }
 
@@ -29,6 +32,7 @@ var _ http.Handler = &api{} //nolint:exhaustruct
 func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
+	authCtxKey string,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -41,6 +45,7 @@ func NewAPIHandler(
 		postgRESTURL: postgRESTURL,
 		db:           db,
 		mux:          mux,
+		authCtxKey:   authCtxKey,
 	}
 
 	// check for controllable unit lookup
@@ -68,6 +73,29 @@ func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 func (data *api) controllableUnitLookupHandler(
 	w http.ResponseWriter, req *http.Request,
 ) {
+	ctx := req.Context()
+
+	rd, err := auth.RequestDetailsFromContext(ctx, data.authCtxKey)
+	if err != nil {
+		slog.ErrorContext(ctx, "no request details in context", "error", err)
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "request is not authenticated",
+		})
+		return
+	}
+
+	allowedRoles := []string{
+		"flex_service_provider",
+		"flex_flexibility_information_system_operator",
+	}
+
+	if !slices.Contains(allowedRoles, rd.Role()) {
+		writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
+			Message: "user cannot perform this operation",
+		})
+		return
+	}
+
 	endUserIDStr := req.FormValue("end_user_id")
 	if endUserIDStr == "" {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
@@ -75,8 +103,6 @@ func (data *api) controllableUnitLookupHandler(
 		})
 		return
 	}
-
-	ctx := req.Context()
 
 	endUserID, err := strconv.Atoi(endUserIDStr)
 	if err != nil {
