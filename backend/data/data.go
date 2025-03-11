@@ -167,12 +167,6 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	url := req.URL.Path
 	query := req.URL.Query()
 	header := req.Header
-	authorizationHeader := header.Get("Authorization")
-	sessionCookie, err := req.Cookie("__Host-flex_session")
-
-	if authorizationHeader == "" && err == nil {
-		header.Set("Authorization", "Bearer "+sessionCookie.Value)
-	}
 
 	header.Set("Content-Type", "application/json")
 

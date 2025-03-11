@@ -111,6 +111,8 @@ func (auth *API) TokenDecodingMiddleware(
 			}
 		} else { // no authorization header means we must use the cookie
 			tokenStr = sessionCookie.Value
+			// but we set it for the non-auth endpoints to use
+			req.Header.Set("Authorization", "Bearer "+tokenStr)
 		}
 
 		token, err := auth.decodeTokenString(tokenStr)
