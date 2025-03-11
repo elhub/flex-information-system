@@ -34,17 +34,9 @@ FROM flex.controllable_unit AS cu
         ON ap.id = apeu.accounting_point_id
 WHERE apeu.valid_time_range @> current_timestamp
     AND apeu.end_user_id = l_end_user_id
-    -- one of these fields must not be empty
-    AND (
-        coalesce(l_business_id, '') <> ''
-        OR coalesce(l_accounting_point_id, '') <> ''
-    )
-    -- if a field is empty, ignore the filter
-    AND (
-        coalesce(l_business_id, '') = ''
-        OR cu.business_id = l_business_id::uuid
-    ) AND (
-        coalesce(l_accounting_point_id, '') = ''
-        OR cu.accounting_point_id = l_accounting_point_id
-    );
+    -- one of these fields must not be null
+    AND (l_business_id IS NOT NULL OR l_accounting_point_id IS NOT NULL)
+    -- if a field is null, ignore the filter
+    AND (coalesce(cu.business_id = l_business_id::uuid, true))
+    AND (coalesce(cu.accounting_point_id = l_accounting_point_id, true));
 $$;

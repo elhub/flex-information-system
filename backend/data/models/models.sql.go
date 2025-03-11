@@ -18,7 +18,10 @@ SELECT
     end_user_id::bigint,
     technical_resources::jsonb
 FROM controllable_unit_lookup(
-  $1, $2, $3
+  $1,
+  -- empty strings considered as missing values
+  nullif($2::text, ''),
+  nullif($3::text, '')
 )
 `
 

@@ -7,5 +7,8 @@ SELECT
     end_user_id::bigint,
     technical_resources::jsonb
 FROM controllable_unit_lookup(
-  @end_user_id, @business_id, @accounting_point_id
+  @end_user_id,
+  -- empty strings considered as missing values
+  nullif(@business_id::text, ''),
+  nullif(@accounting_point_id::text, '')
 );
