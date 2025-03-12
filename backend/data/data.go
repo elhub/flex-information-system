@@ -13,54 +13,140 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
-// API holds the data API handlers.
-type API struct {
+// api gathers handlers for all endpoints of the data API.
+type api struct {
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
 	ctxKey       string
+	mux          *http.ServeMux
 }
 
-// NewAPI creates a new data.API instance.
-func NewAPI(
+var _ http.Handler = &api{} //nolint:exhaustruct
+
+// NewAPIHandler returns a handler for all the data API endpoints.
+//
+//nolint:funlen
+func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
-) (*API, error) {
+) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
 		return nil, fmt.Errorf("invalid PostgREST URL: %w", err)
 	}
 
-	return &API{
+	mux := http.NewServeMux()
+
+	data := &api{
 		postgRESTURL: postgRESTURL,
 		db:           db,
+		mux:          mux,
 		ctxKey:       ctxKey,
-	}, nil
+	}
+
+	// all other requests are forwarded to PostgREST
+	mux.HandleFunc("/accounting_point", data.postgRESTHandler)
+	mux.HandleFunc("/accounting_point/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_history", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider_history", data.postgRESTHandler)
+	mux.HandleFunc("/controllable_unit_service_provider_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/entity", data.postgRESTHandler)
+	mux.HandleFunc("/entity/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/event", data.postgRESTHandler)
+	mux.HandleFunc("/event/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/identity", data.postgRESTHandler)
+	mux.HandleFunc("/identity/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/notice", data.postgRESTHandler)
+	mux.HandleFunc("/notice/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/notification", data.postgRESTHandler)
+	mux.HandleFunc("/notification/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/party", data.postgRESTHandler)
+	mux.HandleFunc("/party/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/party_history", data.postgRESTHandler)
+	mux.HandleFunc("/party_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership_history", data.postgRESTHandler)
+	mux.HandleFunc("/party_membership_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/product_type", data.postgRESTHandler)
+	mux.HandleFunc("/product_type/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_provider_product_application_comment_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_grid_prequalification_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_membership_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application_history", data.postgRESTHandler)
+	mux.HandleFunc("/service_providing_group_product_application_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type_history", data.postgRESTHandler)
+	mux.HandleFunc("/system_operator_product_type_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource_history", data.postgRESTHandler)
+	mux.HandleFunc("/technical_resource_history/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/", data.notFoundHandler)
+
+	return data, nil
 }
 
-// PostgRESTHandler forwards the request to the PostgREST API.
-func (data *API) PostgRESTHandler(ctx *gin.Context) {
+func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	data.mux.ServeHTTP(w, req)
+}
+
+// writeErrorToResponseWriter writes an error message as JSON in the response
+// writer.
+func writeErrorToResponseWriter(
+	w http.ResponseWriter, statusCode int, msg errorMessage,
+) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	if msg.Code == "" {
+		msg.Code = fmt.Sprintf("HTTP%d", statusCode)
+	}
+	body, _ := json.Marshal(msg)
+	w.Write(body)
+}
+
+// postgRESTHandler forwards the request to the PostgREST API.
+func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting a single ID and subresource/history pages,
 	// which are not valid formats in PostgREST
 	regexIDSubHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)(/[a-z_]+)?$")
 
-	url := ctx.Param("url")
-	query := ctx.Request.URL.Query()
-	header := ctx.Request.Header
-	authorizationHeader := header.Get("Authorization")
-	sessionCookie, err := ctx.Request.Cookie("__Host-flex_session")
-
-	if authorizationHeader == "" && err == nil {
-		header.Set("Authorization", "Bearer "+sessionCookie.Value)
-	}
+	ctx := req.Context()
+	url := req.URL.Path
+	query := req.URL.Query()
+	header := req.Header
 
 	header.Set("Content-Type", "application/json")
 
-	if ctx.Request.Method == http.MethodPost {
+	if req.Method == http.MethodPost {
 		// ensure singular when object is created
 		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
 		header.Set("Accept", "application/vnd.pgrst.object+json")
@@ -105,7 +191,7 @@ func (data *API) PostgRESTHandler(ctx *gin.Context) {
 	}
 	proxy.ModifyResponse = fixPostgRESTResponse
 
-	proxy.ServeHTTP(ctx.Writer, ctx.Request)
+	proxy.ServeHTTP(w, req)
 }
 
 // errorMessage is the format of PostgREST error messages.
@@ -129,7 +215,7 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 	// error => parse the body, modify it, and write it to the actual response
 	body, err := io.ReadAll(rsp.Body)
 	if err != nil {
-		writeErrorResponse(rsp, errorMessage{ //nolint:exhaustruct
+		writeErrorToResponse(rsp, errorMessage{ //nolint:exhaustruct
 			Code:    fmt.Sprintf("HTTP%d", http.StatusInternalServerError),
 			Message: "could not read PostgREST response body",
 		})
@@ -165,7 +251,7 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 		}
 	}
 
-	writeErrorResponse(rsp, errorBody)
+	writeErrorToResponse(rsp, errorBody)
 	slog.InfoContext(
 		rsp.Request.Context(),
 		"data API failure",
@@ -177,10 +263,16 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 	return nil
 }
 
-// writeErrorResponse writes an error message as JSON in the response body.
-func writeErrorResponse(rsp *http.Response, msg errorMessage) {
+// writeErrorToResponse writes an error message as JSON in the response body.
+func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 	body, _ := json.Marshal(msg)
 	rsp.Body = io.NopCloser(bytes.NewReader(body))
 	rsp.ContentLength = int64(len(body))
 	rsp.Header.Set("Content-Length", strconv.Itoa(len(body)))
+}
+
+func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
+	writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+		Message: "Not Found" + req.URL.Path,
+	})
 }

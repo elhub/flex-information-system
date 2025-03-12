@@ -10,7 +10,7 @@ sql:
         package: "models"
         out: "models"
         sql_package: "pgx/v5"
-        query_parameter_limit: 2
+        query_parameter_limit: 3
         # we use pointers as a direct way to represent nullability
         # instead of using pgtype wrapper types
         emit_pointers_for_null_types: true

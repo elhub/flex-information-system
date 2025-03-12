@@ -7,7 +7,6 @@ import (
 	"flex/auth/oidc"
 	"flex/data"
 	"flex/event"
-	"flex/internal/middleware"
 	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
@@ -38,6 +37,17 @@ const requestDetailsContextKey = "_flex/auth"
 func WrapHandlerFunc(f http.HandlerFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		f(ctx.Writer, ctx.Request.WithContext(ctx))
+	}
+}
+
+// WrapHandler is a helper function for wrapping http.Handler and returns a Gin handler.
+// Is is basically gin.WrapH but explicitly passing the full gin.Context.
+// This is necessary because we are using gin.Contexts in our middleware.
+// The intended use of this function is to allow us to move away fron gin-gonic/gin,
+// by (slowly?) rewriting our handlers to use the standard http.HandlerFunc signature.
+func WrapHandler(f http.Handler) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		f.ServeHTTP(ctx.Writer, ctx.Request.WithContext(ctx))
 	}
 }
 
@@ -223,7 +233,9 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
 
 	slog.DebugContext(ctx, "Creating data API")
-	dataAPI, err := data.NewAPI(postgRESTUpstream, dbPool, requestDetailsContextKey)
+	dataAPIHandler, err := data.NewAPIHandler(
+		postgRESTUpstream, dbPool, requestDetailsContextKey,
+	)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
 	}
@@ -340,14 +352,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authRouter.GET("/callback", authAPI.GetCallbackHandler)
 	authRouter.GET("/logout", authAPI.GetLogoutHandler)
 
-	// data API endpoints
-	// by default, just act as a reverse proxy for PostgREST
-	dataRouter := router.Group("/api/v0")
-	dataRouter.Use(WrapMiddleware(middleware.StripFinalSlash))
-	dataRouter.Match(
+	// data API endpoint
+	router.Match(
 		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		"/*url",
-		dataAPI.PostgRESTHandler,
+		"/api/v0/*url",
+		WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
 	)
 
 	slog.InfoContext(ctx, "Running server on server on"+addr)
