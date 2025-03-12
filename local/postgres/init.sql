@@ -26,7 +26,7 @@ CREATE ROLE flex_third_party WITH NOLOGIN;
 
 -- internal roles
 CREATE ROLE flex_replication
-WITH NOINHERIT LOGIN PASSWORD 'replication_password';
+WITH REPLICATION NOINHERIT LOGIN PASSWORD 'replication_password';
 CREATE ROLE flex_internal_event_notification WITH NOINHERIT NOLOGIN;
 
 
