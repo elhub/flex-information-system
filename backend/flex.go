@@ -7,6 +7,7 @@ import (
 	"flex/auth/oidc"
 	"flex/data"
 	"flex/event"
+	"flex/internal/middleware"
 	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
@@ -342,6 +343,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// data API endpoints
 	// by default, just act as a reverse proxy for PostgREST
 	dataRouter := router.Group("/api/v0")
+	dataRouter.Use(WrapMiddleware(middleware.StripFinalSlash))
 	dataRouter.Match(
 		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		"/*url",
