@@ -2,8 +2,6 @@
 --- Utilities / extensions
 --
 -- public
-\i pgjwt/pgjwt.sql
-
 SET search_path TO flex, public;
 
 \i temporal_tables/temporal_tables.sql
