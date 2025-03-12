@@ -20,8 +20,8 @@ const CreateCUSPButton = () => (
     component={Link}
     to={`/controllable_unit_service_provider/create`}
     startIcon={<AddIcon />}
-    // used to be able to input a CU ID instead of picking from the known CUs
-    state={{ fromCUList: true }}
+    // input a CU ID instead of from a list of names (cf. CUSP input)
+    state={{ cuIDAsNumber: true }}
     label="Manage another controllable unit"
   />
 );
