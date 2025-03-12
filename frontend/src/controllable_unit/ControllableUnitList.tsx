@@ -9,11 +9,13 @@ import {
   CreateButton,
   usePermissions,
   TopToolbar,
+  useGetIdentity,
 } from "react-admin";
 import { Datagrid } from "../auth";
 import { DateField } from "../datetime";
 import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 
 const CreateCUSPButton = () => (
   <Button
@@ -26,8 +28,23 @@ const CreateCUSPButton = () => (
   />
 );
 
+const CULookupButton = () => (
+  <Button
+    component={Link}
+    to="/controllable_unit/lookup"
+    startIcon={<TravelExploreIcon />}
+    label="Lookup a controllable unit"
+  />
+);
+
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions();
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
+  if (identityLoading) return <p>Loading...</p>;
+
+  const isSPOrFISO =
+    identity?.role == "flex_service_provider" ||
+    identity?.role == "flex_flexibility_information_system_operator";
 
   const controllableUnitFilters = [
     <SelectArrayInput
@@ -41,6 +58,7 @@ export const ControllableUnitList = () => {
 
   const ListActions = () => (
     <TopToolbar>
+      {isSPOrFISO && <CULookupButton />}
       {permissions.includes("controllable_unit_service_provider.create") && (
         <CreateCUSPButton />
       )}

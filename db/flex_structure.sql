@@ -32,6 +32,7 @@ and support the processes in the value chain.$$;
 \i flex/service_provider_product_application_comment.sql
 -- loaded last because it is built from the others
 \i flex/notice.sql
+\i flex/controllable_unit_lookup.sql
 
 -- history and audit
 
