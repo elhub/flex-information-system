@@ -4,12 +4,13 @@ This process is used to terminate the service provider contract for the
 controllable unit. The process can be triggered by one of the following:
 
 - Service contract revocation by end user.
-- Implicit contract termination triggered by the metering point administrator.
+- Implicit contract termination (e.g., move-out) triggered by the metering point
+  administrator.
 - Service contract termination by service provider.
 
 ## Prerequisites
 
-- The service provider acts on behalf of the end user in all cases.
+- The service provider acts on behalf of the end user in all scenarios.
 - In the event that FIS receives information about implicit contract
   termination, the end user's access to the affected controllable unit(s) will
   be revoked.
