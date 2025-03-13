@@ -29,7 +29,7 @@ party_membership;entity_id;;R;R;R;RC;R;R;R;R;R;
 party_membership;party_id;;R;R;R;RC;R;R;R;R;R;
 party_membership;recorded_at;;R;R;R;R;R;R;R;R;R;
 party_membership;recorded_by;;R;R;R;R;R;R;R;R;R;
-controllable_unit;;;;;;;;;;;;R
+controllable_unit;;;;;;L;;;L;;;R
 controllable_unit;id;;R;R;R;R;R;R;R;R;;
 controllable_unit;business_id;;R;R;R;R;R;R;R;R;;
 controllable_unit;name;;R;R;R;RCU;R;R;RCU;R;;

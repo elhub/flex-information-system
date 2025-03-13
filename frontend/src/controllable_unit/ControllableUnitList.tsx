@@ -9,7 +9,6 @@ import {
   CreateButton,
   usePermissions,
   TopToolbar,
-  useGetIdentity,
 } from "react-admin";
 import { Datagrid } from "../auth";
 import { DateField } from "../datetime";
@@ -39,12 +38,6 @@ const CULookupButton = () => (
 
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions();
-  const { data: identity, isLoading: identityLoading } = useGetIdentity();
-  if (identityLoading) return <p>Loading...</p>;
-
-  const isSPOrFISO =
-    identity?.role == "flex_service_provider" ||
-    identity?.role == "flex_flexibility_information_system_operator";
 
   const controllableUnitFilters = [
     <SelectArrayInput
@@ -58,7 +51,7 @@ export const ControllableUnitList = () => {
 
   const ListActions = () => (
     <TopToolbar>
-      {isSPOrFISO && <CULookupButton />}
+      {permissions.includes("controllable_unit.lookup") && <CULookupButton />}
       {permissions.includes("controllable_unit_service_provider.create") && (
         <CreateCUSPButton />
       )}
