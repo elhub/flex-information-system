@@ -2,6 +2,21 @@
 
 Notice to users about various issues or actions expected from them.
 
+## Context
+
+The following is an overview of notices with description and actions required
+from the responsible party.
+
+| Resource | Description | Responsible Party | Action required|
+| ---- | ----------- | ----------------- | ------- |
+| CU | Grid node ID missing | SO | Update CU with grid node |
+| CU | Grid validation status pending | SO | Update grid validation status |
+| CU | Grid validation status incomplete information | SP | Update missing information |
+| SP product application | Status requested | SO | Update application status |
+| SPG membership | Inconsistency: SPG contains expired CU(s) | SP | Validate and update SPG membership |
+| SPG product application | Status requested | SO | Update application status |
+| SPG grid prequalification | Status requested | SO | Update prequalification status |
+
 ## Relevant links
 
 * [API Documentation](/api/v0/#/operations/list_notice)
