@@ -44,6 +44,35 @@ func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Co
 	return items, nil
 }
 
+const getControllableUnitLookupNotificationRecipients = `-- name: GetControllableUnitLookupNotificationRecipients :many
+SELECT apeu.end_user_id::bigint
+FROM controllable_unit AS cu
+INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
+LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+WHERE cu.id = $1
+AND apeu.valid_time_range @> $2::timestamptz
+`
+
+func (q *Queries) GetControllableUnitLookupNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var apeu_end_user_id int
+		if err := rows.Scan(&apeu_end_user_id); err != nil {
+			return nil, err
+		}
+		items = append(items, apeu_end_user_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getControllableUnitServiceProviderCreateNotificationRecipients = `-- name: GetControllableUnitServiceProviderCreateNotificationRecipients :many
 
 SELECT unnest(

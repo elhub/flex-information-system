@@ -219,6 +219,9 @@ func (data *api) controllableUnitLookupHandler(
 		})
 		return
 	}
+	if err = tx.Commit(ctx); err != nil {
+		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
+	}
 
 	body, err := MarshalControllableUnitLookupResult(cuLookup)
 	if err != nil {
