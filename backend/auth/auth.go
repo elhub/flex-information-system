@@ -112,7 +112,8 @@ func (auth *API) TokenDecodingMiddleware(
 		} else { // no authorization header means we must use the cookie
 			tokenStr = sessionCookie.Value
 
-			// we set the header for cases where the request is sent to PostgREST
+			// we set the header for cases where the request is proxied or forwarded
+			// to another upstream service
 			req.Header.Set("Authorization", "Bearer "+tokenStr)
 		}
 
