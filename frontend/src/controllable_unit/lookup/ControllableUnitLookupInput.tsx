@@ -4,6 +4,7 @@ import {
   TextInput,
   Toolbar as RAToolbar,
   useNotify,
+  NumberInput,
 } from "react-admin";
 import { Typography, Stack, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +31,7 @@ const Toolbar = () => {
     }
 
     const response = await fetch(apiURL + "/controllable_unit/lookup", {
+      method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
       }),
@@ -79,7 +81,7 @@ export const ControllableUnitLookupInput = () => (
         Lookup a controllable unit
       </Typography>
       <Stack direction="row" flexWrap="wrap">
-        <TextInput
+        <NumberInput
           label="End user ID"
           source="end_user_id"
           validate={required()}

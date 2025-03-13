@@ -51,7 +51,7 @@ func NewAPIHandler(
 	}
 
 	// controllable unit lookup
-	mux.HandleFunc("GET /controllable_unit/lookup", data.controllableUnitLookupHandler)
+	mux.HandleFunc("POST /controllable_unit/lookup", data.controllableUnitLookupHandler)
 
 	// all other requests are forwarded to PostgREST
 	mux.HandleFunc("/accounting_point", data.postgRESTHandler)

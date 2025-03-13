@@ -2426,7 +2426,7 @@
             }
         },
         "/controllable_unit/lookup": {
-            "get": {
+            "post": {
                 "operationId": "call_controllable_unit_lookup",
                 "summary": "Call - Controllable unit lookup",
                 "description": "Lookup a controllable unit from end user ID and business and/or accounting point ID.",

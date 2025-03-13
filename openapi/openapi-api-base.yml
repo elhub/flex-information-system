@@ -169,7 +169,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/error_message'
   /controllable_unit/lookup:
-    get:
+    post:
       operationId: call_controllable_unit_lookup
       summary: Call - Controllable unit lookup
       description: >-
