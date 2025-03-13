@@ -161,9 +161,14 @@ func (data *api) controllableUnitLookupHandler(
 		return
 	}
 
-	businessID := ""
-	if cuLookupRequestBody.BusinessID != nil {
-		businessID = *cuLookupRequestBody.BusinessID
+	endUserBusinessID := ""
+	if cuLookupRequestBody.EndUserBusinessID != nil {
+		endUserBusinessID = *cuLookupRequestBody.EndUserBusinessID
+	}
+
+	controllableUnitBusinessID := ""
+	if cuLookupRequestBody.ControllableUnitBusinessID != nil {
+		controllableUnitBusinessID = *cuLookupRequestBody.ControllableUnitBusinessID
 	}
 
 	accountingPointID := ""
@@ -171,7 +176,14 @@ func (data *api) controllableUnitLookupHandler(
 		accountingPointID = *cuLookupRequestBody.AccountingPointID
 	}
 
-	if accountingPointID == "" && businessID == "" {
+	if endUserBusinessID == "" {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "missing end user business ID",
+		})
+		return
+	}
+
+	if accountingPointID == "" && controllableUnitBusinessID == "" {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "missing accounting point ID or business ID",
 		})
@@ -180,9 +192,9 @@ func (data *api) controllableUnitLookupHandler(
 
 	slog.InfoContext(
 		ctx, "will lookup controllable unit",
-		"end_user_id", cuLookupRequestBody.EndUserID,
+		"end_user_business_id", endUserBusinessID,
 		"accounting_point_id", accountingPointID,
-		"business_id", businessID,
+		"controllable_unit_business_id", controllableUnitBusinessID,
 	)
 
 	conn, err := data.db.Acquire(ctx)
@@ -206,8 +218,8 @@ func (data *api) controllableUnitLookupHandler(
 
 	cuLookup, err := queries.ControllableUnitLookup(
 		ctx,
-		cuLookupRequestBody.EndUserID,
-		businessID,
+		endUserBusinessID,
+		controllableUnitBusinessID,
 		accountingPointID,
 	)
 	if err != nil {

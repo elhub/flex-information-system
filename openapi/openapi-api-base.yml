@@ -52,14 +52,16 @@ components:
       description: Request schema for controllable unit lookup operations
       type: object
       properties:
-        end_user_id:
+        end_user_business_id:
           description: >-
-            The identifier of the current end user on the controllable unit(s)
+            The business ID of the current end user on the controllable unit(s)
             to lookup.
-          format: bigint
-          type: integer
-          example: 379
-        business_id:
+          format: text
+          type: string
+          # yamllint disable-line rule:line-length
+          pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+          example: '8d4bde5a-decc-4e92-9a04-a64f258921f0'
+        controllable_unit_business_id:
           description: The business ID of the controllable unit to lookup.
           format: text
           type: string

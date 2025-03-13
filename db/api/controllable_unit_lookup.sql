@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION controllable_unit_lookup(
-    l_end_user_id bigint,
-    l_business_id text,
+    l_end_user_business_id text,
+    l_controllable_unit_business_id text,
     l_accounting_point_id text
 )
 RETURNS TABLE (
@@ -15,6 +15,8 @@ SECURITY INVOKER
 LANGUAGE sql
 AS $$
     SELECT flex.controllable_unit_lookup(
-        l_end_user_id, l_business_id, l_accounting_point_id
+        l_end_user_business_id,
+        l_controllable_unit_business_id,
+        l_accounting_point_id
     );
 $$;

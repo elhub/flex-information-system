@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION controllable_unit_lookup(
-    l_end_user_id bigint,
-    l_business_id text,
+    l_end_user_business_id text,
+    l_controllable_unit_business_id text,
     l_accounting_point_id text
 )
 RETURNS TABLE (
@@ -49,12 +49,21 @@ BEGIN
                 ON cu.accounting_point_id = ap.business_id
             INNER JOIN flex.accounting_point_end_user AS apeu
                 ON ap.id = apeu.accounting_point_id
+            INNER JOIN flex.party AS p
+                ON apeu.end_user_id = p.id
         WHERE apeu.valid_time_range @> current_timestamp
-            AND apeu.end_user_id = l_end_user_id
+            AND p.business_id = l_end_user_business_id
             -- one of these fields must not be null
-            AND (l_business_id IS NOT NULL OR l_accounting_point_id IS NOT NULL)
+            AND (
+                l_controllable_unit_business_id IS NOT NULL
+                OR l_accounting_point_id IS NOT NULL)
             -- if a field is null, ignore the filter
-            AND (coalesce(cu.business_id = l_business_id::uuid, true))
+            AND (
+                coalesce(
+                    cu.business_id = l_controllable_unit_business_id::uuid,
+                    true
+                )
+            )
             AND (coalesce(cu.accounting_point_id = l_accounting_point_id, true))
     )
     LOOP

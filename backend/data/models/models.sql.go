@@ -34,8 +34,8 @@ type ControllableUnitLookupRow struct {
 	TechnicalResources []byte
 }
 
-func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserID int, businessID string, accountingPointID string) ([]ControllableUnitLookupRow, error) {
-	rows, err := q.db.Query(ctx, controllableUnitLookup, endUserID, businessID, accountingPointID)
+func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserBusinessID string, controllableUnitBusinessID string, accountingPointID string) ([]ControllableUnitLookupRow, error) {
+	rows, err := q.db.Query(ctx, controllableUnitLookup, endUserBusinessID, controllableUnitBusinessID, accountingPointID)
 	if err != nil {
 		return nil, err
 	}

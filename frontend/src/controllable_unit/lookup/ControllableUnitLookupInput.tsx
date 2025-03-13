@@ -4,7 +4,6 @@ import {
   TextInput,
   Toolbar as RAToolbar,
   useNotify,
-  NumberInput,
 } from "react-admin";
 import { Typography, Stack, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -81,13 +80,16 @@ export const ControllableUnitLookupInput = () => (
         Lookup a controllable unit
       </Typography>
       <Stack direction="row" flexWrap="wrap">
-        <NumberInput
-          label="End user ID"
-          source="end_user_id"
+        <TextInput
+          label="End user business ID"
+          source="end_user_business_id"
           validate={required()}
         />
         <TextInput label="Accounting point ID" source="accounting_point_id" />
-        <TextInput label="Business ID" source="business_id" />
+        <TextInput
+          label="Controllable unit business ID"
+          source="controllable_unit_business_id"
+        />
       </Stack>
     </Stack>
   </SimpleForm>

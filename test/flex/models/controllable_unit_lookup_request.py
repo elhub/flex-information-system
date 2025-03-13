@@ -13,34 +13,33 @@ class ControllableUnitLookupRequest:
     """Request schema for controllable unit lookup operations
 
     Attributes:
-        end_user_id (int): The identifier of the current end user on the controllable unit(s) to lookup. Example: 379.
-        business_id (Union[Unset, str]): The business ID of the controllable unit to lookup. Example:
+        end_user_business_id (Union[Unset, str]): The business ID of the current end user on the controllable unit(s) to
+            lookup. Example: 8d4bde5a-decc-4e92-9a04-a64f258921f0.
+        controllable_unit_business_id (Union[Unset, str]): The business ID of the controllable unit to lookup. Example:
             53919b79-876f-4dad-8bde-b29368367604.
         accounting_point_id (Union[Unset, str]): The accounting point ID of the controllable unit(s) to lookup. `GSRN`
             metering point id. Example: 709000000000000057.
     """
 
-    end_user_id: int
-    business_id: Union[Unset, str] = UNSET
+    end_user_business_id: Union[Unset, str] = UNSET
+    controllable_unit_business_id: Union[Unset, str] = UNSET
     accounting_point_id: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        end_user_id = self.end_user_id
+        end_user_business_id = self.end_user_business_id
 
-        business_id = self.business_id
+        controllable_unit_business_id = self.controllable_unit_business_id
 
         accounting_point_id = self.accounting_point_id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "end_user_id": end_user_id,
-            }
-        )
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
+        field_dict.update({})
+        if end_user_business_id is not UNSET:
+            field_dict["end_user_business_id"] = end_user_business_id
+        if controllable_unit_business_id is not UNSET:
+            field_dict["controllable_unit_business_id"] = controllable_unit_business_id
         if accounting_point_id is not UNSET:
             field_dict["accounting_point_id"] = accounting_point_id
 
@@ -49,15 +48,15 @@ class ControllableUnitLookupRequest:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        end_user_id = d.pop("end_user_id")
+        end_user_business_id = d.pop("end_user_business_id", UNSET)
 
-        business_id = d.pop("business_id", UNSET)
+        controllable_unit_business_id = d.pop("controllable_unit_business_id", UNSET)
 
         accounting_point_id = d.pop("accounting_point_id", UNSET)
 
         controllable_unit_lookup_request = cls(
-            end_user_id=end_user_id,
-            business_id=business_id,
+            end_user_business_id=end_user_business_id,
+            controllable_unit_business_id=controllable_unit_business_id,
             accounting_point_id=accounting_point_id,
         )
 
