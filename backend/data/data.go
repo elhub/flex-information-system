@@ -197,16 +197,7 @@ func (data *api) controllableUnitLookupHandler(
 		"controllable_unit_business_id", controllableUnitBusinessID,
 	)
 
-	conn, err := data.db.Acquire(ctx)
-	if err != nil {
-		slog.ErrorContext(ctx, "could not acquire system connection", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "could not acquire system connection",
-		})
-		return
-	}
-	defer conn.Release()
-	tx, err := conn.Begin(ctx)
+	tx, err := data.db.Begin(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "could not start transaction", "error", err)
 		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
