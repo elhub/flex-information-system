@@ -94,8 +94,6 @@ components:
             description: The business ID of the controllable unit.
             format: text
             type: string
-            # yamllint disable-line rule:line-length
-            pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
             example: '53919b79-876f-4dad-8bde-b29368367604'
           name:
             description: The name of the controllable unit.

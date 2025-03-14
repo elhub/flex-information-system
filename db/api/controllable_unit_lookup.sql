@@ -51,8 +51,10 @@ BEGIN
                 ON ap.id = apeu.accounting_point_id
             INNER JOIN flex.party AS p
                 ON apeu.end_user_id = p.id
+            INNER JOIN flex.entity AS e
+                ON p.entity_id = e.id
         WHERE apeu.valid_time_range @> current_timestamp
-            AND p.business_id = l_end_user_business_id
+            AND e.business_id = l_end_user_business_id
             -- one of these fields must not be null
             AND (
                 l_controllable_unit_business_id IS NOT NULL

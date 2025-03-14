@@ -9,7 +9,7 @@ from flex.models import (
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
-    PartyResponse,
+    EntityResponse,
     ErrorMessage,
 )
 from flex.api.controllable_unit import (
@@ -20,8 +20,8 @@ from flex.api.controllable_unit import (
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
-from flex.api.party import (
-    read_party,
+from flex.api.entity import (
+    read_entity,
 )
 from typing import cast
 import pytest
@@ -36,11 +36,11 @@ def sts():
 def test_cu_lookup(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    eu_party = read_party.sync(
+    eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST, "EU"))["party_id"],
+        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
     )
-    assert isinstance(eu_party, PartyResponse)
+    assert isinstance(eu_entity, EntityResponse)
 
     # various cases of ill formed request / CU not found
 
@@ -54,7 +54,7 @@ def test_cu_lookup(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_party.business_id,
+            end_user_business_id=eu_entity.business_id,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -63,7 +63,7 @@ def test_cu_lookup(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_party.business_id,
+            end_user_business_id=eu_entity.business_id,
             accounting_point_id="12359120doesnotexist",
         ),
     )
@@ -73,7 +73,7 @@ def test_cu_lookup(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_party.business_id,
+            end_user_business_id=eu_entity.business_id,
             controllable_unit_business_id="12359120doesnotexist",
         ),
     )
@@ -83,7 +83,7 @@ def test_cu_lookup(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_party.business_id,
+            end_user_business_id=eu_entity.business_id,
             accounting_point_id="12359120doesnotexist",
             controllable_unit_business_id="12359120doesnotexist",
         ),
@@ -96,7 +96,7 @@ def test_cu_lookup(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_party.business_id,
+            end_user_business_id=eu_entity.business_id,
             accounting_point_id="133700000000010007",
         ),
     )
@@ -127,7 +127,7 @@ def test_cu_lookup(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_sp,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_party.business_id,
+            end_user_business_id=eu_entity.business_id,
             controllable_unit_business_id=cu.business_id,
         ),
     )
