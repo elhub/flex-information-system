@@ -224,6 +224,10 @@ func (data *api) controllableUnitLookupHandler(
 	}
 	if err = tx.Commit(ctx); err != nil {
 		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "could not notify end user",
+		})
+		return
 	}
 
 	reformattedCULookup, err := ReformatControllableUnitLookupResult(cuLookup)
