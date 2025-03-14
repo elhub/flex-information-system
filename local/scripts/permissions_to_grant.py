@@ -79,6 +79,10 @@ for row in csv_iterator:
             }
 
         for grant in row[party_type]:
+            if grant not in full_action_names:
+                # skip non-CRUD authorisation (not translated into grants)
+                continue
+
             if grant == "R" and resource in history_enabled:
                 grants[resource_history][party_type]["SELECT"].append(column)
                 if column in history_column_mapping:

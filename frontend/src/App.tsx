@@ -116,6 +116,8 @@ import { ServiceProviderProductApplicationCommentInput } from "./service_provide
 import { ServiceProviderProductApplicationCommentShow } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentShow";
 import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
 import { NoticeList } from "./notice/NoticeList";
+import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
+import { ControllableUnitLookupResult } from "./controllable_unit/lookup/ControllableUnitLookupResult";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -452,6 +454,12 @@ export const App = () => (
             }
             recordRepresentation="name"
           >
+            {/* lookup */}
+            <Route path="lookup" element={<ControllableUnitLookupInput />} />
+            <Route
+              path="lookup/result"
+              element={<ControllableUnitLookupResult />}
+            />
             {/* controllable unit history */}
             <Route
               path=":controllable_unit_id/history"

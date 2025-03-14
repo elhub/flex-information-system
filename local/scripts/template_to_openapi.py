@@ -420,9 +420,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     # generate global tags for each resource in the resource file
 
     for resource in resources:
-        base["tags"].append(
-            {"name": resource["id"], "description": resource["summary"]}
-        )
+        if not any(tag["name"] == resource["id"] for tag in base["tags"]):
+            base["tags"].append(
+                {"name": resource["id"], "description": resource["summary"]}
+            )
 
     # ---- SCHEMAS (under components->schemas) ----
 

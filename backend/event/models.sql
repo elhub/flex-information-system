@@ -220,3 +220,15 @@ AND sppach.visibility = 'any_party';
 INSERT INTO notification (event_id, party_id)
 VALUES (@event_id, @party_id)
 ON CONFLICT DO NOTHING;
+
+-- name: GetControllableUnitLookupNotificationRecipients :many
+SELECT apeu.end_user_id::bigint
+FROM controllable_unit AS cu
+INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
+INNER JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+WHERE cu.id = @resource_id
+AND apeu.valid_time_range @> @recorded_at::timestamptz;
+-- not using history on CU because AP ID is stable
+-- not using history on AP because business ID is stable
+-- not using history on APEU because we take the latest knowledge we have to
+--   identify who to notify

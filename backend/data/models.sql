@@ -1,4 +1,14 @@
--- TODO: turn into a proper request once we override one endpoint
--- (this file cannot be empty for sqlc to work properly)
--- name: Get1 :one
-SELECT 1;
+-- name: ControllableUnitLookup :many
+SELECT
+    id::bigint,
+    business_id::text,
+    name::text,
+    accounting_point_id::text,
+    end_user_id::bigint,
+    technical_resources::jsonb
+FROM controllable_unit_lookup(
+  @end_user_business_id,
+  -- empty strings considered as missing values
+  nullif(@controllable_unit_business_id::text, ''),
+  nullif(@accounting_point_id::text, '')
+);

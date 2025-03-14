@@ -9,15 +9,54 @@ import (
 	"context"
 )
 
-const get1 = `-- name: Get1 :one
-SELECT 1
+const controllableUnitLookup = `-- name: ControllableUnitLookup :many
+SELECT
+    id::bigint,
+    business_id::text,
+    name::text,
+    accounting_point_id::text,
+    end_user_id::bigint,
+    technical_resources::jsonb
+FROM controllable_unit_lookup(
+  $1,
+  -- empty strings considered as missing values
+  nullif($2::text, ''),
+  nullif($3::text, '')
+)
 `
 
-// TODO: turn into a proper request once we override one endpoint
-// (this file cannot be empty for sqlc to work properly)
-func (q *Queries) Get1(ctx context.Context) (int32, error) {
-	row := q.db.QueryRow(ctx, get1)
-	var column_1 int32
-	err := row.Scan(&column_1)
-	return column_1, err
+type ControllableUnitLookupRow struct {
+	ID                 int
+	BusinessID         string
+	Name               string
+	AccountingPointID  string
+	EndUserID          int
+	TechnicalResources []byte
+}
+
+func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserBusinessID string, controllableUnitBusinessID string, accountingPointID string) ([]ControllableUnitLookupRow, error) {
+	rows, err := q.db.Query(ctx, controllableUnitLookup, endUserBusinessID, controllableUnitBusinessID, accountingPointID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []ControllableUnitLookupRow
+	for rows.Next() {
+		var i ControllableUnitLookupRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.BusinessID,
+			&i.Name,
+			&i.AccountingPointID,
+			&i.EndUserID,
+			&i.TechnicalResources,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
