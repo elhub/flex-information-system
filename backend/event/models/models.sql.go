@@ -48,7 +48,7 @@ const getControllableUnitLookupNotificationRecipients = `-- name: GetControllabl
 SELECT apeu.end_user_id::bigint
 FROM controllable_unit AS cu
 INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
-LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+INNER JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
 WHERE cu.id = $1
 AND apeu.valid_time_range @> $2::timestamptz
 `
