@@ -10,7 +10,8 @@ import { DateField } from "../datetime";
 import { QuickFilter } from "../QuickFilter";
 
 export const NotificationList = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity, isPending } = useGetIdentity();
+  if (isPending) return <p>Loading...</p>;
 
   const notificationFilters = [
     <QuickFilter
