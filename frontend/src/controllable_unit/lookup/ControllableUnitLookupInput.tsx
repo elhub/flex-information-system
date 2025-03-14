@@ -79,17 +79,11 @@ export const ControllableUnitLookupInput = () => (
       <Typography variant="h6" gutterBottom>
         Lookup a controllable unit
       </Typography>
+      <p>Mandatory : end user and at least one of the other fields</p>
       <Stack direction="row" flexWrap="wrap">
-        <TextInput
-          label="End user business ID"
-          source="end_user_business_id"
-          validate={required()}
-        />
-        <TextInput label="Accounting point ID" source="accounting_point_id" />
-        <TextInput
-          label="Controllable unit business ID"
-          source="controllable_unit_business_id"
-        />
+        <TextInput source="end_user" validate={required()} />
+        <TextInput source="accounting_point" />
+        <TextInput source="controllable_unit" />
       </Stack>
     </Stack>
   </SimpleForm>

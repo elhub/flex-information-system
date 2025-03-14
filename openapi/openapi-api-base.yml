@@ -52,23 +52,19 @@ components:
       description: Request schema for controllable unit lookup operations
       type: object
       properties:
-        end_user_business_id:
-          description: >-
-            The business ID of the current end user on the controllable unit(s)
-            to lookup.
+        end_user:
+          description: Birth number or organisation number of the end user.
           format: text
           type: string
-          # yamllint disable-line rule:line-length
-          pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
           example: '8d4bde5a-decc-4e92-9a04-a64f258921f0'
-        controllable_unit_business_id:
+        controllable_unit:
           description: The business ID of the controllable unit to lookup.
           format: text
           type: string
           # yamllint disable-line rule:line-length
           pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
           example: '53919b79-876f-4dad-8bde-b29368367604'
-        accounting_point_id:
+        accounting_point:
           description: >-
             The accounting point ID of the controllable unit(s) to lookup.
             `GSRN` metering point id.
@@ -77,7 +73,7 @@ components:
           pattern: '^[1-9][0-9]{17}$'
           example: '709000000000000057'
       required:
-        - end_user_id
+        - end_user
     controllable_unit_lookup_response:
       summary: Controllable unit lookup
       description: Response schema for controllable unit lookup operations

@@ -8,9 +8,9 @@ import (
 // controllableUnitLookupRequest is the expected format for the body of the
 // controllable unit lookup operation.
 type controllableUnitLookupRequest struct {
-	EndUserBusinessID          *string `json:"end_user_business_id,omitempty"`
-	ControllableUnitBusinessID *string `json:"controllable_unit_business_id,omitempty"`
-	AccountingPointID          *string `json:"accounting_point_id,omitempty"`
+	EndUserBusinessID          *string `json:"end_user,omitempty"`
+	ControllableUnitBusinessID *string `json:"controllable_unit,omitempty"`
+	AccountingPointID          *string `json:"accounting_point,omitempty"`
 }
 
 // technicalResource represents technical resource information as part of the

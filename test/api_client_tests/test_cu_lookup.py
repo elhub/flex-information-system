@@ -46,15 +46,8 @@ def test_cu_lookup(sts):
 
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
-        body=ControllableUnitLookupRequest(),
-    )
-    assert isinstance(e, ErrorMessage)
-    assert e.code == "HTTP400"
-
-    e = call_controllable_unit_lookup.sync(
-        client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_entity.business_id,
+            end_user=str(eu_entity.business_id),
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -63,8 +56,8 @@ def test_cu_lookup(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_entity.business_id,
-            accounting_point_id="12359120doesnotexist",
+            end_user=str(eu_entity.business_id),
+            accounting_point="12359120doesnotexist",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -73,8 +66,8 @@ def test_cu_lookup(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_entity.business_id,
-            controllable_unit_business_id="12359120doesnotexist",
+            end_user=str(eu_entity.business_id),
+            controllable_unit="12359120doesnotexist",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -83,9 +76,9 @@ def test_cu_lookup(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_entity.business_id,
-            accounting_point_id="12359120doesnotexist",
-            controllable_unit_business_id="12359120doesnotexist",
+            end_user=str(eu_entity.business_id),
+            accounting_point="12359120doesnotexist",
+            controllable_unit="12359120doesnotexist",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -96,8 +89,8 @@ def test_cu_lookup(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_entity.business_id,
-            accounting_point_id="133700000000010007",
+            end_user=str(eu_entity.business_id),
+            accounting_point="133700000000010007",
         ),
     )
     assert isinstance(cul, list)
@@ -127,8 +120,8 @@ def test_cu_lookup(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_sp,
         body=ControllableUnitLookupRequest(
-            end_user_business_id=eu_entity.business_id,
-            controllable_unit_business_id=cu.business_id,
+            end_user=str(eu_entity.business_id),
+            controllable_unit=cu.business_id,
         ),
     )
     assert isinstance(cul, list)
