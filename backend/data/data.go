@@ -226,10 +226,10 @@ func (data *api) controllableUnitLookupHandler(
 		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
 	}
 
-	body, err := MarshalControllableUnitLookupResult(cuLookup)
+	reformattedCULookup, err := ReformatControllableUnitLookupResult(cuLookup)
 	if err != nil {
 		slog.ErrorContext(
-			ctx, "could not marshal controllable unit lookup result", "error", err,
+			ctx, "could not reformat controllable unit lookup result", "error", err,
 		)
 		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
 			Message: "ill formed controllable unit lookup result",
@@ -238,6 +238,7 @@ func (data *api) controllableUnitLookupHandler(
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	body, _ := json.Marshal(reformattedCULookup)
 	w.Write(body)
 }
 

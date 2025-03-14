@@ -21,9 +21,9 @@ type technicalResource struct {
 	Details *string `json:"details,omitempty"`
 }
 
-// controllableUnitLookup is the format of a valid response in the controllable
+// ControllableUnitLookup is the format of a valid response in the controllable
 // unit lookup operation.
-type controllableUnitLookup struct {
+type ControllableUnitLookup struct {
 	ID                 int                 `json:"id"`
 	BusinessID         string              `json:"business_id"`
 	Name               string              `json:"name"`
@@ -32,12 +32,13 @@ type controllableUnitLookup struct {
 	TechnicalResources []technicalResource `json:"technical_resources"`
 }
 
-// MarshalControllableUnitLookupResult serialises the result of the database
-// controllable unit lookup operation into JSON.
-func MarshalControllableUnitLookupResult(
+// ReformatControllableUnitLookupResult turns the raw result of the
+// controllable unit lookup operation into the response format expected in the
+// API specification.
+func ReformatControllableUnitLookupResult(
 	cuLookup []models.ControllableUnitLookupRow,
-) ([]byte, error) {
-	marshallableCULookupResult := []controllableUnitLookup{}
+) ([]ControllableUnitLookup, error) {
+	reformattedCULookupResult := []ControllableUnitLookup{}
 
 	for _, cuLookupRow := range cuLookup {
 		var technicalResources []technicalResource
@@ -52,9 +53,9 @@ func MarshalControllableUnitLookupResult(
 			}
 		}
 
-		marshallableCULookupResult = append(
-			marshallableCULookupResult,
-			controllableUnitLookup{
+		reformattedCULookupResult = append(
+			reformattedCULookupResult,
+			ControllableUnitLookup{
 				ID:                 cuLookupRow.ID,
 				BusinessID:         cuLookupRow.BusinessID,
 				Name:               cuLookupRow.Name,
@@ -65,6 +66,5 @@ func MarshalControllableUnitLookupResult(
 		)
 	}
 
-	json, _ := json.Marshal(marshallableCULookupResult)
-	return json, nil
+	return reformattedCULookupResult, nil
 }
