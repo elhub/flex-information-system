@@ -3,6 +3,8 @@ package data
 import (
 	"bytes"
 	"encoding/json"
+	"flex/auth"
+	"flex/data/models"
 	"flex/pgpool"
 	"fmt"
 	"io"
@@ -11,6 +13,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -46,6 +49,9 @@ func NewAPIHandler(
 		mux:          mux,
 		ctxKey:       ctxKey,
 	}
+
+	// controllable unit lookup
+	mux.HandleFunc("POST /controllable_unit/lookup", data.controllableUnitLookupHandler)
 
 	// all other requests are forwarded to PostgREST
 	mux.HandleFunc("/accounting_point", data.postgRESTHandler)
@@ -117,6 +123,127 @@ func NewAPIHandler(
 
 func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
+}
+
+//nolint:funlen,cyclop
+func (data *api) controllableUnitLookupHandler(
+	w http.ResponseWriter, req *http.Request,
+) {
+	ctx := req.Context()
+
+	rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
+	if err != nil {
+		slog.ErrorContext(ctx, "no request details in context", "error", err)
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "request is not authenticated",
+		})
+		return
+	}
+
+	allowedRoles := []string{
+		"flex_service_provider",
+		"flex_flexibility_information_system_operator",
+	}
+
+	if !slices.Contains(allowedRoles, rd.Role()) {
+		writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
+			Message: "user cannot perform this operation",
+		})
+		return
+	}
+
+	var cuLookupRequestBody controllableUnitLookupRequest
+	if err = json.NewDecoder(req.Body).Decode(&cuLookupRequestBody); err != nil {
+		slog.ErrorContext(ctx, "could not read request body", "error", err)
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "ill formed request body",
+		})
+		return
+	}
+
+	endUserBusinessID := ""
+	if cuLookupRequestBody.EndUserBusinessID != nil {
+		endUserBusinessID = *cuLookupRequestBody.EndUserBusinessID
+	}
+
+	controllableUnitBusinessID := ""
+	if cuLookupRequestBody.ControllableUnitBusinessID != nil {
+		controllableUnitBusinessID = *cuLookupRequestBody.ControllableUnitBusinessID
+	}
+
+	accountingPointID := ""
+	if cuLookupRequestBody.AccountingPointID != nil {
+		accountingPointID = *cuLookupRequestBody.AccountingPointID
+	}
+
+	if endUserBusinessID == "" {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "missing end user business ID",
+		})
+		return
+	}
+
+	if accountingPointID == "" && controllableUnitBusinessID == "" {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "missing accounting point ID or business ID",
+		})
+		return
+	}
+
+	slog.InfoContext(
+		ctx, "will lookup controllable unit",
+		"end_user_business_id", endUserBusinessID,
+		"accounting_point_id", accountingPointID,
+		"controllable_unit_business_id", controllableUnitBusinessID,
+	)
+
+	tx, err := data.db.Begin(ctx)
+	if err != nil {
+		slog.ErrorContext(ctx, "could not start transaction", "error", err)
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "could not start transaction",
+		})
+		return
+	}
+	queries := models.New(tx)
+
+	cuLookup, err := queries.ControllableUnitLookup(
+		ctx,
+		endUserBusinessID,
+		controllableUnitBusinessID,
+		accountingPointID,
+	)
+	if err != nil {
+		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
+	}
+	if err != nil || len(cuLookup) == 0 {
+		writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+			Message: "controllable unit not found",
+		})
+		return
+	}
+	if err = tx.Commit(ctx); err != nil {
+		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "could not notify end user",
+		})
+		return
+	}
+
+	reformattedCULookup, err := ReformatControllableUnitLookupResult(cuLookup)
+	if err != nil {
+		slog.ErrorContext(
+			ctx, "could not reformat controllable unit lookup result", "error", err,
+		)
+		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+			Message: "ill formed controllable unit lookup result",
+		})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	body, _ := json.Marshal(reformattedCULookup)
+	w.Write(body)
 }
 
 // writeErrorToResponseWriter writes an error message as JSON in the response
@@ -271,6 +398,7 @@ func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 	rsp.Header.Set("Content-Length", strconv.Itoa(len(body)))
 }
 
+// notFoundHandler writes a 404 Not Found response in PostgREST format.
 func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
 	writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 		Message: "Not Found" + req.URL.Path,

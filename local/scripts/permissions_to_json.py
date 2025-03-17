@@ -44,6 +44,7 @@ full_action_names = {
     "H": "read",
     "U": "update",
     "D": "delete",
+    "L": "lookup",
 }
 
 party_type_abbr = {
