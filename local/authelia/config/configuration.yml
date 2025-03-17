@@ -97,10 +97,18 @@ identity_providers:
     # TODO proper cors
     cors:
       allowed_origins: "*"
+    # follows Authelia's changes to ID token content
+    # https://www.authelia.com/blog/4.39-release-notes/#id-token-changes
+    # TODO see if we want to keep using preferred_username
+    claims_policies:
+      default:
+        id_token: ['preferred_username']
     # https://www.authelia.com/configuration/identity-providers/openid-connect/clients/
     clients:
       - client_id: 'flex_oidc_client_id_value'
         client_name: 'Flex Portal'
+        # related to claims_policies above
+        claims_policy: 'default'
         # TODO secret file
         # This is the secret from the docker-compose.yml
         client_secret: '$argon2id$v=19$m=16,t=2,p=1$cmFuZG9tc2FsdA$5QIrCASIDQHP8kRK4XB4eA'
@@ -120,6 +128,8 @@ identity_providers:
         response_modes:
           - 'form_post'
           - 'query'
+
+
 notifier:
   filesystem:
     filename: '/config/.notification.txt'
