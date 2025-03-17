@@ -39,7 +39,7 @@ export const SystemOperatorProductTypeInput = () => {
     ...currentRecord,
     system_operator_id:
       createOrUpdate == "create" && isSystemOperator
-        ? identity?.party_id
+        ? identity?.partyID
         : currentRecord?.system_operator_id,
   });
 
