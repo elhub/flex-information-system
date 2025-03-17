@@ -433,9 +433,13 @@ openapi-to-tooltips:
     cat openapi/resources.yml \
         | yq '.resources[] as $res ireduce ({};
             .[$res.id] = ($res.properties | map_values (.description)))' \
-            -o json \
-            --indent 4 \
-            > frontend/src/tooltip/tooltips.json
+            > tmp.yml
+    cat openapi/openapi-api-base.yml \
+        | yq '.components.schemas | to_entries[] as $sch ireduce({};
+            .[$sch.key] = ($sch.value.properties | map_values (.description)))' \
+            >> tmp.yml
+    cat tmp.yml | yq -o json --indent 4 > frontend/src/tooltip/tooltips.json
+    rm tmp.yml
 
 permissions: permissions-to-frontend permissions-to-md permissions-to-db
 
