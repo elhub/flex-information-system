@@ -15,7 +15,6 @@ SELECT
     business_id::text,
     name::text,
     accounting_point_id::text,
-    end_user_id::bigint,
     technical_resources::jsonb
 FROM controllable_unit_lookup(
   $1,
@@ -30,7 +29,6 @@ type ControllableUnitLookupRow struct {
 	BusinessID         string
 	Name               string
 	AccountingPointID  string
-	EndUserID          int
 	TechnicalResources []byte
 }
 
@@ -48,7 +46,6 @@ func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserBusinessID 
 			&i.BusinessID,
 			&i.Name,
 			&i.AccountingPointID,
-			&i.EndUserID,
 			&i.TechnicalResources,
 		); err != nil {
 			return nil, err
