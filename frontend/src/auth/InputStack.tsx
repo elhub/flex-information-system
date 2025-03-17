@@ -1,24 +1,28 @@
 import { Children, cloneElement } from "react";
 import { useResourceContext, usePermissions } from "react-admin";
-import { Stack as MUIStack, StackProps, InputAdornment } from "@mui/material";
+import { Stack as MUIStack, InputAdornment } from "@mui/material";
 import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 
 // custom Stack component disabling the underlying inputs based on permissions
-export const InputStack = (props: StackProps) => {
-  const resource = useResourceContext();
+export const InputStack = (props: any) => {
+  const resourceFromContext = useResourceContext();
   const { children, ...rest } = props;
   const { permissions } = usePermissions();
   const createOrUpdate = useCreateOrUpdate();
+
+  const allowAll = props.allowAll ?? false;
+  const resource = props.resource ?? resourceFromContext;
 
   const addPermissionToInput = (input: any) =>
     cloneElement(input, {
       margin: "none",
       disabled:
         input.props.disabled ||
-        !permissions.includes(
-          `${resource}.${input.props.source}.${createOrUpdate}`,
-        ),
+        (!allowAll &&
+          !permissions.includes(
+            `${resource}.${input.props.source}.${createOrUpdate}`,
+          )),
       slotProps: {
         input: {
           startAdornment: (
