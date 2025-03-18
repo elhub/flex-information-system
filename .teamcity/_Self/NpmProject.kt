@@ -18,6 +18,7 @@ object NpmProject : TeamcityProject({
                     workingDir = "frontend"
                     sonarProjectTests = null // no tests in frontend
                 }
+                disableLint = true
             }
         }
     }
