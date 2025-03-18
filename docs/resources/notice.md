@@ -7,15 +7,15 @@ Notice to users about various issues or actions expected from them.
 The following is an overview of notices with description and actions required
 from the responsible party.
 
-| Resource                  | Description                                   | Responsible Party | Action required                    |
-|---------------------------|-----------------------------------------------|-------------------|------------------------------------|
-| CU                        | Grid node ID missing                          | SO                | Update CU with grid node           |
-| CU                        | Grid validation status pending                | SO                | Update grid validation status      |
-| CU                        | Grid validation status incomplete information | SP                | Update missing information         |
-| SP product application    | Status requested                              | SO                | Update application status          |
-| SPG membership            | Inconsistency: SPG contains expired CU(s)     | SP                | Validate and update SPG membership |
-| SPG product application   | Status requested                              | SO                | Update application status          |
-| SPG grid prequalification | Status requested                              | SO                | Update prequalification status     |
+| Type                                                                          | Description                                   | Responsible Party | Action required                                         |
+|-------------------------------------------------------------------------------|-----------------------------------------------|-------------------|---------------------------------------------------------|
+| no.elhub.flex.controllable_unit.grid_node_id.missing                          | Grid node ID missing                          | CSO               | Update CU with grid node                                |
+| no.elhub.flex.controllable_unit.grid_validation_status.pending                | Grid validation status pending                | CSO               | Verify CU for grid verification and update status       |
+| no.elhub.flex.controllable_unit.grid_validation_status.incomplete_information | Grid validation status incomplete information | SP                | Update missing information                              |
+| no.elhub.flex.service_provider_product_application.status.requested           | SP product application status requested       | PSO               | Initiate SP product qualification and update status     |
+| no.elhub.flex.service_providing_group_membership.valid_time.outside_contract  | Inconsistency: SPG contains expired CU(s)     | SP                | Validate and update SPG membership                      |
+| no.elhub.flex.service_providing_group_product_application.status.requested    | SPG product application status requested      | PSO               | Initiate SPG product prequalification and update status |
+| no.elhub.flex.service_providing_group_grid_prequalification.status.requested  | SPG grid prequalification status requested    | ISO               | Initiate SPG grid prequalification and update status    |
 
 ## Relevant links
 
