@@ -5,6 +5,7 @@
 !.pre-commit-config.yaml
 !.markdownlint.json
 !.mega-linter.yml
+!.npmrc
 !.gitleaks.toml
 !.gitleaksignore
 !.secretlintignore
