@@ -205,6 +205,7 @@ func (data *api) controllableUnitLookupHandler(
 		})
 		return
 	}
+	defer tx.Rollback(ctx)
 	queries := models.New(tx)
 
 	cuLookup, err := queries.ControllableUnitLookup(

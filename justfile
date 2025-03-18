@@ -14,7 +14,7 @@ start:
     docker compose up -d
 
     # wait for startup
-    until docker compose logs db |& grep -q "PostgreSQL init process complete";
+    until psql -h localhost -d flex -U postgres -c "select 1" &> /dev/null;
     do
         sleep 0.1;
     done
