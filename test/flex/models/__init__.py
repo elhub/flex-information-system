@@ -6,9 +6,9 @@ from .controllable_unit_create_request import ControllableUnitCreateRequest
 from .controllable_unit_grid_validation_status import ControllableUnitGridValidationStatus
 from .controllable_unit_history_response import ControllableUnitHistoryResponse
 from .controllable_unit_lookup_request import ControllableUnitLookupRequest
-from .controllable_unit_lookup_response_item import ControllableUnitLookupResponseItem
-from .controllable_unit_lookup_response_item_technical_resources_item import (
-    ControllableUnitLookupResponseItemTechnicalResourcesItem,
+from .controllable_unit_lookup_response import ControllableUnitLookupResponse
+from .controllable_unit_lookup_response_technical_resources_item import (
+    ControllableUnitLookupResponseTechnicalResourcesItem,
 )
 from .controllable_unit_regulation_direction import ControllableUnitRegulationDirection
 from .controllable_unit_response import ControllableUnitResponse
@@ -128,8 +128,8 @@ __all__ = (
     "ControllableUnitGridValidationStatus",
     "ControllableUnitHistoryResponse",
     "ControllableUnitLookupRequest",
-    "ControllableUnitLookupResponseItem",
-    "ControllableUnitLookupResponseItemTechnicalResourcesItem",
+    "ControllableUnitLookupResponse",
+    "ControllableUnitLookupResponseTechnicalResourcesItem",
     "ControllableUnitRegulationDirection",
     "ControllableUnitResponse",
     "ControllableUnitServiceProviderCreateRequest",

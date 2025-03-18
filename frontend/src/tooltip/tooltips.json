@@ -165,13 +165,11 @@
         "controllable_unit": "The business ID of the controllable unit to lookup.",
         "accounting_point": "The accounting point ID of the controllable unit(s) to lookup. `GSRN` metering point id."
     },
-    "controllable_unit_lookup_response_item": {
+    "controllable_unit_lookup_response": {
         "id": "The surrogate key of the controllable unit.",
         "business_id": "The business ID of the controllable unit.",
         "name": "The name of the controllable unit.",
         "accounting_point_id": "The accounting point ID of the controllable unit.",
-        "end_user_id": "The ID of the current end user on the controllable unit.",
         "technical_resources": "The technical resources belonging to the controllable unit."
-    },
-    "controllable_unit_lookup_response": null
+    }
 }

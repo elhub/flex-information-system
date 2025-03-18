@@ -5,7 +5,6 @@ import {
   RecordContextProvider,
   Button,
   useRecordContext,
-  ReferenceField,
 } from "react-admin";
 import { Link, useLocation } from "react-router-dom";
 import { Typography, Stack, Card, Box } from "@mui/material";
@@ -72,20 +71,17 @@ const ControllableUnitLookupResultItem = () => {
           direction="row"
           flexWrap="wrap"
           allowAll
-          resource="controllable_unit_lookup_response_item"
+          resource="controllable_unit_lookup_response"
         >
           <TextField source="id" label="ID" />
           <TextField source="business_id" label="Business ID" />
           <TextField source="accounting_point_id" label="Accounting point ID" />
           <TextField source="name" />
-          <ReferenceField source="end_user_id" reference="party">
-            <TextField source="name" />
-          </ReferenceField>
         </FieldStack>
         <FieldStack
           spacing={2}
           allowAll
-          resource="controllable_unit_lookup_response_item"
+          resource="controllable_unit_lookup_response"
         >
           <TechnicalResourceList
             source="technical_resources"

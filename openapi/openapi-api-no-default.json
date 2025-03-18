@@ -167,7 +167,9 @@
                     "end_user"
                 ]
             },
-            "controllable_unit_lookup_response_item": {
+            "controllable_unit_lookup_response": {
+                "summary": "Controllable unit lookup",
+                "description": "Response schema for controllable unit lookup operations",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -194,12 +196,6 @@
                         "type": "string",
                         "pattern": "^[1-9][0-9]{17}$",
                         "example": "709000000000000057"
-                    },
-                    "end_user_id": {
-                        "description": "The ID of the current end user on the controllable unit.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 379
                     },
                     "technical_resources": {
                         "description": "The technical resources belonging to the controllable unit.",
@@ -238,17 +234,8 @@
                     "business_id",
                     "name",
                     "accounting_point_id",
-                    "end_user_id",
                     "technical_resources"
                 ]
-            },
-            "controllable_unit_lookup_response": {
-                "summary": "Controllable unit lookup",
-                "description": "Response schema for controllable unit lookup operations",
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/controllable_unit_lookup_response_item"
-                }
             },
             "empty_object": {
                 "description": "An empty object",
@@ -2450,7 +2437,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/controllable_unit_lookup_response"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_lookup_response"
+                                    }
                                 }
                             }
                         },

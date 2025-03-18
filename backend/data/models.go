@@ -28,7 +28,6 @@ type ControllableUnitLookup struct {
 	BusinessID         string              `json:"business_id"`
 	Name               string              `json:"name"`
 	AccountingPointID  string              `json:"accounting_point_id"`
-	EndUserID          int                 `json:"end_user_id"`
 	TechnicalResources []technicalResource `json:"technical_resources"`
 }
 
@@ -60,7 +59,6 @@ func ReformatControllableUnitLookupResult(
 				BusinessID:         cuLookupRow.BusinessID,
 				Name:               cuLookupRow.Name,
 				AccountingPointID:  cuLookupRow.AccountingPointID,
-				EndUserID:          cuLookupRow.EndUserID,
 				TechnicalResources: technicalResources,
 			},
 		)

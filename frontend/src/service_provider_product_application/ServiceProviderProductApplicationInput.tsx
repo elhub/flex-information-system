@@ -104,7 +104,7 @@ export const ServiceProviderProductApplicationInput = () => {
     ...currentRecord,
     service_provider_id:
       createOrUpdate == "create" && isServiceProvider
-        ? identity?.party_id
+        ? identity?.partyID
         : currentRecord?.service_provider_id,
   });
 

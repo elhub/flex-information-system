@@ -6,7 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.controllable_unit_lookup_request import ControllableUnitLookupRequest
-from ...models.controllable_unit_lookup_response_item import ControllableUnitLookupResponseItem
+from ...models.controllable_unit_lookup_response import ControllableUnitLookupResponse
 from ...models.error_message import ErrorMessage
 from ...types import Response
 
@@ -33,16 +33,14 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorMessage, List["ControllableUnitLookupResponseItem"]]]:
+) -> Optional[Union[ErrorMessage, List["ControllableUnitLookupResponse"]]]:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
-        for componentsschemascontrollable_unit_lookup_response_item_data in _response_200:
-            componentsschemascontrollable_unit_lookup_response_item = ControllableUnitLookupResponseItem.from_dict(
-                componentsschemascontrollable_unit_lookup_response_item_data
-            )
+        for response_200_item_data in _response_200:
+            response_200_item = ControllableUnitLookupResponse.from_dict(response_200_item_data)
 
-            response_200.append(componentsschemascontrollable_unit_lookup_response_item)
+            response_200.append(response_200_item)
 
         return response_200
     if response.status_code == 400:
@@ -69,7 +67,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorMessage, List["ControllableUnitLookupResponseItem"]]]:
+) -> Response[Union[ErrorMessage, List["ControllableUnitLookupResponse"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -82,7 +80,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ControllableUnitLookupRequest,
-) -> Response[Union[ErrorMessage, List["ControllableUnitLookupResponseItem"]]]:
+) -> Response[Union[ErrorMessage, List["ControllableUnitLookupResponse"]]]:
     """Call - Controllable unit lookup
 
      Lookup a controllable unit from end user ID and business and/or accounting point ID.
@@ -96,7 +94,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorMessage, List['ControllableUnitLookupResponseItem']]]
+        Response[Union[ErrorMessage, List['ControllableUnitLookupResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -114,7 +112,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ControllableUnitLookupRequest,
-) -> Optional[Union[ErrorMessage, List["ControllableUnitLookupResponseItem"]]]:
+) -> Optional[Union[ErrorMessage, List["ControllableUnitLookupResponse"]]]:
     """Call - Controllable unit lookup
 
      Lookup a controllable unit from end user ID and business and/or accounting point ID.
@@ -128,7 +126,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorMessage, List['ControllableUnitLookupResponseItem']]
+        Union[ErrorMessage, List['ControllableUnitLookupResponse']]
     """
 
     return sync_detailed(
@@ -141,7 +139,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ControllableUnitLookupRequest,
-) -> Response[Union[ErrorMessage, List["ControllableUnitLookupResponseItem"]]]:
+) -> Response[Union[ErrorMessage, List["ControllableUnitLookupResponse"]]]:
     """Call - Controllable unit lookup
 
      Lookup a controllable unit from end user ID and business and/or accounting point ID.
@@ -155,7 +153,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorMessage, List['ControllableUnitLookupResponseItem']]]
+        Response[Union[ErrorMessage, List['ControllableUnitLookupResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -171,7 +169,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     body: ControllableUnitLookupRequest,
-) -> Optional[Union[ErrorMessage, List["ControllableUnitLookupResponseItem"]]]:
+) -> Optional[Union[ErrorMessage, List["ControllableUnitLookupResponse"]]]:
     """Call - Controllable unit lookup
 
      Lookup a controllable unit from end user ID and business and/or accounting point ID.
@@ -185,7 +183,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorMessage, List['ControllableUnitLookupResponseItem']]
+        Union[ErrorMessage, List['ControllableUnitLookupResponse']]
     """
 
     return (
