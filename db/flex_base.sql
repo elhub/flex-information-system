@@ -43,7 +43,7 @@ BEGIN
         END IF;
 
         RETURN (
-            validate_check_digit(business_id)
+            gs1.validate_check_digit(business_id)
         );
     ELSIF business_id_type = 'gsrn' THEN
         -- GSRN validation:
@@ -53,7 +53,7 @@ BEGIN
         END IF;
 
         RETURN (
-            validate_check_digit(business_id)
+            gs1.validate_check_digit(business_id)
         );
     ELSIF business_id_type = 'email' THEN
         -- Email validation: check if business_id is a valid email address
