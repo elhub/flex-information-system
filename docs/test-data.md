@@ -1,6 +1,4 @@
 <!-- markdownlint-disable MD033 MD041 MD013-->
-<script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js"></script>
-
 # Test data
 
 Each test user has its own set of test data generated into the system. This includes:
@@ -45,30 +43,53 @@ Your test data will show up below.
 
 > [!TIP]
 > The values for the common test user is `0` and `Felles`.
-
 <script type="text/javascript">
-    function calculateCheckDigit(code) {
-        const sum = code.split('')
-            .reverse()
-            .map((n, i) => n * (i % 2 ? 1 : 3))
-            .reduce((sum, n) => sum + n, 0)
 
-        const roundedUp = Math.ceil(sum / 10) * 10;
+    // https://alpinejs.dev/advanced/csp
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('testdatainfo', () => {
+            return {
+                suffix: 0,
+                firstName: 'Felles',
+                parties: ['BRP','EU','ES','MO','SO','SP','TP','FISO'],
+                numAccountingPoints: 1000,
+                calculateCheckDigit(code) {
+                    const sum = code.split('')
+                        .reverse()
+                        .map((n, i) => n * (i % 2 ? 1 : 3))
+                        .reduce((sum, n) => sum + n, 0)
 
-        const checkDigit = roundedUp - sum;
+                    const roundedUp = Math.ceil(sum / 10) * 10;
 
-        return checkDigit;
-    }
-    function generateGLN(ssnSuffix, index) {
-        const base = '13370' + ssnSuffix.toString().padStart(3, '0') + index.toString().padStart(4, '0');
-        return base + calculateCheckDigit(base);
-    }
-    function generateGSRN(ssnSuffix, index) {
-        const base = '13370000000' + ssnSuffix.toString().padStart(3, '0') + index.toString().padStart(3, '0');
-        return base + calculateCheckDigit(base);
-    }
+                    const checkDigit = roundedUp - sum;
+
+                    return checkDigit;
+                },
+                generateGLN() {
+                    var index = this.$data.index;
+                    const base = '13370' + this.suffix.toString().padStart(3, '0') + index.toString().padStart(4, '0');
+                    return base + this.calculateCheckDigit(base);
+                },
+                generateGSRN() {
+                    var index = this.$data.index - 1;
+                    const base = '13370000000' + this.suffix.toString().padStart(3, '0') + index.toString().padStart(3, '0');
+                    return base + this.calculateCheckDigit(base);
+                },
+                setFirstName(event) {
+                    this.firstName = event.target.value;
+                },
+                setSuffix(event) {
+                    this.suffix = event.target.value;
+                },
+                partyName() {
+                    var party = this.$data.party;
+                    return this.firstName + ' ' + party;
+                }
+            }
+        })
+    })
 </script>
-<div id="testdata-gen" x-data="{ ssnSuffix: 0, userFirstname: 'Felles', parties: ['BRP','EU','ES','MO','SO','SP','TP','FISO'] }">
+<div id="testdata-gen" x-data="testdatainfo">
     <style type="text/css">
         #testdata-gen input{
             background: transparent;
@@ -76,30 +97,30 @@ Your test data will show up below.
             border-bottom: solid 1px #ccc;
             padding: 5px;
             transition: padding 0.4s;
-
+        }
         #testdata-gen .input-box {
             margin-bottom: 10px;
         }
     </style>
     <div class="input-box">
-        <label for="ssnSuffix">SSN Suffix:</label>
-        <input id="ssnSuffix" type="number" x-model="ssnSuffix" min="0" max="999" />
+        <label for="suffix">SSN Suffix:</label>
+        <input id="suffix" type="number" :value="suffix" @input="setSuffix" min="0" max="999" />
     </div>
     <div class="input-box">
-        <label for="userFirstname">User Firstname:</label>
-        <input id="userFirstname" type="text" x-model="userFirstname" pattern="[A-Za-z]+" />
+        <label for="firstName">User Firstname:</label>
+        <input id="firstName" type="text" :value="firstName" @input="setFirstName" pattern="[A-Za-z]+" />
     </div>
 
     <h3>Parties</h3>
     <p>
-        These are the test parties for <em x-text="userFirstname"></em>.
+        These are the test parties for <em x-text="firstName"></em>.
     </p>
     <ul>
-        <template x-for="(abbr, index) in parties">
+        <template x-for="(party, index) in parties">
             <li>
-                <span x-text="generateGLN(ssnSuffix, index)"></span>
+                <span x-text="generateGLN"></span>
                 -
-                <span x-text="userFirstname + ' ' + abbr"></span>
+                <span x-text="partyName"></span>
             </li>
 
         </template>
@@ -107,12 +128,13 @@ Your test data will show up below.
     <h3>Accounting points</h3>
     <p>
         This list contains 1000 accounting points where
-        <em x-text="userFirstname + ' SO'"></em> is the connecting system operator.
+        <em x-text="firstName"></em> is the connecting system operator.
     </p>
     <ul>
-        <template x-for="index in 1000">
+        <template x-for="index in numAccountingPoints">
             <li>
-                <span x-text="generateGSRN(ssnSuffix, index-1)"></span>
+                <span x-text="generateGSRN"></span>
             </li>
         </template>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3/dist/cdn.min.js"></script>
