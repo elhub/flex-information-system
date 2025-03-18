@@ -20,7 +20,6 @@ class ControllableUnitLookupResponseItem:
         business_id (str): The business ID of the controllable unit. Example: 53919b79-876f-4dad-8bde-b29368367604.
         name (str): The name of the controllable unit. Example: Car Charger #54.
         accounting_point_id (str): The accounting point ID of the controllable unit. Example: 709000000000000057.
-        end_user_id (int): The ID of the current end user on the controllable unit. Example: 379.
         technical_resources (List['ControllableUnitLookupResponseItemTechnicalResourcesItem']): The technical resources
             belonging to the controllable unit.
     """
@@ -29,7 +28,6 @@ class ControllableUnitLookupResponseItem:
     business_id: str
     name: str
     accounting_point_id: str
-    end_user_id: int
     technical_resources: List["ControllableUnitLookupResponseItemTechnicalResourcesItem"]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -41,8 +39,6 @@ class ControllableUnitLookupResponseItem:
         name = self.name
 
         accounting_point_id = self.accounting_point_id
-
-        end_user_id = self.end_user_id
 
         technical_resources = []
         for technical_resources_item_data in self.technical_resources:
@@ -57,7 +53,6 @@ class ControllableUnitLookupResponseItem:
                 "business_id": business_id,
                 "name": name,
                 "accounting_point_id": accounting_point_id,
-                "end_user_id": end_user_id,
                 "technical_resources": technical_resources,
             }
         )
@@ -79,8 +74,6 @@ class ControllableUnitLookupResponseItem:
 
         accounting_point_id = d.pop("accounting_point_id")
 
-        end_user_id = d.pop("end_user_id")
-
         technical_resources = []
         _technical_resources = d.pop("technical_resources")
         for technical_resources_item_data in _technical_resources:
@@ -95,7 +88,6 @@ class ControllableUnitLookupResponseItem:
             business_id=business_id,
             name=name,
             accounting_point_id=accounting_point_id,
-            end_user_id=end_user_id,
             technical_resources=technical_resources,
         )
 
