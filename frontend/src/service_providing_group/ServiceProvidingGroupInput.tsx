@@ -19,7 +19,7 @@ export const ServiceProvidingGroupInput = () => {
   const is_service_provider = identity?.role == "flex_service_provider";
   const record = is_service_provider
     ? {
-        service_provider_id: identity?.party_id,
+        service_provider_id: identity?.partyID,
       }
     : {};
 
