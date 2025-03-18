@@ -2,6 +2,21 @@
 
 Notice to users about various issues or actions expected from them.
 
+## Context
+
+The following is an overview of notices with description and actions required
+from the responsible party.
+
+| Type                                                                          | Description                                   | Responsible Party | Action required                                         |
+|-------------------------------------------------------------------------------|-----------------------------------------------|-------------------|---------------------------------------------------------|
+| no.elhub.flex.controllable_unit.grid_node_id.missing                          | Grid node ID missing                          | CSO               | Update CU with grid node                                |
+| no.elhub.flex.controllable_unit.grid_validation_status.pending                | Grid validation status pending                | CSO               | Verify CU for grid verification and update status       |
+| no.elhub.flex.controllable_unit.grid_validation_status.incomplete_information | Grid validation status incomplete information | SP                | Update missing information                              |
+| no.elhub.flex.service_provider_product_application.status.requested           | SP product application status requested       | PSO               | Initiate SP product qualification and update status     |
+| no.elhub.flex.service_providing_group_membership.valid_time.outside_contract  | Inconsistency: SPG contains expired CU(s)     | SP                | Validate and update SPG membership                      |
+| no.elhub.flex.service_providing_group_product_application.status.requested    | SPG product application status requested      | PSO               | Initiate SPG product prequalification and update status |
+| no.elhub.flex.service_providing_group_grid_prequalification.status.requested  | SPG grid prequalification status requested    | ISO               | Initiate SPG grid prequalification and update status    |
+
 ## Relevant links
 
 * [API Documentation](/api/v0/#/operations/list_notice)
@@ -52,9 +67,9 @@ No policies.
 
 #### Common
 
-| Policy key     | Policy                         | Status |
-|----------------|--------------------------------|--------|
-| NOTICE-COM001  | Read notices targeted to them. | DONE   |
+| Policy key    | Policy                         | Status |
+|---------------|--------------------------------|--------|
+| NOTICE-COM001 | Read notices targeted to them. | DONE   |
 
 #### Balance Responsible Party
 
@@ -70,9 +85,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key      | Policy            | Status |
-|-----------------|-------------------|--------|
-| NOTICE-FISO001  | Read all notices. | DONE   |
+| Policy key     | Policy            | Status |
+|----------------|-------------------|--------|
+| NOTICE-FISO001 | Read all notices. | DONE   |
 
 #### Market Operator
 
