@@ -11,6 +11,7 @@ and support the processes in the value chain.$$;
 
 -- resources
 
+\i flex/client.sql
 \i flex/party_membership.sql
 \i flex/grid_node.sql
 \i flex/grid_edge.sql
@@ -39,6 +40,7 @@ and support the processes in the value chain.$$;
 \i flex/accounting_point_end_user_history_audit.sql
 \i flex/accounting_point_energy_supplier_history_audit.sql
 \i flex/accounting_point_history_audit.sql
+\i flex/client_history_audit.sql
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
 \i flex/notification_history_audit.sql
@@ -65,6 +67,7 @@ and support the processes in the value chain.$$;
 \i flex/accounting_point_balance_responsible_party_rls.sql
 \i flex/accounting_point_end_user_rls.sql
 \i flex/accounting_point_energy_supplier_rls.sql
+\i flex/client_rls.sql
 \i flex/controllable_unit_rls.sql
 \i flex/controllable_unit_service_provider_rls.sql
 \i flex/entity_rls.sql

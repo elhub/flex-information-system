@@ -1,6 +1,7 @@
 import { Show, SimpleShowLayout, TextField } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
+import { ClientList } from "./client/ClientList";
 
 export const EntityShow = () => (
   <Show>
@@ -24,6 +25,10 @@ export const EntityShow = () => (
           <TextField source="client_secret" />
           <TextField source="client_public_key" />
         </FieldStack>
+        <Typography variant="h6" gutterBottom>
+          Clients
+        </Typography>
+        <ClientList />
       </Stack>
     </SimpleShowLayout>
   </Show>

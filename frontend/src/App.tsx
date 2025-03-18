@@ -118,6 +118,8 @@ import { ServiceProviderProductApplicationCommentHistoryList } from "./service_p
 import { NoticeList } from "./notice/NoticeList";
 import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
 import { ControllableUnitLookupResult } from "./controllable_unit/lookup/ControllableUnitLookupResult";
+import { ClientInput } from "./entity/client/ClientInput";
+import { ClientShow } from "./entity/client/ClientShow";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -352,7 +354,47 @@ export const App = () => (
               )
             }
             recordRepresentation="name"
-          />
+          >
+            {/* client subresource */}
+            {/* list is part of ENT show page */}
+            <Route
+              path=":entity_id/client/:id/show"
+              element={
+                <ResourceContextProvider value="client">
+                  <ClientShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":entity_id/client/create"
+              element={
+                <ResourceContextProvider value="client">
+                  <Create
+                    redirect={(_: any, _id: any, record: any) =>
+                      `entity/${record.entity_id}/show`
+                    }
+                  >
+                    <ClientInput />
+                  </Create>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":entity_id/client/:id"
+              element={
+                <ResourceContextProvider value="client">
+                  <Edit
+                    mutationMode="pessimistic"
+                    redirect={(_: any, _id: any, record: any) =>
+                      `entity/${record.entity_id}/show`
+                    }
+                  >
+                    <ClientInput />
+                  </Edit>
+                </ResourceContextProvider>
+              }
+            />
+          </Resource>
         ) : null}
         {permissions.includes("party.read") ? (
           <Resource

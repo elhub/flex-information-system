@@ -118,6 +118,123 @@ TO flex_entity;
 
 GRANT SELECT (
     id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_third_party;
+
+GRANT INSERT (
+    entity_id,
+    client_id,
+    secret,
+    public_key
+) ON TABLE api.client
+TO flex_entity;
+
+GRANT SELECT (
+    id,
+    entity_id,
+    client_id,
+    secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.client
+TO flex_entity;
+
+GRANT UPDATE (
+    client_id,
+    secret,
+    public_key
+) ON TABLE api.client
+TO flex_entity;
+
+GRANT DELETE ON TABLE api.client
+TO flex_entity;
+
+GRANT SELECT (
+    id,
     name,
     business_id,
     business_id_type,

@@ -531,6 +531,68 @@ resources:
           0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
           -----END PUBLIC KEY-----
 
+  - id: client
+    acronym: CLI
+    summary: Client
+    description: >-
+      Client linked to an entity for client credentials and JWT grant
+      authentication methods.
+    operations:
+      - list
+      - read
+      - create
+      - update
+      - delete
+    audit: true
+    generate_views: false
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 14
+      entity_id:
+        description: Reference to the entity that this client is attached to.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: entity
+          field: id
+        example: 30
+      client_id:
+        description: >-
+          The identifier of the entity. For use with client credentials
+          authentication method.
+        format: text
+        type: string
+        example: addr@flex.test
+      secret:
+        description: >-
+          The secret of the entity. For use with client credentials
+          authentication method. Input as plain text but stored encrypted.
+        format: text
+        type: string
+        minLength: 12
+        nullable: true
+        example: mysupersecretpassword
+      public_key:
+        description:
+          The public key of the entity (X.509 SubjectPublicKeyInfo). For use
+          with JWT grant authentication method.
+        format: text
+        type: string
+        nullable: true
+        pattern: '^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+/\n]*={0,3}\n-----END PUBLIC KEY-----$'
+        example: |-
+          -----BEGIN PUBLIC KEY-----
+          MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
+          TozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V
+          kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
+          0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
+          -----END PUBLIC KEY-----
+
   - id: party
     acronym: PTY
     summary: Party

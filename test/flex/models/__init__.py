@@ -2,6 +2,9 @@
 
 from .accounting_point_response import AccountingPointResponse
 from .accounting_point_update_request import AccountingPointUpdateRequest
+from .client_create_request import ClientCreateRequest
+from .client_response import ClientResponse
+from .client_update_request import ClientUpdateRequest
 from .controllable_unit_create_request import ControllableUnitCreateRequest
 from .controllable_unit_grid_validation_status import ControllableUnitGridValidationStatus
 from .controllable_unit_history_response import ControllableUnitHistoryResponse
@@ -27,6 +30,7 @@ from .event_update_request import EventUpdateRequest
 from .identity_response import IdentityResponse
 from .identity_update_request import IdentityUpdateRequest
 from .list_accounting_point_prefer import ListAccountingPointPrefer
+from .list_client_prefer import ListClientPrefer
 from .list_controllable_unit_prefer import ListControllableUnitPrefer
 from .list_controllable_unit_service_provider_prefer import ListControllableUnitServiceProviderPrefer
 from .list_entity_prefer import ListEntityPrefer
@@ -124,6 +128,9 @@ from .technical_resource_update_request import TechnicalResourceUpdateRequest
 __all__ = (
     "AccountingPointResponse",
     "AccountingPointUpdateRequest",
+    "ClientCreateRequest",
+    "ClientResponse",
+    "ClientUpdateRequest",
     "ControllableUnitCreateRequest",
     "ControllableUnitGridValidationStatus",
     "ControllableUnitHistoryResponse",
@@ -147,6 +154,7 @@ __all__ = (
     "IdentityResponse",
     "IdentityUpdateRequest",
     "ListAccountingPointPrefer",
+    "ListClientPrefer",
     "ListControllableUnitPrefer",
     "ListControllableUnitServiceProviderPrefer",
     "ListEntityPrefer",

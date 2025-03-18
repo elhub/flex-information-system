@@ -7,6 +7,14 @@ entity;business_id_type;;R;R;R;R;R;R;R;R;R;
 entity;client_id;;R;R;R;R;R;R;R;R;R;
 entity;client_secret;;R;R;R;R;R;R;R;R;RU;
 entity;client_public_key;;R;R;R;R;R;R;R;R;RU;
+client;;;;;;;;;;;D;
+client;id;;R;R;R;R;R;R;R;R;R;
+client;entity_id;;R;R;R;R;R;R;R;R;RC;
+client;client_id;;R;R;R;R;R;R;R;R;RCU;
+client;secret;;R;R;R;R;R;R;R;R;RCU;
+client;public_key;;R;R;R;R;R;R;R;R;RCU;
+client;recorded_at;;R;R;R;R;R;R;R;R;R;
+client;recorded_by;;R;R;R;R;R;R;R;R;R;
 party;;;;;;;;;;;;R
 party;id;;R;R;R;R;R;R;R;R;R;
 party;name;;R;R;R;RCU;R;R;R;R;R;

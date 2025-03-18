@@ -277,19 +277,20 @@ with open(output_file_backend_schema, "w") as backend_schema_f:
                             file=f,
                         )
                         space_needed = True
+
+                    # generate fake history table for sqlc in the backend
+                    print(
+                        fake_history_table_create_statement(
+                            resource["id"],
+                            resource["properties"],
+                        ),
+                        file=backend_schema_f,
+                    )
+
                 if resource.get("audit"):
                     if space_needed:
                         print(file=f)
                     print(audit_statement(resource["id"]), file=f)
-
-            # generate fake history table for sqlc in the backend
-            print(
-                fake_history_table_create_statement(
-                    resource["id"],
-                    resource["properties"],
-                ),
-                file=backend_schema_f,
-            )
 
         # generate views and history views creation statements
         if resource.get("generate_views", False):

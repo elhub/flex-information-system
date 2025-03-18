@@ -58,6 +58,13 @@
         "client_secret": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
         "client_public_key": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method."
     },
+    "client": {
+        "id": "Unique surrogate identifier.",
+        "entity_id": "Reference to the entity that this client is attached to.",
+        "client_id": "The identifier of the entity. For use with client credentials authentication method.",
+        "secret": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
+        "public_key": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method."
+    },
     "party": {
         "id": "Unique surrogate identifier.",
         "business_id": "The business identifier of the party. Format depends on `business_id_type`.",
