@@ -16,6 +16,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { FieldStack } from "../../auth";
 
 // button to redirect to the CU-SP create page with the CU ID pre-filled
 const CreateCUSPButton = () => {
@@ -65,14 +66,28 @@ const ControllableUnitLookupResultItem = () => {
   return (
     <Card>
       <SimpleShowLayout>
-        <TextField source="id" label="ID" />
-        <TextField source="business_id" label="Business ID" />
-        <TextField source="accounting_point_id" label="Accounting point ID" />
-        <TextField source="name" />
-        <TechnicalResourceList
-          source="technical_resources"
-          data={record.technical_resources}
-        />
+        <FieldStack
+          spacing={2}
+          direction="row"
+          flexWrap="wrap"
+          allowAll
+          resource="controllable_unit_lookup_response"
+        >
+          <TextField source="id" label="ID" />
+          <TextField source="business_id" label="Business ID" />
+          <TextField source="accounting_point_id" label="Accounting point ID" />
+          <TextField source="name" />
+        </FieldStack>
+        <FieldStack
+          spacing={2}
+          allowAll
+          resource="controllable_unit_lookup_response"
+        >
+          <TechnicalResourceList
+            source="technical_resources"
+            data={record.technical_resources}
+          />
+        </FieldStack>
         <CreateCUSPButton />
       </SimpleShowLayout>
     </Card>

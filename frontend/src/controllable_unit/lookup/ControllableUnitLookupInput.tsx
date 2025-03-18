@@ -11,6 +11,7 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import UndoIcon from "@mui/icons-material/Undo";
 import { apiURL } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
+import { InputStack } from "../../auth";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -80,11 +81,16 @@ export const ControllableUnitLookupInput = () => (
         Lookup a controllable unit
       </Typography>
       <p>Mandatory : end user and at least one of the other fields</p>
-      <Stack direction="row" flexWrap="wrap">
+      <InputStack
+        direction="row"
+        flexWrap="wrap"
+        allowAll
+        resource="controllable_unit_lookup_request"
+      >
         <TextInput source="end_user" validate={required()} />
         <TextInput source="accounting_point" />
         <TextInput source="controllable_unit" />
-      </Stack>
+      </InputStack>
     </Stack>
   </SimpleForm>
 );

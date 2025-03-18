@@ -153,5 +153,23 @@
         "type": "The type of the notice.",
         "source": "The URI of the resource concerned by the event.",
         "data": "The data of the notice."
+    },
+    "error_message": {
+        "code": "The error code.",
+        "details": "Detailed information about the error.",
+        "hint": "A hint to help resolve the error.",
+        "message": "The error message."
+    },
+    "controllable_unit_lookup_request": {
+        "end_user": "Birth number or organisation number of the end user.",
+        "controllable_unit": "The business ID of the controllable unit to lookup.",
+        "accounting_point": "The accounting point ID of the controllable unit(s) to lookup. `GSRN` metering point id."
+    },
+    "controllable_unit_lookup_response": {
+        "id": "The surrogate key of the controllable unit.",
+        "business_id": "The business ID of the controllable unit.",
+        "name": "The name of the controllable unit.",
+        "accounting_point_id": "The accounting point ID of the controllable unit.",
+        "technical_resources": "The technical resources belonging to the controllable unit."
     }
 }
