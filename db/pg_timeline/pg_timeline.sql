@@ -403,3 +403,42 @@ BEGIN
     RETURN NEW;
 END;
 $$;
+
+-- changeset flex:timeline-is-empty runOnChange:true endDelimiter:--
+-- checks if a timeline has no record for current time
+CREATE OR REPLACE FUNCTION timeline.is_empty(
+    -- table that contains the timeline
+    tl_table text,
+    -- column that identifies the timeline
+    tl_column text,
+    -- value that identifies the timeline
+    tl_value bigint
+)
+RETURNS boolean
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+    l_sql text;
+    l_count integer;
+BEGIN
+
+    l_sql = format(
+            $s$
+            SELECT
+                count(*)
+            FROM
+                %1$s
+            WHERE
+                %2$s = $1
+                AND valid_time_range @> $2
+            $s$, tl_table, tl_column
+    );
+
+    RAISE DEBUG '%', l_sql;
+
+    EXECUTE l_sql INTO l_count USING tl_value, current_timestamp;
+
+    RETURN l_count = 0;
+END;
+$$;

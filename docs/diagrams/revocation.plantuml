@@ -1,7 +1,7 @@
 @startuml revocation
 !theme plain
 
-title Service Provider Contract Revocation and Termination 
+title Service Provider Contract Revocation and Termination
 
 autonumber
 skinparam note {
@@ -14,7 +14,7 @@ participant "Flexibility Information System (FIS)" as FIS
 actor "Metering Point Administrator (Elhub)" as Elhub
 
 |||
-    
+
 alt "Revocation by end user"
     |||
     EU -> SP: Revoke contract
@@ -23,12 +23,12 @@ else "Implicit contract termination"
     |||
     Elhub -> FIS: Update on End user from Elhub
     activate FIS
-    FIS --> SP: Notify 
+    FIS --> SP: Notify
     deactivate FIS
     activate SP
     SP -> EU: Verify updated end user information
-    deactivate SP 
-    |||    
+    deactivate SP
+    |||
 else "Termination by service provider"
     |||
     SP -> EU: Terminate contract

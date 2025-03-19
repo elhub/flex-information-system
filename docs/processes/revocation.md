@@ -5,7 +5,7 @@ controllable unit. The process can be triggered by one of the following:
 
 - Service contract revocation by end user.
 - Implicit contract termination triggered by updated end user information in
-  Elhub (Metering Point Administrator).  
+  Elhub (Metering Point Administrator).
 - Service contract termination by service provider.
 
 Updated end user information from Elhub can occur for several reasons, such as:

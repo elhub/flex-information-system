@@ -196,8 +196,6 @@ def test_cusp_sp(data):
     assert isinstance(cusps_sp, list)
     assert len(cusps_sp) > 0
 
-    # SP cannot insert too soon
-
     def midnight_n_days_diff(n):
         return (
             datetime.combine(date.today() + timedelta(days=n), time.min)
@@ -205,14 +203,28 @@ def test_cusp_sp(data):
             .isoformat()
         )
 
+    # SP can add CU-SP for current date when the CU is empty
+
     cusp = create_controllable_unit_service_provider.sync(
         client=client_sp,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
             contract_reference="TEST-CONTRACT",
-            valid_from=midnight_n_days_diff(-3),
-            valid_to=midnight_n_days_diff(2),
+            valid_from=midnight_n_days_diff(0),
+        ),
+    )
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
+    # but not if there is already a CU-SP relation
+
+    cusp = create_controllable_unit_service_provider.sync(
+        client=client_sp,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=sp_id,
+            contract_reference="TEST-CONTRACT",
+            valid_from=midnight_n_days_diff(1),
         ),
     )
     assert isinstance(cusp, ErrorMessage)
