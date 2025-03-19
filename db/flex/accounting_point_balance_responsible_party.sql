@@ -35,4 +35,4 @@ CREATE OR REPLACE TRIGGER
 accounting_point_balance_responsible_party_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON accounting_point_balance_responsible_party
 FOR EACH ROW
-EXECUTE FUNCTION timeline_midnight_aligned();
+EXECUTE FUNCTION timeline.midnight_aligned();

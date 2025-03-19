@@ -13,7 +13,7 @@ create trigger pgtl_midnight_upsert
 before insert or update
 on pgtl_midnight
 for each row
-execute function timeline_midnight_aligned();
+execute function timeline.midnight_aligned();
 
 begin;
 select plan(7);

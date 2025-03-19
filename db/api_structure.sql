@@ -32,7 +32,7 @@ CREATE OR REPLACE TRIGGER controllable_unit_service_provider_upsert_timeline
 INSTEAD OF INSERT OR UPDATE
 ON api.controllable_unit_service_provider
 FOR EACH ROW
-EXECUTE PROCEDURE flex.timeline_no_overlap(
+EXECUTE PROCEDURE timeline.no_overlap(
     'flex.controllable_unit_service_provider',
     'controllable_unit_id',
     'service_provider_id,contract_reference'
@@ -42,7 +42,7 @@ CREATE OR REPLACE TRIGGER service_providing_group_membership_upsert_timeline
 INSTEAD OF INSERT OR UPDATE
 ON api.service_providing_group_membership
 FOR EACH ROW
-EXECUTE PROCEDURE flex.timeline_no_check(
+EXECUTE PROCEDURE timeline.no_check(
     'flex.service_providing_group_membership',
     'controllable_unit_id,service_providing_group_id'
 );

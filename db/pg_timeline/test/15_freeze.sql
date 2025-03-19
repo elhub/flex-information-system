@@ -48,7 +48,7 @@ create trigger pgtl_freeze_upsert
 before insert or update
 on pgtl_freeze
 for each row
-execute function timeline_freeze('5 days');
+execute function timeline.freeze('5 days');
 
 drop function if exists pgtl_freeze_actual;
 create or replace function pgtl_freeze_actual()

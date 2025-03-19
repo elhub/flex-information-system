@@ -55,8 +55,8 @@ BEGIN
 
     IF NOT lv_covered THEN
       RAISE 'The CU must be managed by the SP from % to %',
-        timeline_timestamptz_to_text(lower(NEW.valid_time_range)),
-        timeline_timestamptz_to_text(upper(NEW.valid_time_range));
+        timeline.timestamptz_to_text(lower(NEW.valid_time_range)),
+        timeline.timestamptz_to_text(upper(NEW.valid_time_range));
     END IF;
 
     RETURN NEW;
@@ -76,4 +76,4 @@ CREATE OR REPLACE TRIGGER
 service_providing_group_membership_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW
-EXECUTE FUNCTION timeline_midnight_aligned();
+EXECUTE FUNCTION timeline.midnight_aligned();
