@@ -404,8 +404,9 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:timeline-is-empty runOnChange:true endDelimiter:--
 -- checks if a timeline has no record for current time
-CREATE OR REPLACE FUNCTION timeline_is_empty(
+CREATE OR REPLACE FUNCTION timeline.is_empty(
     -- table that contains the timeline
     tl_table text,
     -- column that identifies the timeline
