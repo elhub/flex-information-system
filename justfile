@@ -28,7 +28,7 @@ unload:
 
 
 # load the database
-load:
+load: liquibase
     #!/usr/bin/env bash
     set -euo pipefail
     export PGHOST=localhost
@@ -198,18 +198,18 @@ build:
     mkdir -p local/nginx/.html
     tar -xzf ./dist/dist.tar.gz -C ./local/nginx/.html/
 
-liquibase action='update':
+liquibase pghost='localhost' password='flex_password' action='update':
     #!/usr/bin/env bash
     set -euo pipefail
     JAVA_HOME=.bin/java \
-    LIQUIBASE_COMMAND_URL=jdbc:postgresql://localhost:5432/flex \
+    LIQUIBASE_COMMAND_URL=jdbc:postgresql://{{ pghost }}:5432/flex \
     LIQUIBASE_COMMAND_USERNAME=flex \
-    LIQUIBASE_COMMAND_PASSWORD=flex_password \
+    LIQUIBASE_COMMAND_PASSWORD={{ password }} \
     .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase \
     --contexts=local \
     --liquibaseSchemaName=flex \
     --defaultSchemaName=flex \
-    --changeLogFile=db/changelog.sql \
+    --changeLogFile=db/changelog.yml \
     --log-level=warning \
     {{ action }}
 

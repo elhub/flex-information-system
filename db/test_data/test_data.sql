@@ -335,7 +335,7 @@ BEGIN
       business_id,
       system_operator_id
     ) VALUES (
-      add_check_digit(partial_gsrn::text),
+      gs1.add_check_digit(partial_gsrn::text),
       so_id
     ) RETURNING id INTO ap_id;
 
@@ -492,7 +492,7 @@ BEGIN
     entity_id_person,
     entity_first_name || ' BRP',
    'balance_responsible_party',
-    add_check_digit(party_business_id_seq::text),
+    gs1.add_check_digit(party_business_id_seq::text),
     'gln'
   );
 
@@ -501,7 +501,7 @@ BEGIN
     entity_id_person,
     entity_first_name || ' ES',
    'energy_supplier',
-    add_check_digit((party_business_id_seq + 2)::text),
+    gs1.add_check_digit((party_business_id_seq + 2)::text),
     'gln'
   );
 
@@ -510,7 +510,7 @@ BEGIN
     entity_id_person,
     entity_first_name || ' MO',
    'market_operator',
-    add_check_digit((party_business_id_seq + 3)::text),
+    gs1.add_check_digit((party_business_id_seq + 3)::text),
     'gln'
   );
 
@@ -519,7 +519,7 @@ BEGIN
     entity_id_person,
     entity_first_name || ' SO',
    'system_operator',
-    add_check_digit((party_business_id_seq + 4)::text),
+    gs1.add_check_digit((party_business_id_seq + 4)::text),
     'gln'
   );
 
@@ -528,7 +528,7 @@ BEGIN
     entity_id_person,
     entity_first_name || ' SP',
    'service_provider',
-    add_check_digit((party_business_id_seq + 5)::text),
+    gs1.add_check_digit((party_business_id_seq + 5)::text),
     'gln'
   );
 
@@ -537,7 +537,7 @@ BEGIN
     entity_id_person,
     entity_first_name || ' TP',
    'third_party',
-    add_check_digit((party_business_id_seq + 6)::text),
+    gs1.add_check_digit((party_business_id_seq + 6)::text),
     'gln'
   );
 
@@ -547,7 +547,7 @@ BEGIN
       entity_id_person,
       entity_first_name || ' FISO',
       'flexibility_information_system_operator',
-      add_check_digit((party_business_id_seq + 7)::text),
+      gs1.add_check_digit((party_business_id_seq + 7)::text),
       'gln'
     );
   end if;
@@ -599,7 +599,7 @@ BEGIN
     SELECT add_controllable_unit(
       entity_first_name || ' ' || asset_type,
       so_id,
-      add_check_digit(accounting_point_seq::text),
+      gs1.add_check_digit(accounting_point_seq::text),
       ARRAY[
           (sp_id, '[2024-07-01 00:00:00 Europe/Oslo,2024-08-01 00:00:00 Europe/Oslo)'::tstzrange),
           (common_sp_id, '[2024-08-01 00:00:00 Europe/Oslo,2024-09-01 00:00:00 Europe/Oslo)'::tstzrange),

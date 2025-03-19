@@ -1,4 +1,5 @@
 SET client_min_messages TO notice;
+SET search_path TO gs1, public;
 
 BEGIN;
 SELECT plan(20);

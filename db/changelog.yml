@@ -1,0 +1,5 @@
+---
+databaseChangeLog:
+  - include:
+      file: ./gs1/gs1.sql
+      relativeToChangelogFile: true

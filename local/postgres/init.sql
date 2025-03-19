@@ -2,8 +2,10 @@
 -- It will NOT run on restarts
 
 -- flex is the main role for the application
--- it owns all the schemas and objects in the database
 CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';
+-- it owns all the schemas and objects in the database
+-- it should be allowed to create new schemas
+GRANT CREATE ON DATABASE flex TO flex;
 -- the main schema must exist for liquibase to add its changelog tables
 CREATE SCHEMA flex AUTHORIZATION flex;
 
