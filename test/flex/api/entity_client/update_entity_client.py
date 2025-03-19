@@ -5,8 +5,8 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.client_update_request import ClientUpdateRequest
 from ...models.empty_object import EmptyObject
+from ...models.entity_client_update_request import EntityClientUpdateRequest
 from ...models.error_message import ErrorMessage
 from ...types import Response
 
@@ -14,13 +14,13 @@ from ...types import Response
 def _get_kwargs(
     id: int,
     *,
-    body: ClientUpdateRequest,
+    body: EntityClientUpdateRequest,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
     _kwargs: Dict[str, Any] = {
         "method": "patch",
-        "url": f"/client/{id}",
+        "url": f"/entity_client/{id}",
     }
 
     _body = body.to_dict()
@@ -99,14 +99,14 @@ def sync_detailed(
     id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientUpdateRequest,
+    body: EntityClientUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Update Client
+    """Update Entity client
 
     Args:
         id (int):
-        body (ClientUpdateRequest): Request schema for update operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        body (EntityClientUpdateRequest): Request schema for update operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -132,14 +132,14 @@ def sync(
     id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientUpdateRequest,
+    body: EntityClientUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Update Client
+    """Update Entity client
 
     Args:
         id (int):
-        body (ClientUpdateRequest): Request schema for update operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        body (EntityClientUpdateRequest): Request schema for update operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -160,14 +160,14 @@ async def asyncio_detailed(
     id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientUpdateRequest,
+    body: EntityClientUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Update Client
+    """Update Entity client
 
     Args:
         id (int):
-        body (ClientUpdateRequest): Request schema for update operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        body (EntityClientUpdateRequest): Request schema for update operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -191,14 +191,14 @@ async def asyncio(
     id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientUpdateRequest,
+    body: EntityClientUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Update Client
+    """Update Entity client
 
     Args:
         id (int):
-        body (ClientUpdateRequest): Request schema for update operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        body (EntityClientUpdateRequest): Request schema for update operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

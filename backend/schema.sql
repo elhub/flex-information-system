@@ -143,11 +143,12 @@ CREATE TABLE entity (
     client_secret text NULL,
     client_public_key text NULL
 );
-CREATE TABLE client (
+CREATE TABLE entity_client (
     id bigint NOT NULL,
     entity_id bigint NOT NULL,
+    name text NULL,
     client_id text NOT NULL,
-    secret text NULL,
+    client_secret text NULL,
     public_key text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL

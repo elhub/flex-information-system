@@ -1,8 +1,9 @@
-CREATE TABLE IF NOT EXISTS client (
+CREATE TABLE IF NOT EXISTS entity_client (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     entity_id bigint NOT NULL REFERENCES entity (id),
-    client_id text NOT NULL UNIQUE,
-    secret text NULL,
+    client_id uuid NOT NULL UNIQUE DEFAULT (public.uuid_generate_v4()),
+    name text NULL CHECK (char_length(name) <= 64),
+    client_secret text NULL,
     public_key text NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
@@ -15,7 +16,7 @@ CREATE TABLE IF NOT EXISTS client (
     )
 );
 
-CREATE OR REPLACE FUNCTION client_secret_crypt()
+CREATE OR REPLACE FUNCTION entity_client_secret_crypt()
 RETURNS trigger
 SECURITY DEFINER
 LANGUAGE plpgsql
@@ -23,22 +24,25 @@ AS
 $$
 BEGIN
     IF
-        (TG_OP = 'INSERT' AND NEW.secret IS NOT NULL) OR
-        (TG_OP = 'UPDATE' AND NEW.secret IS DISTINCT FROM OLD.secret)
+        (TG_OP = 'INSERT' AND NEW.client_secret IS NOT NULL) OR
+        (TG_OP = 'UPDATE' AND
+            NEW.client_secret IS DISTINCT FROM OLD.client_secret)
     THEN
         -- If the client secret is shorter than 12 characters, error
-        IF char_length(NEW.secret) < 12 THEN
+        IF char_length(NEW.client_secret) < 12 THEN
             RAISE EXCEPTION 'client secret must be at least 12 characters long';
         END IF;
 
-        NEW.secret = public.crypt(NEW.secret, public.gen_salt('bf'));
+        NEW.client_secret = public.crypt(
+            NEW.client_secret, public.gen_salt('bf')
+        );
     END IF;
 
     RETURN NEW;
 END;
 $$;
 
-CREATE OR REPLACE TRIGGER client_secret_crypt
-BEFORE INSERT OR UPDATE ON client
+CREATE OR REPLACE TRIGGER entity_client_secret_crypt
+BEFORE INSERT OR UPDATE ON entity_client
 FOR EACH ROW
-EXECUTE FUNCTION client_secret_crypt();
+EXECUTE FUNCTION entity_client_secret_crypt();

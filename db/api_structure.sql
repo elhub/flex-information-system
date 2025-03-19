@@ -6,11 +6,11 @@ SET search_path TO api;
 \i api/accounting_point_balance_responsible_party.sql
 \i api/accounting_point_end_user.sql
 \i api/accounting_point_energy_supplier.sql
-\i api/client.sql
 \i api/controllable_unit.sql
 \i api/controllable_unit_lookup.sql
 \i api/controllable_unit_service_provider.sql
 \i api/entity.sql
+\i api/entity_client.sql
 \i api/event.sql
 \i api/identity.sql
 \i api/notice.sql

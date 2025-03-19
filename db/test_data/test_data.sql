@@ -467,10 +467,10 @@ BEGIN
 
   -- add clients
 
-  INSERT INTO flex.client (entity_id, client_id)
+  INSERT INTO flex.entity_client (entity_id, name)
   VALUES
-  (entity_id_person, in_email),
-  (entity_id_org, public.uuid_generate_v4());
+  (entity_id_person, 'PC #1'),
+  (entity_id_org, 'Laptop #4');
 
   -- end user parties
 

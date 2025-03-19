@@ -45,8 +45,8 @@
             "description": "Entity"
         },
         {
-            "name": "client",
-            "description": "Client"
+            "name": "entity_client",
+            "description": "Entity client"
         },
         {
             "name": "party",
@@ -1005,18 +1005,26 @@
                 ],
                 "type": "object"
             },
-            "client_update_request": {
-                "summary": "Update - Client",
+            "entity_client_update_request": {
+                "summary": "Update - Entity client",
                 "description": "Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "type": "object",
                 "properties": {
+                    "name": {
+                        "description": "Name of the client. Maximum 64 characters.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 64,
+                        "nullable": true,
+                        "example": "Laptop"
+                    },
                     "client_id": {
                         "description": "The identifier of the entity. For use with client credentials authentication method.",
                         "format": "text",
                         "type": "string",
                         "example": "addr@flex.test"
                     },
-                    "secret": {
+                    "client_secret": {
                         "description": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
                         "format": "text",
                         "type": "string",
@@ -1034,12 +1042,12 @@
                     }
                 }
             },
-            "client_create_request": {
-                "summary": "Create - Client",
+            "entity_client_create_request": {
+                "summary": "Create - Entity client",
                 "description": "Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/client_update_request"
+                        "$ref": "#/components/schemas/entity_client_update_request"
                     },
                     {
                         "properties": {
@@ -1060,12 +1068,12 @@
                 ],
                 "type": "object"
             },
-            "client_response": {
-                "summary": "Response - Client",
+            "entity_client_response": {
+                "summary": "Response - Entity client",
                 "description": "Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/client_create_request"
+                        "$ref": "#/components/schemas/entity_client_create_request"
                     },
                     {
                         "properties": {
@@ -6904,15 +6912,15 @@
                 }
             }
         },
-        "/client": {
-            "summary": "Client",
+        "/entity_client": {
+            "summary": "Entity client",
             "description": "",
             "get": {
-                "operationId": "list_client",
-                "summary": "List Client",
+                "operationId": "list_entity_client",
+                "summary": "List Entity client",
                 "description": "",
                 "tags": [
-                    "client"
+                    "entity_client"
                 ],
                 "parameters": [
                     {
@@ -6934,6 +6942,15 @@
                         "example": "eq.55",
                         "description": "Reference to the entity that this client is attached to.",
                         "name": "entity_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the client. Maximum 64 characters."
                     },
                     {
                         "description": "Filtering Columns",
@@ -7002,7 +7019,7 @@
                             "application/json": {
                                 "schema": {
                                     "items": {
-                                        "$ref": "#/components/schemas/client_response"
+                                        "$ref": "#/components/schemas/entity_client_response"
                                     },
                                     "type": "array"
                                 }
@@ -7094,21 +7111,21 @@
                 }
             },
             "post": {
-                "operationId": "create_client",
-                "summary": "Create Client",
+                "operationId": "create_entity_client",
+                "summary": "Create Entity client",
                 "description": "",
                 "tags": [
-                    "client"
+                    "entity_client"
                 ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/client_create_request"
+                                "$ref": "#/components/schemas/entity_client_create_request"
                             }
                         }
                     },
-                    "description": "client",
+                    "description": "entity_client",
                     "required": false
                 },
                 "responses": {
@@ -7116,7 +7133,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/client_response"
+                                    "$ref": "#/components/schemas/entity_client_response"
                                 }
                             }
                         },
@@ -7202,8 +7219,8 @@
                 }
             }
         },
-        "/client/{id}": {
-            "summary": "Client - single",
+        "/entity_client/{id}": {
+            "summary": "Entity client - single",
             "description": "",
             "parameters": [
                 {
@@ -7218,18 +7235,18 @@
                 }
             ],
             "get": {
-                "operationId": "read_client",
-                "summary": "Read Client",
+                "operationId": "read_entity_client",
+                "summary": "Read Entity client",
                 "description": "",
                 "tags": [
-                    "client"
+                    "entity_client"
                 ],
                 "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/client_response"
+                                    "$ref": "#/components/schemas/entity_client_response"
                                 }
                             }
                         },
@@ -7314,21 +7331,21 @@
                 }
             },
             "patch": {
-                "operationId": "update_client",
-                "summary": "Update Client",
+                "operationId": "update_entity_client",
+                "summary": "Update Entity client",
                 "description": "",
                 "tags": [
-                    "client"
+                    "entity_client"
                 ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/client_update_request"
+                                "$ref": "#/components/schemas/entity_client_update_request"
                             }
                         }
                     },
-                    "description": "client",
+                    "description": "entity_client",
                     "required": true
                 },
                 "responses": {
@@ -7406,11 +7423,11 @@
                 }
             },
             "delete": {
-                "operationId": "delete_client",
-                "summary": "Delete Client",
+                "operationId": "delete_entity_client",
+                "summary": "Delete Entity client",
                 "description": "",
                 "tags": [
-                    "client"
+                    "entity_client"
                 ],
                 "requestBody": {
                     "content": {

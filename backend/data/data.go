@@ -56,8 +56,6 @@ func NewAPIHandler(
 	// all other requests are forwarded to PostgREST
 	mux.HandleFunc("/accounting_point", data.postgRESTHandler)
 	mux.HandleFunc("/accounting_point/{path...}", data.postgRESTHandler)
-	mux.HandleFunc("/client", data.postgRESTHandler)
-	mux.HandleFunc("/client/{path...}", data.postgRESTHandler)
 	mux.HandleFunc("/controllable_unit", data.postgRESTHandler)
 	mux.HandleFunc("/controllable_unit/{path...}", data.postgRESTHandler)
 	mux.HandleFunc("/controllable_unit_history", data.postgRESTHandler)
@@ -68,6 +66,8 @@ func NewAPIHandler(
 	mux.HandleFunc("/controllable_unit_service_provider_history/{path...}", data.postgRESTHandler)
 	mux.HandleFunc("/entity", data.postgRESTHandler)
 	mux.HandleFunc("/entity/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/entity_client", data.postgRESTHandler)
+	mux.HandleFunc("/entity_client/{path...}", data.postgRESTHandler)
 	mux.HandleFunc("/event", data.postgRESTHandler)
 	mux.HandleFunc("/event/{path...}", data.postgRESTHandler)
 	mux.HandleFunc("/identity", data.postgRESTHandler)

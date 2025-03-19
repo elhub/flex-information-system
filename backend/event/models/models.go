@@ -23,16 +23,6 @@ type AccountingPointEndUser struct {
 	RecordedBy        int
 }
 
-type Client struct {
-	ID         int
-	EntityID   int
-	ClientID   string
-	Secret     *string
-	PublicKey  *string
-	RecordedBy int
-	RecordedAt pgtype.Timestamptz
-}
-
 type ControllableUnit struct {
 	ID                         int
 	BusinessID                 string
@@ -116,6 +106,17 @@ type Entity struct {
 	ClientID        string
 	ClientSecret    *string
 	ClientPublicKey *string
+}
+
+type EntityClient struct {
+	ID           int
+	EntityID     int
+	Name         *string
+	ClientID     string
+	ClientSecret *string
+	PublicKey    *string
+	RecordedBy   int
+	RecordedAt   pgtype.Timestamptz
 }
 
 type Event struct {

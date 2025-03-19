@@ -5,10 +5,10 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.client_response import ClientResponse
 from ...models.empty_object import EmptyObject
+from ...models.entity_client_response import EntityClientResponse
 from ...models.error_message import ErrorMessage
-from ...models.list_client_prefer import ListClientPrefer
+from ...models.list_entity_client_prefer import ListEntityClientPrefer
 from ...types import UNSET, Response, Unset
 
 
@@ -16,13 +16,14 @@ def _get_kwargs(
     *,
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListClientPrefer] = UNSET,
+    prefer: Union[Unset, ListEntityClientPrefer] = UNSET,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
     if not isinstance(range_, Unset):
@@ -40,6 +41,8 @@ def _get_kwargs(
 
     params["entity_id"] = entity_id
 
+    params["name"] = name
+
     params["select"] = select
 
     params["order"] = order
@@ -52,7 +55,7 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/client",
+        "url": "/entity_client",
         "params": params,
     }
 
@@ -62,12 +65,12 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ErrorMessage, List["ClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+) -> Optional[Union[Any, ErrorMessage, List["EntityClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ClientResponse.from_dict(response_200_item_data)
+            response_200_item = EntityClientResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -127,7 +130,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ErrorMessage, List["ClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+) -> Response[Union[Any, ErrorMessage, List["EntityClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -141,38 +144,41 @@ def sync_detailed(
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListClientPrefer] = UNSET,
-) -> Response[Union[Any, ErrorMessage, List["ClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Client
+    prefer: Union[Unset, ListEntityClientPrefer] = UNSET,
+) -> Response[Union[Any, ErrorMessage, List["EntityClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Entity client
 
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListClientPrefer]):
+        prefer (Union[Unset, ListEntityClientPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, List['ClientResponse'], Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, List['EntityClientResponse'], Union['EmptyObject', 'ErrorMessage']]]
     """
 
     kwargs = _get_kwargs(
         id=id,
         entity_id=entity_id,
+        name=name,
         select=select,
         order=order,
         offset=offset,
@@ -194,39 +200,42 @@ def sync(
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListClientPrefer] = UNSET,
-) -> Optional[Union[Any, ErrorMessage, List["ClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Client
+    prefer: Union[Unset, ListEntityClientPrefer] = UNSET,
+) -> Optional[Union[Any, ErrorMessage, List["EntityClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Entity client
 
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListClientPrefer]):
+        prefer (Union[Unset, ListEntityClientPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, List['ClientResponse'], Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, List['EntityClientResponse'], Union['EmptyObject', 'ErrorMessage']]
     """
 
     return sync_detailed(
         client=client,
         id=id,
         entity_id=entity_id,
+        name=name,
         select=select,
         order=order,
         offset=offset,
@@ -242,38 +251,41 @@ async def asyncio_detailed(
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListClientPrefer] = UNSET,
-) -> Response[Union[Any, ErrorMessage, List["ClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Client
+    prefer: Union[Unset, ListEntityClientPrefer] = UNSET,
+) -> Response[Union[Any, ErrorMessage, List["EntityClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Entity client
 
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListClientPrefer]):
+        prefer (Union[Unset, ListEntityClientPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, List['ClientResponse'], Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, List['EntityClientResponse'], Union['EmptyObject', 'ErrorMessage']]]
     """
 
     kwargs = _get_kwargs(
         id=id,
         entity_id=entity_id,
+        name=name,
         select=select,
         order=order,
         offset=offset,
@@ -293,33 +305,35 @@ async def asyncio(
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListClientPrefer] = UNSET,
-) -> Optional[Union[Any, ErrorMessage, List["ClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Client
+    prefer: Union[Unset, ListEntityClientPrefer] = UNSET,
+) -> Optional[Union[Any, ErrorMessage, List["EntityClientResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Entity client
 
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListClientPrefer]):
+        prefer (Union[Unset, ListEntityClientPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, List['ClientResponse'], Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, List['EntityClientResponse'], Union['EmptyObject', 'ErrorMessage']]
     """
 
     return (
@@ -327,6 +341,7 @@ async def asyncio(
             client=client,
             id=id,
             entity_id=entity_id,
+            name=name,
             select=select,
             order=order,
             offset=offset,

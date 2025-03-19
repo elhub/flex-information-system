@@ -531,9 +531,9 @@ resources:
           0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
           -----END PUBLIC KEY-----
 
-  - id: client
-    acronym: CLI
-    summary: Client
+  - id: entity_client
+    acronym: ECL
+    summary: Entity client
     description: >-
       Client linked to an entity for client credentials and JWT grant
       authentication methods.
@@ -561,6 +561,13 @@ resources:
           resource: entity
           field: id
         example: 30
+      name:
+        description: Name of the client. Maximum 64 characters.
+        format: text
+        type: string
+        maxLength: 64
+        nullable: true
+        example: Laptop
       client_id:
         description: >-
           The identifier of the entity. For use with client credentials
@@ -568,7 +575,7 @@ resources:
         format: text
         type: string
         example: addr@flex.test
-      secret:
+      client_secret:
         description: >-
           The secret of the entity. For use with client credentials
           authentication method. Input as plain text but stored encrypted.

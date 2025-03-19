@@ -1,7 +1,7 @@
 import { Show, SimpleShowLayout, TextField } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
-import { ClientList } from "./client/ClientList";
+import { EntityClientList } from "./client/EntityClientList";
 
 export const EntityShow = () => (
   <Show>
@@ -28,7 +28,7 @@ export const EntityShow = () => (
         <Typography variant="h6" gutterBottom>
           Clients
         </Typography>
-        <ClientList />
+        <EntityClientList />
       </Stack>
     </SimpleShowLayout>
   </Show>

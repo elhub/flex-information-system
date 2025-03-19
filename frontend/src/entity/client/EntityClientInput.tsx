@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../Toolbar";
 
 // common layout to create and edit pages
-export const ClientInput = () => {
+export const EntityClientInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
   const record = { ...actualRecord, ...overrideRecord };
@@ -27,7 +27,8 @@ export const ClientInput = () => {
           readOnly
         />
         <TextInput source="client_id" label="Client ID" />
-        <PasswordInput source="secret" />
+        <TextInput source="name" />
+        <PasswordInput source="client_secret" />
         <TextInput
           source="public_key"
           multiline={true}

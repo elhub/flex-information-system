@@ -16,7 +16,7 @@ import { IdentityField } from "../../IdentityField";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 
-export const ClientShow = () => {
+export const EntityClientShow = () => {
   const { permissions } = usePermissions();
 
   const EditButton = () => {
@@ -34,7 +34,7 @@ export const ClientShow = () => {
   return (
     <Show
       actions={
-        permissions.includes("client.update") && (
+        permissions.includes("entity_client.update") && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>
@@ -51,8 +51,9 @@ export const ClientShow = () => {
             <ReferenceField source="entity_id" reference="entity" link="show">
               <TextField source="name" />
             </ReferenceField>
+            <TextField source="name" />
             <TextField source="client_id" label="Client ID" />
-            <TextField source="secret" />
+            <TextField source="client_secret" />
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <FunctionField

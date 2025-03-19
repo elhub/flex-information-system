@@ -1,26 +1,25 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.client_create_request import ClientCreateRequest
-from ...models.client_response import ClientResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...types import Response
 
 
 def _get_kwargs(
+    id: int,
     *,
-    body: ClientCreateRequest,
+    body: EmptyObject,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
     _kwargs: Dict[str, Any] = {
-        "method": "post",
-        "url": "/client",
+        "method": "delete",
+        "url": f"/entity_client/{id}",
     }
 
     _body = body.to_dict()
@@ -34,11 +33,10 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ClientResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    if response.status_code == 201:
-        response_201 = ClientResponse.from_dict(response.json())
-
-        return response_201
+) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+    if response.status_code == 204:
+        response_204 = cast(Any, None)
+        return response_204
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
 
@@ -75,14 +73,6 @@ def _parse_response(
         response_406 = ErrorMessage.from_dict(response.json())
 
         return response_406
-    if response.status_code == 409:
-        response_409 = ErrorMessage.from_dict(response.json())
-
-        return response_409
-    if response.status_code == 500:
-        response_500 = ErrorMessage.from_dict(response.json())
-
-        return response_500
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -91,7 +81,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ClientResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -101,25 +91,27 @@ def _build_response(
 
 
 def sync_detailed(
+    id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientCreateRequest,
-) -> Response[Union[ClientResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Create Client
+    body: EmptyObject,
+) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+    """Delete Entity client
 
     Args:
-        body (ClientCreateRequest): Request schema for create operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        id (int):
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ClientResponse, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]]
     """
 
     kwargs = _get_kwargs(
+        id=id,
         body=body,
     )
 
@@ -131,50 +123,54 @@ def sync_detailed(
 
 
 def sync(
+    id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientCreateRequest,
-) -> Optional[Union[ClientResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Create Client
+    body: EmptyObject,
+) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+    """Delete Entity client
 
     Args:
-        body (ClientCreateRequest): Request schema for create operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        id (int):
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ClientResponse, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]
     """
 
     return sync_detailed(
+        id=id,
         client=client,
         body=body,
     ).parsed
 
 
 async def asyncio_detailed(
+    id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientCreateRequest,
-) -> Response[Union[ClientResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Create Client
+    body: EmptyObject,
+) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+    """Delete Entity client
 
     Args:
-        body (ClientCreateRequest): Request schema for create operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        id (int):
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ClientResponse, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]]
     """
 
     kwargs = _get_kwargs(
+        id=id,
         body=body,
     )
 
@@ -184,26 +180,28 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    id: int,
     *,
     client: Union[AuthenticatedClient, Client],
-    body: ClientCreateRequest,
-) -> Optional[Union[ClientResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
-    """Create Client
+    body: EmptyObject,
+) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+    """Delete Entity client
 
     Args:
-        body (ClientCreateRequest): Request schema for create operations - Client linked to an
-            entity for client credentials and JWT grant authentication methods.
+        id (int):
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ClientResponse, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage']]
     """
 
     return (
         await asyncio_detailed(
+            id=id,
             client=client,
             body=body,
         )

@@ -38,7 +38,6 @@ schema = schemathesis.from_file(
 @schema.parametrize(
     endpoint=[
         "^/api/v0/openapi.json$",
-        "^/api/v0/client",
         "^/api/v0/controllable_unit",
         "^/api/v0/entity",
         "^/api/v0/party",

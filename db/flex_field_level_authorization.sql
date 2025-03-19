@@ -32,40 +32,40 @@ TO flex_entity;
 GRANT UPDATE ON TABLE flex.entity
 TO flex_entity;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_balance_responsible_party;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_energy_supplier;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_end_user;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_flexibility_information_system_operator;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_market_operator;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_system_operator;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_service_provider;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_third_party;
 
-GRANT INSERT ON TABLE flex.client
+GRANT INSERT ON TABLE flex.entity_client
 TO flex_entity;
 
-GRANT SELECT ON TABLE flex.client
+GRANT SELECT ON TABLE flex.entity_client
 TO flex_entity;
 
-GRANT UPDATE ON TABLE flex.client
+GRANT UPDATE ON TABLE flex.entity_client
 TO flex_entity;
 
-GRANT DELETE ON TABLE flex.client
+GRANT DELETE ON TABLE flex.entity_client
 TO flex_entity;
 
 GRANT SELECT ON TABLE flex.party

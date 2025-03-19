@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ListClientPrefer(str, Enum):
+class ListEntityClientPrefer(str, Enum):
     COUNTNONE = "count=none"
 
     def __str__(self) -> str:

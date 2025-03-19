@@ -1,19 +1,20 @@
 -- Manually managed file
 
-CREATE OR REPLACE VIEW client
+CREATE OR REPLACE VIEW entity_client
 WITH (security_invoker = true) AS (
     SELECT
         id,
         entity_id,
         client_id,
+        name,
         public_key,
-        '***************' AS secret,
+        '***************' AS client_secret,
         recorded_by,
         lower(record_time_range) AS recorded_at
-    FROM flex.client
+    FROM flex.entity_client
 );
 
-CREATE OR REPLACE FUNCTION client_modify()
+CREATE OR REPLACE FUNCTION entity_client_modify()
 RETURNS TRIGGER
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -25,19 +26,30 @@ DECLARE
 BEGIN
     IF TG_OP = 'INSERT' THEN
 
-        INSERT INTO flex.client (entity_id, client_id, public_key, secret)
-        VALUES (NEW.entity_id, NEW.client_id, NEW.public_key, NEW.secret)
+        INSERT INTO flex.entity_client (
+            entity_id,
+            name,
+            public_key,
+            client_secret
+        )
+        VALUES (
+            NEW.entity_id,
+            NEW.name,
+            NEW.public_key,
+            NEW.client_secret
+        )
         RETURNING id INTO l_id;
 
-        SELECT * INTO l_new FROM api.client WHERE id = l_id;
+        SELECT * INTO l_new FROM api.entity_client WHERE id = l_id;
         RETURN l_new;
 
     ELSIF TG_OP = 'UPDATE' THEN
 
-        UPDATE flex.client SET
+        UPDATE flex.entity_client SET
             client_id = NEW.client_id,
+            name = NEW.name,
             public_key = NEW.public_key,
-            secret = NEW.secret
+            client_secret = NEW.client_secret
         WHERE id = NEW.id;
 
         IF NOT FOUND THEN
@@ -46,12 +58,12 @@ BEGIN
             RETURN null;
         END IF;
 
-        SELECT * INTO l_new FROM api.client WHERE id = NEW.id;
+        SELECT * INTO l_new FROM api.entity_client WHERE id = NEW.id;
         RETURN l_new;
 
     ELSIF TG_OP = 'DELETE' THEN
 
-        DELETE FROM flex.client WHERE id = OLD.id;
+        DELETE FROM flex.entity_client WHERE id = OLD.id;
 
         IF NOT FOUND THEN
             RAISE sqlstate 'PT401' USING
@@ -66,8 +78,8 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE TRIGGER client_modify_trg
+CREATE OR REPLACE TRIGGER entity_client_modify_trg
 INSTEAD OF INSERT OR UPDATE OR DELETE
-ON client
+ON entity_client
 FOR EACH ROW
-EXECUTE FUNCTION client_modify();
+EXECUTE FUNCTION entity_client_modify();

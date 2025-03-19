@@ -3,18 +3,18 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
-    ClientCreateRequest,
-    ClientResponse,
-    ClientUpdateRequest,
+    EntityClientCreateRequest,
+    EntityClientResponse,
+    EntityClientUpdateRequest,
     ErrorMessage,
     EmptyObject,
 )
-from flex.api.client import (
-    read_client,
-    list_client,
-    update_client,
-    create_client,
-    delete_client,
+from flex.api.entity_client import (
+    read_entity_client,
+    list_entity_client,
+    update_entity_client,
+    create_entity_client,
+    delete_entity_client,
 )
 import pytest
 from typing import cast
@@ -33,67 +33,66 @@ def test_entity_client(sts):
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
-    # RLS: CLI-ENT001
+    # RLS: ECL-ENT001
     # entity can do everything on their own clients
 
-    # endpoint: GET /client
-    clts_ent = list_client.sync(client=client_ent)
+    # endpoint: GET /entity_client
+    clts_ent = list_entity_client.sync(client=client_ent)
     assert isinstance(clts_ent, list)
     assert len(clts_ent) >= 1
 
-    # endpoint: POST /client
-    clt = create_client.sync(
+    # endpoint: POST /entity_client
+    clt = create_entity_client.sync(
         client=client_ent,
-        body=ClientCreateRequest(
-            entity_id=ent_id,
-            client_id="test_client",
-        ),
+        body=EntityClientCreateRequest(entity_id=ent_id, name="test client name"),
     )
-    assert isinstance(clt, ClientResponse)
+    assert isinstance(clt, EntityClientResponse)
 
-    # endpoint: GET /client/{id}
-    clt = read_client.sync(client=client_ent, id=cast(int, clt.id))
-    assert isinstance(clt, ClientResponse)
+    # endpoint: GET /entity_client/{id}
+    clt = read_entity_client.sync(client=client_ent, id=cast(int, clt.id))
+    assert isinstance(clt, EntityClientResponse)
 
-    # endpoint: PATCH /client/{id}
-    u = update_client.sync(
+    # endpoint: PATCH /entity_client/{id}
+    u = update_entity_client.sync(
         client=client_ent,
         id=cast(int, clt.id),
-        body=ClientUpdateRequest(secret="abcdefghijklm"),
+        body=EntityClientUpdateRequest(client_secret="abcdefghijklm"),
     )
     assert not isinstance(u, ErrorMessage)
 
-    # RLS: CLI-FISO001
+    # RLS: ECL-FISO001
     # FISO can read everything
 
-    clt = read_client.sync(client=client_fiso, id=cast(int, clt.id))
-    assert isinstance(clt, ClientResponse)
+    clt = read_entity_client.sync(client=client_fiso, id=cast(int, clt.id))
+    assert isinstance(clt, EntityClientResponse)
 
     # but FISO or other entity cannot modify the resource for this entity
 
-    e = create_client.sync(
+    e = create_entity_client.sync(
         client=client_other_ent,
-        body=ClientCreateRequest(
-            entity_id=ent_id,
-            client_id="test_client",
-        ),
+        body=EntityClientCreateRequest(entity_id=ent_id, name="test client name"),
     )
     assert isinstance(e, ErrorMessage)
 
-    e = create_client.sync(
+    e = create_entity_client.sync(
         client=client_fiso,
-        body=ClientCreateRequest(
-            entity_id=ent_id,
-            client_id="test_client",
-        ),
+        body=EntityClientCreateRequest(entity_id=ent_id, name="test client name"),
     )
     assert isinstance(e, ErrorMessage)
 
-    e = delete_client.sync(client=client_fiso, id=cast(int, clt.id), body=EmptyObject())
+    e = delete_entity_client.sync(
+        client=client_fiso,
+        id=cast(int, clt.id),
+        body=EmptyObject(),
+    )
     assert isinstance(e, ErrorMessage)
 
     # only the entity can delete its clients
 
-    # endpoint: DELETE /client/{id}
-    d = delete_client.sync(client=client_ent, id=cast(int, clt.id), body=EmptyObject())
+    # endpoint: DELETE /entity_client/{id}
+    d = delete_entity_client.sync(
+        client=client_ent,
+        id=cast(int, clt.id),
+        body=EmptyObject(),
+    )
     assert not isinstance(d, ErrorMessage)

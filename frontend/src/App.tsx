@@ -118,8 +118,8 @@ import { ServiceProviderProductApplicationCommentHistoryList } from "./service_p
 import { NoticeList } from "./notice/NoticeList";
 import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
 import { ControllableUnitLookupResult } from "./controllable_unit/lookup/ControllableUnitLookupResult";
-import { ClientInput } from "./entity/client/ClientInput";
-import { ClientShow } from "./entity/client/ClientShow";
+import { EntityClientInput } from "./entity/client/EntityClientInput";
+import { EntityClientShow } from "./entity/client/EntityClientShow";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -360,21 +360,21 @@ export const App = () => (
             <Route
               path=":entity_id/client/:id/show"
               element={
-                <ResourceContextProvider value="client">
-                  <ClientShow />
+                <ResourceContextProvider value="entity_client">
+                  <EntityClientShow />
                 </ResourceContextProvider>
               }
             />
             <Route
               path=":entity_id/client/create"
               element={
-                <ResourceContextProvider value="client">
+                <ResourceContextProvider value="entity_client">
                   <Create
                     redirect={(_: any, _id: any, record: any) =>
                       `entity/${record.entity_id}/show`
                     }
                   >
-                    <ClientInput />
+                    <EntityClientInput />
                   </Create>
                 </ResourceContextProvider>
               }
@@ -382,14 +382,14 @@ export const App = () => (
             <Route
               path=":entity_id/client/:id"
               element={
-                <ResourceContextProvider value="client">
+                <ResourceContextProvider value="entity_client">
                   <Edit
                     mutationMode="pessimistic"
                     redirect={(_: any, _id: any, record: any) =>
                       `entity/${record.entity_id}/show`
                     }
                   >
-                    <ClientInput />
+                    <EntityClientInput />
                   </Edit>
                 </ResourceContextProvider>
               }

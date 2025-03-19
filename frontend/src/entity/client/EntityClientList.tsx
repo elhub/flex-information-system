@@ -15,12 +15,12 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../datetime";
 import { IdentityField } from "../../IdentityField";
 
-export const ClientList = () => {
+export const EntityClientList = () => {
   // id of the entity
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
-  const { data, isLoading } = useGetList("client", {
+  const { data, isLoading } = useGetList("entity_client", {
     filter: { entity_id: id },
   });
 
@@ -36,13 +36,13 @@ export const ClientList = () => {
 
   const ListActions = () => (
     <TopToolbar>
-      {permissions.includes("client.create") && <CreateButton />}
+      {permissions.includes("entity_client.create") && <CreateButton />}
     </TopToolbar>
   );
 
   return (
-    permissions.includes("client.read") && (
-      <ResourceContextProvider value="client">
+    permissions.includes("entity_client.read") && (
+      <ResourceContextProvider value="entity_client">
         <List
           perPage={10}
           actions={<ListActions />}
@@ -60,9 +60,10 @@ export const ClientList = () => {
           >
             <TextField source="id" label="ID" />
             <TextField source="client_id" label="Client ID" />
+            <TextField source="name" />
             <DateField source="recorded_at" showTime />
             <IdentityField source="recorded_by" />
-            {permissions.includes("client.delete") && (
+            {permissions.includes("entity_client.delete") && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}
           </Datagrid>
