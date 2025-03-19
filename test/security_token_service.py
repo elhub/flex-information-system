@@ -62,12 +62,12 @@ class TestEntity(Enum):
     # https://stackoverflow.com/questions/62460557/cannot-collect-test-class-testmain-because-it-has-a-init-constructor-from
     __test__ = False
 
-    def email(self):
+    def client_id(self):
         match self:
             case TestEntity.TEST:
-                return "test.suite@flex.test"
+                return "3733e21b-5def-400d-8133-06bcda02465e"
             case TestEntity.COMMON:
-                return "common.shared@flex.test"
+                return "df8bee5f-6e60-4a21-8927-e5bcdd4ce768"
 
 
 """
@@ -148,7 +148,7 @@ class SecurityTokenService:
 
     # network call for authentication
     def _get_client(self, entity: TestEntity, party_name=None):
-        entity_token = self._client_credentials(entity.email(), "87h87hijhulO")
+        entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
         entity_client = AuthenticatedClient(
             base_url=self.api_url, token=entity_token, verify_ssl=False
         )
@@ -251,7 +251,7 @@ class SecurityTokenService:
 
         # now get a client for the new party
 
-        entity_token = self._client_credentials(entity.email(), "87h87hijhulO")
+        entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
         token = self._token_exchange(entity_token, party.id)
 
         return AuthenticatedClient(
