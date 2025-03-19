@@ -4,8 +4,8 @@ This process is used to terminate the service provider contract for the
 controllable unit. The process can be triggered by one of the following:
 
 - Service contract revocation by end user.
-- Implicit contract termination triggered by the metering point
-  administrator (Elhub).  
+- Implicit contract termination triggered by updated end user information in
+  Elhub (Metering Point Administrator).  
 - Service contract termination by service provider.
 
 Updated end user information from Elhub can occur for several reasons, such as:
@@ -18,8 +18,10 @@ Updated end user information from Elhub can occur for several reasons, such as:
 
 In all these cases, FIS does not have insight into the reasons behind the
 updates from Elhub. Therefore, it is important for the service provider to
-actively monitor these updates and verify them against their end users, to assess
-whether the update trigger an implicit contract termination.
+actively monitor these updates and verify them against their end users, to
+assess whether the update trigger an implicit contract termination. Note that
+updates on end user information from Elhub can be both in the future and back in
+time.
 
 ## Prerequisites
 
