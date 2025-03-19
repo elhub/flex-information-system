@@ -42,10 +42,7 @@ SP -> FIS: Update existing contract
 activate SP
 note left SP
     Data:
-    - Service provider
-    - Controllable unit
     - End date
-
 end note
 activate FIS
 FIS --> SP: OK
