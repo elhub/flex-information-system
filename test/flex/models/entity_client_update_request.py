@@ -14,7 +14,7 @@ class EntityClientUpdateRequest:
     authentication methods.
 
         Attributes:
-            name (Union[None, Unset, str]): Name of the client. Maximum 64 characters. Example: Laptop.
+            name (Union[None, Unset, str]): Name of the client. Example: Laptop.
             client_id (Union[Unset, str]): The identifier of the entity. For use with client credentials authentication
                 method. Example: addr@flex.test.
             client_secret (Union[None, Unset, str]): The secret of the entity. For use with client credentials

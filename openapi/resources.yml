@@ -562,10 +562,10 @@ resources:
           field: id
         example: 30
       name:
-        description: Name of the client. Maximum 64 characters.
+        description: Name of the client.
         format: text
         type: string
-        maxLength: 64
+        maxLength: 256
         nullable: true
         example: Laptop
       client_id:

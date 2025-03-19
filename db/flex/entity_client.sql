@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS entity_client (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     entity_id bigint NOT NULL REFERENCES entity (id),
     client_id uuid NOT NULL UNIQUE DEFAULT (public.uuid_generate_v4()),
-    name text NULL CHECK (char_length(name) <= 64),
+    name text NULL CHECK (char_length(name) <= 256),
     client_secret text NULL,
     public_key text NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(

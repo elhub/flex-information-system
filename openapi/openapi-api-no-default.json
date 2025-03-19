@@ -1001,10 +1001,10 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "description": "Name of the client. Maximum 64 characters.",
+                        "description": "Name of the client.",
                         "format": "text",
                         "type": "string",
-                        "maxLength": 64,
+                        "maxLength": 256,
                         "nullable": true,
                         "example": "Laptop"
                     },
@@ -6934,7 +6934,7 @@
                             "type": "string"
                         },
                         "example": "eq.somename",
-                        "description": "Name of the client. Maximum 64 characters."
+                        "description": "Name of the client."
                     },
                     {
                         "description": "Filtering Columns",
