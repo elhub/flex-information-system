@@ -11,7 +11,7 @@ skinparam note {
 actor "End User (EU)" AS EU
 actor "Service Provider (SP)" as SP
 participant "Flexibility Information System (FIS)" as FIS
-actor "Metering Point Administrator (MPA)" as MPA
+actor "Metering Point Administrator (Elhub)" as Elhub
 
 |||
     
@@ -21,10 +21,13 @@ alt "Revocation by end user"
     |||
 else "Implicit contract termination"
     |||
-    MPA -> FIS: Implicit contract termination
+    Elhub -> FIS: Update on End user from Elhub
     activate FIS
     FIS --> SP: Notify 
     deactivate FIS
+    activate SP
+    SP -> EU: Verify updated end user information
+    deactivate SP 
     |||    
 else "Termination by service provider"
     |||
@@ -38,13 +41,11 @@ end
 SP -> FIS: Update existing contract
 activate SP
 note left SP
-Data:
-- Service provider
-- Controllable unit
-- End date
+    Data:
+    - Service provider
+    - Controllable unit
+    - End date
 
-Contract end date must be 
-2-4 weeks in the future
 end note
 activate FIS
 FIS --> SP: OK
