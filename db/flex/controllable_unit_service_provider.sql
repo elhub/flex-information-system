@@ -69,5 +69,8 @@ CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_timeline_valid_start_window
 BEFORE INSERT ON controllable_unit_service_provider
 FOR EACH ROW
-WHEN (current_role = 'flex_service_provider')
+WHEN (
+    current_role = 'flex_service_provider'
+    and not timeline_is_empty('flex.controllable_unit_service_provider', 'controllable_unit_id', NEW.controllable_unit_id)
+)
 EXECUTE FUNCTION timeline_valid_start_window('2 weeks', '2 weeks');
