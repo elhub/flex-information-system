@@ -17,6 +17,8 @@ digraph flex {
     service_providing_group_grid_prequalification -> service_providing_group     [label=service_providing_group_id]
     service_providing_group_grid_prequalification -> party     [label=impacted_system_operator_id]
     entity    [label="{entity}|{Entity - Natural or\nlegal person}" shape=record style=solid]
+    entity_client    [label="{entity_client}|{Client linked to an\nentity for client\ncredentials and JWT\ngrant authentication\nmethods.}" shape=record style=solid]
+    entity_client -> entity     [label=entity_id]
     party    [label="{party}|{The body that\ninteracts with the\nFlexibility\nInformation System}|{🕰️}" shape=record style=solid]
     party -> entity     [label=entity_id]
     party_membership    [label="{party_membership}|{The relation between\na party and entity.}|{🕰️}" shape=record style=solid]

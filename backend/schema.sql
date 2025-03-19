@@ -143,6 +143,16 @@ CREATE TABLE entity (
     client_secret text NULL,
     client_public_key text NULL
 );
+CREATE TABLE entity_client (
+    id bigint NOT NULL,
+    entity_id bigint NOT NULL,
+    name text NULL,
+    client_id text NOT NULL,
+    client_secret text NULL,
+    public_key text NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
 CREATE TABLE party (
     id bigint NOT NULL,
     business_id text NOT NULL,
@@ -228,17 +238,6 @@ CREATE TABLE notification (
     party_id bigint NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
-);
-CREATE TABLE notification_history (
-    notification_id bigint NOT NULL,
-    id bigint NOT NULL,
-    acknowledged boolean NOT NULL,
-    event_id bigint NOT NULL,
-    party_id bigint NOT NULL,
-    recorded_by bigint NOT NULL,
-    recorded_at timestamp with time zone NOT NULL,
-    replaced_by bigint NULL,
-    replaced_at timestamp with time zone NULL
 );
 CREATE TABLE accounting_point (
     id bigint NOT NULL,

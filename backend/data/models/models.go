@@ -99,6 +99,17 @@ type Entity struct {
 	ClientPublicKey *string
 }
 
+type EntityClient struct {
+	ID           int
+	EntityID     int
+	Name         *string
+	ClientID     string
+	ClientSecret *string
+	PublicKey    *string
+	RecordedBy   int
+	RecordedAt   pgtype.Timestamptz
+}
+
 type Event struct {
 	ID          int
 	Specversion string
@@ -131,18 +142,6 @@ type Notification struct {
 	PartyID      int
 	RecordedBy   int
 	RecordedAt   pgtype.Timestamptz
-}
-
-type NotificationHistory struct {
-	NotificationID int
-	ID             int
-	Acknowledged   bool
-	EventID        int
-	PartyID        int
-	RecordedBy     int
-	RecordedAt     pgtype.Timestamptz
-	ReplacedBy     *int
-	ReplacedAt     pgtype.Timestamptz
 }
 
 type Party struct {

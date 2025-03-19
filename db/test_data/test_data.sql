@@ -465,6 +465,13 @@ BEGIN
   VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org', public.uuid_generate_v4())
   RETURNING id INTO entity_id_org;
 
+  -- add clients
+
+  INSERT INTO flex.entity_client (entity_id, name)
+  VALUES
+  (entity_id_person, 'PC #1'),
+  (entity_id_org, 'Laptop #4');
+
   -- end user parties
 
   PERFORM add_party_for_entity(

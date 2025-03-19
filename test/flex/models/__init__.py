@@ -19,6 +19,9 @@ from .controllable_unit_service_provider_update_request import ControllableUnitS
 from .controllable_unit_status import ControllableUnitStatus
 from .controllable_unit_update_request import ControllableUnitUpdateRequest
 from .empty_object import EmptyObject
+from .entity_client_create_request import EntityClientCreateRequest
+from .entity_client_response import EntityClientResponse
+from .entity_client_update_request import EntityClientUpdateRequest
 from .entity_response import EntityResponse
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
@@ -29,6 +32,7 @@ from .identity_update_request import IdentityUpdateRequest
 from .list_accounting_point_prefer import ListAccountingPointPrefer
 from .list_controllable_unit_prefer import ListControllableUnitPrefer
 from .list_controllable_unit_service_provider_prefer import ListControllableUnitServiceProviderPrefer
+from .list_entity_client_prefer import ListEntityClientPrefer
 from .list_entity_prefer import ListEntityPrefer
 from .list_event_prefer import ListEventPrefer
 from .list_identity_prefer import ListIdentityPrefer
@@ -139,6 +143,9 @@ __all__ = (
     "ControllableUnitStatus",
     "ControllableUnitUpdateRequest",
     "EmptyObject",
+    "EntityClientCreateRequest",
+    "EntityClientResponse",
+    "EntityClientUpdateRequest",
     "EntityResponse",
     "EntityUpdateRequest",
     "ErrorMessage",
@@ -149,6 +156,7 @@ __all__ = (
     "ListAccountingPointPrefer",
     "ListControllableUnitPrefer",
     "ListControllableUnitServiceProviderPrefer",
+    "ListEntityClientPrefer",
     "ListEntityPrefer",
     "ListEventPrefer",
     "ListIdentityPrefer",
