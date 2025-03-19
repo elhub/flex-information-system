@@ -264,11 +264,11 @@ with open(output_file_backend_schema, "w") as backend_schema_f:
                     "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
                     file=f,
                 )
-                space_needed = False
+                print(history_statements(resource["id"]), file=f)
+
                 if "history" in resource:
-                    print(history_statements(resource["id"]), file=f)
-                    print(file=f)
                     if resource.get("history_rls"):
+                        print(file=f)
                         print(
                             history_rls_statements(
                                 resource["id"],
@@ -276,7 +276,6 @@ with open(output_file_backend_schema, "w") as backend_schema_f:
                             ),
                             file=f,
                         )
-                        space_needed = True
 
                     # generate fake history table for sqlc in the backend
                     print(
@@ -288,8 +287,7 @@ with open(output_file_backend_schema, "w") as backend_schema_f:
                     )
 
                 if resource.get("audit"):
-                    if space_needed:
-                        print(file=f)
+                    print(file=f)
                     print(audit_statement(resource["id"]), file=f)
 
         # generate views and history views creation statements
