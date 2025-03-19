@@ -25,7 +25,7 @@ create trigger pgtl_nooverlap_v_insert_and_update
 instead of insert or update
 on pgtl_nooverlap_v
 for each row
-execute procedure timeline_no_overlap(
+execute procedure timeline.no_overlap(
     'public.pgtl_nooverlap', 'tl_id', 'value'
 );
 

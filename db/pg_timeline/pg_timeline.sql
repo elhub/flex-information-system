@@ -1,5 +1,11 @@
+--liquibase formatted sql
+
+-- changeset flex:timeline-create-schema
+CREATE SCHEMA IF NOT EXISTS timeline;
+
+-- changeset flex:timeline-make-room runOnChange:true endDelimiter:--
 -- make room for a new record in the timeline
-CREATE OR REPLACE FUNCTION timeline_make_room(
+CREATE OR REPLACE FUNCTION timeline.make_room(
     -- table that contains the timeline
     tl_table text,
     -- column that identifies the timeline
@@ -57,7 +63,9 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION timeline_no_overlap()
+-- changeset timeline-no-overlap:2 runOnChange:true endDelimiter:--
+-- trigger for view that makes room for a new or updated record in the timeline
+CREATE OR REPLACE FUNCTION timeline.no_overlap()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY INVOKER
@@ -89,7 +97,7 @@ BEGIN
 
     tl_new_range = tstzrange(NEW.valid_from, NEW.valid_to, '[)');
 
-    PERFORM timeline_make_room(tl_table, tl_id_column, NEW);
+    PERFORM timeline.make_room(tl_table, tl_id_column, NEW);
 
     if TG_OP = 'INSERT' then
 
@@ -140,7 +148,10 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION timeline_no_check()
+-- changeset timeline-no-check:2 runOnChange:true endDelimiter:--
+-- trigger for view that turns individual valid from/to into the expected range in
+-- the backing timline table
+CREATE OR REPLACE FUNCTION timeline.no_check()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY INVOKER
@@ -208,7 +219,9 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION timeline_timestamptz_to_text(t timestamptz)
+-- changeset flex:timeline-timestamp-to-text runOnChange:true endDelimiter:--
+-- convert a timestamptz to a text representation
+CREATE OR REPLACE FUNCTION timeline.timestamptz_to_text(t timestamptz)
 RETURNS text
 SECURITY INVOKER
 LANGUAGE sql
@@ -222,10 +235,11 @@ AS $$ SELECT
     )
 $$;
 
+-- changeset flex:timeline-freeze runOnChange:true endDelimiter:--
 -- freeze a 'valid time' timeline before a certain date :
 --   no date can be inserted or updated before the limit
 -- (limit aligned to the nearest previous midnight in the Norwegian timezone)
-CREATE OR REPLACE FUNCTION timeline_freeze()
+CREATE OR REPLACE FUNCTION timeline.freeze()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -250,7 +264,7 @@ BEGIN
                 message = 'Cannot create new contract more than '
                     || tl_freeze_after_interval || ' back in time',
                 detail = 'Valid time is frozen before '
-                    || timeline_timestamptz_to_text(tl_freeze_time);
+                    || timeline.timestamptz_to_text(tl_freeze_time);
             RETURN null;
         END IF;
     END IF;
@@ -279,7 +293,7 @@ BEGIN
                             || 'more than ' || tl_freeze_after_interval
                             || ' old',
                         detail = 'Valid time is frozen before '
-                            || timeline_timestamptz_to_text(tl_freeze_time);
+                            || timeline.timestamptz_to_text(tl_freeze_time);
                     RETURN null;
                 END IF;
 
@@ -293,7 +307,7 @@ BEGIN
                             || 'more than ' || tl_freeze_after_interval
                             || ' back in time',
                         detail = 'Valid time is frozen before '
-                            || timeline_timestamptz_to_text(tl_freeze_time);
+                            || timeline.timestamptz_to_text(tl_freeze_time);
                     RETURN null;
                 END IF;
             END IF;
@@ -308,7 +322,9 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION timeline_midnight_aligned()
+-- changeset flex:timeline-midnight-aligned runOnChange:true endDelimiter:--
+-- trigger that checks that start and end of a valid_time_range aligned with Norwegian midnight
+CREATE OR REPLACE FUNCTION timeline.midnight_aligned()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -332,13 +348,14 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:timeline-valid-start-window runOnChange:true endDelimiter:--
 -- set a window for new entries in the 'valid time' timeline :
 --   a contract can neither be created too short or too long in advance
 --   (i.e., only after a first interval has passed and during a second interval)
 -- the window is :
 --   - midnight-aligned in the Norwegian timezone
 --   - inclusive at the start, exclusive at the end
-CREATE OR REPLACE FUNCTION timeline_valid_start_window()
+CREATE OR REPLACE FUNCTION timeline.valid_start_window()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -366,7 +383,7 @@ BEGIN
                 || 'less than ' || tl_window_start_after_interval
                 || ' ahead of time',
             detail = 'Valid time window starts on '
-                || timeline_timestamptz_to_text(tl_window_start);
+                || timeline.timestamptz_to_text(tl_window_start);
         RETURN null;
     END IF;
 
@@ -379,7 +396,7 @@ BEGIN
                    )::text
                 || ' ahead of time',
             detail = 'Valid time window lasts until '
-                || timeline_timestamptz_to_text(tl_window_end) || ' (excluded)';
+                || timeline.timestamptz_to_text(tl_window_end) || ' (excluded)';
         RETURN null;
     END IF;
 

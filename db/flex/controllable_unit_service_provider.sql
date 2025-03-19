@@ -56,13 +56,13 @@ CREATE OR REPLACE TRIGGER controllable_unit_service_provider_valid_time_freeze
 BEFORE UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
-EXECUTE FUNCTION timeline_freeze('2 weeks');
+EXECUTE FUNCTION timeline.freeze('2 weeks');
 
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_timeline_midnight_aligned
 BEFORE INSERT OR UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
-EXECUTE FUNCTION timeline_midnight_aligned();
+EXECUTE FUNCTION timeline.midnight_aligned();
 
 -- IFV: CUSP-IFV002
 CREATE OR REPLACE TRIGGER

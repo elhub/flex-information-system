@@ -5,8 +5,14 @@
 SET search_path TO flex, public;
 
 \i temporal_tables/temporal_tables.sql
+
 \i pg_timeline/pg_timeline.sql
+GRANT USAGE ON SCHEMA timeline TO flex_anonymous;
+
 \i gs1/gs1.sql
+GRANT USAGE ON SCHEMA gs1 TO flex_anonymous;
+
+
 
 --
 ---- Business Identifier Type

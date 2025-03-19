@@ -12,3 +12,6 @@ for schema in flex api auth; do
 	psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
 		-c "DROP SCHEMA IF EXISTS ${schema} CASCADE;"
 done
+
+psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
+	-c "CREATE SCHEMA flex AUTHORIZATION flex;"

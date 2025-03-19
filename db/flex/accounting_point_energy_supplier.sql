@@ -35,4 +35,4 @@ CREATE OR REPLACE TRIGGER
 accounting_point_energy_supplier_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON accounting_point_energy_supplier
 FOR EACH ROW
-EXECUTE FUNCTION timeline_midnight_aligned();
+EXECUTE FUNCTION timeline.midnight_aligned();

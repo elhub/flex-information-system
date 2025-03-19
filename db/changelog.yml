@@ -3,3 +3,13 @@ databaseChangeLog:
   - include:
       file: ./gs1/gs1.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./pg_timeline/pg_timeline.sql
+      relativeToChangelogFile: true
+  - changeSet:
+      id: grant-usage
+      author: flex
+      runOnChange: true
+      changes:
+        - sql: GRANT USAGE ON SCHEMA gs1 TO flex_anonymous
+        - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous
