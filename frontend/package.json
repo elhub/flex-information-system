@@ -1,14 +1,15 @@
 {
-    "name": "flex-admin",
+    "name": "flex-portal",
     "private": true,
     "scripts": {
-        "dev": "vite dev",
         "build": "vite build",
-        "serve": "vite preview",
-        "type-check": "tsc --noEmit",
-        "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
+        "dev": "vite dev",
         "format": "prettier --write ./src",
-        "test": "true"
+        "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
+        "owasp": "owasp-dependency-check --project \"flex-portal\"",
+        "serve": "vite preview",
+        "test": "true",
+        "type-check": "tsc --noEmit"
     },
     "dependencies": {
         "@raphiniert/ra-data-postgrest": "^2.4.1",
