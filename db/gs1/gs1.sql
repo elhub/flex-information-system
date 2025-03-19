@@ -1,9 +1,9 @@
 --liquibase formatted sql
 
--- changeset gs1-create-schema:1
+-- changeset flex:gs1-create-schema
 CREATE SCHEMA IF NOT EXISTS gs1;
 
--- changeset gs1-compute-check-digit:1 runOnChange:true endDelimiter:--
+-- changeset flex:gs1-compute-check-digit runOnChange:true endDelimiter:--
 -- compute the last digit (check digit) of a GS1 prefix
 CREATE OR REPLACE FUNCTION gs1.compute_check_digit(partial_gs1 text)
 RETURNS integer AS $$
@@ -19,7 +19,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
--- changeset gs1-add-check-digit:2 runOnChange:true endDelimiter:--
+-- changeset flex:gs1-add-check-digit runOnChange:true endDelimiter:--
 -- compute and add the check digit to a GS1 prefix to form a full GS1 identifier
 CREATE OR REPLACE FUNCTION gs1.add_check_digit(partial_gs1 text)
 RETURNS text AS $$
@@ -28,7 +28,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
--- changeset gs1-validate-check-digit:3 runOnChange:true endDelimiter:--
+-- changeset flex:gs1-validate-check-digit runOnChange:true endDelimiter:--
 -- validate a GS1 identifier
 CREATE OR REPLACE FUNCTION gs1.validate_check_digit(gs1 text)
 RETURNS boolean
