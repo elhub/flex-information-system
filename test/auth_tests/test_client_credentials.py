@@ -58,7 +58,7 @@ def test_wrong_password():
         headers=auth_headers,
         data={
             "grant_type": "client_credentials",
-            "client_id": "test.suite@flex.test",
+            "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
             "client_secret": "wrong_pass",
         },
     )
@@ -79,7 +79,7 @@ def test_client_credentials_ok():
         headers=auth_headers,
         data={
             "grant_type": "client_credentials",
-            "client_id": "test.suite@flex.test",
+            "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
             "client_secret": "87h87hijhulO",
         },
     )

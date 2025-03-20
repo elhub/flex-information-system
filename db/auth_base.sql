@@ -25,16 +25,14 @@ RETURNS TABLE (
 SECURITY DEFINER VOLATILE
 LANGUAGE sql
 AS $$
-    select
-      e.id,
-      flex.identity_external_id(e.id, null) as external_id
-    from
-      flex.entity e
-    inner join flex.entity_client as clt
-      on e.id = clt.entity_id
-    where
-      clt.client_id = _client_id::uuid
-      and clt.client_secret = public.crypt(_client_secret, clt.client_secret)
+    SELECT
+        e.id,
+        flex.identity_external_id(e.id, null) AS external_id
+    FROM flex.entity e
+    INNER JOIN flex.entity_client AS clt
+        ON e.id = clt.entity_id
+    WHERE clt.client_id::text = _client_id
+        AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
 $$;
 
 GRANT EXECUTE ON FUNCTION entity_of_credentials TO flex_anonymous;
