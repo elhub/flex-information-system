@@ -23,11 +23,17 @@ type subject struct {
 	IdentifierType string
 	// Identifier is the identifier of the subject.
 	Identifier string
+	// ClientID is the client ID of the subject.
+	ClientID *string
 }
 
 // String returns the subject as a string.
 func (s *subject) String() string {
-	return "no:" + s.Type + ":" + s.IdentifierType + ":" + s.Identifier
+	strSub := "no:" + s.Type + ":" + s.IdentifierType + ":" + s.Identifier
+	if s.ClientID != nil {
+		strSub += ":" + *s.ClientID
+	}
+	return strSub
 }
 
 // MarshalJSON marshals a subject to a JSON string.
@@ -40,12 +46,12 @@ func (s *subject) MarshalJSON() ([]byte, error) {
 //nolint:cyclop,goconst,funlen
 func (s *subject) UnmarshalJSON(data []byte) error {
 	nQuote := 2
-	nParts := 4
-	nSep := nParts - 1
+	nPartsMin := 4
+	nSepMin := nPartsMin - 1
 	lenGln := 13
 	lenOrg := 9
 	lenPerson := 11
-	minLen := nQuote + nSep + len("entity") + len("org") + lenOrg
+	minLen := nQuote + nSepMin + len("entity") + len("org") + lenOrg
 
 	if len(data) < minLen {
 		return fmt.Errorf("%w: too short", errInvalidSubject)
@@ -55,11 +61,15 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 	data = data[1 : len(data)-1]
 
 	parts := strings.Split(string(data), `:`)
-	if len(parts) != nParts {
+	if len(parts) < nPartsMin || len(parts) > nPartsMin+1 {
 		return fmt.Errorf("%w: incorrect number of parts", errInvalidSubject)
 	}
 
 	prefix, subjectType, identifierType, identifier := parts[0], parts[1], parts[2], parts[3]
+	var clientID *string
+	if len(parts) == nPartsMin+1 {
+		clientID = &parts[4]
+	}
 
 	if prefix != "no" {
 		return fmt.Errorf("%w: incorrect subject prefix", errInvalidSubject)
@@ -99,9 +109,16 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 		}
 	}
 
+	if clientID != nil {
+		if err := uuid.Validate(*clientID); err != nil {
+			return fmt.Errorf("%w: invalid client ID", errInvalidSubject)
+		}
+	}
+
 	s.Type = subjectType
 	s.IdentifierType = identifierType
 	s.Identifier = identifier
+	s.ClientID = clientID
 	return nil
 }
 
@@ -116,9 +133,10 @@ type authorizationGrant struct {
 	// Example: "https://flex-test.elhub.no"
 	Audience string `json:"aud"`
 
-	// Issuer is the subject identifier of the entity that issued and signed the authorization grant token.
-	// no:entity:pid:111111111111
-	// no:entity:org:999999999
+	// Issuer is the subject identifier of the entity that issued and signed the authorization grant
+	// token. We identify it by its business ID and the UUID of the client used to sign the token.
+	// no:entity:pid:111111111111:b31b0459-e1c7-4157-b9f6-e1994b574385
+	// no:entity:org:999999999:6f732081-6e9f-4b4d-95fb-5c6e14ca5f61
 	Issuer subject `json:"iss"`
 
 	// IssuedAt is the time at which the token was issued.

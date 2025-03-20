@@ -43,6 +43,24 @@ CREATE OR REPLACE FUNCTION entity_of_business_id(
     in_business_id_type text
 ) RETURNS TABLE (
     entity_id bigint,
+    external_id uuid
+) SECURITY DEFINER VOLATILE
+LANGUAGE sql
+AS $$
+    SELECT
+        e.id,
+        flex.identity_external_id(e.id, null) as external_id
+    FROM flex.entity e
+    WHERE e.business_id = in_business_id
+$$;
+
+-- Gets entity details from the business id on the required client
+CREATE OR REPLACE FUNCTION entity_client_of_business_id(
+    in_business_id text,
+    in_business_id_type text,
+    in_client_id text
+) RETURNS TABLE (
+    entity_id bigint,
     external_id uuid,
     client_public_key text
 ) SECURITY DEFINER VOLATILE
@@ -51,12 +69,13 @@ AS $$
     SELECT
         e.id,
         flex.identity_external_id(e.id, null) as external_id,
-        COALESCE(e.client_public_key,'') as client_public_key
-    FROM
-        flex.entity e
-    WHERE
-        e.business_id = in_business_id
+        COALESCE(clt.public_key,'') as client_public_key
+    FROM flex.entity e
+    INNER JOIN flex.entity_client as clt
+        ON e.id = clt.entity_id
+    WHERE e.business_id = in_business_id
         AND e.business_id_type = in_business_id_type
+        AND clt.client_id::text = in_client_id
 $$;
 
 CREATE OR REPLACE FUNCTION assume_party(_party_id bigint)

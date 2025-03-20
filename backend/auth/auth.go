@@ -458,7 +458,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 	defer tx.Commit(ctx)
 
-	entityID, eid, _, err := models.GetEntityOfBusinessID(ctx, tx, pid, "pid")
+	entityID, eid, err := models.GetEntityOfBusinessID(ctx, tx, pid, "pid")
 	if err != nil {
 		slog.DebugContext(ctx, "getting identity of person identifier failed", "token", idToken, "pid", pid, "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -848,6 +848,14 @@ func (auth *API) jwtBearerHandler(
 		return
 	}
 
+	if grant.Issuer.ClientID == nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid assertion payload: no client ID in issuer claim",
+		})
+		return
+	}
+
 	if err := grant.Validate(); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
@@ -876,7 +884,13 @@ func (auth *API) jwtBearerHandler(
 	}
 	defer tx.Commit(ctx)
 
-	entityID, externalID, pubKeyPEM, err := models.GetEntityOfBusinessID(ctx, tx, grant.Issuer.Identifier, grant.Issuer.IdentifierType)
+	entityID, externalID, pubKeyPEM, err := models.GetEntityClientOfBusinessID(
+		ctx,
+		tx,
+		grant.Issuer.Identifier,
+		grant.Issuer.IdentifierType,
+		*grant.Issuer.ClientID,
+	)
 	if err != nil || pubKeyPEM == "" {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
