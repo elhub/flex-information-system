@@ -18,17 +18,16 @@ controllable_unit_history_id_idx
 ON controllable_unit_history (id);
 
 CREATE OR REPLACE TRIGGER
-controllable_unit_audit_current
-BEFORE INSERT OR UPDATE
+controllable_unit_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON controllable_unit
-FOR EACH ROW EXECUTE PROCEDURE audit.current(
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
     'flex.current_identity'
 );
 
 CREATE OR REPLACE TRIGGER
-controllable_unit_audit_history
-AFTER UPDATE OR DELETE
-ON controllable_unit
-FOR EACH ROW EXECUTE PROCEDURE audit.history(
+controllable_unit_audit_current
+BEFORE INSERT OR UPDATE ON controllable_unit
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );

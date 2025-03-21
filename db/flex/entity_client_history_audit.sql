@@ -18,21 +18,16 @@ entity_client_history_id_idx
 ON entity_client_history (id);
 
 CREATE OR REPLACE TRIGGER
-entity_client_history
-BEFORE INSERT OR UPDATE OR DELETE
+entity_client_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON entity_client
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.entity_client_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
 );
 
 CREATE OR REPLACE TRIGGER
-entity_client_replaced_by
-BEFORE INSERT ON entity_client_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
-
-CREATE OR REPLACE TRIGGER
-entity_client_recorded_by
+entity_client_audit_current
 BEFORE INSERT OR UPDATE ON entity_client
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

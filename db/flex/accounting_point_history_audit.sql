@@ -9,15 +9,21 @@ CREATE TABLE IF NOT EXISTS accounting_point_history (
     replaced_by bigint NOT NULL
 );
 
-CREATE OR REPLACE TRIGGER accounting_point_history
-BEFORE INSERT OR UPDATE OR DELETE ON accounting_point
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range', 'flex.accounting_point_history', true
+CREATE OR REPLACE TRIGGER
+accounting_point_audit_current
+BEFORE INSERT OR UPDATE
+ON accounting_point
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
 );
 
-CREATE OR REPLACE TRIGGER accounting_point_replaced_by
-BEFORE INSERT ON accounting_point_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
+CREATE OR REPLACE TRIGGER
+accounting_point_audit_history
+AFTER UPDATE OR DELETE
+ON accounting_point
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);
 
 ALTER TABLE IF EXISTS accounting_point_history
 ENABLE ROW LEVEL SECURITY;

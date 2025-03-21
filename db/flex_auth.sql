@@ -52,26 +52,6 @@ AS $$
     SELECT nullif(current_setting('flex.current_entity', true),'')::bigint;
 $$;
 
-CREATE OR REPLACE FUNCTION recorded_by()
-RETURNS trigger AS $$
-BEGIN
-  -- the system must be able to override on system-generated records
-  -- 0 means system generated
-  IF NOT ( TG_OP = 'INSERT' AND NEW.recorded_by = 0 ) THEN
-    NEW.recorded_by = flex.current_identity();
-  END IF;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION replaced_by()
-RETURNS trigger AS $$
-BEGIN
-  NEW.replaced_by = flex.current_identity();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
 -- all the following resources must be loaded after the audit functions above
 
 -- must be loaded before the resources below

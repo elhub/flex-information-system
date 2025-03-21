@@ -18,19 +18,12 @@ party_membership_history_id_idx
 ON party_membership_history (id);
 
 CREATE OR REPLACE TRIGGER
-party_membership_history
-BEFORE INSERT OR UPDATE OR DELETE
+party_membership_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON party_membership
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.party_membership_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
 );
-
-CREATE OR REPLACE TRIGGER
-party_membership_replaced_by
-BEFORE INSERT ON party_membership_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
 
 ALTER TABLE IF EXISTS party_membership_history
 ENABLE ROW LEVEL SECURITY;
@@ -49,6 +42,8 @@ USING (EXISTS (
 ));
 
 CREATE OR REPLACE TRIGGER
-party_membership_recorded_by
+party_membership_audit_current
 BEFORE INSERT OR UPDATE ON party_membership
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

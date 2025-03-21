@@ -18,21 +18,16 @@ notification_history_id_idx
 ON notification_history (id);
 
 CREATE OR REPLACE TRIGGER
-notification_history
-BEFORE INSERT OR UPDATE OR DELETE
+notification_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON notification
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.notification_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
 );
 
 CREATE OR REPLACE TRIGGER
-notification_replaced_by
-BEFORE INSERT ON notification_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
-
-CREATE OR REPLACE TRIGGER
-notification_recorded_by
+notification_audit_current
 BEFORE INSERT OR UPDATE ON notification
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

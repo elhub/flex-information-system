@@ -4,7 +4,8 @@
 -- public
 SET search_path TO flex, public;
 
-\i temporal_tables/temporal_tables.sql
+\i pg_audit/pg_audit.sql
+GRANT USAGE ON SCHEMA audit TO flex_anonymous;
 
 \i pg_timeline/pg_timeline.sql
 GRANT USAGE ON SCHEMA timeline TO flex_anonymous;

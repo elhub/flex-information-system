@@ -34,28 +34,23 @@ CREATE INDEX IF NOT EXISTS
 ON {base_resource}_history (id);
 
 CREATE OR REPLACE TRIGGER
-{base_resource}_history
-BEFORE INSERT OR UPDATE OR DELETE
+{base_resource}_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON {base_resource}
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.{base_resource}_history',
-    true
-);
-
-CREATE OR REPLACE TRIGGER
-{base_resource}_replaced_by
-BEFORE INSERT ON {base_resource}_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();\
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);\
 """
 
 
 def audit_statement(resource):
     return f"""\
 CREATE OR REPLACE TRIGGER
-{resource}_recorded_by
+{resource}_audit_current
 BEFORE INSERT OR UPDATE ON {resource}
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();\
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);\
 """
 
 
