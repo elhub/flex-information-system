@@ -3,6 +3,16 @@
 A resource tracking the grid prequalification status of a service providing
 group.
 
+## Status transitions for grid prequalification
+
+[Full Size](../diagrams/service_providing_group_prequalification_status.png)
+|
+[Plantuml description](../diagrams/service_providing_group_prequalification_status.plantuml)
+|
+[How to read the diagram](./index.md#status-and-transitions)
+
+![Service Providing Group prequalification](../diagrams/service_providing_group_prequalification_status.png)
+
 ## Relevant links
 
 * [API Documentation](/api/v0/#/operations/list_service_providing_group_grid_prequalification)

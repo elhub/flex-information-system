@@ -34,16 +34,6 @@ The following is a list of types-of-checks that might be relevant for the prequa
   [service provider product application process](./service-provider-product-application.md).
 - Activation test
 
-## Application status transitions
-
-[Full Size](../diagrams/service_providing_group_product_application_status.png)
-|
-[Graphviz description](../diagrams/service_providing_group_product_application_status.plantuml)
-|
-[How to read the diagram](./index.md#status-and-transitions)
-
-![Service provider product application status transitions](../diagrams/service_providing_group_product_application_status.png)
-
 ## Sequence
 
 [Full Size](../diagrams/service_providing_group_product_application.png) |

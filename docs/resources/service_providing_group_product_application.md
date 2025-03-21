@@ -3,6 +3,16 @@
 Relation between a service providing group and a system operator for a product
 type, for the SPG to deliver a product to the SO later.
 
+## Application status transitions
+
+[Full Size](../diagrams/service_providing_group_product_application_status.png)
+|
+[Graphviz description](../diagrams/service_providing_group_product_application_status.plantuml)
+|
+[How to read the diagram](./index.md#status-and-transitions)
+
+![Service provider product application status transitions](../diagrams/service_providing_group_product_application_status.png)
+
 ## Relevant links
 
 * [API Documentation](/api/v0/#/operations/list_service_providing_group_product_application)

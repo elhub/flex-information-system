@@ -19,16 +19,6 @@ is considered an update, and handled by the update process.
   will still be the service provider, so the process does not model those
   systems specifically. The FIS is considered the system of record for the SPG information.
 
-## Status transitions for grid prequalification
-
-[Full Size](../diagrams/service_providing_group_prequalification_status.png)
-|
-[Plantuml description](../diagrams/service_providing_group_prequalification_status.plantuml)
-|
-[How to read the diagram](./index.md#status-and-transitions)
-
-![Service Providing Group prequalification](../diagrams/service_providing_group_prequalification_status.png)
-
 ## Sequence
 
 [Full Size](../diagrams/service_providing_group_registration.png) |

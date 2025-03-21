@@ -12,32 +12,6 @@ is done by the connecting system operator.
 The connecting system operator will during the validation process be able to
 inform SP about missing details.
 
-## Status transitions for grid validation
-
-[Full Size](../diagrams/controllable_unit_grid_validation_status.png)
-|
-[Plantuml description](../diagrams/controllable_unit_grid_validation_status.plantuml)
-|
-[How to read the diagram](./index.md#status-and-transitions)
-
-![Controllable Unit Registration Status](../diagrams/controllable_unit_grid_validation_status.png)
-
-## Status transitions for controllable unit
-
-The following diagram shows the status and its transition for controllable unit.
-The Service Provider is responsible for creating a new controllable unit.
-Initially, the status is set to "new." Once the CU registration is complete, the
-Service Provider updates the status to "active." After termination, the status
-can only be edited by a FIS operator
-
-[Full Size](../diagrams/controllable_unit_status.png)
-|
-[Plantuml description](../diagrams/controllable_unit_status.plantuml)
-|
-[How to read the diagram](./index.md#status-and-transitions)
-
-![Controllable Unit Registration Status](../diagrams/controllable_unit_status.png)
-
 ## Prerequisites
 
 * Controllable Unit does not exist in the flexibility information system
