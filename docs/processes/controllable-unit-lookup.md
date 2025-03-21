@@ -4,7 +4,7 @@ This process is used to look up information on controllable units before
 initiating controllable unit registration or service provider switching.
 
 Before starting the CU registration or switching process, the service provider
-needs to verify the linkage between the end user and the metering point / CU, as
+needs to verify the linkage between the end user and the accounting point / CU, as
 well as validate CU data. This process retrieves the necessary information from
 FIS, to ensure that the service provider has sufficient data to determine the
 appropriate process to execute.
@@ -15,9 +15,9 @@ provider to access CU data.
 ## Prerequisites
 
 - Service provider has a consent from the end user to request data on the
-  metering point / CU.
+  accounting point / CU.
 - Service provider knows the end user id and other key information about
-  metering point / CU.
+  accounting point / CU.
 - CU ID provided from FIS must be used in service provider switching.
 
 ## Sequence
