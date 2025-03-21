@@ -17,6 +17,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -664,7 +665,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		Name:     sessionCookieKey,
 		Value:    string(signedPartyToken),
 		Path:     "/",
-		MaxAge:   auth.tokenDurationSeconds,
+		MaxAge:   int(time.Until(partyToken.ExpirationTime.Time).Seconds()),
 		Secure:   true,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
@@ -776,7 +777,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		Name:     sessionCookieKey,
 		Value:    string(signedEntityToken),
 		Path:     "/",
-		MaxAge:   auth.tokenDurationSeconds,
+		MaxAge:   int(time.Until(entityToken.ExpirationTime.Time).Seconds()),
 		Secure:   true,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
