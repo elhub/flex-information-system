@@ -864,14 +864,6 @@ func (auth *API) jwtBearerHandler(
 		return
 	}
 
-	if grant.Issuer.IdentifierType != "uuid" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "invalid assertion payload: no entity client UUID in issuer",
-		})
-		return
-	}
-
 	// get entity of client
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
@@ -887,7 +879,7 @@ func (auth *API) jwtBearerHandler(
 	entityID, externalID, pubKeyPEM, err := models.GetEntityClientByUUID(
 		ctx,
 		tx,
-		grant.Issuer.Identifier,
+		grant.Issuer.ClientID,
 	)
 	if err != nil || pubKeyPEM == "" {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{

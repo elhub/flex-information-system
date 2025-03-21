@@ -12,14 +12,58 @@ import (
 	"github.com/google/uuid"
 )
 
+// issuer is a convenience type to parse entity client UUIDs stored in the
+// issuer claim of the authorization grant token.
+type issuer struct {
+	ClientID string
+}
+
+const issuerPrefix = "no:entity:uuid:"
+
+func (i *issuer) String() string {
+	return issuerPrefix + i.ClientID
+}
+
+func (i *issuer) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + i.String() + `"`), nil
+}
+
+var errInvalidIssuer = errors.New("invalid issuer")
+
+func (i *issuer) UnmarshalJSON(data []byte) error {
+	nQuote := 2
+	lenUUID := 36
+	expectedLen := nQuote + len(issuerPrefix) + lenUUID
+
+	if len(data) < expectedLen {
+		return fmt.Errorf("%w: too short", errInvalidIssuer)
+	}
+	if len(data) > expectedLen {
+		return fmt.Errorf("%w: too long", errInvalidIssuer)
+	}
+
+	// Remove quotes
+	data = data[1 : len(data)-1]
+
+	clientID, hasRightPrefix := strings.CutPrefix(string(data), issuerPrefix)
+	if !hasRightPrefix {
+		return fmt.Errorf("%w: incorrect issuer prefix", errInvalidIssuer)
+	}
+
+	if err := uuid.Validate(clientID); err != nil {
+		return fmt.Errorf("%w: invalid uuid identifier", errInvalidIssuer)
+	}
+
+	i.ClientID = clientID
+	return nil
+}
+
 // errInvalidSubject is returned when the subject has invalid format.
 var errInvalidSubject = errors.New("invalid subject")
 
-// subject is either the iss or sub of a authorization grant token.
+// subject is the sub claim of an authorization grant token.
 type subject struct {
-	// Type is the type of the subject, either entity or party.
-	Type string
-	// IdentifierType is the type of the identifier, either org, gln or uuid.
+	// IdentifierType is the type of the identifier, either gln or uuid.
 	IdentifierType string
 	// Identifier is the identifier of the subject.
 	Identifier string
@@ -27,7 +71,7 @@ type subject struct {
 
 // String returns the subject as a string.
 func (s *subject) String() string {
-	return "no:" + s.Type + ":" + s.IdentifierType + ":" + s.Identifier
+	return "no:party:" + s.IdentifierType + ":" + s.Identifier
 }
 
 // MarshalJSON marshals a subject to a JSON string.
@@ -37,56 +81,46 @@ func (s *subject) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a subject from a JSON string.
 //
-//nolint:cyclop,goconst
+//nolint:cyclop
 func (s *subject) UnmarshalJSON(data []byte) error {
 	nQuote := 2
-	nParts := 4
-	nSep := nParts - 1
 	lenGln := 13
-	lenOrg := 9
-	minLen := nQuote + nSep + len("entity") + len("org") + lenOrg
+	lenUUID := 36
+	minLen := nQuote + len("no:party:gln:") + lenGln
+	maxLen := nQuote + len("no:party:uuid:") + lenUUID
 
 	if len(data) < minLen {
 		return fmt.Errorf("%w: too short", errInvalidSubject)
+	}
+	if len(data) > maxLen {
+		return fmt.Errorf("%w: too long", errInvalidSubject)
 	}
 
 	// Remove quotes
 	data = data[1 : len(data)-1]
 
-	parts := strings.Split(string(data), `:`)
-	if len(parts) != nParts {
-		return fmt.Errorf("%w: incorrect number of parts", errInvalidSubject)
-	}
-
-	prefix, subjectType, identifierType, identifier := parts[0], parts[1], parts[2], parts[3]
-
-	if prefix != "no" {
+	typedIdentifier, hasRightPrefix := strings.CutPrefix(string(data), "no:party:")
+	if !hasRightPrefix {
 		return fmt.Errorf("%w: incorrect subject prefix", errInvalidSubject)
 	}
 
-	if subjectType != "entity" && subjectType != "party" {
-		return fmt.Errorf("%w: incorrect subject type", errInvalidSubject)
+	parts := strings.Split(typedIdentifier, `:`)
+	if len(parts) != 2 { //nolint:mnd
+		return fmt.Errorf("%w: incorrect number of parts", errInvalidSubject)
+	}
+	identifierType, identifier := parts[0], parts[1]
+
+	if identifierType != "gln" && identifierType != "uuid" {
+		return fmt.Errorf("%w: invalid identifier type", errInvalidSubject)
 	}
 
-	if subjectType == "entity" && identifierType != "uuid" {
-		return fmt.Errorf("%w: invalid entity identifier type", errInvalidSubject)
-	}
-
-	if subjectType == "party" && identifierType != "gln" && identifierType != "uuid" {
-		return fmt.Errorf("%w: invalid party identifier type", errInvalidSubject)
-	}
-
-	if identifierType == "uuid" { //nolint:nestif
+	if identifierType == "uuid" {
 		if err := uuid.Validate(identifier); err != nil {
 			return fmt.Errorf("%w: invalid uuid identifier", errInvalidSubject)
 		}
-	} else { // Not a UUID. All others are integer-looking.
+	} else { // Not a UUID. GLN is integer-looking.
 		if _, err := strconv.Atoi(identifier); err != nil {
 			return fmt.Errorf("%w: invalid numeric identifier", errInvalidSubject)
-		}
-
-		if identifierType == "org" && len(identifier) != lenOrg {
-			return fmt.Errorf("%w: invalid org identifier", errInvalidSubject)
 		}
 
 		if identifierType == "gln" && len(identifier) != lenGln {
@@ -94,7 +128,6 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 		}
 	}
 
-	s.Type = subjectType
 	s.IdentifierType = identifierType
 	s.Identifier = identifier
 	return nil
@@ -114,7 +147,7 @@ type authorizationGrant struct {
 	// Issuer is the subject identifier of the entity that issued and signed the authorization grant
 	// token. We identify it by the UUID of the client used to sign the token.
 	// no:entity:uuid:b31b0459-e1c7-4157-b9f6-e1994b574385
-	Issuer subject `json:"iss"`
+	Issuer issuer `json:"iss"`
 
 	// IssuedAt is the time at which the token was issued.
 	IssuedAt unixTime `json:"iat"`
@@ -139,11 +172,9 @@ type authorizationGrant struct {
 func (a authorizationGrant) Validate() error {
 	val := validate.New()
 	val.Check(a.Audience != "", "aud is empty")
-	val.Check(a.Issuer.Type == "entity", "iss must be an entity")
 	val.Check(math.Abs(time.Until(a.IssuedAt.Time).Seconds()) < 10, "iss must be within 10 seconds of server time") //nolint:mnd
 	val.Check(a.ExpirationTime.Sub(a.IssuedAt.Time).Seconds() <= 120, "maximum lifetime is 120 seconds")            //nolint:mnd
 	val.Check(a.ExpirationTime.After(a.IssuedAt.Time), "iss must be before exp")
 	val.Check(a.JWTID != "", "jti is empty")
-	val.Check(a.Subject == nil || a.Subject.Type == "party", "sub must be a party")
 	return val.Error()
 }
