@@ -22,7 +22,7 @@ SP -> FIS: Register new CU
 note left
     Minimum data required:
     - name
-    - metering point id (MPID)
+    - accounting point
 end note
 
 activate FIS
@@ -32,14 +32,14 @@ FIS --> SP: Return w/ unique ID
 FIS --> EU : Notify new CU
 note right
     FIS knows who the end user is
-    based on metering point ID and
-    data from Elhub.
+    based on the accounting point 
+    and data from Elhub.
 end note
 FIS --> SO: Notify new CU to\nConnecting System Operator
 deactivate FIS
 
 activate SO
-SO -> SO: Map MPID to\ngrid node
+SO -> SO: Map accounting point \nto grid node
 SO -> FIS: Update CU with grid node
 deactivate SO
 activate FIS

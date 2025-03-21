@@ -20,9 +20,9 @@ activate SP
 SP -> FIS: Lookup CU data
 note left
     Data Required:
-    - end user id and metering point id
+    - end user and accounting point
     or
-    - end user id and business id
+    - end user and controllable unit
 end note
 activate FIS
 FIS --> SP: CU data
