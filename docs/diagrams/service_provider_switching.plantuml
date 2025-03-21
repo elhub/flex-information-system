@@ -23,6 +23,7 @@ activate SP_NEW
 SP_NEW -> FIS: Register CU service provider contract
 note left
     Data:
+    - service provider
     - controllable unit
     - contract reference
     - start date
