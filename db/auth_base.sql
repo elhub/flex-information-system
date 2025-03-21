@@ -54,12 +54,9 @@ AS $$
     WHERE e.business_id = in_business_id
 $$;
 
--- Gets entity details from the business id on the required client
-CREATE OR REPLACE FUNCTION entity_client_of_business_id(
-    in_business_id text,
-    in_business_id_type text,
-    in_client_id text
-) RETURNS TABLE (
+-- Gets entity details from the entity client uuid
+CREATE OR REPLACE FUNCTION entity_client_by_uuid(in_client_id text)
+RETURNS TABLE (
     entity_id bigint,
     external_id uuid,
     client_public_key text
@@ -73,9 +70,7 @@ AS $$
     FROM flex.entity e
     INNER JOIN flex.entity_client as clt
         ON e.id = clt.entity_id
-    WHERE e.business_id = in_business_id
-        AND e.business_id_type = in_business_id_type
-        AND clt.client_id::text = in_client_id
+    WHERE clt.client_id::text = in_client_id
 $$;
 
 CREATE OR REPLACE FUNCTION assume_party(_party_id bigint)

@@ -76,13 +76,11 @@ func GetEntityOfBusinessID(
 	return entityID, eid, nil
 }
 
-// GetEntityClientOfBusinessID gets the entity, external ID and PEM public key
-// of a entity business id for the required client.
-func GetEntityClientOfBusinessID(
+// GetEntityClientByUUID gets the entity, external ID and PEM public key of an
+// entity client identified by its UUID.
+func GetEntityClientByUUID(
 	ctx context.Context,
 	tx pgx.Tx,
-	businessID string,
-	businessIDType string,
 	clientID string,
 ) (int, string, string, error) {
 	var entityID int
@@ -91,9 +89,7 @@ func GetEntityClientOfBusinessID(
 	err := tx.QueryRow(
 		ctx,
 		"select entity_id, external_id, client_public_key"+
-			" from auth.entity_client_of_business_id($1, $2, $3)",
-		businessID,
-		businessIDType,
+			" from auth.entity_client_by_uuid($1)",
 		clientID,
 	).Scan(&entityID, &eid, &pubKeyPEM)
 	if err != nil {

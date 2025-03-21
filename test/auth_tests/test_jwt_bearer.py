@@ -28,33 +28,25 @@ client_ids = {
 
 
 @pytest.mark.parametrize(
-    "key,pid,client_id,expected_status,error",
+    "key,idtype,client_id,expected_status,error",
     [
-        ("test", "13370000001", client_ids["test"], 200, ""),
-        ("common", "13370000000", client_ids["common"], 200, ""),
+        ("test", "uuid", client_ids["test"], 200, ""),
+        ("common", "uuid", client_ids["common"], 200, ""),
+        ("common", "uuid", "malformed", 400, "invalid_request"),
+        ("common", "org", client_ids["common"], 400, "invalid_request"),
         ("common", "malformed", client_ids["common"], 400, "invalid_request"),
-        ("common", "13370000000", "malformed", 400, "invalid_request"),
-        ("common", "13370000000", None, 400, "invalid_request"),
+        ("common", "uuid", None, 400, "invalid_request"),
         (
             "common",
-            "13370000013",
-            client_ids["common"],
+            "uuid",
+            "0c799c4b-9a0e-4b52-a19d-44e18fbd2cd1",
             400,
             "invalid_client",
-        ),  # Existing entity
-        (
-            "common",
-            "44440000000",
-            client_ids["common"],
-            400,
-            "invalid_client",
-        ),  # Non-existing entity
-        ("common", "13370000001", client_ids["common"], 400, "invalid_client"),
-        ("test", "13370000000", client_ids["test"], 400, "invalid_client"),
+        ),
     ],
 )
-def test_entity(keys, key, pid, client_id, expected_status, error):
-    iss = f"no:entity:pid:{pid}" + (":" + client_id) if client_id is not None else ""
+def test_entity(keys, key, idtype, client_id, expected_status, error):
+    iss = f"no:entity:{idtype}" + (":" + client_id) if client_id is not None else ""
     payload = {
         # Audience
         "aud": "https://test.flex.internal:6443/auth/v0/",
@@ -84,11 +76,10 @@ def test_entity(keys, key, pid, client_id, expected_status, error):
 
 
 @pytest.mark.parametrize(
-    "key,pid,gln,client_id,expected_status,error",
+    "key,gln,client_id,expected_status,error",
     [
         (
             "test",
-            "13370000001",
             "1337000100058",
             client_ids["test"],
             200,
@@ -96,7 +87,6 @@ def test_entity(keys, key, pid, client_id, expected_status, error):
         ),  # Test ENT - Test SP
         (
             "common",
-            "13370000000",
             "1337000000051",
             client_ids["common"],
             200,
@@ -104,7 +94,6 @@ def test_entity(keys, key, pid, client_id, expected_status, error):
         ),  # Common ENT - Common SP
         (
             "common",
-            "13370000000",
             "1337000100058",
             client_ids["common"],
             400,
@@ -112,7 +101,6 @@ def test_entity(keys, key, pid, client_id, expected_status, error):
         ),  # Common ENT - Test SP
         (
             "test",
-            "13370000002",
             "1337121312322",
             client_ids["test"],
             400,
@@ -120,7 +108,6 @@ def test_entity(keys, key, pid, client_id, expected_status, error):
         ),  # Test ENT - unknown GLN
         (
             "common",
-            "13370000002",
             "malformed",
             client_ids["common"],
             400,
@@ -128,13 +115,12 @@ def test_entity(keys, key, pid, client_id, expected_status, error):
         ),  # Does entity does not exist
     ],
 )
-def test_party(keys, key, pid, gln, client_id, expected_status, error):
-    iss = f"no:entity:pid:{pid}" + (":" + client_id) if client_id is not None else ""
+def test_party(keys, key, gln, client_id, expected_status, error):
     payload = {
         # Audience
         "aud": "https://test.flex.internal:6443/auth/v0/",
         # Issuer
-        "iss": iss,  # Test Suite
+        "iss": f"no:entity:uuid:{client_id}",  # Test Suite
         # JWT ID
         "jti": str(uuid.uuid4()),
         # Subject (the subject to get a token for)
@@ -166,58 +152,52 @@ def test_party(keys, key, pid, gln, client_id, expected_status, error):
         # The only valid case
         (
             "https://test.flex.internal:6443/auth/v0/",
-            f"no:entity:pid:13370000001:{client_ids['test']}",
+            f"no:entity:uuid:{client_ids['test']}",
             "no:party:gln:1337000100058",
             200,
         ),
         # Invalid audience
         (
             "https://test.flex.internal:6443/auth/v0",
-            f"no:entity:pid:13370000001:{client_ids['test']}",
+            f"no:entity:uuid:{client_ids['test']}",
             "no:party:gln:1337000100058",
             400,
         ),
         (
             "https://flex.localost:6443/auth/v0/",
-            f"no:entity:pid:13370000001:{client_ids['test']}",
+            f"no:entity:uuid:{client_ids['test']}",
             "no:party:gln:1337000100058",
             400,
         ),
         # Invalid issuer
         (
             "https://test.flex.internal:6443/auth/v0/",
-            f"no:entity:13370000001:{client_ids['test']}",
+            f"no:entity:{client_ids['test']}",
             "no:party:gln:1337000100058",
             400,
         ),
         (
             "https://test.flex.internal:6443/auth/v0/",
-            "no:entity:pid:13370000001",
-            "no:party:gln:1337000100058",
-            400,
-        ),
-        (
-            "https://test.flex.internal:6443/auth/v0/",
-            f"no:party:pid:13370000001:{client_ids['test']}",
+            f"no:party:uuid:{client_ids['test']}",
             "no:party:gln:1337000100058",
             400,
         ),
         # Invalid subject
         (
             "https://test.flex.internal:6443/auth/v0/",
-            f"no:entity:pid:13370000001:{client_ids['test']}",
+            f"no:entity:uuid:{client_ids['test']}",
             "no:entity:gln:1337000100058",
             400,
         ),
         (
             "https://test.flex.internal:6443/auth/v0/",
-            f"no:entity:pid:13370000001:{client_ids['test']}",
+            f"no:entity:uuid:{client_ids['test']}",
             "party:gln:1337000100058",
             400,
         ),
         (
             "https://test.flex.internal:6443/auth/v0/",
-            f"no:entity:pid:13370000001:{client_ids['test']}",
+            f"no:entity:uuid:{client_ids['test']}",
             "no:party:gln:337000100058",
             400,
         ),
@@ -282,7 +262,7 @@ def test_timing(keys, expected_status, iat, exp):
         # Audience
         "aud": "https://test.flex.internal:6443/auth/v0/",
         # Issuer
-        "iss": f"no:entity:pid:13370000001:{client_ids['test']}",  # Test Suite
+        "iss": f"no:entity:uuid:{client_ids['test']}",  # Test Suite
         # Subject
         "sub": "no:party:gln:1337000100058",
         # JWT ID
