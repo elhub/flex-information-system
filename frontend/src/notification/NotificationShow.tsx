@@ -56,7 +56,7 @@ export const NotificationShow = () => (
         <Typography variant="h6" gutterBottom>
           Event
         </Typography>
-        <FieldStack direction="column" flexWrap="wrap" spacing={2}>
+        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
           <TextField source="event_id" label="Event ID" />
           <ReferenceField
             source="event_id"
