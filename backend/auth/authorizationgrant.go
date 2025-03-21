@@ -12,52 +12,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// issuer is a convenience type to parse entity client UUIDs stored in the
-// issuer claim of the authorization grant token.
-type issuer struct {
-	ClientID string
-}
-
-const issuerPrefix = "no:entity:uuid:"
-
-func (i *issuer) String() string {
-	return issuerPrefix + i.ClientID
-}
-
-func (i *issuer) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + i.String() + `"`), nil
-}
-
-var errInvalidIssuer = errors.New("invalid issuer")
-
-func (i *issuer) UnmarshalJSON(data []byte) error {
-	nQuote := 2
-	lenUUID := 36
-	expectedLen := nQuote + len(issuerPrefix) + lenUUID
-
-	if len(data) < expectedLen {
-		return fmt.Errorf("%w: too short", errInvalidIssuer)
-	}
-	if len(data) > expectedLen {
-		return fmt.Errorf("%w: too long", errInvalidIssuer)
-	}
-
-	// Remove quotes
-	data = data[1 : len(data)-1]
-
-	clientID, hasRightPrefix := strings.CutPrefix(string(data), issuerPrefix)
-	if !hasRightPrefix {
-		return fmt.Errorf("%w: incorrect issuer prefix", errInvalidIssuer)
-	}
-
-	if err := uuid.Validate(clientID); err != nil {
-		return fmt.Errorf("%w: invalid uuid identifier", errInvalidIssuer)
-	}
-
-	i.ClientID = clientID
-	return nil
-}
-
 // errInvalidSubject is returned when the subject has invalid format.
 var errInvalidSubject = errors.New("invalid subject")
 
@@ -144,10 +98,10 @@ type authorizationGrant struct {
 	// Example: "https://flex-test.elhub.no"
 	Audience string `json:"aud"`
 
-	// Issuer is the subject identifier of the entity that issued and signed the authorization grant
-	// token. We identify it by the UUID of the client used to sign the token.
-	// no:entity:uuid:b31b0459-e1c7-4157-b9f6-e1994b574385
-	Issuer issuer `json:"iss"`
+	// Issuer is the subject identifier of the entity that issued and signed the
+	// authorization grant token. This field contains the UUID of the client used
+	// to sign the token.
+	Issuer string `json:"iss"`
 
 	// IssuedAt is the time at which the token was issued.
 	IssuedAt unixTime `json:"iat"`
@@ -172,9 +126,10 @@ type authorizationGrant struct {
 func (a authorizationGrant) Validate() error {
 	val := validate.New()
 	val.Check(a.Audience != "", "aud is empty")
-	val.Check(math.Abs(time.Until(a.IssuedAt.Time).Seconds()) < 10, "iss must be within 10 seconds of server time") //nolint:mnd
+	val.Check(uuid.Validate(a.Issuer) == nil, "iss is not a valid UUID")
+	val.Check(math.Abs(time.Until(a.IssuedAt.Time).Seconds()) < 10, "iat must be within 10 seconds of server time") //nolint:mnd
 	val.Check(a.ExpirationTime.Sub(a.IssuedAt.Time).Seconds() <= 120, "maximum lifetime is 120 seconds")            //nolint:mnd
-	val.Check(a.ExpirationTime.After(a.IssuedAt.Time), "iss must be before exp")
+	val.Check(a.ExpirationTime.After(a.IssuedAt.Time), "iat must be before exp")
 	val.Check(a.JWTID != "", "jti is empty")
 	return val.Error()
 }

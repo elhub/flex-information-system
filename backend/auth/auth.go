@@ -879,7 +879,7 @@ func (auth *API) jwtBearerHandler(
 	entityID, externalID, pubKeyPEM, err := models.GetEntityClientByUUID(
 		ctx,
 		tx,
-		grant.Issuer.ClientID,
+		grant.Issuer,
 	)
 	if err != nil || pubKeyPEM == "" {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
