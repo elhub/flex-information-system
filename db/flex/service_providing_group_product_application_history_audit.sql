@@ -18,19 +18,12 @@ service_providing_group_product_application_history_id_idx
 ON service_providing_group_product_application_history (id);
 
 CREATE OR REPLACE TRIGGER
-service_providing_group_product_application_history
-BEFORE INSERT OR UPDATE OR DELETE
+service_providing_group_product_application_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON service_providing_group_product_application
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.service_providing_group_product_application_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
 );
-
-CREATE OR REPLACE TRIGGER
-service_providing_group_product_application_replaced_by
-BEFORE INSERT ON service_providing_group_product_application_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
 
 ALTER TABLE IF EXISTS service_providing_group_product_application_history
 ENABLE ROW LEVEL SECURITY;
@@ -49,6 +42,8 @@ USING (EXISTS (
 ));
 
 CREATE OR REPLACE TRIGGER
-service_providing_group_product_application_recorded_by
+service_providing_group_product_application_audit_current
 BEFORE INSERT OR UPDATE ON service_providing_group_product_application
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

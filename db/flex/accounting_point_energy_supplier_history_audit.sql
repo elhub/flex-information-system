@@ -12,24 +12,20 @@ CREATE TABLE IF NOT EXISTS accounting_point_energy_supplier_history (
 );
 
 CREATE OR REPLACE TRIGGER
-accounting_point_energy_supplier_history
-BEFORE INSERT OR UPDATE OR DELETE
+accounting_point_energy_supplier_audit_current
+BEFORE INSERT OR UPDATE
 ON accounting_point_energy_supplier
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.accounting_point_energy_supplier_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
 );
 
 CREATE OR REPLACE TRIGGER
-accounting_point_energy_supplier_replaced_by
-BEFORE INSERT ON accounting_point_energy_supplier_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
+accounting_point_energy_supplier_audit_history
+AFTER UPDATE OR DELETE
+ON accounting_point_energy_supplier
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);
 
 ALTER TABLE IF EXISTS accounting_point_energy_supplier_history
 ENABLE ROW LEVEL SECURITY;
-
-CREATE OR REPLACE TRIGGER
-accounting_point_energy_supplier_recorded_by
-BEFORE INSERT OR UPDATE ON accounting_point_energy_supplier
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();

@@ -18,21 +18,16 @@ controllable_unit_service_provider_history_id_idx
 ON controllable_unit_service_provider_history (id);
 
 CREATE OR REPLACE TRIGGER
-controllable_unit_service_provider_history
-BEFORE INSERT OR UPDATE OR DELETE
+controllable_unit_service_provider_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON controllable_unit_service_provider
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.controllable_unit_service_provider_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
 );
 
 CREATE OR REPLACE TRIGGER
-controllable_unit_service_provider_replaced_by
-BEFORE INSERT ON controllable_unit_service_provider_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
-
-CREATE OR REPLACE TRIGGER
-controllable_unit_service_provider_recorded_by
+controllable_unit_service_provider_audit_current
 BEFORE INSERT OR UPDATE ON controllable_unit_service_provider
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

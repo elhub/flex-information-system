@@ -18,19 +18,12 @@ system_operator_product_type_history_id_idx
 ON system_operator_product_type_history (id);
 
 CREATE OR REPLACE TRIGGER
-system_operator_product_type_history
-BEFORE INSERT OR UPDATE OR DELETE
+system_operator_product_type_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON system_operator_product_type
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.system_operator_product_type_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
 );
-
-CREATE OR REPLACE TRIGGER
-system_operator_product_type_replaced_by
-BEFORE INSERT ON system_operator_product_type_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
 
 ALTER TABLE IF EXISTS system_operator_product_type_history
 ENABLE ROW LEVEL SECURITY;
@@ -49,6 +42,8 @@ USING (EXISTS (
 ));
 
 CREATE OR REPLACE TRIGGER
-system_operator_product_type_recorded_by
+system_operator_product_type_audit_current
 BEFORE INSERT OR UPDATE ON system_operator_product_type
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

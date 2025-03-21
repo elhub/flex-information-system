@@ -1,6 +1,9 @@
 ---
 databaseChangeLog:
   - include:
+      file: ./pg_audit/pg_audit.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./gs1/gs1.sql
       relativeToChangelogFile: true
   - include:
@@ -11,5 +14,6 @@ databaseChangeLog:
       author: flex
       runOnChange: true
       changes:
+        - sql: GRANT USAGE ON SCHEMA audit TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA gs1 TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous

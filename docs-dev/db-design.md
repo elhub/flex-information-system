@@ -153,35 +153,27 @@ shows the main columns, their usage and purpose.
 The following diagram shows the structure of how we do it in the database. In
 the next sections we will highlight some of the details.
 
-![Bi-temporal database](../diagrams/bi-temporal-db.drawio.png)
+![Bi-temporal database](./diagrams/bi-temporal-db.drawio.png)
 
 !!! note "Splitting the responsibility for record and valid time"
 
     We have split the responsibility for record and valid time into two separate
-    sets of functions/triggers - `pg_timeline` and `temporal_tables` in the
+    sets of functions/triggers - `pg_timeline` and `pg_audit` in the
     diagram. These operate independent of each other, allowing us to pick which
     of the temporal axis we need for each resource and it allows us to test it
     independently.
 
-### Record history
+### Record history and audit
 
 The green items in the diagram above highlight the main items that provide
 record history. We use a trigger based approach to record history of records in
-a separate history table in the database. In the PostgreSQL ecosystem, this is
-commonly done with a `temporal_tables` extension, written in one of two
-languages:
+a separate history table in the database and to track who recorded the changes.
+This is done with trigger functions kept in the `pg_audit` "package".
 
-* [PL/pgSQL by nearform](https://github.com/nearform/temporal_tables)
-* [C by arkhipov](https://github.com/arkhipov/temporal_tables)
-
-We use the PL/pgSQL version since it can be used in any hosted PostgreSQL
-service (where custom C extensions usually are banned). The trigger is also
-defined as SECURITY DEFINER to allow the trigger to run with "system privileges"
-instead of the privileges of the invoker, since we are using row level security.
-
-For each update of a record in the source table, the trigger adds a copy of the
+For each update of a record in the source table, a trigger adds a copy of the
 now outdated version of the record in the history table, and sets the record
-time upper bound to the current time.
+time upper bound to the current time. A separate trigger sets the recorded at
+time and recorded by user on the main table.
 
 A union view is made available to the API so that it is possible to get the
 whole history of a single record, including the currently active record.
@@ -189,12 +181,6 @@ whole history of a single record, including the currently active record.
 For this to work, the `id` field of the two tables must be unique. This is
 ensured by re-using the sequence that generates the primary keys of the resource
 on the history table.
-
-#### Audit
-
-All changes in the to the database are audited. We use the trigger based approach
-highlighted in the
-[temporal_tables docs](https://github.com/arkhipov/temporal_tables?tab=readme-ov-file#using-system-period-temporal-tables-for-data-audit).
 
 ### Valid time timelines
 

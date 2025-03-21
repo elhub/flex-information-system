@@ -18,19 +18,12 @@ service_provider_product_application_comment_history_id_idx
 ON service_provider_product_application_comment_history (id);
 
 CREATE OR REPLACE TRIGGER
-service_provider_product_application_comment_history
-BEFORE INSERT OR UPDATE OR DELETE
+service_provider_product_application_comment_audit_history
+AFTER INSERT OR UPDATE OR DELETE
 ON service_provider_product_application_comment
-FOR EACH ROW EXECUTE PROCEDURE flex.versioning(
-    'record_time_range',
-    'flex.service_provider_product_application_comment_history',
-    true
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
 );
-
-CREATE OR REPLACE TRIGGER
-service_provider_product_application_comment_replaced_by
-BEFORE INSERT ON service_provider_product_application_comment_history
-FOR EACH ROW EXECUTE PROCEDURE flex.replaced_by();
 
 ALTER TABLE IF EXISTS service_provider_product_application_comment_history
 ENABLE ROW LEVEL SECURITY;
@@ -49,6 +42,8 @@ USING (EXISTS (
 ));
 
 CREATE OR REPLACE TRIGGER
-service_provider_product_application_comment_recorded_by
+service_provider_product_application_comment_audit_current
 BEFORE INSERT OR UPDATE ON service_provider_product_application_comment
-FOR EACH ROW EXECUTE PROCEDURE flex.recorded_by();
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
