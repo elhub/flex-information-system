@@ -55,21 +55,6 @@ qualification, _depending on the product type_.
 - Communication test.
 - Operational capabilities e.g. operations center and on-call procedures.
 
-## Status transitions
-
-The following diagram shows the status transition we envision for an
-application/qualification _resource_. We think of the "application" as a
-resource in the system, that can be created and updated. The status of the
-application is updated as the process and lifecycle of the application progresses.
-
-[Full Size](../diagrams/service_provider_product_application_status.png)
-|
-[Graphviz description](../diagrams/service_provider_product_application_status.plantuml)
-|
-[How to read the diagram](./index.md#status-and-transitions)
-
-![Service provider product application status transitions](../diagrams/service_provider_product_application_status.png)
-
 ## Sequence
 
 [Full Size](../diagrams/service_provider_product_application.png) |

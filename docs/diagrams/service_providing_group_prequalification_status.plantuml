@@ -8,21 +8,21 @@ digraph G {
     start [shape=point];
 
     // status - Atricle 30.3.b
-    pending;
+    requested;
     in_progress;
     conditionally_approved;
     approved;
     not_approved;
 
     // transitions
-    start -> pending [label="", color="pink"];
-    pending -> in_progress [label="", color="green"];
-    approved -> pending [label="SP significantly \nupdates data", color="green"];
+    start -> requested [label="", color="pink"];
+    requested -> in_progress [label="", color="green"];
+    approved -> requested [label="SP significantly \nupdates data", color="green"];
     in_progress -> conditionally_approved [label="", color="green"];
-    conditionally_approved -> pending [label="SP updates \ndata", color="green"];
+    conditionally_approved -> requested [label="SP updates \ndata", color="green"];
     in_progress -> approved [label="", color="green"];
     in_progress -> not_approved [label="", color="green"];
-    not_approved -> pending [label="SP updates \ndata", color="green"];
+    not_approved -> requested [label="SP updates \ndata", color="green"];
 
    }
 @enddot

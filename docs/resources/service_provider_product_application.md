@@ -4,6 +4,21 @@ The relation that links a service provider to a system operator, for the SP to
 apply for delivering the SO some of the types of product they want to buy on a
 flexibility market.
 
+## Status transitions
+
+The following diagram shows the status transition we envision for an
+application/qualification _resource_. We think of the "application" as a
+resource in the system, that can be created and updated. The status of the
+application is updated as the process and lifecycle of the application progresses.
+
+[Full Size](../diagrams/service_provider_product_application_status.png)
+|
+[Graphviz description](../diagrams/service_provider_product_application_status.plantuml)
+|
+[How to read the diagram](./index.md#status-and-transitions)
+
+![Service provider product application status transitions](../diagrams/service_provider_product_application_status.png)
+
 ## Relevant links
 
 * [API Documentation](/api/v0/#/operations/list_service_provider_product_application)

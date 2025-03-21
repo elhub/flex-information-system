@@ -12,7 +12,7 @@ Updated end user information from Elhub can occur for several reasons, such as:
 
 - Move in of a new end user, which automatically terminates the current end user.
 - Move out of the current end user.
-- Deactivation of an acounting point, which results in the termination of the
+- Deactivation of an accounting point, which results in the termination of the
   current end user.
 - Corrections to move ins and move outs, which trigger updates on end users.
 
@@ -26,8 +26,8 @@ time.
 ## Prerequisites
 
 - The service provider acts on behalf of the end user in all scenarios.
-- End users access to the the controllable unit is given based
-  on continiously updated end user information from Elhub.
+- End users access to the controllable unit is given based
+  on continuously updated end user information from Elhub.
 - A controllable unit service provider contract is decoupled from the end user
   and can span multiple end users from Elhub.
 - The service provider must verify the information given by FIS when notified
