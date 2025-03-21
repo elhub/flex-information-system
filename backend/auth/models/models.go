@@ -53,21 +53,44 @@ func GetExternalIDByEntityID(
 	return eid, nil
 }
 
-// GetEntityOfBusinessID gets the entity, external ID and PEM public key of a entity business id.
+// GetEntityOfBusinessID gets the entity and external ID of a entity business id.
 func GetEntityOfBusinessID(
 	ctx context.Context,
 	tx pgx.Tx,
 	businessID string,
 	businessIDType string,
+) (int, string, error) {
+	var entityID int
+	var eid string
+
+	err := tx.QueryRow(
+		ctx,
+		"select entity_id, external_id from auth.entity_of_business_id($1, $2)",
+		businessID,
+		businessIDType,
+	).Scan(&entityID, &eid)
+	if err != nil {
+		return -1, "", fmt.Errorf("failed to get entity: %w", err)
+	}
+
+	return entityID, eid, nil
+}
+
+// GetEntityClientByUUID gets the entity, external ID and PEM public key of an
+// entity client identified by its UUID.
+func GetEntityClientByUUID(
+	ctx context.Context,
+	tx pgx.Tx,
+	clientID string,
 ) (int, string, string, error) {
 	var entityID int
 	var eid, pubKeyPEM string
 
 	err := tx.QueryRow(
 		ctx,
-		"select entity_id, external_id, client_public_key from auth.entity_of_business_id($1, $2)",
-		businessID,
-		businessIDType,
+		"select entity_id, external_id, client_public_key"+
+			" from auth.entity_client_by_uuid($1)",
+		clientID,
 	).Scan(&entityID, &eid, &pubKeyPEM)
 	if err != nil {
 		return -1, "", "", fmt.Errorf("failed to get entity: %w", err)

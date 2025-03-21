@@ -459,7 +459,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 	defer tx.Commit(ctx)
 
-	entityID, eid, _, err := models.GetEntityOfBusinessID(ctx, tx, pid, "pid")
+	entityID, eid, err := models.GetEntityOfBusinessID(ctx, tx, pid, "pid")
 	if err != nil {
 		slog.DebugContext(ctx, "getting identity of person identifier failed", "token", idToken, "pid", pid, "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -877,7 +877,11 @@ func (auth *API) jwtBearerHandler(
 	}
 	defer tx.Commit(ctx)
 
-	entityID, externalID, pubKeyPEM, err := models.GetEntityOfBusinessID(ctx, tx, grant.Issuer.Identifier, grant.Issuer.IdentifierType)
+	entityID, externalID, pubKeyPEM, err := models.GetEntityClientByUUID(
+		ctx,
+		tx,
+		grant.Issuer,
+	)
 	if err != nil || pubKeyPEM == "" {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,

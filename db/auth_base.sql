@@ -25,14 +25,14 @@ RETURNS TABLE (
 SECURITY DEFINER VOLATILE
 LANGUAGE sql
 AS $$
-    select
-      e.id,
-      flex.identity_external_id(e.id, null) as external_id
-    from
-      flex.entity e
-    where
-      e.client_id = _client_id
-      and e.client_secret = public.crypt(_client_secret, e.client_secret)
+    SELECT
+        e.id,
+        flex.identity_external_id(e.id, null) AS external_id
+    FROM flex.entity e
+    INNER JOIN flex.entity_client AS clt
+        ON e.id = clt.entity_id
+    WHERE clt.client_id::text = _client_id
+        AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
 $$;
 
 GRANT EXECUTE ON FUNCTION entity_of_credentials TO flex_anonymous;
@@ -43,6 +43,21 @@ CREATE OR REPLACE FUNCTION entity_of_business_id(
     in_business_id_type text
 ) RETURNS TABLE (
     entity_id bigint,
+    external_id uuid
+) SECURITY DEFINER VOLATILE
+LANGUAGE sql
+AS $$
+    SELECT
+        e.id,
+        flex.identity_external_id(e.id, null) as external_id
+    FROM flex.entity e
+    WHERE e.business_id = in_business_id
+$$;
+
+-- Gets entity details from the entity client uuid
+CREATE OR REPLACE FUNCTION entity_client_by_uuid(in_client_id text)
+RETURNS TABLE (
+    entity_id bigint,
     external_id uuid,
     client_public_key text
 ) SECURITY DEFINER VOLATILE
@@ -51,12 +66,11 @@ AS $$
     SELECT
         e.id,
         flex.identity_external_id(e.id, null) as external_id,
-        COALESCE(e.client_public_key,'') as client_public_key
-    FROM
-        flex.entity e
-    WHERE
-        e.business_id = in_business_id
-        AND e.business_id_type = in_business_id_type
+        COALESCE(clt.public_key,'') as client_public_key
+    FROM flex.entity e
+    INNER JOIN flex.entity_client as clt
+        ON e.id = clt.entity_id
+    WHERE clt.client_id::text = in_client_id
 $$;
 
 CREATE OR REPLACE FUNCTION assume_party(_party_id bigint)
