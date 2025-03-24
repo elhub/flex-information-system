@@ -19,6 +19,7 @@ object NpmProject : TeamcityProject({
                     sonarProjectTests = null // no tests in frontend
                 }
                 disableLint = true
+                analyzeDependencies = false // will be solved by TDX-587
             }
         }
     }
