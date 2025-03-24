@@ -181,17 +181,20 @@ def test_cusp_fiso(data):
 def test_cusp_sp(data):
     (sts, cu_id) = data
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
-    sp_id = sts.get_userinfo(client_sp)["party_id"]
+    sp1_client = sts.get_client(TestEntity.TEST, "SP")
+    sp1_id = sts.get_userinfo(sp1_client)["party_id"]
+
+    sp2_client = sts.get_client(TestEntity.COMMON, "SP")
+    sp2_id = sts.get_userinfo(sp2_client)["party_id"]
 
     # SP can do CU-SP without seeing the CU, they just need the ID
-    cu = read_controllable_unit.sync(client=client_sp, id=cu_id)
+    cu = read_controllable_unit.sync(client=sp1_client, id=cu_id)
     assert isinstance(cu, ErrorMessage)
 
     # check SP can read the CU-SP relations they are responsible for
 
     cusps_sp = list_controllable_unit_service_provider.sync(
-        client=client_sp,
+        client=sp1_client,
     )
     assert isinstance(cusps_sp, list)
     assert len(cusps_sp) > 0
@@ -206,10 +209,10 @@ def test_cusp_sp(data):
     # SP can add CU-SP for current date when the CU is empty
 
     cusp = create_controllable_unit_service_provider.sync(
-        client=client_sp,
+        client=sp1_client,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
-            service_provider_id=sp_id,
+            service_provider_id=sp1_id,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(0),
         ),
@@ -219,12 +222,24 @@ def test_cusp_sp(data):
     # but not if there is already a CU-SP relation
 
     cusp = create_controllable_unit_service_provider.sync(
-        client=client_sp,
+        client=sp1_client,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
-            service_provider_id=sp_id,
+            service_provider_id=sp1_id,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(1),
+        ),
+    )
+    assert isinstance(cusp, ErrorMessage)
+
+    # Another SP cannot add a CU-SP relation
+    cusp = create_controllable_unit_service_provider.sync(
+        client=sp2_client,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=sp2_id,
+            contract_reference="TEST-CONTRACT",
+            valid_from=midnight_n_days_diff(0),
         ),
     )
     assert isinstance(cusp, ErrorMessage)
@@ -232,10 +247,10 @@ def test_cusp_sp(data):
     # but they can insert in a 2-4 weeks window ahead of time
 
     cusp = create_controllable_unit_service_provider.sync(
-        client=client_sp,
+        client=sp1_client,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
-            service_provider_id=sp_id,
+            service_provider_id=sp1_id,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(16),
         ),
@@ -245,7 +260,7 @@ def test_cusp_sp(data):
     # they can update in a 2-week window
 
     u = update_controllable_unit_service_provider.sync(
-        client=client_sp,
+        client=sp1_client,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
             valid_from=midnight_n_days_diff(-10),
@@ -257,7 +272,7 @@ def test_cusp_sp(data):
     # but not too far in the past
 
     u = update_controllable_unit_service_provider.sync(
-        client=client_sp,
+        client=sp1_client,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
             valid_from=midnight_n_days_diff(-17),
@@ -266,7 +281,7 @@ def test_cusp_sp(data):
     assert isinstance(u, ErrorMessage)
 
     d = delete_controllable_unit_service_provider.sync(
-        client=client_sp, id=cast(int, cusp.id), body=EmptyObject()
+        client=sp1_client, id=cast(int, cusp.id), body=EmptyObject()
     )
     assert not (isinstance(d, ErrorMessage))
 
@@ -276,7 +291,7 @@ def test_cusp_sp(data):
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     u = update_controllable_unit_service_provider.sync(
-        client=client_sp,
+        client=sp1_client,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
             valid_to=midnight_n_days_diff(0),
