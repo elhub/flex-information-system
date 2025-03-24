@@ -21,11 +21,11 @@ begin;
 select plan(5);
 
 -- test
-select ok(not timeline_is_empty('public.pgtl_is_empty', 'tl_id', 1));
-select ok(not timeline_is_empty('public.pgtl_is_empty', 'tl_id', 2));
-select ok(timeline_is_empty('public.pgtl_is_empty', 'tl_id', 3));
-select ok(timeline_is_empty('public.pgtl_is_empty', 'tl_id', 4));
-select ok(timeline_is_empty('public.pgtl_is_empty', 'tl_id', 5));
+select ok(not timeline.is_empty('public.pgtl_is_empty', 'tl_id', 1));
+select ok(not timeline.is_empty('public.pgtl_is_empty', 'tl_id', 2));
+select ok(timeline.is_empty('public.pgtl_is_empty', 'tl_id', 3));
+select ok(timeline.is_empty('public.pgtl_is_empty', 'tl_id', 4));
+select ok(timeline.is_empty('public.pgtl_is_empty', 'tl_id', 5));
 
 select finish();
 rollback;

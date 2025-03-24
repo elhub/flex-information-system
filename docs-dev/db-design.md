@@ -184,17 +184,18 @@ on the history table.
 
 ### Valid time timelines
 
-We handle valid time timelines with `INSTEAD OF` triggers on the views. We
-generally need the instead of triggers since our conversion between `tstzrange`
-and `timestamptz` makes our views non-update-able, but it also allows us to add
-timeline functionality.
+We are creating the functionality to handle valid time timelines under the name
+"pg_timeline" (highlighted in red).
 
-We are creating the functionality under the name "pg_timeline" (highlighted in
-red). The instead of trigger does the conversion from `timestamptz` to
-`tstzrange`, but also kicks of a function that ensures that the timeline ends up
-with no overlaps. The split is important since the trigger must run as
-`SECURITY INVOKER` while the function must run with system privileges aka
-`SECURITY DEFINER`.
+Inserting and updating views is done with `INSTEAD OF` triggers on the views. We
+generally need the instead of triggers since our conversion between `tstzrange`
+and `timestamptz` makes our views non-update-able.
+
+For some timelines we also need to ensure that there are no overlaps in the
+timeline. This is done by a separate trigger (`make_room`) that runs before
+insert and update on the backing table. This trigger runs as `SECURITY INVOKER`
+since the calling user does not have direct access to update other rows in the
+backing table.
 
 The consistency of the timeline is also ensured with constraints on the main
 table. It allows us to ensure that there are no overlaps on the timeline and

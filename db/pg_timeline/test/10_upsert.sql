@@ -25,7 +25,7 @@ create trigger pgtl_nocheck_v_insert_and_update
 instead of insert or update
 on pgtl_nocheck_v
 for each row
-execute procedure timeline.no_check('public.pgtl_nocheck', 'tl_id,value');
+execute procedure timeline.upsert('public.pgtl_nocheck', 'tl_id,value');
 
 drop function if exists pgtl_nocheck_actual;
 create or replace function pgtl_nocheck_actual()

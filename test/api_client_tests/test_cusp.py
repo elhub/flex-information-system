@@ -214,7 +214,7 @@ def test_cusp_sp(data):
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
             contract_reference="TEST-CONTRACT",
-            valid_from=midnight_n_days_diff(0),
+            valid_from=midnight_n_days_diff(-5),
         ),
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
@@ -232,7 +232,8 @@ def test_cusp_sp(data):
     )
     assert isinstance(cusp, ErrorMessage)
 
-    # Another SP cannot add a CU-SP relation
+    # another SP cannot add a CU-SP relation
+
     cusp = create_controllable_unit_service_provider.sync(
         client=sp2_client,
         body=ControllableUnitServiceProviderCreateRequest(

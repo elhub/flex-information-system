@@ -35,6 +35,14 @@ CREATE TABLE IF NOT EXISTS controllable_unit_service_provider (
     ) WHERE (valid_time_range IS NOT null)
 );
 
+CREATE OR REPLACE TRIGGER controllable_unit_service_provider_make_room
+BEFORE INSERT OR UPDATE
+ON flex.controllable_unit_service_provider
+FOR EACH ROW
+EXECUTE PROCEDURE timeline.make_room(
+    'controllable_unit_id'
+);
+
 -- rule because INSTEAD OF triggers on tables are not possible,
 -- and we want all the trigger logic here, not in the api schema file
 -- noqa: disable=all
@@ -66,7 +74,9 @@ EXECUTE FUNCTION timeline.midnight_aligned();
 
 -- IFV: CUSP-IFV002
 CREATE OR REPLACE TRIGGER
-controllable_unit_service_provider_timeline_valid_start_window
+-- the _a_ in this name is to make sure it runs before other triggers
+-- PostgreSQL runs triggers in alphabetical order
+controllable_unit_service_provider_a_timeline_valid_start_window
 BEFORE INSERT ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (
