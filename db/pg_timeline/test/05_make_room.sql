@@ -1,36 +1,25 @@
 set client_min_messages to notice;
 -- setup
-drop view if exists pgtl_nooverlap_v;
-drop table if exists pgtl_nooverlap;
+drop table if exists pgtl_make_room;
 
-create table pgtl_nooverlap (
+create table pgtl_make_room (
     id serial primary key,
     tl_id bigint not null,
     value text not null,
     valid_time_range tstzrange not null
 );
 
-create view pgtl_nooverlap_v as (
-    select
-        id,
-        tl_id,
-        value,
-        lower(valid_time_range) as valid_from,
-        upper(valid_time_range) as valid_to
-    from pgtl_nooverlap
-);
 
-
-create trigger pgtl_nooverlap_v_insert_and_update
-instead of insert or update
-on pgtl_nooverlap_v
+create trigger pgtl_make_room_trg
+before insert or update
+on pgtl_make_room
 for each row
-execute procedure timeline.no_overlap(
-    'public.pgtl_nooverlap', 'tl_id', 'value'
+execute procedure timeline.make_room(
+    'tl_id'
 );
 
-drop function if exists pgtl_nooverlap_actual;
-create or replace function pgtl_nooverlap_actual()
+drop function if exists pgtl_make_room_actual;
+create or replace function pgtl_make_room_actual()
 returns table (v text, r tstzrange)
 as $$
 begin
@@ -38,7 +27,7 @@ begin
     SELECT
         value,
         valid_time_range as range
-    FROM pgtl_nooverlap
+    FROM pgtl_make_room
     where tl_id = 1;
 end;
 $$ language plpgsql;
@@ -47,13 +36,13 @@ begin;
 select plan(6);
 
 -- happy path - non-overlapping ranges
-insert into pgtl_nooverlap_v (tl_id, value, valid_from, valid_to)
+insert into pgtl_make_room (tl_id, value, valid_time_range)
 values
-(1, 'a', '2020-01-01 00:00:00', '2020-02-01 00:00:00'),
-(1, 'b', '2020-02-01 00:00:00', null);
+(1, 'a', '[2020-01-01 00:00:00,2020-02-01 00:00:00)'),
+(1, 'b', '[2020-02-01 00:00:00,)');
 
 select bag_eq(
-    'SELECT v, r from pgtl_nooverlap_actual()',
+    'SELECT v, r from pgtl_make_room_actual()',
     $$VALUES
             ('a', '[2020-01-01 00:00:00,2020-02-01 00:00:00)'::tstzrange),
             ('b', '[2020-02-01 00:00:00,)')
@@ -62,11 +51,11 @@ select bag_eq(
 );
 
 -- new range overlaps with existing range
-insert into pgtl_nooverlap_v (tl_id, value, valid_from, valid_to)
-values (1, 'c', '2020-03-01 00:00:00', null);
+insert into pgtl_make_room (tl_id, value, valid_time_range)
+values (1, 'c', '[2020-03-01 00:00:00,)');
 
 select bag_eq(
-    'SELECT v, r from pgtl_nooverlap_actual()',
+    'SELECT v, r from pgtl_make_room_actual()',
     $$VALUES
             ('a', '[2020-01-01 00:00:00,2020-02-01 00:00:00)'::tstzrange),
             ('b', '[2020-02-01 00:00:00,2020-03-01 00:00:00)'),
@@ -76,11 +65,11 @@ select bag_eq(
 );
 
 -- new range contains old range
-insert into pgtl_nooverlap_v (tl_id, value, valid_from, valid_to)
-values (1, 'd', '2020-01-15 00:00:00', '2020-03-15 00:00:00');
+insert into pgtl_make_room (tl_id, value, valid_time_range)
+values (1, 'd', '[2020-01-15 00:00:00,2020-03-15 00:00:00)');
 
 select bag_eq(
-    'SELECT v, r from pgtl_nooverlap_actual()',
+    'SELECT v, r from pgtl_make_room_actual()',
     $$VALUES
             ('a', '[2020-01-01 00:00:00,2020-01-15 00:00:00)'::tstzrange),
             ('d', '[2020-01-15 00:00:00,2020-03-15 00:00:00)'),
@@ -90,11 +79,11 @@ select bag_eq(
 );
 
 -- old range contains new range
-insert into pgtl_nooverlap_v (tl_id, value, valid_from, valid_to)
-values (1, 'e', '2020-02-01 00:00:00', '2020-02-15 00:00:00');
+insert into pgtl_make_room (tl_id, value, valid_time_range)
+values (1, 'e', '[2020-02-01 00:00:00,2020-02-15 00:00:00)');
 
 select bag_eq(
-    'SELECT v, r from pgtl_nooverlap_actual()',
+    'SELECT v, r from pgtl_make_room_actual()',
     $$VALUES
             ('a', '[2020-01-01 00:00:00,2020-01-15 00:00:00)'::tstzrange),
             ('d', '[2020-01-15 00:00:00,2020-02-01 00:00:00)'),
@@ -105,13 +94,13 @@ select bag_eq(
 );
 
 -- extend a range
-update pgtl_nooverlap_v
-set valid_to = '2020-03-17 00:00:00'
+update pgtl_make_room
+set valid_time_range = tstzrange(lower(valid_time_range), '2020-03-17 00:00:00')
 where value = 'd'
-    and valid_from = '2020-01-15 00:00:00';
+    and lower(valid_time_range) = '2020-01-15 00:00:00';
 
 select bag_eq(
-    'SELECT v, r from pgtl_nooverlap_actual()',
+    'SELECT v, r from pgtl_make_room_actual()',
     $$VALUES
             ('a', '[2020-01-01 00:00:00,2020-01-15 00:00:00)'::tstzrange),
             ('d', '[2020-01-15 00:00:00,2020-03-17 00:00:00)'),
@@ -121,21 +110,21 @@ select bag_eq(
 );
 
 -- return id
-drop function if exists pgtl_nooverlap_insert;
-create or replace function pgtl_nooverlap_insert()
+drop function if exists pgtl_make_room_insert;
+create or replace function pgtl_make_room_insert()
 returns bigint
 as $$
 DECLARE
     lv_id bigint;
 begin
-    insert into pgtl_nooverlap_v (tl_id, value, valid_from)
-    values (1, 'd', '2020-01-15 00:00:00') returning id into lv_id;
+    insert into pgtl_make_room (tl_id, value, valid_time_range)
+    values (1, 'd', '[2020-01-15 00:00:00,)') returning id into lv_id;
 
     return lv_id;
 end;
 $$ language plpgsql;
 
-select isnt(pgtl_nooverlap_insert(), null, 'Returns ID');
+select isnt(pgtl_make_room_insert(), null, 'Returns ID');
 
 select finish();
 rollback;

@@ -4,22 +4,19 @@
 CREATE SCHEMA IF NOT EXISTS timeline;
 
 -- changeset flex:timeline-make-room runOnChange:true endDelimiter:--
--- make room for a new record in the timeline
-CREATE OR REPLACE FUNCTION timeline.make_room(
-    -- table that contains the timeline
-    tl_table text,
-    -- column that identifies the timeline
-    tl_column text,
-    -- the new record
-    tl_new record
-)
-RETURNS void
+-- before trigger to make room for a new record in the timeline
+CREATE OR REPLACE FUNCTION timeline.make_room()
+RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 DECLARE
-    tl_new_range tstzrange := tstzrange(tl_new.valid_from, tl_new.valid_to, '[)');
+    -- table that contains the timeline
+    tl_table text := TG_RELID::regclass::text;
+    -- column that identifies the timeline
+    tl_column text := TG_ARGV[0];
 
+    -- the new record
     l_rec record;
     l_sql text;
 BEGIN
@@ -34,18 +31,18 @@ BEGIN
             WHERE
                 id IS DISTINCT FROM $1.id
                 AND %2$s = $1.%2$s
-                AND $2 && valid_time_range FOR UPDATE
+                AND $1.valid_time_range && valid_time_range FOR UPDATE
             $s$, tl_table, tl_column
     );
 
     RAISE DEBUG '%', l_sql;
 
     for l_rec in
-        EXECUTE l_sql using tl_new, tl_new_range
+        EXECUTE l_sql using NEW
     loop
 
         -- @> = contains
-        if tl_new_range @> l_rec.old_range then
+        if NEW.valid_time_range @> l_rec.old_range then
             EXECUTE format('DELETE FROM %s WHERE id = $1', tl_table) USING l_rec.id;
             continue;
         end if;
@@ -56,102 +53,19 @@ BEGIN
             -- Using multiranges since new range might be contained by old range.
             -- If so, the result will be two disjoint sub-ranges.
             -- Difference on regular ranges will fail in these cases.
-            (select unnest(multirange(l_rec.old_range) - multirange(tl_new_range)) limit 1),
+            (select unnest(multirange(l_rec.old_range) - multirange(NEW.valid_time_range)) limit 1),
             l_rec.id;
 
     end loop;
-END;
-$$;
 
--- changeset timeline-no-overlap:2 runOnChange:true endDelimiter:--
--- trigger for view that makes room for a new or updated record in the timeline
-CREATE OR REPLACE FUNCTION timeline.no_overlap()
-RETURNS trigger
-LANGUAGE plpgsql
-SECURITY INVOKER
-AS $$
-DECLARE
-    -- the table that contains the actual timeline
-    tl_table text;
-    -- the view the trigger is on
-    tl_view text;
-    -- the column that allows us to identify timeline id
-    tl_id_column text;
-    -- columns that should be inserted/updated. Comma separated
-    -- should not include the id column
-    tl_columns text;
-    -- the new range
-    tl_new_range tstzrange;
-
-
-    l_rec record;
-    l_new record;
-    l_sql text;
-
-BEGIN
-
-    tl_table = TG_ARGV[0];
-    tl_view = TG_TABLE_NAME;
-    tl_id_column = TG_ARGV[1];
-    tl_columns = TG_ARGV[2];
-
-    tl_new_range = tstzrange(NEW.valid_from, NEW.valid_to, '[)');
-
-    PERFORM timeline.make_room(tl_table, tl_id_column, NEW);
-
-    if TG_OP = 'INSERT' then
-
-        l_sql = format(
-            $i$
-            INSERT INTO %1$s (
-                %2$s,
-                %3$s,
-                valid_time_range
-            ) VALUES (
-                $1.%2$s,
-                $1.%4$s,
-                $2
-            ) RETURNING *
-            $i$, tl_table, tl_id_column, tl_columns, replace(tl_columns,',',',$1.')
-        );
-
-        RAISE DEBUG '%', l_sql;
-
-        EXECUTE l_sql INTO l_new USING NEW, tl_new_range;
-
-    elsif TG_OP = 'UPDATE' then
-        l_sql := format(
-            $u$
-            UPDATE %1$s
-            SET (
-                %2$s,
-                %3$s,
-                valid_time_range
-            ) = ( VALUES (
-                    $1.%2$s,
-                    $1.%4$s,
-                    $2
-            ) )
-            WHERE id = $1.id
-            RETURNING *
-            $u$, tl_table, tl_id_column,tl_columns, replace(tl_columns,',',',$1.')
-        );
-
-        RAISE DEBUG '%', l_sql;
-
-        EXECUTE l_sql INTO l_new USING NEW, tl_new_range;
-    end if;
-
-    EXECUTE format('SELECT * FROM %s WHERE id = %s', tl_view, l_new.id) INTO l_new;
-
-    RETURN l_new;
+    RETURN NEW;
 END;
 $$;
 
 -- changeset timeline-no-check:2 runOnChange:true endDelimiter:--
 -- trigger for view that turns individual valid from/to into the expected range in
 -- the backing timline table
-CREATE OR REPLACE FUNCTION timeline.no_check()
+CREATE OR REPLACE FUNCTION timeline.upsert()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY INVOKER
