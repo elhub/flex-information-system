@@ -14,4 +14,4 @@ select finish();
 rollback;
 
 -- load our functions
-\i /db/gs1/gs1.sql
+\i /db/pg_gs1/pg_gs1.sql
