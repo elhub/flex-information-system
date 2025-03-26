@@ -10,7 +10,7 @@ GRANT USAGE ON SCHEMA audit TO flex_anonymous;
 \i pg_timeline/pg_timeline.sql
 GRANT USAGE ON SCHEMA timeline TO flex_anonymous;
 
-\i gs1/gs1.sql
+\i pg_gs1/pg_gs1.sql
 GRANT USAGE ON SCHEMA gs1 TO flex_anonymous;
 
 

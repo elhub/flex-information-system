@@ -4,7 +4,7 @@ databaseChangeLog:
       file: ./pg_audit/pg_audit.sql
       relativeToChangelogFile: true
   - include:
-      file: ./gs1/gs1.sql
+      file: ./pg_gs1/pg_gs1.sql
       relativeToChangelogFile: true
   - include:
       file: ./pg_timeline/pg_timeline.sql
