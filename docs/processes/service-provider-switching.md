@@ -13,7 +13,7 @@ service provider
   controllable unit lookup.
 - The controllable unit will remain with the old service provider’s control and
   useable for operations until the contract start date for new service provider.
-- The old service provider must update effected service providing groups.
+- The old service provider must update affected service providing groups.
 
 ## Sequence
 

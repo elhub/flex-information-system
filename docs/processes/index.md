@@ -124,7 +124,7 @@ also use the menu to find process details.
 
 ### Controllable unit
 
-### [Controllable Unit Lookup](controllable-unit-lookup.md)
+#### [Controllable Unit Lookup](controllable-unit-lookup.md)
 
 Before a service provider registers or switch a controllable unit, they must
 look up the controllable unit to see if it is already registered in the system.
@@ -146,14 +146,10 @@ provided (CU grid validation).
 Switching of a controllable unit between service providers. Initiated by new
 service provider.
 
-#### Revocation of service provider entitlement to controllable unit
+#### [Service provider contract revocation and termination](revocation.md)
 
-Initiated by system user or due to invalidation of entitlement of system user to
-accounting point.
-
-#### Termination of controllable unit service provider contract
-
-Initiated by service provider.
+Ending the service provider contract on a controllable unit. Initiated by end
+user, implicit contract termination or service provider.
 
 #### Suspension of controllable unit
 
