@@ -943,14 +943,14 @@
                                 "format": "text",
                                 "type": "string",
                                 "readOnly": true,
-                                "example": "example@flex.test"
+                                "example": "13370000000"
                             },
                             "business_id_type": {
                                 "description": "The type of the business identifier.",
                                 "format": "text",
                                 "type": "string",
                                 "readOnly": true,
-                                "example": "email"
+                                "example": "pid"
                             },
                             "name": {
                                 "description": "Name of the entity. Maximum 128 characters.",

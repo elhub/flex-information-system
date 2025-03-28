@@ -25,8 +25,8 @@ class EntityResponse:
                 Note:
                 This is a Primary Key. Example: 14.
             business_id (Union[Unset, str]): The business identifier of the entity. Format depends on `business_id_type`.
-                Example: example@flex.test.
-            business_id_type (Union[Unset, str]): The type of the business identifier. Example: email.
+                Example: 13370000000.
+            business_id_type (Union[Unset, str]): The type of the business identifier. Example: pid.
             name (Union[Unset, str]): Name of the entity. Maximum 128 characters. Example: John Smith.
             type (Union[Unset, str]): The type of the entity, e.g Person, Organisation Example: person.
     """
