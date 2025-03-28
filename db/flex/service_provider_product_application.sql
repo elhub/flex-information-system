@@ -106,6 +106,38 @@ FOR EACH ROW
 EXECUTE FUNCTION
 service_provider_product_application_product_type_ids_insert();
 
+-- trigger to reject updates by SP to the product types if the status of the
+-- application is no longer `requested`
+
+CREATE OR REPLACE FUNCTION
+service_provider_product_application_product_type_ids_update_only_requested()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF OLD.status != 'requested' THEN
+        RAISE sqlstate 'PT400' using
+            message = 'status is no longer requested, cannot update product types';
+        RETURN null;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER
+service_provider_product_application_product_type_ids_update_only_requested
+BEFORE UPDATE ON service_provider_product_application
+FOR EACH ROW
+WHEN (
+    current_role = 'flex_service_provider'
+    AND NEW.product_type_ids IS DISTINCT FROM OLD.product_type_ids -- noqa
+)
+EXECUTE FUNCTION
+service_provider_product_application_product_type_ids_update_only_requested();
+
 --
 
 CREATE OR REPLACE FUNCTION all_already_qualified(
