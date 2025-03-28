@@ -459,8 +459,7 @@ resources:
     operations:
       - list
       - read
-      - update
-    generate_views: false
+    generate_views: true
     properties:
       id:
         description: |-
@@ -479,14 +478,14 @@ resources:
         format: text
         type: string
         readOnly: true
-        example: example@flex.test
+        example: '13370000000'
       business_id_type:
         description: >-
           The type of the business identifier.
         format: text
         type: string
         readOnly: true
-        example: email
+        example: pid
       name:
         description: Name of the entity. Maximum 128 characters.
         format: text
@@ -499,37 +498,6 @@ resources:
         type: string
         readOnly: true
         example: person
-      client_id:
-        description: >-
-          The identifier of the entity. For use with client credentials
-          authentication method.
-        format: text
-        type: string
-        example: addr@flex.test
-      client_secret:
-        description: >-
-          The secret of the entity. For use with client credentials
-          authentication method. Input as plain text but stored encrypted.
-        format: text
-        type: string
-        minLength: 12
-        nullable: true
-        example: mysupersecretpassword
-      client_public_key:
-        description:
-          The public key of the entity (X.509 SubjectPublicKeyInfo). For use
-          with JWT grant authentication method.
-        format: text
-        type: string
-        nullable: true
-        pattern: '^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+/\n]*={0,3}\n-----END PUBLIC KEY-----$'
-        example: |-
-          -----BEGIN PUBLIC KEY-----
-          MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
-          TozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V
-          kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
-          0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
-          -----END PUBLIC KEY-----
 
   - id: entity_client
     acronym: ECL

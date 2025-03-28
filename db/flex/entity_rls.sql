@@ -8,9 +8,9 @@ FOR SELECT
 TO flex_common
 USING (type = 'organisation' OR id = flex.current_entity());
 
-GRANT SELECT, UPDATE ON entity TO flex_entity;
+GRANT SELECT ON entity TO flex_entity;
 CREATE POLICY "ENT_ENT001" ON entity
-FOR ALL
+FOR SELECT
 TO flex_entity
 USING (id = flex.current_entity());
 

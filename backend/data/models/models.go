@@ -89,14 +89,11 @@ type ControllableUnitServiceProviderHistory struct {
 }
 
 type Entity struct {
-	ID              int
-	BusinessID      string
-	BusinessIDType  string
-	Name            string
-	Type            string
-	ClientID        string
-	ClientSecret    *string
-	ClientPublicKey *string
+	ID             int
+	BusinessID     string
+	BusinessIDType string
+	Name           string
+	Type           string
 }
 
 type EntityClient struct {

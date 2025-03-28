@@ -53,10 +53,7 @@
         "business_id": "The business identifier of the entity. Format depends on `business_id_type`.",
         "business_id_type": "The type of the business identifier.",
         "name": "Name of the entity. Maximum 128 characters.",
-        "type": "The type of the entity, e.g Person, Organisation",
-        "client_id": "The identifier of the entity. For use with client credentials authentication method.",
-        "client_secret": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
-        "client_public_key": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method."
+        "type": "The type of the entity, e.g Person, Organisation"
     },
     "entity_client": {
         "id": "Unique surrogate identifier.",

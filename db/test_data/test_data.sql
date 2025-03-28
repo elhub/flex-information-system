@@ -458,12 +458,12 @@ BEGIN
 
   -- add entities
 
-  INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
-  VALUES (entity_name, 'person', entity_person_business_id, 'pid', in_email)
+  INSERT INTO flex.entity (name, type, business_id, business_id_type)
+  VALUES (entity_name, 'person', entity_person_business_id, 'pid')
   RETURNING id INTO entity_id_person;
 
-  INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
-  VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org', public.uuid_generate_v4())
+  INSERT INTO flex.entity (name, type, business_id, business_id_type)
+  VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org')
   RETURNING id INTO entity_id_org;
 
   -- add clients

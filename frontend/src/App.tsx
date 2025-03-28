@@ -111,7 +111,6 @@ import { ServiceProviderProductApplicationShow } from "./service_provider_produc
 import { ServiceProviderProductApplicationInput } from "./service_provider_product_application/ServiceProviderProductApplicationInput";
 import { ServiceProviderProductApplicationHistoryList } from "./service_provider_product_application/ServiceProviderProductApplicationHistoryList";
 import { ServiceProvidingGroupGridPrequalificationList } from "./service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
-import { EntityInput } from "./entity/EntityInput";
 import { ServiceProviderProductApplicationCommentInput } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentInput";
 import { ServiceProviderProductApplicationCommentShow } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentShow";
 import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
@@ -344,15 +343,6 @@ export const App = () => (
             name="entity"
             list={EntityList}
             show={EntityShow}
-            edit={
-              permissions.includes("entity.update") ? (
-                <Edit mutationMode="pessimistic">
-                  <EntityInput />
-                </Edit>
-              ) : (
-                (null as any)
-              )
-            }
             recordRepresentation="name"
           >
             {/* client subresource */}
