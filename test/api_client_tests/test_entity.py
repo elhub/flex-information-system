@@ -4,7 +4,6 @@ from security_token_service import (
 )
 from flex.models import (
     EntityResponse,
-    EntityUpdateRequest,
     ErrorMessage,
     PartyMembershipCreateRequest,
     PartyMembershipResponse,
@@ -13,7 +12,6 @@ from flex.models import (
 from flex.api.entity import (
     read_entity,
     list_entity,
-    update_entity,
 )
 from flex.api.party_membership import (
     create_party_membership,
@@ -100,68 +98,11 @@ def test_entity_com(sts):
 # RLS: ENT-ENT001
 def test_entity_ent(sts):
     client_ent = sts.get_client(TestEntity.TEST)
-    client_so = sts.get_client(TestEntity.TEST, "SO")
-    client_ent2 = sts.get_client(TestEntity.COMMON)
 
     entities_ent = list_entity.sync(client=client_ent)
     assert isinstance(entities_ent, list)
     assert len(entities_ent) == 1
     assert entities_ent[0].type == "person"
-
-    ent_id = sts.get_userinfo(client_ent)["entity_id"]
-
-    default_password = "87h87hijhulO"
-    temporary_password = "123lkn7HD77sdasd"
-    short_password = "12345678901"  # min password length is 12
-
-    # other entities / parties can't update the entity
-    u = update_entity.sync(
-        client=client_ent2,
-        id=ent_id,
-        body=EntityUpdateRequest(
-            client_secret=temporary_password,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
-
-    u = update_entity.sync(
-        client=client_so,
-        id=ent_id,
-        body=EntityUpdateRequest(
-            client_secret=temporary_password,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
-
-    # endpoint: PATCH /entity/{id}
-    u = update_entity.sync(
-        client=client_ent,
-        id=ent_id,
-        body=EntityUpdateRequest(
-            client_secret=temporary_password,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    # reset password for further tests
-    u = update_entity.sync(
-        client=client_ent,
-        id=ent_id,
-        body=EntityUpdateRequest(
-            client_secret=default_password,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    # short password should fail
-    u = update_entity.sync(
-        client=client_ent,
-        id=ent_id,
-        body=EntityUpdateRequest(
-            client_secret=short_password,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
 
 
 def test_rla_absence(sts):

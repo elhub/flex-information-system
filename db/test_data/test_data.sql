@@ -1,8 +1,9 @@
 -- test_data contains functions to add test data to the database.
+CREATE SCHEMA IF NOT EXISTS test_data;
 
 -- Turn an email into a name
 -- john.doe@ex.test -> John Doe
-CREATE OR REPLACE FUNCTION email_to_name(email text)
+CREATE OR REPLACE FUNCTION test_data.email_to_name(email text)
 RETURNS text
 AS $$
 BEGIN
@@ -15,7 +16,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 
 -- Randomly return 'up', 'down' or 'both'
-CREATE OR REPLACE FUNCTION random_regulation_direction()
+CREATE OR REPLACE FUNCTION test_data.random_regulation_direction()
 RETURNS text
 AS $$
 BEGIN
@@ -28,7 +29,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 
 -- Add a party for an entity based on name and type
-CREATE OR REPLACE FUNCTION add_party_for_entity(
+CREATE OR REPLACE FUNCTION test_data.add_party_for_entity(
     parent_entity_id bigint,
     member_entity_id bigint,
     party_name text,
@@ -61,7 +62,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
 -- Add a party as a member to an entity based on name of party
-CREATE OR REPLACE FUNCTION add_party_to_entity(
+CREATE OR REPLACE FUNCTION test_data.add_party_to_entity(
     entity_id bigint, party_name text
 )
 RETURNS bigint
@@ -89,7 +90,7 @@ END
 $$;
 
 -- Add a controllable unit with service providers
-CREATE OR REPLACE FUNCTION add_controllable_unit(
+CREATE OR REPLACE FUNCTION test_data.add_controllable_unit(
     cu_name text,
     so_id bigint,
     accounting_point_id text,
@@ -119,7 +120,7 @@ BEGIN
   ) VALUES (
     cu_name,
     '2020-01-01',
-    random_regulation_direction(),
+    test_data.random_regulation_direction(),
     3.5,
     1,
     5,
@@ -227,7 +228,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
-CREATE OR REPLACE FUNCTION add_technical_resource(
+CREATE OR REPLACE FUNCTION test_data.add_technical_resource(
     l_name text,
     l_controllable_unit_id bigint,
     l_details text,
@@ -303,7 +304,7 @@ END
 $$;
 
 -- Add accounting point mapping
-CREATE OR REPLACE FUNCTION add_accounting_points(
+CREATE OR REPLACE FUNCTION test_data.add_accounting_points(
     accounting_point_prefix text,
     end_user contract_parties,
     energy_supplier contract_parties,
@@ -406,8 +407,8 @@ END
 $$;
 
 -- Add a test account with parties and controllable units
-DROP FUNCTION IF EXISTS add_test_account;
-CREATE OR REPLACE FUNCTION add_test_account(
+DROP FUNCTION IF EXISTS test_data.add_test_account;
+CREATE OR REPLACE FUNCTION test_data.add_test_account(
     in_user_seq_id bigint,
     in_email text,
     in_add_fiso boolean,
@@ -417,7 +418,7 @@ CREATE OR REPLACE FUNCTION add_test_account(
 AS $$
 DECLARE
   user_seq_id_text text := lpad(in_user_seq_id::text, 4, '0');
-  entity_name text := email_to_name(in_email);
+  entity_name text := test_data.email_to_name(in_email);
   entity_name_org text := entity_name || ' AS';
   entity_first_name text := split_part(entity_name, ' ', 1);
   entity_org_business_id text := '13370' || user_seq_id_text;
@@ -457,12 +458,12 @@ BEGIN
 
   -- add entities
 
-  INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
-  VALUES (entity_name, 'person', entity_person_business_id, 'pid', in_email)
+  INSERT INTO flex.entity (name, type, business_id, business_id_type)
+  VALUES (entity_name, 'person', entity_person_business_id, 'pid')
   RETURNING id INTO entity_id_person;
 
-  INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
-  VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org', public.uuid_generate_v4())
+  INSERT INTO flex.entity (name, type, business_id, business_id_type)
+  VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org')
   RETURNING id INTO entity_id_org;
 
   -- add clients
@@ -474,7 +475,7 @@ BEGIN
 
   -- end user parties
 
-  PERFORM add_party_for_entity(
+  PERFORM test_data.add_party_for_entity(
     entity_id_org,
     entity_id_org,
     entity_first_name || ' AS EU',
@@ -483,7 +484,7 @@ BEGIN
    null
   );
 
-  eu_id := add_party_for_entity(
+  eu_id := test_data.add_party_for_entity(
     entity_id_person,
     entity_id_person,
     entity_first_name || ' EU',
@@ -494,7 +495,7 @@ BEGIN
 
   -- add parties
 
-  brp_id := add_party_for_entity(
+  brp_id := test_data.add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' BRP',
@@ -503,7 +504,7 @@ BEGIN
     'gln'
   );
 
-  es_id := add_party_for_entity(
+  es_id := test_data.add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' ES',
@@ -512,7 +513,7 @@ BEGIN
     'gln'
   );
 
-  PERFORM add_party_for_entity(
+  PERFORM test_data.add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' MO',
@@ -521,7 +522,7 @@ BEGIN
     'gln'
   );
 
-  so_id := add_party_for_entity(
+  so_id := test_data.add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' SO',
@@ -530,7 +531,7 @@ BEGIN
     'gln'
   );
 
-  sp_id := add_party_for_entity(
+  sp_id := test_data.add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' SP',
@@ -539,7 +540,7 @@ BEGIN
     'gln'
   );
 
-  PERFORM add_party_for_entity(
+  PERFORM test_data.add_party_for_entity(
     entity_id_org,
     entity_id_person,
     entity_first_name || ' TP',
@@ -549,7 +550,7 @@ BEGIN
   );
 
   if in_add_fiso then
-    PERFORM add_party_for_entity(
+    PERFORM test_data.add_party_for_entity(
       entity_id_org,
       entity_id_person,
       entity_first_name || ' FISO',
@@ -568,7 +569,7 @@ BEGIN
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
   if not in_add_data then
-    PERFORM add_accounting_points(
+    PERFORM test_data.add_accounting_points(
       accounting_point_prefix,
       null,
       null,
@@ -578,15 +579,15 @@ BEGIN
     return;
   end if;
 
-  common_brp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
-  common_eu_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
-  common_es_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' MO');
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' SO');
-  common_sp_id := add_party_to_entity(entity_id_person, in_common_party_first_name || ' SP');
-  PERFORM add_party_to_entity(entity_id_person, in_common_party_first_name || ' TP');
+  common_brp_id := test_data.add_party_to_entity(entity_id_person, in_common_party_first_name || ' BRP');
+  common_eu_id := test_data.add_party_to_entity(entity_id_person, in_common_party_first_name || ' EU');
+  common_es_id := test_data.add_party_to_entity(entity_id_person, in_common_party_first_name || ' ES');
+  PERFORM test_data.add_party_to_entity(entity_id_person, in_common_party_first_name || ' MO');
+  PERFORM test_data.add_party_to_entity(entity_id_person, in_common_party_first_name || ' SO');
+  common_sp_id := test_data.add_party_to_entity(entity_id_person, in_common_party_first_name || ' SP');
+  PERFORM test_data.add_party_to_entity(entity_id_person, in_common_party_first_name || ' TP');
 
-  PERFORM add_accounting_points(
+  PERFORM test_data.add_accounting_points(
     accounting_point_prefix,
     (common_eu_id, eu_id),
     (common_es_id, es_id),
@@ -603,7 +604,7 @@ BEGIN
   FOREACH asset_type in ARRAY ARRAY['Car Charger','Water Heater','Solar Panel']::text[]
   LOOP
 
-    SELECT add_controllable_unit(
+    SELECT test_data.add_controllable_unit(
       entity_first_name || ' ' || asset_type,
       so_id,
       gs1.add_check_digit(accounting_point_seq::text),
@@ -622,19 +623,19 @@ BEGIN
         '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange
     );
 
-    PERFORM add_technical_resource(
+    PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #1',
       cu_id,
       E'Make: ACME\nModel: ' || asset_type || ' 2000',
       '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
     );
-    PERFORM add_technical_resource(
+    PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #2',
       cu_id,
       E'Make: ACME\nModel: ' || asset_type || ' 2000',
       '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
     );
-    PERFORM add_technical_resource(
+    PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #3',
       cu_id,
       E'Make: ACME\nModel: ' || asset_type || ' 2000',

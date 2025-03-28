@@ -29,9 +29,6 @@ TO flex_third_party;
 GRANT SELECT ON TABLE flex.entity
 TO flex_entity;
 
-GRANT UPDATE ON TABLE flex.entity
-TO flex_entity;
-
 GRANT SELECT ON TABLE flex.entity_client
 TO flex_balance_responsible_party;
 

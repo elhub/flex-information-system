@@ -18,14 +18,6 @@ export const EntityShow = () => (
           <TextField source="business_id_type" label="Business ID type" />
         </FieldStack>
         <Typography variant="h6" gutterBottom>
-          Authentication
-        </Typography>
-        <FieldStack direction="row" spacing={2}>
-          <TextField source="client_id" label="Client ID" />
-          <TextField source="client_secret" />
-          <TextField source="client_public_key" />
-        </FieldStack>
-        <Typography variant="h6" gutterBottom>
           Clients
         </Typography>
         <EntityClientList />

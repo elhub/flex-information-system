@@ -138,10 +138,7 @@ CREATE TABLE entity (
     business_id text NOT NULL,
     business_id_type text NOT NULL,
     name text NOT NULL,
-    type text NOT NULL,
-    client_id text NOT NULL,
-    client_secret text NULL,
-    client_public_key text NULL
+    type text NOT NULL
 );
 CREATE TABLE entity_client (
     id bigint NOT NULL,

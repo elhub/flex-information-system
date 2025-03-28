@@ -7,10 +7,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_balance_responsible_party;
 
@@ -19,10 +16,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_energy_supplier;
 
@@ -31,10 +25,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_end_user;
 
@@ -43,10 +34,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_flexibility_information_system_operator;
 
@@ -55,10 +43,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_market_operator;
 
@@ -67,10 +52,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_system_operator;
 
@@ -79,10 +61,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_service_provider;
 
@@ -91,10 +70,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_third_party;
 
@@ -103,16 +79,7 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type,
-    client_id,
-    client_secret,
-    client_public_key
-) ON TABLE api.entity
-TO flex_entity;
-
-GRANT UPDATE (
-    client_secret,
-    client_public_key
+    business_id_type
 ) ON TABLE api.entity
 TO flex_entity;
 
