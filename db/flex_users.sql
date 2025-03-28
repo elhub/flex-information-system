@@ -6,5 +6,5 @@ SET "flex.current_party" TO 0;
 SET "flex.current_entity" TO 0;
 
 -- noqa: disable=all
-SELECT add_test_account(0, 'common.shared@flex.test', true, false, 'N/A');
-SELECT add_test_account(1, 'test.suite@flex.test', true, true, 'Common');
+SELECT add_test_account(0, 'Common Shared', true, false, 'N/A');
+SELECT add_test_account(1, 'Test Suite', true, true, 'Common');

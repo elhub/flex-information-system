@@ -9,16 +9,13 @@ A legal (organisation) or natural person. Used in authentication.
 
 ## Fields
 
-| Name                                                                                    | Description                                                                                                                | Format                                                                                                  | Reference |
-|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-----------|
-| <a name="field-id" href="#field-id">id</a>                                              | Unique surrogate identifier.<br/><br/>Note:<br/>This is a Primary Key.                                                     | bigint<br/>Read only                                                                                    |           |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                   | The business identifier of the entity. Format depends on `business_id_type`.                                               | text<br/>Read only                                                                                      |           |
-| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a>    | The type of the business identifier.                                                                                       | text<br/>Read only                                                                                      |           |
-| <a name="field-name" href="#field-name">name</a>                                        | Name of the entity. Maximum 128 characters.                                                                                | text<br/>Read only                                                                                      |           |
-| <a name="field-type" href="#field-type">type</a>                                        | The type of the entity, e.g Person, Organisation                                                                           | text<br/>Read only                                                                                      |           |
-| <a name="field-client_id" href="#field-client_id">client_id</a>                         | The identifier of the entity. For use with client credentials authentication method.                                       | text<br/>Required                                                                                       |           |
-| <a name="field-client_secret" href="#field-client_secret">client_secret</a>             | The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted. | text<br/>Min length: `12`                                                                               |           |
-| <a name="field-client_public_key" href="#field-client_public_key">client_public_key</a> | The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.                   | text<br/>Pattern: `^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+/\n]*={0,3}\n-----END PUBLIC KEY-----$` |           |
+| Name                                                                                 | Description                                                                  | Format               | Reference |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------|-----------|
+| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.<br/><br/>Note:<br/>This is a Primary Key.       | bigint<br/>Read only |           |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the entity. Format depends on `business_id_type`. | text<br/>Read only   |           |
+| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                         | text<br/>Read only   |           |
+| <a name="field-name" href="#field-name">name</a>                                     | Name of the entity. Maximum 128 characters.                                  | text<br/>Read only   |           |
+| <a name="field-type" href="#field-type">type</a>                                     | The type of the entity, e.g Person, Organisation                             | text<br/>Read only   |           |
 
 ## Validation Rules
 
@@ -53,9 +50,9 @@ No policies.
 #### Entity
 <!-- markdownlint-enable MD024 -->
 
-| Policy key | Policy                        | Status |
-|------------|-------------------------------|--------|
-| ENT-ENT001 | Read and update their own ENT | DONE   |
+| Policy key | Policy             | Status |
+|------------|--------------------|--------|
+| ENT-ENT001 | Read their own ENT | DONE   |
 
 #### Common
 
@@ -103,13 +100,10 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../auth.md#party)
 
-| FIELD             | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|-------------------|------|-----|----|----|------|----|----|----|----|
-| id                |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| name              |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| type              |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| business_id       |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| business_id_type  |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| client_id         |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| client_secret     |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| client_public_key |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
+|------------------|------|-----|----|----|------|----|----|----|----|
+| id               |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| name             |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| type             |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| business_id      |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| business_id_type |      | R   | R  | R  | R    | R  | R  | R  | R  |

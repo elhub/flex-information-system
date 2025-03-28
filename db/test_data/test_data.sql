@@ -409,7 +409,7 @@ $$;
 DROP FUNCTION IF EXISTS add_test_account;
 CREATE OR REPLACE FUNCTION add_test_account(
     in_user_seq_id bigint,
-    in_email text,
+    in_entity_name text,
     in_add_fiso boolean,
     in_add_data boolean,
     in_common_party_first_name text
@@ -417,9 +417,8 @@ CREATE OR REPLACE FUNCTION add_test_account(
 AS $$
 DECLARE
   user_seq_id_text text := lpad(in_user_seq_id::text, 4, '0');
-  entity_name text := email_to_name(in_email);
-  entity_name_org text := entity_name || ' AS';
-  entity_first_name text := split_part(entity_name, ' ', 1);
+  entity_name_org text := in_entity_name || ' AS';
+  entity_first_name text := split_part(in_entity_name, ' ', 1);
   entity_org_business_id text := '13370' || user_seq_id_text;
   entity_person_business_id text := '1337000' || user_seq_id_text;
 
@@ -457,12 +456,12 @@ BEGIN
 
   -- add entities
 
-  INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
-  VALUES (entity_name, 'person', entity_person_business_id, 'pid', in_email)
+  INSERT INTO flex.entity (name, type, business_id, business_id_type)
+  VALUES (in_entity_name, 'person', entity_person_business_id, 'pid')
   RETURNING id INTO entity_id_person;
 
-  INSERT INTO flex.entity (name, type, business_id, business_id_type, client_id)
-  VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org', public.uuid_generate_v4())
+  INSERT INTO flex.entity (name, type, business_id, business_id_type)
+  VALUES (entity_name_org, 'organisation', entity_org_business_id, 'org')
   RETURNING id INTO entity_id_org;
 
   -- add clients

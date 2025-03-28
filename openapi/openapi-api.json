@@ -930,31 +930,7 @@
             "entity_update_request": {
                 "summary": "Update - Entity",
                 "description": "Request schema for update operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
-                "type": "object",
-                "properties": {
-                    "client_id": {
-                        "description": "The identifier of the entity. For use with client credentials authentication method.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "addr@flex.test"
-                    },
-                    "client_secret": {
-                        "description": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
-                        "format": "text",
-                        "type": "string",
-                        "minLength": 12,
-                        "nullable": true,
-                        "example": "mysupersecretpassword"
-                    },
-                    "client_public_key": {
-                        "description": "The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.",
-                        "format": "text",
-                        "type": "string",
-                        "nullable": true,
-                        "pattern": "^-----BEGIN PUBLIC KEY-----\\nMIIB[-A-Za-z0-9+/\\n]*={0,3}\\n-----END PUBLIC KEY-----$",
-                        "example": "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA\nTozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V\nkbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5\n0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu\n-----END PUBLIC KEY-----"
-                    }
-                }
+                "type": "object"
             },
             "entity_response": {
                 "summary": "Response - Entity",
@@ -6816,98 +6792,6 @@
                             }
                         },
                         "description": "Internal Server Error"
-                    }
-                }
-            },
-            "patch": {
-                "operationId": "update_entity",
-                "summary": "Update Entity",
-                "description": "",
-                "tags": [
-                    "entity"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/entity_update_request"
-                            }
-                        }
-                    },
-                    "description": "entity",
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "content": {},
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                }
-                            }
-                        },
-                        "description": "Bad Request"
-                    },
-                    "401": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                }
-                            }
-                        },
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                }
-                            }
-                        },
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "oneOf": [
-                                        {
-                                            "$ref": "#/components/schemas/error_message"
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/empty_object"
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        "description": "Not Found"
-                    },
-                    "406": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                }
-                            }
-                        },
-                        "description": "Not Acceptable"
-                    },
-                    "409": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                }
-                            }
-                        },
-                        "description": "Conflict"
                     }
                 }
             }

@@ -52,6 +52,14 @@ def test_entity_client(sts):
     clt = read_entity_client.sync(client=client_ent, id=cast(int, clt.id))
     assert isinstance(clt, EntityClientResponse)
 
+    # min password length is 12
+    e = update_entity_client.sync(
+        client=client_ent,
+        id=cast(int, clt.id),
+        body=EntityClientUpdateRequest(client_secret="12345678901"),
+    )
+    assert isinstance(e, ErrorMessage)
+
     # endpoint: PATCH /entity_client/{id}
     u = update_entity_client.sync(
         client=client_ent,

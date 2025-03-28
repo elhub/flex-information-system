@@ -123,7 +123,8 @@
                     "client_id": {
                         "type": "string",
                         "description": "The identifier of the entity that logs in.",
-                        "example": "example@flex.test"
+                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                        "example": "2854fee6-4591-4b1f-8726-af04475ef047"
                     },
                     "client_secret": {
                         "type": "string",
@@ -131,7 +132,7 @@
                         "example": "1234"
                     }
                 },
-                "example": "grant_type=client_credentials&client_id=example@flex.test&client_secret=1234",
+                "example": "grant_type=client_credentials&client_id=2854fee6-4591-4b1f-8726-af04475ef047&client_secret=1234",
                 "required": [
                     "grant_type",
                     "client_id",
