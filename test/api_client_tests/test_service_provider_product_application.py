@@ -128,6 +128,7 @@ def test_sppa_sp(sts):
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
+    # RLS: SPPA-SP002
     # still requested, update OK
     u = update_service_provider_product_application.sync(
         client=client_sp,

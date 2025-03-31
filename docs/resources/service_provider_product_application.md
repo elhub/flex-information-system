@@ -97,9 +97,10 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                              | Status |
-|------------|-----------------------------------------------------|--------|
-| SPPA-SP001 | Read, create and update SPPA concerning themselves. | DONE   |
+| Policy key | Policy                                        | Status |
+|------------|-----------------------------------------------|--------|
+| SPPA-SP001 | Read and create SPPA concerning themselves.   | DONE   |
+| SPPA-SP002 | Update their SPPA when status is `requested`. | DONE   |
 
 #### Third Party
 

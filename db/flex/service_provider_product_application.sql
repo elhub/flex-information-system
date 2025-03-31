@@ -127,6 +127,7 @@ BEGIN
 END;
 $$;
 
+-- RLS: SPPA-SP002
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_product_type_ids_update_only_requested
 BEFORE UPDATE ON service_provider_product_application
