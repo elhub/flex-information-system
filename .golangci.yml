@@ -1,89 +1,97 @@
 ---
 # https://golangci-lint.run/usage/configuration/
 
-issues:
-  # don't skip warning about doc comments
-  # we can enable individual ones with
-  # https://golangci-lint.run/usage/false-positives/#default-exclusions
-  exclude-use-default: false
-  exclude:
-    - should have a package comment
-
+version: "2"
 linters:
-  # using enable-all since it allows us to get all new linters
+  # using default all since it allows us to get all new linters
   # without having to update this file
-  enable-all: true
+  default: all
   disable:
-    # deprecated linters
-    - tenv
     # depguard checks that package imports are in a
     # list of acceptable packages - not applicable at the moment
     - depguard
-    # nlreturn and wsl adds lots of whitespace rules that are annoying
+    # nlreturn and wsl add lots of whitespace rules that are annoying
     - nlreturn
     - wsl
-    # gci conflicts with gofumpt
-    - gci
-linters-settings:
-  ireturn:
-    allow:
-      - anon
-      - error
-      - empty
-      - stdlib
-      - github.com\/jackc\/pgx\/v5.Tx
-      - github.com\/jackc\/pgx\/v5.BatchResults
-      - github.com\/jackc\/pgx\/v5.Rows
-      - github.com\/jackc\/pgx\/v5.Row
-
-  lll:
-    line-length: 160
-  errcheck:
-    exclude-functions:
-      - (github.com/jackc/pgx/v5.Tx).Commit
-      - (github.com/jackc/pgx/v5.Tx).Rollback
-      - (io.Closer).Close
-      - (net/http.ResponseWriter).Write
-      - encoding/json.Marshal
-  errchkjson:
-    check-error-free-encoding: true
-  forbidigo:
-    forbid:
-      - ^fmt\.Print.*$
-      - ^log\.Print.*$
-      - ^slog\.(Debug|Warn|Info|Error)$
-  godox:
-    keywords:
-      - FIXME
-  gosec:
-    excludes:
-      - G104 # Audit errors not checked
-  tagliatelle:
-    case:
-      rules:
-        json: snake
-  mnd:
-    checks:
-      - argument
-      - case
-      - condition
+  settings:
+    errcheck:
+      exclude-functions:
+        - (github.com/jackc/pgx/v5.Tx).Commit
+        - (github.com/jackc/pgx/v5.Tx).Rollback
+        - (io.Closer).Close
+        - (net/http.ResponseWriter).Write
+        - encoding/json.Marshal
+    errchkjson:
+      check-error-free-encoding: true
+    forbidigo:
+      forbid:
+        - pattern: ^fmt\.Print.*$
+        - pattern: ^log\.Print.*$
+        - pattern: ^slog\.(Debug|Warn|Info|Error)$
+    godox:
+      keywords:
+        - FIXME
+    gosec:
+      excludes:
+        - G104 # Audit errors not checked
+    ireturn:
+      allow:
+        - anon
+        - error
+        - empty
+        - stdlib
+        - github.com\/jackc\/pgx\/v5.Tx
+        - github.com\/jackc\/pgx\/v5.BatchResults
+        - github.com\/jackc\/pgx\/v5.Rows
+        - github.com\/jackc\/pgx\/v5.Row
+    lll:
+      line-length: 160
+    mnd:
+      checks:
+        - argument
+        - case
+        - condition
       # - operation
-      - return
+        - return
       # - assign
-  varnamelen:
-    min-name-length: 2
-    ignore-decls:
-      - w http.ResponseWriter
-      - r *http.Request
-  wrapcheck:
-    ignoreSigs:
-      - .Error
-      - .Errorf(
-      - errors.New(
-      - errors.Unwrap(
-      - errors.Join(
-      - .Wrap(
-      - .Wrapf(
-      - .WithMessage(
-      - .WithMessagef(
-      - .WithStack(
+    tagliatelle:
+      case:
+        rules:
+          json: snake
+    varnamelen:
+      min-name-length: 2
+      ignore-decls:
+        - w http.ResponseWriter
+        - r *http.Request
+    wrapcheck:
+      ignore-sigs:
+        - .Error
+        - .Errorf(
+        - errors.New(
+        - errors.Unwrap(
+        - errors.Join(
+        - .Wrap(
+        - .Wrapf(
+        - .WithMessage(
+        - .WithMessagef(
+        - .WithStack(
+  exclusions:
+    generated: lax
+    rules:
+      - path: (.+)\.go$
+        text: should have a package comment
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
