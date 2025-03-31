@@ -55,8 +55,6 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    UNIQUE (service_provider_id, system_operator_id),
-
     CONSTRAINT service_provider_product_application_service_provider_fkey
     FOREIGN KEY (
         service_provider_id, service_provider_party_type
