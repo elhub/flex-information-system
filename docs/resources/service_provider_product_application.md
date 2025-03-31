@@ -2,7 +2,8 @@
 
 The relation that links a service provider to a system operator, for the SP to
 apply for delivering the SO some of the types of product they want to buy on a
-flexibility market.
+flexibility market. The SP can apply for one or more product types, several
+times, for a given SO.
 
 ## Status transitions
 
