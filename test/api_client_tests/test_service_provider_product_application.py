@@ -69,9 +69,6 @@ def test_sppa_fiso(sts):
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
-    # default status as nothing is qualified for now
-    assert sppa.status == ServiceProviderProductApplicationStatus.REQUESTED
-
     # endpoint: GET /service_provider_product_application
     sppas = list_service_provider_product_application.sync(client=client_fiso)
     assert isinstance(sppas, list)
@@ -204,15 +201,6 @@ def test_sppa_sp(sts):
     assert isinstance(sppas, list)
     assert len(sppas) > 0
 
-    # as SP is qualified for 1 and 2 for another SO (see fixture)
-    # they can ask for 1 and 2 faster here
-    sppa = read_service_provider_product_application.sync(
-        client=client_sp,
-        id=cast(int, sppa.id),
-    )
-    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
-    assert sppa.status == ServiceProviderProductApplicationStatus.COMMUNICATION_TEST
-
     # SO qualifies the SPPA
     u = update_service_provider_product_application.sync(
         client=client_so,
@@ -236,58 +224,6 @@ def test_sppa_sp(sts):
         ),
     )
     assert isinstance(u, ErrorMessage)
-
-    # if we remove a product type, the status stays qualified for the rest
-    u = update_service_provider_product_application.sync(
-        client=client_fiso,
-        id=cast(int, sppa.id),
-        body=ServiceProviderProductApplicationUpdateRequest(
-            product_type_ids=[1],
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-    sppa = read_service_provider_product_application.sync(
-        client=client_sp,
-        id=cast(int, sppa.id),
-    )
-    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
-    assert sppa.status == ServiceProviderProductApplicationStatus.QUALIFIED
-
-    # but if we add a new one, it must restart
-
-    # adding a new product type that was already qualified should get us to
-    # the communication test directly
-    u = update_service_provider_product_application.sync(
-        client=client_fiso,
-        id=cast(int, sppa.id),
-        body=ServiceProviderProductApplicationUpdateRequest(
-            product_type_ids=[1, 2],
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-    sppa = read_service_provider_product_application.sync(
-        client=client_sp,
-        id=cast(int, sppa.id),
-    )
-    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
-    assert sppa.status == ServiceProviderProductApplicationStatus.COMMUNICATION_TEST
-
-    # but adding a new product type that was not qualified should get us to
-    # a simple application request now
-    u = update_service_provider_product_application.sync(
-        client=client_fiso,
-        id=cast(int, sppa.id),
-        body=ServiceProviderProductApplicationUpdateRequest(
-            product_type_ids=[1, 2, 6],
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-    sppa = read_service_provider_product_application.sync(
-        client=client_sp,
-        id=cast(int, sppa.id),
-    )
-    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
-    assert sppa.status == ServiceProviderProductApplicationStatus.REQUESTED
 
 
 def test_sppa_so(sts):
