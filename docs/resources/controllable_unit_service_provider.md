@@ -24,20 +24,10 @@ of one service provider per activation period.
 
 ## Validation Rules
 
-### Inter-Field Validation
-
 | Validation rule key | Validation rule                                                                                                 | Status |
 |---------------------|-----------------------------------------------------------------------------------------------------------------|--------|
-| CUSP-IFV001         | Valid time is frozen after 2 weeks for SP.                                                                      | DONE   |
-| CUSP-IFV002         | New contracts added by SP must be created 2-4 weeks ahead of their start unless the CU has no current contract. | DONE   |
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
-
-No validation rules.
+| CUSP-VAL001         | Valid time is frozen after 2 weeks for SP.                                                                      | DONE   |
+| CUSP-VAL002         | New contracts added by SP must be created 2-4 weeks ahead of their start unless the CU has no current contract. | DONE   |
 
 ## Notifications
 

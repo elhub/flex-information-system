@@ -1,7 +1,7 @@
 # Service Providing Group Grid Prequalification
 
 A resource tracking the grid prequalification status of a service providing
-group.
+group. One SPG grid prequalification per impacted system operator.
 
 ## Status transitions for grid prequalification
 
@@ -32,16 +32,6 @@ group.
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                                 | The identity that recorded the resource.                                                                 | bigint<br/>Read only                                                                                                                                                                                          |                                                                   |
 
 ## Validation Rules
-
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
 
 No validation rules.
 

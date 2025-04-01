@@ -70,6 +70,7 @@ BEGIN
 END;
 $$;
 
+-- SPGPA-VAL001
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_insert_on_active_spg
 BEFORE INSERT ON service_providing_group_product_application
@@ -106,6 +107,7 @@ BEGIN
 END;
 $$;
 
+-- SPGPA-VAL002
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_product_type_insert
 BEFORE INSERT ON service_providing_group_product_application

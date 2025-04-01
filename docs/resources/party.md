@@ -42,20 +42,10 @@ generate a UUID as the business identifier.
 
 ## Validation Rules
 
-### Inter-Field Validation
-
 | Policy key | Policy                                                                              | Status |
 |------------|-------------------------------------------------------------------------------------|--------|
-| PTY-IFV001 | `business_id_type` is UUID if and only if the party is an `end_user`.               | DONE   |
-| PTY-IFV002 | `business_id` is not required if `business_id_type` is UUID (it will be generated). | DONE   |
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
-
-No validation rules.
+| PTY-VAL001 | `business_id_type` is UUID if and only if the party is an `end_user`.               | DONE   |
+| PTY-VAL002 | `business_id` is not required if `business_id_type` is UUID (it will be generated). | DONE   |
 
 ## Notifications
 

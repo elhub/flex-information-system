@@ -59,7 +59,7 @@ AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('controllable_unit_service_provider');
 
--- IFV: CUSP-IFV001
+-- IFV: CUSP-VAL001
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_valid_time_freeze
 BEFORE UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
@@ -72,7 +72,7 @@ BEFORE INSERT OR UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
 
--- IFV: CUSP-IFV002
+-- IFV: CUSP-VAL002
 CREATE OR REPLACE TRIGGER
 -- the _a_ in this name is to make sure it runs before other triggers
 -- PostgreSQL runs triggers in alphabetical order
