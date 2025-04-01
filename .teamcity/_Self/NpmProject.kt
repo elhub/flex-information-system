@@ -14,7 +14,7 @@ object NpmProject : TeamcityProject({
             npmVerify {
                 workingDir = "frontend"
                 sonarScanSettings = {
-                    sonarProjectSources = "frontend"
+                    sonarProjectSources = "frontend/src"
                     workingDir = "frontend"
                     sonarProjectTests = null // no tests in frontend
                 }
