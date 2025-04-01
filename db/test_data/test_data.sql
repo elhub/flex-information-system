@@ -1,20 +1,6 @@
 -- test_data contains functions to add test data to the database.
 CREATE SCHEMA IF NOT EXISTS test_data;
 
--- Turn an email into a name
--- john.doe@ex.test -> John Doe
-CREATE OR REPLACE FUNCTION test_data.email_to_name(email text)
-RETURNS text
-AS $$
-BEGIN
-  -- error if input does not look like a email ending with .test TLD
-  IF email !~ '^[a-z]+\.[a-z]+@[a-z]+.test$' THEN
-    RAISE EXCEPTION 'Invalid email: %', email;
-  END IF;
-  RETURN initcap(replace(split_part(email, '@', 1), '.', ' '));
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
-
 -- Randomly return 'up', 'down' or 'both'
 CREATE OR REPLACE FUNCTION test_data.random_regulation_direction()
 RETURNS text
@@ -410,7 +396,7 @@ $$;
 DROP FUNCTION IF EXISTS test_data.add_test_account;
 CREATE OR REPLACE FUNCTION test_data.add_test_account(
     in_user_seq_id bigint,
-    in_email text,
+    in_entity_name text,
     in_add_fiso boolean,
     in_add_data boolean,
     in_common_party_first_name text
@@ -418,9 +404,8 @@ CREATE OR REPLACE FUNCTION test_data.add_test_account(
 AS $$
 DECLARE
   user_seq_id_text text := lpad(in_user_seq_id::text, 4, '0');
-  entity_name text := test_data.email_to_name(in_email);
-  entity_name_org text := entity_name || ' AS';
-  entity_first_name text := split_part(entity_name, ' ', 1);
+  entity_name_org text := in_entity_name || ' AS';
+  entity_first_name text := split_part(in_entity_name, ' ', 1);
   entity_org_business_id text := '13370' || user_seq_id_text;
   entity_person_business_id text := '1337000' || user_seq_id_text;
 
@@ -459,7 +444,7 @@ BEGIN
   -- add entities
 
   INSERT INTO flex.entity (name, type, business_id, business_id_type)
-  VALUES (entity_name, 'person', entity_person_business_id, 'pid')
+  VALUES (in_entity_name, 'person', entity_person_business_id, 'pid')
   RETURNING id INTO entity_id_person;
 
   INSERT INTO flex.entity (name, type, business_id, business_id_type)
