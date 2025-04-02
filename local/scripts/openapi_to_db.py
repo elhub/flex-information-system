@@ -14,26 +14,6 @@ DB_DIR = "./db"
 output_file_backend_schema = "backend/schema.sql"
 
 
-def history_rls_statements(base_resource, acronym):
-    return f"""\
-ALTER TABLE IF EXISTS {base_resource}_history
-ENABLE ROW LEVEL SECURITY;
-
--- RLS: {acronym}-COM001
-GRANT SELECT ON {base_resource}_history
-TO flex_common;
-CREATE POLICY "{acronym}_COM001"
-ON {base_resource}_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM {base_resource}
-    WHERE {base_resource}_history.id = {base_resource}.id -- noqa
-));\
-"""
-
-
 def view_create_statement(resource, schema_fields, has_audit):
     formatted_fields = ",\n        ".join(
         list(sorted(schema_fields - set(["id", "valid_from", "valid_to"])))
