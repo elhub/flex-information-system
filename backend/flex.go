@@ -189,16 +189,18 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_OIDC_POST_LOGOUT_REDIRECT_URL", errMissingEnv)
 	}
 
-	loginDelay := 2 * time.Second
-	loginDelayStr, exists := lookupenv("FLEX_LOGIN_DELAY")
+	failedLoginDelay := 2 * time.Second
+	failedLoginDelayStr, exists := lookupenv("FLEX_FAILED_LOGIN_DELAY")
 	if exists {
-		n, err := strconv.Atoi(loginDelayStr)
+		n, err := strconv.Atoi(failedLoginDelayStr)
 		if err != nil {
-			return fmt.Errorf("could not parse FLEX_LOGIN_DELAY: %w", err)
+			return fmt.Errorf("could not parse FLEX_FAILED_LOGIN_DELAY: %w", err)
 		}
-		loginDelay = time.Duration(n) * time.Second
+		failedLoginDelay = time.Duration(n) * time.Second
 	}
-	slog.InfoContext(ctx, "Will use a login delay of", "delay", loginDelay)
+	slog.InfoContext(
+		ctx, "Failed login will cause a delay of", "delay", failedLoginDelay,
+	)
 
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
@@ -248,7 +250,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		jwtSecret,
 		oidcProvider,
 		requestDetailsContextKey,
-		loginDelay,
+		failedLoginDelay,
 	)
 
 	slog.DebugContext(ctx, "Creating data API")

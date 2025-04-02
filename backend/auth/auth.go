@@ -32,16 +32,16 @@ const (
 	sessionCookieKey = "__Host-flex_session"
 )
 
-// loginRecord is used to limit the number of login attempts from a single IP
-// address.
+// failedLoginRecord is used to limit the number of failed login attempts from
+// a single IP address.
 //
-// It stores the first attempt time and the number of attempts. The time of the
-// first attempt is used to identify the start of a fixed time window. If there
-// are more than a fixed number of attempts in the time window, the IP address
-// will be blocked until the end of the window. On the first attempt after the
-// end of the window, this record is reset and a new time window is started to
-// allow further attempts.
-type loginRecord struct {
+// It stores the first time a login attempt was failed, and the total number of
+// failed attempts. The time of the first attempt is used to identify the start
+// of a fixed time window. If there are more than a fixed number of failed
+// attempts in the time window, the IP address will be blocked until the end of
+// the window. On the first failed attempt after the end of the window, this
+// record is reset and a new time window is started to allow further attempts.
+type failedLoginRecord struct {
 	firstAttempt time.Time
 	attempts     int
 }
@@ -63,16 +63,16 @@ func readUserIP(r *http.Request) ipAddress {
 type API struct {
 	// self is the api service itself.
 	// Used as the issuer of access tokens and to validate the audience of incoming tokens.
-	self                     string
-	db                       *pgpool.Pool
-	jwtSecret                []byte
-	tokenDurationSeconds     int
-	oidcProvider             *oidc.Provider
-	ctxKey                   string
-	loginDelay               time.Duration
-	loginWindow              time.Duration
-	maxAttemptsInLoginWindow int
-	loginRecords             map[ipAddress]loginRecord
+	self                           string
+	db                             *pgpool.Pool
+	jwtSecret                      []byte
+	tokenDurationSeconds           int
+	oidcProvider                   *oidc.Provider
+	ctxKey                         string
+	failedLoginDelay               time.Duration
+	failedLoginWindow              time.Duration
+	maxFailedAttemptsInLoginWindow int
+	failedLoginRecords             map[ipAddress]failedLoginRecord
 }
 
 // NewAPI creates a new auth.API instance.
@@ -82,19 +82,19 @@ func NewAPI(
 	jwtSecret string,
 	oidcProvider *oidc.Provider,
 	ctxKey string,
-	loginDelay time.Duration,
+	failedLoginDelay time.Duration,
 ) *API {
 	return &API{
-		self:                     self,
-		db:                       db,
-		jwtSecret:                []byte(jwtSecret),
-		tokenDurationSeconds:     3600,
-		oidcProvider:             oidcProvider,
-		ctxKey:                   ctxKey,
-		loginDelay:               loginDelay,
-		loginWindow:              1 * time.Hour,
-		maxAttemptsInLoginWindow: 20,
-		loginRecords:             make(map[ipAddress]loginRecord),
+		self:                           self,
+		db:                             db,
+		jwtSecret:                      []byte(jwtSecret),
+		tokenDurationSeconds:           3600,
+		oidcProvider:                   oidcProvider,
+		ctxKey:                         ctxKey,
+		failedLoginDelay:               failedLoginDelay,
+		failedLoginWindow:              1 * time.Hour,
+		maxFailedAttemptsInLoginWindow: 20,
+		failedLoginRecords:             make(map[ipAddress]failedLoginRecord),
 	}
 }
 
@@ -1040,34 +1040,6 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		return
 	}
 
-	clientIP := readUserIP(ctx.Request)
-	record, present := auth.loginRecords[clientIP]
-	// user has never logged in before or the time window has passed
-	if !present || time.Since(record.firstAttempt) > auth.loginWindow {
-		slog.InfoContext(ctx, "client credentials login window reset", "client", clientIP)
-		record = loginRecord{
-			attempts:     0,
-			firstAttempt: time.Now(),
-		}
-	}
-
-	if record.attempts >= auth.maxAttemptsInLoginWindow {
-		// user has exceeded the number of attempts in the time window
-		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
-			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "too many login attempts, try again later",
-		})
-		return
-	}
-
-	// update after checks to avoid incrementing the attempts indefinitely
-	// (and risking overflow) if the user is blocked but still decides to spam
-	record.attempts++
-	auth.loginRecords[clientIP] = record
-
-	// mitigation of brute force attacks
-	time.Sleep(auth.loginDelay)
-
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
@@ -1083,6 +1055,37 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
 	if err != nil {
+		// it is a failed login attempt
+
+		// mitigation of brute force attacks
+		time.Sleep(auth.failedLoginDelay)
+
+		clientIP := readUserIP(ctx.Request)
+		record, present := auth.failedLoginRecords[clientIP]
+		// user has never failed login before or the time window has passed
+		if !present || time.Since(record.firstAttempt) > auth.failedLoginWindow {
+			slog.InfoContext(
+				ctx, "client credentials failed login window reset", "client", clientIP,
+			)
+			record = failedLoginRecord{
+				attempts:     0,
+				firstAttempt: time.Now(),
+			}
+		}
+
+		if record.attempts >= auth.maxFailedAttemptsInLoginWindow {
+			ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+				Error:            oauthErrorInvalidClient,
+				ErrorDescription: "too many login attempts, try again later",
+			})
+			return
+		}
+
+		// update after checks to avoid incrementing the attempts indefinitely
+		// (and risking overflow) if the user is blocked but still decides to spam
+		record.attempts++
+		auth.failedLoginRecords[clientIP] = record
+
 		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
