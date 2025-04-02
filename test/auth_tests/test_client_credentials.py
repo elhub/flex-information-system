@@ -1,6 +1,7 @@
 import os
 import requests
 from typing import Union, cast
+from time import sleep
 
 """Test of the client credentials phase of the login process"""
 
@@ -112,3 +113,22 @@ def test_spam():
     json = cast(requests.Response, response).json()
     assert json.get("error") is not None
     assert json["error"] == "access_denied"
+
+    sleep(4)
+
+    # now the window is over and we can try again
+
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+            "client_secret": "wrong_pass",
+        },
+    )
+
+    assert cast(requests.Response, response).status_code == 400
+    json = cast(requests.Response, response).json()
+    assert json.get("error") is not None
+    assert json["error"] == "invalid_client"

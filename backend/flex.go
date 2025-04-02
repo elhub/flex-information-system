@@ -202,6 +202,20 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		ctx, "Failed login will cause a delay of", "delay", failedLoginDelay,
 	)
 
+	failedLoginWindow := 1 * time.Hour
+	failedLoginWindowStr, exists := lookupenv("FLEX_FAILED_LOGIN_WINDOW")
+	if exists {
+		n, err := strconv.Atoi(failedLoginWindowStr)
+		if err != nil {
+			return fmt.Errorf("could not parse FLEX_FAILED_LOGIN_WINDOW: %w", err)
+		}
+		failedLoginWindow = time.Duration(n) * time.Second
+	}
+	slog.InfoContext(
+		ctx, "Failed login attempts will be restricted in a window of",
+		"window", failedLoginWindow,
+	)
+
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
 
@@ -251,6 +265,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		oidcProvider,
 		requestDetailsContextKey,
 		failedLoginDelay,
+		failedLoginWindow,
 	)
 
 	slog.DebugContext(ctx, "Creating data API")

@@ -83,6 +83,7 @@ func NewAPI(
 	oidcProvider *oidc.Provider,
 	ctxKey string,
 	failedLoginDelay time.Duration,
+	failedLoginWindow time.Duration,
 ) *API {
 	return &API{
 		self:                           self,
@@ -92,7 +93,7 @@ func NewAPI(
 		oidcProvider:                   oidcProvider,
 		ctxKey:                         ctxKey,
 		failedLoginDelay:               failedLoginDelay,
-		failedLoginWindow:              1 * time.Hour,
+		failedLoginWindow:              failedLoginWindow,
 		maxFailedAttemptsInLoginWindow: 20,
 		failedLoginRecords:             make(map[ipAddress]failedLoginRecord),
 	}
