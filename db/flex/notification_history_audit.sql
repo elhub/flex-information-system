@@ -25,8 +25,6 @@ ALTER TABLE IF EXISTS
 flex.notification_history
 ENABLE ROW LEVEL SECURITY;
 
-
-
 -- changeset flex:notification-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 notification_audit_current

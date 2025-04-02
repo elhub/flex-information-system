@@ -25,8 +25,6 @@ ALTER TABLE IF EXISTS
 flex.accounting_point_history
 ENABLE ROW LEVEL SECURITY;
 
-
-
 -- changeset flex:accounting-point-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 accounting_point_audit_current

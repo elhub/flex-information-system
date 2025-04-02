@@ -25,8 +25,6 @@ ALTER TABLE IF EXISTS
 flex.controllable_unit_service_provider_history
 ENABLE ROW LEVEL SECURITY;
 
-
-
 -- changeset flex:controllable-unit-service-provider-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_audit_current

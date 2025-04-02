@@ -25,8 +25,6 @@ ALTER TABLE IF EXISTS
 flex.accounting_point_energy_supplier_history
 ENABLE ROW LEVEL SECURITY;
 
-
-
 -- changeset flex:accounting-point-energy-supplier-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 accounting_point_energy_supplier_audit_current

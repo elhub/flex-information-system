@@ -25,8 +25,6 @@ ALTER TABLE IF EXISTS
 flex.entity_client_history
 ENABLE ROW LEVEL SECURITY;
 
-
-
 -- changeset flex:entity-client-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 entity_client_audit_current

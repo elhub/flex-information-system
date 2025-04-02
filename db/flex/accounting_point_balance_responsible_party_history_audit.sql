@@ -25,8 +25,6 @@ ALTER TABLE IF EXISTS
 flex.accounting_point_balance_responsible_party_history
 ENABLE ROW LEVEL SECURITY;
 
-
-
 -- changeset flex:accounting-point-balance-responsible-party-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 accounting_point_balance_responsible_party_audit_current

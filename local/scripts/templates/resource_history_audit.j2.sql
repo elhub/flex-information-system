@@ -25,7 +25,8 @@ ALTER TABLE IF EXISTS
 flex.{{ resource }}_history
 ENABLE ROW LEVEL SECURITY;
 
-{% if data.get('history_rls') -%}
+{%- if data.get('history_rls')%}
+
 -- changeset flex:{{ resource | replace("_", "-") }}-history-rls-com endDelimiter:--
 -- RLS: {{ data.acronym }}-COM001
 GRANT SELECT ON flex.{{ resource }}_history

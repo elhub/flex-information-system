@@ -25,8 +25,6 @@ ALTER TABLE IF EXISTS
 flex.technical_resource_history
 ENABLE ROW LEVEL SECURITY;
 
-
-
 -- changeset flex:technical-resource-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 technical_resource_audit_current
