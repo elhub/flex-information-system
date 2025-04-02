@@ -67,6 +67,48 @@ CREATE OR REPLACE TRIGGER service_providing_group_membership_upsert_consistency
 BEFORE INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE consistency_on_spgm_valid_time_increase();
 
+CREATE OR REPLACE FUNCTION spgm_insert_grid_prequalification()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    spg_status text;
+    impacted_system_operator_id bigint;
+BEGIN
+    SELECT status INTO spg_status
+    FROM flex.service_providing_group
+    WHERE id = NEW.service_providing_group_id;
+
+    -- TODO: update when a grid model is implemented
+    -- ISO is currently the CSO of the CU
+    SELECT ap.system_operator_id INTO impacted_system_operator_id
+    FROM flex.controllable_unit AS cu
+        INNER JOIN flex.accounting_point AS ap
+            ON cu.accounting_point_id = ap.business_id
+    WHERE cu.id = NEW.controllable_unit_id;
+
+    INSERT INTO flex.service_providing_group_grid_prequalification (
+        service_providing_group_id,
+        impacted_system_operator_id,
+        recorded_by
+    ) VALUES (
+        NEW.service_providing_group_id,
+        impacted_system_operator_id,
+        0
+    )
+    ON CONFLICT DO NOTHING;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER spgm_insert_grid_prequalification
+AFTER INSERT ON service_providing_group_membership
+FOR EACH ROW
+EXECUTE FUNCTION spgm_insert_grid_prequalification();
+
 CREATE OR REPLACE TRIGGER service_providing_group_membership_event
 AFTER INSERT OR UPDATE OR DELETE ON service_providing_group_membership
 FOR EACH ROW
