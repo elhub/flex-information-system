@@ -104,106 +104,21 @@ FOR EACH ROW
 EXECUTE FUNCTION
 service_provider_product_application_product_type_ids_insert();
 
---
-
-CREATE OR REPLACE FUNCTION all_already_qualified(
-    pt_ids bigint [],
-    sp_id bigint
-)
-RETURNS boolean
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS
-$$
-DECLARE
-    l_qualified_product_type_ids bigint[];
-    l_product_type_id bigint;
-BEGIN
-    -- find the product types that the SP has already been qualified for
-    SELECT array_agg(pt_id) INTO l_qualified_product_type_ids
-    FROM (
-        SELECT DISTINCT unnest(product_type_ids) pt_id
-        FROM service_provider_product_application
-        WHERE service_provider_id = sp_id
-        AND status = 'qualified'
-    ) AS already_qualified_product_types;
-
-    -- check the product types of the given array
-    FOR l_product_type_id IN SELECT unnest(pt_ids) LOOP
-        IF
-            l_product_type_id NOT IN
-            (SELECT unnest(l_qualified_product_type_ids))
-        THEN
-            RETURN false;
-        END IF;
-    END LOOP;
-
-    RETURN true;
-END;
-$$;
-
--- trigger to push the status further on insert if the SP has already been
--- qualified for the given product types
-
-CREATE OR REPLACE FUNCTION
-service_provider_product_application_already_qualified_insert()
-RETURNS trigger
-SECURITY DEFINER -- because we update the status, which the SP cannot do
-LANGUAGE plpgsql
-AS
-$$
-BEGIN
-    IF all_already_qualified(NEW.product_type_ids, NEW.service_provider_id) THEN
-        UPDATE service_provider_product_application
-        SET status = 'communication_test'
-        WHERE id = NEW.id;
-    END IF;
-    RETURN null;
-END;
-$$;
-
-CREATE OR REPLACE TRIGGER
-service_provider_product_application_already_qualified_insert
-AFTER INSERT ON service_provider_product_application
-FOR EACH ROW
-EXECUTE FUNCTION
-service_provider_product_application_already_qualified_insert();
-
--- trigger to update status when the product type list changes
-
+-- RLS: SPPA-SP002
+-- reject updates by SP if the status is not `requested`
 CREATE OR REPLACE FUNCTION
 service_provider_product_application_product_type_ids_update()
 RETURNS trigger
--- because users who can update this table can always update the status
 SECURITY INVOKER
 LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    -- array_length returns null instead of 0 if the array is empty => coalesce
-    IF coalesce(array_length(NEW.product_type_ids, 1), 0) >
-       coalesce(array_length(OLD.product_type_ids, 1), 0)
-    THEN
-        -- new product types : restart the application process
-        IF all_already_qualified(NEW.product_type_ids, NEW.service_provider_id)
-        THEN
-            NEW.status := 'communication_test';
-        ELSE
-            NEW.status := 'requested';
-        END IF;
-    ELSE
-        -- product types were removed
-        IF OLD.status IN ('not_qualified', 'requested') THEN
-            -- in these cases it means the application is to be restarted
-            IF all_already_qualified(
-                NEW.product_type_ids, NEW.service_provider_id
-            ) THEN
-                NEW.status := 'communication_test';
-            ELSE
-                NEW.status := 'requested';
-            END IF;
-        END IF;
-        -- in the other cases, the application does not change status
+    IF OLD.status != 'requested' THEN
+        RAISE sqlstate 'PT400' using
+            message =
+                'status is no longer requested, cannot update product types';
+        RETURN null;
     END IF;
 
     RETURN NEW;
@@ -214,7 +129,10 @@ CREATE OR REPLACE TRIGGER
 service_provider_product_application_product_type_ids_update
 BEFORE UPDATE OF product_type_ids ON service_provider_product_application
 FOR EACH ROW
-WHEN (OLD.status = NEW.status) -- noqa
+WHEN (
+    NEW.product_type_ids IS DISTINCT FROM OLD.product_type_ids -- noqa
+    AND current_role = 'flex_service_provider'
+)
 EXECUTE FUNCTION
 service_provider_product_application_product_type_ids_update();
 
@@ -249,6 +167,13 @@ CREATE OR REPLACE TRIGGER service_provider_product_application_status_insert
 BEFORE INSERT ON service_provider_product_application
 FOR EACH ROW
 EXECUTE FUNCTION status_insert('requested');
+
+CREATE OR REPLACE TRIGGER
+service_provider_product_application_status_update
+BEFORE UPDATE OF status ON service_provider_product_application
+FOR EACH ROW
+WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
+EXECUTE FUNCTION status_update('requested');
 
 CREATE OR REPLACE TRIGGER service_provider_product_application_event
 AFTER INSERT OR UPDATE ON service_provider_product_application

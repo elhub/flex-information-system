@@ -16,14 +16,13 @@ digraph G {
 
 
     start -> requested [label="", color="pink"];
-    requested-> communication_test [label="If already qualified\nby another SO", color="pink"];
+    requested-> communication_test [label="If already qualified\nby another SO", color="green"];
     requested -> in_progress [label="If not qualified\nby another SO", color="green"];
     in_progress -> communication_test [label="Qualified but needs\ncommunication test", color="green"];
     in_progress -> not_qualified [label="Not qualified", color="green"];
     in_progress -> qualified [label="Qualified", color="green"];
     communication_test -> qualified [label="Qualified", color="green"];
     qualified -> communication_test [label="Significant changes\nin SP ICT system", color="green"];
-    not_qualified -> requested [label="SP has made\nupdates \nto comply", color="blue"];
-    qualified -> requested [label="SP adds\nproduct type(s)", color="pink"];
+    not_qualified -> in_progress [label="SP has made\nupdates \nto comply", color="blue"];
 }
 @enddot

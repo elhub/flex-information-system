@@ -2,7 +2,8 @@
 
 The relation that links a service provider to a system operator, for the SP to
 apply for delivering the SO some of the types of product they want to buy on a
-flexibility market.
+flexibility market. The SP can apply for one or more product types, several
+times, for a given SO.
 
 ## Status transitions
 
@@ -97,9 +98,10 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                              | Status |
-|------------|-----------------------------------------------------|--------|
-| SPPA-SP001 | Read, create and update SPPA concerning themselves. | DONE   |
+| Policy key | Policy                                        | Status |
+|------------|-----------------------------------------------|--------|
+| SPPA-SP001 | Read and create SPPA concerning themselves.   | DONE   |
+| SPPA-SP002 | Update their SPPA when status is `requested`. | DONE   |
 
 #### Third Party
 
