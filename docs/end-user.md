@@ -35,12 +35,13 @@ and system operators. However, the end user is also required to take part in
 giving consent to contract changes and approve access to third parties. The
 following two sub-sections gives a brief history of those two.
 
-!!! note "Non digital users"
+### *Non digital users*
 
-    Elhub market processes must support non-digital end users since everyone
-    should have access to electricity. We believe that FIS does not have this
-    requirement since providing flexibility is not a basic requirement for
-    living.
+``` text
+Elhub market processes must support non-digital end users since everyone should
+have access to electricity. We believe that FIS does not have this requirement
+since providing flexibility is not a basic requirement for living.
+```
 
 ## Energy supplier change
 
