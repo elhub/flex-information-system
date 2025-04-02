@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT
 
--- changeset flex:entity-client-history-table-create
+-- changeset flex:entity-client-history-table-create endDelimiter:--
 CREATE TABLE IF NOT EXISTS
 flex.entity_client_history (
     history_id bigint PRIMARY KEY NOT NULL
@@ -15,17 +15,19 @@ flex.entity_client_history (
     replaced_by bigint NOT NULL
 );
 
--- changeset flex:entity-client-history-id-index
+-- changeset flex:entity-client-history-id-index endDelimiter:--
 CREATE INDEX IF NOT EXISTS
 entity_client_history_id_idx
 ON flex.entity_client_history (id);
 
--- changeset flex:entity-client-history-rls
+-- changeset flex:entity-client-history-rls endDelimiter:--
 ALTER TABLE IF EXISTS
 flex.entity_client_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:entity-client-audit-current
+
+
+-- changeset flex:entity-client-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 entity_client_audit_current
 BEFORE INSERT OR UPDATE
@@ -34,7 +36,7 @@ FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );
 
--- changeset flex:entity-client-audit-history
+-- changeset flex:entity-client-audit-history endDelimiter:--
 CREATE OR REPLACE TRIGGER
 entity_client_audit_history
 AFTER UPDATE OR DELETE

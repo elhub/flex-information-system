@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT
 
--- changeset flex:controllable-unit-service-provider-history-table-create
+-- changeset flex:controllable-unit-service-provider-history-table-create endDelimiter:--
 CREATE TABLE IF NOT EXISTS
 flex.controllable_unit_service_provider_history (
     history_id bigint PRIMARY KEY NOT NULL
@@ -15,17 +15,19 @@ flex.controllable_unit_service_provider_history (
     replaced_by bigint NOT NULL
 );
 
--- changeset flex:controllable-unit-service-provider-history-id-index
+-- changeset flex:controllable-unit-service-provider-history-id-index endDelimiter:--
 CREATE INDEX IF NOT EXISTS
 controllable_unit_service_provider_history_id_idx
 ON flex.controllable_unit_service_provider_history (id);
 
--- changeset flex:controllable-unit-service-provider-history-rls
+-- changeset flex:controllable-unit-service-provider-history-rls endDelimiter:--
 ALTER TABLE IF EXISTS
 flex.controllable_unit_service_provider_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:controllable-unit-service-provider-audit-current
+
+
+-- changeset flex:controllable-unit-service-provider-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_audit_current
 BEFORE INSERT OR UPDATE
@@ -34,7 +36,7 @@ FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );
 
--- changeset flex:controllable-unit-service-provider-audit-history
+-- changeset flex:controllable-unit-service-provider-audit-history endDelimiter:--
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_audit_history
 AFTER UPDATE OR DELETE
