@@ -218,13 +218,8 @@ if __name__ == "__main__":
             if "history" in resource or resource.get("audit"):
                 j2.template(
                     resource,
-                    "resource_history.j2.sql",
-                    f"{DB_DIR}/flex/{resource['id']}_history.sql",
-                )
-                j2.template(
-                    resource,
-                    "resource_audit.j2.sql",
-                    f"{DB_DIR}/logic/{resource['id']}_audit.sql",
+                    "resource_history_audit.j2.sql",
+                    f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
                 )
 
             # generate views and history views creation statements

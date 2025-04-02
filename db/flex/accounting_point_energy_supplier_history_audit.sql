@@ -24,3 +24,21 @@ ON flex.accounting_point_energy_supplier_history (id);
 ALTER TABLE IF EXISTS
 flex.accounting_point_energy_supplier_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:accounting-point-energy-supplier-audit-current
+CREATE OR REPLACE TRIGGER
+accounting_point_energy_supplier_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.accounting_point_energy_supplier
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+-- changeset flex:accounting-point-energy-supplier-audit-history
+CREATE OR REPLACE TRIGGER
+accounting_point_energy_supplier_audit_history
+AFTER UPDATE OR DELETE
+ON flex.accounting_point_energy_supplier
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);

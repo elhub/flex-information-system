@@ -24,3 +24,12 @@ ON flex.notification_history (id);
 ALTER TABLE IF EXISTS
 flex.notification_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:notification-audit-current
+CREATE OR REPLACE TRIGGER
+notification_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.notification
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

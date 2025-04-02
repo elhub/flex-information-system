@@ -24,3 +24,23 @@ ON flex.{{ resource }}_history (id);
 ALTER TABLE IF EXISTS
 flex.{{ resource }}_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:{{ resource | replace("_", "-") }}-audit-current
+CREATE OR REPLACE TRIGGER
+{{ resource }}_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.{{ resource }}
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+{% if data.history -%}
+-- changeset flex:{{ resource | replace("_", "-") }}-audit-history
+CREATE OR REPLACE TRIGGER
+{{ resource }}_audit_history
+AFTER UPDATE OR DELETE
+ON flex.{{ resource }}
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);
+{% endif -%}

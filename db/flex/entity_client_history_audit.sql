@@ -24,3 +24,12 @@ ON flex.entity_client_history (id);
 ALTER TABLE IF EXISTS
 flex.entity_client_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:entity-client-audit-current
+CREATE OR REPLACE TRIGGER
+entity_client_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.entity_client
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);

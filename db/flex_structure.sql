@@ -36,24 +36,24 @@ and support the processes in the value chain.$$;
 
 -- history and audit
 
-\i flex/accounting_point_balance_responsible_party_history.sql
-\i flex/accounting_point_end_user_history.sql
-\i flex/accounting_point_energy_supplier_history.sql
-\i flex/accounting_point_history.sql
-\i flex/controllable_unit_history.sql
-\i flex/controllable_unit_service_provider_history.sql
-\i flex/entity_client_history.sql
-\i flex/notification_history.sql
-\i flex/party_history.sql
-\i flex/party_membership_history.sql
-\i flex/service_provider_product_application_comment_history.sql
-\i flex/service_provider_product_application_history.sql
-\i flex/service_providing_group_grid_prequalification_history.sql
-\i flex/service_providing_group_history.sql
-\i flex/service_providing_group_membership_history.sql
-\i flex/service_providing_group_product_application_history.sql
-\i flex/system_operator_product_type_history.sql
-\i flex/technical_resource_history.sql
+\i flex/accounting_point_balance_responsible_party_history_audit.sql
+\i flex/accounting_point_end_user_history_audit.sql
+\i flex/accounting_point_energy_supplier_history_audit.sql
+\i flex/accounting_point_history_audit.sql
+\i flex/controllable_unit_history_audit.sql
+\i flex/controllable_unit_service_provider_history_audit.sql
+\i flex/entity_client_history_audit.sql
+\i flex/notification_history_audit.sql
+\i flex/party_history_audit.sql
+\i flex/party_membership_history_audit.sql
+\i flex/service_provider_product_application_comment_history_audit.sql
+\i flex/service_provider_product_application_history_audit.sql
+\i flex/service_providing_group_grid_prequalification_history_audit.sql
+\i flex/service_providing_group_history_audit.sql
+\i flex/service_providing_group_membership_history_audit.sql
+\i flex/service_providing_group_product_application_history_audit.sql
+\i flex/system_operator_product_type_history_audit.sql
+\i flex/technical_resource_history_audit.sql
 
 -- security definer views for RLS
 

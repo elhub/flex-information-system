@@ -24,3 +24,21 @@ ON flex.controllable_unit_history (id);
 ALTER TABLE IF EXISTS
 flex.controllable_unit_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:controllable-unit-audit-current
+CREATE OR REPLACE TRIGGER
+controllable_unit_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.controllable_unit
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+-- changeset flex:controllable-unit-audit-history
+CREATE OR REPLACE TRIGGER
+controllable_unit_audit_history
+AFTER UPDATE OR DELETE
+ON flex.controllable_unit
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);

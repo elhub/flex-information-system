@@ -24,3 +24,21 @@ ON flex.service_provider_product_application_comment_history (id);
 ALTER TABLE IF EXISTS
 flex.service_provider_product_application_comment_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:service-provider-product-application-comment-audit-current
+CREATE OR REPLACE TRIGGER
+service_provider_product_application_comment_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.service_provider_product_application_comment
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+-- changeset flex:service-provider-product-application-comment-audit-history
+CREATE OR REPLACE TRIGGER
+service_provider_product_application_comment_audit_history
+AFTER UPDATE OR DELETE
+ON flex.service_provider_product_application_comment
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);

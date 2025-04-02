@@ -24,3 +24,21 @@ ON flex.technical_resource_history (id);
 ALTER TABLE IF EXISTS
 flex.technical_resource_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:technical-resource-audit-current
+CREATE OR REPLACE TRIGGER
+technical_resource_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.technical_resource
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+-- changeset flex:technical-resource-audit-history
+CREATE OR REPLACE TRIGGER
+technical_resource_audit_history
+AFTER UPDATE OR DELETE
+ON flex.technical_resource
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);

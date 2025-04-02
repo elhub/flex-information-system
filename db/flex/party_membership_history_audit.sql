@@ -24,3 +24,21 @@ ON flex.party_membership_history (id);
 ALTER TABLE IF EXISTS
 flex.party_membership_history
 ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:party-membership-audit-current
+CREATE OR REPLACE TRIGGER
+party_membership_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.party_membership
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+-- changeset flex:party-membership-audit-history
+CREATE OR REPLACE TRIGGER
+party_membership_audit_history
+AFTER UPDATE OR DELETE
+ON flex.party_membership
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);
