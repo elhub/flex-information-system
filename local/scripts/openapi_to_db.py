@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import yaml
 import sys
+import j2
 
 """
 This script generates SQL statements to create views in the `api` schema,
@@ -9,49 +10,8 @@ OpenAPI specification. It brings more automation to the DB code and reduces the
 risk of making a copy-paste mistake.
 """
 
-output_folder_tables = "db/flex"
-output_folder_views = "db/api"
+DB_DIR = "./db"
 output_file_backend_schema = "backend/schema.sql"
-
-
-def history_statements(base_resource):
-    return f"""\
-CREATE TABLE IF NOT EXISTS
-{base_resource}_history (
-    history_id bigint PRIMARY KEY NOT NULL
-    DEFAULT nextval(
-        pg_get_serial_sequence(
-            'flex.{base_resource}',
-            'id'
-        )
-    ),
-    LIKE {base_resource},
-    replaced_by bigint NOT NULL
-);
-
-CREATE INDEX IF NOT EXISTS
-{base_resource}_history_id_idx
-ON {base_resource}_history (id);
-
-CREATE OR REPLACE TRIGGER
-{base_resource}_audit_history
-AFTER INSERT OR UPDATE OR DELETE
-ON {base_resource}
-FOR EACH ROW EXECUTE PROCEDURE audit.history(
-    'flex.current_identity'
-);\
-"""
-
-
-def audit_statement(resource):
-    return f"""\
-CREATE OR REPLACE TRIGGER
-{resource}_audit_current
-BEFORE INSERT OR UPDATE ON {resource}
-FOR EACH ROW EXECUTE PROCEDURE audit.current(
-    'flex.current_identity'
-);\
-"""
 
 
 def history_rls_statements(base_resource, acronym):
@@ -224,86 +184,70 @@ CREATE TABLE {resource}_history (
 """
 
 
-# ------------------------------------------------------------------------------
+if __name__ == "__main__":
+    yaml.SafeDumper.ignore_aliases = lambda self, data: True
+    resources = yaml.safe_load(sys.stdin)
+    resources = resources["resources"]
 
-yaml.SafeDumper.ignore_aliases = lambda self, data: True
-
-resources = yaml.safe_load(sys.stdin)
-resources = resources["resources"]
-
-with open(output_file_backend_schema, "w") as backend_schema_f:
-    print(
-        "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
-        file=backend_schema_f,
-    )
-
-    for resource in resources:
-        # generate fake table for sqlc in the backend
+    with open(output_file_backend_schema, "w") as backend_schema_f:
         print(
-            fake_table_create_statement(
-                resource["id"],
-                resource["properties"],
-                resource.get("audit"),
-            ),
+            "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
             file=backend_schema_f,
         )
 
-        operations = resource["operations"]
-        if "history" in resource or resource.get("audit"):
-            # generate history and audit (table creation and triggers)
-            with open(
-                f"{output_folder_tables}/{resource['id']}_history_audit.sql",
-                "w",
-            ) as f:
+        for resource in resources:
+            # generate fake table for sqlc in the backend
+            print(
+                fake_table_create_statement(
+                    resource["id"],
+                    resource["properties"],
+                    resource.get("audit"),
+                ),
+                file=backend_schema_f,
+            )
+            if "history" in resource:
                 print(
-                    "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
-                    file=f,
+                    fake_history_table_create_statement(
+                        resource["id"],
+                        resource["properties"],
+                    ),
+                    file=backend_schema_f,
                 )
-                print(history_statements(resource["id"]), file=f)
 
-                if "history" in resource:
-                    if resource.get("history_rls"):
+            # generate sql for history table and audit triggers
+            if "history" in resource or resource.get("audit"):
+                j2.template(
+                    resource,
+                    "resource_history.j2.sql",
+                    f"{DB_DIR}/flex/{resource['id']}_history.sql",
+                )
+                j2.template(
+                    resource,
+                    "resource_audit.j2.sql",
+                    f"{DB_DIR}/logic/{resource['id']}_audit.sql",
+                )
+
+            # generate views and history views creation statements
+            if resource.get("generate_views", False):
+                with open(f"{DB_DIR}/api/{resource['id']}.sql", "w") as f:
+                    print(
+                        "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
+                        file=f,
+                    )
+                    schema_fields = set(resource["properties"].keys())
+                    print(
+                        view_create_statement(
+                            resource["id"],
+                            schema_fields,
+                            resource.get("audit"),
+                        ),
+                        file=f,
+                    )
+                    if "history" in resource:
                         print(file=f)
                         print(
-                            history_rls_statements(
-                                resource["id"],
-                                resource["acronym"],
+                            history_view_create_statement(
+                                resource["id"], schema_fields
                             ),
                             file=f,
                         )
-
-                    # generate fake history table for sqlc in the backend
-                    print(
-                        fake_history_table_create_statement(
-                            resource["id"],
-                            resource["properties"],
-                        ),
-                        file=backend_schema_f,
-                    )
-
-                if resource.get("audit"):
-                    print(file=f)
-                    print(audit_statement(resource["id"]), file=f)
-
-        # generate views and history views creation statements
-        if resource.get("generate_views", False):
-            with open(f"{output_folder_views}/{resource['id']}.sql", "w") as f:
-                print(
-                    "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
-                    file=f,
-                )
-                schema_fields = set(resource["properties"].keys())
-                print(
-                    view_create_statement(
-                        resource["id"],
-                        schema_fields,
-                        resource.get("audit"),
-                    ),
-                    file=f,
-                )
-                if "history" in resource:
-                    print(file=f)
-                    print(
-                        history_view_create_statement(resource["id"], schema_fields),
-                        file=f,
-                    )

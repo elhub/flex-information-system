@@ -1,0 +1,19 @@
+SET search_path TO logic, public;
+\i logic/accounting_point_audit.sql
+\i logic/accounting_point_balance_responsible_party_audit.sql
+\i logic/accounting_point_end_user_audit.sql
+\i logic/accounting_point_energy_supplier_audit.sql
+\i logic/controllable_unit_audit.sql
+\i logic/controllable_unit_service_provider_audit.sql
+\i logic/entity_client_audit.sql
+\i logic/notification_audit.sql
+\i logic/party_audit.sql
+\i logic/party_membership_audit.sql
+\i logic/service_provider_product_application_audit.sql
+\i logic/service_provider_product_application_comment_audit.sql
+\i logic/service_providing_group_audit.sql
+\i logic/service_providing_group_grid_prequalification_audit.sql
+\i logic/service_providing_group_membership_audit.sql
+\i logic/service_providing_group_product_application_audit.sql
+\i logic/system_operator_product_type_audit.sql
+\i logic/technical_resource_audit.sql

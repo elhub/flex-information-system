@@ -320,7 +320,9 @@ openapi-to-db:
     set -euo pipefail
     cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_db.py
 
-    imports=$(ls db/flex | grep history_audit | sed -e 's|.*|\\i flex/&|')
+    .venv/bin/python3 local/scripts/internal_resources_to_db.py
+
+    imports=$(ls db/flex | grep history.sql | sed -e 's|.*|\\i flex/&|')
 
     ed -s "./db/flex_structure.sql" <<EOF
     /-- history and audit/+,/-- security/-d
@@ -355,6 +357,10 @@ openapi-to-db:
     .
     wq
     EOF
+
+    cd db
+    echo "SET search_path TO logic, public;" > logic.sql
+    /usr/bin/ls -1 logic/*.sql | sed 's/^/\\\i /' >> logic.sql
 
 sqlc:
     #!/usr/bin/env bash
