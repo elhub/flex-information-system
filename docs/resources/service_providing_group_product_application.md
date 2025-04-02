@@ -45,10 +45,10 @@ again.
 
 ## Validation Rules
 
-| Validation rule key | Validation rule                                                   | Status |
-|---------------------|-------------------------------------------------------------------|--------|
-| SPGPA-VAL001        | Product applications can only be created on active SPGs.          | DONE   |
-| SPGPA-VAL002        | Product applications can only be created on active product types. | DONE   |
+| Validation rule key | Validation rule                                                                   | Status |
+|---------------------|-----------------------------------------------------------------------------------|--------|
+| SPGPA-VAL001        | Product applications can only be created on active SPGs.                          | DONE   |
+| SPGPA-VAL002        | Product applications can only be created on active system operator product types. | DONE   |
 
 ## Notifications
 
