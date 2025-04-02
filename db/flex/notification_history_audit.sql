@@ -33,3 +33,12 @@ ON flex.notification
 FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );
+
+-- changeset flex:notification-audit-history
+CREATE OR REPLACE TRIGGER
+notification_audit_history
+AFTER UPDATE OR DELETE
+ON flex.notification
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);

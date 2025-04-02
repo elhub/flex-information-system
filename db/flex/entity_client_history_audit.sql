@@ -33,3 +33,12 @@ ON flex.entity_client
 FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );
+
+-- changeset flex:entity-client-audit-history
+CREATE OR REPLACE TRIGGER
+entity_client_audit_history
+AFTER UPDATE OR DELETE
+ON flex.entity_client
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
+    'flex.current_identity'
+);

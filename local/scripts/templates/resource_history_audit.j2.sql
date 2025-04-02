@@ -34,7 +34,6 @@ FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );
 
-{% if data.history -%}
 -- changeset flex:{{ resource | replace("_", "-") }}-audit-history
 CREATE OR REPLACE TRIGGER
 {{ resource }}_audit_history
@@ -43,4 +42,3 @@ ON flex.{{ resource }}
 FOR EACH ROW EXECUTE PROCEDURE audit.history(
     'flex.current_identity'
 );
-{% endif -%}

@@ -215,7 +215,7 @@ if __name__ == "__main__":
                 )
 
             # generate sql for history table and audit triggers
-            if "history" in resource or resource.get("audit"):
+            if resource.get("audit"):
                 j2.template(
                     resource,
                     "resource_history_audit.j2.sql",
