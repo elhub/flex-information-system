@@ -1075,7 +1075,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 
 		if record.attempts >= auth.maxFailedAttemptsInLoginWindow {
 			ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
-				Error:            oauthErrorInvalidClient,
+				Error:            oauthErrorAccessDenied,
 				ErrorDescription: "too many login attempts, try again later",
 			})
 			return

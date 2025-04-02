@@ -1,5 +1,6 @@
 import os
 import requests
+from typing import Union, cast
 
 """Test of the client credentials phase of the login process"""
 
@@ -87,3 +88,27 @@ def test_client_credentials_ok():
     assert response.status_code == 200
     json = response.json()
     assert json.get("access_token") is not None
+
+
+# ---- ---- ---- ----- -----
+
+
+# Try to spam the system with wrong credentials
+def test_spam():
+    response: Union[requests.Response, None] = None
+    for _ in range(20):
+        response = requests.post(
+            auth_url + "/token",
+            headers=auth_headers,
+            data={
+                "grant_type": "client_credentials",
+                "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+                "client_secret": "wrong_pass",
+            },
+        )
+
+    # the last response should be a Too Many Requests
+    assert cast(requests.Response, response).status_code == 429
+    json = cast(requests.Response, response).json()
+    assert json.get("error") is not None
+    assert json["error"] == "access_denied"
