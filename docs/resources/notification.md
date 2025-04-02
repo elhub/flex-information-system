@@ -20,21 +20,7 @@ A notification of an event happening in the system.
 
 ## Validation Rules
 
-### Inter-Field Validation
-
 No validation rules.
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
-
-No validation rules.
-
-## Notifications
-
-No notifications.
 
 ## Authorization
 

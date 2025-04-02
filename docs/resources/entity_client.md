@@ -1,7 +1,7 @@
 # Entity client
 
 Client linked to an entity for client credentials and JWT grant authentication
-methods.
+methods. An entity can have several clients registered.
 
 ## Relevant links
 
@@ -22,16 +22,6 @@ methods.
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>       | The identity that recorded the resource.                                                                                   | bigint<br/>Read only                                                                                    |                                 |
 
 ## Validation Rules
-
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
 
 No validation rules.
 

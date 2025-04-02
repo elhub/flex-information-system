@@ -41,7 +41,9 @@ application is updated as the process and lifecycle of the application progresse
 
 ## Validation Rules
 
-No validation rules
+| Validation rule key | Validation rule                                                           | Status |
+|---------------------|---------------------------------------------------------------------------|--------|
+| SPPA-VAL001         | Inserted `product_type_ids` must be active product types asked by the SO. | DONE   |
 
 ## Notifications
 

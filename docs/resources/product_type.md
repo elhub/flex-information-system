@@ -1,6 +1,7 @@
 # Product type
 
 A type of product to be bought by system operators on a flexibility market.
+This resource is a read-only enumeration.
 
 ## Context
 
@@ -56,16 +57,6 @@ as input.
 | <a name="field-notes" href="#field-notes">notes</a>                   | Additional information about a product type.          | text<br/>Max length: `1024`<br/>Read only |           |
 
 ## Validation Rules
-
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
 
 No validation rules.
 

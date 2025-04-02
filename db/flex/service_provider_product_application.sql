@@ -97,6 +97,7 @@ BEGIN
 END;
 $$;
 
+-- SPPA-VAL001
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_product_type_ids_insert
 BEFORE INSERT ON service_provider_product_application

@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     CONSTRAINT controllable_unit_accounting_point_id_fkey FOREIGN KEY (
         accounting_point_id
     ) REFERENCES accounting_point (business_id),
-    -- CU-IFV001
+    -- CU-VAL001
     CONSTRAINT controllable_unit_duration_check CHECK (
         minimum_duration <= maximum_duration
     )

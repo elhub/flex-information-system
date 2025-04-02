@@ -85,7 +85,7 @@ AFTER INSERT OR UPDATE ON service_providing_group
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_providing_group');
 
--- SPG-RLV001
+-- SPG-VAL001
 CREATE OR REPLACE FUNCTION service_providing_group_activation_not_empty()
 RETURNS trigger
 SECURITY DEFINER

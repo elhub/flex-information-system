@@ -1,7 +1,15 @@
 # System operator product type
 
 The relation that links a system operator to a type of product they want to buy
-on a flexibility market.
+on a flexibility market. The system operator creates one resource for each
+product type they ask for.
+
+## Status transitions for system operator product type
+
+The system operator can ask for a product type temporarily or periodically.
+The `status` field on the resource is there to give this information. A system
+operator product type resource always starts as `active`, but it can be marked
+`inactive` when the system operator does not need the product.
 
 ## Relevant links
 
