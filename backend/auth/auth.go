@@ -32,28 +32,69 @@ const (
 	sessionCookieKey = "__Host-flex_session"
 )
 
+// loginRecord is used to limit the number of login attempts from a single IP
+// address.
+//
+// It stores the first attempt time and the number of attempts. The time of the
+// first attempt is used to identify the start of a fixed time window. If there
+// are more than a fixed number of attempts in the time window, the IP address
+// will be blocked until the end of the window. On the first attempt after the
+// end of the window, this record is reset and a new time window is started to
+// allow further attempts.
+type loginRecord struct {
+	firstAttempt time.Time
+	attempts     int
+}
+
+type ipAddress string
+
+func readUserIP(r *http.Request) ipAddress {
+	ip := r.Header.Get("X-Real-IP")
+	if ip == "" {
+		ip = r.Header.Get("X-Forwarded-For")
+	}
+	if ip == "" {
+		ip = r.RemoteAddr
+	}
+	return ipAddress(ip)
+}
+
 // API holds the authentication API handlers.
 type API struct {
 	// self is the api service itself.
 	// Used as the issuer of access tokens and to validate the audience of incoming tokens.
-	self                 string
-	db                   *pgpool.Pool
-	jwtSecret            []byte
-	tokenDurationSeconds int
-	oidcProvider         *oidc.Provider
-	ctxKey               string
+	self                     string
+	db                       *pgpool.Pool
+	jwtSecret                []byte
+	tokenDurationSeconds     int
+	oidcProvider             *oidc.Provider
+	ctxKey                   string
+	loginDelay               time.Duration
+	loginWindow              time.Duration
+	maxAttemptsInLoginWindow int
+	loginRecords             map[ipAddress]loginRecord
 }
 
 // NewAPI creates a new auth.API instance.
-func NewAPI(self string, db *pgpool.Pool, jwtSecret string, oidcProvider *oidc.Provider, ctxKey string) *API {
+func NewAPI(
+	self string,
+	db *pgpool.Pool,
+	jwtSecret string,
+	oidcProvider *oidc.Provider,
+	ctxKey string,
+	loginDelay time.Duration,
+) *API {
 	return &API{
-		self:      self,
-		db:        db,
-		jwtSecret: []byte(jwtSecret),
-		// algorithm defined once and for all here
-		tokenDurationSeconds: 3600,
-		oidcProvider:         oidcProvider,
-		ctxKey:               ctxKey,
+		self:                     self,
+		db:                       db,
+		jwtSecret:                []byte(jwtSecret),
+		tokenDurationSeconds:     3600,
+		oidcProvider:             oidcProvider,
+		ctxKey:                   ctxKey,
+		loginDelay:               loginDelay,
+		loginWindow:              1 * time.Hour,
+		maxAttemptsInLoginWindow: 20,
+		loginRecords:             make(map[ipAddress]loginRecord),
 	}
 }
 
@@ -998,6 +1039,34 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		})
 		return
 	}
+
+	clientIP := readUserIP(ctx.Request)
+	record, present := auth.loginRecords[clientIP]
+	// user has never logged in before or the time window has passed
+	if !present || time.Since(record.firstAttempt) > auth.loginWindow {
+		slog.InfoContext(ctx, "client credentials login window reset", "client", clientIP)
+		record = loginRecord{
+			attempts:     0,
+			firstAttempt: time.Now(),
+		}
+	}
+
+	if record.attempts >= auth.maxAttemptsInLoginWindow {
+		// user has exceeded the number of attempts in the time window
+		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+			Error:            oauthErrorInvalidClient,
+			ErrorDescription: "too many login attempts, try again later",
+		})
+		return
+	}
+
+	// update after checks to avoid incrementing the attempts indefinitely
+	// (and risking overflow) if the user is blocked but still decides to spam
+	record.attempts++
+	auth.loginRecords[clientIP] = record
+
+	// mitigation of brute force attacks
+	time.Sleep(auth.loginDelay)
 
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {

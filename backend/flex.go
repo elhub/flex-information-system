@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
@@ -90,7 +91,7 @@ func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
 }
 
 // Run is the main entry point for the application.
-func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx
+func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx,gocyclo
 	// Sets the global TracerProvider.
 	trace.Init()
 
@@ -188,6 +189,17 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_OIDC_POST_LOGOUT_REDIRECT_URL", errMissingEnv)
 	}
 
+	loginDelay := 2 * time.Second
+	loginDelayStr, exists := lookupenv("FLEX_LOGIN_DELAY")
+	if exists {
+		n, err := strconv.Atoi(loginDelayStr)
+		if err != nil {
+			return fmt.Errorf("could not parse FLEX_LOGIN_DELAY: %w", err)
+		}
+		loginDelay = time.Duration(n) * time.Second
+	}
+	slog.InfoContext(ctx, "Will use a login delay of", "delay", loginDelay)
+
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
 
@@ -230,7 +242,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	slog.DebugContext(ctx, "Creating auth API")
-	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
+	authAPI := auth.NewAPI(
+		authAPIBaseURL,
+		dbPool,
+		jwtSecret,
+		oidcProvider,
+		requestDetailsContextKey,
+		loginDelay,
+	)
 
 	slog.DebugContext(ctx, "Creating data API")
 	dataAPIHandler, err := data.NewAPIHandler(
