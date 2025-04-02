@@ -27,10 +27,11 @@ ENABLE ROW LEVEL SECURITY;
 
 -- changeset flex:system-operator-product-type-history-rls-com endDelimiter:--
 -- RLS: SOPT-COM001
-GRANT SELECT ON system_operator_product_type_history
+GRANT SELECT ON flex.system_operator_product_type_history
 TO flex_common;
+
 CREATE POLICY "SOPT_COM001"
-ON system_operator_product_type_history
+ON flex.system_operator_product_type_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (

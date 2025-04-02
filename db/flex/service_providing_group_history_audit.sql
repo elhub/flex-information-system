@@ -27,10 +27,11 @@ ENABLE ROW LEVEL SECURITY;
 
 -- changeset flex:service-providing-group-history-rls-com endDelimiter:--
 -- RLS: SPG-COM001
-GRANT SELECT ON service_providing_group_history
+GRANT SELECT ON flex.service_providing_group_history
 TO flex_common;
+
 CREATE POLICY "SPG_COM001"
-ON service_providing_group_history
+ON flex.service_providing_group_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (

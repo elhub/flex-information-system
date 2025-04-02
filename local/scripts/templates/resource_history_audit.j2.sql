@@ -28,10 +28,11 @@ ENABLE ROW LEVEL SECURITY;
 {% if data.get('history_rls') -%}
 -- changeset flex:{{ resource | replace("_", "-") }}-history-rls-com endDelimiter:--
 -- RLS: {{ data.acronym }}-COM001
-GRANT SELECT ON {{ resource }}_history
+GRANT SELECT ON flex.{{ resource }}_history
 TO flex_common;
+
 CREATE POLICY "{{ data.acronym }}_COM001"
-ON {{ resource }}_history
+ON flex.{{ resource }}_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (

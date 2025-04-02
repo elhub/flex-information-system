@@ -27,10 +27,11 @@ ENABLE ROW LEVEL SECURITY;
 
 -- changeset flex:service-providing-group-grid-prequalification-history-rls-com endDelimiter:--
 -- RLS: SPGGP-COM001
-GRANT SELECT ON service_providing_group_grid_prequalification_history
+GRANT SELECT ON flex.service_providing_group_grid_prequalification_history
 TO flex_common;
+
 CREATE POLICY "SPGGP_COM001"
-ON service_providing_group_grid_prequalification_history
+ON flex.service_providing_group_grid_prequalification_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (

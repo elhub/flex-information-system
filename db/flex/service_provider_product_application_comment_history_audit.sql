@@ -27,10 +27,11 @@ ENABLE ROW LEVEL SECURITY;
 
 -- changeset flex:service-provider-product-application-comment-history-rls-com endDelimiter:--
 -- RLS: SPPAC-COM001
-GRANT SELECT ON service_provider_product_application_comment_history
+GRANT SELECT ON flex.service_provider_product_application_comment_history
 TO flex_common;
+
 CREATE POLICY "SPPAC_COM001"
-ON service_provider_product_application_comment_history
+ON flex.service_provider_product_application_comment_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (

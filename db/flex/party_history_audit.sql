@@ -27,10 +27,11 @@ ENABLE ROW LEVEL SECURITY;
 
 -- changeset flex:party-history-rls-com endDelimiter:--
 -- RLS: PTY-COM001
-GRANT SELECT ON party_history
+GRANT SELECT ON flex.party_history
 TO flex_common;
+
 CREATE POLICY "PTY_COM001"
-ON party_history
+ON flex.party_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (
