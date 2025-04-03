@@ -320,7 +320,9 @@ openapi-to-db:
     set -euo pipefail
     cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_db.py
 
-    imports=$(ls db/flex | grep history_audit | sed -e 's|.*|\\i flex/&|')
+    .venv/bin/python3 local/scripts/internal_resources_to_db.py
+
+    imports=$(ls db/flex | grep history_audit.sql | sed -e 's|.*|\\i flex/&|')
 
     ed -s "./db/flex_structure.sql" <<EOF
     /-- history and audit/+,/-- security/-d

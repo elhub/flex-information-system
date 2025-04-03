@@ -1,40 +1,44 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT
 
-CREATE TABLE IF NOT EXISTS accounting_point_history (
+-- changeset flex:accounting-point-history-table-create endDelimiter:--
+CREATE TABLE IF NOT EXISTS
+flex.accounting_point_history (
     history_id bigint PRIMARY KEY NOT NULL
     DEFAULT nextval(
-        pg_get_serial_sequence('flex.accounting_point', 'id')
+        pg_get_serial_sequence(
+            'flex.accounting_point',
+            'id'
+        )
     ),
-    LIKE accounting_point,
+    LIKE flex.accounting_point,
     replaced_by bigint NOT NULL
 );
 
+-- changeset flex:accounting-point-history-id-index endDelimiter:--
+CREATE INDEX IF NOT EXISTS
+accounting_point_history_id_idx
+ON flex.accounting_point_history (id);
+
+-- changeset flex:accounting-point-history-rls endDelimiter:--
+ALTER TABLE IF EXISTS
+flex.accounting_point_history
+ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:accounting-point-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 accounting_point_audit_current
 BEFORE INSERT OR UPDATE
-ON accounting_point
+ON flex.accounting_point
 FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );
 
+-- changeset flex:accounting-point-audit-history endDelimiter:--
 CREATE OR REPLACE TRIGGER
 accounting_point_audit_history
 AFTER UPDATE OR DELETE
-ON accounting_point
+ON flex.accounting_point
 FOR EACH ROW EXECUTE PROCEDURE audit.history(
     'flex.current_identity'
 );
-
-ALTER TABLE IF EXISTS accounting_point_history
-ENABLE ROW LEVEL SECURITY;
-
--- RLS: AP-COM001
-GRANT SELECT ON accounting_point_history TO flex_common;
-CREATE POLICY "AP_COM001" ON accounting_point_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM accounting_point
-    WHERE accounting_point_history.id = accounting_point.id -- noqa
-));

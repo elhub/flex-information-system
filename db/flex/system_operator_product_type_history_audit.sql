@@ -1,7 +1,9 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT
 
+-- changeset flex:system-operator-product-type-history-table-create endDelimiter:--
 CREATE TABLE IF NOT EXISTS
-system_operator_product_type_history (
+flex.system_operator_product_type_history (
     history_id bigint PRIMARY KEY NOT NULL
     DEFAULT nextval(
         pg_get_serial_sequence(
@@ -9,30 +11,27 @@ system_operator_product_type_history (
             'id'
         )
     ),
-    LIKE system_operator_product_type,
+    LIKE flex.system_operator_product_type,
     replaced_by bigint NOT NULL
 );
 
+-- changeset flex:system-operator-product-type-history-id-index endDelimiter:--
 CREATE INDEX IF NOT EXISTS
 system_operator_product_type_history_id_idx
-ON system_operator_product_type_history (id);
+ON flex.system_operator_product_type_history (id);
 
-CREATE OR REPLACE TRIGGER
-system_operator_product_type_audit_history
-AFTER INSERT OR UPDATE OR DELETE
-ON system_operator_product_type
-FOR EACH ROW EXECUTE PROCEDURE audit.history(
-    'flex.current_identity'
-);
-
-ALTER TABLE IF EXISTS system_operator_product_type_history
+-- changeset flex:system-operator-product-type-history-rls endDelimiter:--
+ALTER TABLE IF EXISTS
+flex.system_operator_product_type_history
 ENABLE ROW LEVEL SECURITY;
 
+-- changeset flex:system-operator-product-type-history-rls-com endDelimiter:--
 -- RLS: SOPT-COM001
-GRANT SELECT ON system_operator_product_type_history
+GRANT SELECT ON flex.system_operator_product_type_history
 TO flex_common;
+
 CREATE POLICY "SOPT_COM001"
-ON system_operator_product_type_history
+ON flex.system_operator_product_type_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (
@@ -41,9 +40,20 @@ USING (EXISTS (
     WHERE system_operator_product_type_history.id = system_operator_product_type.id -- noqa
 ));
 
+-- changeset flex:system-operator-product-type-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 system_operator_product_type_audit_current
-BEFORE INSERT OR UPDATE ON system_operator_product_type
+BEFORE INSERT OR UPDATE
+ON flex.system_operator_product_type
 FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+-- changeset flex:system-operator-product-type-audit-history endDelimiter:--
+CREATE OR REPLACE TRIGGER
+system_operator_product_type_audit_history
+AFTER UPDATE OR DELETE
+ON flex.system_operator_product_type
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
     'flex.current_identity'
 );
