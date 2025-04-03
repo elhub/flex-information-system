@@ -28,51 +28,25 @@ import (
 )
 
 const (
-	callbackPath     = "/auth/v0/callback"
-	sessionCookieKey = "__Host-flex_session"
+	callbackPath                     = "/auth/v0/callback"
+	sessionCookieKey                 = "__Host-flex_session"
+	defaultFailedLoginDelay          = 2 * time.Second
+	defaultNumberIPRateLimiterTokens = 20
+	defaultIPRateLimiterTokenPeriod  = 3 * time.Minute
 )
-
-// failedLoginRecord is used to limit the number of failed login attempts from
-// a single IP address.
-//
-// It stores the first time a login attempt was failed, and the total number of
-// failed attempts. The time of the first attempt is used to identify the start
-// of a fixed time window. If there are more than a fixed number of failed
-// attempts in the time window, the IP address will be blocked until the end of
-// the window. On the first failed attempt after the end of the window, this
-// record is reset and a new time window is started to allow further attempts.
-type failedLoginRecord struct {
-	firstAttempt time.Time
-	attempts     int
-}
-
-type ipAddress string
-
-func readUserIP(r *http.Request) ipAddress {
-	ip := r.Header.Get("X-Real-IP")
-	if ip == "" {
-		ip = r.Header.Get("X-Forwarded-For")
-	}
-	if ip == "" {
-		ip = r.RemoteAddr
-	}
-	return ipAddress(ip)
-}
 
 // API holds the authentication API handlers.
 type API struct {
 	// self is the api service itself.
 	// Used as the issuer of access tokens and to validate the audience of incoming tokens.
-	self                           string
-	db                             *pgpool.Pool
-	jwtSecret                      []byte
-	tokenDurationSeconds           int
-	oidcProvider                   *oidc.Provider
-	ctxKey                         string
-	failedLoginDelay               time.Duration
-	failedLoginWindow              time.Duration
-	maxFailedAttemptsInLoginWindow int
-	failedLoginRecords             map[ipAddress]failedLoginRecord
+	self                 string
+	db                   *pgpool.Pool
+	jwtSecret            []byte
+	tokenDurationSeconds int
+	oidcProvider         *oidc.Provider
+	ctxKey               string
+	failedLoginDelay     time.Duration
+	loginIPRateLimiter   *IPRateLimiter
 }
 
 // NewAPI creates a new auth.API instance.
@@ -82,20 +56,33 @@ func NewAPI(
 	jwtSecret string,
 	oidcProvider *oidc.Provider,
 	ctxKey string,
-	failedLoginDelay time.Duration,
-	failedLoginWindow time.Duration,
+	laxLoginLimiting bool,
 ) *API {
+	// default login limiting
+	failedLoginDelay := defaultFailedLoginDelay
+	loginIPRateLimiter := NewIPRateLimiter(
+		defaultNumberIPRateLimiterTokens,
+		defaultIPRateLimiterTokenPeriod,
+	)
+
+	if laxLoginLimiting {
+		failedLoginDelay = 0
+		// An infinite rate limiter would make it impossible to test rate limiting.
+		// Here, we use something lax enough to be able to run all our API tests,
+		// but still finite, so that if we run requests in a loop, it will
+		// eventually block.
+		loginIPRateLimiter = NewIPRateLimiter(50, 200*time.Millisecond) //nolint:mnd
+	}
+
 	return &API{
-		self:                           self,
-		db:                             db,
-		jwtSecret:                      []byte(jwtSecret),
-		tokenDurationSeconds:           3600,
-		oidcProvider:                   oidcProvider,
-		ctxKey:                         ctxKey,
-		failedLoginDelay:               failedLoginDelay,
-		failedLoginWindow:              failedLoginWindow,
-		maxFailedAttemptsInLoginWindow: 20,
-		failedLoginRecords:             make(map[ipAddress]failedLoginRecord),
+		self:                 self,
+		db:                   db,
+		jwtSecret:            []byte(jwtSecret),
+		tokenDurationSeconds: 3600,
+		oidcProvider:         oidcProvider,
+		ctxKey:               ctxKey,
+		failedLoginDelay:     failedLoginDelay,
+		loginIPRateLimiter:   loginIPRateLimiter,
 	}
 }
 
@@ -113,6 +100,17 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 	}
 
 	return token, nil
+}
+
+// IPMiddleware reads the header set by the reverse proxy / load balancer and
+// sets the client IP as the remote address of the request.
+func (auth *API) IPMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if realIP := req.Header.Get("X-Real-IP"); realIP != "" {
+			req.RemoteAddr = realIP
+		}
+		next.ServeHTTP(w, req)
+	})
 }
 
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
@@ -1032,6 +1030,18 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 ) {
 	slog.InfoContext(ctx, "client credentials for client", "client", payload.ClientID)
 
+	loginAuthorisation := auth.loginIPRateLimiter.AcquireToken(
+		ctx,
+		ctx.Request.RemoteAddr,
+	)
+	if loginAuthorisation == nil {
+		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+			Error:            oauthErrorAccessDenied,
+			ErrorDescription: "too many login attempts, try again later",
+		})
+		return
+	}
+
 	err := payload.Validate()
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -1056,36 +1066,8 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
 	if err != nil {
-		// it is a failed login attempt
-
 		// mitigation of brute force attacks
 		time.Sleep(auth.failedLoginDelay)
-
-		clientIP := readUserIP(ctx.Request)
-		record, present := auth.failedLoginRecords[clientIP]
-		// user has never failed login before or the time window has passed
-		if !present || time.Since(record.firstAttempt) > auth.failedLoginWindow {
-			slog.InfoContext(
-				ctx, "client credentials failed login window reset", "client", clientIP,
-			)
-			record = failedLoginRecord{
-				attempts:     0,
-				firstAttempt: time.Now(),
-			}
-		}
-
-		if record.attempts >= auth.maxFailedAttemptsInLoginWindow {
-			ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
-				Error:            oauthErrorAccessDenied,
-				ErrorDescription: "too many login attempts, try again later",
-			})
-			return
-		}
-
-		// update after checks to avoid incrementing the attempts indefinitely
-		// (and risking overflow) if the user is blocked but still decides to spam
-		record.attempts++
-		auth.failedLoginRecords[clientIP] = record
 
 		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -1094,6 +1076,9 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		})
 		return
 	}
+
+	// this makes sure valid logins are not rate limited
+	loginAuthorisation.Release()
 
 	accessToken := accessToken{
 		EntityID:       entityID,

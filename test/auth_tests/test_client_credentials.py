@@ -97,7 +97,7 @@ def test_client_credentials_ok():
 # Try to spam the system with wrong credentials
 def test_spam():
     response: Union[requests.Response, None] = None
-    for _ in range(20):
+    for _ in range(60):
         response = requests.post(
             auth_url + "/token",
             headers=auth_headers,
@@ -114,9 +114,9 @@ def test_spam():
     assert json.get("error") is not None
     assert json["error"] == "access_denied"
 
-    sleep(4)
+    sleep(2)
 
-    # now the window is over and we can try again
+    # now, tokens have been regenerated and we can try again
 
     response = requests.post(
         auth_url + "/token",
@@ -132,3 +132,18 @@ def test_spam():
     json = cast(requests.Response, response).json()
     assert json.get("error") is not None
     assert json["error"] == "invalid_client"
+
+    # we can also have a high number of valid logins
+
+    for _ in range(60):
+        response = requests.post(
+            auth_url + "/token",
+            headers=auth_headers,
+            data={
+                "grant_type": "client_credentials",
+                "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+                "client_secret": "87h87hijhulO",
+            },
+        )
+
+    assert cast(requests.Response, response).status_code == 200

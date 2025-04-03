@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
@@ -189,32 +188,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_OIDC_POST_LOGOUT_REDIRECT_URL", errMissingEnv)
 	}
 
-	failedLoginDelay := 2 * time.Second
-	failedLoginDelayStr, exists := lookupenv("FLEX_FAILED_LOGIN_DELAY")
+	laxLoginLimiting := false
+	_, exists = lookupenv("FLEX_DEBUG_LAX_LOGIN_LIMITING")
 	if exists {
-		n, err := strconv.Atoi(failedLoginDelayStr)
-		if err != nil {
-			return fmt.Errorf("could not parse FLEX_FAILED_LOGIN_DELAY: %w", err)
-		}
-		failedLoginDelay = time.Duration(n) * time.Second
+		laxLoginLimiting = true
+		slog.InfoContext(ctx, "Lax login limiting")
+	} else {
+		slog.InfoContext(ctx, "Default login limiting")
 	}
-	slog.InfoContext(
-		ctx, "Failed login will cause a delay of", "delay", failedLoginDelay,
-	)
-
-	failedLoginWindow := 1 * time.Hour
-	failedLoginWindowStr, exists := lookupenv("FLEX_FAILED_LOGIN_WINDOW")
-	if exists {
-		n, err := strconv.Atoi(failedLoginWindowStr)
-		if err != nil {
-			return fmt.Errorf("could not parse FLEX_FAILED_LOGIN_WINDOW: %w", err)
-		}
-		failedLoginWindow = time.Duration(n) * time.Second
-	}
-	slog.InfoContext(
-		ctx, "Failed login attempts will be restricted in a window of",
-		"window", failedLoginWindow,
-	)
 
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
@@ -264,8 +245,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		jwtSecret,
 		oidcProvider,
 		requestDetailsContextKey,
-		failedLoginDelay,
-		failedLoginWindow,
+		laxLoginLimiting,
 	)
 
 	slog.DebugContext(ctx, "Creating data API")
@@ -375,6 +355,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
+	router.Use(WrapMiddleware(authAPI.IPMiddleware))
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
