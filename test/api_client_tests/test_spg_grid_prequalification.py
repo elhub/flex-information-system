@@ -201,7 +201,7 @@ def test_spggp_fiso(data):
 
     # the CU added in the past does not need to be prequalified
     # the 2 others have the same impacted SO
-    assert len(spggps_spg) == 1
+    assert len(spggps_spg) == 0
 
     # endpoint: POST /service_providing_group_grid_prequalification
     spggp = create_service_providing_group_grid_prequalification.sync(
@@ -217,7 +217,7 @@ def test_spggp_fiso(data):
         client=client_fiso, service_providing_group_id=f"eq.{spg_id}"
     )
     assert isinstance(spggps_spg, list)
-    assert len(spggps_spg) == 2
+    assert len(spggps_spg) == 1
 
     # endpoint: GET /service_providing_group_grid_prequalification/{id}
     spggp = read_service_providing_group_grid_prequalification.sync(
@@ -322,14 +322,14 @@ def test_spggp_so(data):
         client=client_so,
     )
     assert isinstance(spggps_so2, list)
-    assert len(spggps_so2) == len(spggps_so) + 1
+    assert len(spggps_so2) == len(spggps_so) + 2
 
     new_spggps = [
         spggp
         for spggp in spggps_so2
         if spggp.id not in set(spggp.id for spggp in spggps_so)
     ]
-    assert len(new_spggps) == 1
+    assert len(new_spggps) == 2
 
     so_spggp = spggps_so[0]
     other_spggp = new_spggps[0]

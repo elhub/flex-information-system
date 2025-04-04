@@ -38,26 +38,17 @@ EXECUTE FUNCTION status_update('new');
 
 -- adds a SPG-GP resource for each ISO present in a SPG, now or in the future
 CREATE OR REPLACE FUNCTION
-add_spg_grid_prequalifications_for_future_impacted_system_operators()
-RETURNS trigger
+add_spg_grid_prequalifications_for_future_impacted_system_operators(
+    l_service_providing_group_id bigint
+)
+RETURNS void
 SECURITY DEFINER
 LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    l_service_providing_group_id bigint;
     l_impacted_system_operator_id bigint;
 BEGIN
-    IF TG_TABLE_NAME = 'service_providing_group' THEN
-        l_service_providing_group_id := NEW.id;
-    ELSIF TG_TABLE_NAME = 'service_providing_group_membership' THEN
-        l_service_providing_group_id := NEW.service_providing_group_id;
-    ELSE
-        RAISE sqlstate 'PT500' using
-            message = 'trigger not supported on this table';
-        RETURN null;
-    END IF;
-
     -- ISO are currently the CSO of the CUs currently in the updated SPG
     -- TODO: update when a grid model is implemented
 
@@ -86,6 +77,21 @@ BEGIN
         )
         ON CONFLICT DO NOTHING;
     END LOOP;
+END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION
+service_providing_group_activation()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    PERFORM add_spg_grid_prequalifications_for_future_impacted_system_operators(
+        NEW.id
+    );
 
     RETURN NEW;
 END;
@@ -97,7 +103,7 @@ FOR EACH ROW
 -- as status cannot go back to new, this trigger may be executed only once
 WHEN (OLD.status = 'new' AND NEW.status = 'active') -- noqa
 EXECUTE FUNCTION
-add_spg_grid_prequalifications_for_future_impacted_system_operators(); --noqa
+service_providing_group_activation();
 
 CREATE OR REPLACE TRIGGER service_providing_group_event
 AFTER INSERT OR UPDATE ON service_providing_group
