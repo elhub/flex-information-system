@@ -14,6 +14,7 @@ import (
 	"flex/pgpool"
 	"fmt"
 	"log/slog"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -28,11 +29,12 @@ import (
 )
 
 const (
-	callbackPath                     = "/auth/v0/callback"
-	sessionCookieKey                 = "__Host-flex_session"
-	defaultFailedLoginDelay          = 2 * time.Second
-	defaultNumberIPRateLimiterTokens = 20
-	defaultIPRateLimiterTokenPeriod  = 3 * time.Minute
+	callbackPath                           = "/auth/v0/callback"
+	sessionCookieKey                       = "__Host-flex_session"
+	defaultFailedLoginDelay                = 2 * time.Second
+	defaultNumberIPRateLimiterTokens       = 20
+	defaultInitialWaitingTimeOnFailedLogin = 2 * time.Minute
+	defaultMaxWaitingTimeOnFailedLogin     = 1 * time.Hour
 )
 
 // API holds the authentication API handlers.
@@ -62,7 +64,8 @@ func NewAPI(
 	failedLoginDelay := defaultFailedLoginDelay
 	loginIPRateLimiter := NewIPRateLimiter(
 		defaultNumberIPRateLimiterTokens,
-		defaultIPRateLimiterTokenPeriod,
+		defaultInitialWaitingTimeOnFailedLogin,
+		defaultMaxWaitingTimeOnFailedLogin,
 	)
 
 	if laxLoginLimiting {
@@ -71,7 +74,7 @@ func NewAPI(
 		// Here, we use something lax enough to be able to run all our API tests,
 		// but still finite, so that if we run requests in a loop, it will
 		// eventually block.
-		loginIPRateLimiter = NewIPRateLimiter(50, 200*time.Millisecond) //nolint:mnd
+		loginIPRateLimiter = NewIPRateLimiter(5, 1*time.Second, 10*time.Second) //nolint:mnd
 	}
 
 	return &API{
@@ -1030,18 +1033,6 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 ) {
 	slog.InfoContext(ctx, "client credentials for client", "client", payload.ClientID)
 
-	loginAuthorisation := auth.loginIPRateLimiter.AcquireToken(
-		ctx,
-		ctx.Request.RemoteAddr,
-	)
-	if loginAuthorisation == nil {
-		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
-			Error:            oauthErrorAccessDenied,
-			ErrorDescription: "too many login attempts, try again later",
-		})
-		return
-	}
-
 	err := payload.Validate()
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -1062,6 +1053,18 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
+	ipAddress := ctx.Request.RemoteAddr
+
+	if !auth.loginIPRateLimiter.IsAllowed(ctx, ipAddress) {
+		timeToWait := auth.loginIPRateLimiter.TimeUntilNextReservation(ipAddress)
+		ctx.Header("Retry-After", strconv.Itoa(int(math.Ceil(timeToWait.Seconds()))))
+		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+			Error:            oauthErrorAccessDenied,
+			ErrorDescription: "too many login attempts, try again later",
+		})
+		return
+	}
+
 	entityID, eid, err := models.GetEntityOfCredentials(
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
@@ -1078,7 +1081,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 
 	// this makes sure valid logins are not rate limited
-	loginAuthorisation.Release()
+	auth.loginIPRateLimiter.Reset(ctx, ipAddress)
 
 	accessToken := accessToken{
 		EntityID:       entityID,
