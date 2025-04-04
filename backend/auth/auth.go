@@ -58,7 +58,7 @@ func NewAPI(
 	jwtSecret string,
 	oidcProvider *oidc.Provider,
 	ctxKey string,
-	laxLoginLimiting bool,
+	isLoginLimitingDisabled bool,
 ) *API {
 	// default login limiting
 	failedLoginDelay := defaultFailedLoginDelay
@@ -68,7 +68,7 @@ func NewAPI(
 		defaultMaxWaitingTimeOnFailedLogin,
 	)
 
-	if laxLoginLimiting {
+	if isLoginLimitingDisabled {
 		failedLoginDelay = 0
 		// An infinite rate limiter would make it impossible to test rate limiting.
 		// Here, we use something lax enough to be able to run all our API tests,

@@ -189,11 +189,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_OIDC_POST_LOGOUT_REDIRECT_URL", errMissingEnv)
 	}
 
-	laxLoginLimiting := false
-	_, exists = lookupenv("FLEX_DEBUG_LAX_LOGIN_LIMITING")
+	isLoginLimitingDisabled := false
+	_, exists = lookupenv("FLEX_DISABLE_LOGIN_LIMITING")
 	if exists {
-		laxLoginLimiting = true
-		slog.InfoContext(ctx, "Lax login limiting")
+		isLoginLimitingDisabled = true
+		slog.InfoContext(ctx, "Disabled login limiting")
 	} else {
 		slog.InfoContext(ctx, "Default login limiting")
 	}
@@ -246,7 +246,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		jwtSecret,
 		oidcProvider,
 		requestDetailsContextKey,
-		laxLoginLimiting,
+		isLoginLimitingDisabled,
 	)
 
 	slog.DebugContext(ctx, "Creating data API")
