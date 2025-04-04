@@ -36,34 +36,52 @@ FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION status_update('new');
 
-CREATE OR REPLACE FUNCTION spg_status_active_grid_prequalification()
+-- adds a SPG-GP resource for each ISO present in a SPG, now or in the future
+CREATE OR REPLACE FUNCTION
+add_spg_grid_prequalifications_for_future_impacted_system_operators()
 RETURNS trigger
 SECURITY DEFINER
 LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    system_operator_id bigint;
+    l_service_providing_group_id bigint;
+    l_impacted_system_operator_id bigint;
 BEGIN
-    FOR system_operator_id IN
-        -- TODO: update when a grid model is implemented
-        -- ISO are currently the CSO of the CUs currently in the updated SPG
+    IF TG_TABLE_NAME = 'service_providing_group' THEN
+        l_service_providing_group_id := NEW.id;
+    ELSIF TG_TABLE_NAME = 'service_providing_group_membership' THEN
+        l_service_providing_group_id := NEW.service_providing_group_id;
+    ELSE
+        RAISE sqlstate 'PT500' using
+            message = 'trigger not supported on this table';
+        RETURN null;
+    END IF;
+
+    -- ISO are currently the CSO of the CUs currently in the updated SPG
+    -- TODO: update when a grid model is implemented
+
+    FOR l_impacted_system_operator_id IN
         SELECT DISTINCT ap.system_operator_id
         FROM flex.service_providing_group_membership spgm
         INNER JOIN flex.controllable_unit cu
         ON spgm.controllable_unit_id = cu.id
         INNER JOIN flex.accounting_point ap
         ON ap.business_id = cu.accounting_point_id
-        WHERE spgm.service_providing_group_id = NEW.id
-        AND spgm.valid_time_range @> current_timestamp
+        WHERE spgm.service_providing_group_id = l_service_providing_group_id
+        -- CU still in the SPG in the future
+        AND (
+            upper(spgm.valid_time_range) IS NULL OR
+            upper(spgm.valid_time_range) > current_timestamp
+        )
     LOOP
         INSERT INTO flex.service_providing_group_grid_prequalification (
             service_providing_group_id,
             impacted_system_operator_id,
             recorded_by
         ) VALUES (
-            NEW.id,
-            system_operator_id,
+            l_service_providing_group_id,
+            l_impacted_system_operator_id,
             0
         )
         ON CONFLICT DO NOTHING;
@@ -78,7 +96,8 @@ AFTER UPDATE OF status ON service_providing_group
 FOR EACH ROW
 -- as status cannot go back to new, this trigger may be executed only once
 WHEN (OLD.status = 'new' AND NEW.status = 'active') -- noqa
-EXECUTE FUNCTION spg_status_active_grid_prequalification();
+EXECUTE FUNCTION
+add_spg_grid_prequalifications_for_future_impacted_system_operators(); --noqa
 
 CREATE OR REPLACE TRIGGER service_providing_group_event
 AFTER INSERT OR UPDATE ON service_providing_group
