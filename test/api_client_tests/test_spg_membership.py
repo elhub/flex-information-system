@@ -339,6 +339,7 @@ def test_spgm_so(data):
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
             valid_from="2024-01-10T00:00:00+1",
+            valid_to="2024-01-11 Europe/Oslo",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
