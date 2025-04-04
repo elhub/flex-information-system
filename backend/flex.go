@@ -7,6 +7,7 @@ import (
 	"flex/auth/oidc"
 	"flex/data"
 	"flex/event"
+	"flex/internal/middleware"
 	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
@@ -355,7 +356,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
-	router.Use(WrapMiddleware(authAPI.IPMiddleware))
+	router.Use(WrapMiddleware(middleware.RealIP))
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints

@@ -105,17 +105,6 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 	return token, nil
 }
 
-// IPMiddleware reads the header set by the reverse proxy / load balancer and
-// sets the client IP as the remote address of the request.
-func (auth *API) IPMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		if realIP := req.Header.Get("X-Real-IP"); realIP != "" {
-			req.RemoteAddr = realIP
-		}
-		next.ServeHTTP(w, req)
-	})
-}
-
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
 func (auth *API) TokenDecodingMiddleware(
 	next http.Handler,
