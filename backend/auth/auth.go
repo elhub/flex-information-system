@@ -14,6 +14,7 @@ import (
 	"flex/pgpool"
 	"fmt"
 	"log/slog"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -28,8 +29,12 @@ import (
 )
 
 const (
-	callbackPath     = "/auth/v0/callback"
-	sessionCookieKey = "__Host-flex_session"
+	callbackPath                           = "/auth/v0/callback"
+	sessionCookieKey                       = "__Host-flex_session"
+	defaultFailedLoginDelay                = 2 * time.Second
+	defaultNumberIPRateLimiterTokens       = 20
+	defaultInitialWaitingTimeOnFailedLogin = 2 * time.Minute
+	defaultMaxWaitingTimeOnFailedLogin     = 1 * time.Hour
 )
 
 // API holds the authentication API handlers.
@@ -42,18 +47,45 @@ type API struct {
 	tokenDurationSeconds int
 	oidcProvider         *oidc.Provider
 	ctxKey               string
+	failedLoginDelay     time.Duration
+	loginIPRateLimiter   *IPRateLimiter
 }
 
 // NewAPI creates a new auth.API instance.
-func NewAPI(self string, db *pgpool.Pool, jwtSecret string, oidcProvider *oidc.Provider, ctxKey string) *API {
+func NewAPI(
+	self string,
+	db *pgpool.Pool,
+	jwtSecret string,
+	oidcProvider *oidc.Provider,
+	ctxKey string,
+	isLoginLimitingDisabled bool,
+) *API {
+	// default login limiting
+	failedLoginDelay := defaultFailedLoginDelay
+	loginIPRateLimiter := NewIPRateLimiter(
+		defaultNumberIPRateLimiterTokens,
+		defaultInitialWaitingTimeOnFailedLogin,
+		defaultMaxWaitingTimeOnFailedLogin,
+	)
+
+	if isLoginLimitingDisabled {
+		failedLoginDelay = 0
+		// An infinite rate limiter would make it impossible to test rate limiting.
+		// Here, we use something lax enough to be able to run all our API tests,
+		// but still finite, so that if we run requests in a loop, it will
+		// eventually block.
+		loginIPRateLimiter = NewIPRateLimiter(5, 1*time.Second, 10*time.Second) //nolint:mnd
+	}
+
 	return &API{
-		self:      self,
-		db:        db,
-		jwtSecret: []byte(jwtSecret),
-		// algorithm defined once and for all here
+		self:                 self,
+		db:                   db,
+		jwtSecret:            []byte(jwtSecret),
 		tokenDurationSeconds: 3600,
 		oidcProvider:         oidcProvider,
 		ctxKey:               ctxKey,
+		failedLoginDelay:     failedLoginDelay,
+		loginIPRateLimiter:   loginIPRateLimiter,
 	}
 }
 
@@ -1010,10 +1042,25 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
+	ipAddress := ctx.Request.RemoteAddr
+
+	if !auth.loginIPRateLimiter.IsAllowed(ctx, ipAddress) {
+		timeToWait := auth.loginIPRateLimiter.TimeUntilNextReservation(ipAddress)
+		ctx.Header("Retry-After", strconv.Itoa(int(math.Ceil(timeToWait.Seconds()))))
+		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+			Error:            oauthErrorAccessDenied,
+			ErrorDescription: "too many login attempts, try again later",
+		})
+		return
+	}
+
 	entityID, eid, err := models.GetEntityOfCredentials(
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
 	if err != nil {
+		// mitigation of brute force attacks
+		time.Sleep(auth.failedLoginDelay)
+
 		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
@@ -1021,6 +1068,9 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		})
 		return
 	}
+
+	// this makes sure valid logins are not rate limited
+	auth.loginIPRateLimiter.Reset(ctx, ipAddress)
 
 	accessToken := accessToken{
 		EntityID:       entityID,

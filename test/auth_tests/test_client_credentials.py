@@ -1,5 +1,7 @@
 import os
 import requests
+from typing import Union, cast
+from time import sleep
 
 """Test of the client credentials phase of the login process"""
 
@@ -87,3 +89,84 @@ def test_client_credentials_ok():
     assert response.status_code == 200
     json = response.json()
     assert json.get("access_token") is not None
+
+
+# ---- ---- ---- ----- -----
+
+
+# Try to spam the system with wrong credentials
+def test_spam():
+    response: Union[requests.Response, None] = None
+
+    for _ in range(5):
+        response = requests.post(
+            auth_url + "/token",
+            headers=auth_headers,
+            data={
+                "grant_type": "client_credentials",
+                "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+                "client_secret": "wrong_pass",
+            },
+        )
+    assert cast(requests.Response, response).status_code == 400
+
+    # the next responses should be Too Many Requests with exponentially increasing delay
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+            "client_secret": "wrong_pass",
+        },
+    )
+    assert response.status_code == 429
+    json = response.json()
+    assert json.get("error") is not None
+    assert json["error"] == "access_denied"
+    assert response.headers["Retry-After"] is not None
+    assert int(response.headers["Retry-After"]) == 1
+
+    sleep(1)
+
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+            "client_secret": "wrong_pass",
+        },
+    )
+    assert response.status_code == 400
+
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+            "client_secret": "wrong_pass",
+        },
+    )
+    assert response.status_code == 429
+    assert response.headers["Retry-After"] is not None
+    assert int(response.headers["Retry-After"]) == 2
+
+    sleep(4)
+
+    # now, tokens have been regenerated and we can try again
+    # and we can always have a high number of valid logins
+
+    for _ in range(20):
+        response = requests.post(
+            auth_url + "/token",
+            headers=auth_headers,
+            data={
+                "grant_type": "client_credentials",
+                "client_id": "3733e21b-5def-400d-8133-06bcda02465e",
+                "client_secret": "87h87hijhulO",
+            },
+        )
+
+    assert response.status_code == 200
