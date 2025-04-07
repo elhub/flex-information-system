@@ -17,7 +17,7 @@ payload = {
     # Audience
     "aud": "https://test.flex.internal:6443/auth/v0/",
     # Issuer
-    "iss": "no:entity:uuid:3733e21b-5def-400d-8133-06bcda02465e",  # Test Suite
+    "iss": "3733e21b-5def-400d-8133-06bcda02465e",  # Test Suite
     # JWT ID
     "jti": str(uuid.uuid4()),
     # Subject (the subject to get a token for)
