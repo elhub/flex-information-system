@@ -5,7 +5,7 @@
         "name": "Free text name of the controllable unit.",
         "start_date": "The usage date when the controllable unit is first active.",
         "status": "The status of the controllable unit.",
-        "regulation_direction": "The regulation direction of the controllable unit.",
+        "regulation_direction": "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
         "maximum_available_capacity": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
         "is_small": "Whether the controllable unit is small or not, following NCDR.",
         "minimum_duration": "The minimum activation duration in seconds.",
