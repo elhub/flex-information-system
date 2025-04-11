@@ -10,7 +10,8 @@ import (
 type rateLimiter struct {
 	waitingTime           time.Duration
 	minTimeForNextRequest *time.Time
-	nbTokens              int
+	nbFailedLogins        int
+	windowStart           *time.Time
 }
 
 // IPRateLimiter is a rate limiter specialised to IP addresses. It makes sure
@@ -33,33 +34,28 @@ type rateLimiter struct {
 type IPRateLimiter struct {
 	limiters           map[string]*rateLimiter
 	mutex              *sync.Mutex
-	maxTokens          int
+	maxFailedLogins    int
 	initialWaitingTime time.Duration
 	maxWaitingTime     time.Duration
+	windowSize         time.Duration
 }
 
 // NewIPRateLimiter creates a new IPRateLimiter with a given initial number of
 // tokens for each IP, and initial and maximum waiting time when no tokens are
 // left.
 func NewIPRateLimiter(
-	maxTokens int,
+	maxFailedLogins int,
 	initialWaitingTime time.Duration,
 	maxWaitingTime time.Duration,
+	windowSize time.Duration,
 ) *IPRateLimiter {
 	return &IPRateLimiter{
 		limiters:           make(map[string]*rateLimiter),
 		mutex:              &sync.Mutex{},
-		maxTokens:          maxTokens,
+		maxFailedLogins:    maxFailedLogins,
 		initialWaitingTime: initialWaitingTime,
 		maxWaitingTime:     maxWaitingTime,
-	}
-}
-
-func (ipRateLimiter *IPRateLimiter) newRateLimiter() *rateLimiter {
-	return &rateLimiter{
-		waitingTime:           ipRateLimiter.initialWaitingTime,
-		minTimeForNextRequest: nil,
-		nbTokens:              ipRateLimiter.maxTokens,
+		windowSize:         windowSize,
 	}
 }
 
@@ -79,83 +75,105 @@ func (ipRateLimiter *IPRateLimiter) raiseLimit(ctx context.Context, limiter *rat
 	limiter.minTimeForNextRequest = &minTime
 }
 
+type reservation struct {
+	valid         bool
+	active        bool
+	ipAddress     string
+	ipRateLimiter *IPRateLimiter
+	limiter       *rateLimiter
+}
+
+// ust checks if we have a deadline to wait before retrying. If yes, HTTP 429, otherwise allow. Don't do anything else at this point.
 // IsAllowed tries to reserve a token for a given IP address.
-func (ipRateLimiter *IPRateLimiter) IsAllowed(ctx context.Context, ipAddress string) bool {
+func (ipRateLimiter *IPRateLimiter) Reserve(ctx context.Context, ipAddress string) *reservation {
 	ipRateLimiter.mutex.Lock()
 	defer ipRateLimiter.mutex.Unlock()
 
 	limiter, exists := ipRateLimiter.limiters[ipAddress]
 	if !exists {
-		limiter = ipRateLimiter.newRateLimiter()
+		limiter = &rateLimiter{
+			waitingTime:           ipRateLimiter.initialWaitingTime,
+			minTimeForNextRequest: nil,
+			nbFailedLogins:        0,
+			windowStart:           nil,
+		}
 		ipRateLimiter.limiters[ipAddress] = limiter
 	}
 
 	if limiter.minTimeForNextRequest != nil {
 		if limiter.minTimeForNextRequest.After(time.Now()) {
-			// client still in the waiting period
 			slog.DebugContext(
 				ctx, "IP is in the waiting period",
 				"ipAddress", ipAddress,
 				"until", limiter.minTimeForNextRequest,
 				"waitingTime", limiter.waitingTime,
 			)
-			return false
+			return &reservation{
+				valid:         false,
+				active:        false,
+				ipAddress:     ipAddress,
+				ipRateLimiter: ipRateLimiter,
+				limiter:       limiter,
+			}
 		}
 
-		// client was in the waiting period, but can try again
 		slog.DebugContext(
 			ctx, "IP was in the waiting period, but can try again",
 			"ipAddress", ipAddress,
 		)
-		// here we step up the waiting time, but still let them try
-		// if they are successful, the limiter will be completely reset
-		// if not, the next request will be in the waiting period
-		ipRateLimiter.raiseLimit(ctx, limiter)
-		return true
+		limiter.minTimeForNextRequest = nil
 	}
 
-	if limiter.nbTokens == 0 {
-		// no token available, step up the waiting time
-		slog.DebugContext(
-			ctx, "no more tokens",
-			"ipAddress", ipAddress,
-		)
-		ipRateLimiter.raiseLimit(ctx, limiter)
-		return false
+	if limiter.windowStart != nil &&
+		time.Now().After(limiter.windowStart.Add(ipRateLimiter.windowSize)) {
+		limiter.nbFailedLogins = 0
+		limiter.windowStart = nil
 	}
 
-	// token available, reserve it
-	limiter.nbTokens--
-	slog.DebugContext(
-		ctx, "tokens left",
-		"ipAddress", ipAddress,
-		"tokens", limiter.nbTokens,
-	)
-	return true
+	return &reservation{
+		valid:         true,
+		active:        true,
+		ipAddress:     ipAddress,
+		ipRateLimiter: ipRateLimiter,
+		limiter:       limiter,
+	}
 }
 
-// TimeUntilNextReservation returns the duration until the next reservation can
-// be made.
-func (ipRateLimiter *IPRateLimiter) TimeUntilNextReservation(ipAddress string) time.Duration {
-	ipRateLimiter.mutex.Lock()
-	defer ipRateLimiter.mutex.Unlock()
+func (reservation *reservation) IsValid() bool {
+	return reservation.valid
+}
 
-	limiter, exists := ipRateLimiter.limiters[ipAddress]
-	if !exists || limiter.minTimeForNextRequest == nil {
+func (reservation *reservation) TimeUntilNext() time.Duration {
+	reservation.ipRateLimiter.mutex.Lock()
+	defer reservation.ipRateLimiter.mutex.Unlock()
+
+	if reservation.limiter.minTimeForNextRequest == nil {
 		return 0
 	}
-
-	return time.Until(*limiter.minTimeForNextRequest)
+	return time.Until(*reservation.limiter.minTimeForNextRequest)
 }
 
-// Reset resets the rate limiter for a given IP address, restoring all the
-// tokens and setting back the waiting time to the minimal one.
-func (ipRateLimiter *IPRateLimiter) Reset(ctx context.Context, ipAddress string) {
-	limiter := ipRateLimiter.newRateLimiter()
+// consume increases the number of failed logins. If we have more than N failed logins, set a delay from now for further requests, based on an internally stored duration that exponentially increases for each reservation that gets consumed over the limit.
+func (reservation *reservation) Consume(ctx context.Context) {
+	if !reservation.active {
+		return
+	}
 
-	ipRateLimiter.mutex.Lock()
-	ipRateLimiter.limiters[ipAddress] = limiter
-	ipRateLimiter.mutex.Unlock()
+	reservation.ipRateLimiter.mutex.Lock()
+	defer reservation.ipRateLimiter.mutex.Unlock()
 
-	slog.DebugContext(ctx, "tokens reset", "ipAddress", ipAddress)
+	now := time.Now()
+	reservation.limiter.windowStart = &now
+	reservation.limiter.nbFailedLogins++
+	if reservation.limiter.nbFailedLogins > reservation.ipRateLimiter.maxFailedLogins {
+		slog.DebugContext(
+			ctx, "IP reached the maximum number of failed logins",
+			"ipAddress", reservation.ipAddress,
+		)
+		reservation.ipRateLimiter.raiseLimit(ctx, reservation.limiter)
+	}
+}
+
+func (reservation *reservation) Cancel() {
+	reservation.active = false
 }

@@ -1044,9 +1044,14 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 
 	ipAddress := ctx.Request.RemoteAddr
 
-	if !auth.loginIPRateLimiter.IsAllowed(ctx, ipAddress) {
-		timeToWait := auth.loginIPRateLimiter.TimeUntilNextReservation(ipAddress)
-		ctx.Header("Retry-After", strconv.Itoa(int(math.Ceil(timeToWait.Seconds()))))
+	reservation := auth.loginIPRateLimiter.Reserve(ctx, ipAddress)
+	defer reservation.Consume(ctx)
+
+	if !reservation.IsValid() {
+		ctx.Header(
+			"Retry-After",
+			strconv.Itoa(int(math.Ceil(reservation.TimeUntilNext().Seconds()))),
+		)
 		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
 			Error:            oauthErrorAccessDenied,
 			ErrorDescription: "too many login attempts, try again later",
@@ -1070,7 +1075,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 
 	// this makes sure valid logins are not rate limited
-	auth.loginIPRateLimiter.Reset(ctx, ipAddress)
+	reservation.Cancel()
 
 	accessToken := accessToken{
 		EntityID:       entityID,
