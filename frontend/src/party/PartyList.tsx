@@ -1,5 +1,9 @@
 import { List, ReferenceField, SelectArrayInput, TextField } from "react-admin";
-import { AutocompleteReferenceInput, Datagrid } from "../auth";
+import {
+  AutocompleteReferenceInput,
+  Datagrid,
+  PartyReferenceInput,
+} from "../auth";
 import { DateField } from "../datetime";
 
 export const PartyList = () => {
@@ -8,6 +12,14 @@ export const PartyList = () => {
       key="entity_id"
       source="entity_id"
       reference="entity"
+      alwaysOn
+    />,
+    <PartyReferenceInput
+      key="id"
+      source="id"
+      label="Name"
+      reference="party"
+      noTypeFilter
       alwaysOn
     />,
     <SelectArrayInput

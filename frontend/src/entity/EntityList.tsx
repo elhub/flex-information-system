@@ -1,5 +1,5 @@
 import { List, SelectArrayInput, TextField } from "react-admin";
-import { Datagrid } from "../auth";
+import { AutocompleteReferenceInput, Datagrid } from "../auth";
 
 export const EntityList = () => {
   const entityFilters = [
@@ -8,6 +8,13 @@ export const EntityList = () => {
       label="Type"
       source="type@in"
       choices={["organisation", "person"]}
+      alwaysOn
+    />,
+    <AutocompleteReferenceInput
+      key="id"
+      source="id"
+      reference="entity"
+      label="Name"
       alwaysOn
     />,
   ];
