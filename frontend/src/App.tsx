@@ -130,7 +130,7 @@ const config: IDataProviderConfig = {
 
 const dataProvider = postgrestRestProvider(config);
 
-const AssumeParty = () => {
+const RedirectMenuButton = (props: { label: string; url: string }) => {
   const redirect = useRedirect();
   const userMenu = useUserMenu();
 
@@ -138,13 +138,13 @@ const AssumeParty = () => {
     <MenuItem
       onClick={() => {
         userMenu?.onClose();
-        redirect("/login/assumeParty");
+        redirect(props.url);
       }}
     >
       <ListItemIcon>
         <PeopleAltIcon />
       </ListItemIcon>
-      <ListItemText>Assume another party</ListItemText>
+      <ListItemText>{props.label}</ListItemText>
     </MenuItem>
   );
 };
@@ -183,7 +183,24 @@ const AppBar = () => {
     <RaAppBar
       userMenu={
         <UserMenu>
-          <AssumeParty />
+          {!isLoading && (
+            <RedirectMenuButton
+              url="/login/assumeParty"
+              label={data!.partyID ? "Unassume party" : "Assume party"}
+            />
+          )}
+          {!isLoading && (
+            <RedirectMenuButton
+              url={`/entity/${data!.entityID}/show`}
+              label="My entity"
+            />
+          )}
+          {!isLoading && data!.partyID && (
+            <RedirectMenuButton
+              url={`/party/${data!.partyID}/show`}
+              label="My party"
+            />
+          )}
           <Logout />
         </UserMenu>
       }
