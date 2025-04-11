@@ -23,7 +23,8 @@ class ControllableUnitUpdateRequest:
             Example: 2024-05-17.
         status (Union[Unset, ControllableUnitStatus]): The status of the controllable unit. Example: active.
         regulation_direction (Union[Unset, ControllableUnitRegulationDirection]): The regulation direction of the
-            controllable unit. Example: up.
+            controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means
+            to decrease production or increase consumption. Example: up.
         maximum_available_capacity (Union[Unset, float]): Maximum continuous active power that the controllable unit can
             produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         minimum_duration (Union[None, Unset, int]): The minimum activation duration in seconds. Example: 30.

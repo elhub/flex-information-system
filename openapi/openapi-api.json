@@ -261,7 +261,7 @@
                 "example": "active"
             },
             "controllable_unit_regulation_direction": {
-                "description": "The regulation direction of the controllable unit.",
+                "description": "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
                 "format": "text",
                 "type": "string",
                 "enum": [
