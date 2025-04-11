@@ -11,7 +11,7 @@ import {
 // and passing the "disabled" boolean to the child input
 
 export const AutocompleteReferenceInput = (props: any) => {
-  const { field, disabled, readOnly, source, ...rest } = props;
+  const { field, disabled, readOnly, source, label, ...rest } = props;
 
   const record = useRecordContext();
   const defaultValue = record ? record[source] : undefined;
@@ -33,6 +33,7 @@ export const AutocompleteReferenceInput = (props: any) => {
         disabled={disabled}
         readOnly={readOnly}
         filterToQuery={filterToQuery}
+        label={label}
       />
     </ReferenceInput>
   );
