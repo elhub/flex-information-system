@@ -594,6 +594,15 @@ BEGIN
     0
   );
 
+  -- add BRP to one of the MGAs
+  INSERT INTO flex.balance_responsible_party_metering_grid_area (
+    balance_responsible_party_id,
+    metering_grid_area_id
+  ) VALUES (
+    brp_id,
+    so_mga_id
+  );
+
   if not in_add_data then
     PERFORM test_data.add_accounting_points(
       accounting_point_prefix,
