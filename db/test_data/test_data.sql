@@ -43,6 +43,38 @@ BEGIN
 
   INSERT INTO flex.party_membership (entity_id, party_id) VALUES (member_entity_id, party_id);
 
+  -- if SO, associate a few metering grid areas
+  IF party_type = 'system_operator' THEN
+    INSERT INTO flex.metering_grid_area (
+      business_id,
+      name,
+      price_area,
+      system_operator_id,
+      valid_time_range,
+      recorded_by
+    ) VALUES (
+      eic.add_check_char('31X-' || upper(replace(rpad(left(party_name, 10), 10), ' ', '-')) || '-'),
+      party_name || ' AREA 1',
+      'NO4',
+      party_id,
+      tstzrange(
+        '2023-10-01 Europe/Oslo',
+        null, '[)'
+      ),
+      0
+    ), (
+      eic.add_check_char('42X-' || upper(replace(rpad(left(party_name, 10), 10), ' ', '-')) || '-'),
+      party_name || ' AREA 2',
+      'NO4',
+      party_id,
+      tstzrange(
+        '2023-10-01 Europe/Oslo',
+        null, '[)'
+      ),
+      0
+    );
+  END IF;
+
   RETURN party_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;

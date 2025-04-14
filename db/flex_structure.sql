@@ -21,6 +21,7 @@ and support the processes in the value chain.$$;
 \i flex/accounting_point_energy_supplier.sql
 \i flex/controllable_unit.sql
 \i flex/controllable_unit_service_provider.sql
+\i flex/metering_grid_area.sql
 \i flex/notification.sql
 \i flex/product_type.sql
 \i flex/service_provider_product_application.sql
@@ -43,6 +44,7 @@ and support the processes in the value chain.$$;
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
 \i flex/entity_client_history_audit.sql
+\i flex/metering_grid_area_history_audit.sql
 \i flex/notification_history_audit.sql
 \i flex/party_history_audit.sql
 \i flex/party_membership_history_audit.sql
@@ -73,6 +75,7 @@ and support the processes in the value chain.$$;
 \i flex/entity_client_rls.sql
 \i flex/event_rls.sql
 \i flex/identity_rls.sql
+\i flex/metering_grid_area_rls.sql
 \i flex/notification_rls.sql
 \i flex/party_membership_rls.sql
 \i flex/party_rls.sql

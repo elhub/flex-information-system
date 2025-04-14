@@ -14,6 +14,8 @@ GRANT USAGE ON SCHEMA timeline TO flex_anonymous;
 GRANT USAGE ON SCHEMA gs1 TO flex_anonymous;
 
 
+\i pg_eic/pg_eic.sql
+GRANT USAGE ON SCHEMA eic TO flex_anonymous;
 
 --
 ---- Business Identifier Type
@@ -38,8 +40,13 @@ BEGIN
     END IF;
 
     IF business_id_type = 'eic_x' THEN
-        -- TODO: include an EIC check character validation function
-        RETURN (business_id ~ '^[0-9]{2}X[0-9A-Z-]{12}[0-9A-Z]$');
+        IF business_id !~ '^[0-9]{2}X[0-9A-Z-]{12}[0-9A-Z]$' THEN
+            RETURN false;
+        END IF;
+
+        RETURN (
+            eic.validate_check_char(business_id)
+        );
     ELSIF business_id_type = 'uuid' THEN
         RETURN (
             business_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
