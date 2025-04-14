@@ -113,6 +113,7 @@ notification;recorded_by;;R;R;R;R;R;R;R;R;;
 accounting_point;;;;;;;;;;;;R
 accounting_point;id;;R;R;R;R;R;R;R;R;;
 accounting_point;business_id;;R;R;R;R;R;R;R;R;;
+accounting_point;metering_grid_area_id;;R;R;R;R;R;R;R;R;;
 accounting_point;system_operator_id;;R;R;R;R;R;R;R;R;;
 product_type;;;;;;;;;;;;
 product_type;id;;R;R;R;R;R;R;R;R;;

@@ -3,6 +3,7 @@
     "flex_balance_responsible_party": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.read",
@@ -326,6 +327,7 @@
     "flex_end_user": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.read",
@@ -649,6 +651,7 @@
     "flex_energy_supplier": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.read",
@@ -1046,6 +1049,7 @@
     "flex_flexibility_information_system_operator": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.create",
@@ -1474,6 +1478,7 @@
     "flex_market_operator": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.read",
@@ -1797,6 +1802,7 @@
     "flex_service_provider": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.create",
@@ -2194,6 +2200,7 @@
     "flex_system_operator": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.read",
@@ -2547,6 +2554,7 @@
     "flex_third_party": [
         "accounting_point.business_id.read",
         "accounting_point.id.read",
+        "accounting_point.metering_grid_area_id.read",
         "accounting_point.read",
         "accounting_point.system_operator_id.read",
         "controllable_unit.accounting_point_id.read",

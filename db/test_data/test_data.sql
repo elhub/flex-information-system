@@ -43,38 +43,6 @@ BEGIN
 
   INSERT INTO flex.party_membership (entity_id, party_id) VALUES (member_entity_id, party_id);
 
-  -- if SO, associate a few metering grid areas
-  IF party_type = 'system_operator' THEN
-    INSERT INTO flex.metering_grid_area (
-      business_id,
-      name,
-      price_area,
-      system_operator_id,
-      valid_time_range,
-      recorded_by
-    ) VALUES (
-      eic.add_check_char('31X-' || upper(replace(rpad(left(party_name, 10), 10), ' ', '-')) || '-'),
-      party_name || ' AREA 1',
-      'NO4',
-      party_id,
-      tstzrange(
-        '2023-10-01 Europe/Oslo',
-        null, '[)'
-      ),
-      0
-    ), (
-      eic.add_check_char('42X-' || upper(replace(rpad(left(party_name, 10), 10), ' ', '-')) || '-'),
-      party_name || ' AREA 2',
-      'NO4',
-      party_id,
-      tstzrange(
-        '2023-10-01 Europe/Oslo',
-        null, '[)'
-      ),
-      0
-    );
-  END IF;
-
   RETURN party_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
@@ -324,6 +292,7 @@ $$;
 -- Add accounting point mapping
 CREATE OR REPLACE FUNCTION test_data.add_accounting_points(
     accounting_point_prefix text,
+    in_metering_grid_area_id text,
     end_user contract_parties,
     energy_supplier contract_parties,
     balance_responsible_party contract_parties,
@@ -352,9 +321,11 @@ BEGIN
   LOOP
     INSERT INTO flex.accounting_point (
       business_id,
+      metering_grid_area_id,
       system_operator_id
     ) VALUES (
       gs1.add_check_digit(partial_gsrn::text),
+      in_metering_grid_area_id,
       so_id
     ) RETURNING id INTO ap_id;
 
@@ -458,6 +429,8 @@ DECLARE
   spgpa_id bigint;
   cu_id bigint;
   so_id bigint;
+
+  so_mga_id text;
 
   asset_type text;
   accounting_point_prefix text := '1337000000' || user_seq_id_text;
@@ -585,9 +558,46 @@ BEGIN
   FROM flex.product_type pt
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
+  so_mga_id := eic.add_check_char(
+    '42X-' || upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
+  );
+
+  -- associate a few metering grid areas to the SO
+  INSERT INTO flex.metering_grid_area (
+    business_id,
+    name,
+    price_area,
+    system_operator_id,
+    valid_time_range,
+    recorded_by
+  ) VALUES (
+    eic.add_check_char(
+      '31X-' || upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
+    ),
+    in_entity_name || ' AREA 1',
+    'NO4',
+    so_id,
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  ), (
+    so_mga_id,
+    in_entity_name || ' AREA 2',
+    'NO4',
+    so_id,
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  );
+
   if not in_add_data then
     PERFORM test_data.add_accounting_points(
       accounting_point_prefix,
+      so_mga_id,
       null,
       null,
       null,
@@ -606,6 +616,7 @@ BEGIN
 
   PERFORM test_data.add_accounting_points(
     accounting_point_prefix,
+    so_mga_id,
     (common_eu_id, eu_id),
     (common_es_id, es_id),
     (common_brp_id, brp_id),
