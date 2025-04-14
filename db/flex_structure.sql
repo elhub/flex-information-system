@@ -15,13 +15,13 @@ and support the processes in the value chain.$$;
 \i flex/party_membership.sql
 \i flex/grid_node.sql
 \i flex/grid_edge.sql
+\i flex/metering_grid_area.sql
 \i flex/accounting_point.sql
 \i flex/accounting_point_balance_responsible_party.sql
 \i flex/accounting_point_end_user.sql
 \i flex/accounting_point_energy_supplier.sql
 \i flex/controllable_unit.sql
 \i flex/controllable_unit_service_provider.sql
-\i flex/metering_grid_area.sql
 \i flex/notification.sql
 \i flex/product_type.sql
 \i flex/service_provider_product_application.sql

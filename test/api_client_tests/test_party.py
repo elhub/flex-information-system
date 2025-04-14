@@ -67,6 +67,35 @@ def calculate_gln_check_digit(number: str) -> str:
     return str(check_digit)
 
 
+def add_eic_check_char(eic: str) -> str:
+    """
+    Add a check character to an EIC prefix.
+    """
+
+    def char_to_code(c):
+        if c.isdigit():
+            return int(c)
+        elif c.isalpha():
+            return ord(c) - ord("A") + 10
+        elif c == "-":
+            return 36
+        else:
+            raise ValueError(f"Invalid character: {c}")
+
+    def code_to_char(code):
+        if 0 <= code <= 9:
+            return str(code)
+        elif 10 <= code <= 35:
+            return chr(code + ord("A") - 10)
+        elif code == 36:
+            return "-"
+        else:
+            raise ValueError(f"Invalid code: {code}")
+
+    s = sum([(16 - i) * char_to_code(c) for i, c in enumerate(eic)])
+    return eic + code_to_char(36 - ((s - 1) % 37))
+
+
 @pytest.fixture
 def sts():
     yield SecurityTokenService()
@@ -105,9 +134,10 @@ def test_party_fiso(sts):
         client=client_fiso,
         body=PartyCreateRequest(
             name="New SP",
-            # TODO: use a valid EIC-X here when validation is implemented
             # Using unix timestamp to get a unique value
-            business_id=f"11X{str(int(time.time_ns()))[-12:]}T",
+            business_id=add_eic_check_char(
+                f"11X{str(int(time.time_ns()))[-12:]}",
+            ),
             business_id_type=PartyBusinessIdType.EIC_X,
             role="flex_service_provider",
             type="service_provider",

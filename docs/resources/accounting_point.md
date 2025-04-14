@@ -18,11 +18,12 @@ The business identifier is the GSRN metering point id.
 
 ## Fields
 
-| Name                                                                                       | Description                                         | Format                                            | Reference                     |
-|--------------------------------------------------------------------------------------------|-----------------------------------------------------|---------------------------------------------------|-------------------------------|
-| <a name="field-id" href="#field-id">id</a>                                                 | Unique surrogate identifier.                        | bigint<br/>Read only                              |                               |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                      | The GSRN metering point id of the accounting point. | text<br/>Pattern: `^[1-9][0-9]{17}$`<br/>Required |                               |
-| <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a> | The system operator of the accounting point         | text<br/>Required                                 | [party.id](party.md#field-id) |
+| Name                                                                                                | Description                                              | Format                                                            | Reference                     |
+|-----------------------------------------------------------------------------------------------------|----------------------------------------------------------|-------------------------------------------------------------------|-------------------------------|
+| <a name="field-id" href="#field-id">id</a>                                                          | Unique surrogate identifier.                             | bigint<br/>Read only                                              |                               |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                               | The GSRN metering point id of the accounting point.      | text<br/>Pattern: `^[1-9][0-9]{17}$`<br/>Required                 |                               |
+| <a name="field-metering_grid_area_id" href="#field-metering_grid_area_id">metering_grid_area_id</a> | The metering grid area EIC-X id of the accounting point. | text<br/>Pattern: `^[0-9]{2}X[0-9A-Z-]{12}[0-9A-Z]$`<br/>Required |                               |
+| <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a>          | The system operator of the accounting point              | text<br/>Required                                                 | [party.id](party.md#field-id) |
 
 ## Validation Rules
 
@@ -89,8 +90,9 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../auth.md#party)
 
-| FIELD              | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|--------------------|------|-----|----|----|------|----|----|----|----|
-| id                 |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| business_id        |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| system_operator_id |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD                 | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
+|-----------------------|------|-----|----|----|------|----|----|----|----|
+| id                    |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| business_id           |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| metering_grid_area_id |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| system_operator_id    |      | R   | R  | R  | R    | R  | R  | R  | R  |

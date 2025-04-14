@@ -9,9 +9,10 @@ import (
 )
 
 type AccountingPoint struct {
-	ID               int
-	BusinessID       string
-	SystemOperatorID string
+	ID                 int
+	BusinessID         string
+	MeteringGridAreaID string
+	SystemOperatorID   string
 }
 
 type AccountingPointEndUser struct {
