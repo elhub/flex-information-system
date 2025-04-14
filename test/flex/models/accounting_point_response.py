@@ -15,17 +15,22 @@ class AccountingPointResponse:
     Attributes:
         business_id (Union[Unset, str]): The GSRN metering point id of the accounting point. Example:
             709000000000000057.
+        metering_grid_area_id (Union[Unset, str]): The metering grid area EIC-X id of the accounting point. Example:
+            78X-TEST-123456K.
         system_operator_id (Union[Unset, str]): The system operator of the accounting point
         id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
     business_id: Union[Unset, str] = UNSET
+    metering_grid_area_id: Union[Unset, str] = UNSET
     system_operator_id: Union[Unset, str] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         business_id = self.business_id
+
+        metering_grid_area_id = self.metering_grid_area_id
 
         system_operator_id = self.system_operator_id
 
@@ -36,6 +41,8 @@ class AccountingPointResponse:
         field_dict.update({})
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
+        if metering_grid_area_id is not UNSET:
+            field_dict["metering_grid_area_id"] = metering_grid_area_id
         if system_operator_id is not UNSET:
             field_dict["system_operator_id"] = system_operator_id
         if id is not UNSET:
@@ -48,12 +55,15 @@ class AccountingPointResponse:
         d = src_dict.copy()
         business_id = d.pop("business_id", UNSET)
 
+        metering_grid_area_id = d.pop("metering_grid_area_id", UNSET)
+
         system_operator_id = d.pop("system_operator_id", UNSET)
 
         id = d.pop("id", UNSET)
 
         accounting_point_response = cls(
             business_id=business_id,
+            metering_grid_area_id=metering_grid_area_id,
             system_operator_id=system_operator_id,
             id=id,
         )

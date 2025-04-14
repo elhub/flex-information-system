@@ -1517,6 +1517,13 @@
                         "pattern": "^[1-9][0-9]{17}$",
                         "example": "709000000000000057"
                     },
+                    "metering_grid_area_id": {
+                        "description": "The metering grid area EIC-X id of the accounting point.",
+                        "format": "text",
+                        "type": "string",
+                        "pattern": "^[0-9]{2}X[0-9A-Z-]{12}[0-9A-Z]$",
+                        "example": "78X-TEST-123456K"
+                    },
                     "system_operator_id": {
                         "description": "The system operator of the accounting point",
                         "format": "text",

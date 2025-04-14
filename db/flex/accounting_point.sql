@@ -3,6 +3,9 @@
 CREATE TABLE IF NOT EXISTS accounting_point (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id text UNIQUE NOT NULL,
+    metering_grid_area_id text NOT NULL CHECK (
+        validate_business_id(metering_grid_area_id, 'eic_x')
+    ),
     balance_responsible_id bigint NULL,
     balance_responsible_party_type text GENERATED ALWAYS AS (
         'balance_responsible_party'
@@ -15,6 +18,10 @@ CREATE TABLE IF NOT EXISTS accounting_point (
         localtimestamp, null, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
+
+    CONSTRAINT fk_accounting_point_metering_grid_area FOREIGN KEY (
+        metering_grid_area_id
+    ) REFERENCES metering_grid_area (business_id),
     CONSTRAINT fk_accounting_point_balance_responsible FOREIGN KEY (
         balance_responsible_id, balance_responsible_party_type
     ) REFERENCES party (id, type),

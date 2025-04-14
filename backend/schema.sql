@@ -239,6 +239,7 @@ CREATE TABLE notification (
 CREATE TABLE accounting_point (
     id bigint NOT NULL,
     business_id text NOT NULL,
+    metering_grid_area_id text NOT NULL,
     system_operator_id text NOT NULL
 );
 CREATE TABLE product_type (
