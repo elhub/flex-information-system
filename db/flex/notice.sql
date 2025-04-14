@@ -93,5 +93,32 @@ CREATE OR REPLACE VIEW notice AS (
             null AS data -- noqa
         FROM service_providing_group_grid_prequalification AS spggp
         WHERE spggp.status = 'requested'
+
+        -- SPG containing CUs with more than one BRP
+        UNION ALL
+        SELECT
+            spg_id AS party_id,
+            'no.elhub.flex.service_providing_group.brp.multiple' AS type, -- noqa
+            '/service_providing_group/' || spg_id AS source,
+            null AS data -- noqa
+        FROM (
+            SELECT
+                spg.id AS spg_id,
+                count(DISTINCT apbrp.balance_responsible_party_id) AS nb_brp
+            FROM flex.service_providing_group AS spg
+                INNER JOIN flex.service_providing_group_membership AS spgm
+                    ON spg.id = spgm.service_providing_group_id
+                INNER JOIN flex.controllable_unit AS cu
+                    ON spgm.controllable_unit_id = cu.id
+                INNER JOIN flex.accounting_point AS ap
+                    ON cu.accounting_point_id = ap.business_id
+                INNER JOIN
+                    flex.accounting_point_balance_responsible_party AS apbrp
+                    ON ap.id = apbrp.accounting_point_id
+            WHERE spgm.valid_time_range && apbrp.valid_time_range
+                AND spgm.valid_time_range @> current_timestamp
+            GROUP BY spg.id
+        ) AS spg_brp_count
+        WHERE nb_brp > 1
     ) AS r
 );
