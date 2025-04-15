@@ -87,7 +87,7 @@ func (eventWorker *Worker) Stop(ctx context.Context) error {
 // from a replication connection dedicated to event processing. It has access
 // to a transaction to perform operations on the database.
 //
-//nolint:cyclop
+//nolint:cyclop,funlen
 func (eventWorker *Worker) handleMessage(
 	ctx context.Context,
 	message *pgrepl.Message,
@@ -119,9 +119,14 @@ func (eventWorker *Worker) handleMessage(
 		slog.DebugContext(ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID)
 
 		// TODO (improvement): go through the auth API instead of the models
-		eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
-		if err != nil {
-			return fmt.Errorf("could not get party of identity: %w", err)
+		var eventPartyID int
+		if event.RecordedBy == 0 { // system event
+			eventPartyID = 0
+		} else {
+			eventPartyID, err = authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
+			if err != nil {
+				return fmt.Errorf("could not get party of identity: %w", err)
+			}
 		}
 
 		// determine who should be notified

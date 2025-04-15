@@ -116,6 +116,12 @@ AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)');
 -- valid time check : notifying all end users that (up to the latest knowledge)
 --   are in charge of the AP during at least a part of the CU-SP validity period
 
+-- name: GetControllableUnitServiceProviderImplicitTerminationNotificationRecipients :many
+SELECT service_provider_id::bigint
+FROM controllable_unit_service_provider
+WHERE id = @resource_id;
+-- not using history on CU-SP because SP ID is stable
+
 -- name: GetServiceProviderProductApplicationNotificationRecipients :many
 SELECT unnest(array[system_operator_id, service_provider_id])::bigint
 FROM service_provider_product_application_history

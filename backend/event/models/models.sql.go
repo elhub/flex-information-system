@@ -124,6 +124,44 @@ func (q *Queries) GetControllableUnitServiceProviderCreateNotificationRecipients
 	return items, nil
 }
 
+const getControllableUnitServiceProviderImplicitTerminationNotificationRecipients = `-- name: GetControllableUnitServiceProviderImplicitTerminationNotificationRecipients :many
+
+SELECT service_provider_id::bigint
+FROM controllable_unit_service_provider
+WHERE id = $1
+`
+
+// not using history on CU-SP for CU ID and SP ID because they are stable
+// not using history on CU because AP ID is stable
+// not using history on AP because business ID is stable
+// not using history on APEU or CU-SP for end user ID because we take the
+//
+//	latest knowledge we have to identify who to notify and if it still
+//	makes sense
+//
+// valid time check : notifying all end users that (up to the latest knowledge)
+//
+//	are in charge of the AP during at least a part of the CU-SP validity period
+func (q *Queries) GetControllableUnitServiceProviderImplicitTerminationNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitServiceProviderImplicitTerminationNotificationRecipients, resourceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var service_provider_id int
+		if err := rows.Scan(&service_provider_id); err != nil {
+			return nil, err
+		}
+		items = append(items, service_provider_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getControllableUnitServiceProviderUpdateDeleteNotificationRecipients = `-- name: GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients :many
 SELECT DISTINCT unnest(
     array_remove(
@@ -253,17 +291,7 @@ WHERE service_provider_product_application_id = $1
 AND tstzrange(recorded_at, replaced_at, '[)') @> $2::timestamptz
 `
 
-// not using history on CU-SP for CU ID and SP ID because they are stable
-// not using history on CU because AP ID is stable
-// not using history on AP because business ID is stable
-// not using history on APEU or CU-SP for end user ID because we take the
-//
-//	latest knowledge we have to identify who to notify and if it still
-//	makes sense
-//
-// valid time check : notifying all end users that (up to the latest knowledge)
-//
-//	are in charge of the AP during at least a part of the CU-SP validity period
+// not using history on CU-SP because SP ID is stable
 func (q *Queries) GetServiceProviderProductApplicationNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
 	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationNotificationRecipients, resourceID, recordedAt)
 	if err != nil {
