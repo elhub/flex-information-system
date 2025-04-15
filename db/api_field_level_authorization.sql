@@ -2665,7 +2665,9 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_balance_responsible_party;
 
@@ -2673,7 +2675,9 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_energy_supplier;
 
@@ -2681,7 +2685,9 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_end_user;
 
@@ -2689,7 +2695,9 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_flexibility_information_system_operator;
 
@@ -2697,7 +2705,9 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_market_operator;
 
@@ -2705,7 +2715,9 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_system_operator;
 
@@ -2713,7 +2725,9 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_service_provider;
 
@@ -2721,11 +2735,532 @@ GRANT SELECT (
     id,
     business_id,
     metering_grid_area_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_third_party;
 
 GRANT SELECT ON TABLE api.accounting_point
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    business_id,
+    metering_grid_area_id,
+    system_operator_id,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_history
+TO flex_third_party;
+
+GRANT SELECT ON TABLE api.accounting_point_history
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_third_party;
+
+GRANT SELECT ON TABLE api.accounting_point_balance_responsible_party
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    accounting_point_balance_responsible_party_id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_third_party;
+
+GRANT SELECT ON TABLE api.accounting_point_balance_responsible_party_history
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    recorded_by
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_third_party;
+
+GRANT SELECT ON TABLE api.accounting_point_energy_supplier
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    accounting_point_energy_supplier_id,
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.accounting_point_energy_supplier_history
+TO flex_third_party;
+
+GRANT SELECT ON TABLE api.accounting_point_energy_supplier_history
 TO flex_internal_event_notification;
 
 GRANT SELECT (

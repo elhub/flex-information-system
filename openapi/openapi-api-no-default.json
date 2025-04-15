@@ -77,6 +77,14 @@
             "description": "Accounting Point"
         },
         {
+            "name": "accounting_point_balance_responsible_party",
+            "description": "Accounting Point Balance Responsible Party"
+        },
+        {
+            "name": "accounting_point_energy_supplier",
+            "description": "Accounting Point Energy Supplier"
+        },
+        {
             "name": "product_type",
             "description": "Product Type"
         },
@@ -1546,6 +1554,158 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
+                            },
+                            "recorded_at": {
+                                "description": "When the resource was recorded (created or updated) in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2023-12-31 23:59:00 CET"
+                            },
+                            "recorded_by": {
+                                "description": "The identity that recorded the resource.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 145
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_balance_responsible_party_update_request": {
+                "summary": "Update - Accounting Point Balance Responsible Party",
+                "description": "Request schema for update operations - Relation linking a balance responsible party to an accounting point.",
+                "type": "object"
+            },
+            "accounting_point_balance_responsible_party_response": {
+                "summary": "Response - Accounting Point Balance Responsible Party",
+                "description": "Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_update_request"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "Unique surrogate identifier.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 19
+                            },
+                            "accounting_point_id": {
+                                "description": "The ID of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 245
+                            },
+                            "balance_responsible_party_id": {
+                                "description": "The balance responsible party of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 37,
+                                "readOnly": true
+                            },
+                            "valid_from": {
+                                "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2022-08-08 00:00:00 CET"
+                            },
+                            "valid_to": {
+                                "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "nullable": true,
+                                "example": null
+                            },
+                            "recorded_at": {
+                                "description": "When the resource was recorded (created or updated) in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2023-12-31 23:59:00 CET"
+                            },
+                            "recorded_by": {
+                                "description": "The identity that recorded the resource.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 145
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_energy_supplier_update_request": {
+                "summary": "Update - Accounting Point Energy Supplier",
+                "description": "Request schema for update operations - Relation linking an energy supplier to an accounting point.",
+                "type": "object"
+            },
+            "accounting_point_energy_supplier_response": {
+                "summary": "Response - Accounting Point Energy Supplier",
+                "description": "Response schema for operations with return values - Relation linking an energy supplier to an accounting point.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_energy_supplier_update_request"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "Unique surrogate identifier.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 19
+                            },
+                            "accounting_point_id": {
+                                "description": "The ID of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 245
+                            },
+                            "energy_supplier_id": {
+                                "description": "The energy supplier of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 37
+                            },
+                            "valid_from": {
+                                "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2022-08-08 00:00:00 CET"
+                            },
+                            "valid_to": {
+                                "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "nullable": true,
+                                "example": null
+                            },
+                            "recorded_at": {
+                                "description": "When the resource was recorded (created or updated) in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2023-12-31 23:59:00 CET"
+                            },
+                            "recorded_by": {
+                                "description": "The identity that recorded the resource.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 145
                             }
                         }
                     }
@@ -2309,6 +2469,105 @@
                     {
                         "properties": {
                             "technical_resource_id": {
+                                "description": "Reference to the resource that was updated.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 48
+                            },
+                            "replaced_by": {
+                                "description": "The identity that updated the resource when it was replaced.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "nullable": true,
+                                "example": 90
+                            },
+                            "replaced_at": {
+                                "description": "When the resource was replaced in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "nullable": true,
+                                "example": "2024-07-07 10:00:00 CET"
+                            }
+                        }
+                    }
+                ]
+            },
+            "accounting_point_history_response": {
+                "summary": "Accounting Point - history",
+                "description": "Accounting Point - history",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_response"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_id": {
+                                "description": "Reference to the resource that was updated.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 48
+                            },
+                            "replaced_by": {
+                                "description": "The identity that updated the resource when it was replaced.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "nullable": true,
+                                "example": 90
+                            },
+                            "replaced_at": {
+                                "description": "When the resource was replaced in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "nullable": true,
+                                "example": "2024-07-07 10:00:00 CET"
+                            }
+                        }
+                    }
+                ]
+            },
+            "accounting_point_balance_responsible_party_history_response": {
+                "summary": "Accounting Point Balance Responsible Party - history",
+                "description": "Accounting Point Balance Responsible Party - history",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_balance_responsible_party_id": {
+                                "description": "Reference to the resource that was updated.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 48
+                            },
+                            "replaced_by": {
+                                "description": "The identity that updated the resource when it was replaced.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "nullable": true,
+                                "example": 90
+                            },
+                            "replaced_at": {
+                                "description": "When the resource was replaced in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "nullable": true,
+                                "example": "2024-07-07 10:00:00 CET"
+                            }
+                        }
+                    }
+                ]
+            },
+            "accounting_point_energy_supplier_history_response": {
+                "summary": "Accounting Point Energy Supplier - history",
+                "description": "Accounting Point Energy Supplier - history",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_energy_supplier_id": {
                                 "description": "Reference to the resource that was updated.",
                                 "format": "bigint",
                                 "type": "integer",
@@ -10977,6 +11236,1344 @@
                                 "description": "The `system_operator_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
                             }
                         }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_history": {
+            "summary": "Accounting Point - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Accounting Point whose history we want to inspect.",
+                    "name": "accounting_point_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_accounting_point_history",
+                "summary": "List Accounting Point - history",
+                "description": "",
+                "tags": [
+                    "accounting_point"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_history/{id}": {
+            "summary": "Accounting Point - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_accounting_point_history",
+                "summary": "Read Accounting Point - history",
+                "description": "",
+                "tags": [
+                    "accounting_point"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_balance_responsible_party": {
+            "summary": "Accounting Point Balance Responsible Party",
+            "description": "",
+            "get": {
+                "operationId": "list_accounting_point_balance_responsible_party",
+                "summary": "List Accounting Point Balance Responsible Party",
+                "description": "",
+                "tags": [
+                    "accounting_point_balance_responsible_party"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The ID of the accounting point.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The balance responsible party of the accounting point.",
+                        "name": "balance_responsible_party_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_balance_responsible_party/{id}": {
+            "summary": "Accounting Point Balance Responsible Party - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_accounting_point_balance_responsible_party",
+                "summary": "Read Accounting Point Balance Responsible Party",
+                "description": "",
+                "tags": [
+                    "accounting_point_balance_responsible_party"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "accounting_point_id": {
+                                "operationId": "read_accounting_point",
+                                "parameters": {
+                                    "path.id": "$response.body#/accounting_point_id"
+                                },
+                                "description": "The `accounting_point_id` value returned in the response can be used as the `id` parameter in `GET /accounting_point/{id}`."
+                            },
+                            "balance_responsible_party_id": {
+                                "operationId": "read_party",
+                                "parameters": {
+                                    "path.id": "$response.body#/balance_responsible_party_id"
+                                },
+                                "description": "The `balance_responsible_party_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_balance_responsible_party_history": {
+            "summary": "Accounting Point Balance Responsible Party - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Accounting Point Balance Responsible Party whose history we want to inspect.",
+                    "name": "accounting_point_balance_responsible_party_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_accounting_point_balance_responsible_party_history",
+                "summary": "List Accounting Point Balance Responsible Party - history",
+                "description": "",
+                "tags": [
+                    "accounting_point_balance_responsible_party"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_balance_responsible_party_history/{id}": {
+            "summary": "Accounting Point Balance Responsible Party - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_accounting_point_balance_responsible_party_history",
+                "summary": "Read Accounting Point Balance Responsible Party - history",
+                "description": "",
+                "tags": [
+                    "accounting_point_balance_responsible_party"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_balance_responsible_party_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_energy_supplier": {
+            "summary": "Accounting Point Energy Supplier",
+            "description": "",
+            "get": {
+                "operationId": "list_accounting_point_energy_supplier",
+                "summary": "List Accounting Point Energy Supplier",
+                "description": "",
+                "tags": [
+                    "accounting_point_energy_supplier"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The ID of the accounting point.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The energy supplier of the accounting point.",
+                        "name": "energy_supplier_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_energy_supplier/{id}": {
+            "summary": "Accounting Point Energy Supplier - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_accounting_point_energy_supplier",
+                "summary": "Read Accounting Point Energy Supplier",
+                "description": "",
+                "tags": [
+                    "accounting_point_energy_supplier"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "accounting_point_id": {
+                                "operationId": "read_accounting_point",
+                                "parameters": {
+                                    "path.id": "$response.body#/accounting_point_id"
+                                },
+                                "description": "The `accounting_point_id` value returned in the response can be used as the `id` parameter in `GET /accounting_point/{id}`."
+                            },
+                            "energy_supplier_id": {
+                                "operationId": "read_party",
+                                "parameters": {
+                                    "path.id": "$response.body#/energy_supplier_id"
+                                },
+                                "description": "The `energy_supplier_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_energy_supplier_history": {
+            "summary": "Accounting Point Energy Supplier - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Accounting Point Energy Supplier whose history we want to inspect.",
+                    "name": "accounting_point_energy_supplier_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_accounting_point_energy_supplier_history",
+                "summary": "List Accounting Point Energy Supplier - history",
+                "description": "",
+                "tags": [
+                    "accounting_point_energy_supplier"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_energy_supplier_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_energy_supplier_history/{id}": {
+            "summary": "Accounting Point Energy Supplier - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_accounting_point_energy_supplier_history",
+                "summary": "Read Accounting Point Energy Supplier - history",
+                "description": "",
+                "tags": [
+                    "accounting_point_energy_supplier"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_energy_supplier_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
                     },
                     "400": {
                         "content": {

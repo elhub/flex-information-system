@@ -740,6 +740,141 @@ TO flex_third_party;
 GRANT SELECT ON TABLE flex.accounting_point
 TO flex_internal_event_notification;
 
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_balance_responsible_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_energy_supplier;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_end_user;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_market_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_third_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_history
+TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_balance_responsible_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_energy_supplier;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_end_user;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_market_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_third_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_balance_responsible_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_energy_supplier;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_end_user;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_market_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_third_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party_history
+TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_balance_responsible_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_energy_supplier;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_end_user;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_market_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_third_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_balance_responsible_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_energy_supplier;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_end_user;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_market_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_third_party;
+
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier_history
+TO flex_internal_event_notification;
+
 GRANT SELECT ON TABLE flex.product_type
 TO flex_balance_responsible_party;
 

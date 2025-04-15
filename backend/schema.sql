@@ -240,7 +240,62 @@ CREATE TABLE accounting_point (
     id bigint NOT NULL,
     business_id text NOT NULL,
     metering_grid_area_id text NOT NULL,
-    system_operator_id text NOT NULL
+    system_operator_id text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE accounting_point_history (
+    accounting_point_id bigint NOT NULL,
+    id bigint NOT NULL,
+    business_id text NOT NULL,
+    metering_grid_area_id text NOT NULL,
+    system_operator_id text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
+CREATE TABLE accounting_point_balance_responsible_party (
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    balance_responsible_party_id bigint NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE accounting_point_balance_responsible_party_history (
+    accounting_point_balance_responsible_party_id bigint NOT NULL,
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    balance_responsible_party_id bigint NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
+CREATE TABLE accounting_point_energy_supplier (
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    energy_supplier_id bigint NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE accounting_point_energy_supplier_history (
+    accounting_point_energy_supplier_id bigint NOT NULL,
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    energy_supplier_id bigint NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
 );
 CREATE TABLE product_type (
     id bigint NOT NULL,

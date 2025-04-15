@@ -922,6 +922,11 @@ resources:
       - read
       - list
     generate_views: true
+    audit: true
+    history:
+      - list
+      - read
+    history_rls: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -951,6 +956,122 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+
+  - id: accounting_point_balance_responsible_party
+    acronym: APBRP
+    summary: Accounting Point Balance Responsible Party
+    description: >-
+      Relation linking a balance responsible party to an accounting point.
+    operations:
+      - read
+      - list
+    generate_views: true
+    audit: true
+    history:
+      - list
+      - read
+    history_rls: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 19
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 245
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+      balance_responsible_party_id:
+        description: The balance responsible party of the accounting point.
+        format: bigint
+        type: integer
+        example: 37
+        readOnly: true
+        x-foreign-key:
+          resource: party
+          field: id
+      valid_from:
+        description: >-
+          The date from which the relation between the accounting point and
+          the balance responsible party is valid. Midnight aligned on Norwegian
+          timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2022-08-08 00:00:00 CET
+      valid_to:
+        description: >-
+          The date until which the relation between the accounting point and
+          the balance responsible party is valid. Midnight aligned on Norwegian
+          timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+
+  - id: accounting_point_energy_supplier
+    acronym: APES
+    summary: Accounting Point Energy Supplier
+    description: >-
+      Relation linking an energy supplier to an accounting point.
+    operations:
+      - read
+      - list
+    generate_views: true
+    audit: true
+    history:
+      - list
+      - read
+    history_rls: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 19
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 245
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+      energy_supplier_id:
+        description: The energy supplier of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 37
+        x-foreign-key:
+          resource: party
+          field: id
+      valid_from:
+        description: >-
+          The date from which the relation between the accounting point and
+          the energy supplier is valid. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2022-08-08 00:00:00 CET
+      valid_to:
+        description: >-
+          The date until which the relation between the accounting point and
+          the energy supplier is valid. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
 
   - id: product_type
     acronym: PT

@@ -13,6 +13,31 @@ type AccountingPoint struct {
 	BusinessID         string
 	MeteringGridAreaID string
 	SystemOperatorID   string
+	RecordedBy         int
+	RecordedAt         pgtype.Timestamptz
+}
+
+type AccountingPointBalanceResponsibleParty struct {
+	ID                        int
+	AccountingPointID         int
+	BalanceResponsiblePartyID int
+	ValidFrom                 pgtype.Timestamptz
+	ValidTo                   pgtype.Timestamptz
+	RecordedBy                int
+	RecordedAt                pgtype.Timestamptz
+}
+
+type AccountingPointBalanceResponsiblePartyHistory struct {
+	AccountingPointBalanceResponsiblePartyID int
+	ID                                       int
+	AccountingPointID                        int
+	BalanceResponsiblePartyID                int
+	ValidFrom                                pgtype.Timestamptz
+	ValidTo                                  pgtype.Timestamptz
+	RecordedBy                               int
+	RecordedAt                               pgtype.Timestamptz
+	ReplacedBy                               *int
+	ReplacedAt                               pgtype.Timestamptz
 }
 
 type AccountingPointEndUser struct {
@@ -22,6 +47,41 @@ type AccountingPointEndUser struct {
 	ValidTimeRange    pgtype.Range[pgtype.Timestamptz]
 	RecordTimeRange   pgtype.Range[pgtype.Timestamptz]
 	RecordedBy        int
+}
+
+type AccountingPointEnergySupplier struct {
+	ID                int
+	AccountingPointID int
+	EnergySupplierID  int
+	ValidFrom         pgtype.Timestamptz
+	ValidTo           pgtype.Timestamptz
+	RecordedBy        int
+	RecordedAt        pgtype.Timestamptz
+}
+
+type AccountingPointEnergySupplierHistory struct {
+	AccountingPointEnergySupplierID int
+	ID                              int
+	AccountingPointID               int
+	EnergySupplierID                int
+	ValidFrom                       pgtype.Timestamptz
+	ValidTo                         pgtype.Timestamptz
+	RecordedBy                      int
+	RecordedAt                      pgtype.Timestamptz
+	ReplacedBy                      *int
+	ReplacedAt                      pgtype.Timestamptz
+}
+
+type AccountingPointHistory struct {
+	AccountingPointID  int
+	ID                 int
+	BusinessID         string
+	MeteringGridAreaID string
+	SystemOperatorID   string
+	RecordedBy         int
+	RecordedAt         pgtype.Timestamptz
+	ReplacedBy         *int
+	ReplacedAt         pgtype.Timestamptz
 }
 
 type ControllableUnit struct {

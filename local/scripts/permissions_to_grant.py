@@ -23,6 +23,9 @@ party_type_abbr = {
 }
 
 history_enabled = [
+    "accounting_point",
+    "accounting_point_balance_responsible_party",
+    "accounting_point_energy_supplier",
     "controllable_unit",
     "controllable_unit_service_provider",
     "service_providing_group",
