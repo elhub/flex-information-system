@@ -111,6 +111,20 @@
         "metering_grid_area_id": "The metering grid area EIC-X id of the accounting point.",
         "system_operator_id": "The system operator of the accounting point"
     },
+    "accounting_point_balance_responsible_party": {
+        "id": "Unique surrogate identifier.",
+        "accounting_point_id": "The ID of the accounting point.",
+        "balance_responsible_party_id": "The balance responsible party of the accounting point.",
+        "valid_from": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
+        "valid_to": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
+    },
+    "accounting_point_energy_supplier": {
+        "id": "Unique surrogate identifier.",
+        "accounting_point_id": "The ID of the accounting point.",
+        "energy_supplier_id": "The energy supplier of the accounting point.",
+        "valid_from": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
+        "valid_to": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
+    },
     "product_type": {
         "id": "Unique surrogate identifier.",
         "business_id": "The code for this product type.",

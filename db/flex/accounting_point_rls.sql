@@ -1,9 +1,19 @@
--- We shouldn't really need RLS, but keeping the filename consistent with the other tables
-GRANT SELECT ON flex.accounting_point TO flex_common;
+ALTER TABLE IF EXISTS accounting_point ENABLE ROW LEVEL SECURITY;
 
--- internal
-GRANT SELECT ON accounting_point TO flex_internal_event_notification;
-CREATE POLICY "AP_INTERNAL_EVENT_NOTIFICATION" ON accounting_point
+-- RLS: AP-COM001
+GRANT SELECT ON accounting_point
+TO flex_common;
+CREATE POLICY "AP_COM001"
+ON accounting_point
 FOR SELECT
-TO flex_internal_event_notification
+TO flex_common
+USING (true);
+
+-- RLS: AP-COM002
+GRANT SELECT ON accounting_point_history
+TO flex_common;
+CREATE POLICY "AP_COM002"
+ON accounting_point_history
+FOR SELECT
+TO flex_common
 USING (true);
