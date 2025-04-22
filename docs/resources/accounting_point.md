@@ -52,26 +52,31 @@ No policies.
 
 #### Common
 
-| Policy key | Policy                                 | Status |
-|------------|----------------------------------------|--------|
-| AP-COM001  | Read all accounting points.            | DONE   |
-| AP-COM002  | Read history of all accounting points. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key | Policy                                               | Status |
+|------------|------------------------------------------------------|--------|
+| AP-BRP001  | Read AP when they are its balance responsible party. | DONE   |
 
 #### End User
 
-No policies.
+| Policy key | Policy                              | Status |
+|------------|-------------------------------------|--------|
+| AP-EU001   | Read AP when they are its end user. | DONE   |
 
 #### Energy Supplier
 
-No policies.
+| Policy key | Policy                                     | Status |
+|------------|--------------------------------------------|--------|
+| AP-ES001   | Read AP when they are its energy supplier. | DONE   |
 
 #### Flexibility Information System Operator
 
-No policies.
+| Policy key  | Policy                      | Status |
+|-------------|-----------------------------|--------|
+| AP-FISO001  | Read all accounting points. | DONE   |
 
 #### Market Operator
 
@@ -83,7 +88,9 @@ No policies.
 
 #### Service Provider
 
-No policies.
+| Policy key | Policy                                                 | Status |
+|------------|--------------------------------------------------------|--------|
+| AP-SP001   | Read AP when they have a relation with a CU on the AP. | DONE   |
 
 #### Third Party
 

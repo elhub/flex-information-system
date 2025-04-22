@@ -46,14 +46,13 @@ No policies.
 
 #### Common
 
-| Policy key   | Policy                                                 | Status |
-|--------------|--------------------------------------------------------|--------|
-| APES-COM001  | Read all accounting point energy suppliers.            | DONE   |
-| APES-COM002  | Read history of all accounting point energy suppliers. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key   | Policy                                            | Status |
+|--------------|---------------------------------------------------|--------|
+| APES-BRP001  | Read APES when they can see the accounting point. | DONE   |
 
 #### End User
 
@@ -61,11 +60,15 @@ No policies.
 
 #### Energy Supplier
 
-No policies.
+| Policy key  | Policy                                       | Status |
+|-------------|----------------------------------------------|--------|
+| APES-ES001  | Read APES when they are the energy supplier. | DONE   |
 
 #### Flexibility Information System Operator
 
-No policies.
+| Policy key    | Policy         | Status |
+|---------------|----------------|--------|
+| APES-FISO001  | Read all APES. | DONE   |
 
 #### Market Operator
 
@@ -77,7 +80,9 @@ No policies.
 
 #### Service Provider
 
-No policies.
+| Policy key  | Policy                                            | Status |
+|-------------|---------------------------------------------------|--------|
+| APES-SP001  | Read APES when they can see the accounting point. | DONE   |
 
 #### Third Party
 

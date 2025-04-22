@@ -46,14 +46,13 @@ No policies.
 
 #### Common
 
-| Policy key    | Policy                                                            | Status |
-|---------------|-------------------------------------------------------------------|--------|
-| APBRP-COM001  | Read all accounting point balance responsible parties.            | DONE   |
-| APBRP-COM002  | Read history of all accounting point balance responsible parties. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key    | Policy                                                  | Status |
+|---------------|---------------------------------------------------------|--------|
+| APBRP-BRP001  | Read APBRP when they are the balance responsible party. | DONE   |
 
 #### End User
 
@@ -61,11 +60,15 @@ No policies.
 
 #### Energy Supplier
 
-No policies.
+| Policy key   | Policy                                             | Status |
+|--------------|----------------------------------------------------|--------|
+| APBRP-ES001  | Read APBRP when they can see the accounting point. | DONE   |
 
 #### Flexibility Information System Operator
 
-No policies.
+| Policy key     | Policy          | Status |
+|----------------|-----------------|--------|
+| APBRP-FISO001  | Read all APBRP. | DONE   |
 
 #### Market Operator
 
@@ -77,7 +80,9 @@ No policies.
 
 #### Service Provider
 
-No policies.
+| Policy key   | Policy                                             | Status |
+|--------------|----------------------------------------------------|--------|
+| APBRP-SP001  | Read APBRP when they can see the accounting point. | DONE   |
 
 #### Third Party
 
