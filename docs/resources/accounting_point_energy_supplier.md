@@ -46,15 +46,13 @@ No policies.
 
 #### Common
 
-| Policy key   | Policy                                        | Status |
-|--------------|-----------------------------------------------|--------|
-| APES-COM001  | Read APES history when they can see the APES. | TODO   |
+No policies.
 
 #### Balance Responsible Party
 
-| Policy key   | Policy                                            | Status |
-|--------------|---------------------------------------------------|--------|
-| APES-BRP001  | Read APES when they can see the accounting point. | TODO   |
+| Policy key  | Policy                                             | Status |
+|-------------|----------------------------------------------------|--------|
+| APES-BRP001 | Read APES on periods where they are BRP on the AP. | TODO   |
 
 #### End User
 
@@ -62,15 +60,15 @@ No policies.
 
 #### Energy Supplier
 
-| Policy key  | Policy                                       | Status |
-|-------------|----------------------------------------------|--------|
-| APES-ES001  | Read APES when they are the energy supplier. | TODO   |
+| Policy key | Policy                                       | Status |
+|------------|----------------------------------------------|--------|
+| APES-ES001 | Read APES when they are the energy supplier. | TODO   |
 
 #### Flexibility Information System Operator
 
-| Policy key    | Policy         | Status |
-|---------------|----------------|--------|
-| APES-FISO001  | Read all APES. | TODO   |
+| Policy key   | Policy         | Status |
+|--------------|----------------|--------|
+| APES-FISO001 | Read all APES. | TODO   |
 
 #### Market Operator
 
@@ -82,9 +80,9 @@ No policies.
 
 #### Service Provider
 
-| Policy key  | Policy                                            | Status |
-|-------------|---------------------------------------------------|--------|
-| APES-SP001  | Read APES when they can see the accounting point. | TODO   |
+| Policy key | Policy                                                         | Status |
+|------------|----------------------------------------------------------------|--------|
+| APES-SP001 | Read APES on periods where they are related to a CU on the AP. | TODO   |
 
 #### Third Party
 

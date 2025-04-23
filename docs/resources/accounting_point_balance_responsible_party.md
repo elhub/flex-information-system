@@ -46,15 +46,13 @@ No policies.
 
 #### Common
 
-| Policy key   | Policy                                          | Status |
-|--------------|-------------------------------------------------|--------|
-| APBRP-COM001 | Read APBRP history when they can see the APBRP. | TODO   |
+No policies.
 
 #### Balance Responsible Party
 
-| Policy key    | Policy                                                  | Status |
-|---------------|---------------------------------------------------------|--------|
-| APBRP-BRP001  | Read APBRP when they are the balance responsible party. | TODO   |
+| Policy key   | Policy                                                  | Status |
+|--------------|---------------------------------------------------------|--------|
+| APBRP-BRP001 | Read APBRP when they are the balance responsible party. | TODO   |
 
 #### End User
 
@@ -64,13 +62,13 @@ No policies.
 
 | Policy key   | Policy                                             | Status |
 |--------------|----------------------------------------------------|--------|
-| APBRP-ES001  | Read APBRP when they can see the accounting point. | TODO   |
+| APBRP-ES001  | Read APBRP on periods where they are ES on the AP. | TODO   |
 
 #### Flexibility Information System Operator
 
 | Policy key     | Policy          | Status |
 |----------------|-----------------|--------|
-| APBRP-FISO001  | Read all APBRP. | DONE   |
+| APBRP-FISO001  | Read all APBRP. | TODO   |
 
 #### Market Operator
 
@@ -82,9 +80,9 @@ No policies.
 
 #### Service Provider
 
-| Policy key   | Policy                                             | Status |
-|--------------|----------------------------------------------------|--------|
-| APBRP-SP001  | Read APBRP when they can see the accounting point. | TODO   |
+| Policy key  | Policy                                                          | Status |
+|-------------|-----------------------------------------------------------------|--------|
+| APBRP-SP001 | Read APBRP on periods where they are related to a CU on the AP. | TODO   |
 
 #### Third Party
 

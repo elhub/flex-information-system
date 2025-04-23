@@ -56,31 +56,27 @@ No policies.
 
 #### Balance Responsible Party
 
-| Policy key | Policy                                                                   | Status |
-|------------|--------------------------------------------------------------------------|--------|
-| AP-BRP001  | Read AP on periods where they are its balance responsible party.         | TODO   |
-| AP-BRP002  | Read AP history on periods where they are its balance responsible party. | TODO   |
+| Policy key | Policy                                        | Status |
+|------------|-----------------------------------------------|--------|
+| AP-BRP001  | Read AP if they have an APBRP relation on it. | TODO   |
 
 #### End User
 
-| Policy key | Policy                                                  | Status |
-|------------|---------------------------------------------------------|--------|
-| AP-EU001   | Read AP on periods where they are its end user.         | TODO   |
-| AP-EU002   | Read AP history on periods where they are its end user. | TODO   |
+| Policy key | Policy                                       | Status |
+|------------|----------------------------------------------|--------|
+| AP-EU001   | Read AP if they have an APEU relation on it. | TODO   |
 
 #### Energy Supplier
 
-| Policy key | Policy                                                         | Status |
-|------------|----------------------------------------------------------------|--------|
-| AP-ES001   | Read AP on periods where they are its energy supplier.         | TODO   |
-| AP-ES002   | Read AP history on periods where they are its energy supplier. | TODO   |
+| Policy key | Policy                                       | Status |
+|------------|----------------------------------------------|--------|
+| AP-ES001   | Read AP if they have an APES relation on it. | TODO   |
 
 #### Flexibility Information System Operator
 
-| Policy key  | Policy                             | Status |
-|-------------|------------------------------------|--------|
-| AP-FISO001  | Read all accounting points.        | TODO   |
-| AP-FISO002  | Read all accounting point history. | TODO   |
+| Policy key | Policy                      | Status |
+|------------|-----------------------------|--------|
+| AP-FISO001 | Read all accounting points. | TODO   |
 
 #### Market Operator
 
@@ -92,10 +88,9 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                                                     | Status |
-|------------|----------------------------------------------------------------------------|--------|
-| AP-SP001   | Read AP on periods where they have a relation with a CU on the AP.         | TODO   |
-| AP-SP002   | Read AP history on periods where they have a relation with a CU on the AP. | TODO   |
+| Policy key | Policy                                           | Status |
+|------------|--------------------------------------------------|--------|
+| AP-SP001   | Read AP if they have a relation with a CU on it. | TODO   |
 
 #### Third Party
 
