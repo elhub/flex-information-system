@@ -46,13 +46,15 @@ No policies.
 
 #### Common
 
-No policies.
+| Policy key   | Policy                                          | Status |
+|--------------|-------------------------------------------------|--------|
+| APBRP-COM001 | Read APBRP history when they can see the APBRP. | TODO   |
 
 #### Balance Responsible Party
 
 | Policy key    | Policy                                                  | Status |
 |---------------|---------------------------------------------------------|--------|
-| APBRP-BRP001  | Read APBRP when they are the balance responsible party. | DONE   |
+| APBRP-BRP001  | Read APBRP when they are the balance responsible party. | TODO   |
 
 #### End User
 
@@ -62,7 +64,7 @@ No policies.
 
 | Policy key   | Policy                                             | Status |
 |--------------|----------------------------------------------------|--------|
-| APBRP-ES001  | Read APBRP when they can see the accounting point. | DONE   |
+| APBRP-ES001  | Read APBRP when they can see the accounting point. | TODO   |
 
 #### Flexibility Information System Operator
 
@@ -82,7 +84,7 @@ No policies.
 
 | Policy key   | Policy                                             | Status |
 |--------------|----------------------------------------------------|--------|
-| APBRP-SP001  | Read APBRP when they can see the accounting point. | DONE   |
+| APBRP-SP001  | Read APBRP when they can see the accounting point. | TODO   |
 
 #### Third Party
 
