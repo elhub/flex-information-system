@@ -84,7 +84,9 @@ No policies.
 
 #### System Operator
 
-No policies.
+| Policy key | Policy                                  | Status |
+|------------|-----------------------------------------|--------|
+| AP-SO001   | Read AP where they are system operator. | DONE   |
 
 #### Service Provider
 

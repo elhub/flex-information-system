@@ -20,6 +20,7 @@ USING (
     EXISTS (
         SELECT 1 FROM accounting_point_balance_responsible_party AS apbrp
         WHERE apbrp.accounting_point_id = accounting_point.id -- noqa
+            AND apbrp.balance_responsible_party_id = current_party()
     )
 );
 
@@ -34,6 +35,7 @@ USING (
     EXISTS (
         SELECT 1 FROM accounting_point_energy_supplier AS apes
         WHERE apes.accounting_point_id = accounting_point.id --noqa
+            AND apes.energy_supplier_id = current_party()
     )
 );
 
@@ -48,8 +50,18 @@ USING (
     EXISTS (
         SELECT 1 FROM accounting_point_end_user AS apeu
         WHERE apeu.accounting_point_id = accounting_point.id --noqa
+            AND apeu.end_user_id = current_party()
     )
 );
+
+-- RLS: AP-SO001
+GRANT SELECT ON accounting_point
+TO flex_system_operator;
+CREATE POLICY "AP_SO001"
+ON accounting_point
+FOR SELECT
+TO flex_system_operator
+USING (system_operator_id = current_party());
 
 -- RLS: AP-SP001
 GRANT SELECT ON accounting_point
@@ -64,9 +76,7 @@ USING (
         FROM controllable_unit_service_provider AS cusp -- noqa
             INNER JOIN controllable_unit AS cu
                 ON cu.id = cusp.controllable_unit_id
-            INNER JOIN accounting_point AS ap
-                ON ap.business_id = cusp.accounting_point_id
         WHERE cusp.service_provider_id = current_party()
-            AND ap.id = accounting_point.id
+            AND cu.accounting_point_id = accounting_point.business_id -- noqa
     )
 );

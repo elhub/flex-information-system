@@ -65,7 +65,7 @@ USING (
             INNER JOIN controllable_unit AS cu
                 ON cu.id = cusp.controllable_unit_id
             INNER JOIN accounting_point AS ap
-                ON ap.business_id = cusp.accounting_point_id
+                ON ap.business_id = cu.accounting_point_id
         WHERE cusp.service_provider_id = current_party()
             AND ap.id = accounting_point_energy_supplier.accounting_point_id -- noqa
             AND cusp.valid_time_range && accounting_point_energy_supplier.valid_time_range -- noqa

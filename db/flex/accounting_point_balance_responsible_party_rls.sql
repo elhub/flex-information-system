@@ -51,15 +51,6 @@ USING (
     )
 );
 
--- RLS: APBRP-FISO001
-GRANT SELECT ON accounting_point_balance_responsible_party
-TO flex_flexibility_information_system_operator;
-CREATE POLICY "APBRP_FISO001"
-ON accounting_point_balance_responsible_party
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
-
 -- RLS: APBRP-SP001
 GRANT SELECT ON accounting_point_balance_responsible_party
 TO flex_service_provider;
@@ -74,7 +65,7 @@ USING (
             INNER JOIN controllable_unit AS cu
                 ON cu.id = cusp.controllable_unit_id
             INNER JOIN accounting_point AS ap
-                ON ap.business_id = cusp.accounting_point_id
+                ON ap.business_id = cu.accounting_point_id
         WHERE cusp.service_provider_id = current_party()
             AND ap.id = accounting_point_balance_responsible_party.accounting_point_id -- noqa
             AND cusp.valid_time_range && accounting_point_balance_responsible_party.valid_time_range -- noqa
