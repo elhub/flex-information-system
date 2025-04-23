@@ -58,25 +58,25 @@ No policies.
 
 | Policy key | Policy                                        | Status |
 |------------|-----------------------------------------------|--------|
-| AP-BRP001  | Read AP if they have an APBRP relation on it. | TODO   |
+| AP-BRP001  | Read AP if they have an APBRP relation on it. | DONE   |
 
 #### End User
 
 | Policy key | Policy                                       | Status |
 |------------|----------------------------------------------|--------|
-| AP-EU001   | Read AP if they have an APEU relation on it. | TODO   |
+| AP-EU001   | Read AP if they have an APEU relation on it. | DONE   |
 
 #### Energy Supplier
 
 | Policy key | Policy                                       | Status |
 |------------|----------------------------------------------|--------|
-| AP-ES001   | Read AP if they have an APES relation on it. | TODO   |
+| AP-ES001   | Read AP if they have an APES relation on it. | DONE   |
 
 #### Flexibility Information System Operator
 
 | Policy key | Policy                      | Status |
 |------------|-----------------------------|--------|
-| AP-FISO001 | Read all accounting points. | TODO   |
+| AP-FISO001 | Read all accounting points. | DONE   |
 
 #### Market Operator
 
@@ -90,7 +90,7 @@ No policies.
 
 | Policy key | Policy                                           | Status |
 |------------|--------------------------------------------------|--------|
-| AP-SP001   | Read AP if they have a relation with a CU on it. | TODO   |
+| AP-SP001   | Read AP if they have a relation with a CU on it. | DONE   |
 
 #### Third Party
 

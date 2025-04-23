@@ -52,23 +52,25 @@ No policies.
 
 | Policy key   | Policy                                                  | Status |
 |--------------|---------------------------------------------------------|--------|
-| APBRP-BRP001 | Read APBRP when they are the balance responsible party. | TODO   |
+| APBRP-BRP001 | Read APBRP when they are the balance responsible party. | DONE   |
 
 #### End User
 
-No policies.
+| Policy key   | Policy                                             | Status |
+|--------------|----------------------------------------------------|--------|
+| APBRP-EU001  | Read APBRP on periods where they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
 | Policy key   | Policy                                             | Status |
 |--------------|----------------------------------------------------|--------|
-| APBRP-ES001  | Read APBRP on periods where they are ES on the AP. | TODO   |
+| APBRP-ES001  | Read APBRP on periods where they are ES on the AP. | DONE   |
 
 #### Flexibility Information System Operator
 
 | Policy key     | Policy          | Status |
 |----------------|-----------------|--------|
-| APBRP-FISO001  | Read all APBRP. | TODO   |
+| APBRP-FISO001  | Read all APBRP. | DONE   |
 
 #### Market Operator
 
@@ -82,7 +84,7 @@ No policies.
 
 | Policy key  | Policy                                                          | Status |
 |-------------|-----------------------------------------------------------------|--------|
-| APBRP-SP001 | Read APBRP on periods where they are related to a CU on the AP. | TODO   |
+| APBRP-SP001 | Read APBRP on periods where they are related to a CU on the AP. | DONE   |
 
 #### Third Party
 

@@ -56,7 +56,9 @@ No policies.
 
 #### End User
 
-No policies.
+| Policy key | Policy                                            | Status |
+|------------|---------------------------------------------------|--------|
+| APES-EU001 | Read APES on periods where they are EU on the AP. | TODO   |
 
 #### Energy Supplier
 
