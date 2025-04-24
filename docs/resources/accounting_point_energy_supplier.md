@@ -52,25 +52,25 @@ No policies.
 
 | Policy key  | Policy                                             | Status |
 |-------------|----------------------------------------------------|--------|
-| APES-BRP001 | Read APES on periods where they are BRP on the AP. | TODO   |
+| APES-BRP001 | Read APES on periods where they are BRP on the AP. | DONE   |
 
 #### End User
 
 | Policy key | Policy                                            | Status |
 |------------|---------------------------------------------------|--------|
-| APES-EU001 | Read APES on periods where they are EU on the AP. | TODO   |
+| APES-EU001 | Read APES on periods where they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
 | Policy key | Policy                                       | Status |
 |------------|----------------------------------------------|--------|
-| APES-ES001 | Read APES when they are the energy supplier. | TODO   |
+| APES-ES001 | Read APES when they are the energy supplier. | DONE   |
 
 #### Flexibility Information System Operator
 
 | Policy key   | Policy         | Status |
 |--------------|----------------|--------|
-| APES-FISO001 | Read all APES. | TODO   |
+| APES-FISO001 | Read all APES. | DONE   |
 
 #### Market Operator
 
@@ -84,7 +84,7 @@ No policies.
 
 | Policy key | Policy                                                         | Status |
 |------------|----------------------------------------------------------------|--------|
-| APES-SP001 | Read APES on periods where they are related to a CU on the AP. | TODO   |
+| APES-SP001 | Read APES on periods where they are related to a CU on the AP. | DONE   |
 
 #### Third Party
 
