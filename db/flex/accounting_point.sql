@@ -2,9 +2,7 @@
 -- It is intended to be an
 CREATE TABLE IF NOT EXISTS accounting_point (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    business_id text UNIQUE NOT NULL CHECK (
-        validate_business_id(business_id, 'gsrn')
-    ),
+    business_id text UNIQUE NOT NULL,
     metering_grid_area_id text NOT NULL CHECK (
         validate_business_id(metering_grid_area_id, 'eic_x')
     ),
@@ -29,5 +27,8 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     ) REFERENCES party (id, type),
     CONSTRAINT fk_accounting_point_system_operator FOREIGN KEY (
         system_operator_id, system_operator_party_type
-    ) REFERENCES party (id, type)
+    ) REFERENCES party (id, type),
+    CONSTRAINT check_accounting_point_business_id_length CHECK (
+        (char_length(business_id) = 18)
+    )
 );

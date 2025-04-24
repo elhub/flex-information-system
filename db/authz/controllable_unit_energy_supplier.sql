@@ -4,8 +4,10 @@ CREATE OR REPLACE VIEW controllable_unit_energy_supplier AS (
         apes.energy_supplier_id,
         apes.valid_time_range
     FROM flex.controllable_unit AS cu
+        INNER JOIN flex.accounting_point AS ap
+            ON cu.accounting_point_id = ap.business_id
         LEFT JOIN flex.accounting_point_energy_supplier AS apes
-            ON cu.accounting_point_id = apes.accounting_point_id
+            ON ap.id = apes.accounting_point_id
 );
 
 GRANT SELECT ON TABLE controllable_unit_energy_supplier

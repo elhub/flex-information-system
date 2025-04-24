@@ -14,8 +14,7 @@ class AccountingPointEnergySupplierHistoryResponse:
 
     Attributes:
         id (Union[Unset, int]): Unique surrogate identifier. Example: 19.
-        accounting_point_id (Union[Unset, str]): The GSRN metering point ID of the accounting point. Example:
-            709000000000000057.
+        accounting_point_id (Union[Unset, int]): The ID of the accounting point. Example: 245.
         energy_supplier_id (Union[Unset, int]): The energy supplier of the accounting point. Example: 37.
         valid_from (Union[Unset, str]): The date from which the relation between the accounting point and the energy
             supplier is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
@@ -32,7 +31,7 @@ class AccountingPointEnergySupplierHistoryResponse:
     """
 
     id: Union[Unset, int] = UNSET
-    accounting_point_id: Union[Unset, str] = UNSET
+    accounting_point_id: Union[Unset, int] = UNSET
     energy_supplier_id: Union[Unset, int] = UNSET
     valid_from: Union[Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET

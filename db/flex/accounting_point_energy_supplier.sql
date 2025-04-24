@@ -1,7 +1,7 @@
 -- relation linking accounting points to their energy supplier
 CREATE TABLE IF NOT EXISTS accounting_point_energy_supplier (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    accounting_point_id text NOT NULL,
+    accounting_point_id bigint NOT NULL,
     energy_supplier_id bigint NOT NULL,
     energy_supplier_party_type text GENERATED ALWAYS AS (
         'energy_supplier'
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_energy_supplier (
     CONSTRAINT fk_accounting_point_energy_supplier_accounting_point
     FOREIGN KEY (
         accounting_point_id
-    ) REFERENCES accounting_point (business_id),
+    ) REFERENCES accounting_point (id),
     CONSTRAINT fk_accounting_point_energy_supplier_energy_supplier FOREIGN KEY (
         energy_supplier_id, energy_supplier_party_type
     ) REFERENCES party (id, type),

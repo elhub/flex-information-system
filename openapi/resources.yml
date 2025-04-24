@@ -979,16 +979,14 @@ resources:
         readOnly: true
         example: 19
       accounting_point_id:
-        description: The GSRN metering point ID of the accounting point.
-        format: text
-        type: string
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
         readOnly: true
-        pattern: '^[1-9][0-9]{17}$'
-        nullable: false
-        example: '709000000000000057'
+        example: 245
         x-foreign-key:
           resource: accounting_point
-          field: business_id
+          field: id
       balance_responsible_party_id:
         description: The balance responsible party of the accounting point.
         format: bigint
@@ -1040,16 +1038,14 @@ resources:
         readOnly: true
         example: 19
       accounting_point_id:
-        description: The GSRN metering point ID of the accounting point.
-        format: text
-        type: string
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
         readOnly: true
-        pattern: '^[1-9][0-9]{17}$'
-        nullable: false
-        example: '709000000000000057'
+        example: 245
         x-foreign-key:
           resource: accounting_point
-          field: business_id
+          field: id
       energy_supplier_id:
         description: The energy supplier of the accounting point.
         format: bigint

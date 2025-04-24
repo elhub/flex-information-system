@@ -9,9 +9,9 @@ CREATE OR REPLACE VIEW notice AS (
             'no.elhub.flex.controllable_unit.grid_node_id.missing' AS type, -- noqa
             '/controllable_unit/' || cu.id AS source,
             null AS data -- noqa
-        FROM controllable_unit AS cu -- noqa
+        FROM controllable_unit AS cu
             INNER JOIN accounting_point AS apt
-                ON apt.business_id = cu.accounting_point_id
+                ON cu.accounting_point_id = apt.business_id
         WHERE cu.grid_node_id IS null
 
         -- CU grid validation status pending
@@ -21,9 +21,9 @@ CREATE OR REPLACE VIEW notice AS (
             'no.elhub.flex.controllable_unit.grid_validation_status.pending' AS type, -- noqa
             '/controllable_unit/' || cu.id AS source,
             null AS data -- noqa
-        FROM controllable_unit AS cu -- noqa
+        FROM controllable_unit AS cu
             INNER JOIN accounting_point AS apt
-                ON apt.business_id = cu.accounting_point_id
+                ON cu.accounting_point_id = apt.business_id
         WHERE cu.grid_validation_status = 'pending'
 
         -- CU grid validation status incomplete information
@@ -33,9 +33,9 @@ CREATE OR REPLACE VIEW notice AS (
             'no.elhub.flex.controllable_unit.grid_validation_status.incomplete_information' AS type, -- noqa
             '/controllable_unit/' || cu.id AS source,
             null AS data -- noqa
-        FROM controllable_unit AS cu -- noqa
+        FROM controllable_unit AS cu
             INNER JOIN controllable_unit_service_provider AS cusp
-                ON cusp.controllable_unit_id = cu.id
+                ON cu.id = cusp.controllable_unit_id
         WHERE cusp.valid_time_range @> current_timestamp
             AND cu.grid_validation_status = 'incomplete_information'
 
@@ -110,9 +110,11 @@ CREATE OR REPLACE VIEW notice AS (
                     ON spg.id = spgm.service_providing_group_id
                 INNER JOIN flex.controllable_unit AS cu
                     ON spgm.controllable_unit_id = cu.id
+                INNER JOIN flex.accounting_point AS ap
+                    ON cu.accounting_point_id = ap.business_id
                 INNER JOIN
                     flex.accounting_point_balance_responsible_party AS apbrp
-                    ON cu.accounting_point_id = apbrp.accounting_point_id
+                    ON ap.id = apbrp.accounting_point_id
             WHERE spgm.valid_time_range && apbrp.valid_time_range
                 AND spgm.valid_time_range @> current_timestamp
             GROUP BY spg.id
