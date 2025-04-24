@@ -19,7 +19,7 @@ TO flex_balance_responsible_party
 USING (
     EXISTS (
         SELECT 1 FROM accounting_point_balance_responsible_party AS apbrp
-        WHERE apbrp.accounting_point_id = accounting_point.id -- noqa
+        WHERE apbrp.accounting_point_id = accounting_point.business_id -- noqa
             AND apbrp.balance_responsible_party_id = current_party()
     )
 );
@@ -34,7 +34,7 @@ TO flex_energy_supplier
 USING (
     EXISTS (
         SELECT 1 FROM accounting_point_energy_supplier AS apes
-        WHERE apes.accounting_point_id = accounting_point.id --noqa
+        WHERE apes.accounting_point_id = accounting_point.business_id --noqa
             AND apes.energy_supplier_id = current_party()
     )
 );

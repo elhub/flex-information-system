@@ -28,8 +28,10 @@ FOR SELECT
 TO flex_end_user
 USING (
     EXISTS (
-        SELECT 1 FROM accounting_point_end_user AS apeu
-        WHERE apeu.accounting_point_id = accounting_point_balance_responsible_party.accounting_point_id --noqa
+        SELECT 1 FROM accounting_point_end_user AS apeu -- noqa
+            INNER JOIN accounting_point AS ap
+                ON ap.id = apeu.accounting_point_id
+        WHERE ap.business_id = accounting_point_balance_responsible_party.accounting_point_id --noqa
             AND apeu.end_user_id = current_party()
             AND apeu.valid_time_range && accounting_point_balance_responsible_party.valid_time_range --noqa
     )
@@ -64,10 +66,8 @@ USING (
         FROM controllable_unit_service_provider AS cusp -- noqa
             INNER JOIN controllable_unit AS cu
                 ON cu.id = cusp.controllable_unit_id
-            INNER JOIN accounting_point AS ap
-                ON ap.business_id = cu.accounting_point_id
         WHERE cusp.service_provider_id = current_party()
-            AND ap.id = accounting_point_balance_responsible_party.accounting_point_id -- noqa
+            AND cu.accounting_point_id = accounting_point_balance_responsible_party.accounting_point_id -- noqa
             AND cusp.valid_time_range && accounting_point_balance_responsible_party.valid_time_range -- noqa
     )
 );

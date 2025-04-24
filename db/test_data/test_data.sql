@@ -304,6 +304,7 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
   ap_id bigint;
+  ap_business_id text;
   partial_gsrn text;
 BEGIN
   FOR partial_gsrn IN
@@ -327,7 +328,7 @@ BEGIN
       gs1.add_check_digit(partial_gsrn::text),
       in_metering_grid_area_id,
       so_id
-    ) RETURNING id INTO ap_id;
+    ) RETURNING id, business_id INTO ap_id, ap_business_id;
 
     IF end_user IS NOT NULL THEN
       -- insert 2 end users for each accounting point
@@ -357,7 +358,7 @@ BEGIN
         energy_supplier_id,
         valid_time_range
       ) VALUES (
-        ap_id,
+        ap_business_id,
         energy_supplier.former_id,
         tstzrange(
           '2023-05-01 00:00:00 Europe/Oslo',
@@ -365,7 +366,7 @@ BEGIN
           '[)'
         )
       ), (
-        ap_id,
+        ap_business_id,
         energy_supplier.new_id,
         tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );
@@ -378,7 +379,7 @@ BEGIN
         balance_responsible_party_id,
         valid_time_range
       ) VALUES (
-        ap_id,
+        ap_business_id,
         balance_responsible_party.former_id,
         tstzrange(
           '2023-05-01 00:00:00 Europe/Oslo',
@@ -386,7 +387,7 @@ BEGIN
           '[)'
         )
       ), (
-        ap_id,
+        ap_business_id,
         balance_responsible_party.new_id,
         tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );

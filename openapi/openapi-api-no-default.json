@@ -1596,11 +1596,13 @@
                                 "example": 19
                             },
                             "accounting_point_id": {
-                                "description": "The ID of the accounting point.",
-                                "format": "bigint",
-                                "type": "integer",
+                                "description": "The GSRN metering point ID of the accounting point.",
+                                "format": "text",
+                                "type": "string",
                                 "readOnly": true,
-                                "example": 245
+                                "pattern": "^[1-9][0-9]{17}$",
+                                "nullable": false,
+                                "example": "709000000000000057"
                             },
                             "balance_responsible_party_id": {
                                 "description": "The balance responsible party of the accounting point.",
@@ -1665,11 +1667,13 @@
                                 "example": 19
                             },
                             "accounting_point_id": {
-                                "description": "The ID of the accounting point.",
-                                "format": "bigint",
-                                "type": "integer",
+                                "description": "The GSRN metering point ID of the accounting point.",
+                                "format": "text",
+                                "type": "string",
                                 "readOnly": true,
-                                "example": 245
+                                "pattern": "^[1-9][0-9]{17}$",
+                                "nullable": false,
+                                "example": "709000000000000057"
                             },
                             "energy_supplier_id": {
                                 "description": "The energy supplier of the accounting point.",
@@ -11569,7 +11573,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "The ID of the accounting point.",
+                        "description": "The GSRN metering point ID of the accounting point.",
                         "name": "accounting_point_id"
                     },
                     {
@@ -12121,7 +12125,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "The ID of the accounting point.",
+                        "description": "The GSRN metering point ID of the accounting point.",
                         "name": "accounting_point_id"
                     },
                     {

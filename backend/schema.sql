@@ -257,7 +257,7 @@ CREATE TABLE accounting_point_history (
 );
 CREATE TABLE accounting_point_balance_responsible_party (
     id bigint NOT NULL,
-    accounting_point_id bigint NOT NULL,
+    accounting_point_id text NOT NULL,
     balance_responsible_party_id bigint NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL,
@@ -267,7 +267,7 @@ CREATE TABLE accounting_point_balance_responsible_party (
 CREATE TABLE accounting_point_balance_responsible_party_history (
     accounting_point_balance_responsible_party_id bigint NOT NULL,
     id bigint NOT NULL,
-    accounting_point_id bigint NOT NULL,
+    accounting_point_id text NOT NULL,
     balance_responsible_party_id bigint NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL,
@@ -278,7 +278,7 @@ CREATE TABLE accounting_point_balance_responsible_party_history (
 );
 CREATE TABLE accounting_point_energy_supplier (
     id bigint NOT NULL,
-    accounting_point_id bigint NOT NULL,
+    accounting_point_id text NOT NULL,
     energy_supplier_id bigint NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL,
@@ -288,7 +288,7 @@ CREATE TABLE accounting_point_energy_supplier (
 CREATE TABLE accounting_point_energy_supplier_history (
     accounting_point_energy_supplier_id bigint NOT NULL,
     id bigint NOT NULL,
-    accounting_point_id bigint NOT NULL,
+    accounting_point_id text NOT NULL,
     energy_supplier_id bigint NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL,

@@ -1,7 +1,7 @@
 -- relation linking accounting points to their balance responsible party
 CREATE TABLE IF NOT EXISTS accounting_point_balance_responsible_party (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    accounting_point_id bigint NOT NULL,
+    accounting_point_id text NOT NULL,
     balance_responsible_party_id bigint NOT NULL,
     balance_responsible_party_party_type text GENERATED ALWAYS AS (
         'balance_responsible_party'
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_balance_responsible_party (
     CONSTRAINT fk_accounting_point_balance_responsible_party_accounting_point
     FOREIGN KEY (
         accounting_point_id
-    ) REFERENCES accounting_point (id),
+    ) REFERENCES accounting_point (business_id),
     CONSTRAINT fk_accounting_point_balance_responsible_party_brp FOREIGN KEY (
         balance_responsible_party_id, balance_responsible_party_party_type
     ) REFERENCES party (id, type),
