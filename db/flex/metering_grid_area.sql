@@ -26,9 +26,5 @@ CREATE TABLE IF NOT EXISTS metering_grid_area (
     CONSTRAINT metering_grid_area_system_operator_fkey
     FOREIGN KEY (
         system_operator_id, system_operator_party_type
-    ) REFERENCES party (id, type),
-    CONSTRAINT metering_grid_area_valid_time_overlap
-    EXCLUDE USING gist (
-        business_id WITH =, valid_time_range WITH &&
-    ) WHERE (valid_time_range IS NOT null)
+    ) REFERENCES party (id, type)
 );

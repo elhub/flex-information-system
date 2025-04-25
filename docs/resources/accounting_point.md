@@ -18,12 +18,14 @@ The business identifier is the GSRN metering point id.
 
 ## Fields
 
-| Name                                                                                                | Description                                              | Format                                                            | Reference                     |
-|-----------------------------------------------------------------------------------------------------|----------------------------------------------------------|-------------------------------------------------------------------|-------------------------------|
-| <a name="field-id" href="#field-id">id</a>                                                          | Unique surrogate identifier.                             | bigint<br/>Read only                                              |                               |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                               | The GSRN metering point id of the accounting point.      | text<br/>Pattern: `^[1-9][0-9]{17}$`<br/>Required                 |                               |
-| <a name="field-metering_grid_area_id" href="#field-metering_grid_area_id">metering_grid_area_id</a> | The metering grid area EIC-X id of the accounting point. | text<br/>Pattern: `^[0-9]{2}X[0-9A-Z-]{12}[0-9A-Z]$`<br/>Required |                               |
-| <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a>          | The system operator of the accounting point              | text<br/>Required                                                 | [party.id](party.md#field-id) |
+| Name                                                                                                | Description                                                            | Format                                             | Reference                                               |
+|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------|---------------------------------------------------------|
+| <a name="field-id" href="#field-id">id</a>                                                          | Unique surrogate identifier.                                           | bigint<br/>Read only                               |                                                         |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                               | The GSRN metering point id of the accounting point.                    | text<br/>Pattern: `^[1-9][0-9]{17}$`<br/>Read only |                                                         |
+| <a name="field-metering_grid_area_id" href="#field-metering_grid_area_id">metering_grid_area_id</a> | The ID of the metering grid area that the accounting point belongs to. | bigint<br/>Read only                               | [metering_grid_area.id](metering_grid_area.md#field-id) |
+| <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a>          | The system operator of the accounting point.                           | bigint<br/>Read only                               | [party.id](party.md#field-id)                           |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                               | When the resource was recorded (created or updated) in the system.     | timestamp with time zone<br/>Read only             |                                                         |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                               | The identity that recorded the resource.                               | bigint<br/>Read only                               |                                                         |
 
 ## Validation Rules
 
@@ -96,3 +98,5 @@ For party type abbreviations, check [the auth docs](../auth.md#party)
 | business_id           |      | R   | R  | R  | R    | R  | R  | R  | R  |
 | metering_grid_area_id |      | R   | R  | R  | R    | R  | R  | R  | R  |
 | system_operator_id    |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| recorded_at           |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| recorded_by           |      | R   | R  | R  | R    | R  | R  | R  | R  |

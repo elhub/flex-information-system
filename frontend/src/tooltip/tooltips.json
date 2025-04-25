@@ -108,8 +108,17 @@
     "accounting_point": {
         "id": "Unique surrogate identifier.",
         "business_id": "The GSRN metering point id of the accounting point.",
-        "metering_grid_area_id": "The metering grid area EIC-X id of the accounting point.",
-        "system_operator_id": "The system operator of the accounting point"
+        "metering_grid_area_id": "The ID of the metering grid area that the accounting point belongs to.",
+        "system_operator_id": "The system operator of the accounting point."
+    },
+    "metering_grid_area": {
+        "id": "Unique surrogate identifier.",
+        "business_id": "The EIC-X ID of the metering grid area.",
+        "name": "The name of the metering grid area.",
+        "price_area": "The price area the MGA belongs to.",
+        "system_operator_id": "The system operator that owns the metering grid area.",
+        "valid_from": "The date from which the metering grid area is valid. Midnight aligned on Norwegian timezone.",
+        "valid_to": "The date until which the metering grid area is valid. Midnight aligned on Norwegian timezone."
     },
     "product_type": {
         "id": "Unique surrogate identifier.",

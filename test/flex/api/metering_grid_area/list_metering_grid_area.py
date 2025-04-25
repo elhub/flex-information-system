@@ -5,18 +5,18 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.accounting_point_response import AccountingPointResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.list_accounting_point_prefer import ListAccountingPointPrefer
+from ...models.list_metering_grid_area_prefer import ListMeteringGridAreaPrefer
+from ...models.metering_grid_area_response import MeteringGridAreaResponse
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -24,7 +24,7 @@ def _get_kwargs(
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListAccountingPointPrefer] = UNSET,
+    prefer: Union[Unset, ListMeteringGridAreaPrefer] = UNSET,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
     if not isinstance(range_, Unset):
@@ -40,9 +40,9 @@ def _get_kwargs(
 
     params["id"] = id
 
-    params["metering_grid_area_id"] = metering_grid_area_id
-
     params["system_operator_id"] = system_operator_id
+
+    params["name"] = name
 
     params["business_id"] = business_id
 
@@ -58,7 +58,7 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/accounting_point",
+        "url": "/metering_grid_area",
         "params": params,
     }
 
@@ -68,12 +68,12 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ErrorMessage, List["AccountingPointResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+) -> Optional[Union[Any, ErrorMessage, List["MeteringGridAreaResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = AccountingPointResponse.from_dict(response_200_item_data)
+            response_200_item = MeteringGridAreaResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -133,7 +133,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[Any, ErrorMessage, List["AccountingPointResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+) -> Response[Union[Any, ErrorMessage, List["MeteringGridAreaResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -146,8 +146,8 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -155,14 +155,14 @@ def sync_detailed(
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListAccountingPointPrefer] = UNSET,
-) -> Response[Union[Any, ErrorMessage, List["AccountingPointResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Accounting Point
+    prefer: Union[Unset, ListMeteringGridAreaPrefer] = UNSET,
+) -> Response[Union[Any, ErrorMessage, List["MeteringGridAreaResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Metering Grid Area
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -170,20 +170,20 @@ def sync_detailed(
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListAccountingPointPrefer]):
+        prefer (Union[Unset, ListMeteringGridAreaPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, List['AccountingPointResponse'], Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, List['MeteringGridAreaResponse'], Union['EmptyObject', 'ErrorMessage']]]
     """
 
     kwargs = _get_kwargs(
         id=id,
-        metering_grid_area_id=metering_grid_area_id,
         system_operator_id=system_operator_id,
+        name=name,
         business_id=business_id,
         select=select,
         order=order,
@@ -205,8 +205,8 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -214,14 +214,14 @@ def sync(
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListAccountingPointPrefer] = UNSET,
-) -> Optional[Union[Any, ErrorMessage, List["AccountingPointResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Accounting Point
+    prefer: Union[Unset, ListMeteringGridAreaPrefer] = UNSET,
+) -> Optional[Union[Any, ErrorMessage, List["MeteringGridAreaResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Metering Grid Area
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -229,21 +229,21 @@ def sync(
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListAccountingPointPrefer]):
+        prefer (Union[Unset, ListMeteringGridAreaPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, List['AccountingPointResponse'], Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, List['MeteringGridAreaResponse'], Union['EmptyObject', 'ErrorMessage']]
     """
 
     return sync_detailed(
         client=client,
         id=id,
-        metering_grid_area_id=metering_grid_area_id,
         system_operator_id=system_operator_id,
+        name=name,
         business_id=business_id,
         select=select,
         order=order,
@@ -259,8 +259,8 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -268,14 +268,14 @@ async def asyncio_detailed(
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListAccountingPointPrefer] = UNSET,
-) -> Response[Union[Any, ErrorMessage, List["AccountingPointResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Accounting Point
+    prefer: Union[Unset, ListMeteringGridAreaPrefer] = UNSET,
+) -> Response[Union[Any, ErrorMessage, List["MeteringGridAreaResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Metering Grid Area
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -283,20 +283,20 @@ async def asyncio_detailed(
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListAccountingPointPrefer]):
+        prefer (Union[Unset, ListMeteringGridAreaPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, List['AccountingPointResponse'], Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, List['MeteringGridAreaResponse'], Union['EmptyObject', 'ErrorMessage']]]
     """
 
     kwargs = _get_kwargs(
         id=id,
-        metering_grid_area_id=metering_grid_area_id,
         system_operator_id=system_operator_id,
+        name=name,
         business_id=business_id,
         select=select,
         order=order,
@@ -316,8 +316,8 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
+    name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -325,14 +325,14 @@ async def asyncio(
     limit: Union[Unset, str] = UNSET,
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
-    prefer: Union[Unset, ListAccountingPointPrefer] = UNSET,
-) -> Optional[Union[Any, ErrorMessage, List["AccountingPointResponse"], Union["EmptyObject", "ErrorMessage"]]]:
-    """List Accounting Point
+    prefer: Union[Unset, ListMeteringGridAreaPrefer] = UNSET,
+) -> Optional[Union[Any, ErrorMessage, List["MeteringGridAreaResponse"], Union["EmptyObject", "ErrorMessage"]]]:
+    """List Metering Grid Area
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
+        name (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -340,22 +340,22 @@ async def asyncio(
         limit (Union[Unset, str]):
         range_ (Union[Unset, str]):
         range_unit (Union[Unset, str]):
-        prefer (Union[Unset, ListAccountingPointPrefer]):
+        prefer (Union[Unset, ListMeteringGridAreaPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, List['AccountingPointResponse'], Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, List['MeteringGridAreaResponse'], Union['EmptyObject', 'ErrorMessage']]
     """
 
     return (
         await asyncio_detailed(
             client=client,
             id=id,
-            metering_grid_area_id=metering_grid_area_id,
             system_operator_id=system_operator_id,
+            name=name,
             business_id=business_id,
             select=select,
             order=order,
