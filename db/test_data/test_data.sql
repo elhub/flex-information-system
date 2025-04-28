@@ -636,6 +636,38 @@ BEGIN
     so_id
   );
 
+  INSERT INTO flex.retailer_balance_responsibility (
+    metering_grid_area_id,
+    energy_supplier_id,
+    balance_responsible_party_id,
+    direction,
+    valid_time_range
+  ) VALUES (
+    so_mga_id,
+    es_id,
+    common_brp_id,
+    'up',
+    tstzrange('2023-10-01 Europe/Oslo', '2024-10-01 Europe/Oslo', '[)')
+  ), (
+    so_mga_id,
+    es_id,
+    brp_id,
+    'up',
+    tstzrange('2024-10-01 Europe/Oslo', null, '[)')
+  ), (
+    so_mga_id,
+    es_id,
+    brp_id,
+    'down',
+    tstzrange('2023-10-01 Europe/Oslo', null, '[)')
+  ), (
+    so_mga_id,
+    common_es_id,
+    common_brp_id,
+    'up',
+    tstzrange('2023-10-01 Europe/Oslo', null, '[)')
+  );
+
   INSERT INTO flex.service_providing_group (
     name, service_provider_id
   ) VALUES (
