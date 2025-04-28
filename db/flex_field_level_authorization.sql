@@ -737,9 +737,6 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.accounting_point
 TO flex_third_party;
 
-GRANT SELECT ON TABLE flex.accounting_point
-TO flex_internal_event_notification;
-
 GRANT SELECT ON TABLE flex.product_type
 TO flex_balance_responsible_party;
 

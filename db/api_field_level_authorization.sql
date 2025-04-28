@@ -2664,61 +2664,74 @@ TO flex_internal_event_notification;
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_balance_responsible_party;
 
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_energy_supplier;
 
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_end_user;
 
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_flexibility_information_system_operator;
 
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_market_operator;
 
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_system_operator;
 
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_service_provider;
 
 GRANT SELECT (
     id,
     business_id,
-    system_operator_id
+    system_operator_id,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.accounting_point
 TO flex_third_party;
-
-GRANT SELECT ON TABLE api.accounting_point
-TO flex_internal_event_notification;
 
 GRANT SELECT (
     id,

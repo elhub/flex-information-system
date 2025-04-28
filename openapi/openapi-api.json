@@ -1518,21 +1518,7 @@
             "accounting_point_update_request": {
                 "summary": "Update - Accounting Point",
                 "description": "Request schema for update operations - Accounting point for a controllable unit.",
-                "type": "object",
-                "properties": {
-                    "business_id": {
-                        "description": "The GSRN metering point id of the accounting point.",
-                        "format": "text",
-                        "type": "string",
-                        "pattern": "^[1-9][0-9]{17}$",
-                        "example": "709000000000000057"
-                    },
-                    "system_operator_id": {
-                        "description": "The system operator of the accounting point",
-                        "format": "text",
-                        "type": "string"
-                    }
-                }
+                "type": "object"
             },
             "accounting_point_response": {
                 "summary": "Response - Accounting Point",
@@ -1549,6 +1535,34 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
+                            },
+                            "business_id": {
+                                "description": "The GSRN metering point id of the accounting point.",
+                                "format": "text",
+                                "type": "string",
+                                "readOnly": true,
+                                "pattern": "^[1-9][0-9]{17}$",
+                                "example": "709000000000000057"
+                            },
+                            "system_operator_id": {
+                                "description": "The system operator of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true
+                            },
+                            "recorded_at": {
+                                "description": "When the resource was recorded (created or updated) in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2023-12-31 23:59:00 CET"
+                            },
+                            "recorded_by": {
+                                "description": "The identity that recorded the resource.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 145
                             }
                         }
                     }
@@ -10782,7 +10796,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "The system operator of the accounting point",
+                        "description": "The system operator of the accounting point.",
                         "name": "system_operator_id"
                     },
                     {

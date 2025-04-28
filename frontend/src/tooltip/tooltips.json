@@ -108,7 +108,7 @@
     "accounting_point": {
         "id": "Unique surrogate identifier.",
         "business_id": "The GSRN metering point id of the accounting point.",
-        "system_operator_id": "The system operator of the accounting point"
+        "system_operator_id": "The system operator of the accounting point."
     },
     "product_type": {
         "id": "Unique surrogate identifier.",

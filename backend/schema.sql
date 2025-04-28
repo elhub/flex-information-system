@@ -239,7 +239,9 @@ CREATE TABLE notification (
 CREATE TABLE accounting_point (
     id bigint NOT NULL,
     business_id text NOT NULL,
-    system_operator_id text NOT NULL
+    system_operator_id bigint NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
 );
 CREATE TABLE product_type (
     id bigint NOT NULL,

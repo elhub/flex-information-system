@@ -10,10 +10,11 @@ if __name__ == "__main__":
             "audit": True,
         }
         for r in [
-            "accounting_point",
             "accounting_point_balance_responsible_party",
             "accounting_point_end_user",
             "accounting_point_energy_supplier",
+            "metering_grid_area",
+            "accounting_point_metering_grid_area",
         ]
     ]
 

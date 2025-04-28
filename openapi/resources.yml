@@ -922,6 +922,7 @@ resources:
       - read
       - list
     generate_views: true
+    audit: true
     properties:
       id:
         description: Unique surrogate identifier.
@@ -934,13 +935,15 @@ resources:
           The GSRN metering point id of the accounting point.
         format: text
         type: string
+        readOnly: true
         pattern: '^[1-9][0-9]{17}$'
         example: '709000000000000057'
       system_operator_id:
         description: >-
-          The system operator of the accounting point
-        format: text
-        type: string
+          The system operator of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
         x-foreign-key:
           resource: party
           field: id
