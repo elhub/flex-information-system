@@ -321,13 +321,21 @@ BEGIN
   LOOP
     INSERT INTO flex.accounting_point (
       business_id,
-      metering_grid_area_id,
       system_operator_id
     ) VALUES (
       gs1.add_check_digit(partial_gsrn::text),
-      in_metering_grid_area_id,
       so_id
     ) RETURNING id INTO ap_id;
+
+    INSERT INTO flex.accounting_point_metering_grid_area (
+      accounting_point_id,
+      metering_grid_area_id,
+      valid_time_range
+    ) VALUES (
+      ap_id,
+      in_metering_grid_area_id,
+      tstzrange('2023-05-01 00:00:00 Europe/Oslo', null, '[)')
+    );
 
     IF end_user IS NOT NULL THEN
       -- insert 2 end users for each accounting point

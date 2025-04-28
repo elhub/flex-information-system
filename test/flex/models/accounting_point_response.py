@@ -16,8 +16,6 @@ class AccountingPointResponse:
         id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
         business_id (Union[Unset, str]): The GSRN metering point id of the accounting point. Example:
             709000000000000057.
-        metering_grid_area_id (Union[Unset, int]): The ID of the metering grid area that the accounting point belongs
-            to. Example: 34.
         system_operator_id (Union[Unset, int]): The system operator of the accounting point.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
@@ -26,7 +24,6 @@ class AccountingPointResponse:
 
     id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
-    metering_grid_area_id: Union[Unset, int] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
@@ -36,8 +33,6 @@ class AccountingPointResponse:
         id = self.id
 
         business_id = self.business_id
-
-        metering_grid_area_id = self.metering_grid_area_id
 
         system_operator_id = self.system_operator_id
 
@@ -52,8 +47,6 @@ class AccountingPointResponse:
             field_dict["id"] = id
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
-        if metering_grid_area_id is not UNSET:
-            field_dict["metering_grid_area_id"] = metering_grid_area_id
         if system_operator_id is not UNSET:
             field_dict["system_operator_id"] = system_operator_id
         if recorded_at is not UNSET:
@@ -70,8 +63,6 @@ class AccountingPointResponse:
 
         business_id = d.pop("business_id", UNSET)
 
-        metering_grid_area_id = d.pop("metering_grid_area_id", UNSET)
-
         system_operator_id = d.pop("system_operator_id", UNSET)
 
         recorded_at = d.pop("recorded_at", UNSET)
@@ -81,7 +72,6 @@ class AccountingPointResponse:
         accounting_point_response = cls(
             id=id,
             business_id=business_id,
-            metering_grid_area_id=metering_grid_area_id,
             system_operator_id=system_operator_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,

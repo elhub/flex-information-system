@@ -15,7 +15,6 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -39,8 +38,6 @@ def _get_kwargs(
     params: Dict[str, Any] = {}
 
     params["id"] = id
-
-    params["metering_grid_area_id"] = metering_grid_area_id
 
     params["system_operator_id"] = system_operator_id
 
@@ -146,7 +143,6 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -161,7 +157,6 @@ def sync_detailed(
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -182,7 +177,6 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        metering_grid_area_id=metering_grid_area_id,
         system_operator_id=system_operator_id,
         business_id=business_id,
         select=select,
@@ -205,7 +199,6 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -220,7 +213,6 @@ def sync(
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -242,7 +234,6 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
-        metering_grid_area_id=metering_grid_area_id,
         system_operator_id=system_operator_id,
         business_id=business_id,
         select=select,
@@ -259,7 +250,6 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -274,7 +264,6 @@ async def asyncio_detailed(
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -295,7 +284,6 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        metering_grid_area_id=metering_grid_area_id,
         system_operator_id=system_operator_id,
         business_id=business_id,
         select=select,
@@ -316,7 +304,6 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
-    metering_grid_area_id: Union[Unset, str] = UNSET,
     system_operator_id: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -331,7 +318,6 @@ async def asyncio(
 
     Args:
         id (Union[Unset, str]):
-        metering_grid_area_id (Union[Unset, str]):
         system_operator_id (Union[Unset, str]):
         business_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -354,7 +340,6 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
-            metering_grid_area_id=metering_grid_area_id,
             system_operator_id=system_operator_id,
             business_id=business_id,
             select=select,

@@ -13,7 +13,6 @@ SET search_path TO api;
 \i api/entity_client.sql
 \i api/event.sql
 \i api/identity.sql
-\i api/metering_grid_area.sql
 \i api/notice.sql
 \i api/notification.sql
 \i api/party.sql

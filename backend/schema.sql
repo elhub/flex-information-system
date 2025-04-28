@@ -239,19 +239,7 @@ CREATE TABLE notification (
 CREATE TABLE accounting_point (
     id bigint NOT NULL,
     business_id text NOT NULL,
-    metering_grid_area_id bigint NOT NULL,
     system_operator_id bigint NOT NULL,
-    recorded_by bigint NOT NULL,
-    recorded_at timestamp with time zone NOT NULL
-);
-CREATE TABLE metering_grid_area (
-    id bigint NOT NULL,
-    business_id text NOT NULL,
-    name text NOT NULL,
-    price_area text NOT NULL,
-    system_operator_id bigint NOT NULL,
-    valid_from timestamp with time zone NULL,
-    valid_to timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );

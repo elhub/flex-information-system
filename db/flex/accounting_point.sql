@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     business_id text UNIQUE NOT NULL CHECK (
         validate_business_id(business_id, 'gsrn')
     ),
-    metering_grid_area_id bigint NOT NULL,
     system_operator_id bigint NOT NULL,
     system_operator_party_type text GENERATED ALWAYS AS (
         'system_operator'
@@ -14,9 +13,6 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT fk_accounting_point_metering_grid_area FOREIGN KEY (
-        metering_grid_area_id
-    ) REFERENCES metering_grid_area (id),
     CONSTRAINT fk_accounting_point_system_operator FOREIGN KEY (
         system_operator_id, system_operator_party_type
     ) REFERENCES party (id, type)

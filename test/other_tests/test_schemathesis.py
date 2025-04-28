@@ -39,7 +39,6 @@ schema = schemathesis.from_file(
     endpoint=[
         "^/api/v0/openapi.json$",
         "^/api/v0/accounting_point",
-        "^/api/v0/metering_grid_area",
         "^/api/v0/controllable_unit",
         "^/api/v0/entity",
         "^/api/v0/party",

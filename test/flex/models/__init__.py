@@ -36,7 +36,6 @@ from .list_entity_client_prefer import ListEntityClientPrefer
 from .list_entity_prefer import ListEntityPrefer
 from .list_event_prefer import ListEventPrefer
 from .list_identity_prefer import ListIdentityPrefer
-from .list_metering_grid_area_prefer import ListMeteringGridAreaPrefer
 from .list_notice_prefer import ListNoticePrefer
 from .list_notification_prefer import ListNotificationPrefer
 from .list_party_membership_prefer import ListPartyMembershipPrefer
@@ -52,9 +51,6 @@ from .list_service_providing_group_prefer import ListServiceProvidingGroupPrefer
 from .list_service_providing_group_product_application_prefer import ListServiceProvidingGroupProductApplicationPrefer
 from .list_system_operator_product_type_prefer import ListSystemOperatorProductTypePrefer
 from .list_technical_resource_prefer import ListTechnicalResourcePrefer
-from .metering_grid_area_price_area import MeteringGridAreaPriceArea
-from .metering_grid_area_response import MeteringGridAreaResponse
-from .metering_grid_area_update_request import MeteringGridAreaUpdateRequest
 from .notice_response import NoticeResponse
 from .notice_update_request import NoticeUpdateRequest
 from .notification_response import NotificationResponse
@@ -164,7 +160,6 @@ __all__ = (
     "ListEntityPrefer",
     "ListEventPrefer",
     "ListIdentityPrefer",
-    "ListMeteringGridAreaPrefer",
     "ListNoticePrefer",
     "ListNotificationPrefer",
     "ListPartyMembershipPrefer",
@@ -178,9 +173,6 @@ __all__ = (
     "ListServiceProvidingGroupProductApplicationPrefer",
     "ListSystemOperatorProductTypePrefer",
     "ListTechnicalResourcePrefer",
-    "MeteringGridAreaPriceArea",
-    "MeteringGridAreaResponse",
-    "MeteringGridAreaUpdateRequest",
     "NoticeResponse",
     "NoticeUpdateRequest",
     "NotificationResponse",

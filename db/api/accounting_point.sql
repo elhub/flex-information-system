@@ -5,7 +5,6 @@ WITH (security_invoker = true) AS (
     SELECT
         id,
         business_id,
-        metering_grid_area_id,
         system_operator_id,
         recorded_by,
         lower(record_time_range) AS recorded_at

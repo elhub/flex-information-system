@@ -9,12 +9,11 @@ import (
 )
 
 type AccountingPoint struct {
-	ID                 int
-	BusinessID         string
-	MeteringGridAreaID int
-	SystemOperatorID   int
-	RecordedBy         int
-	RecordedAt         pgtype.Timestamptz
+	ID               int
+	BusinessID       string
+	SystemOperatorID int
+	RecordedBy       int
+	RecordedAt       pgtype.Timestamptz
 }
 
 type ControllableUnit struct {
@@ -125,18 +124,6 @@ type Identity struct {
 	EntityName string
 	PartyID    *int
 	PartyName  *string
-}
-
-type MeteringGridArea struct {
-	ID               int
-	BusinessID       string
-	Name             string
-	PriceArea        string
-	SystemOperatorID int
-	ValidFrom        pgtype.Timestamptz
-	ValidTo          pgtype.Timestamptz
-	RecordedBy       int
-	RecordedAt       pgtype.Timestamptz
 }
 
 type Notice struct {
