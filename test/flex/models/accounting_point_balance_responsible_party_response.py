@@ -3,8 +3,8 @@ from typing import Any, Dict, List, Type, TypeVar, Union, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.accounting_point_balance_responsible_party_direction import (
-    AccountingPointBalanceResponsiblePartyDirection,
+from ..models.accounting_point_balance_responsible_party_energy_direction import (
+    AccountingPointBalanceResponsiblePartyEnergyDirection,
 )
 from ..types import UNSET, Unset
 
@@ -17,8 +17,8 @@ class AccountingPointBalanceResponsiblePartyResponse:
     point.
 
         Attributes:
-            direction (Union[Unset, AccountingPointBalanceResponsiblePartyDirection]): The direction of the effect on the
-                balance that the BRP takes responsibility for. Example: consumption.
+            energy_direction (Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]): The direction of the
+                effect on the balance that the BRP takes responsibility for. Example: consumption.
             id (Union[Unset, int]): NON-STABLE unique identifier. Example: 8.
             accounting_point_id (Union[Unset, int]): The ID of the accounting point. Example: 245.
             balance_responsible_party_id (Union[Unset, int]): The balance responsible party of the accounting point.
@@ -32,7 +32,7 @@ class AccountingPointBalanceResponsiblePartyResponse:
             recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
-    direction: Union[Unset, AccountingPointBalanceResponsiblePartyDirection] = UNSET
+    energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection] = UNSET
     id: Union[Unset, int] = UNSET
     accounting_point_id: Union[Unset, int] = UNSET
     balance_responsible_party_id: Union[Unset, int] = UNSET
@@ -43,9 +43,9 @@ class AccountingPointBalanceResponsiblePartyResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        direction: Union[Unset, str] = UNSET
-        if not isinstance(self.direction, Unset):
-            direction = self.direction.value
+        energy_direction: Union[Unset, str] = UNSET
+        if not isinstance(self.energy_direction, Unset):
+            energy_direction = self.energy_direction.value
 
         id = self.id
 
@@ -68,8 +68,8 @@ class AccountingPointBalanceResponsiblePartyResponse:
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if direction is not UNSET:
-            field_dict["direction"] = direction
+        if energy_direction is not UNSET:
+            field_dict["energy_direction"] = energy_direction
         if id is not UNSET:
             field_dict["id"] = id
         if accounting_point_id is not UNSET:
@@ -90,12 +90,12 @@ class AccountingPointBalanceResponsiblePartyResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        _direction = d.pop("direction", UNSET)
-        direction: Union[Unset, AccountingPointBalanceResponsiblePartyDirection]
-        if isinstance(_direction, Unset):
-            direction = UNSET
+        _energy_direction = d.pop("energy_direction", UNSET)
+        energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]
+        if isinstance(_energy_direction, Unset):
+            energy_direction = UNSET
         else:
-            direction = AccountingPointBalanceResponsiblePartyDirection(_direction)
+            energy_direction = AccountingPointBalanceResponsiblePartyEnergyDirection(_energy_direction)
 
         id = d.pop("id", UNSET)
 
@@ -119,7 +119,7 @@ class AccountingPointBalanceResponsiblePartyResponse:
         recorded_by = d.pop("recorded_by", UNSET)
 
         accounting_point_balance_responsible_party_response = cls(
-            direction=direction,
+            energy_direction=energy_direction,
             id=id,
             accounting_point_id=accounting_point_id,
             balance_responsible_party_id=balance_responsible_party_id,

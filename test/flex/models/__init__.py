@@ -1,6 +1,8 @@
 """Contains all the data models used in inputs/outputs"""
 
-from .accounting_point_balance_responsible_party_direction import AccountingPointBalanceResponsiblePartyDirection
+from .accounting_point_balance_responsible_party_energy_direction import (
+    AccountingPointBalanceResponsiblePartyEnergyDirection,
+)
 from .accounting_point_balance_responsible_party_response import AccountingPointBalanceResponsiblePartyResponse
 from .accounting_point_balance_responsible_party_update_request import (
     AccountingPointBalanceResponsiblePartyUpdateRequest,
@@ -132,7 +134,7 @@ from .technical_resource_response import TechnicalResourceResponse
 from .technical_resource_update_request import TechnicalResourceUpdateRequest
 
 __all__ = (
-    "AccountingPointBalanceResponsiblePartyDirection",
+    "AccountingPointBalanceResponsiblePartyEnergyDirection",
     "AccountingPointBalanceResponsiblePartyResponse",
     "AccountingPointBalanceResponsiblePartyUpdateRequest",
     "AccountingPointResponse",

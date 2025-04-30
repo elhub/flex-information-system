@@ -247,7 +247,7 @@ CREATE TABLE accounting_point_balance_responsible_party (
     id bigint NOT NULL,
     accounting_point_id bigint NOT NULL,
     balance_responsible_party_id bigint NOT NULL,
-    direction text NOT NULL,
+    energy_direction text NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL,
     recorded_by bigint NOT NULL,

@@ -2737,7 +2737,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party
@@ -2747,7 +2747,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party
@@ -2757,7 +2757,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party
@@ -2767,7 +2767,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party
@@ -2777,7 +2777,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party
@@ -2787,7 +2787,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party
@@ -2797,7 +2797,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party
@@ -2807,7 +2807,7 @@ GRANT SELECT (
     id,
     accounting_point_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_from,
     valid_to
 ) ON TABLE api.accounting_point_balance_responsible_party

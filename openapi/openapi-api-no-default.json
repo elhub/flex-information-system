@@ -335,7 +335,7 @@
                 ],
                 "example": "active"
             },
-            "accounting_point_balance_responsible_party_direction": {
+            "accounting_point_balance_responsible_party_energy_direction": {
                 "description": "The direction of the effect on the balance that the BRP takes responsibility for.",
                 "format": "text",
                 "type": "string",
@@ -1579,8 +1579,8 @@
                 "description": "Request schema for update operations - Relation linking a balance responsible party to an accounting point.",
                 "type": "object",
                 "properties": {
-                    "direction": {
-                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_direction"
+                    "energy_direction": {
+                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_energy_direction"
                     }
                 }
             },

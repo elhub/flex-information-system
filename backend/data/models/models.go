@@ -20,7 +20,7 @@ type AccountingPointBalanceResponsibleParty struct {
 	ID                        int
 	AccountingPointID         int
 	BalanceResponsiblePartyID int
-	Direction                 string
+	EnergyDirection           string
 	ValidFrom                 pgtype.Timestamptz
 	ValidTo                   pgtype.Timestamptz
 	RecordedBy                int

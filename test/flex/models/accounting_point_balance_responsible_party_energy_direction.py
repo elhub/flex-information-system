@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class AccountingPointBalanceResponsiblePartyDirection(str, Enum):
+class AccountingPointBalanceResponsiblePartyEnergyDirection(str, Enum):
     CONSUMPTION = "consumption"
     PRODUCTION = "production"
 

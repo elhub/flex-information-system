@@ -4,7 +4,7 @@ WITH (security_invoker = true) AS (
     SELECT
         accounting_point_id,
         balance_responsible_party_id,
-        direction,
+        energy_direction,
         row_number() OVER () AS id,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
@@ -12,7 +12,7 @@ WITH (security_invoker = true) AS (
         SELECT
             ap_es.accounting_point_id,
             es_br.balance_responsible_party_id,
-            es_br.direction,
+            es_br.energy_direction,
             (
                 ap_es.valid_time_range
                 * ap_mga.valid_time_range

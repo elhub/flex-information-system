@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS energy_supplier_balance_responsibility (
     balance_responsible_party_party_type text GENERATED ALWAYS AS (
         'balance_responsible_party'
     ) STORED,
-    direction text NOT NULL CHECK (
-        direction IN (
+    energy_direction text NOT NULL CHECK (
+        energy_direction IN (
             'production',
             'consumption'
         )
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS energy_supplier_balance_responsibility (
     EXCLUDE USING gist (
         metering_grid_area_id WITH =,
         energy_supplier_id WITH =,
-        direction WITH =,
+        energy_direction WITH =,
         valid_time_range WITH &&
     ) WHERE (valid_time_range IS NOT null)
 );

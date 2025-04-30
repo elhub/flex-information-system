@@ -3,8 +3,8 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.accounting_point_balance_responsible_party_direction import (
-    AccountingPointBalanceResponsiblePartyDirection,
+from ..models.accounting_point_balance_responsible_party_energy_direction import (
+    AccountingPointBalanceResponsiblePartyEnergyDirection,
 )
 from ..types import UNSET, Unset
 
@@ -16,38 +16,38 @@ class AccountingPointBalanceResponsiblePartyUpdateRequest:
     """Request schema for update operations - Relation linking a balance responsible party to an accounting point.
 
     Attributes:
-        direction (Union[Unset, AccountingPointBalanceResponsiblePartyDirection]): The direction of the effect on the
-            balance that the BRP takes responsibility for. Example: consumption.
+        energy_direction (Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]): The direction of the
+            effect on the balance that the BRP takes responsibility for. Example: consumption.
     """
 
-    direction: Union[Unset, AccountingPointBalanceResponsiblePartyDirection] = UNSET
+    energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        direction: Union[Unset, str] = UNSET
-        if not isinstance(self.direction, Unset):
-            direction = self.direction.value
+        energy_direction: Union[Unset, str] = UNSET
+        if not isinstance(self.energy_direction, Unset):
+            energy_direction = self.energy_direction.value
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if direction is not UNSET:
-            field_dict["direction"] = direction
+        if energy_direction is not UNSET:
+            field_dict["energy_direction"] = energy_direction
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        _direction = d.pop("direction", UNSET)
-        direction: Union[Unset, AccountingPointBalanceResponsiblePartyDirection]
-        if isinstance(_direction, Unset):
-            direction = UNSET
+        _energy_direction = d.pop("energy_direction", UNSET)
+        energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]
+        if isinstance(_energy_direction, Unset):
+            energy_direction = UNSET
         else:
-            direction = AccountingPointBalanceResponsiblePartyDirection(_direction)
+            energy_direction = AccountingPointBalanceResponsiblePartyEnergyDirection(_energy_direction)
 
         accounting_point_balance_responsible_party_update_request = cls(
-            direction=direction,
+            energy_direction=energy_direction,
         )
 
         accounting_point_balance_responsible_party_update_request.additional_properties = d

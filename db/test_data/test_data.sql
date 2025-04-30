@@ -640,7 +640,7 @@ BEGIN
     metering_grid_area_id,
     energy_supplier_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_time_range
   ) VALUES (
     so_mga_id,
