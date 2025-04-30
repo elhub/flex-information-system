@@ -12,3 +12,8 @@ USING (true);
 
 GRANT SELECT ON accounting_point_energy_supplier
 TO flex_common;
+CREATE POLICY "APES_INTERNAL_COMMON"
+ON accounting_point_energy_supplier
+FOR SELECT
+TO flex_common
+USING (true);

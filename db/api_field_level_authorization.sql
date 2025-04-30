@@ -2735,6 +2735,86 @@ TO flex_third_party;
 
 GRANT SELECT (
     id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    balance_responsible_party_id,
+    direction,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_balance_responsible_party
+TO flex_third_party;
+
+GRANT SELECT (
+    id,
     business_id,
     category,
     market,

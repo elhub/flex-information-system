@@ -56,6 +56,8 @@ func NewAPIHandler(
 	// all other requests are forwarded to PostgREST
 	mux.HandleFunc("/accounting_point", data.postgRESTHandler)
 	mux.HandleFunc("/accounting_point/{path...}", data.postgRESTHandler)
+	mux.HandleFunc("/accounting_point_balance_responsible_party", data.postgRESTHandler)
+	mux.HandleFunc("/accounting_point_balance_responsible_party/{path...}", data.postgRESTHandler)
 	mux.HandleFunc("/controllable_unit", data.postgRESTHandler)
 	mux.HandleFunc("/controllable_unit/{path...}", data.postgRESTHandler)
 	mux.HandleFunc("/controllable_unit_history", data.postgRESTHandler)

@@ -73,8 +73,10 @@ and support the processes in the value chain.$$;
 \i flex/accounting_point_balance_responsible_party_rls.sql
 \i flex/accounting_point_end_user_rls.sql
 \i flex/accounting_point_energy_supplier_rls.sql
+\i flex/accounting_point_metering_grid_area_rls.sql
 \i flex/controllable_unit_rls.sql
 \i flex/controllable_unit_service_provider_rls.sql
+\i flex/energy_supplier_balance_responsibility_rls.sql
 \i flex/entity_rls.sql
 \i flex/entity_client_rls.sql
 \i flex/event_rls.sql
