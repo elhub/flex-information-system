@@ -636,7 +636,7 @@ BEGIN
     so_id
   );
 
-  INSERT INTO flex.retailer_balance_responsibility (
+  INSERT INTO flex.energy_supplier_balance_responsibility (
     metering_grid_area_id,
     energy_supplier_id,
     balance_responsible_party_id,

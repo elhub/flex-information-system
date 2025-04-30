@@ -27,7 +27,7 @@ and support the processes in the value chain.$$;
 \i flex/product_type.sql
 \i flex/service_provider_product_application.sql
 \i flex/system_operator_product_type.sql
-\i flex/retailer_balance_responsibility.sql
+\i flex/energy_supplier_balance_responsibility.sql
 \i flex/technical_resource.sql
 \i flex/service_providing_group.sql
 \i flex/service_providing_group_membership.sql
@@ -46,12 +46,12 @@ and support the processes in the value chain.$$;
 \i flex/accounting_point_metering_grid_area_history_audit.sql
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
+\i flex/energy_supplier_balance_responsibility_history_audit.sql
 \i flex/entity_client_history_audit.sql
 \i flex/metering_grid_area_history_audit.sql
 \i flex/notification_history_audit.sql
 \i flex/party_history_audit.sql
 \i flex/party_membership_history_audit.sql
-\i flex/retailer_balance_responsibility_history_audit.sql
 \i flex/service_provider_product_application_comment_history_audit.sql
 \i flex/service_provider_product_application_history_audit.sql
 \i flex/service_providing_group_grid_prequalification_history_audit.sql

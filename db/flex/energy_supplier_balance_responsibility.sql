@@ -1,7 +1,7 @@
 -- internal
 -- This table stores the balance responsible party chosen by each energy
 -- supplier in the different metering grid areas, in both possible directions.
-CREATE TABLE IF NOT EXISTS retailer_balance_responsibility (
+CREATE TABLE IF NOT EXISTS energy_supplier_balance_responsibility (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     metering_grid_area_id bigint NOT NULL,
     energy_supplier_id bigint NOT NULL,
@@ -30,21 +30,21 @@ CREATE TABLE IF NOT EXISTS retailer_balance_responsibility (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT fk_retailer_balance_responsibility_metering_grid_area
+    CONSTRAINT fk_energy_supplier_balance_responsibility_metering_grid_area
     FOREIGN KEY (
         metering_grid_area_id
     ) REFERENCES metering_grid_area (id),
 
-    CONSTRAINT fk_retailer_balance_responsibility_energy_supplier
+    CONSTRAINT fk_energy_supplier_balance_responsibility_energy_supplier
     FOREIGN KEY (
         energy_supplier_id, energy_supplier_party_type
     ) REFERENCES party (id, type),
-    CONSTRAINT fk_retailer_balance_responsibility_balance_responsible_party
+    CONSTRAINT fk_energy_supplier_balance_responsibility_brp
     FOREIGN KEY (
         balance_responsible_party_id, balance_responsible_party_party_type
     ) REFERENCES party (id, type),
 
-    CONSTRAINT retailer_balance_responsibility_valid_time_overlap
+    CONSTRAINT energy_supplier_balance_responsibility_valid_time_overlap
     EXCLUDE USING gist (
         metering_grid_area_id WITH =,
         energy_supplier_id WITH =,
@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS retailer_balance_responsibility (
     ) WHERE (valid_time_range IS NOT null)
 );
 
-CREATE OR REPLACE TRIGGER retailer_balance_responsibility_midnight_aligned
-AFTER INSERT OR UPDATE ON retailer_balance_responsibility
+CREATE OR REPLACE TRIGGER
+energy_supplier_balance_responsibility_midnight_aligned
+AFTER INSERT OR UPDATE ON energy_supplier_balance_responsibility
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();

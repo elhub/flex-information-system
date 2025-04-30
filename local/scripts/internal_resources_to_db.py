@@ -15,7 +15,7 @@ if __name__ == "__main__":
             "accounting_point_energy_supplier",
             "metering_grid_area",
             "accounting_point_metering_grid_area",
-            "retailer_balance_responsibility",
+            "energy_supplier_balance_responsibility",
         ]
     ]
 
