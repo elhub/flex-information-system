@@ -954,7 +954,6 @@ resources:
     description: >-
       Relation linking a balance responsible party to an accounting point.
     operations:
-      - read
       - list
     generate_views: false
     audit: true
