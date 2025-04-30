@@ -6,8 +6,8 @@ WITH (security_invoker = true) AS (
         balance_responsible_party_id,
         direction,
         row_number() OVER () AS id,
-        lower(valid_time_inter) AS valid_from,
-        upper(valid_time_inter) AS valid_to
+        lower(valid_time_range) AS valid_from,
+        upper(valid_time_range) AS valid_to
     FROM ( -- noqa
         SELECT
             ap_es.accounting_point_id,
@@ -17,7 +17,7 @@ WITH (security_invoker = true) AS (
                 ap_es.valid_time_range
                 * ap_mga.valid_time_range
                 * es_br.valid_time_range
-            ) AS valid_time_inter
+            ) AS valid_time_range
         FROM flex.accounting_point_energy_supplier AS ap_es -- noqa
             INNER JOIN flex.accounting_point_metering_grid_area AS ap_mga
                 ON ap_mga.accounting_point_id = ap_es.accounting_point_id
@@ -30,7 +30,7 @@ WITH (security_invoker = true) AS (
     ) AS ap_brp
     WHERE (
         -- RLS: APBRP-FISO001
-        current_role = 'flex_flexibility_system_information_operator'
+        current_role = 'flex_flexibility_information_system_operator'
     ) OR (
         -- RLS: APBRP-SP001
         current_role = 'flex_service_provider'
@@ -43,7 +43,7 @@ WITH (security_invoker = true) AS (
                     ON ap.business_id = cu.accounting_point_id
             WHERE cusp.service_provider_id = flex.current_party()
                 AND ap.id = ap_brp.accounting_point_id
-                AND cusp.valid_time_range && ap_brp.valid_time_inter
+                AND cusp.valid_time_range && ap_brp.valid_time_range
         )
     )
 );
