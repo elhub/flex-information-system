@@ -646,25 +646,25 @@ BEGIN
     so_mga_id,
     es_id,
     common_brp_id,
-    'up',
+    'production',
     tstzrange('2023-10-01 Europe/Oslo', '2024-10-01 Europe/Oslo', '[)')
   ), (
     so_mga_id,
     es_id,
     brp_id,
-    'up',
+    'production',
     tstzrange('2024-10-01 Europe/Oslo', null, '[)')
   ), (
     so_mga_id,
     es_id,
     brp_id,
-    'down',
+    'consumption',
     tstzrange('2023-10-01 Europe/Oslo', null, '[)')
   ), (
     so_mga_id,
     common_es_id,
     common_brp_id,
-    'up',
+    'production',
     tstzrange('2023-10-01 Europe/Oslo', null, '[)')
   );
 

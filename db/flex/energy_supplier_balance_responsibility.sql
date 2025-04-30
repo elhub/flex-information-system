@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS energy_supplier_balance_responsibility (
     ) STORED,
     direction text NOT NULL CHECK (
         direction IN (
-            'up',
-            'down'
+            'production',
+            'consumption'
         )
     ),
     valid_time_range tstzrange CHECK (
