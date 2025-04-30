@@ -23,8 +23,6 @@ type AccountingPointBalanceResponsibleParty struct {
 	EnergyDirection           string
 	ValidFrom                 pgtype.Timestamptz
 	ValidTo                   pgtype.Timestamptz
-	RecordedBy                int
-	RecordedAt                pgtype.Timestamptz
 }
 
 type ControllableUnit struct {

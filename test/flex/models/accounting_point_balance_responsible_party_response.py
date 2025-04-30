@@ -27,9 +27,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
                 responsible party is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
             valid_to (Union[None, Unset, str]): The date until which the relation between the accounting point and the
                 balance responsible party is valid. Midnight aligned on Norwegian timezone.
-            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31 23:59:00 CET.
-            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
     energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection] = UNSET
@@ -38,8 +35,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
     balance_responsible_party_id: Union[Unset, int] = UNSET
     valid_from: Union[Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -61,10 +56,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
         else:
             valid_to = self.valid_to
 
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -80,10 +71,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
             field_dict["valid_from"] = valid_from
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
 
         return field_dict
 
@@ -114,10 +101,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
         accounting_point_balance_responsible_party_response = cls(
             energy_direction=energy_direction,
             id=id,
@@ -125,8 +108,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
             balance_responsible_party_id=balance_responsible_party_id,
             valid_from=valid_from,
             valid_to=valid_to,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
         )
 
         accounting_point_balance_responsible_party_response.additional_properties = d

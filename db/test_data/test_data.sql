@@ -295,7 +295,6 @@ CREATE OR REPLACE FUNCTION test_data.add_accounting_points(
     in_metering_grid_area_id bigint,
     end_user contract_parties,
     energy_supplier contract_parties,
-    balance_responsible_party contract_parties,
     so_id bigint
 )
 RETURNS void
@@ -375,27 +374,6 @@ BEGIN
       ), (
         ap_id,
         energy_supplier.new_id,
-        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
-      );
-    END IF;
-
-    IF balance_responsible_party IS NOT NULL THEN
-      -- insert 2 balance responsible parties for each accounting point
-      INSERT INTO flex.accounting_point_balance_responsible_party (
-        accounting_point_id,
-        balance_responsible_party_id,
-        valid_time_range
-      ) VALUES (
-        ap_id,
-        balance_responsible_party.former_id,
-        tstzrange(
-          '2023-05-01 00:00:00 Europe/Oslo',
-          '2024-01-01 00:00:00 Europe/Oslo',
-          '[)'
-        )
-      ), (
-        ap_id,
-        balance_responsible_party.new_id,
         tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );
     END IF;
@@ -613,7 +591,6 @@ BEGIN
       so_mga_id,
       null,
       null,
-      null,
       so_id
     );
     return;
@@ -632,7 +609,6 @@ BEGIN
     so_mga_id,
     (common_eu_id, eu_id),
     (common_es_id, es_id),
-    (common_brp_id, brp_id),
     so_id
   );
 

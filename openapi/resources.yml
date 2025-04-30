@@ -956,7 +956,7 @@ resources:
     operations:
       - list
     generate_views: false
-    audit: true
+    audit: false
     properties:
       id:
         description: NON-STABLE unique identifier.

@@ -18,16 +18,16 @@ and support the processes in the value chain.$$;
 \i flex/metering_grid_area.sql
 \i flex/accounting_point.sql
 \i flex/accounting_point_metering_grid_area.sql
-\i flex/accounting_point_balance_responsible_party.sql
 \i flex/accounting_point_end_user.sql
 \i flex/accounting_point_energy_supplier.sql
+\i flex/energy_supplier_balance_responsibility.sql
+\i flex/accounting_point_balance_responsible_party.sql
 \i flex/controllable_unit.sql
 \i flex/controllable_unit_service_provider.sql
 \i flex/notification.sql
 \i flex/product_type.sql
 \i flex/service_provider_product_application.sql
 \i flex/system_operator_product_type.sql
-\i flex/energy_supplier_balance_responsibility.sql
 \i flex/technical_resource.sql
 \i flex/service_providing_group.sql
 \i flex/service_providing_group_membership.sql
@@ -39,7 +39,6 @@ and support the processes in the value chain.$$;
 
 -- history and audit
 
-\i flex/accounting_point_balance_responsible_party_history_audit.sql
 \i flex/accounting_point_end_user_history_audit.sql
 \i flex/accounting_point_energy_supplier_history_audit.sql
 \i flex/accounting_point_history_audit.sql
@@ -70,7 +69,6 @@ and support the processes in the value chain.$$;
 -- RLS
 
 \i flex/accounting_point_rls.sql
-\i flex/accounting_point_balance_responsible_party_rls.sql
 \i flex/accounting_point_end_user_rls.sql
 \i flex/accounting_point_energy_supplier_rls.sql
 \i flex/accounting_point_metering_grid_area_rls.sql
