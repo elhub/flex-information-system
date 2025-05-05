@@ -13,7 +13,6 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-
     FROM flex.controllable_unit_service_provider
 );
 -- changeset flex:api-controllable-unit-service-provider-history-create endDelimiter:-- runAlways:true
@@ -33,7 +32,6 @@ WITH (
         null AS replaced_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-
     FROM flex.controllable_unit_service_provider
     UNION ALL
     SELECT
@@ -48,6 +46,5 @@ WITH (
         upper(record_time_range) AS replaced_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-
     FROM flex.controllable_unit_service_provider_history
 );

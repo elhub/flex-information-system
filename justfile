@@ -28,7 +28,7 @@ unload:
 
 
 # load the database
-load: liquibase
+load:
     #!/usr/bin/env bash
     set -euo pipefail
     export PGHOST=localhost

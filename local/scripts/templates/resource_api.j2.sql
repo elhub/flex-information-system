@@ -18,7 +18,7 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at{% endif %}{% if has_valid_time %},
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-{% endif %}
+{%- endif %}
     FROM flex.{{ resource }}
 );
 
@@ -40,7 +40,7 @@ WITH (
         null AS replaced_at{% endif %}{% if has_valid_time %},
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-{% endif %}
+{%- endif %}
     FROM flex.{{ resource }}
     UNION ALL
     SELECT
@@ -55,7 +55,7 @@ WITH (
         upper(record_time_range) AS replaced_at{% endif %}{% if has_valid_time %},
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-{% endif %}
+{%- endif %}
     FROM flex.{{ resource }}_history
 );
 

@@ -12,7 +12,6 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-
     FROM flex.service_providing_group_membership
 );
 -- changeset flex:api-service-providing-group-membership-history-create endDelimiter:-- runAlways:true
@@ -31,7 +30,6 @@ WITH (
         null AS replaced_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-
     FROM flex.service_providing_group_membership
     UNION ALL
     SELECT
@@ -45,6 +43,5 @@ WITH (
         upper(record_time_range) AS replaced_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
-
     FROM flex.service_providing_group_membership_history
 );
