@@ -169,6 +169,32 @@ BEGIN
       '2023-11-01 00:00:00 Europe/Oslo',
       '[)'),
     0
+  ), (
+    cu.id,
+    cu.business_id,
+    cu.name || ' TEST-APBRP',
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.is_small,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record must exist while Common BRP is BRP on the AP
+    tstzrange(
+      '2024-08-10 00:00:00 Europe/Oslo',
+      '2024-08-11 00:00:00 Europe/Oslo',
+      '[)'),
+    0
   );
 
   FOREACH sp IN ARRAY service_providers
@@ -623,7 +649,7 @@ BEGIN
     es_id,
     brp_id,
     'production',
-    tstzrange('2024-06-01 Europe/Oslo', '2024-07-20 Europe/Oslo', '[)')
+    tstzrange('2022-06-01 Europe/Oslo', '2024-07-20 Europe/Oslo', '[)')
   ), (
     so_mga_id,
     es_id,
