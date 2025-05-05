@@ -1,4 +1,8 @@
-CREATE OR REPLACE FUNCTION controllable_unit_lookup(
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:api-controllable-unit-lookup endDelimiter:-- runAlways:true
+CREATE OR REPLACE FUNCTION api.controllable_unit_lookup(
     l_end_user_business_id text,
     l_controllable_unit_business_id text,
     l_accounting_point_id text

@@ -1,5 +1,8 @@
+--liquibase formatted sql
 -- Manually managed file
-CREATE OR REPLACE VIEW accounting_point_energy_supplier
+
+-- changeset flex:api-accounting-point-energy-supplier-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.accounting_point_energy_supplier
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -11,8 +14,9 @@ WITH (security_invoker = true) AS (
     FROM flex.accounting_point_energy_supplier
 );
 
-GRANT SELECT ON TABLE accounting_point_energy_supplier
+-- changeset flex:api-accounting-point-energy-supplier-grant endDelimiter:; runAlways:true
+GRANT SELECT ON TABLE api.accounting_point_energy_supplier
 TO flex_internal_event_notification;
 
-GRANT SELECT ON TABLE accounting_point_energy_supplier
+GRANT SELECT ON TABLE api.accounting_point_energy_supplier
 TO flex_common;

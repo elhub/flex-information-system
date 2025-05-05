@@ -1,6 +1,8 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
-CREATE OR REPLACE VIEW service_providing_group_membership
+-- changeset flex:api-service-providing-group-membership-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.service_providing_group_membership
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -10,10 +12,11 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
+
     FROM flex.service_providing_group_membership
 );
-
-CREATE OR REPLACE VIEW service_providing_group_membership_history
+-- changeset flex:api-service-providing-group-membership-history-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.service_providing_group_membership_history
 WITH (
     security_invoker = true
 ) AS (
@@ -28,6 +31,7 @@ WITH (
         null AS replaced_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
+
     FROM flex.service_providing_group_membership
     UNION ALL
     SELECT
@@ -41,5 +45,6 @@ WITH (
         upper(record_time_range) AS replaced_at,
         lower(valid_time_range) AS valid_from,
         upper(valid_time_range) AS valid_to
+
     FROM flex.service_providing_group_membership_history
 );

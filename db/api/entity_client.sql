@@ -1,6 +1,8 @@
+--liquibase formatted sql
 -- Manually managed file
 
-CREATE OR REPLACE VIEW entity_client
+-- changeset flex:api-entity-client-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.entity_client
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -14,7 +16,8 @@ WITH (security_invoker = true) AS (
     FROM flex.entity_client
 );
 
-CREATE OR REPLACE FUNCTION entity_client_modify()
+-- changeset flex:api-entity-client-modify-function endDelimiter:-- runAlways:true
+CREATE OR REPLACE FUNCTION api.entity_client_modify()
 RETURNS TRIGGER
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -78,8 +81,9 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:api-entity-client-modify-trigger endDelimiter:-- runAlways:true
 CREATE OR REPLACE TRIGGER entity_client_modify_trg
 INSTEAD OF INSERT OR UPDATE OR DELETE
-ON entity_client
+ON api.entity_client
 FOR EACH ROW
-EXECUTE FUNCTION entity_client_modify();
+EXECUTE FUNCTION api.entity_client_modify();

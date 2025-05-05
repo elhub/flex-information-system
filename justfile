@@ -346,7 +346,7 @@ openapi-to-db:
     wq
     EOF
 
-    imports=$(ls db/api/ | sed -e 's|.*|\\i api/&|')
+    imports=$(ls db/api/ | grep sql | sed -e 's|.*|\\i api/&|')
 
     ed -s "./db/api_structure.sql" <<EOF
     /-- views/+,/-- triggers/-d
