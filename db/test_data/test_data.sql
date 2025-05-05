@@ -621,27 +621,27 @@ BEGIN
   ) VALUES (
     so_mga_id,
     es_id,
+    brp_id,
+    'production',
+    tstzrange('2024-06-01 Europe/Oslo', '2024-07-20 Europe/Oslo', '[)')
+  ), (
+    so_mga_id,
+    es_id,
     common_brp_id,
     'production',
-    tstzrange('2023-10-01 Europe/Oslo', '2024-10-01 Europe/Oslo', '[)')
+    tstzrange('2024-07-20 Europe/Oslo', '2024-09-10 Europe/Oslo', '[)')
   ), (
     so_mga_id,
     es_id,
     brp_id,
     'production',
-    tstzrange('2024-10-01 Europe/Oslo', null, '[)')
+    tstzrange('2024-09-10 Europe/Oslo', '2099-01-01 Europe/Oslo', '[)')
   ), (
     so_mga_id,
     es_id,
     brp_id,
     'consumption',
-    tstzrange('2023-10-01 Europe/Oslo', null, '[)')
-  ), (
-    so_mga_id,
-    common_es_id,
-    common_brp_id,
-    'production',
-    tstzrange('2023-10-01 Europe/Oslo', null, '[)')
+    tstzrange('2024-06-01 Europe/Oslo', null, '[)')
   );
 
   INSERT INTO flex.service_providing_group (
