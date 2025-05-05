@@ -35,14 +35,14 @@ CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_insert
 BEFORE INSERT ON service_providing_group_grid_prequalification
 FOR EACH ROW
-EXECUTE FUNCTION status_insert('requested');
+EXECUTE FUNCTION status.restrict_insert('requested');
 
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_update
 BEFORE UPDATE OF status ON service_providing_group_grid_prequalification
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
-EXECUTE FUNCTION status_update('requested');
+EXECUTE FUNCTION status.restrict_update('requested');
 
 CREATE OR REPLACE FUNCTION spg_grid_prequalification_status_approved()
 RETURNS trigger

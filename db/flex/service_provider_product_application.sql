@@ -167,14 +167,14 @@ EXECUTE FUNCTION service_provider_product_application_status_qualified();
 CREATE OR REPLACE TRIGGER service_provider_product_application_status_insert
 BEFORE INSERT ON service_provider_product_application
 FOR EACH ROW
-EXECUTE FUNCTION status_insert('requested');
+EXECUTE FUNCTION status.restrict_insert('requested');
 
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_status_update
 BEFORE UPDATE OF status ON service_provider_product_application
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
-EXECUTE FUNCTION status_update('requested');
+EXECUTE FUNCTION status.restrict_update('requested');
 
 CREATE OR REPLACE TRIGGER service_provider_product_application_event
 AFTER INSERT OR UPDATE ON service_provider_product_application

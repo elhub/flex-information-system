@@ -28,13 +28,13 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
 CREATE OR REPLACE TRIGGER service_providing_group_status_insert
 BEFORE INSERT ON service_providing_group
 FOR EACH ROW
-EXECUTE FUNCTION status_insert('new');
+EXECUTE FUNCTION status.restrict_insert('new');
 
 CREATE OR REPLACE TRIGGER service_providing_group_status_update
 BEFORE UPDATE OF status ON service_providing_group
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
-EXECUTE FUNCTION status_update('new');
+EXECUTE FUNCTION status.restrict_update('new');
 
 -- adds a SPG-GP resource for each ISO present in a SPG, now or in the future
 CREATE OR REPLACE FUNCTION
