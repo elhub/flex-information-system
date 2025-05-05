@@ -62,6 +62,7 @@ and support the processes in the value chain.$$;
 
 -- security definer views for RLS
 
+\i authz/accounting_point_service_provider.sql
 \i authz/controllable_unit_balance_responsible_party.sql
 \i authz/controllable_unit_end_user.sql
 \i authz/controllable_unit_energy_supplier.sql

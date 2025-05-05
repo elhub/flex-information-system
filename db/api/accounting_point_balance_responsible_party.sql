@@ -1,27 +1,4 @@
 -- Manually managed file
-
--- compute the timeline where a SP has CU on an AP
--- (localised around a given time range so as not to compute the whole timeline)
-CREATE OR REPLACE FUNCTION local_ap_sp_timeline(
-    in_accounting_point_id bigint,
-    in_service_provider_id bigint,
-    in_local_time_range tstzrange
-)
-RETURNS tstzmultirange
-SECURITY INVOKER
-LANGUAGE sql
-AS $$
-    SELECT range_agg(cusp.valid_time_range)
-    FROM flex.controllable_unit_service_provider AS cusp
-        INNER JOIN flex.controllable_unit AS cu
-            ON cu.id = cusp.controllable_unit_id
-        INNER JOIN flex.accounting_point AS ap
-            ON ap.business_id = cu.accounting_point_id
-    WHERE ap.id = in_accounting_point_id
-        AND cusp.service_provider_id = in_service_provider_id
-        AND cusp.valid_time_range && in_local_time_range
-$$;
-
 CREATE OR REPLACE VIEW accounting_point_balance_responsible_party
 WITH (security_invoker = true) AS (
     -- RLS: APBRP-FISO001
@@ -63,21 +40,19 @@ WITH (security_invoker = true) AS (
         END AS valid_to
     FROM ( -- noqa
         SELECT
-            id,
-            accounting_point_id,
-            balance_responsible_party_id,
-            energy_direction,
+            ap_brp.id,
+            ap_brp.accounting_point_id,
+            ap_brp.balance_responsible_party_id,
+            ap_brp.energy_direction,
             -- only keep the parts of AP-BRP where SP has a CU on the AP
             unnest(
-                multirange(valid_time_range)
-                * local_ap_sp_timeline(
-                    accounting_point_id,
-                    flex.current_party(),
-                    valid_time_range
-                )
+                multirange(ap_brp.valid_time_range) * ap_sp.valid_timeline
             ) AS valid_time_range
-        FROM flex.accounting_point_balance_responsible_party
+        FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
+            INNER JOIN flex.accounting_point_service_provider AS ap_sp
+                ON ap_sp.accounting_point_id = ap_brp.accounting_point_id
         WHERE current_role = 'flex_service_provider'
+            AND ap_sp.service_provider_id = flex.current_party()
     ) AS ap_brp_for_sp
 );
 
