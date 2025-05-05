@@ -12,97 +12,6 @@ risk of making a copy-paste mistake.
 
 DB_DIR = "./db"
 output_file_backend_schema = "backend/schema.sql"
-
-
-def view_create_statement(resource, schema_fields, has_audit):
-    formatted_fields = ",\n        ".join(
-        list(sorted(schema_fields - set(["id", "valid_from", "valid_to"])))
-    )
-    return (
-        f"""\
-CREATE OR REPLACE VIEW {resource}
-WITH (security_invoker = true) AS (
-    SELECT
-        id,
-        {formatted_fields}\
-"""
-        + (
-            """,
-        recorded_by,
-        lower(record_time_range) AS recorded_at\
-"""
-            if has_audit
-            else ""
-        )
-        + (
-            """,
-        lower(valid_time_range) AS valid_from,
-        upper(valid_time_range) AS valid_to\
-"""
-            if "valid_from" in schema_fields
-            else ""
-        )
-        + f"""
-    FROM flex.{resource}
-);\
-"""
-    )
-
-
-def history_view_create_statement(base_resource, schema_fields):
-    formatted_fields = ",\n        ".join(
-        list(sorted(schema_fields - set(["id", "valid_from", "valid_to"])))
-    )
-    return (
-        f"""\
-CREATE OR REPLACE VIEW {base_resource}_history
-WITH (
-    security_invoker = true
-) AS (
-    SELECT
-        id,
-        id AS {base_resource}_id,
-        {formatted_fields},
-        recorded_by,
-        lower(record_time_range) AS recorded_at,
-        null AS replaced_by,
-        null AS replaced_at\
-"""
-        + (
-            """,
-        lower(valid_time_range) AS valid_from,
-        upper(valid_time_range) AS valid_to\
-"""
-            if "valid_from" in schema_fields
-            else ""
-        )
-        + f"""
-    FROM flex.{base_resource}
-    UNION ALL
-    SELECT
-        history_id AS id,
-        id AS {base_resource}_id,
-        {formatted_fields},
-        recorded_by,
-        lower(record_time_range) AS recorded_at,
-        replaced_by,
-        upper(record_time_range) AS replaced_at\
-"""
-        + (
-            """,
-        lower(valid_time_range) AS valid_from,
-        upper(valid_time_range) AS valid_to\
-"""
-            if "valid_from" in schema_fields
-            else ""
-        )
-        + f"""
-    FROM flex.{base_resource}_history
-);\
-"""
-    )
-
-
 # ------------------------------------------------------------------------------
 
 # this part generates the schema.sql input file for sqlc in the backend
@@ -202,27 +111,10 @@ if __name__ == "__main__":
                     f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
                 )
 
-            # generate views and history views creation statements
+            # generate views and history views
             if resource.get("generate_views", False):
-                with open(f"{DB_DIR}/api/{resource['id']}.sql", "w") as f:
-                    print(
-                        "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
-                        file=f,
-                    )
-                    schema_fields = set(resource["properties"].keys())
-                    print(
-                        view_create_statement(
-                            resource["id"],
-                            schema_fields,
-                            resource.get("audit"),
-                        ),
-                        file=f,
-                    )
-                    if "history" in resource:
-                        print(file=f)
-                        print(
-                            history_view_create_statement(
-                                resource["id"], schema_fields
-                            ),
-                            file=f,
-                        )
+                j2.template(
+                    resource,
+                    "resource_api.j2.sql",
+                    f"{DB_DIR}/api/{resource['id']}.sql",
+                )

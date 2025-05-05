@@ -25,3 +25,6 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA eic TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA status TO flex_anonymous
+  - include:
+      file: ./api/changelog.yml
+      relativeToChangelogFile: true

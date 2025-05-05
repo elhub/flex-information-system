@@ -1,6 +1,8 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
-CREATE OR REPLACE VIEW service_provider_product_application_comment
+-- changeset flex:api-service-provider-product-application-comment-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.service_provider_product_application_comment
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -13,8 +15,8 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at
     FROM flex.service_provider_product_application_comment
 );
-
-CREATE OR REPLACE VIEW service_provider_product_application_comment_history
+-- changeset flex:api-service-provider-product-application-comment-history-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.service_provider_product_application_comment_history
 WITH (
     security_invoker = true
 ) AS (

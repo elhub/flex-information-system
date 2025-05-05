@@ -1,6 +1,8 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
-CREATE OR REPLACE VIEW system_operator_product_type
+-- changeset flex:api-system-operator-product-type-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.system_operator_product_type
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -11,8 +13,8 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at
     FROM flex.system_operator_product_type
 );
-
-CREATE OR REPLACE VIEW system_operator_product_type_history
+-- changeset flex:api-system-operator-product-type-history-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.system_operator_product_type_history
 WITH (
     security_invoker = true
 ) AS (
