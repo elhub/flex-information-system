@@ -1,6 +1,8 @@
+--liquibase formatted sql
 -- Manually managed file
 
-CREATE OR REPLACE VIEW technical_resource_history
+-- changeset flex:api-technical-resource-history-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.technical_resource_history
 WITH (
     security_invoker = true
 ) AS (
@@ -29,7 +31,8 @@ WITH (
     FROM flex.technical_resource_history
 );
 
-CREATE OR REPLACE VIEW technical_resource
+-- changeset flex:api-technical-resource-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.technical_resource
 WITH (security_invoker = true) AS (
     SELECT
         tr.technical_resource_id AS id,
@@ -52,7 +55,8 @@ WITH (security_invoker = true) AS (
     WHERE tr.rn = 1
 );
 
-CREATE OR REPLACE FUNCTION technical_resource_modify()
+-- changeset flex:api-technical-resource-modify-function endDelimiter:-- runAlways:true
+CREATE OR REPLACE FUNCTION api.technical_resource_modify()
 RETURNS TRIGGER
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -148,8 +152,9 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:api-technical-resource-modify-trigger endDelimiter:-- runAlways:true
 CREATE OR REPLACE TRIGGER technical_resource_modify_trg
 INSTEAD OF INSERT OR UPDATE OR DELETE
-ON technical_resource
+ON api.technical_resource
 FOR EACH ROW
-EXECUTE FUNCTION technical_resource_modify();
+EXECUTE FUNCTION api.technical_resource_modify();

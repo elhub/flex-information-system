@@ -17,3 +17,6 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA audit TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA gs1 TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous
+  - include:
+      file: ./api/changelog.yml
+      relativeToChangelogFile: true

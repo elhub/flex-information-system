@@ -1,6 +1,8 @@
--- Manually managed file
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
-CREATE OR REPLACE VIEW controllable_unit_history WITH (
+-- changeset flex:api-controllable-unit-history-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
     security_invoker = true
 ) AS (
     SELECT
@@ -60,7 +62,8 @@ CREATE OR REPLACE VIEW controllable_unit_history WITH (
             ON cu.accounting_point_id = apt.business_id
 );
 
-CREATE OR REPLACE VIEW controllable_unit
+-- changeset flex:api-controllable-unit-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.controllable_unit
 WITH (security_invoker = true) AS (
     SELECT
         cu.controllable_unit_id AS id,
@@ -103,13 +106,16 @@ WITH (security_invoker = true) AS (
     WHERE cu.rn = 1
 );
 
-ALTER VIEW IF EXISTS controllable_unit
+-- changeset flex:api-controllable-unit-grid-validation-status-default endDelimiter:-- runAlways:true
+ALTER VIEW IF EXISTS api.controllable_unit
 ALTER COLUMN grid_validation_status SET DEFAULT 'pending';
 
-ALTER VIEW IF EXISTS controllable_unit
+-- changeset flex:api-controllable-unit-status-default endDelimiter:-- runAlways:true
+ALTER VIEW IF EXISTS api.controllable_unit
 ALTER COLUMN status SET DEFAULT 'new';
 
-CREATE OR REPLACE FUNCTION controllable_unit_modify()
+-- changeset flex:api-controllable-unit-modify-function endDelimiter:-- runAlways:true
+CREATE OR REPLACE FUNCTION api.controllable_unit_modify()
 RETURNS TRIGGER
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -260,8 +266,9 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:api-controllable-unit-modify-trigger endDelimiter:-- runAlways:true
 CREATE OR REPLACE TRIGGER controllable_unit_modify_trg
 INSTEAD OF INSERT OR UPDATE OR DELETE
-ON controllable_unit
+ON api.controllable_unit
 FOR EACH ROW
-EXECUTE FUNCTION controllable_unit_modify();
+EXECUTE FUNCTION api.controllable_unit_modify();

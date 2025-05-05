@@ -1,6 +1,8 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
-CREATE OR REPLACE VIEW controllable_unit_service_provider
+-- changeset flex:api-controllable-unit-service-provider-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.controllable_unit_service_provider
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -13,8 +15,8 @@ WITH (security_invoker = true) AS (
         upper(valid_time_range) AS valid_to
     FROM flex.controllable_unit_service_provider
 );
-
-CREATE OR REPLACE VIEW controllable_unit_service_provider_history
+-- changeset flex:api-controllable-unit-service-provider-history-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.controllable_unit_service_provider_history
 WITH (
     security_invoker = true
 ) AS (
