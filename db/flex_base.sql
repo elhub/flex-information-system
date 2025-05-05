@@ -13,9 +13,11 @@ GRANT USAGE ON SCHEMA timeline TO flex_anonymous;
 \i pg_gs1/pg_gs1.sql
 GRANT USAGE ON SCHEMA gs1 TO flex_anonymous;
 
-
 \i pg_eic/pg_eic.sql
 GRANT USAGE ON SCHEMA eic TO flex_anonymous;
+
+\i pg_status/pg_status.sql
+GRANT USAGE ON SCHEMA status TO flex_anonymous;
 
 --
 ---- Business Identifier Type

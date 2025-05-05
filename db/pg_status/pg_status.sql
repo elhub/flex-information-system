@@ -1,4 +1,10 @@
-CREATE OR REPLACE FUNCTION status_insert()
+--liquibase formatted sql
+
+-- changeset flex:gs1-create-schema
+CREATE SCHEMA IF NOT EXISTS status;
+
+-- changeset flex:status-restrict-insert runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION status.restrict_insert()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -19,7 +25,8 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION status_update()
+-- changeset flex:status-restrict-update runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION status.restrict_update()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql

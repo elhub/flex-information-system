@@ -1,5 +1,9 @@
+--liquibase formatted sql
+
+-- changeset flex:eic-create-schema
 CREATE SCHEMA IF NOT EXISTS eic;
 
+-- changeset flex:eic-char-to-code runOnChange:true endDelimiter:--
 -- convert a character to its EIC numeric value
 CREATE OR REPLACE FUNCTION eic.char_to_code(c text)
 RETURNS integer AS $$
@@ -16,6 +20,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+-- changeset flex:eic-code-to-char runOnChange:true endDelimiter:--
 -- convert an EIC numeric value to a character
 CREATE OR REPLACE FUNCTION eic.code_to_char(code integer)
 RETURNS text AS $$
@@ -32,6 +37,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+-- changeset flex:eic-compute-check-char runOnChange:true endDelimiter:--
 -- compute the check character of an EIC prefix
 CREATE OR REPLACE FUNCTION eic.compute_check_char(partial_eic text)
 RETURNS text AS $$
@@ -54,6 +60,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+-- changeset flex:eic-add-check-char runOnChange:true endDelimiter:--
 -- compute and add the check character to an EIC prefix to form a full EIC
 -- identifier
 CREATE OR REPLACE FUNCTION eic.add_check_char(partial_eic text)
@@ -63,6 +70,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+-- changeset flex:eic-validate-check-char runOnChange:true endDelimiter:--
 -- validate an EIC identifier
 CREATE OR REPLACE FUNCTION eic.validate_check_char(eic text)
 RETURNS boolean
