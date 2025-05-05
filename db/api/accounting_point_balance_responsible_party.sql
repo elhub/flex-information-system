@@ -11,8 +11,22 @@ WITH (security_invoker = true) AS (
         upper(valid_time_range) AS valid_to
     FROM flex.accounting_point_balance_responsible_party
     WHERE current_role = 'flex_flexibility_information_system_operator'
+    -- RLS: APBRP-SO001
     UNION ALL
+    SELECT
+        ap_brp.id,
+        ap_brp.accounting_point_id,
+        ap_brp.balance_responsible_party_id,
+        ap_brp.energy_direction,
+        lower(ap_brp.valid_time_range) AS valid_from,
+        upper(ap_brp.valid_time_range) AS valid_to
+    FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
+        INNER JOIN flex.accounting_point AS ap
+            ON ap.id = ap_brp.accounting_point_id
+    WHERE current_role = 'flex_system_operator'
+        AND ap.system_operator_id = flex.current_party()
     -- RLS: APBRP-SP001
+    UNION ALL
     SELECT
         id,
         accounting_point_id,

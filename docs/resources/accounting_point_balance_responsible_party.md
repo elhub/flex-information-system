@@ -71,7 +71,9 @@ No policies.
 
 #### System Operator
 
-No policies.
+| Policy key  | Policy                                              | Status |
+|-------------|-----------------------------------------------------|--------|
+| APBRP-SO001 | Read APBRP when they are system operator on the AP. | DONE   |
 
 #### Service Provider
 
