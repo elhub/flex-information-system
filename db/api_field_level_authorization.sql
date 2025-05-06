@@ -2733,6 +2733,9 @@ GRANT SELECT (
 ) ON TABLE api.accounting_point
 TO flex_third_party;
 
+GRANT SELECT ON TABLE api.accounting_point
+TO flex_internal_event_notification;
+
 GRANT SELECT (
     id,
     accounting_point_id,

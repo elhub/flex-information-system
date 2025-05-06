@@ -110,7 +110,7 @@ notification;event_id;;R;R;R;R;R;R;R;R;;C
 notification;party_id;;R;R;R;R;R;R;R;R;;C
 notification;recorded_at;;R;R;R;R;R;R;R;R;;
 notification;recorded_by;;R;R;R;R;R;R;R;R;;
-accounting_point;;;;;;;;;;;;
+accounting_point;;;;;;;;;;;;R
 accounting_point;id;;R;R;R;R;R;R;R;R;;
 accounting_point;business_id;;R;R;R;R;R;R;R;R;;
 accounting_point;system_operator_id;;R;R;R;R;R;R;R;R;;

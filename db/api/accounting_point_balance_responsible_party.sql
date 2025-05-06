@@ -63,9 +63,3 @@ WITH (security_invoker = true) AS (
             ap_brp.valid_time_range
     ) AS ap_brp_for_sp
 );
-
-GRANT SELECT ON TABLE accounting_point_balance_responsible_party
-TO flex_internal_event_notification;
-
-GRANT SELECT ON TABLE accounting_point_balance_responsible_party
-TO flex_common;
