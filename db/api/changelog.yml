@@ -7,7 +7,14 @@ databaseChangeLog:
       changes:
         - sql: DROP SCHEMA IF EXISTS api CASCADE
         - sql: CREATE SCHEMA api AUTHORIZATION flex
+        - sql: GRANT USAGE ON SCHEMA api TO flex_anonymous
   - includeAll:
       path: ./
+      relativeToChangelogFile: true
+      endsWithFilter: .sql
+      minDepth: 1
+      maxDepth: 1
+  - includeAll:
+      path: ./grants/
       relativeToChangelogFile: true
       endsWithFilter: .sql

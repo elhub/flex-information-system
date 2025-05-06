@@ -12,7 +12,6 @@ databaseChangeLog:
             separator: ","
             primaryKey: NAME
             header: true
-
   - changeSet:
       id: product-type-reference-data
       author: flex
@@ -25,3 +24,7 @@ databaseChangeLog:
             separator: ","
             primaryKey: BUSINESS_ID
             header: true
+  - includeAll:
+      path: ./grants/
+      relativeToChangelogFile: true
+      endsWithFilter: .sql
