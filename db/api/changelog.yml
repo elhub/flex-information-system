@@ -14,6 +14,8 @@ databaseChangeLog:
       endsWithFilter: .sql
       minDepth: 1
       maxDepth: 1
+      # Revers sort to ensure that <resource>.sql is run before <resource>_<something>.sql
+      resourceComparator: java.util.Comparator.reverseOrder
   - includeAll:
       path: ./grants/
       relativeToChangelogFile: true
