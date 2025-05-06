@@ -3,5 +3,5 @@
 -- TODO proper handling of data
 SET search_path TO flex, public;
 
-\COPY flex.business_id_type FROM './data/business_id_type.csv' WITH CSV HEADER;
-\COPY flex.product_type (business_id, category, market, market_type, examples, notes) FROM './data/product_type.csv' WITH CSV HEADER;
+\COPY flex.business_id_type FROM './flex/reference_data/business_id_type.csv' WITH CSV HEADER;
+\COPY flex.product_type (business_id, category, market, market_type, examples, notes) FROM './flex/reference_data/product_type.csv' WITH CSV HEADER;
