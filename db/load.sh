@@ -18,15 +18,14 @@ psql -X -v ON_ERROR_STOP=1 -d flex -U postgres -f pre.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_base.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_auth.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_structure.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_field_level_authorization.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex/grants/field_level_authorization.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_reference_data.psql || true
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f test_data/test_data.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_users.sql
 
 # api module
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_auth.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_structure.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_field_level_authorization.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api/grants/field_level_authorization.sql
 
 # auth module
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f auth_base.sql
