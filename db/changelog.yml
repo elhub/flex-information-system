@@ -29,5 +29,11 @@ databaseChangeLog:
       file: ./flex/changelog.yml
       relativeToChangelogFile: true
   - include:
+      file: ./auth/changelog.yml
+      relativeToChangelogFile: true
+  - include:
       file: ./api/changelog.yml
+      relativeToChangelogFile: true
+  - include:
+      file: ./test_data/test_data.sql
       relativeToChangelogFile: true

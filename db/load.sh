@@ -28,7 +28,7 @@ psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_structure.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api/grants/field_level_authorization.sql
 
 # auth module
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f auth_base.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f auth/functions.sql
 
 # logical replication
 psql -X -v ON_ERROR_STOP=1 -d flex -U postgres -f replication.sql

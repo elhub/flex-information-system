@@ -1,21 +1,7 @@
--- The auth schema is for the auth module
-SET search_path TO auth;
+-- liquibase formatted sql
 
--- grants for application roles
-GRANT USAGE ON SCHEMA auth TO flex_anonymous;
-GRANT USAGE ON SCHEMA auth TO flex_common;
-GRANT USAGE ON SCHEMA auth TO flex_balance_responsible_party;
-GRANT USAGE ON SCHEMA auth TO flex_end_user;
-GRANT USAGE ON SCHEMA auth TO flex_energy_supplier;
-GRANT USAGE ON SCHEMA auth TO flex_entity;
-GRANT USAGE ON SCHEMA auth TO flex_flexibility_information_system_operator;
-GRANT USAGE ON SCHEMA auth TO flex_market_operator;
-GRANT USAGE ON SCHEMA auth TO flex_system_operator;
-GRANT USAGE ON SCHEMA auth TO flex_service_provider;
-GRANT USAGE ON SCHEMA auth TO flex_third_party;
-GRANT USAGE ON SCHEMA auth TO flex_internal_event_notification;
-
-CREATE OR REPLACE FUNCTION entity_of_credentials(
+-- changeset flex:auth-entity-of-credentials runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.entity_of_credentials(
     _client_id text, _client_secret text
 )
 RETURNS TABLE (
@@ -35,10 +21,12 @@ AS $$
         AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
 $$;
 
-GRANT EXECUTE ON FUNCTION entity_of_credentials TO flex_anonymous;
+-- changeset flex:auth-entity-of-credentials-execute runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.entity_of_credentials TO flex_anonymous;
 
+-- changeset flex:auth-entity-of-business-id runOnChange:true endDelimiter:--
 -- Gets entity details from the business id
-CREATE OR REPLACE FUNCTION entity_of_business_id(
+CREATE OR REPLACE FUNCTION auth.entity_of_business_id(
     in_business_id text,
     in_business_id_type text
 ) RETURNS TABLE (
@@ -54,8 +42,9 @@ AS $$
     WHERE e.business_id = in_business_id
 $$;
 
+-- changeset flex:auth-entity-client-by-uuid runOnChange:true endDelimiter:--
 -- Gets entity details from the entity client uuid
-CREATE OR REPLACE FUNCTION entity_client_by_uuid(in_client_id text)
+CREATE OR REPLACE FUNCTION auth.entity_client_by_uuid(in_client_id text)
 RETURNS TABLE (
     entity_id bigint,
     external_id uuid,
@@ -73,7 +62,8 @@ AS $$
     WHERE clt.client_id::text = in_client_id
 $$;
 
-CREATE OR REPLACE FUNCTION assume_party(_party_id bigint)
+-- changeset flex:auth-assume-party runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.assume_party(_party_id bigint)
 RETURNS TABLE (
     entity_id bigint,
     eid uuid,
@@ -108,9 +98,11 @@ begin
 end;
 $$;
 
-GRANT EXECUTE ON FUNCTION assume_party TO flex_entity;
+-- changeset flex:auth-assume-party-execute runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.assume_party TO flex_entity;
 
-CREATE OR REPLACE FUNCTION party_of_identity(_identity bigint)
+-- changeset flex:auth-party-of-identity runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.party_of_identity(_identity bigint)
 RETURNS bigint
 SECURITY DEFINER
 LANGUAGE sql
@@ -118,9 +110,12 @@ AS $$
   SELECT party_id FROM flex.identity WHERE id = _identity;
 $$;
 
-GRANT EXECUTE ON FUNCTION party_of_identity TO flex_internal_event_notification;
+-- changeset flex:auth-party-of-identity-execute runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.party_of_identity
+TO flex_internal_event_notification;
 
-CREATE OR REPLACE FUNCTION eid_details(_eid text)
+-- changeset flex:auth-eid-details runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.eid_details(_eid text)
 RETURNS TABLE (
     id bigint,
     entity_id bigint,
@@ -140,12 +135,14 @@ AS $$
     where i.eid = _eid::uuid;
 $$;
 
-GRANT EXECUTE ON FUNCTION eid_details TO flex_entity;
-GRANT EXECUTE ON FUNCTION eid_details TO flex_common;
+-- changeset flex:auth-eid-details-execute runOnChange:true endDelimiter:;
+GRANT EXECUTE ON FUNCTION auth.eid_details TO flex_entity;
+GRANT EXECUTE ON FUNCTION auth.eid_details TO flex_common;
 
+-- changeset flex:auth-current-user-info runOnChange:true endDelimiter:--
 -- This trigger functions is used to ensure that the
 -- role name exists in the database catalog tables
-CREATE OR REPLACE FUNCTION current_user_info()
+CREATE OR REPLACE FUNCTION auth.current_user_info()
 RETURNS TABLE (
     identity_id int,
     external_id uuid,
@@ -170,5 +167,6 @@ $$
     WHERE i.id = flex.current_identity();
 $$;
 
-GRANT EXECUTE ON FUNCTION current_user_info TO flex_entity;
-GRANT EXECUTE ON FUNCTION current_user_info TO flex_common;
+-- changeset flex:auth-current-user-info-execute runOnChange:true endDelimiter:;
+GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_entity;
+GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_common;
