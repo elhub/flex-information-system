@@ -177,6 +177,32 @@ BEGIN
       '2023-11-01 00:00:00 Europe/Oslo',
       '[)'),
     0
+  ), (
+    cu.id,
+    cu.business_id,
+    cu.name || ' TEST-APBRP',
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.is_small,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record must exist while Common BRP is BRP on the AP
+    tstzrange(
+      '2024-08-10 00:00:00 Europe/Oslo',
+      '2024-08-11 00:00:00 Europe/Oslo',
+      '[)'),
+    0
   );
 
   FOREACH sp IN ARRAY service_providers
@@ -226,8 +252,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 CREATE OR REPLACE FUNCTION test_data.add_technical_resource(
     l_name text,
     l_controllable_unit_id bigint,
-    l_details text,
-    l_former_record_time_range tstzrange
+    l_details text
 )
 RETURNS void
 AS $$
@@ -264,7 +289,6 @@ BEGIN
       0
     );
 
-    -- insert a previous version of that TR valid at the given time range
     INSERT INTO flex.technical_resource_history (
       id,
       name,
@@ -275,10 +299,16 @@ BEGIN
       replaced_by
     ) VALUES (
       l_tr.id,
-      l_tr.name || ' CUSTOM FORMER TR', -- this string will be searched in tests
+      l_tr.name || ' TEST-APBRP',
       l_tr.controllable_unit_id,
       l_tr.details,
-      l_former_record_time_range,
+      -- the record must exist while Common BRP is BRP on the AP
+      -- and while Common SP manages the CU
+      tstzrange(
+        '2024-08-10 00:00:00 Europe/Oslo',
+        '2024-08-11 00:00:00 Europe/Oslo',
+        '[)'
+      ),
       l_tr.recorded_by,
       0
     );
@@ -306,7 +336,6 @@ CREATE OR REPLACE FUNCTION test_data.add_accounting_points(
     in_metering_grid_area_id bigint,
     end_user contract_parties,
     energy_supplier contract_parties,
-    balance_responsible_party contract_parties,
     so_id bigint
 )
 RETURNS void
@@ -386,27 +415,6 @@ BEGIN
       ), (
         ap_id,
         energy_supplier.new_id,
-        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
-      );
-    END IF;
-
-    IF balance_responsible_party IS NOT NULL THEN
-      -- insert 2 balance responsible parties for each accounting point
-      INSERT INTO flex.accounting_point_balance_responsible_party (
-        accounting_point_id,
-        balance_responsible_party_id,
-        valid_time_range
-      ) VALUES (
-        ap_id,
-        balance_responsible_party.former_id,
-        tstzrange(
-          '2023-05-01 00:00:00 Europe/Oslo',
-          '2024-01-01 00:00:00 Europe/Oslo',
-          '[)'
-        )
-      ), (
-        ap_id,
-        balance_responsible_party.new_id,
         tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );
     END IF;
@@ -624,7 +632,6 @@ BEGIN
       so_mga_id,
       null,
       null,
-      null,
       so_id
     );
     return;
@@ -643,7 +650,6 @@ BEGIN
     so_mga_id,
     (common_eu_id, eu_id),
     (common_es_id, es_id),
-    (common_brp_id, brp_id),
     so_id
   );
 
@@ -651,32 +657,32 @@ BEGIN
     metering_grid_area_id,
     energy_supplier_id,
     balance_responsible_party_id,
-    direction,
+    energy_direction,
     valid_time_range
   ) VALUES (
     so_mga_id,
     es_id,
+    brp_id,
+    'production',
+    tstzrange('2022-06-01 Europe/Oslo', '2024-07-20 Europe/Oslo', '[)')
+  ), (
+    so_mga_id,
+    es_id,
     common_brp_id,
     'production',
-    tstzrange('2023-10-01 Europe/Oslo', '2024-10-01 Europe/Oslo', '[)')
+    tstzrange('2024-07-20 Europe/Oslo', '2024-09-10 Europe/Oslo', '[)')
   ), (
     so_mga_id,
     es_id,
     brp_id,
     'production',
-    tstzrange('2024-10-01 Europe/Oslo', null, '[)')
+    tstzrange('2024-09-10 Europe/Oslo', '2099-01-01 Europe/Oslo', '[)')
   ), (
     so_mga_id,
     es_id,
     brp_id,
-    'consumption',
-    tstzrange('2023-10-01 Europe/Oslo', null, '[)')
-  ), (
-    so_mga_id,
-    common_es_id,
-    common_brp_id,
     'production',
-    tstzrange('2023-10-01 Europe/Oslo', null, '[)')
+    tstzrange('2099-01-01 Europe/Oslo', null, '[)')
   );
 
   INSERT INTO flex.service_providing_group (
@@ -710,20 +716,17 @@ BEGIN
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #1',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #2',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #3',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
 
     accounting_point_seq := accounting_point_seq + 1;

@@ -982,6 +982,42 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.accounting_point
 TO flex_third_party;
 
+-- changeset flex:flex-grant-accounting-point-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point
+TO flex_internal_event_notification;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_end_user;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-accounting-point-balance-responsible-party-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
+TO flex_third_party;
+
 -- changeset flex:flex-grant-product-type-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.product_type
 TO flex_balance_responsible_party;

@@ -16,6 +16,15 @@ type AccountingPoint struct {
 	RecordedAt       pgtype.Timestamptz
 }
 
+type AccountingPointBalanceResponsibleParty struct {
+	ID                        int
+	AccountingPointID         int
+	BalanceResponsiblePartyID int
+	EnergyDirection           string
+	ValidFrom                 pgtype.Timestamptz
+	ValidTo                   pgtype.Timestamptz
+}
+
 type AccountingPointEndUser struct {
 	ID                int
 	AccountingPointID int

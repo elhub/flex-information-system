@@ -1,38 +1,27 @@
--- relation linking accounting points to their balance responsible party
-CREATE TABLE IF NOT EXISTS accounting_point_balance_responsible_party (
-    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    accounting_point_id bigint NOT NULL,
-    balance_responsible_party_id bigint NOT NULL,
-    balance_responsible_party_party_type text GENERATED ALWAYS AS (
-        'balance_responsible_party'
-    ) STORED,
-    valid_time_range tstzrange CHECK (
-        valid_time_range IS null OR (
-            lower(valid_time_range) IS NOT null
-            AND lower_inc(valid_time_range)
-            AND NOT upper_inc(valid_time_range)
-        )
-    ),
-    record_time_range tstzrange NOT NULL DEFAULT tstzrange(
-        localtimestamp, null, '[)'
-    ),
-    recorded_by bigint NOT NULL DEFAULT current_identity(),
-
-    CONSTRAINT fk_accounting_point_balance_responsible_party_accounting_point
-    FOREIGN KEY (
-        accounting_point_id
-    ) REFERENCES accounting_point (id),
-    CONSTRAINT fk_accounting_point_balance_responsible_party_brp FOREIGN KEY (
-        balance_responsible_party_id, balance_responsible_party_party_type
-    ) REFERENCES party (id, type),
-    CONSTRAINT accounting_point_balance_responsible_party_valid_time_overlap
-    EXCLUDE USING gist (
-        accounting_point_id WITH =, valid_time_range WITH &&
-    ) WHERE (valid_time_range IS NOT null)
+CREATE OR REPLACE VIEW accounting_point_balance_responsible_party
+WITH (security_invoker = true) AS (
+    SELECT
+        ap_es.accounting_point_id,
+        es_br.balance_responsible_party_id,
+        es_br.energy_direction,
+        row_number() OVER () AS id,
+        (
+            ap_es.valid_time_range
+            * ap_mga.valid_time_range
+            * es_br.valid_time_range
+        ) AS valid_time_range
+    FROM flex.accounting_point_energy_supplier AS ap_es -- noqa
+        INNER JOIN flex.accounting_point_metering_grid_area AS ap_mga
+            ON ap_mga.accounting_point_id = ap_es.accounting_point_id
+                AND ap_es.valid_time_range && ap_mga.valid_time_range
+        INNER JOIN flex.energy_supplier_balance_responsibility AS es_br
+            ON es_br.metering_grid_area_id = ap_mga.metering_grid_area_id
+                AND es_br.energy_supplier_id = ap_es.energy_supplier_id
+                AND ap_es.valid_time_range && es_br.valid_time_range
 );
 
-CREATE OR REPLACE TRIGGER
-accounting_point_balance_responsible_party_timeline_midnight_aligned
-AFTER INSERT OR UPDATE ON accounting_point_balance_responsible_party
-FOR EACH ROW
-EXECUTE FUNCTION timeline.midnight_aligned();
+GRANT SELECT ON TABLE accounting_point_balance_responsible_party
+TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE accounting_point_balance_responsible_party
+TO flex_common;
