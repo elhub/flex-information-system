@@ -1,6 +1,10 @@
+-- liquibase formatted sql
 -- test_data contains functions to add test data to the database.
+
+-- changeset flex:test-data-create-schema
 CREATE SCHEMA IF NOT EXISTS test_data;
 
+-- changeset flex:test-data-create-random-regulation-direction runOnChange:true endDelimiter:--
 -- Randomly return 'up', 'down' or 'both'
 CREATE OR REPLACE FUNCTION test_data.random_regulation_direction()
 RETURNS text
@@ -14,6 +18,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 
+-- changeset flex:test-data-add-party-for-entity runOnChange:true endDelimiter:--
 -- Add a party for an entity based on name and type
 CREATE OR REPLACE FUNCTION test_data.add_party_for_entity(
     parent_entity_id bigint,
@@ -47,6 +52,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-add-party-to-entity runOnChange:true endDelimiter:--
 -- Add a party as a member to an entity based on name of party
 CREATE OR REPLACE FUNCTION test_data.add_party_to_entity(
     entity_id bigint, party_name text
@@ -62,6 +68,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-create-cu-sp-type runOnChange:true endDelimiter:--
 -- Types for add_controllable_unit
 DO
 $$
@@ -75,6 +82,7 @@ EXCEPTION
 END
 $$;
 
+-- changeset flex:test-data-add-controllable-unit runOnChange:true endDelimiter:--
 -- Add a controllable unit with service providers
 CREATE OR REPLACE FUNCTION test_data.add_controllable_unit(
     cu_name text,
@@ -240,6 +248,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-add-technical-resource runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION test_data.add_technical_resource(
     l_name text,
     l_controllable_unit_id bigint,
@@ -306,6 +315,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-accounting-points-type runOnChange:true endDelimiter:--
 -- Types for add_accounting_points
 DO
 $$
@@ -319,6 +329,7 @@ EXCEPTION
 END
 $$;
 
+-- changeset flex:test-data-add-accounting-points runOnChange:true endDelimiter:--
 -- Add accounting point mapping
 CREATE OR REPLACE FUNCTION test_data.add_accounting_points(
     accounting_point_prefix text,
@@ -411,8 +422,8 @@ BEGIN
 END
 $$;
 
+-- changeset flex:test-data-add-test-account runOnChange:true endDelimiter:--
 -- Add a test account with parties and controllable units
-DROP FUNCTION IF EXISTS test_data.add_test_account;
 CREATE OR REPLACE FUNCTION test_data.add_test_account(
     in_user_seq_id bigint,
     in_entity_name text,

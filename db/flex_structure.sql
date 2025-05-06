@@ -7,6 +7,9 @@ This API is for the Norwegian Flexibility Information System.
 It is used to register distributed flexibility resources in the Norwegian power grid
 and support the processes in the value chain.$$;
 
+-- grants
+GRANT USAGE ON SCHEMA flex TO flex_anonymous;
+
 -- resources
 
 \i flex/entity_client.sql
@@ -59,11 +62,10 @@ and support the processes in the value chain.$$;
 \i flex/technical_resource_history_audit.sql
 
 -- security definer views for RLS
-
-\i authz/accounting_point_service_provider.sql
-\i authz/controllable_unit_balance_responsible_party.sql
-\i authz/controllable_unit_end_user.sql
-\i authz/controllable_unit_energy_supplier.sql
+\i flex/accounting_point_service_provider.sql
+\i flex/controllable_unit_balance_responsible_party.sql
+\i flex/controllable_unit_end_user.sql
+\i flex/controllable_unit_energy_supplier.sql
 
 -- RLS
 

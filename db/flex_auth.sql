@@ -1,35 +1,6 @@
 -- authn
 SET search_path TO flex, public;
 
--- grants for application roles
-GRANT USAGE ON SCHEMA flex TO flex_anonymous;
-GRANT USAGE ON SCHEMA flex TO flex_common;
-GRANT USAGE ON SCHEMA flex TO flex_balance_responsible_party;
-GRANT USAGE ON SCHEMA flex TO flex_end_user;
-GRANT USAGE ON SCHEMA flex TO flex_energy_supplier;
-GRANT USAGE ON SCHEMA flex TO flex_entity;
-GRANT USAGE ON SCHEMA flex TO flex_flexibility_information_system_operator;
-GRANT USAGE ON SCHEMA flex TO flex_market_operator;
-GRANT USAGE ON SCHEMA flex TO flex_system_operator;
-GRANT USAGE ON SCHEMA flex TO flex_service_provider;
-GRANT USAGE ON SCHEMA flex TO flex_third_party;
-GRANT USAGE ON SCHEMA flex TO flex_internal_event_notification;
-
-
--- This trigger functions is used to ensure that the
--- role name exists in the database catalog tables
-CREATE OR REPLACE FUNCTION
-check_role_exists() RETURNS trigger AS $$
-begin
-  if not exists (select 1 from pg_roles as r where r.rolname = new.role) then
-    raise foreign_key_violation using message =
-      'unknown database role: ' || new.role;
-    return null;
-  end if;
-  return new;
-end
-$$ LANGUAGE plpgsql;
-
 -- Functions related figuring out the current user
 \i flex/current_user_setting.sql
 
