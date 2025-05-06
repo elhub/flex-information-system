@@ -28,7 +28,7 @@ unload:
 
 
 # load the database
-load: liquibase
+load:
     #!/usr/bin/env bash
     set -euo pipefail
     export PGHOST=localhost
@@ -346,7 +346,7 @@ openapi-to-db:
     wq
     EOF
 
-    imports=$(ls db/api/ | sed -e 's|.*|\\i api/&|')
+    imports=$(ls db/api/ | grep sql | sed -e 's|.*|\\i api/&|')
 
     ed -s "./db/api_structure.sql" <<EOF
     /-- views/+,/-- triggers/-d
@@ -454,18 +454,13 @@ openapi-to-tooltips:
 permissions: permissions-to-frontend permissions-to-md permissions-to-db
 
 permissions-to-db:
-    echo "-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
-        | tee db/api_field_level_authorization.sql > db/flex_field_level_authorization.sql
-
-    echo "SET search_path TO api;" >> db/api_field_level_authorization.sql
-
-    echo "SET search_path TO flex, public;" >> db/flex_field_level_authorization.sql
-
+    echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
+        | tee db/api/grants/field_level_authorization.sql > db/flex/grants/field_level_authorization.sql
 
     cat local/input/permissions.csv \
         | .venv/bin/python3 local/scripts/permissions_to_grant.py \
-        >> db/api_field_level_authorization.sql \
-        2>> db/flex_field_level_authorization.sql
+        >> db/api/grants/field_level_authorization.sql \
+        2>> db/flex/grants/field_level_authorization.sql
 
 permissions-to-md:
     #!/usr/bin/env bash

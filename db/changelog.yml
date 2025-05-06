@@ -7,7 +7,13 @@ databaseChangeLog:
       file: ./pg_gs1/pg_gs1.sql
       relativeToChangelogFile: true
   - include:
+      file: ./pg_eic/pg_eic.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./pg_timeline/pg_timeline.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./pg_status/pg_status.sql
       relativeToChangelogFile: true
   - changeSet:
       id: grant-usage
@@ -16,4 +22,12 @@ databaseChangeLog:
       changes:
         - sql: GRANT USAGE ON SCHEMA audit TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA gs1 TO flex_anonymous
+        - sql: GRANT USAGE ON SCHEMA eic TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous
+        - sql: GRANT USAGE ON SCHEMA status TO flex_anonymous
+  - include:
+      file: ./flex/changelog.yml
+      relativeToChangelogFile: true
+  - include:
+      file: ./api/changelog.yml
+      relativeToChangelogFile: true

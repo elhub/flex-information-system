@@ -252,7 +252,7 @@ CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_status_insert
 BEFORE INSERT ON service_providing_group_product_application
 FOR EACH ROW
-EXECUTE FUNCTION status_insert('requested');
+EXECUTE FUNCTION status.restrict_insert('requested');
 
 CREATE OR REPLACE TRIGGER service_providing_group_product_application_event
 AFTER INSERT OR UPDATE ON service_providing_group_product_application

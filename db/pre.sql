@@ -1,11 +1,6 @@
 -- extensions
 \connect flex
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- noqa: RF05
-CREATE EXTENSION IF NOT EXISTS btree_gist;
-CREATE EXTENSION IF NOT EXISTS ltree;
-
 -- data schema
 CREATE SCHEMA IF NOT EXISTS flex AUTHORIZATION flex;
 

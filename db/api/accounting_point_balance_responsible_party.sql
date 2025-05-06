@@ -1,5 +1,8 @@
+--liquibase formatted sql
 -- Manually managed file
-CREATE OR REPLACE VIEW accounting_point_balance_responsible_party
+
+-- changeset flex:api-accounting-point-balance-responsible-party-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.accounting_point_balance_responsible_party
 WITH (security_invoker = true) AS (
     -- RLS: APBRP-FISO001
     SELECT

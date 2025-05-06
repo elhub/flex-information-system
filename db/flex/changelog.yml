@@ -1,0 +1,30 @@
+---
+databaseChangeLog:
+  - changeSet:
+      id: business-id-type-reference-data
+      author: flex
+      changes:
+        - loadUpdateData:
+            file: ./reference_data/business_id_type.csv
+            relativeToChangelogFile: true
+            schemaName: flex
+            tableName: business_id_type
+            separator: ","
+            primaryKey: NAME
+            header: true
+  - changeSet:
+      id: product-type-reference-data
+      author: flex
+      changes:
+        - loadUpdateData:
+            file: ./reference_data/product_type.csv
+            relativeToChangelogFile: true
+            schemaName: flex
+            tableName: product_type
+            separator: ","
+            primaryKey: BUSINESS_ID
+            header: true
+  - includeAll:
+      path: ./grants/
+      relativeToChangelogFile: true
+      endsWithFilter: .sql

@@ -7,8 +7,6 @@ This API is for the Norwegian Flexibility Information System.
 It is used to register distributed flexibility resources in the Norwegian power grid
 and support the processes in the value chain.$$;
 
-\i flex/status_triggers.sql
-
 -- resources
 
 \i flex/entity_client.sql

@@ -1,6 +1,8 @@
+--liquibase formatted sql
 -- Manually managed file
 
-CREATE OR REPLACE VIEW identity
+-- changeset flex:api-identity-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.identity
 WITH (security_invoker = true) AS (
     SELECT
         i.id,
