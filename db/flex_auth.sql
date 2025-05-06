@@ -30,29 +30,8 @@ begin
 end
 $$ LANGUAGE plpgsql;
 
--- Audit functions
-CREATE OR REPLACE FUNCTION
-current_identity() RETURNS bigint
-LANGUAGE sql SECURITY DEFINER STABLE
-AS $$
-    SELECT nullif(current_setting('flex.current_identity', true),'')::bigint;
-$$;
-
-CREATE OR REPLACE FUNCTION
-current_party() RETURNS bigint
-LANGUAGE sql SECURITY DEFINER STABLE
-AS $$
-    SELECT nullif(current_setting('flex.current_party', true),'')::bigint;
-$$;
-
-CREATE OR REPLACE FUNCTION
-current_entity() RETURNS bigint
-LANGUAGE sql SECURITY DEFINER STABLE
-AS $$
-    SELECT nullif(current_setting('flex.current_entity', true),'')::bigint;
-$$;
-
--- all the following resources must be loaded after the audit functions above
+-- Functions related figuring out the current user
+\i flex/current_user_setting.sql
 
 -- must be loaded before the resources below
 \i flex/event.sql
@@ -106,9 +85,7 @@ BEGIN
     end if;
 
     perform
-        set_config('flex.current_entity', entity_id::text, true),
-        set_config('flex.current_party', party_id::text, true),
-        set_config('flex.current_identity', id::text, true)
+        flex.set_entity_party_identity(entity_id, party_id, id)
     from flex.identity
     where identity.eid = _eid::uuid;
 
