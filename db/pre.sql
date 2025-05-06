@@ -1,21 +1,17 @@
 -- extensions
 \connect flex
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- noqa: RF05
-CREATE EXTENSION IF NOT EXISTS btree_gist;
-CREATE EXTENSION IF NOT EXISTS ltree;
-
 -- data schema
 CREATE SCHEMA IF NOT EXISTS flex AUTHORIZATION flex;
 
 -- logic schemas
-
 DROP SCHEMA IF EXISTS api CASCADE;
 CREATE SCHEMA IF NOT EXISTS api AUTHORIZATION flex;
+GRANT USAGE ON SCHEMA api TO flex_anonymous;
 
 DROP SCHEMA IF EXISTS auth CASCADE;
 CREATE SCHEMA IF NOT EXISTS auth AUTHORIZATION flex;
+GRANT USAGE ON SCHEMA auth TO flex_anonymous;
 
 -- fresh start for policies
 -- TODO each policy should be dropped IF EXISTS separately?

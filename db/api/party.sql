@@ -1,6 +1,8 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
-CREATE OR REPLACE VIEW party
+-- changeset flex:api-party-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.party
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -15,8 +17,8 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at
     FROM flex.party
 );
-
-CREATE OR REPLACE VIEW party_history
+-- changeset flex:api-party-history-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.party_history
 WITH (
     security_invoker = true
 ) AS (

@@ -16,6 +16,7 @@ from flex.models import (
     ServiceProvidingGroupGridPrequalificationHistoryResponse,
     ServiceProvidingGroupGridPrequalificationStatus,
     ServiceProvidingGroupMembershipCreateRequest,
+    ServiceProvidingGroupMembershipUpdateRequest,
     ServiceProvidingGroupMembershipResponse,
     ErrorMessage,
 )
@@ -31,6 +32,7 @@ from flex.api.service_providing_group import (
 )
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
+    update_service_providing_group_membership,
 )
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
@@ -145,6 +147,7 @@ def data():
     assert isinstance(cu_sp3, ControllableUnitServiceProviderResponse)
 
     # put the CUs into the test SPG
+    # 1 in the past, 2 now/future
 
     spgm1 = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -172,18 +175,19 @@ def data():
             controllable_unit_id=cast(int, cu3.id),
             service_providing_group_id=cast(int, spg.id),
             valid_from="2024-01-01T00:00:00+1",
+            valid_to="2024-09-09 Europe/Oslo",
         ),
     )
     assert isinstance(spgm3, ServiceProvidingGroupMembershipResponse)
 
-    yield (sts, spg.id, so_id)
+    yield (sts, spg.id, so_id, cu3.connecting_system_operator_id, spgm3.id)
 
 
 # ---- ---- ---- ---- ----
 
 
 def test_spggp_fiso(data):
-    (sts, spg_id, so_id) = data
+    (sts, spg_id, _, so2_id, _) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -194,6 +198,9 @@ def test_spggp_fiso(data):
         client=client_fiso, service_providing_group_id=f"eq.{spg_id}"
     )
     assert isinstance(spggps_spg, list)
+
+    # the CU added in the past does not need to be prequalified
+    # the 2 others have the same impacted SO
     assert len(spggps_spg) == 0
 
     # endpoint: POST /service_providing_group_grid_prequalification
@@ -201,7 +208,7 @@ def test_spggp_fiso(data):
         client=client_fiso,
         body=ServiceProvidingGroupGridPrequalificationCreateRequest(
             service_providing_group_id=spg_id,
-            impacted_system_operator_id=so_id,
+            impacted_system_operator_id=so2_id,
         ),
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
@@ -240,7 +247,7 @@ def test_spggp_fiso(data):
 
 
 def test_spggp_sp(data):
-    (sts, spg_id, so_id) = data
+    (sts, spg_id, _, so2_id, _) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_sp = sts.get_client(TestEntity.TEST, "SP")
 
@@ -256,7 +263,7 @@ def test_spggp_sp(data):
         client=client_fiso,
         body=ServiceProvidingGroupGridPrequalificationCreateRequest(
             service_providing_group_id=spg_id,
-            impacted_system_operator_id=so_id,
+            impacted_system_operator_id=so2_id,
         ),
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
@@ -274,7 +281,7 @@ def test_spggp_sp(data):
 
 
 def test_spggp_so(data):
-    (sts, spg_id, so_id) = data
+    (sts, spg_id, _, _, spgm_id) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
@@ -282,6 +289,16 @@ def test_spggp_so(data):
         client=client_so,
     )
     assert isinstance(spggps_so, list)
+
+    # change the SPGM to make it valid in the future as well
+    u = update_service_providing_group_membership.sync(
+        client=client_fiso,
+        id=spgm_id,
+        body=ServiceProvidingGroupMembershipUpdateRequest(
+            valid_to=None,
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
 
     # SPG activation triggers creation of SPGGP by the system
     u = update_service_providing_group.sync(
@@ -312,12 +329,10 @@ def test_spggp_so(data):
         for spggp in spggps_so2
         if spggp.id not in set(spggp.id for spggp in spggps_so)
     ]
+    assert len(new_spggps) == 2
 
-    (so_spggp, other_spggp) = (
-        (new_spggps[0], new_spggps[1])
-        if new_spggps[0].impacted_system_operator_id == so_id
-        else (new_spggps[1], new_spggps[0])
-    )
+    so_spggp = spggps_so[0]
+    other_spggp = new_spggps[0]
 
     spggp = read_service_providing_group_grid_prequalification.sync(
         client=client_so, id=cast(int, so_spggp.id)
@@ -358,7 +373,7 @@ def test_spggp_so(data):
 
 # RLS: SPGGP-COM001
 def test_spggp_common(data):
-    (sts, _, _) = data
+    (sts, _, _, _, _) = data
 
     for role in sts.COMMON_ROLES:
         client = sts.get_client(TestEntity.TEST, role)
@@ -391,7 +406,7 @@ def test_spggp_common(data):
 
 
 def test_rla_absence(data):
-    (sts, _, _) = data
+    (sts, _, _, _, _) = data
 
     roles_without_rla = ["BRP", "EU", "ES", "MO", "TP"]
 

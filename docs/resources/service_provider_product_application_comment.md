@@ -1,6 +1,7 @@
 # Service provider product application comment
 
 Comment made by a party involved in a service provider product application.
+Several comments can be added to a given application.
 
 ## Relevant links
 

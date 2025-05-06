@@ -1,6 +1,8 @@
 # Service Providing Group Membership
 
 The relation that links a controllable unit to a service providing group.
+A service providing group can contain several controllable units, and a
+controllable unit can belong to several groups at the same time.
 
 ## Relevant links
 
@@ -20,16 +22,6 @@ The relation that links a controllable unit to a service providing group.
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                              | The identity that recorded the resource.                                                                                                          | bigint<br/>Read only                   |                                                                   |
 
 ## Validation Rules
-
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
 
 No validation rules.
 

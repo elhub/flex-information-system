@@ -7,7 +7,8 @@ This API is for the Norwegian Flexibility Information System.
 It is used to register distributed flexibility resources in the Norwegian power grid
 and support the processes in the value chain.$$;
 
-\i flex/status_triggers.sql
+-- grants
+GRANT USAGE ON SCHEMA flex TO flex_anonymous;
 
 -- resources
 
@@ -15,10 +16,13 @@ and support the processes in the value chain.$$;
 \i flex/party_membership.sql
 \i flex/grid_node.sql
 \i flex/grid_edge.sql
+\i flex/metering_grid_area.sql
 \i flex/accounting_point.sql
-\i flex/accounting_point_balance_responsible_party.sql
+\i flex/accounting_point_metering_grid_area.sql
 \i flex/accounting_point_end_user.sql
 \i flex/accounting_point_energy_supplier.sql
+\i flex/energy_supplier_balance_responsibility.sql
+\i flex/accounting_point_balance_responsible_party.sql
 \i flex/controllable_unit.sql
 \i flex/controllable_unit_service_provider.sql
 \i flex/notification.sql
@@ -36,13 +40,15 @@ and support the processes in the value chain.$$;
 
 -- history and audit
 
-\i flex/accounting_point_balance_responsible_party_history_audit.sql
 \i flex/accounting_point_end_user_history_audit.sql
 \i flex/accounting_point_energy_supplier_history_audit.sql
 \i flex/accounting_point_history_audit.sql
+\i flex/accounting_point_metering_grid_area_history_audit.sql
 \i flex/controllable_unit_history_audit.sql
 \i flex/controllable_unit_service_provider_history_audit.sql
+\i flex/energy_supplier_balance_responsibility_history_audit.sql
 \i flex/entity_client_history_audit.sql
+\i flex/metering_grid_area_history_audit.sql
 \i flex/notification_history_audit.sql
 \i flex/party_history_audit.sql
 \i flex/party_membership_history_audit.sql
@@ -56,19 +62,20 @@ and support the processes in the value chain.$$;
 \i flex/technical_resource_history_audit.sql
 
 -- security definer views for RLS
-
-\i authz/controllable_unit_balance_responsible_party.sql
-\i authz/controllable_unit_end_user.sql
-\i authz/controllable_unit_energy_supplier.sql
+\i flex/accounting_point_service_provider.sql
+\i flex/controllable_unit_balance_responsible_party.sql
+\i flex/controllable_unit_end_user.sql
+\i flex/controllable_unit_energy_supplier.sql
 
 -- RLS
 
 \i flex/accounting_point_rls.sql
-\i flex/accounting_point_balance_responsible_party_rls.sql
 \i flex/accounting_point_end_user_rls.sql
 \i flex/accounting_point_energy_supplier_rls.sql
+\i flex/accounting_point_metering_grid_area_rls.sql
 \i flex/controllable_unit_rls.sql
 \i flex/controllable_unit_service_provider_rls.sql
+\i flex/energy_supplier_balance_responsibility_rls.sql
 \i flex/entity_rls.sql
 \i flex/entity_client_rls.sql
 \i flex/event_rls.sql

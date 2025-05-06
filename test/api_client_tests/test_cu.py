@@ -369,27 +369,18 @@ def test_controllable_unit_brp(sts):
 
     client_former_brp = sts.get_client(TestEntity.COMMON, "BRP")
 
+    cus_former_brp = list_controllable_unit.sync(client=client_former_brp)
+    assert isinstance(cus_former_brp, list)
+    assert len(cus_former_brp) == 3
+
     cuhs_former_brp = list_controllable_unit_history.sync(
         client=client_former_brp,
     )
     assert isinstance(cuhs_former_brp, list)
+    assert len(cuhs_former_brp) == 3
 
-    assert len(cuhs_former_brp) > 0
-
-    old_cuhs = list(
-        filter(
-            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
-            cuhs_former_brp,
-        )
-    )
-    assert len(old_cuhs) > 0
-
-    cu = read_controllable_unit.sync(
-        client=client_former_brp,
-        id=cast(int, old_cuhs[0].controllable_unit_id),
-    )
-    assert isinstance(cu, ControllableUnitResponse)
-    assert "FORMER NAME" in cast(str, cu.name)
+    assert all("TEST-APBRP" in cast(str, cu.name) for cu in cus_former_brp)
+    assert all("TEST-APBRP" in cast(str, cuh.name) for cuh in cuhs_former_brp)
 
     # current AP BRP can see the current version of the CU,
     # but not the old records
@@ -398,20 +389,15 @@ def test_controllable_unit_brp(sts):
 
     cu = read_controllable_unit.sync(
         client=client_brp,
-        id=cast(int, old_cuhs[0].controllable_unit_id),
+        id=cast(int, cus_former_brp[0].id),
     )
     assert isinstance(cu, ControllableUnitResponse)
+    assert "TEST-APBRP" not in cast(str, cu.name)
 
-    cuhs_eu = list_controllable_unit_history.sync(client=client_brp)
-    assert isinstance(cuhs_eu, list)
+    cuhs = list_controllable_unit_history.sync(client=client_brp)
+    assert isinstance(cuhs, list)
 
-    old_cuhs = list(
-        filter(
-            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
-            cuhs_eu,
-        )
-    )
-    assert len(old_cuhs) == 0
+    assert all("TEST-APBRP" not in cast(str, cuh.name) for cuh in cuhs)
 
 
 def test_controllable_unit_sp(sts):

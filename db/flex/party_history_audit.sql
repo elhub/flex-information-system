@@ -1,7 +1,9 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT
 
+-- changeset flex:party-history-table-create endDelimiter:--
 CREATE TABLE IF NOT EXISTS
-party_history (
+flex.party_history (
     history_id bigint PRIMARY KEY NOT NULL
     DEFAULT nextval(
         pg_get_serial_sequence(
@@ -9,30 +11,27 @@ party_history (
             'id'
         )
     ),
-    LIKE party,
+    LIKE flex.party,
     replaced_by bigint NOT NULL
 );
 
+-- changeset flex:party-history-id-index endDelimiter:--
 CREATE INDEX IF NOT EXISTS
 party_history_id_idx
-ON party_history (id);
+ON flex.party_history (id);
 
-CREATE OR REPLACE TRIGGER
-party_audit_history
-AFTER INSERT OR UPDATE OR DELETE
-ON party
-FOR EACH ROW EXECUTE PROCEDURE audit.history(
-    'flex.current_identity'
-);
-
-ALTER TABLE IF EXISTS party_history
+-- changeset flex:party-history-rls endDelimiter:--
+ALTER TABLE IF EXISTS
+flex.party_history
 ENABLE ROW LEVEL SECURITY;
 
+-- changeset flex:party-history-rls-com endDelimiter:--
 -- RLS: PTY-COM001
-GRANT SELECT ON party_history
+GRANT SELECT ON flex.party_history
 TO flex_common;
+
 CREATE POLICY "PTY_COM001"
-ON party_history
+ON flex.party_history
 FOR SELECT
 TO flex_common
 USING (EXISTS (
@@ -41,9 +40,20 @@ USING (EXISTS (
     WHERE party_history.id = party.id -- noqa
 ));
 
+-- changeset flex:party-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 party_audit_current
-BEFORE INSERT OR UPDATE ON party
+BEFORE INSERT OR UPDATE
+ON flex.party
 FOR EACH ROW EXECUTE PROCEDURE audit.current(
+    'flex.current_identity'
+);
+
+-- changeset flex:party-audit-history endDelimiter:--
+CREATE OR REPLACE TRIGGER
+party_audit_history
+AFTER UPDATE OR DELETE
+ON flex.party
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
     'flex.current_identity'
 );

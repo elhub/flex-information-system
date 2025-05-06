@@ -4,7 +4,7 @@ This resource holds technical details about units and resources that the
 controllable unit consists of. The purpose of this resource is to register
 information that can help procuring system operators performing product
 pre-qualification and simplify that evaluation if controllable units are
-identical.
+identical. A controllable unit can contain several technical resources.
 
 ## Relevant links
 
@@ -23,16 +23,6 @@ identical.
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                            | The identity that recorded the resource.                                    | bigint<br/>Read only                   |                                                       |
 
 ## Validation Rules
-
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
 
 No validation rules.
 

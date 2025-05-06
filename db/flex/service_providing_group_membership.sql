@@ -67,6 +67,36 @@ CREATE OR REPLACE TRIGGER service_providing_group_membership_upsert_consistency
 BEFORE INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE consistency_on_spgm_valid_time_increase();
 
+CREATE OR REPLACE FUNCTION
+spgm_insert_grid_prequalification()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    l_spg_status text;
+BEGIN
+    SELECT status INTO l_spg_status
+    FROM flex.service_providing_group
+    WHERE id = NEW.service_providing_group_id;
+
+    IF l_spg_status = 'active' THEN
+        PERFORM add_spg_grid_prequalifications_for_future_impacted_system_operators(
+            NEW.service_providing_group_id
+        );
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER spgm_insert_grid_prequalification
+AFTER INSERT ON service_providing_group_membership
+FOR EACH ROW
+EXECUTE FUNCTION
+spgm_insert_grid_prequalification();
+
 CREATE OR REPLACE TRIGGER service_providing_group_membership_event
 AFTER INSERT OR UPDATE OR DELETE ON service_providing_group_membership
 FOR EACH ROW

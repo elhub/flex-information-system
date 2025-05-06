@@ -1,5 +1,9 @@
 -- NOTE: Init scripts only runs on first start of the container
 -- It will NOT run on restarts
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- noqa: RF05
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+CREATE EXTENSION IF NOT EXISTS ltree;
 
 -- flex is the main role for the application
 CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';

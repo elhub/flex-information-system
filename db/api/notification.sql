@@ -1,6 +1,8 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
-CREATE OR REPLACE VIEW notification
+-- changeset flex:api-notification-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.notification
 WITH (security_invoker = true) AS (
     SELECT
         id,

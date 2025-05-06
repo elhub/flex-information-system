@@ -2,6 +2,26 @@
 
 A group of controllable units to be used in a flexibility product on the market.
 
+## Status transitions for service providing group
+
+The following diagram shows the status and its transitions for service providing
+groups.
+
+The service provider is responsible for creating a new service providing group.
+Initially, the status is set to `new`. Once the SPG registration is complete,
+the service provider updates the status to `active`. SPG grid prequalification
+resources are created on activation for each impacted system operator.
+The service provider can terminate the service providing group at any time.
+After termination, the status can only be edited by a FIS operator.
+
+[Full Size](../diagrams/service_providing_group_status.png)
+|
+[Plantuml description](../diagrams/service_providing_group_status.plantuml)
+|
+[How to read the diagram](./index.md#status-and-transitions)
+
+![Service Providing Group Registration Status](../diagrams/service_providing_group_status.png)
+
 ## Relevant links
 
 * [API Documentation](/api/v0/#/operations/list_service_providing_group)
@@ -20,19 +40,9 @@ A group of controllable units to be used in a flexibility product on the market.
 
 ## Validation Rules
 
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
 | Validation rule key | Validation rule                                       | Status |
 |---------------------|-------------------------------------------------------|--------|
-| SPG-RLV001          | An empty service providing group cannot be activated. | DONE   |
-
-### Process-Level Validation
-
-No validation rules.
+| SPG-VAL001          | An empty service providing group cannot be activated. | DONE   |
 
 ## Notifications
 

@@ -1,9 +1,19 @@
 # Service providing group product application
 
-Relation between a service providing group and a system operator for a product
-type, for the SPG to deliver a product to the SO later.
+Relation uniquely linking a service providing group and a system operator for a
+product type, for the SPG to deliver a product to the SO later.
 
 ## Application status transitions
+
+The following diagram shows the status transitions for service providing group
+applications. This resource supports the application process and is updated as
+it progresses.
+
+The service provider is responsible for creating a new SPG product application.
+Initially, the status is set to `requested`. The system operator then takes over
+until the application is either `prequalified`, `verified` or `rejected`. If it
+rejected, the service provider can make updates and propose the application
+again.
 
 [Full Size](../diagrams/service_providing_group_product_application_status.png)
 |
@@ -35,7 +45,10 @@ type, for the SPG to deliver a product to the SO later.
 
 ## Validation Rules
 
-No validation rules.
+| Validation rule key | Validation rule                                                                   | Status |
+|---------------------|-----------------------------------------------------------------------------------|--------|
+| SPGPA-VAL001        | Product applications can only be created on active SPGs.                          | DONE   |
+| SPGPA-VAL002        | Product applications can only be created on active system operator product types. | DONE   |
 
 ## Notifications
 

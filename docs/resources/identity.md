@@ -20,16 +20,6 @@ assumed party.
 
 ## Validation Rules
 
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
-No validation rules
-
-### Process-Level Validation
-
 No validation rules.
 
 ## Notifications

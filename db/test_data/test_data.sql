@@ -1,6 +1,10 @@
+-- liquibase formatted sql
 -- test_data contains functions to add test data to the database.
+
+-- changeset flex:test-data-create-schema
 CREATE SCHEMA IF NOT EXISTS test_data;
 
+-- changeset flex:test-data-create-random-regulation-direction runOnChange:true endDelimiter:--
 -- Randomly return 'up', 'down' or 'both'
 CREATE OR REPLACE FUNCTION test_data.random_regulation_direction()
 RETURNS text
@@ -14,6 +18,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 
+-- changeset flex:test-data-add-party-for-entity runOnChange:true endDelimiter:--
 -- Add a party for an entity based on name and type
 CREATE OR REPLACE FUNCTION test_data.add_party_for_entity(
     parent_entity_id bigint,
@@ -47,6 +52,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-add-party-to-entity runOnChange:true endDelimiter:--
 -- Add a party as a member to an entity based on name of party
 CREATE OR REPLACE FUNCTION test_data.add_party_to_entity(
     entity_id bigint, party_name text
@@ -62,6 +68,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-create-cu-sp-type runOnChange:true endDelimiter:--
 -- Types for add_controllable_unit
 DO
 $$
@@ -75,6 +82,7 @@ EXCEPTION
 END
 $$;
 
+-- changeset flex:test-data-add-controllable-unit runOnChange:true endDelimiter:--
 -- Add a controllable unit with service providers
 CREATE OR REPLACE FUNCTION test_data.add_controllable_unit(
     cu_name text,
@@ -169,6 +177,32 @@ BEGIN
       '2023-11-01 00:00:00 Europe/Oslo',
       '[)'),
     0
+  ), (
+    cu.id,
+    cu.business_id,
+    cu.name || ' TEST-APBRP',
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.is_small,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record must exist while Common BRP is BRP on the AP
+    tstzrange(
+      '2024-08-10 00:00:00 Europe/Oslo',
+      '2024-08-11 00:00:00 Europe/Oslo',
+      '[)'),
+    0
   );
 
   FOREACH sp IN ARRAY service_providers
@@ -214,11 +248,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-add-technical-resource runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION test_data.add_technical_resource(
     l_name text,
     l_controllable_unit_id bigint,
-    l_details text,
-    l_former_record_time_range tstzrange
+    l_details text
 )
 RETURNS void
 AS $$
@@ -255,7 +289,6 @@ BEGIN
       0
     );
 
-    -- insert a previous version of that TR valid at the given time range
     INSERT INTO flex.technical_resource_history (
       id,
       name,
@@ -266,16 +299,23 @@ BEGIN
       replaced_by
     ) VALUES (
       l_tr.id,
-      l_tr.name || ' CUSTOM FORMER TR', -- this string will be searched in tests
+      l_tr.name || ' TEST-APBRP',
       l_tr.controllable_unit_id,
       l_tr.details,
-      l_former_record_time_range,
+      -- the record must exist while Common BRP is BRP on the AP
+      -- and while Common SP manages the CU
+      tstzrange(
+        '2024-08-10 00:00:00 Europe/Oslo',
+        '2024-08-11 00:00:00 Europe/Oslo',
+        '[)'
+      ),
       l_tr.recorded_by,
       0
     );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
+-- changeset flex:test-data-accounting-points-type runOnChange:true endDelimiter:--
 -- Types for add_accounting_points
 DO
 $$
@@ -289,12 +329,13 @@ EXCEPTION
 END
 $$;
 
+-- changeset flex:test-data-add-accounting-points runOnChange:true endDelimiter:--
 -- Add accounting point mapping
 CREATE OR REPLACE FUNCTION test_data.add_accounting_points(
     accounting_point_prefix text,
+    in_metering_grid_area_id bigint,
     end_user contract_parties,
     energy_supplier contract_parties,
-    balance_responsible_party contract_parties,
     so_id bigint
 )
 RETURNS void
@@ -325,6 +366,16 @@ BEGIN
       gs1.add_check_digit(partial_gsrn::text),
       so_id
     ) RETURNING id INTO ap_id;
+
+    INSERT INTO flex.accounting_point_metering_grid_area (
+      accounting_point_id,
+      metering_grid_area_id,
+      valid_time_range
+    ) VALUES (
+      ap_id,
+      in_metering_grid_area_id,
+      tstzrange('2023-05-01 00:00:00 Europe/Oslo', null, '[)')
+    );
 
     IF end_user IS NOT NULL THEN
       -- insert 2 end users for each accounting point
@@ -367,33 +418,12 @@ BEGIN
         tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
       );
     END IF;
-
-    IF balance_responsible_party IS NOT NULL THEN
-      -- insert 2 balance responsible parties for each accounting point
-      INSERT INTO flex.accounting_point_balance_responsible_party (
-        accounting_point_id,
-        balance_responsible_party_id,
-        valid_time_range
-      ) VALUES (
-        ap_id,
-        balance_responsible_party.former_id,
-        tstzrange(
-          '2023-05-01 00:00:00 Europe/Oslo',
-          '2024-01-01 00:00:00 Europe/Oslo',
-          '[)'
-        )
-      ), (
-        ap_id,
-        balance_responsible_party.new_id,
-        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
-      );
-    END IF;
   END LOOP;
 END
 $$;
 
+-- changeset flex:test-data-add-test-account runOnChange:true endDelimiter:--
 -- Add a test account with parties and controllable units
-DROP FUNCTION IF EXISTS test_data.add_test_account;
 CREATE OR REPLACE FUNCTION test_data.add_test_account(
     in_user_seq_id bigint,
     in_entity_name text,
@@ -426,6 +456,9 @@ DECLARE
   spgpa_id bigint;
   cu_id bigint;
   so_id bigint;
+
+  so_mga_business_id text;
+  so_mga_id bigint;
 
   asset_type text;
   accounting_point_prefix text := '1337000000' || user_seq_id_text;
@@ -553,10 +586,50 @@ BEGIN
   FROM flex.product_type pt
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
+  so_mga_business_id := eic.add_check_char(
+    '42X-' || upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
+  );
+
+  -- associate a few metering grid areas to the SO
+  INSERT INTO flex.metering_grid_area (
+    business_id,
+    name,
+    price_area,
+    system_operator_id,
+    valid_time_range,
+    recorded_by
+  ) VALUES (
+    eic.add_check_char(
+      '31X-' || upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
+    ),
+    in_entity_name || ' AREA 1',
+    'NO4',
+    so_id,
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  ), (
+    so_mga_business_id,
+    in_entity_name || ' AREA 2',
+    'NO3',
+    so_id,
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  );
+
+  SELECT id INTO so_mga_id
+  FROM flex.metering_grid_area
+  WHERE business_id = so_mga_business_id;
+
   if not in_add_data then
     PERFORM test_data.add_accounting_points(
       accounting_point_prefix,
-      null,
+      so_mga_id,
       null,
       null,
       so_id
@@ -574,10 +647,42 @@ BEGIN
 
   PERFORM test_data.add_accounting_points(
     accounting_point_prefix,
+    so_mga_id,
     (common_eu_id, eu_id),
     (common_es_id, es_id),
-    (common_brp_id, brp_id),
     so_id
+  );
+
+  INSERT INTO flex.energy_supplier_balance_responsibility (
+    metering_grid_area_id,
+    energy_supplier_id,
+    balance_responsible_party_id,
+    energy_direction,
+    valid_time_range
+  ) VALUES (
+    so_mga_id,
+    es_id,
+    brp_id,
+    'production',
+    tstzrange('2022-06-01 Europe/Oslo', '2024-07-20 Europe/Oslo', '[)')
+  ), (
+    so_mga_id,
+    es_id,
+    common_brp_id,
+    'production',
+    tstzrange('2024-07-20 Europe/Oslo', '2024-09-10 Europe/Oslo', '[)')
+  ), (
+    so_mga_id,
+    es_id,
+    brp_id,
+    'production',
+    tstzrange('2024-09-10 Europe/Oslo', '2099-01-01 Europe/Oslo', '[)')
+  ), (
+    so_mga_id,
+    es_id,
+    brp_id,
+    'production',
+    tstzrange('2099-01-01 Europe/Oslo', null, '[)')
   );
 
   INSERT INTO flex.service_providing_group (
@@ -611,20 +716,17 @@ BEGIN
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #1',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #2',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #3',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
 
     accounting_point_seq := accounting_point_seq + 1;

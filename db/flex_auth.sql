@@ -1,58 +1,8 @@
 -- authn
 SET search_path TO flex, public;
 
--- grants for application roles
-GRANT USAGE ON SCHEMA flex TO flex_anonymous;
-GRANT USAGE ON SCHEMA flex TO flex_common;
-GRANT USAGE ON SCHEMA flex TO flex_balance_responsible_party;
-GRANT USAGE ON SCHEMA flex TO flex_end_user;
-GRANT USAGE ON SCHEMA flex TO flex_energy_supplier;
-GRANT USAGE ON SCHEMA flex TO flex_entity;
-GRANT USAGE ON SCHEMA flex TO flex_flexibility_information_system_operator;
-GRANT USAGE ON SCHEMA flex TO flex_market_operator;
-GRANT USAGE ON SCHEMA flex TO flex_system_operator;
-GRANT USAGE ON SCHEMA flex TO flex_service_provider;
-GRANT USAGE ON SCHEMA flex TO flex_third_party;
-GRANT USAGE ON SCHEMA flex TO flex_internal_event_notification;
-
-
--- This trigger functions is used to ensure that the
--- role name exists in the database catalog tables
-CREATE OR REPLACE FUNCTION
-check_role_exists() RETURNS trigger AS $$
-begin
-  if not exists (select 1 from pg_roles as r where r.rolname = new.role) then
-    raise foreign_key_violation using message =
-      'unknown database role: ' || new.role;
-    return null;
-  end if;
-  return new;
-end
-$$ LANGUAGE plpgsql;
-
--- Audit functions
-CREATE OR REPLACE FUNCTION
-current_identity() RETURNS bigint
-LANGUAGE sql SECURITY DEFINER STABLE
-AS $$
-    SELECT nullif(current_setting('flex.current_identity', true),'')::bigint;
-$$;
-
-CREATE OR REPLACE FUNCTION
-current_party() RETURNS bigint
-LANGUAGE sql SECURITY DEFINER STABLE
-AS $$
-    SELECT nullif(current_setting('flex.current_party', true),'')::bigint;
-$$;
-
-CREATE OR REPLACE FUNCTION
-current_entity() RETURNS bigint
-LANGUAGE sql SECURITY DEFINER STABLE
-AS $$
-    SELECT nullif(current_setting('flex.current_entity', true),'')::bigint;
-$$;
-
--- all the following resources must be loaded after the audit functions above
+-- Functions related figuring out the current user
+\i flex/current_user_setting.sql
 
 -- must be loaded before the resources below
 \i flex/event.sql
@@ -106,9 +56,7 @@ BEGIN
     end if;
 
     perform
-        set_config('flex.current_entity', entity_id::text, true),
-        set_config('flex.current_party', party_id::text, true),
-        set_config('flex.current_identity', id::text, true)
+        flex.set_entity_party_identity(entity_id, party_id, id)
     from flex.identity
     where identity.eid = _eid::uuid;
 

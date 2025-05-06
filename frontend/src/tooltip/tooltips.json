@@ -5,7 +5,7 @@
         "name": "Free text name of the controllable unit.",
         "start_date": "The usage date when the controllable unit is first active.",
         "status": "The status of the controllable unit.",
-        "regulation_direction": "The regulation direction of the controllable unit.",
+        "regulation_direction": "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
         "maximum_available_capacity": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
         "is_small": "Whether the controllable unit is small or not, following NCDR.",
         "minimum_duration": "The minimum activation duration in seconds.",
@@ -108,7 +108,15 @@
     "accounting_point": {
         "id": "Unique surrogate identifier.",
         "business_id": "The GSRN metering point id of the accounting point.",
-        "system_operator_id": "The system operator of the accounting point"
+        "system_operator_id": "The system operator of the accounting point."
+    },
+    "accounting_point_balance_responsible_party": {
+        "id": "NON-STABLE unique identifier.",
+        "accounting_point_id": "The ID of the accounting point.",
+        "balance_responsible_party_id": "The balance responsible party of the accounting point.",
+        "energy_direction": "The direction of the effect on the balance that the BRP takes responsibility for.",
+        "valid_from": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
+        "valid_to": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
     },
     "product_type": {
         "id": "Unique surrogate identifier.",

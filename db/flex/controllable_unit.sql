@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     CONSTRAINT controllable_unit_accounting_point_id_fkey FOREIGN KEY (
         accounting_point_id
     ) REFERENCES accounting_point (business_id),
-    -- CU-IFV001
+    -- CU-VAL001
     CONSTRAINT controllable_unit_duration_check CHECK (
         minimum_duration <= maximum_duration
     )
@@ -70,13 +70,13 @@ FOR EACH ROW EXECUTE FUNCTION suppress_redundant_updates_trigger();
 CREATE OR REPLACE TRIGGER controllable_unit_status_insert
 BEFORE INSERT ON controllable_unit
 FOR EACH ROW
-EXECUTE FUNCTION status_insert('new');
+EXECUTE FUNCTION status.restrict_insert('new');
 
 CREATE OR REPLACE TRIGGER controllable_unit_status_update
 BEFORE UPDATE OF status ON controllable_unit
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
-EXECUTE FUNCTION status_update('new');
+EXECUTE FUNCTION status.restrict_update('new');
 
 CREATE OR REPLACE FUNCTION controllable_unit_grid_validation_status_approved()
 RETURNS trigger

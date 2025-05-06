@@ -1,6 +1,8 @@
+--liquibase formatted sql
 -- Manually managed file
 
-CREATE OR REPLACE VIEW notice
+-- changeset flex:api-notice-create endDelimiter:-- runAlways:true
+CREATE OR REPLACE VIEW api.notice
 WITH (security_invoker = true) AS (
     SELECT
         id,

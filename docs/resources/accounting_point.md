@@ -18,23 +18,15 @@ The business identifier is the GSRN metering point id.
 
 ## Fields
 
-| Name                                                                                       | Description                                         | Format                                            | Reference                     |
-|--------------------------------------------------------------------------------------------|-----------------------------------------------------|---------------------------------------------------|-------------------------------|
-| <a name="field-id" href="#field-id">id</a>                                                 | Unique surrogate identifier.                        | bigint<br/>Read only                              |                               |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                      | The GSRN metering point id of the accounting point. | text<br/>Pattern: `^[1-9][0-9]{17}$`<br/>Required |                               |
-| <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a> | The system operator of the accounting point         | text<br/>Required                                 | [party.id](party.md#field-id) |
+| Name                                                                                       | Description                                                        | Format                                             | Reference                     |
+|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------|----------------------------------------------------|-------------------------------|
+| <a name="field-id" href="#field-id">id</a>                                                 | Unique surrogate identifier.                                       | bigint<br/>Read only                               |                               |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                      | The GSRN metering point id of the accounting point.                | text<br/>Pattern: `^[1-9][0-9]{17}$`<br/>Read only |                               |
+| <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a> | The system operator of the accounting point.                       | bigint<br/>Read only                               | [party.id](party.md#field-id) |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                      | When the resource was recorded (created or updated) in the system. | timestamp with time zone<br/>Read only             |                               |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                      | The identity that recorded the resource.                           | bigint<br/>Read only                               |                               |
 
 ## Validation Rules
-
-### Inter-Field Validation
-
-No validation rules.
-
-### Resource-Level Validation
-
-No validation rules.
-
-### Process-Level Validation
 
 No validation rules.
 
@@ -104,3 +96,5 @@ For party type abbreviations, check [the auth docs](../auth.md#party)
 | id                 |      | R   | R  | R  | R    | R  | R  | R  | R  |
 | business_id        |      | R   | R  | R  | R    | R  | R  | R  | R  |
 | system_operator_id |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| recorded_at        |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| recorded_by        |      | R   | R  | R  | R    | R  | R  | R  | R  |

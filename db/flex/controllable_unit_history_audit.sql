@@ -1,7 +1,9 @@
--- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+--liquibase formatted sql
+-- GENERATED CODE -- DO NOT EDIT
 
+-- changeset flex:controllable-unit-history-table-create endDelimiter:--
 CREATE TABLE IF NOT EXISTS
-controllable_unit_history (
+flex.controllable_unit_history (
     history_id bigint PRIMARY KEY NOT NULL
     DEFAULT nextval(
         pg_get_serial_sequence(
@@ -9,25 +11,34 @@ controllable_unit_history (
             'id'
         )
     ),
-    LIKE controllable_unit,
+    LIKE flex.controllable_unit,
     replaced_by bigint NOT NULL
 );
 
+-- changeset flex:controllable-unit-history-id-index endDelimiter:--
 CREATE INDEX IF NOT EXISTS
 controllable_unit_history_id_idx
-ON controllable_unit_history (id);
+ON flex.controllable_unit_history (id);
 
+-- changeset flex:controllable-unit-history-rls endDelimiter:--
+ALTER TABLE IF EXISTS
+flex.controllable_unit_history
+ENABLE ROW LEVEL SECURITY;
+
+-- changeset flex:controllable-unit-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
-controllable_unit_audit_history
-AFTER INSERT OR UPDATE OR DELETE
-ON controllable_unit
-FOR EACH ROW EXECUTE PROCEDURE audit.history(
+controllable_unit_audit_current
+BEFORE INSERT OR UPDATE
+ON flex.controllable_unit
+FOR EACH ROW EXECUTE PROCEDURE audit.current(
     'flex.current_identity'
 );
 
+-- changeset flex:controllable-unit-audit-history endDelimiter:--
 CREATE OR REPLACE TRIGGER
-controllable_unit_audit_current
-BEFORE INSERT OR UPDATE ON controllable_unit
-FOR EACH ROW EXECUTE PROCEDURE audit.current(
+controllable_unit_audit_history
+AFTER UPDATE OR DELETE
+ON flex.controllable_unit
+FOR EACH ROW EXECUTE PROCEDURE audit.history(
     'flex.current_identity'
 );
