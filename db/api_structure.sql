@@ -1,5 +1,7 @@
 SET search_path TO api;
 
+GRANT USAGE ON SCHEMA api TO flex_anonymous;
+
 -- views
 
 \i api/accounting_point.sql
