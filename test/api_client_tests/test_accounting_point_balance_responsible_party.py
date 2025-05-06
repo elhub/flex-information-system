@@ -31,7 +31,7 @@ def test_apbrp_brp(sts):
         client=client_fiso,
     )
     assert isinstance(apbrps, list)
-    assert len(apbrps) == 4000  # all APBRP in the test data
+    assert len(apbrps) == 3000  # all APBRP in the test data
 
 
 # RLS: APBRP-SO001
@@ -44,7 +44,7 @@ def test_apbrp_so(sts):
         client=client_so,
     )
     assert isinstance(apbrps, list)
-    assert len(apbrps) == 4000  # all APBRP in the test data
+    assert len(apbrps) == 3000  # all APBRP in the test data
 
 
 # RLS: APBRP-SP001

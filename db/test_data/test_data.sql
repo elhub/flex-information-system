@@ -281,6 +281,29 @@ BEGIN
       0
     );
 
+    INSERT INTO flex.technical_resource_history (
+      id,
+      name,
+      controllable_unit_id,
+      details,
+      record_time_range,
+      recorded_by,
+      replaced_by
+    ) VALUES (
+      l_tr.id,
+      l_tr.name || ' TEST-APBRP',
+      l_tr.controllable_unit_id,
+      l_tr.details,
+      -- the record must exist while Common BRP is BRP on the AP
+      tstzrange(
+        '2024-08-10 00:00:00 Europe/Oslo',
+        '2024-08-11 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      l_tr.recorded_by,
+      0
+    );
+
     -- insert a previous version of that TR valid at the given time range
     INSERT INTO flex.technical_resource_history (
       id,
@@ -662,12 +685,6 @@ BEGIN
     brp_id,
     'production',
     tstzrange('2024-09-10 Europe/Oslo', '2099-01-01 Europe/Oslo', '[)')
-  ), (
-    so_mga_id,
-    es_id,
-    brp_id,
-    'consumption',
-    tstzrange('2024-06-01 Europe/Oslo', null, '[)')
   );
 
   INSERT INTO flex.service_providing_group (

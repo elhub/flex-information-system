@@ -46,13 +46,21 @@ WITH (security_invoker = true) AS (
             ap_brp.energy_direction,
             -- only keep the parts of AP-BRP where SP has a CU on the AP
             unnest(
-                multirange(ap_brp.valid_time_range) * ap_sp.valid_timeline
+                multirange(ap_brp.valid_time_range)
+                * range_agg(ap_sp.valid_time_range)
             ) AS valid_time_range
         FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
             INNER JOIN flex.accounting_point_service_provider AS ap_sp
                 ON ap_sp.accounting_point_id = ap_brp.accounting_point_id
+                    AND ap_sp.valid_time_range && ap_brp.valid_time_range
         WHERE current_role = 'flex_service_provider'
             AND ap_sp.service_provider_id = flex.current_party()
+        GROUP BY
+            ap_brp.id,
+            ap_brp.accounting_point_id,
+            ap_brp.balance_responsible_party_id,
+            ap_brp.energy_direction,
+            ap_brp.valid_time_range
     ) AS ap_brp_for_sp
 );
 

@@ -48,49 +48,38 @@ def test_tr_brp(sts):
 
     client_former_brp = sts.get_client(TestEntity.COMMON, "BRP")
 
+    # endpoint: GET /technical_resource
+    trs_former_brp = list_technical_resource.sync(client=client_former_brp)
+    assert isinstance(trs_former_brp, list)
+    assert len(trs_former_brp) == 9  # the tagged TEST-APBRP technical resources
+
     # endpoint: GET /technical_resource_history
-    trhs_former_brp = list_technical_resource_history.sync(client=client_former_brp)
-    assert isinstance(trhs_former_brp, list)
-
-    assert len(trhs_former_brp) > 0
-
-    old_trhs = list(
-        filter(
-            lambda trh: "FORMER NAME" in cast(str, trh.name),
-            trhs_former_brp,
-        )
-    )
-    assert len(old_trhs) > 0
-
-    # endpoint: GET /technical_resource/{id}
-    tr = read_technical_resource.sync(
+    trhs_former_brp = list_technical_resource_history.sync(
         client=client_former_brp,
-        id=cast(int, old_trhs[0].technical_resource_id),
     )
-    assert isinstance(tr, TechnicalResourceResponse)
-    assert "FORMER NAME" in cast(str, tr.name)
+    assert isinstance(trhs_former_brp, list)
+    assert len(trhs_former_brp) == 18  # all tagged technical resources
+
+    assert all("TEST-APBRP" in cast(str, tr.name) for tr in trs_former_brp)
+    assert any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_former_brp)
 
     # current AP BRP can see the current version of the TR,
     # but not the old records
 
     client_brp = sts.get_client(TestEntity.TEST, "BRP")
 
+    # endpoint: GET /technical_resource/{id}
     tr = read_technical_resource.sync(
         client=client_brp,
-        id=cast(int, old_trhs[0].technical_resource_id),
+        id=cast(int, trs_former_brp[0].id),
     )
     assert isinstance(tr, TechnicalResourceResponse)
+    assert "TEST-APBRP" not in cast(str, tr.name)
 
-    trhs_brp = list_technical_resource_history.sync(client=client_brp)
-    assert isinstance(trhs_brp, list)
+    trhs = list_technical_resource_history.sync(client=client_brp)
+    assert isinstance(trhs, list)
 
-    old_trhs = list(
-        filter(
-            lambda trh: "FORMER NAME" in cast(str, trh.name),
-            trhs_brp,
-        )
-    )
-    assert len(old_trhs) == 0
+    assert all("TEST-APBRP" not in cast(str, trh.name) for trh in trhs)
 
 
 # RLS: TR-EU001
@@ -311,8 +300,14 @@ def test_tr_sp(sts):
     trhs_common_sp = list_technical_resource_history.sync(client=client_common_sp)
     assert isinstance(trhs_common_sp, list)
 
-    assert any("CUSTOM FORMER TR" in cast(str, tr.name) for tr in trs_common_sp)
-    assert not any("CUSTOM FORMER TR" in cast(str, tr.name) for tr in trs_sp)
+    assert all(
+        "CUSTOM" in cast(str, tr.name) or "TEST-APBRP" in cast(str, tr.name)
+        for tr in trs_common_sp
+    )
+    assert not any(
+        "CUSTOM" in cast(str, tr.name) or "TEST-APBRP" in cast(str, tr.name)
+        for tr in trs_sp
+    )
 
     assert any("CUSTOM FORMER TR" in cast(str, trh.name) for trh in trhs_common_sp)
     assert not any("CUSTOM FORMER TR" in cast(str, trh.name) for trh in trhs_sp)
