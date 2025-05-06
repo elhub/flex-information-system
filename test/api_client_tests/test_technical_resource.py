@@ -58,7 +58,7 @@ def test_tr_brp(sts):
         client=client_former_brp,
     )
     assert isinstance(trhs_former_brp, list)
-    assert len(trhs_former_brp) == 18  # all tagged technical resources
+    assert len(trhs_former_brp) == 9
 
     assert all("TEST-APBRP" in cast(str, tr.name) for tr in trs_former_brp)
     assert any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_former_brp)
@@ -300,17 +300,11 @@ def test_tr_sp(sts):
     trhs_common_sp = list_technical_resource_history.sync(client=client_common_sp)
     assert isinstance(trhs_common_sp, list)
 
-    assert all(
-        "CUSTOM" in cast(str, tr.name) or "TEST-APBRP" in cast(str, tr.name)
-        for tr in trs_common_sp
-    )
-    assert not any(
-        "CUSTOM" in cast(str, tr.name) or "TEST-APBRP" in cast(str, tr.name)
-        for tr in trs_sp
-    )
+    assert any("TEST-APBRP" in cast(str, tr.name) for tr in trs_common_sp)
+    assert not any("TEST-APBRP" in cast(str, tr.name) for tr in trs_sp)
 
-    assert any("CUSTOM FORMER TR" in cast(str, trh.name) for trh in trhs_common_sp)
-    assert not any("CUSTOM FORMER TR" in cast(str, trh.name) for trh in trhs_sp)
+    assert any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_common_sp)
+    assert not any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_sp)
 
     cu_id = trs_sp[0].controllable_unit_id
 

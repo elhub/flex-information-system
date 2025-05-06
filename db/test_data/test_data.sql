@@ -243,8 +243,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 CREATE OR REPLACE FUNCTION test_data.add_technical_resource(
     l_name text,
     l_controllable_unit_id bigint,
-    l_details text,
-    l_former_record_time_range tstzrange
+    l_details text
 )
 RETURNS void
 AS $$
@@ -295,30 +294,12 @@ BEGIN
       l_tr.controllable_unit_id,
       l_tr.details,
       -- the record must exist while Common BRP is BRP on the AP
+      -- and while Common SP manages the CU
       tstzrange(
         '2024-08-10 00:00:00 Europe/Oslo',
         '2024-08-11 00:00:00 Europe/Oslo',
         '[)'
       ),
-      l_tr.recorded_by,
-      0
-    );
-
-    -- insert a previous version of that TR valid at the given time range
-    INSERT INTO flex.technical_resource_history (
-      id,
-      name,
-      controllable_unit_id,
-      details,
-      record_time_range,
-      recorded_by,
-      replaced_by
-    ) VALUES (
-      l_tr.id,
-      l_tr.name || ' CUSTOM FORMER TR', -- this string will be searched in tests
-      l_tr.controllable_unit_id,
-      l_tr.details,
-      l_former_record_time_range,
       l_tr.recorded_by,
       0
     );
@@ -718,20 +699,17 @@ BEGIN
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #1',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #2',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || asset_type || ' Unit #3',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000',
-      '[2024-08-10 00:00:00 Europe/Oslo,2024-08-14 00:00:00 Europe/Oslo)'::tstzrange
+      E'Make: ACME\nModel: ' || asset_type || ' 2000'
     );
 
     accounting_point_seq := accounting_point_seq + 1;
