@@ -1,6 +1,12 @@
 ---
 databaseChangeLog:
   - changeSet:
+      id: flex-schema
+      author: flex
+      runAlways: true
+      changes:
+        - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous
+  - changeSet:
       id: business-id-type-reference-data
       author: flex
       changes:
