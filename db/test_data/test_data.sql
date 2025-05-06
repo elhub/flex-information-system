@@ -677,6 +677,12 @@ BEGIN
     brp_id,
     'production',
     tstzrange('2024-09-10 Europe/Oslo', '2099-01-01 Europe/Oslo', '[)')
+  ), (
+    so_mga_id,
+    es_id,
+    brp_id,
+    'production',
+    tstzrange('2099-01-01 Europe/Oslo', null, '[)')
   );
 
   INSERT INTO flex.service_providing_group (

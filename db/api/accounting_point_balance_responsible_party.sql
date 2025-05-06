@@ -35,11 +35,11 @@ WITH (security_invoker = true) AS (
         accounting_point_id,
         balance_responsible_party_id,
         energy_direction,
-        CASE WHEN lower(valid_time_range) < current_timestamp + '2w'::interval
-                THEN lower(valid_time_range)
-        END AS valid_from,
-        CASE WHEN upper(valid_time_range) < current_timestamp + '2w'::interval
-                THEN upper(valid_time_range)
+        lower(valid_time_range) AS valid_from,
+        -- allow window so SP does not see too far in the future
+        CASE WHEN upper(valid_time_range) > current_timestamp + '2w'::interval
+                THEN null
+            ELSE upper(valid_time_range)
         END AS valid_to
     FROM ( -- noqa
         SELECT
@@ -65,4 +65,6 @@ WITH (security_invoker = true) AS (
             ap_brp.energy_direction,
             ap_brp.valid_time_range
     ) AS ap_brp_for_sp
+    -- allow window, see above
+    WHERE lower(valid_time_range) < current_timestamp + '2w'::interval
 );
