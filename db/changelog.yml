@@ -37,3 +37,6 @@ databaseChangeLog:
   - include:
       file: ./test_data/test_data.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./users.sql
+      relativeToChangelogFile: true

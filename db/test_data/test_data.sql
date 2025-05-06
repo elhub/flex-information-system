@@ -468,6 +468,9 @@ DECLARE
   party_business_id_seq bigint :=
       rpad(party_business_id_prefix, 12, '0')::bigint;
 BEGIN
+
+  PERFORM flex.set_entity_party_identity(0,0,0);
+
   -- return early if the entity buiness id is already in use
   PERFORM id FROM flex.entity e WHERE e.business_id = entity_org_business_id;
   IF FOUND THEN
