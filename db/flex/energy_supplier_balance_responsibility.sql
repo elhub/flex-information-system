@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:energy-supplier-balance-responsibility-create runOnChange:false endDelimiter:--
 -- internal
 -- This table stores the balance responsible party chosen by each energy
 -- supplier in the different metering grid areas, in both possible directions.
@@ -53,6 +57,7 @@ CREATE TABLE IF NOT EXISTS energy_supplier_balance_responsibility (
     ) WHERE (valid_time_range IS NOT null)
 );
 
+-- changeset flex:energy-supplier-balance-responsibility-timeline-midnight-aligned runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 energy_supplier_balance_responsibility_midnight_aligned
 AFTER INSERT OR UPDATE ON energy_supplier_balance_responsibility

@@ -1,19 +1,7 @@
--- foreign key check but for an array
-CREATE OR REPLACE FUNCTION product_type_ids_check(
-    product_type_ids bigint []
-)
-RETURNS boolean
-SECURITY DEFINER
-LANGUAGE sql
-AS $$
-    SELECT NOT EXISTS (
-        SELECT product_type_id FROM unnest(product_type_ids) product_type_id -- noqa
-        WHERE NOT EXISTS (
-                SELECT 1 FROM product_type WHERE id = product_type_id
-            )
-    )
-$$;
+--liquibase formatted sql
+-- Manually managed file
 
+-- changeset flex:service-provider-product-application-create runOnChange:false endDelimiter:--
 -- relation between SP and SO with its product types
 CREATE TABLE IF NOT EXISTS service_provider_product_application (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -35,7 +23,7 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application (
         -- SO) is done with triggers on the operations. We do this because we
         -- want to keep things simple and not be forced to set up a cascading
         -- delete/update operation if a product type becomes inactive for an SO.
-        product_type_ids_check(product_type_ids)
+        product_type_ids_exists(product_type_ids)
     ),
     status text NOT NULL DEFAULT 'requested' CHECK (
         status IN (
@@ -65,8 +53,8 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application (
     ) REFERENCES party (id, type)
 );
 
+-- changeset flex:service-provider-product-type-ids-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the inserted product types are active for the SO
-
 CREATE OR REPLACE FUNCTION
 service_provider_product_application_product_type_ids_insert()
 RETURNS trigger
@@ -97,6 +85,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-provider-product-type-ids-insert-trigger runOnChange:true endDelimiter:--
 -- SPPA-VAL001
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_product_type_ids_insert
@@ -105,6 +94,7 @@ FOR EACH ROW
 EXECUTE FUNCTION
 service_provider_product_application_product_type_ids_insert();
 
+-- changeset flex:service-provider-product-type-ids-update-function runOnChange:true endDelimiter:--
 -- RLS: SPPA-SP002
 -- reject updates by SP if the status is not `requested`
 CREATE OR REPLACE FUNCTION
@@ -126,6 +116,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-provider-product-type-ids-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_product_type_ids_update
 BEFORE UPDATE OF product_type_ids ON service_provider_product_application
@@ -137,8 +128,8 @@ WHEN (
 EXECUTE FUNCTION
 service_provider_product_application_product_type_ids_update();
 
+-- changeset flex:service-provider-product-application-status-qualified-function runOnChange:true endDelimiter:--
 -- trigger to first set the last qualified timestamp if not done by the user
-
 CREATE OR REPLACE FUNCTION
 service_provider_product_application_status_qualified()
 RETURNS trigger
@@ -152,6 +143,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-provider-product-application-status-qualified-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_provider_product_application_status_qualified
 BEFORE UPDATE OF status ON service_provider_product_application
 FOR EACH ROW
@@ -162,13 +154,13 @@ WHEN (
 )
 EXECUTE FUNCTION service_provider_product_application_status_qualified();
 
---
-
+-- changeset flex:service-provider-product-application-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_provider_product_application_status_insert
 BEFORE INSERT ON service_provider_product_application
 FOR EACH ROW
 EXECUTE FUNCTION status.restrict_insert('requested');
 
+-- changeset flex:service-provider-product-application-status-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_status_update
 BEFORE UPDATE OF status ON service_provider_product_application
@@ -176,6 +168,7 @@ FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION status.restrict_update('requested');
 
+-- changeset flex:service-provider-product-application-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_provider_product_application_event
 AFTER INSERT OR UPDATE ON service_provider_product_application
 FOR EACH ROW

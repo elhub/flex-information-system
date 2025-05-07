@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:party-membership-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS party_membership ENABLE ROW LEVEL SECURITY;
 
 -- RLS: PTYM-FISO001

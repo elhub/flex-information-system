@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:service-provider-product-application-comment-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_provider_product_application_id bigint NOT NULL,
@@ -23,6 +27,7 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     REFERENCES service_provider_product_application (id)
 );
 
+-- changeset flex:service-provider-product-application-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_provider_product_application_comment_event
 AFTER INSERT OR UPDATE ON service_provider_product_application_comment
 FOR EACH ROW

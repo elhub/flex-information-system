@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:event-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS event (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- reverse DNS style identifier

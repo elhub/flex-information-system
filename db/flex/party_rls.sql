@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:party-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS party ENABLE ROW LEVEL SECURITY;
 
 -- internal

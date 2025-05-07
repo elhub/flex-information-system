@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:notification-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS notification ENABLE ROW LEVEL SECURITY;
 
 -- internal

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:technical-resource-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS technical_resource ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS technical_resource_history ENABLE ROW LEVEL SECURITY;
 

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-metering-grid-area-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS accounting_point_metering_grid_area
 ENABLE ROW LEVEL SECURITY;
 

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-create runOnChange:true endDelimiter:--
 -- The accounting point table is purpose is to store information about accounting points from the Elhub system.
 CREATE TABLE IF NOT EXISTS accounting_point (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

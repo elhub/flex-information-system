@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:entity-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS entity ENABLE ROW LEVEL SECURITY;
 
 -- RLS: ENT-COM001
