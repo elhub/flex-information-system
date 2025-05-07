@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:service-providing-group-product-application-create runOnChange:true endDelimiter:--
 -- relation between SPG and SO with the product type
 CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -46,8 +50,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     REFERENCES product_type (id)
 );
 
+-- changeset flex:service-providing-group-product-application-insert-on-active-spg-function runOnChange:true endDelimiter:--
 -- trigger to check that the SPG is active before adding a product application
-
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_insert_on_active_spg()
 RETURNS trigger
@@ -70,6 +74,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-insert-on-active-spg-trigger runOnChange:true endDelimiter:--
 -- SPGPA-VAL001
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_insert_on_active_spg
@@ -78,8 +83,9 @@ FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_insert_on_active_spg();
 
--- trigger to check that the inserted product type is active for the SO
 
+-- changeset flex:service-providing-group-product-application-product-type-insert-function runOnChange:true endDelimiter:--
+-- trigger to check that the inserted product type is active for the SO
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_product_type_insert()
 RETURNS trigger
@@ -107,6 +113,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-product-type-insert-trigger runOnChange:true endDelimiter:--
 -- SPGPA-VAL002
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_product_type_insert
@@ -115,9 +122,9 @@ FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_product_type_insert();
 
+-- changeset flex:service-providing-group-product-application-sp-qualified-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the SP inserting the SPGPA was qualified by the SO
 -- for this product type
-
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_sp_qualified_insert()
 RETURNS trigger
@@ -152,6 +159,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-sp-qualified-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_sp_qualified_insert
 BEFORE INSERT ON service_providing_group_product_application
@@ -159,8 +167,9 @@ FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_qualified_insert();
 
--- trigger to first set the last prequalified timestamp if not done by the user
 
+-- changeset flex:service-providing-group-product-application-status-prequalified-function runOnChange:true endDelimiter:--
+-- trigger to first set the last prequalified timestamp if not done by the user
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_status_prequalified()
 RETURNS trigger
@@ -174,6 +183,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-status-prequalified-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_status_prequalified
 BEFORE UPDATE OF status ON service_providing_group_product_application
@@ -186,8 +196,8 @@ WHEN (
 EXECUTE FUNCTION
 service_providing_group_product_application_status_prequalified();
 
+-- changeset flex:service-providing-group-product-application-status-verified-function runOnChange:true endDelimiter:--
 -- trigger to first set the last verified timestamp if not done by the user
-
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_status_verified()
 RETURNS trigger
@@ -201,6 +211,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-status-verified-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_status_verified
 BEFORE UPDATE OF status ON service_providing_group_product_application
@@ -212,9 +223,9 @@ WHEN (
 )
 EXECUTE FUNCTION service_providing_group_product_application_status_verified();
 
+-- changeset flex:service-providing-group-product-application-sp-status-update-function runOnChange:true endDelimiter:--
 -- trigger to check that a status update done by the SP is always a reset
 -- i.e., rejected->requested
-
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_sp_status_update()
 RETURNS trigger
@@ -238,6 +249,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-sp-status-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_sp_status_update
 BEFORE UPDATE OF status ON service_providing_group_product_application
@@ -246,14 +258,14 @@ WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_status_update();
 
---
-
+-- changeset flex:service-providing-group-product-application-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_status_insert
 BEFORE INSERT ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION status.restrict_insert('requested');
 
+-- changeset flex:service-providing-group-product-application-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_product_application_event
 AFTER INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW

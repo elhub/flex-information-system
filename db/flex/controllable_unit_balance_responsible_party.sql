@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-balance-responsible-party-create runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW controllable_unit_balance_responsible_party AS (
     SELECT
         cu.id AS controllable_unit_id,
@@ -10,6 +14,7 @@ CREATE OR REPLACE VIEW controllable_unit_balance_responsible_party AS (
             ON ap.id = apbrp.accounting_point_id
 );
 
+-- changeset flex:controllable-unit-balance-responsible-party-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE controllable_unit_balance_responsible_party
 TO flex_common;
 

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:technical-resource-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS technical_resource (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
@@ -20,10 +24,13 @@ CREATE TABLE IF NOT EXISTS technical_resource (
     )
 );
 
+-- changeset flex:technical-resource-suppress-redundant-updates runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER a_technical_resource_suppress_redundant_updates
 BEFORE UPDATE ON technical_resource
 FOR EACH ROW EXECUTE FUNCTION suppress_redundant_updates_trigger();
 
+
+-- changeset flex:technical-resource-grid-validation-status-reset-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION technical_resource_grid_validation_status_reset()
 RETURNS trigger
 SECURITY DEFINER
@@ -43,6 +50,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:technical-resource-grid-validation-status-reset-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER technical_resource_grid_validation_status_reset
 BEFORE UPDATE OF
 details
@@ -54,6 +62,7 @@ WHEN (
 )
 EXECUTE FUNCTION technical_resource_grid_validation_status_reset();
 
+-- changeset flex:technical-resource-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER technical_resource_event
 AFTER INSERT OR UPDATE OR DELETE ON technical_resource
 FOR EACH ROW

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-balance-responsible-party-create runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW accounting_point_balance_responsible_party
 WITH (security_invoker = true) AS (
     SELECT
@@ -20,6 +24,7 @@ WITH (security_invoker = true) AS (
                 AND ap_es.valid_time_range && es_br.valid_time_range
 );
 
+-- changeset flex:accounting-point-balance-responsible-party-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE accounting_point_balance_responsible_party
 TO flex_internal_event_notification;
 

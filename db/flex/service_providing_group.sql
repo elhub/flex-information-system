@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:service-providing-group-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_providing_group (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
@@ -25,11 +29,13 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
     )
 );
 
+-- changeset flex:service-providing-group-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_status_insert
 BEFORE INSERT ON service_providing_group
 FOR EACH ROW
 EXECUTE FUNCTION status.restrict_insert('new');
 
+-- changeset flex:service-providing-group-status-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_status_update
 BEFORE UPDATE OF status ON service_providing_group
 FOR EACH ROW
@@ -37,6 +43,7 @@ WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION status.restrict_update('new');
 
 -- adds a SPG-GP resource for each ISO present in a SPG, now or in the future
+-- changeset flex:service-providing-group-add-grid-prequalifications-for-future-impacted-system-operators runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 add_spg_grid_prequalifications_for_future_impacted_system_operators(
     l_service_providing_group_id bigint
@@ -81,6 +88,7 @@ END;
 $$;
 
 
+-- changeset flex:service-providing-group-activation-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 service_providing_group_activation()
 RETURNS trigger
@@ -97,6 +105,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-activation-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_activation
 AFTER UPDATE OF status ON service_providing_group
 FOR EACH ROW
@@ -105,11 +114,13 @@ WHEN (OLD.status = 'new' AND NEW.status = 'active') -- noqa
 EXECUTE FUNCTION
 service_providing_group_activation();
 
+-- changeset flex:service-providing-group-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_event
 AFTER INSERT OR UPDATE ON service_providing_group
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_providing_group');
 
+-- changeset flex:service-providing-group-activation-not-empty-function runOnChange:true endDelimiter:--
 -- SPG-VAL001
 CREATE OR REPLACE FUNCTION service_providing_group_activation_not_empty()
 RETURNS trigger
@@ -134,6 +145,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-activation-not-empty-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_activation_not_empty
 BEFORE UPDATE OF status ON service_providing_group
 FOR EACH ROW

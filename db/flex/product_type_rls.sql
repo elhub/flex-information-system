@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:product-type-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS product_type ENABLE ROW LEVEL SECURITY;
 
 -- RLS: PT-COM001

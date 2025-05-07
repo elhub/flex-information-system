@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:notice runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW notice AS (
     SELECT
         r.*,

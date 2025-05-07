@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:identity-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS identity (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     eid uuid UNIQUE DEFAULT public.uuid_generate_v4(),

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:metering-grid-area runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS metering_grid_area (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id text UNIQUE NOT NULL CHECK (

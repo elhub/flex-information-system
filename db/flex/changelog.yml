@@ -6,6 +6,128 @@ databaseChangeLog:
       runAlways: true
       changes:
         - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous
+  # Dropping policies to provide a clean slate on every migration
+  - changeSet:
+      id: drop-policies
+      author: flex
+
+      runAlways: true
+      changes:
+        - sql:
+            endDelimiter: "/"
+            sql: |
+              DO
+              $$
+              declare
+                rec record;
+              begin
+                for rec in (SELECT tablename, schemaname, policyname FROM pg_policies where schemaname = 'flex')
+                loop
+                  execute 'drop policy "'||rec.policyname||'" on '||rec.schemaname||'.'||rec.tablename;
+                end loop;
+              end;
+              $$;
+  # Tables
+  - include:
+      file: ./entity_client.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./party_membership.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./grid_node.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./grid_edge.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./metering_grid_area.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_metering_grid_area.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_end_user.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_energy_supplier.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./energy_supplier_balance_responsibility.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_balance_responsible_party.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_service_provider.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./notification.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./product_type.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_provider_product_application.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./system_operator_product_type.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./technical_resource.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_membership.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_grid_prequalification.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_product_application.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_provider_product_application_comment.sql
+      relativeToChangelogFile: true
+
+  # Views
+  - include:
+      file: ./notice.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_service_provider.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_balance_responsible_party.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_end_user.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_energy_supplier.sql
+      relativeToChangelogFile: true
+
+  # RLS and history
+  - includeAll:
+      path: ./
+      relativeToChangelogFile: true
+      endsWithFilter: _rls.sql
+      maxDepth: 1
+  - includeAll:
+      path: ./
+      relativeToChangelogFile: true
+      endsWithFilter: _history_audit.sql
+      maxDepth: 1
+
+  # Reference Data
   - changeSet:
       id: business-id-type-reference-data
       author: flex

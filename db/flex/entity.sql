@@ -1,5 +1,7 @@
--- Entity
+--liquibase formatted sql
+-- Manually managed file
 
+-- changeset flex:entity-create runOnChange:false endDelimiter:;
 CREATE TABLE IF NOT EXISTS entity (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
@@ -22,5 +24,3 @@ CREATE TABLE IF NOT EXISTS entity (
         AND validate_business_id(business_id, business_id_type)
     )
 );
-
-COMMENT ON TABLE entity IS 'A legal or natural person.';

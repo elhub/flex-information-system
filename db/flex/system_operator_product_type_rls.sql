@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:system-operator-product-type-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS system_operator_product_type
 ENABLE ROW LEVEL SECURITY;
 

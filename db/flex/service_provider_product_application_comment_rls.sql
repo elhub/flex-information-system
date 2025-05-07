@@ -1,3 +1,18 @@
+--liquibase formatted sql
+-- Manually managed file
+
+
+-- changeset flex:party-of-identity runOnChange:true endDelimiter:--
+-- utility function to reduce joins in the policies below
+CREATE OR REPLACE FUNCTION party_of_identity(_identity bigint)
+RETURNS bigint
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+  SELECT party_id FROM flex.identity WHERE id = _identity;
+$$;
+
+-- changeset flex:service-provider-product-application-comment-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS service_provider_product_application_comment
 ENABLE ROW LEVEL SECURITY;
 
@@ -33,15 +48,6 @@ WITH CHECK (
         WHERE sppa.id = service_provider_product_application_comment.service_provider_product_application_id -- noqa
     )
 );
-
--- utility function to reduce joins in the policy below and keep it readable
-CREATE OR REPLACE FUNCTION party_of_identity(_identity bigint)
-RETURNS bigint
-SECURITY DEFINER
-LANGUAGE sql
-AS $$
-  SELECT party_id FROM flex.identity WHERE id = _identity;
-$$;
 
 -- RLS: SPPAC-SO001
 -- RLS: SPPAC-SP001
