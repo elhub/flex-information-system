@@ -27,7 +27,29 @@ databaseChangeLog:
                 end loop;
               end;
               $$;
-  # Tables
+  # Current user setting logic
+  - include:
+      file: ./current_user_setting.sql
+      relativeToChangelogFile: true
+
+  # Enums
+  - include:
+      file: ./business_id_type.sql
+      relativeToChangelogFile: true
+
+  # Tables - order is important!
+  - include:
+      file: ./event.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./entity.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./party.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./identity.sql
+      relativeToChangelogFile: true
   - include:
       file: ./entity_client.sql
       relativeToChangelogFile: true
@@ -119,12 +141,13 @@ databaseChangeLog:
   - includeAll:
       path: ./
       relativeToChangelogFile: true
-      endsWithFilter: _rls.sql
+      endsWithFilter: _history_audit.sql
       maxDepth: 1
+
   - includeAll:
       path: ./
       relativeToChangelogFile: true
-      endsWithFilter: _history_audit.sql
+      endsWithFilter: _rls.sql
       maxDepth: 1
 
   # Reference Data
