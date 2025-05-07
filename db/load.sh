@@ -21,7 +21,7 @@ psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_structure.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex/grants/field_level_authorization.sql
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_reference_data.psql || true
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f test_data/test_data.sql
-psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f flex_users.sql
+psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f users.sql
 
 # api module
 psql -X -v ON_ERROR_STOP=1 -d flex -U flex -f api_structure.sql
