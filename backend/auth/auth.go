@@ -29,26 +29,31 @@ import (
 )
 
 const (
-	callbackPath                           = "/auth/v0/callback"
-	sessionCookieKey                       = "__Host-flex_session"
-	defaultFailedLoginDelay                = 2 * time.Second
-	defaultNumberIPRateLimiterTokens       = 20
-	defaultInitialWaitingTimeOnFailedLogin = 2 * time.Minute
-	defaultMaxWaitingTimeOnFailedLogin     = 1 * time.Hour
+	callbackPath     = "/auth/v0/callback"
+	sessionCookieKey = "__Host-flex_session"
+
+	defaultFailedLoginResponseDelay = 2 * time.Second
+
+	defaultLoginDelayerDurationBeforeReset  = 1 * time.Hour
+	defaultLoginDelayerMaxFailedLogins      = 20
+	defaultLoginDelayerNbLoginsWithoutDelay = 5
+	defaultLoginDelayerBaseDelay            = 2 * time.Minute
+	defaultLoginDelayerDelayIncreaseFactor  = 1.1
+	defaultLoginDelayerMaxDelay             = 1 * time.Hour
 )
 
 // API holds the authentication API handlers.
 type API struct {
 	// self is the api service itself.
 	// Used as the issuer of access tokens and to validate the audience of incoming tokens.
-	self                 string
-	db                   *pgpool.Pool
-	jwtSecret            []byte
-	tokenDurationSeconds int
-	oidcProvider         *oidc.Provider
-	ctxKey               string
-	failedLoginDelay     time.Duration
-	loginIPRateLimiter   *IPRateLimiter
+	self                     string
+	db                       *pgpool.Pool
+	jwtSecret                []byte
+	tokenDurationSeconds     int
+	oidcProvider             *oidc.Provider
+	ctxKey                   string
+	failedLoginResponseDelay time.Duration // delay inside the handler on failed login
+	loginDelayer             *IPLoginDelayer
 }
 
 // NewAPI creates a new auth.API instance.
@@ -61,48 +66,37 @@ func NewAPI(
 	isLoginLimitingDisabled bool,
 ) *API {
 	// default login limiting
-	failedLoginDelay := defaultFailedLoginDelay
-	loginIPRateLimiter := NewIPRateLimiter(
-		defaultNumberIPRateLimiterTokens,
-		defaultInitialWaitingTimeOnFailedLogin,
-		defaultMaxWaitingTimeOnFailedLogin,
+	failedLoginResponseDelay := defaultFailedLoginResponseDelay
+	loginDelayer := NewIPLoginDelayer(
+		defaultLoginDelayerDurationBeforeReset,
+		defaultLoginDelayerMaxFailedLogins,
+		defaultLoginDelayerNbLoginsWithoutDelay,
+		defaultLoginDelayerBaseDelay,
+		defaultLoginDelayerDelayIncreaseFactor,
+		defaultLoginDelayerMaxDelay,
 	)
 
 	if isLoginLimitingDisabled {
-		failedLoginDelay = 0
-		// An infinite rate limiter would make it impossible to test rate limiting.
+		failedLoginResponseDelay = 0
+		// A zero-delay delayer would make it impossible to test login delay.
 		// Here, we use something lax enough to be able to run all our API tests,
 		// but still finite, so that if we run requests in a loop, it will
 		// eventually block.
-		loginIPRateLimiter = NewIPRateLimiter(5, 1*time.Second, 10*time.Second) //nolint:mnd
+		loginDelayer = NewIPLoginDelayer(
+			5*time.Second, 6, 2, 500*time.Millisecond, 2, 2*time.Second, //nolint:mnd
+		)
 	}
 
 	return &API{
-		self:                 self,
-		db:                   db,
-		jwtSecret:            []byte(jwtSecret),
-		tokenDurationSeconds: 3600,
-		oidcProvider:         oidcProvider,
-		ctxKey:               ctxKey,
-		failedLoginDelay:     failedLoginDelay,
-		loginIPRateLimiter:   loginIPRateLimiter,
+		self:                     self,
+		db:                       db,
+		jwtSecret:                []byte(jwtSecret),
+		tokenDurationSeconds:     3600,
+		oidcProvider:             oidcProvider,
+		ctxKey:                   ctxKey,
+		failedLoginResponseDelay: failedLoginResponseDelay,
+		loginDelayer:             loginDelayer,
 	}
-}
-
-// decodeTokenString decodes the token string and returns the claims.
-// Returns an error if the token was not verified or validated.
-func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
-	token := new(accessToken)
-	err := verifyTokenString(tokenStr, token, jws.WithKey(jwa.HS384(), auth.jwtSecret))
-	if err != nil {
-		return nil, fmt.Errorf("error in verifying access token: %w", err)
-	}
-
-	if err := token.Validate(); err != nil {
-		return nil, fmt.Errorf("error in validating access token: %w", err)
-	}
-
-	return token, nil
 }
 
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
@@ -530,12 +524,6 @@ func (auth *API) GetLogoutHandler(ctx *gin.Context) {
 	ctx.Redirect(http.StatusFound, endSessionURL)
 }
 
-// jwtBearerPayload is the payload for the JWT bearer request.
-type jwtBearerPayload struct {
-	GrantType grantType `binding:"required" form:"grant_type"`
-	Assertion string    `binding:"required" form:"assertion"`
-}
-
 // Validate checks if the JWT bearer payload is valid.
 func (j jwtBearerPayload) Validate() error {
 	val := validate.New()
@@ -824,6 +812,325 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
+// userInfoResponse is the response containing the user information.
+type userInfoResponse struct {
+	Sub         string  `json:"sub"`
+	EntityID    int     `json:"entity_id"`
+	EntityName  string  `json:"entity_name"`
+	PartyID     *int    `json:"party_id,omitempty"`
+	PartyName   *string `json:"party_name,omitempty"`
+	CurrentRole string  `json:"current_role"`
+}
+
+// GetUserInfoHandler returns the identity information of the current user.
+func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
+	rd, _ := RequestDetailsFromContext(ctx, auth.ctxKey)
+	role := rd.Role()
+
+	if role == "flex_anonymous" {
+		ctx.Header(
+			wwwAuthenticateKey,
+			wwwAuthenticate{}.String(), //nolint:exhaustruct
+		)
+		ctx.AbortWithStatusJSON(
+			http.StatusUnauthorized,
+			newErrorMessage(
+				http.StatusUnauthorized,
+				"missing authentication",
+				nil,
+			),
+		)
+		return
+	}
+
+	tx, err := auth.db.Begin(ctx)
+	if err != nil {
+		slog.WarnContext(ctx, "error in begin tx in userinfo handler", "error", err)
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not begin tx in userinfo handler",
+			err),
+		)
+		return
+	}
+	defer tx.Rollback(ctx)
+
+	ui, err := models.GetCurrentUserInfo(ctx, tx)
+	if err != nil {
+		slog.WarnContext(ctx, "error in get current user info", "error", err)
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not get current user info",
+			err),
+		)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, userInfoResponse{
+		Sub:         ui.ExternalID,
+		EntityID:    ui.EntityID,
+		EntityName:  ui.EntityName,
+		PartyID:     ui.PartyID,
+		PartyName:   ui.PartyName,
+		CurrentRole: role,
+	})
+}
+
+// clientCredentialsPayload is the payload for the client credentials request.
+type clientCredentialsPayload struct {
+	GrantType    grantType `binding:"required" form:"grant_type"`
+	ClientID     string    `binding:"required" form:"client_id"`
+	ClientSecret string    `binding:"required" form:"client_secret"`
+}
+
+// Validate checks if the client credentials payload is valid.
+func (cc clientCredentialsPayload) Validate() error {
+	val := validate.New()
+
+	val.Check(cc.GrantType == grantTypeClientCredentials, "invalid grant type")
+	val.Check(cc.ClientID != "", "client_id is required")
+	val.Check(cc.ClientSecret != "", "client_secret is required")
+
+	return val.Error()
+}
+
+// tokenExchangePayload is the payload for the token exchange request.
+type tokenExchangePayload struct {
+	GrantType      grantType `binding:"required" form:"grant_type"`
+	ActorToken     string    `binding:"required" form:"actor_token"`
+	ActorTokenType tokenType `binding:"required" form:"actor_token_type"`
+	Scope          string    `binding:"required" form:"scope"`
+}
+
+// Validate checks if the token exchange payload is valid.
+func (t tokenExchangePayload) Validate() error {
+	v := validate.New()
+
+	v.Check(t.GrantType == grantTypeTokenExchange, "invalid grant type")
+	v.Check(t.ActorTokenType == tokenTypeJWT, "invalid actor_token_type")
+
+	return v.Error()
+}
+
+// decodeTokenString decodes the token string and returns the claims.
+// Returns an error if the token was not verified or validated.
+func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
+	token := new(accessToken)
+	err := verifyTokenString(tokenStr, token, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		return nil, fmt.Errorf("error in verifying access token: %w", err)
+	}
+
+	if err := token.Validate(); err != nil {
+		return nil, fmt.Errorf("error in validating access token: %w", err)
+	}
+
+	return token, nil
+}
+
+func (auth *API) clientCredentialsHandler( //nolint:funlen
+	ctx *gin.Context,
+	payload clientCredentialsPayload,
+) {
+	slog.InfoContext(ctx, "client credentials for client", "client", payload.ClientID)
+
+	err := payload.Validate()
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: err.Error(),
+		})
+		return
+	}
+
+	tx, err := auth.db.Begin(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not begin tx in client credentials handler",
+			err),
+		)
+		return
+	}
+	defer tx.Commit(ctx)
+
+	ipAddress := ctx.Request.RemoteAddr
+
+	reservation, ok := auth.loginDelayer.Reserve(ctx, ipAddress)
+
+	if !ok {
+		ctx.Header(
+			"Retry-After",
+			strconv.Itoa(int(math.Ceil(reservation.TimeUntilNext().Seconds()))),
+		)
+		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+			Error:            oauthErrorAccessDenied,
+			ErrorDescription: "too many login attempts, try again later",
+		})
+		return
+	}
+
+	entityID, eid, err := models.GetEntityOfCredentials(
+		ctx, tx, payload.ClientID, payload.ClientSecret,
+	)
+	if err != nil {
+		// mitigation of brute force attacks
+		time.Sleep(auth.failedLoginResponseDelay)
+
+		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidClient,
+			ErrorDescription: "Invalid client_id or client_secret",
+		})
+		return
+	}
+
+	// this makes sure valid logins are not rate limited
+	reservation.Cancel()
+
+	accessToken := accessToken{
+		EntityID:       entityID,
+		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
+		ExternalID:     eid,
+		PartyID:        0,
+		Role:           "flex_entity",
+	}
+
+	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not sign access token",
+			err),
+		)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"access_token":      string(signedAccessToken),
+		"issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
+		"token_type":        "Bearer",
+		"expires_in":        auth.tokenDurationSeconds,
+	})
+}
+
+func (auth *API) tokenExchangeHandler( //nolint:funlen
+	ctx *gin.Context,
+	payload tokenExchangePayload,
+) {
+	err := payload.Validate()
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: err.Error(),
+		})
+		return
+	}
+
+	headerToken := strings.TrimPrefix(ctx.GetHeader("Authorization"), "Bearer ")
+	if headerToken != payload.ActorToken {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "actor token must match header token",
+		})
+		return
+	}
+
+	entityToken := new(accessToken)
+	err = verifyTokenString(payload.ActorToken, entityToken, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "Invalid actor token",
+		})
+		return
+	}
+
+	if err := entityToken.Validate(); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "Invalid actor token",
+		})
+		return
+	}
+
+	assumePartyID, err := scopeToPartyID(payload.Scope)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidScope,
+			ErrorDescription: "invalid scope format",
+		})
+		return
+	}
+
+	tx, err := auth.db.Begin(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not begin tx in token exchange handler",
+			err,
+		))
+		return
+	}
+	defer tx.Commit(ctx)
+
+	eid, role, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidTarget,
+			ErrorDescription: "entity cannot assume requested party",
+		})
+		return
+	}
+
+	partyToken := accessToken{
+		ExpirationTime: entityToken.ExpirationTime,
+		Role:           role,
+		PartyID:        assumePartyID,
+		EntityID:       entityID,
+		ExternalID:     eid,
+	}
+
+	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"could not sign party token",
+			err,
+		))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, tokenResponse{
+		AccessToken:     string(signedPartyToken),
+		IssuedTokenType: tokenTypeAccess,
+		TokenType:       accessTokenTypeBearer,
+		ExpiresIn:       partyToken.ExpiresIn(),
+	})
+}
+
+var errInvalidScope = errors.New("invalid scope")
+
+func scopeToPartyID(scope string) (int, error) {
+	assumePartyIDStr, found := strings.CutPrefix(scope, "assume:party:")
+	if !found {
+		return 0, fmt.Errorf("%w: does not start with 'assume:party:'", errInvalidScope)
+	}
+
+	assumePartyID, err := strconv.Atoi(assumePartyIDStr)
+	if err != nil {
+		return 0, fmt.Errorf("%w: scope party ID is not an integer", errInvalidScope)
+	}
+
+	return assumePartyID, nil
+}
+
+// jwtBearerPayload is the payload for the JWT bearer request.
+type jwtBearerPayload struct {
+	GrantType grantType `binding:"required" form:"grant_type"`
+	Assertion string    `binding:"required" form:"assertion"`
+}
+
 // jwtBearerHandler handles the jwt-bearer grant type.
 //
 //nolint:funlen,cyclop
@@ -995,304 +1302,5 @@ func (auth *API) jwtBearerHandler(
 		IssuedTokenType: tokenTypeAccess,
 		TokenType:       accessTokenTypeBearer,
 		ExpiresIn:       accessToken.ExpiresIn(),
-	})
-}
-
-// clientCredentialsPayload is the payload for the client credentials request.
-type clientCredentialsPayload struct {
-	GrantType    grantType `binding:"required" form:"grant_type"`
-	ClientID     string    `binding:"required" form:"client_id"`
-	ClientSecret string    `binding:"required" form:"client_secret"`
-}
-
-// Validate checks if the client credentials payload is valid.
-func (cc clientCredentialsPayload) Validate() error {
-	val := validate.New()
-
-	val.Check(cc.GrantType == grantTypeClientCredentials, "invalid grant type")
-	val.Check(cc.ClientID != "", "client_id is required")
-	val.Check(cc.ClientSecret != "", "client_secret is required")
-
-	return val.Error()
-}
-
-func (auth *API) clientCredentialsHandler( //nolint:funlen
-	ctx *gin.Context,
-	payload clientCredentialsPayload,
-) {
-	slog.InfoContext(ctx, "client credentials for client", "client", payload.ClientID)
-
-	err := payload.Validate()
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: err.Error(),
-		})
-		return
-	}
-
-	tx, err := auth.db.Begin(ctx)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not begin tx in client credentials handler",
-			err),
-		)
-		return
-	}
-	defer tx.Commit(ctx)
-
-	ipAddress := ctx.Request.RemoteAddr
-
-	reservation := auth.loginIPRateLimiter.Reserve(ctx, ipAddress)
-	defer reservation.Consume(ctx)
-
-	if !reservation.IsValid() {
-		ctx.Header(
-			"Retry-After",
-			strconv.Itoa(int(math.Ceil(reservation.TimeUntilNext().Seconds()))),
-		)
-		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
-			Error:            oauthErrorAccessDenied,
-			ErrorDescription: "too many login attempts, try again later",
-		})
-		return
-	}
-
-	entityID, eid, err := models.GetEntityOfCredentials(
-		ctx, tx, payload.ClientID, payload.ClientSecret,
-	)
-	if err != nil {
-		// mitigation of brute force attacks
-		time.Sleep(auth.failedLoginDelay)
-
-		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "Invalid client_id or client_secret",
-		})
-		return
-	}
-
-	// this makes sure valid logins are not rate limited
-	reservation.Cancel()
-
-	accessToken := accessToken{
-		EntityID:       entityID,
-		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
-		ExternalID:     eid,
-		PartyID:        0,
-		Role:           "flex_entity",
-	}
-
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not sign access token",
-			err),
-		)
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{
-		"access_token":      string(signedAccessToken),
-		"issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
-		"token_type":        "Bearer",
-		"expires_in":        auth.tokenDurationSeconds,
-	})
-}
-
-// ---- token exchange phase.
-var errInvalidScope = errors.New("invalid scope")
-
-func scopeToPartyID(scope string) (int, error) {
-	assumePartyIDStr, found := strings.CutPrefix(scope, "assume:party:")
-	if !found {
-		return 0, fmt.Errorf("%w: does not start with 'assume:party:'", errInvalidScope)
-	}
-
-	assumePartyID, err := strconv.Atoi(assumePartyIDStr)
-	if err != nil {
-		return 0, fmt.Errorf("%w: scope party ID is not an integer", errInvalidScope)
-	}
-
-	return assumePartyID, nil
-}
-
-// tokenExchangePayload is the payload for the token exchange request.
-type tokenExchangePayload struct {
-	GrantType      grantType `binding:"required" form:"grant_type"`
-	ActorToken     string    `binding:"required" form:"actor_token"`
-	ActorTokenType tokenType `binding:"required" form:"actor_token_type"`
-	Scope          string    `binding:"required" form:"scope"`
-}
-
-// Validate checks if the token exchange payload is valid.
-func (t tokenExchangePayload) Validate() error {
-	v := validate.New()
-
-	v.Check(t.GrantType == grantTypeTokenExchange, "invalid grant type")
-	v.Check(t.ActorTokenType == tokenTypeJWT, "invalid actor_token_type")
-
-	return v.Error()
-}
-
-func (auth *API) tokenExchangeHandler( //nolint:funlen
-	ctx *gin.Context,
-	payload tokenExchangePayload,
-) {
-	err := payload.Validate()
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: err.Error(),
-		})
-		return
-	}
-
-	headerToken := strings.TrimPrefix(ctx.GetHeader("Authorization"), "Bearer ")
-	if headerToken != payload.ActorToken {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "actor token must match header token",
-		})
-		return
-	}
-
-	entityToken := new(accessToken)
-	err = verifyTokenString(payload.ActorToken, entityToken, jws.WithKey(jwa.HS384(), auth.jwtSecret))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "Invalid actor token",
-		})
-		return
-	}
-
-	if err := entityToken.Validate(); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "Invalid actor token",
-		})
-		return
-	}
-
-	assumePartyID, err := scopeToPartyID(payload.Scope)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidScope,
-			ErrorDescription: "invalid scope format",
-		})
-		return
-	}
-
-	tx, err := auth.db.Begin(ctx)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not begin tx in token exchange handler",
-			err,
-		))
-		return
-	}
-	defer tx.Commit(ctx)
-
-	eid, role, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidTarget,
-			ErrorDescription: "entity cannot assume requested party",
-		})
-		return
-	}
-
-	partyToken := accessToken{
-		ExpirationTime: entityToken.ExpirationTime,
-		Role:           role,
-		PartyID:        assumePartyID,
-		EntityID:       entityID,
-		ExternalID:     eid,
-	}
-
-	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not sign party token",
-			err,
-		))
-		return
-	}
-
-	ctx.JSON(http.StatusOK, tokenResponse{
-		AccessToken:     string(signedPartyToken),
-		IssuedTokenType: tokenTypeAccess,
-		TokenType:       accessTokenTypeBearer,
-		ExpiresIn:       partyToken.ExpiresIn(),
-	})
-}
-
-// userInfoResponse is the response containing the user information.
-type userInfoResponse struct {
-	Sub         string  `json:"sub"`
-	EntityID    int     `json:"entity_id"`
-	EntityName  string  `json:"entity_name"`
-	PartyID     *int    `json:"party_id,omitempty"`
-	PartyName   *string `json:"party_name,omitempty"`
-	CurrentRole string  `json:"current_role"`
-}
-
-// GetUserInfoHandler returns the identity information of the current user.
-func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
-	rd, _ := RequestDetailsFromContext(ctx, auth.ctxKey)
-	role := rd.Role()
-
-	if role == "flex_anonymous" {
-		ctx.Header(
-			wwwAuthenticateKey,
-			wwwAuthenticate{}.String(), //nolint:exhaustruct
-		)
-		ctx.AbortWithStatusJSON(
-			http.StatusUnauthorized,
-			newErrorMessage(
-				http.StatusUnauthorized,
-				"missing authentication",
-				nil,
-			),
-		)
-		return
-	}
-
-	tx, err := auth.db.Begin(ctx)
-	if err != nil {
-		slog.WarnContext(ctx, "error in begin tx in userinfo handler", "error", err)
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not begin tx in userinfo handler",
-			err),
-		)
-		return
-	}
-	defer tx.Rollback(ctx)
-
-	ui, err := models.GetCurrentUserInfo(ctx, tx)
-	if err != nil {
-		slog.WarnContext(ctx, "error in get current user info", "error", err)
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"could not get current user info",
-			err),
-		)
-		return
-	}
-
-	ctx.JSON(http.StatusOK, userInfoResponse{
-		Sub:         ui.ExternalID,
-		EntityID:    ui.EntityID,
-		EntityName:  ui.EntityName,
-		PartyID:     ui.PartyID,
-		PartyName:   ui.PartyName,
-		CurrentRole: role,
 	})
 }

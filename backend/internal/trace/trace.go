@@ -18,7 +18,7 @@ func Init() {
 }
 
 // Tracer returns the global otel tracer.
-func Tracer(name string) trace.Tracer { //nolint:ireturn
+func Tracer(name string) trace.Tracer {
 	return otel.Tracer(name)
 }
 
