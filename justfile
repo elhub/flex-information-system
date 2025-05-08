@@ -125,6 +125,7 @@ _liquibase_install:
         wget -c https://github.com/liquibase/liquibase/releases/download/v{{ LIQUIBASE_VERSION }}/liquibase-{{ LIQUIBASE_VERSION }}.tar.gz  -O - |
             tar -xz -C .bin/liquibase-{{ LIQUIBASE_VERSION }}
 
+        ln -s liquibase-{{ LIQUIBASE_VERSION }}/liquibase .bin/liquibase
     else
         echo "Liquibase {{ LIQUIBASE_VERSION }} already installed at .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase"
     fi
@@ -205,7 +206,7 @@ build:
     mkdir -p local/nginx/.html
     tar -xzf ./dist/dist.tar.gz -C ./local/nginx/.html/
 
-liquibase pghost='localhost' password='flex_password' action='update':
+liquibase pghost='localhost' password='flex_password' action='update' changelog='db/changelog.yml':
     #!/usr/bin/env bash
     set -euo pipefail
     JAVA_HOME=.bin/java \
@@ -216,7 +217,7 @@ liquibase pghost='localhost' password='flex_password' action='update':
     --contexts=local \
     --liquibaseSchemaName=flex \
     --defaultSchemaName=flex \
-    --changeLogFile=db/changelog.yml \
+    --changeLogFile={{ changelog }} \
     --log-level=warning \
     {{ action }}
 
@@ -320,42 +321,6 @@ openapi-to-db:
     cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_db.py
 
     .venv/bin/python3 local/scripts/internal_resources_to_db.py
-
-    imports=$(ls db/flex | grep history_audit.sql | sed -e 's|.*|\\i flex/&|')
-
-    ed -s "./db/flex_structure.sql" <<EOF
-    /-- history and audit/+,/-- security/-d
-    /-- history and audit/a
-
-    ${imports}
-
-    .
-    wq
-    EOF
-
-    imports=$(ls db/authz | sed -e 's|.*|\\i authz/&|')
-
-    ed -s "./db/flex_structure.sql" <<EOF
-    /-- security/+,/-- RLS/-d
-    /-- security/a
-
-    ${imports}
-
-    .
-    wq
-    EOF
-
-    imports=$(ls db/api/ | grep sql | sed -e 's|.*|\\i api/&|')
-
-    ed -s "./db/api_structure.sql" <<EOF
-    /-- views/+,/-- triggers/-d
-    /-- views/a
-
-    ${imports}
-
-    .
-    wq
-    EOF
 
 sqlc:
     #!/usr/bin/env bash

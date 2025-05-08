@@ -10,42 +10,25 @@ The following diagram is an auto-generated representation of the `flex` schema d
 
 ## Schema maintenance and migrations
 
-The system is still in rapid development and we don't actually want to deal with
-migrations just yet. We want to maintain a "declarative" schema without tracking
-changes, as long as possible.
+We are using liquibase for schema maintenance and migrations. Migrations are
+written in sql.
 
-Our strategy is therefore to recreate the database when we need to, but usually
-rely on just recreating the objects that contain logic, and not the tables
-containing data. Retaining the data is benefitial, since we have (external)
-testers using the system and we want to deploy frequently. This is somewhat
-inspired by the
-[approach outlined by one of the PostgREST maintainers](https://github.com/PostgREST/postgrest/discussions/2999#discussioncomment-7592206).
+Writing migrations and maintaining a schema with _incremental_ changesets is
+painful. It is neccessary, but not for all-the-things. As an example: tables
+must be incrementally managed while views can be recreated at any time.
+Incremental changesets also makes it harder to reason about the database objects
+by just looking at the code. As much as possible we try to avoid incremental
+changesets. To do this we have a few strategies:
 
-We achieve this by leveraging `IF NOT EXISTS`, `CREATE OR REPLACE` and similar
-functionality in PostgreSQL. We also have some schemas that we can drop since
-they just hold logic such as views, functions and triggers. If we need to change
-an actual data table (alter a column name or table name), then we bite the
-bullet, wipe the database and recreate it.
+* leveraging `IF NOT EXISTS`, `CREATE OR REPLACE` and similar functionality in
+  PostgreSQL in combination with `runOnChange` in liquibase
+* dropping objects and using `runAlways` to create new ones for some types of
+  objects (e.g. policies)
+* updating actual definitions as well as adding incremental `ALTER TABLE` (or
+  simmilar) changesets so that the incremental changesets can be deleted once
+  deployed
 
-On local, this can be achieved by running the `just reload` command.
-
-Our next step for schema maintenance is to start tracking changes in the data
-tables using a schema migration tool. The
-[default choice at Elhub is Liquibase](https://elhub.atlassian.net/wiki/spaces/ELHUBDEV/pages/1214163591/AD-50+-+Liquibase).
-Once we do that, we must consider refactoring how we set up the database, e.g.
-setting up specific schemas for extensions and logic. Maintaining [declarative
-versioned migration
-authoring](https://atlasgo.io/concepts/declarative-vs-versioned#migration-authoring)
-with assisting tools such as migra is the preferred approach.
-
-> [!NOTE]
-> If there is some specific reason for why we cannot wipe the database
-> within a reasonable timeframe, and it is not feasible to hold the change, then
-> we can resort to writing actual migrations. These must be in addition to
-> making changes to the declarative object definitions. Migrations can be run
-> manually or we can wrap it in a pl/pgsql function that checks if the migration
-> was already done, thereby ensuring idempotence. Once done, we should remove
-> the migration from version control.
+To clean out the local database and start over, use the `just reload` command.
 
 ## Foreign keys to tables with multiple types
 
