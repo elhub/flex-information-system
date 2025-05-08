@@ -422,6 +422,35 @@ BEGIN
 END
 $$;
 
+-- changeset flex:test-data-forge-valid-eic runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION forge_valid_eic(
+    in_prefix int,
+    in_entity_name text
+)
+RETURNS text
+LANGUAGE plpgsql
+IMMUTABLE
+AS $$
+DECLARE
+    l_eic text;
+BEGIN
+    -- EIC of the form PPX-NNNN-NNNN--
+    -- where P is a character in the prefix and N is a character in the name
+    l_eic := eic.add_check_char(
+        lpad(left(in_prefix::text, 2), 2, '0') || 'X-' ||
+        upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
+    );
+
+    -- sometimes the check character is a hyphen, which is not valid
+    -- in this case we just increment the prefix and try again
+    IF right(l_eic, 1) = '-' THEN
+        RETURN forge_valid_eic(in_prefix + 1, in_entity_name);
+    ELSE
+        RETURN l_eic;
+    END IF;
+END
+$$;
+
 -- changeset flex:test-data-add-test-account runOnChange:true endDelimiter:--
 -- Add a test account with parties and controllable units
 CREATE OR REPLACE FUNCTION test_data.add_test_account(
@@ -586,9 +615,7 @@ BEGIN
   FROM flex.product_type pt
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
-  so_mga_business_id := eic.add_check_char(
-    '42X-' || upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
-  );
+  so_mga_business_id := forge_valid_eic(42, in_entity_name);
 
   -- associate a few metering grid areas to the SO
   INSERT INTO flex.metering_grid_area (
@@ -599,9 +626,7 @@ BEGIN
     valid_time_range,
     recorded_by
   ) VALUES (
-    eic.add_check_char(
-      '31X-' || upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
-    ),
+    forge_valid_eic(31, in_entity_name),
     in_entity_name || ' AREA 1',
     'NO4',
     so_id,
