@@ -8,7 +8,7 @@ if [ -z "${PGHOST}" ]; then
 	exit 1
 fi
 
-for schema in flex api auth; do
+for schema in flex api auth utils; do
 	psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
 		-c "DROP SCHEMA IF EXISTS ${schema} CASCADE;"
 done
