@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:controllable-unit-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS controllable_unit (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id uuid UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()) CHECK (
@@ -63,21 +67,25 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     )
 );
 
+-- changeset flex:controllable-unit-suppress-redundant-updates-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER a_controllable_unit_suppress_redundant_updates
 BEFORE UPDATE ON controllable_unit
 FOR EACH ROW EXECUTE FUNCTION suppress_redundant_updates_trigger();
 
+-- changeset flex:controllable-unit-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_status_insert
 BEFORE INSERT ON controllable_unit
 FOR EACH ROW
 EXECUTE FUNCTION status.restrict_insert('new');
 
+-- changeset flex:controllable-unit-status-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_status_update
 BEFORE UPDATE OF status ON controllable_unit
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION status.restrict_update('new');
 
+-- changeset flex:controllable-unit-grid-validation-status-approved-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION controllable_unit_grid_validation_status_approved()
 RETURNS trigger
 SECURITY INVOKER
@@ -90,6 +98,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:controllable-unit-grid-validation-status-approved-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_approved
 BEFORE UPDATE OF grid_validation_status ON controllable_unit
 FOR EACH ROW
@@ -100,6 +109,7 @@ WHEN (
 )
 EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();
 
+-- changeset flex:controllable-unit-grid-validation-status-reset-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION controllable_unit_grid_validation_status_reset()
 RETURNS trigger
 SECURITY DEFINER
@@ -113,6 +123,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:controllable-unit-grid-validation-status-reset-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_reset
 BEFORE UPDATE OF
 regulation_direction,
@@ -132,7 +143,7 @@ WHEN (
 )
 EXECUTE FUNCTION controllable_unit_grid_validation_status_reset();
 
--- event
+-- changeset flex:controllable-unit-event-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_event
 AFTER INSERT OR UPDATE ON controllable_unit
 FOR EACH ROW

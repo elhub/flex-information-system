@@ -15,6 +15,9 @@ databaseChangeLog:
   - include:
       file: ./pg_status/pg_status.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./utils/triggers.sql
+      relativeToChangelogFile: true
   - changeSet:
       id: grant-usage
       author: flex
@@ -25,6 +28,7 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA eic TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous
         - sql: GRANT USAGE ON SCHEMA status TO flex_anonymous
+        - sql: GRANT USAGE ON SCHEMA utils TO flex_anonymous
   - include:
       file: ./flex/changelog.yml
       relativeToChangelogFile: true
@@ -36,4 +40,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./test_data/test_data.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./users.sql
       relativeToChangelogFile: true

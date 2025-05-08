@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-service-provider-create runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW accounting_point_service_provider AS (
     SELECT
         ap.id AS accounting_point_id,
@@ -11,6 +15,7 @@ CREATE OR REPLACE VIEW accounting_point_service_provider AS (
     WHERE cusp.valid_time_range IS NOT null
 );
 
+-- changeset flex:accounting-point-service-provider-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE accounting_point_service_provider
 TO flex_common;
 

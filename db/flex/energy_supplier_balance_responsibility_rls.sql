@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:energy-supplier-balance-responsibility-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS energy_supplier_balance_responsibility
 ENABLE ROW LEVEL SECURITY;
 

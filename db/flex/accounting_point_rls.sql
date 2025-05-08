@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS accounting_point ENABLE ROW LEVEL SECURITY;
 
 -- internal

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:controllable-unit-service-provider-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS controllable_unit_service_provider
 ENABLE ROW LEVEL SECURITY;
 

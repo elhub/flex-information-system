@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-end-user-create runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW controllable_unit_end_user AS (
     SELECT
         cu.id AS controllable_unit_id,
@@ -10,6 +14,7 @@ CREATE OR REPLACE VIEW controllable_unit_end_user AS (
             ON ap.id = apeu.accounting_point_id
 );
 
+-- changeset flex:controllable-unit-end-user-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE controllable_unit_end_user
 TO flex_common;
 

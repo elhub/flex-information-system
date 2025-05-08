@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-energy-supplier-create runOnChange:true endDelimiter:--
 -- relation linking accounting points to their energy supplier
 CREATE TABLE IF NOT EXISTS accounting_point_energy_supplier (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -31,6 +35,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_energy_supplier (
     ) WHERE (valid_time_range IS NOT null)
 );
 
+-- changeset flex:accounting-point-energy-supplier-timline-midnight-aligned runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 accounting_point_energy_supplier_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON accounting_point_energy_supplier

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:party-membership-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS party_membership (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     party_id bigint NOT NULL,
@@ -13,6 +17,7 @@ CREATE TABLE IF NOT EXISTS party_membership (
     CONSTRAINT uk_party_membership_entity_party_id UNIQUE (party_id, entity_id)
 );
 
+-- changeset flex:party-membership-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER party_membership_event
 AFTER INSERT OR DELETE ON party_membership
 FOR EACH ROW

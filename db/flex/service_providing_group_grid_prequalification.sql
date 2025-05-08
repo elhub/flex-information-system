@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:service-providing-group-grid-prequalification-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_providing_group_id bigint NOT NULL,
@@ -31,12 +35,14 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     UNIQUE (service_providing_group_id, impacted_system_operator_id)
 );
 
+-- changeset flex:service-providing-group-grid-prequalification-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_insert
 BEFORE INSERT ON service_providing_group_grid_prequalification
 FOR EACH ROW
 EXECUTE FUNCTION status.restrict_insert('requested');
 
+-- changeset flex:service-providing-group-grid-prequalification-status-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_update
 BEFORE UPDATE OF status ON service_providing_group_grid_prequalification
@@ -44,6 +50,7 @@ FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION status.restrict_update('requested');
 
+-- changeset flex:service-providing-group-grid-prequalification-status-approved-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION spg_grid_prequalification_status_approved()
 RETURNS trigger
 SECURITY INVOKER
@@ -56,6 +63,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-grid-prequalification-status-approved-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER spg_grid_prequalification_status_approved
 BEFORE UPDATE OF status
 ON service_providing_group_grid_prequalification
@@ -67,6 +75,7 @@ WHEN (
 )
 EXECUTE FUNCTION spg_grid_prequalification_status_approved();
 
+-- changeset flex:service-providing-group-grid-prequalification-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_grid_prequalification_event
 AFTER INSERT OR UPDATE ON service_providing_group_grid_prequalification
 FOR EACH ROW

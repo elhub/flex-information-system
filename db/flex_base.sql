@@ -19,5 +19,8 @@ GRANT USAGE ON SCHEMA eic TO flex_anonymous;
 \i pg_status/pg_status.sql
 GRANT USAGE ON SCHEMA status TO flex_anonymous;
 
+\i utils/triggers.sql
+GRANT USAGE ON SCHEMA status TO flex_anonymous;
+
 -- enums
 \i flex/business_id_type.sql

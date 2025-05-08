@@ -170,3 +170,28 @@ $$;
 -- changeset flex:auth-current-user-info-execute runOnChange:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_entity;
 GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_common;
+
+-- changeset flex:pre-request runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION
+auth.pre_request() RETURNS void
+LANGUAGE plpgsql SECURITY DEFINER STABLE
+AS $$
+DECLARE
+    _eid text = current_setting('request.jwt.claims', true)::json->>'eid';
+BEGIN
+
+    if _eid is null or _eid = '' then
+        return;
+    end if;
+
+    perform
+        flex.set_entity_party_identity(entity_id, party_id, id)
+    from flex.identity
+    where identity.eid = _eid::uuid;
+
+    return;
+END;
+$$;
+
+-- changeset flex:pre-request-execute runOnChange:true endDelimiter:;
+GRANT EXECUTE ON FUNCTION auth.pre_request TO flex_anonymous;

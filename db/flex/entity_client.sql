@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:entity-client runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS entity_client (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     entity_id bigint NOT NULL REFERENCES entity (id),
@@ -16,6 +20,7 @@ CREATE TABLE IF NOT EXISTS entity_client (
     )
 );
 
+-- changeset flex:entity-client-secret-crypt-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION entity_client_secret_crypt()
 RETURNS trigger
 SECURITY DEFINER
@@ -42,6 +47,7 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:entity-client-secret-crypt-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER entity_client_secret_crypt
 BEFORE INSERT OR UPDATE ON entity_client
 FOR EACH ROW

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:identity-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS identity ENABLE ROW LEVEL SECURITY;
 
 -- RLS: ID-ENT001

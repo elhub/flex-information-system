@@ -1,4 +1,7 @@
--- internal
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-metering-grid-area runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS accounting_point_metering_grid_area (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     accounting_point_id bigint NOT NULL,
@@ -27,6 +30,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_metering_grid_area (
     ) WHERE (valid_time_range IS NOT null)
 );
 
+-- changeset flex:accounting-point-metering-grid-area-timeline-midnight-aligned runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER accounting_point_mga_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON accounting_point_metering_grid_area
 FOR EACH ROW

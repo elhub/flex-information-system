@@ -1,6 +1,7 @@
--- TODO: consider relating SPG to CU-SP instead of only CU
---       (to have consistency by construction)
+--liquibase formatted sql
+-- Manually managed file
 
+-- changeset flex:service-providing-group-membership-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_providing_group_membership (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     controllable_unit_id bigint NOT NULL,
@@ -31,6 +32,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_membership (
     ) WHERE (valid_time_range IS NOT null)
 );
 
+-- changeset flex:service-providing-group-membership-consistency-on-valid-time-increase runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION consistency_on_spgm_valid_time_increase()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -63,10 +65,12 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-membership-upsert-consistency-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_membership_upsert_consistency
 BEFORE INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE consistency_on_spgm_valid_time_increase();
 
+-- changeset flex:service-providing-group-insert-grip-prequalificaton-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 spgm_insert_grid_prequalification()
 RETURNS trigger
@@ -91,17 +95,20 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:service-providing-group-insert-grip-prequalificaton-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER spgm_insert_grid_prequalification
 AFTER INSERT ON service_providing_group_membership
 FOR EACH ROW
 EXECUTE FUNCTION
 spgm_insert_grid_prequalification();
 
+-- changeset flex:service-providing-group-membership-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_membership_event
 AFTER INSERT OR UPDATE OR DELETE ON service_providing_group_membership
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_providing_group_membership');
 
+-- changeset flex:service-providing-group-membership-timeline-midnight-aligned runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_membership_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON service_providing_group_membership

@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:service-providing-group-grid-prequalification-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS service_providing_group_grid_prequalification
 ENABLE ROW LEVEL SECURITY;
 

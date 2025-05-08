@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:controllable-unit-service-provider-create runOnChange:false endDelimiter:--
 -- SP relation for controllable unit
 CREATE TABLE IF NOT EXISTS controllable_unit_service_provider (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -35,6 +39,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit_service_provider (
     ) WHERE (valid_time_range IS NOT null)
 );
 
+-- changeset flex:controllable-unit-service-provider-make-room-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_make_room
 BEFORE INSERT OR UPDATE
 ON flex.controllable_unit_service_provider
@@ -43,6 +48,7 @@ EXECUTE PROCEDURE timeline.make_room(
     'controllable_unit_id'
 );
 
+-- changeset flex:controllable-unit-service-provider-soft-delete runOnChange:true endDelimiter:--
 -- rule because INSTEAD OF triggers on tables are not possible,
 -- and we want all the trigger logic here, not in the api schema file
 -- noqa: disable=all
@@ -54,11 +60,13 @@ ON DELETE TO controllable_unit_service_provider DO INSTEAD
     RETURNING controllable_unit_service_provider.*;
 -- noqa: enable=all
 
+-- changeset flex:controllable-unit-service-provider-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_event
 AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('controllable_unit_service_provider');
 
+-- changeset flex:controllable-unit-service-provider-valid-time-freeze runOnChange:true endDelimiter:--
 -- IFV: CUSP-VAL001
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_valid_time_freeze
 BEFORE UPDATE ON controllable_unit_service_provider
@@ -66,12 +74,14 @@ FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
 EXECUTE FUNCTION timeline.freeze('2 weeks');
 
+-- changeset flex:controllable-unit-service-provider-timeline-midnight-aligned runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 controllable_unit_service_provider_timeline_midnight_aligned
 BEFORE INSERT OR UPDATE ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
 
+-- changeset flex:controllable-unit-service-provider-timeline-valid-start-window runOnChange:true endDelimiter:--
 -- IFV: CUSP-VAL002
 CREATE OR REPLACE TRIGGER
 -- the _a_ in this name is to make sure it runs before other triggers

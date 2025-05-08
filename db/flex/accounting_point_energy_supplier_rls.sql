@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:accounting-point-energy-supplier-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS accounting_point_energy_supplier
 ENABLE ROW LEVEL SECURITY;
 

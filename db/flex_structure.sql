@@ -35,11 +35,16 @@ GRANT USAGE ON SCHEMA flex TO flex_anonymous;
 \i flex/service_providing_group_grid_prequalification.sql
 \i flex/service_providing_group_product_application.sql
 \i flex/service_provider_product_application_comment.sql
--- loaded last because it is built from the others
+
+-- views built on top of the resources
+
 \i flex/notice.sql
+\i flex/accounting_point_service_provider.sql
+\i flex/controllable_unit_balance_responsible_party.sql
+\i flex/controllable_unit_end_user.sql
+\i flex/controllable_unit_energy_supplier.sql
 
 -- history and audit
-
 \i flex/accounting_point_end_user_history_audit.sql
 \i flex/accounting_point_energy_supplier_history_audit.sql
 \i flex/accounting_point_history_audit.sql
@@ -61,14 +66,7 @@ GRANT USAGE ON SCHEMA flex TO flex_anonymous;
 \i flex/system_operator_product_type_history_audit.sql
 \i flex/technical_resource_history_audit.sql
 
--- security definer views for RLS
-\i flex/accounting_point_service_provider.sql
-\i flex/controllable_unit_balance_responsible_party.sql
-\i flex/controllable_unit_end_user.sql
-\i flex/controllable_unit_energy_supplier.sql
-
 -- RLS
-
 \i flex/accounting_point_rls.sql
 \i flex/accounting_point_end_user_rls.sql
 \i flex/accounting_point_energy_supplier_rls.sql
