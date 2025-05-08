@@ -131,84 +131,6 @@ func NewProvider( //nolint: funlen
 	}, nil
 }
 
-// parResponse is a struct used to unmarshal the response from the PAR endpoint.
-type parResponse struct {
-	ExpiresIn  int    `json:"expires_in"`
-	RequestURI string `json:"request_uri"`
-}
-
-// addBasicAuth adds basic auth to the request using client id and secret.
-func (p *Provider) addBasicAuth(r *http.Request) {
-	auth := p.oauth2Config.ClientID + ":" + p.oauth2Config.ClientSecret
-	encodedAuth := base64.StdEncoding.EncodeToString([]byte(auth))
-	r.Header.Add("Authorization", "Basic "+encodedAuth)
-}
-
-// parAuthURL returns the authorization URL.
-func (p *Provider) parAuthURL(requestURI string) string {
-	var buf bytes.Buffer
-	buf.WriteString(p.oauth2Config.Endpoint.AuthURL)
-
-	if strings.Contains(p.oauth2Config.Endpoint.AuthURL, "?") {
-		buf.WriteByte('&')
-	} else {
-		buf.WriteByte('?')
-	}
-
-	v := url.Values{
-		"request_uri": {requestURI},
-		"client_id":   {p.oauth2Config.ClientID},
-	}
-
-	buf.WriteString(v.Encode())
-	return buf.String()
-}
-
-// parRequest returns the request body for the PAR endpoint.
-func (p *Provider) parRequest(ctx context.Context, state, nonce, codeChallenge string) (string, error) {
-	par := new(parResponse)
-	// Prod
-	// https://docs.digdir.no/docs/idporten/oidc/oidc_protocol_par.html
-	// Test
-	// https://www.authelia.com/integration/openid-connect/introduction/#pushed-authorization-requests-endpoint
-	data := url.Values{
-		"response_type": []string{"code"},
-		"client_id":     []string{p.oauth2Config.ClientID},
-		"redirect_uri":  []string{p.oauth2Config.RedirectURL},
-		"scope":         []string{strings.Join(p.oauth2Config.Scopes, " ")},
-		"state":         []string{state},
-		"nonce":         []string{nonce},
-		"acr_values":    []string{"idporten-loa-substantial"},
-		// TODO prompt is not formally supported by authelia
-		// https://github.com/authelia/authelia/issues/2596
-		// "prompt":                []string{"login"},
-		"code_challenge":        []string{codeChallenge},
-		"code_challenge_method": []string{"S256"},
-	}
-
-	client := new(http.Client)
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, p.parEndpoint, strings.NewReader(data.Encode()))
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	p.addBasicAuth(req)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", fmt.Errorf("could not push authorization request: %w", err)
-	}
-
-	if resp.StatusCode != http.StatusCreated {
-		return "", IncorrectPARResponseError{status: resp.Status}
-	}
-	defer resp.Body.Close()
-
-	err = json.NewDecoder(resp.Body).Decode(par)
-	if err != nil {
-		return "", fmt.Errorf("could not decode PAR response: %w", err)
-	}
-
-	return p.parAuthURL(par.RequestURI), nil
-}
-
 // AuthURL pushes a authorization request.
 // If a PAR endpoint is not available, the regular authorization endpoint is used.
 // Returns the URL, generated nonce and state.
@@ -305,6 +227,84 @@ func (p *Provider) Verify(msgStr, hashStr string) (bool, error) {
 		return false, fmt.Errorf("could not create verifier: %w", err)
 	}
 	return v.verifyStr(hashStr), nil
+}
+
+// parResponse is a struct used to unmarshal the response from the PAR endpoint.
+type parResponse struct {
+	ExpiresIn  int    `json:"expires_in"`
+	RequestURI string `json:"request_uri"`
+}
+
+// addBasicAuth adds basic auth to the request using client id and secret.
+func (p *Provider) addBasicAuth(r *http.Request) {
+	auth := p.oauth2Config.ClientID + ":" + p.oauth2Config.ClientSecret
+	encodedAuth := base64.StdEncoding.EncodeToString([]byte(auth))
+	r.Header.Add("Authorization", "Basic "+encodedAuth)
+}
+
+// parAuthURL returns the authorization URL.
+func (p *Provider) parAuthURL(requestURI string) string {
+	var buf bytes.Buffer
+	buf.WriteString(p.oauth2Config.Endpoint.AuthURL)
+
+	if strings.Contains(p.oauth2Config.Endpoint.AuthURL, "?") {
+		buf.WriteByte('&')
+	} else {
+		buf.WriteByte('?')
+	}
+
+	v := url.Values{
+		"request_uri": {requestURI},
+		"client_id":   {p.oauth2Config.ClientID},
+	}
+
+	buf.WriteString(v.Encode())
+	return buf.String()
+}
+
+// parRequest returns the request body for the PAR endpoint.
+func (p *Provider) parRequest(ctx context.Context, state, nonce, codeChallenge string) (string, error) {
+	par := new(parResponse)
+	// Prod
+	// https://docs.digdir.no/docs/idporten/oidc/oidc_protocol_par.html
+	// Test
+	// https://www.authelia.com/integration/openid-connect/introduction/#pushed-authorization-requests-endpoint
+	data := url.Values{
+		"response_type": []string{"code"},
+		"client_id":     []string{p.oauth2Config.ClientID},
+		"redirect_uri":  []string{p.oauth2Config.RedirectURL},
+		"scope":         []string{strings.Join(p.oauth2Config.Scopes, " ")},
+		"state":         []string{state},
+		"nonce":         []string{nonce},
+		"acr_values":    []string{"idporten-loa-substantial"},
+		// TODO prompt is not formally supported by authelia
+		// https://github.com/authelia/authelia/issues/2596
+		// "prompt":                []string{"login"},
+		"code_challenge":        []string{codeChallenge},
+		"code_challenge_method": []string{"S256"},
+	}
+
+	client := new(http.Client)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, p.parEndpoint, strings.NewReader(data.Encode()))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	p.addBasicAuth(req)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("could not push authorization request: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusCreated {
+		return "", IncorrectPARResponseError{status: resp.Status}
+	}
+	defer resp.Body.Close()
+
+	err = json.NewDecoder(resp.Body).Decode(par)
+	if err != nil {
+		return "", fmt.Errorf("could not decode PAR response: %w", err)
+	}
+
+	return p.parAuthURL(par.RequestURI), nil
 }
 
 // IncorrectPARResponseError is an error returned when the PAR response is incorrect.
