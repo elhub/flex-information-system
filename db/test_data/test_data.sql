@@ -423,7 +423,7 @@ END
 $$;
 
 -- changeset flex:test-data-forge-valid-eic runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION forge_valid_eic(
+CREATE OR REPLACE FUNCTION test_data.forge_valid_eic(
     in_prefix int,
     in_entity_name text
 )
@@ -444,7 +444,7 @@ BEGIN
     -- sometimes the check character is a hyphen, which is not valid
     -- in this case we just increment the prefix and try again
     IF right(l_eic, 1) = '-' THEN
-        RETURN forge_valid_eic(in_prefix + 1, in_entity_name);
+        RETURN test_data.forge_valid_eic(in_prefix + 1, in_entity_name);
     ELSE
         RETURN l_eic;
     END IF;
@@ -615,7 +615,7 @@ BEGIN
   FROM flex.product_type pt
   WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
 
-  so_mga_business_id := forge_valid_eic(42, in_entity_name);
+  so_mga_business_id := test_data.forge_valid_eic(42, in_entity_name);
 
   -- associate a few metering grid areas to the SO
   INSERT INTO flex.metering_grid_area (
@@ -626,7 +626,7 @@ BEGIN
     valid_time_range,
     recorded_by
   ) VALUES (
-    forge_valid_eic(31, in_entity_name),
+    test_data.forge_valid_eic(31, in_entity_name),
     in_entity_name || ' AREA 1',
     'NO4',
     so_id,
