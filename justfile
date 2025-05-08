@@ -28,11 +28,10 @@ unload:
 
 
 # load the database
-load:
+load: liquibase
     #!/usr/bin/env bash
     set -euo pipefail
     export PGHOST=localhost
-    ./db/load.sh
 
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
         -c "ALTER USER flex_authenticator PASSWORD 'authenticator_password';"

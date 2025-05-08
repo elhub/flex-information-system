@@ -31,7 +31,7 @@ services:
       PGRST_DB_URI: >-
         postgres://flex_authenticator:authenticator_password@db:5432/flex
       PGRST_DB_ANON_ROLE: flex_anonymous
-      PGRST_DB_PRE_REQUEST: "flex.pre_request"
+      PGRST_DB_PRE_REQUEST: "auth.pre_request"
       PGRST_DB_SCHEMAS: api
       PGRST_DB_EXTRA_SEARCH_PATH: flex,public
       PGRST_LOG_LEVEL: info
