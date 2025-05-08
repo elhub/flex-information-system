@@ -322,42 +322,6 @@ openapi-to-db:
 
     .venv/bin/python3 local/scripts/internal_resources_to_db.py
 
-    imports=$(ls db/flex | grep history_audit.sql | sed -e 's|.*|\\i flex/&|')
-
-    ed -s "./db/flex_structure.sql" <<EOF
-    /-- history and audit/+,/-- security/-d
-    /-- history and audit/a
-
-    ${imports}
-
-    .
-    wq
-    EOF
-
-    imports=$(ls db/authz | sed -e 's|.*|\\i authz/&|')
-
-    ed -s "./db/flex_structure.sql" <<EOF
-    /-- security/+,/-- RLS/-d
-    /-- security/a
-
-    ${imports}
-
-    .
-    wq
-    EOF
-
-    imports=$(ls db/api/ | grep sql | sed -e 's|.*|\\i api/&|')
-
-    ed -s "./db/api_structure.sql" <<EOF
-    /-- views/+,/-- triggers/-d
-    /-- views/a
-
-    ${imports}
-
-    .
-    wq
-    EOF
-
 sqlc:
     #!/usr/bin/env bash
     set -euo pipefail
