@@ -57,22 +57,6 @@ func NewAPI(self string, db *pgpool.Pool, jwtSecret string, oidcProvider *oidc.P
 	}
 }
 
-// decodeTokenString decodes the token string and returns the claims.
-// Returns an error if the token was not verified or validated.
-func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
-	token := new(accessToken)
-	err := verifyTokenString(tokenStr, token, jws.WithKey(jwa.HS384(), auth.jwtSecret))
-	if err != nil {
-		return nil, fmt.Errorf("error in verifying access token: %w", err)
-	}
-
-	if err := token.Validate(); err != nil {
-		return nil, fmt.Errorf("error in validating access token: %w", err)
-	}
-
-	return token, nil
-}
-
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
 func (auth *API) TokenDecodingMiddleware(
 	next http.Handler,
@@ -498,21 +482,6 @@ func (auth *API) GetLogoutHandler(ctx *gin.Context) {
 	ctx.Redirect(http.StatusFound, endSessionURL)
 }
 
-// jwtBearerPayload is the payload for the JWT bearer request.
-type jwtBearerPayload struct {
-	GrantType grantType `binding:"required" form:"grant_type"`
-	Assertion string    `binding:"required" form:"assertion"`
-}
-
-// Validate checks if the JWT bearer payload is valid.
-func (j jwtBearerPayload) Validate() error {
-	val := validate.New()
-	val.Check(j.GrantType == grantTypeJWTBearer, "invalid grant type")
-	val.Check(len(strings.Split(j.Assertion, ".")) != 4, "assertion does not look like a jwt") //nolint:mnd
-
-	return val.Error()
-}
-
 // sessionInfo is the response from assume and session.
 type sessionInfo struct {
 	EntityID       int      `json:"entity_id"`
@@ -792,178 +761,84 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
-// jwtBearerHandler handles the jwt-bearer grant type.
-//
-//nolint:funlen,cyclop
-func (auth *API) jwtBearerHandler(
-	ctx *gin.Context,
-	payload jwtBearerPayload,
-) {
+// userInfoResponse is the response containing the user information.
+type userInfoResponse struct {
+	Sub         string  `json:"sub"`
+	EntityID    int     `json:"entity_id"`
+	EntityName  string  `json:"entity_name"`
+	PartyID     *int    `json:"party_id,omitempty"`
+	PartyName   *string `json:"party_name,omitempty"`
+	CurrentRole string  `json:"current_role"`
+}
+
+// GetUserInfoHandler returns the identity information of the current user.
+func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
 	rd, _ := RequestDetailsFromContext(ctx, auth.ctxKey)
-	if rd.Role() != "flex_anonymous" {
-		ctx.AbortWithStatusJSON(http.StatusUnauthorized, oauthErrorMessage{
-			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "client is not anonymous",
-		})
+	role := rd.Role()
+
+	if role == "flex_anonymous" {
+		ctx.Header(
+			wwwAuthenticateKey,
+			wwwAuthenticate{}.String(), //nolint:exhaustruct
+		)
+		ctx.AbortWithStatusJSON(
+			http.StatusUnauthorized,
+			newErrorMessage(
+				http.StatusUnauthorized,
+				"missing authentication",
+				nil,
+			),
+		)
 		return
 	}
 
-	err := payload.Validate()
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: err.Error(),
-		})
-		return
-	}
-
-	// Before being able to verify the token we need to know the entity of the client
-	// so that we can fetch their public key to verify the token.
-	// This means unpacking the token payload.
-
-	jwtParts := strings.Split(payload.Assertion, ".")
-	if len(jwtParts) != 3 { //nolint:mnd
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "assertion is not signed jwt in compact form",
-		})
-		return
-	}
-
-	jwtPayload, err := base64.RawURLEncoding.DecodeString(jwtParts[1])
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "invalid base64 encoding in assertion payload",
-		})
-		return
-	}
-
-	var grant authorizationGrant
-	err = json.Unmarshal(jwtPayload, &grant)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "invalid assertion payload format: " + err.Error(),
-		})
-		return
-	}
-
-	if err := grant.Validate(); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "invalid assertion payload: " + err.Error(),
-		})
-		return
-	}
-
-	if grant.Audience != auth.self {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "assertion audience is not " + auth.self,
-		})
-		return
-	}
-
-	// get entity of client
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
+		slog.WarnContext(ctx, "error in begin tx in userinfo handler", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,
-			"could not begin tx in client credentials handler",
+			"could not begin tx in userinfo handler",
 			err),
 		)
 		return
 	}
-	defer tx.Commit(ctx)
+	defer tx.Rollback(ctx)
 
-	entityID, externalID, pubKeyPEM, err := models.GetEntityClientByUUID(
-		ctx,
-		tx,
-		grant.Issuer,
-	)
-	if err != nil || pubKeyPEM == "" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "invalid or unknown client",
-		})
-		return
-	}
-	_ = tx.Commit(ctx)
-
-	block, _ := pem.Decode([]byte(pubKeyPEM))
-	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
-	pubKey, ok := pubInterface.(*rsa.PublicKey)
-	if err != nil || !ok {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"invalid public key stored for client",
-			err),
-		)
-		return
-	}
-
-	err = verifyTokenString(payload.Assertion, nil, jws.WithKey(jwa.RS256(), pubKey))
+	ui, err := models.GetCurrentUserInfo(ctx, tx)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "could not verify assertion: key or payload is invalid: " + err.Error(),
-		})
-		return
-	}
-
-	var partyID int
-	if grant.Subject != nil {
-		// entity wants to assume a party
-		// we must first "log in" the entity to give it privileges in the database
-		rd := &RequestDetails{role: "flex_entity", externalID: externalID}
-		ctx.Set(auth.ctxKey, rd)
-
-		tx, err := auth.db.Begin(ctx)
-		if err != nil {
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-				http.StatusInternalServerError,
-				"could not begin tx in jwt bearer assumerole",
-				err),
-			)
-			return
-		}
-		defer tx.Commit(ctx)
-
-		partyID, externalID, err = models.GetPartyMembership(ctx, tx, entityID, grant.Subject.Identifier)
-		if err != nil {
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
-				Error:            oauthErrorInvalidClient,
-				ErrorDescription: "could not assume the requested party in sub",
-			})
-			return
-		}
-	}
-
-	accessToken := accessToken{
-		EntityID:       entityID,
-		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
-		ExternalID:     externalID,
-		PartyID:        partyID,
-		Role:           "flex_entity",
-	}
-
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
-	if err != nil {
+		slog.WarnContext(ctx, "error in get current user info", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,
-			"could not sign access token",
+			"could not get current user info",
 			err),
 		)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, tokenResponse{
-		AccessToken:     string(signedAccessToken),
-		IssuedTokenType: tokenTypeAccess,
-		TokenType:       accessTokenTypeBearer,
-		ExpiresIn:       accessToken.ExpiresIn(),
+	ctx.JSON(http.StatusOK, userInfoResponse{
+		Sub:         ui.ExternalID,
+		EntityID:    ui.EntityID,
+		EntityName:  ui.EntityName,
+		PartyID:     ui.PartyID,
+		PartyName:   ui.PartyName,
+		CurrentRole: role,
 	})
+}
+
+// decodeTokenString decodes the token string and returns the claims.
+// Returns an error if the token was not verified or validated.
+func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
+	token := new(accessToken)
+	err := verifyTokenString(tokenStr, token, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
+		return nil, fmt.Errorf("error in verifying access token: %w", err)
+	}
+
+	if err := token.Validate(); err != nil {
+		return nil, fmt.Errorf("error in validating access token: %w", err)
+	}
+
+	return token, nil
 }
 
 // clientCredentialsPayload is the payload for the client credentials request.
@@ -1178,66 +1053,191 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 	})
 }
 
-// userInfoResponse is the response containing the user information.
-type userInfoResponse struct {
-	Sub         string  `json:"sub"`
-	EntityID    int     `json:"entity_id"`
-	EntityName  string  `json:"entity_name"`
-	PartyID     *int    `json:"party_id,omitempty"`
-	PartyName   *string `json:"party_name,omitempty"`
-	CurrentRole string  `json:"current_role"`
+// jwtBearerPayload is the payload for the JWT bearer request.
+type jwtBearerPayload struct {
+	GrantType grantType `binding:"required" form:"grant_type"`
+	Assertion string    `binding:"required" form:"assertion"`
 }
 
-// GetUserInfoHandler returns the identity information of the current user.
-func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
-	rd, _ := RequestDetailsFromContext(ctx, auth.ctxKey)
-	role := rd.Role()
+// Validate checks if the JWT bearer payload is valid.
+func (j jwtBearerPayload) Validate() error {
+	val := validate.New()
+	val.Check(j.GrantType == grantTypeJWTBearer, "invalid grant type")
+	val.Check(len(strings.Split(j.Assertion, ".")) != 4, "assertion does not look like a jwt") //nolint:mnd
 
-	if role == "flex_anonymous" {
-		ctx.Header(
-			wwwAuthenticateKey,
-			wwwAuthenticate{}.String(), //nolint:exhaustruct
-		)
-		ctx.AbortWithStatusJSON(
-			http.StatusUnauthorized,
-			newErrorMessage(
-				http.StatusUnauthorized,
-				"missing authentication",
-				nil,
-			),
-		)
+	return val.Error()
+}
+
+// jwtBearerHandler handles the jwt-bearer grant type.
+//
+//nolint:funlen,cyclop
+func (auth *API) jwtBearerHandler(
+	ctx *gin.Context,
+	payload jwtBearerPayload,
+) {
+	rd, _ := RequestDetailsFromContext(ctx, auth.ctxKey)
+	if rd.Role() != "flex_anonymous" {
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, oauthErrorMessage{
+			Error:            oauthErrorInvalidClient,
+			ErrorDescription: "client is not anonymous",
+		})
 		return
 	}
 
+	err := payload.Validate()
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: err.Error(),
+		})
+		return
+	}
+
+	// Before being able to verify the token we need to know the entity of the client
+	// so that we can fetch their public key to verify the token.
+	// This means unpacking the token payload.
+
+	jwtParts := strings.Split(payload.Assertion, ".")
+	if len(jwtParts) != 3 { //nolint:mnd
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "assertion is not signed jwt in compact form",
+		})
+		return
+	}
+
+	jwtPayload, err := base64.RawURLEncoding.DecodeString(jwtParts[1])
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid base64 encoding in assertion payload",
+		})
+		return
+	}
+
+	var grant authorizationGrant
+	err = json.Unmarshal(jwtPayload, &grant)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid assertion payload format: " + err.Error(),
+		})
+		return
+	}
+
+	if err := grant.Validate(); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "invalid assertion payload: " + err.Error(),
+		})
+		return
+	}
+
+	if grant.Audience != auth.self {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "assertion audience is not " + auth.self,
+		})
+		return
+	}
+
+	// get entity of client
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
-		slog.WarnContext(ctx, "error in begin tx in userinfo handler", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,
-			"could not begin tx in userinfo handler",
+			"could not begin tx in client credentials handler",
 			err),
 		)
 		return
 	}
-	defer tx.Rollback(ctx)
+	defer tx.Commit(ctx)
 
-	ui, err := models.GetCurrentUserInfo(ctx, tx)
+	entityID, externalID, pubKeyPEM, err := models.GetEntityClientByUUID(
+		ctx,
+		tx,
+		grant.Issuer,
+	)
+	if err != nil || pubKeyPEM == "" {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidClient,
+			ErrorDescription: "invalid or unknown client",
+		})
+		return
+	}
+	_ = tx.Commit(ctx)
+
+	block, _ := pem.Decode([]byte(pubKeyPEM))
+	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
+	pubKey, ok := pubInterface.(*rsa.PublicKey)
+	if err != nil || !ok {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"invalid public key stored for client",
+			err),
+		)
+		return
+	}
+
+	err = verifyTokenString(payload.Assertion, nil, jws.WithKey(jwa.RS256(), pubKey))
 	if err != nil {
-		slog.WarnContext(ctx, "error in get current user info", "error", err)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidRequest,
+			ErrorDescription: "could not verify assertion: key or payload is invalid: " + err.Error(),
+		})
+		return
+	}
+
+	var partyID int
+	if grant.Subject != nil {
+		// entity wants to assume a party
+		// we must first "log in" the entity to give it privileges in the database
+		rd := &RequestDetails{role: "flex_entity", externalID: externalID}
+		ctx.Set(auth.ctxKey, rd)
+
+		tx, err := auth.db.Begin(ctx)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+				http.StatusInternalServerError,
+				"could not begin tx in jwt bearer assumerole",
+				err),
+			)
+			return
+		}
+		defer tx.Commit(ctx)
+
+		partyID, externalID, err = models.GetPartyMembership(ctx, tx, entityID, grant.Subject.Identifier)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+				Error:            oauthErrorInvalidClient,
+				ErrorDescription: "could not assume the requested party in sub",
+			})
+			return
+		}
+	}
+
+	accessToken := accessToken{
+		EntityID:       entityID,
+		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
+		ExternalID:     externalID,
+		PartyID:        partyID,
+		Role:           "flex_entity",
+	}
+
+	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,
-			"could not get current user info",
+			"could not sign access token",
 			err),
 		)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, userInfoResponse{
-		Sub:         ui.ExternalID,
-		EntityID:    ui.EntityID,
-		EntityName:  ui.EntityName,
-		PartyID:     ui.PartyID,
-		PartyName:   ui.PartyName,
-		CurrentRole: role,
+	ctx.JSON(http.StatusOK, tokenResponse{
+		AccessToken:     string(signedAccessToken),
+		IssuedTokenType: tokenTypeAccess,
+		TokenType:       accessTokenTypeBearer,
+		ExpiresIn:       accessToken.ExpiresIn(),
 	})
 }

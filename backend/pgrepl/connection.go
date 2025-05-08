@@ -143,6 +143,26 @@ func (replConn *Connection) ReceiveMessage(
 	}
 }
 
+// Acknowledge updates the replication connection's LSN to the one given in the
+// message. To be called only after actually having handled the message.
+func (replConn *Connection) Acknowledge(msg *Message) error {
+	nextLSN, err := pglogrepl.ParseLSN(msg.NextLSN)
+	if err != nil {
+		return lsnParseError(err)
+	}
+	replConn.lsn = nextLSN
+	return nil
+}
+
+// Close closes the replication connection.
+func (replConn *Connection) Close(ctx context.Context) error {
+	slog.InfoContext(ctx, "closing replication connection")
+	if err := replConn.conn.Close(ctx); err != nil {
+		return connectionCloseError(err)
+	}
+	return nil
+}
+
 func (replConn *Connection) handlePrimaryKeepaliveMessage(
 	ctx context.Context,
 	rawPrimaryKeepaliveData []byte,
@@ -177,26 +197,6 @@ func (replConn *Connection) handlePrimaryKeepaliveMessage(
 		slog.DebugContext(
 			ctx, "received PrimaryKeepaliveMessage, no reply requested",
 		)
-	}
-	return nil
-}
-
-// Acknowledge updates the replication connection's LSN to the one given in the
-// message. To be called only after actually having handled the message.
-func (replConn *Connection) Acknowledge(msg *Message) error {
-	nextLSN, err := pglogrepl.ParseLSN(msg.NextLSN)
-	if err != nil {
-		return lsnParseError(err)
-	}
-	replConn.lsn = nextLSN
-	return nil
-}
-
-// Close closes the replication connection.
-func (replConn *Connection) Close(ctx context.Context) error {
-	slog.InfoContext(ctx, "closing replication connection")
-	if err := replConn.conn.Close(ctx); err != nil {
-		return connectionCloseError(err)
 	}
 	return nil
 }
