@@ -85,7 +85,9 @@ type loginDelayer struct {
 	lastLoginAttemptTime time.Time
 }
 
-func (delayer *loginDelayer) Allow(ctx context.Context) (bool, *time.Time) {
+// Allow checks if the login attempt is allowed. If it is allowed, it
+// defensively increments the number of failed logins.
+func (delayer *loginDelayer) Allow(ctx context.Context) bool {
 	delayer.mutex.Lock()
 	defer delayer.mutex.Unlock()
 
@@ -99,7 +101,7 @@ func (delayer *loginDelayer) Allow(ctx context.Context) (bool, *time.Time) {
 			"until", delayedTime,
 			"waitingTime", time.Until(delayedTime),
 		)
-		return false, &delayedTime
+		return false
 	}
 
 	resetTime := delayer.lastLoginAttemptTime.Add(delayer.config.DurationBeforeReset)
@@ -119,7 +121,7 @@ func (delayer *loginDelayer) Allow(ctx context.Context) (bool, *time.Time) {
 			ctx, "IP has reached the maximum number of failed logins",
 			"ipAddress", delayer.ipAddress,
 		)
-		return false, &resetTime
+		return false
 	}
 
 	delayer.lastLoginAttemptTime = time.Now()
@@ -131,7 +133,22 @@ func (delayer *loginDelayer) Allow(ctx context.Context) (bool, *time.Time) {
 		"failedLogins", delayer.currentFailedLogins,
 	)
 
-	return true, nil
+	return true
+}
+
+// MinTimeForNextRequest returns the minimum time at which the next request
+// should be sent in order to be accepted.
+func (delayer *loginDelayer) MinTimeForNextRequest() time.Time {
+	delayer.mutex.Lock()
+	defer delayer.mutex.Unlock()
+
+	delayedTime := delayer.lastLoginAttemptTime.Add(delayer.computeDelay())
+	resetTime := delayer.lastLoginAttemptTime.Add(delayer.config.DurationBeforeReset)
+
+	if delayer.currentFailedLogins >= delayer.config.MaxFailedLogins {
+		return resetTime
+	}
+	return delayedTime
 }
 
 // Cancel should be called when the login attempt was successful, in order to

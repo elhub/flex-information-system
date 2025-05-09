@@ -936,10 +936,10 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 
 	delayer := auth.loginDelayer.GetDelayerFromIP(ctx.Request.RemoteAddr)
 
-	if isAllowed, minTimeForNextRequest := delayer.Allow(ctx); !isAllowed {
+	if !delayer.Allow(ctx) {
 		ctx.Header(
 			"Retry-After",
-			strconv.Itoa(int(math.Ceil(time.Until(*minTimeForNextRequest).Seconds()))),
+			strconv.Itoa(int(math.Ceil(time.Until(delayer.MinTimeForNextRequest()).Seconds()))),
 		)
 		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
 			Error:            oauthErrorAccessDenied,
