@@ -21,7 +21,7 @@ services:
       -c log_min_messages=debug1
       -c wal_level=logical
   postgrest:
-    image: postgrest/postgrest:latest
+    image: postgrest/postgrest:v12.2.12
     expose:
       - "3000"
     ports:
