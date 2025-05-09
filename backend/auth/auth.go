@@ -461,7 +461,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		Role:           "flex_entity",
 	}
 
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not sign access token", err))
 		return
@@ -568,7 +568,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	entityToken := new(accessToken)
-	err = verifyTokenString(accessTokenCookie.Value, entityToken, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	err = verifyTokenString(accessTokenCookie.Value, entityToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -587,7 +587,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		ExternalID:     eid,
 	}
 
-	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -668,7 +668,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	recievedToken := new(accessToken)
-	err = verifyTokenString(accessTokenCookie.Value, recievedToken, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	err = verifyTokenString(accessTokenCookie.Value, recievedToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -731,7 +731,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		ExternalID:     externalID,
 	}
 
-	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -829,7 +829,7 @@ func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
 // Returns an error if the token was not verified or validated.
 func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 	token := new(accessToken)
-	err := verifyTokenString(tokenStr, token, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	err := verifyTokenString(tokenStr, token, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		return nil, fmt.Errorf("error in verifying access token: %w", err)
 	}
@@ -905,7 +905,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		Role:           "flex_entity",
 	}
 
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,
@@ -981,7 +981,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 	}
 
 	entityToken := new(accessToken)
-	err = verifyTokenString(payload.ActorToken, entityToken, jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	err = verifyTokenString(payload.ActorToken, entityToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
@@ -1035,7 +1035,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 		ExternalID:     eid,
 	}
 
-	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,
@@ -1224,7 +1224,7 @@ func (auth *API) jwtBearerHandler(
 		Role:           "flex_entity",
 	}
 
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS384(), auth.jwtSecret))
+	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,

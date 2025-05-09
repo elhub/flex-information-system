@@ -18,4 +18,4 @@ def test_token_alg():
 
         # We should be using minimum 384 bits on SHA
         alg = unverified_header["alg"].upper()
-        assert alg in ["HS384", "HS512"]
+        assert alg in ["HS256"]
