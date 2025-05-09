@@ -29,7 +29,7 @@ import (
 type IPLoginDelayer struct {
 	config   LoginDelayerConfig
 	delayers map[string]*loginDelayer
-	mutex    *sync.Mutex
+	mutex    sync.Mutex
 }
 
 // LoginDelayerConfig contains the configuration for the login delayers.
@@ -50,7 +50,7 @@ func NewIPLoginDelayer(config LoginDelayerConfig) *IPLoginDelayer {
 	return &IPLoginDelayer{
 		config:   config,
 		delayers: make(map[string]*loginDelayer),
-		mutex:    &sync.Mutex{},
+		mutex:    sync.Mutex{},
 	}
 }
 
@@ -67,7 +67,7 @@ func (ipLoginDelayer *IPLoginDelayer) GetDelayerFromIP(ipAddress string) *loginD
 		delayer = &loginDelayer{
 			ipAddress:            ipAddress,
 			config:               &ipLoginDelayer.config,
-			mutex:                &sync.Mutex{},
+			mutex:                sync.Mutex{},
 			currentFailedLogins:  0,
 			lastLoginAttemptTime: time.Now(),
 		}
@@ -80,7 +80,7 @@ func (ipLoginDelayer *IPLoginDelayer) GetDelayerFromIP(ipAddress string) *loginD
 type loginDelayer struct {
 	ipAddress            string
 	config               *LoginDelayerConfig
-	mutex                *sync.Mutex
+	mutex                sync.Mutex
 	currentFailedLogins  int
 	lastLoginAttemptTime time.Time
 }
