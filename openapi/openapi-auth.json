@@ -711,6 +711,16 @@
                         },
                         "description": "Unauthorized\n\nReturned when the client credentials are invalid."
                     },
+                    "429": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Too Many Requests\n\nReturned after too many failures with the client credentials login.\nFurther requests are allowed again after a while."
+                    },
                     "500": {
                         "content": {
                             "application/json": {

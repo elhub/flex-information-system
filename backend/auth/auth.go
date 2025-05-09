@@ -14,6 +14,7 @@ import (
 	"flex/pgpool"
 	"fmt"
 	"log/slog"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -36,24 +37,42 @@ const (
 type API struct {
 	// self is the api service itself.
 	// Used as the issuer of access tokens and to validate the audience of incoming tokens.
-	self                 string
-	db                   *pgpool.Pool
-	jwtSecret            []byte
-	tokenDurationSeconds int
-	oidcProvider         *oidc.Provider
-	ctxKey               string
+	self                     string
+	db                       *pgpool.Pool
+	jwtSecret                []byte
+	tokenDurationSeconds     int
+	oidcProvider             *oidc.Provider
+	ctxKey                   string
+	failedLoginResponseDelay time.Duration // delay inside the handler on failed login
+	loginDelayer             *IPLoginDelayer
 }
 
 // NewAPI creates a new auth.API instance.
-func NewAPI(self string, db *pgpool.Pool, jwtSecret string, oidcProvider *oidc.Provider, ctxKey string) *API {
+func NewAPI(
+	self string,
+	db *pgpool.Pool,
+	jwtSecret string,
+	oidcProvider *oidc.Provider,
+	ctxKey string,
+	failedLoginResponseDelay time.Duration,
+	loginDelayerConfig *LoginDelayerConfig,
+) *API {
+	var loginDelayer *IPLoginDelayer
+	if loginDelayerConfig != nil {
+		loginDelayer = NewIPLoginDelayer(*loginDelayerConfig)
+	} else {
+		loginDelayer = nil
+	}
+
 	return &API{
-		self:      self,
-		db:        db,
-		jwtSecret: []byte(jwtSecret),
-		// algorithm defined once and for all here
-		tokenDurationSeconds: 3600,
-		oidcProvider:         oidcProvider,
-		ctxKey:               ctxKey,
+		self:                     self,
+		db:                       db,
+		jwtSecret:                []byte(jwtSecret),
+		tokenDurationSeconds:     3600,
+		oidcProvider:             oidcProvider,
+		ctxKey:                   ctxKey,
+		failedLoginResponseDelay: failedLoginResponseDelay,
+		loginDelayer:             loginDelayer,
 	}
 }
 
@@ -885,16 +904,41 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
+	var delayer *loginDelayer
+	delayer = nil
+	if auth.loginDelayer != nil {
+		delayer = auth.loginDelayer.GetDelayerFromIP(ctx.Request.RemoteAddr)
+	}
+
+	if delayer != nil && !delayer.Allow(ctx) {
+		ctx.Header(
+			"Retry-After",
+			strconv.Itoa(int(math.Ceil(time.Until(delayer.MinTimeForNextRequest()).Seconds()))),
+		)
+		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+			Error:            oauthErrorAccessDenied,
+			ErrorDescription: "too many login attempts, try again later",
+		})
+		return
+	}
+
 	entityID, eid, err := models.GetEntityOfCredentials(
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
 	if err != nil {
+		time.Sleep(auth.failedLoginResponseDelay)
+
 		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "Invalid client_id or client_secret",
 		})
 		return
+	}
+
+	// this makes sure valid logins are not delayed
+	if delayer != nil {
+		delayer.Cancel()
 	}
 
 	accessToken := accessToken{
