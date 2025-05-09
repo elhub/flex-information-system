@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
@@ -189,13 +190,23 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_OIDC_POST_LOGOUT_REDIRECT_URL", errMissingEnv)
 	}
 
-	isLoginLimitingDisabled := false
-	_, exists = lookupenv("FLEX_DISABLE_LOGIN_LIMITING")
+	// feature toggle is OFF by default for the login delayer, but ON by default
+	// for the internal response delay on failed login
+
+	failedLoginResponseDelay := 2 * time.Second
+
+	failedLoginResponseDelayStr, exists := lookupenv("FLEX_FAILED_LOGIN_RESPONSE_DELAY_S")
 	if exists {
-		isLoginLimitingDisabled = true
-		slog.InfoContext(ctx, "Disabled login limiting")
-	} else {
-		slog.InfoContext(ctx, "Default login limiting")
+		failedLoginResponseDelayInt, err := strconv.Atoi(failedLoginResponseDelayStr)
+		if err != nil {
+			return fmt.Errorf("%w: FLEX_FAILED_LOGIN_RESPONSE_DELAY_S", errMissingEnv)
+		}
+		failedLoginResponseDelay = time.Duration(failedLoginResponseDelayInt) * time.Second
+	}
+
+	loginDelayerConfig := parseLoginDelayerConfig(ctx, lookupenv)
+	if loginDelayerConfig == nil {
+		slog.InfoContext(ctx, "Login delayer disabled")
 	}
 
 	// first instantiate the database service implementation
@@ -246,7 +257,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		jwtSecret,
 		oidcProvider,
 		requestDetailsContextKey,
-		isLoginLimitingDisabled,
+		failedLoginResponseDelay,
+		loginDelayerConfig,
 	)
 
 	slog.DebugContext(ctx, "Creating data API")
@@ -385,4 +397,97 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	return nil
+}
+
+//nolint:cyclop,funlen
+func parseLoginDelayerConfig(
+	ctx context.Context,
+	lookupenv func(string) (string, bool),
+) *auth.LoginDelayerConfig {
+	durationBeforeResetStr, exists := lookupenv("FLEX_LOGIN_DELAYER_DURATION_BEFORE_RESET_S")
+	if !exists {
+		slog.InfoContext(
+			ctx, "FLEX_LOGIN_DELAYER_DURATION_BEFORE_RESET_S environment variable is not set",
+		)
+		return nil
+	}
+	durationBeforeReset, err := strconv.Atoi(durationBeforeResetStr)
+	if err != nil {
+		slog.InfoContext(
+			ctx, "FLEX_LOGIN_DELAYER_DURATION_BEFORE_RESET_S environment variable is ill formed",
+		)
+		return nil
+	}
+
+	maxFailedLoginsStr, exists := lookupenv("FLEX_LOGIN_DELAYER_MAX_FAILED_LOGINS")
+	if !exists {
+		return nil
+	}
+	maxFailedLogins, err := strconv.Atoi(maxFailedLoginsStr)
+	if err != nil {
+		slog.InfoContext(
+			ctx, "FLEX_LOGIN_DELAYER_MAX_FAILED_LOGINS environment variable is ill formed",
+		)
+		return nil
+	}
+
+	nbLoginsWithoutDelayStr, exists := lookupenv("FLEX_LOGIN_DELAYER_NB_LOGINS_WITHOUT_DELAY")
+	if !exists {
+		return nil
+	}
+	nbLoginsWithoutDelay, err := strconv.Atoi(nbLoginsWithoutDelayStr)
+	if err != nil {
+		slog.InfoContext(
+			ctx, "FLEX_LOGIN_DELAYER_NB_LOGINS_WITHOUT_DELAY environment variable is ill formed",
+		)
+		return nil
+	}
+
+	baseDelayStr, exists := lookupenv("FLEX_LOGIN_DELAYER_BASE_DELAY_MS")
+	if !exists {
+		return nil
+	}
+	baseDelay, err := strconv.Atoi(baseDelayStr)
+	if err != nil {
+		slog.InfoContext(
+			ctx, "FLEX_LOGIN_DELAYER_BASE_DELAY_MS environment variable is ill formed",
+		)
+		return nil
+	}
+
+	delayIncreaseFactorStr, exists := lookupenv("FLEX_LOGIN_DELAYER_DELAY_INCREASE_FACTOR")
+	if !exists {
+		return nil
+	}
+	delayIncreaseFactor, err := strconv.ParseFloat(delayIncreaseFactorStr, 64)
+	if err != nil {
+		slog.InfoContext(
+			ctx, "FLEX_LOGIN_DELAYER_DELAY_INCREASE_FACTOR environment variable is ill formed",
+		)
+		return nil
+	}
+
+	maxDelayStr, exists := lookupenv("FLEX_LOGIN_DELAYER_MAX_DELAY_S")
+	if !exists {
+		return nil
+	}
+	maxDelay, err := strconv.Atoi(maxDelayStr)
+	if err != nil {
+		slog.InfoContext(
+			ctx, "FLEX_LOGIN_DELAYER_MAX_DELAY_S environment variable is ill formed",
+		)
+		return nil
+	}
+
+	config := auth.LoginDelayerConfig{
+		DurationBeforeReset:  time.Duration(durationBeforeReset) * time.Second,
+		MaxFailedLogins:      maxFailedLogins,
+		NbLoginsWithoutDelay: nbLoginsWithoutDelay,
+		BaseDelay:            time.Duration(baseDelay) * time.Millisecond,
+		DelayIncreaseFactor:  delayIncreaseFactor,
+		MaxDelay:             time.Duration(maxDelay) * time.Second,
+	}
+
+	slog.InfoContext(ctx, "Login delayer config", "config", config)
+	return &config
 }
