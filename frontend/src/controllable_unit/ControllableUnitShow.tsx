@@ -19,6 +19,7 @@ import { TechnicalResourceList } from "./technical_resource/TechnicalResourceLis
 import { UnitField } from "../unitComponents";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../IdentityField";
+import { ControllableUnitBalanceResponsiblePartyList } from "./balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 
 export const ControllableUnitShow = () => {
   const resource = useResourceContext()!;
@@ -120,6 +121,10 @@ export const ControllableUnitShow = () => {
               noResourceNameMerge
             />
             <TechnicalResourceList />
+            <Typography variant="h6" gutterBottom>
+              Balance responsible parties
+            </Typography>
+            <ControllableUnitBalanceResponsiblePartyList />
           </>
         )}
         {isHistory && <RestoreButton />}
