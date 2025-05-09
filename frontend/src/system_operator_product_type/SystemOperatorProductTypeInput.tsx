@@ -9,6 +9,7 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
+import { Toolbar } from "../Toolbar";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -52,7 +53,11 @@ export const SystemOperatorProductTypeInput = () => {
   productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
 
   return (
-    <SimpleForm record={record} maxWidth={1280}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      toolbar={<Toolbar saveAlwaysEnabled />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
