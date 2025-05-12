@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset flex:auth-entity-of-credentials runOnChange:true endDelimiter:--
+-- changeset flex:auth-entity-of-credentials runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.entity_of_credentials(
     _client_id text, _client_secret text
 )
@@ -21,10 +21,10 @@ AS $$
         AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
 $$;
 
--- changeset flex:auth-entity-of-credentials-execute runOnChange:true endDelimiter:--
+-- changeset flex:auth-entity-of-credentials-execute runAlways:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_of_credentials TO flex_anonymous;
 
--- changeset flex:auth-entity-of-business-id runOnChange:true endDelimiter:--
+-- changeset flex:auth-entity-of-business-id runAlways:true endDelimiter:--
 -- Gets entity details from the business id
 CREATE OR REPLACE FUNCTION auth.entity_of_business_id(
     in_business_id text,
@@ -42,7 +42,7 @@ AS $$
     WHERE e.business_id = in_business_id
 $$;
 
--- changeset flex:auth-entity-client-by-uuid runOnChange:true endDelimiter:--
+-- changeset flex:auth-entity-client-by-uuid runAlways:true endDelimiter:--
 -- Gets entity details from the entity client uuid
 CREATE OR REPLACE FUNCTION auth.entity_client_by_uuid(in_client_id text)
 RETURNS TABLE (
@@ -62,7 +62,7 @@ AS $$
     WHERE clt.client_id::text = in_client_id
 $$;
 
--- changeset flex:auth-assume-party runOnChange:true endDelimiter:--
+-- changeset flex:auth-assume-party runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.assume_party(_party_id bigint)
 RETURNS TABLE (
     entity_id bigint,
@@ -98,10 +98,10 @@ begin
 end;
 $$;
 
--- changeset flex:auth-assume-party-execute runOnChange:true endDelimiter:--
+-- changeset flex:auth-assume-party-execute runAlways:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.assume_party TO flex_entity;
 
--- changeset flex:auth-party-of-identity runOnChange:true endDelimiter:--
+-- changeset flex:auth-party-of-identity runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.party_of_identity(_identity bigint)
 RETURNS bigint
 SECURITY DEFINER
@@ -110,11 +110,11 @@ AS $$
   SELECT party_id FROM flex.identity WHERE id = _identity;
 $$;
 
--- changeset flex:auth-party-of-identity-execute runOnChange:true endDelimiter:--
+-- changeset flex:auth-party-of-identity-execute runAlways:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.party_of_identity
 TO flex_internal_event_notification;
 
--- changeset flex:auth-eid-details runOnChange:true endDelimiter:--
+-- changeset flex:auth-eid-details runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.eid_details(_eid text)
 RETURNS TABLE (
     id bigint,
@@ -135,11 +135,11 @@ AS $$
     where i.eid = _eid::uuid;
 $$;
 
--- changeset flex:auth-eid-details-execute runOnChange:true endDelimiter:;
+-- changeset flex:auth-eid-details-execute runAlways:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.eid_details TO flex_entity;
 GRANT EXECUTE ON FUNCTION auth.eid_details TO flex_common;
 
--- changeset flex:auth-current-user-info runOnChange:true endDelimiter:--
+-- changeset flex:auth-current-user-info runAlways:true endDelimiter:--
 -- This trigger functions is used to ensure that the
 -- role name exists in the database catalog tables
 CREATE OR REPLACE FUNCTION auth.current_user_info()
@@ -167,11 +167,11 @@ $$
     WHERE i.id = flex.current_identity();
 $$;
 
--- changeset flex:auth-current-user-info-execute runOnChange:true endDelimiter:;
+-- changeset flex:auth-current-user-info-execute runAlways:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_entity;
 GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_common;
 
--- changeset flex:pre-request runOnChange:true endDelimiter:--
+-- changeset flex:pre-request runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 auth.pre_request() RETURNS void
 LANGUAGE plpgsql SECURITY DEFINER STABLE
@@ -193,5 +193,5 @@ BEGIN
 END;
 $$;
 
--- changeset flex:pre-request-execute runOnChange:true endDelimiter:;
+-- changeset flex:pre-request-execute runAlways:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.pre_request TO flex_anonymous;
