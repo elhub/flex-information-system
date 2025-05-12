@@ -10,6 +10,8 @@ CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';
 -- it owns all the schemas and objects in the database
 -- it should be allowed to create new schemas
 GRANT CREATE ON DATABASE flex TO flex;
+-- also manage replication slots
+ALTER USER flex WITH REPLICATION;
 -- the main schema must exist for liquibase to add its changelog tables
 CREATE SCHEMA flex AUTHORIZATION flex;
 
@@ -33,7 +35,15 @@ CREATE ROLE flex_third_party WITH NOLOGIN;
 -- internal roles
 CREATE ROLE flex_replication
 WITH REPLICATION NOINHERIT LOGIN PASSWORD 'replication_password';
-CREATE ROLE flex_internal_event_notification WITH NOINHERIT NOLOGIN;
+
+-- flex_internal is similar to flex_anonymous but is used for internal
+-- system roles. All internal roles are granted to flex_internal
+-- and inherit from it. This way, we can easily add new internal roles
+-- without having to add them all-over-the-place.
+CREATE ROLE flex_internal WITH NOINHERIT NOLOGIN;
+
+CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
+GRANT flex_internal TO flex_internal_event_notification;
 
 
 -- authenticator will set role to any of the party and internal roles

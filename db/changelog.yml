@@ -23,12 +23,12 @@ databaseChangeLog:
       author: flex
       runOnChange: true
       changes:
-        - sql: GRANT USAGE ON SCHEMA audit TO flex_anonymous
-        - sql: GRANT USAGE ON SCHEMA gs1 TO flex_anonymous
-        - sql: GRANT USAGE ON SCHEMA eic TO flex_anonymous
-        - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous
-        - sql: GRANT USAGE ON SCHEMA status TO flex_anonymous
-        - sql: GRANT USAGE ON SCHEMA utils TO flex_anonymous
+        - sql: GRANT USAGE ON SCHEMA audit TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA gs1 TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA eic TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA timeline TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA status TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA utils TO flex_anonymous, flex_internal
   - include:
       file: ./flex/changelog.yml
       relativeToChangelogFile: true

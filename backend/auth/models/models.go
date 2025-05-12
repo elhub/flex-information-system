@@ -161,7 +161,9 @@ func PartyOfIdentity(
 
 	err := tx.QueryRow(
 		ctx,
-		"SELECT auth.party_of_identity($1)",
+		// coalesce is used to return 0 if the identity is not a party member
+		// it also handled the case where the identity is 0 (system)
+		"SELECT coalesce(auth.party_of_identity($1),0)",
 		identity,
 	).Scan(&partyID)
 	if err != nil {

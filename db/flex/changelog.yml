@@ -5,7 +5,7 @@ databaseChangeLog:
       author: flex
       runAlways: true
       changes:
-        - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous
+        - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous, flex_internal
   # Dropping policies to provide a clean slate on every migration
   - changeSet:
       id: drop-policies
@@ -137,7 +137,7 @@ databaseChangeLog:
       file: ./controllable_unit_energy_supplier.sql
       relativeToChangelogFile: true
 
-  # RLS and history
+  # RLS, grants and history
   - includeAll:
       path: ./
       relativeToChangelogFile: true
@@ -149,6 +149,11 @@ databaseChangeLog:
       relativeToChangelogFile: true
       endsWithFilter: _rls.sql
       maxDepth: 1
+
+  - includeAll:
+      path: ./grants/
+      relativeToChangelogFile: true
+      endsWithFilter: .sql
 
   # Reference Data
   - changeSet:
@@ -175,7 +180,8 @@ databaseChangeLog:
             separator: ","
             primaryKey: BUSINESS_ID
             header: true
-  - includeAll:
-      path: ./grants/
+
+  # Replication slots
+  - include:
+      file: ./replication/slots.sql
       relativeToChangelogFile: true
-      endsWithFilter: .sql
