@@ -7,7 +7,7 @@ databaseChangeLog:
       changes:
         - sql: DROP SCHEMA IF EXISTS auth CASCADE
         - sql: CREATE SCHEMA auth AUTHORIZATION flex
-        - sql: GRANT USAGE ON SCHEMA auth TO flex_anonymous
+        - sql: GRANT USAGE ON SCHEMA auth TO flex_anonymous, flex_internal
   - includeAll:
       path: ./
       relativeToChangelogFile: true
