@@ -27,7 +27,7 @@ ENABLE ROW LEVEL SECURITY;
 
 {%- if data.get('history_rls')%}
 
--- changeset flex:{{ resource | replace("_", "-") }}-history-rls-com endDelimiter:--
+-- changeset flex:{{ resource | replace("_", "-") }}-history-rls-com runAlways:true endDelimiter:--
 -- RLS: {{ data.acronym }}-COM001
 GRANT SELECT ON flex.{{ resource }}_history
 TO flex_common;
