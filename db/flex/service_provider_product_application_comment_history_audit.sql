@@ -25,7 +25,7 @@ ALTER TABLE IF EXISTS
 flex.service_provider_product_application_comment_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:service-provider-product-application-comment-history-rls-com endDelimiter:--
+-- changeset flex:service-provider-product-application-comment-history-rls-com runAlways:true endDelimiter:--
 -- RLS: SPPAC-COM001
 GRANT SELECT ON flex.service_provider_product_application_comment_history
 TO flex_common;

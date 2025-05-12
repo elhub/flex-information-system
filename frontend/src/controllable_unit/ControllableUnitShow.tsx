@@ -77,7 +77,12 @@ export const ControllableUnitShow = () => {
             Locations
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="accounting_point_id" />
+            <ReferenceField
+              source="accounting_point_id"
+              reference="accounting_point"
+            >
+              <TextField source="business_id" />
+            </ReferenceField>
             <TextField source="grid_node_id" />
           </FieldStack>
 

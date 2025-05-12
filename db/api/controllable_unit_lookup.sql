@@ -11,7 +11,7 @@ RETURNS TABLE (
     id bigint,
     business_id text,
     name text,
-    accounting_point_id text,
+    accounting_point_id bigint,
     technical_resources jsonb
 )
 SECURITY DEFINER
@@ -47,9 +47,9 @@ BEGIN
             ) AS technical_resources
         FROM flex.controllable_unit AS cu
             INNER JOIN flex.accounting_point AS ap
-                ON cu.accounting_point_id = ap.business_id
+                ON cu.accounting_point_id = ap.id
             INNER JOIN flex.accounting_point_end_user AS apeu
-                ON ap.id = apeu.accounting_point_id
+                ON cu.accounting_point_id = apeu.accounting_point_id
             INNER JOIN flex.party AS p
                 ON apeu.end_user_id = p.id
             INNER JOIN flex.entity AS e
@@ -67,7 +67,7 @@ BEGIN
                     true
                 )
             )
-            AND (coalesce(cu.accounting_point_id = l_accounting_point_id, true))
+            AND (coalesce(ap.business_id = l_accounting_point_id, true))
     )
     LOOP
         INSERT INTO flex.event (

@@ -4,6 +4,7 @@ digraph flex {
     graph [ rankdir=LR; pad=0.5; nodesep=0.2; ranksep=-1;]
     node [ shape=record; ]
     controllable_unit    [label="{controllable_unit}|{Controllable unit}|{🕰️}" shape=record style=solid]
+    controllable_unit -> accounting_point     [label=accounting_point_id]
     controllable_unit -> party     [label=connecting_system_operator_id]
     controllable_unit_service_provider    [label="{controllable_unit_service_provider}|{Relation between controllable unit\nand service provider}|{🕰️}" shape=record style=solid]
     controllable_unit_service_provider -> controllable_unit     [label=controllable_unit_id]

@@ -76,7 +76,12 @@ export const ControllableUnitList = () => {
         <TextField source="status" />
         <TextField source="regulation_direction" />
         <BooleanField source="is_small" />
-        <TextField source="accounting_point_id" />
+        <ReferenceField
+          source="accounting_point_id"
+          reference="accounting_point"
+        >
+          <TextField source="business_id" />
+        </ReferenceField>
         <TextField source="grid_node_id" />
         <ReferenceField
           source="connecting_system_operator_id"

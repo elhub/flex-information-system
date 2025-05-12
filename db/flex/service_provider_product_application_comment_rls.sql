@@ -12,7 +12,7 @@ AS $$
   SELECT party_id FROM flex.identity WHERE id = _identity;
 $$;
 
--- changeset flex:service-provider-product-application-comment-rls runOnChange:true endDelimiter:;
+-- changeset flex:service-provider-product-application-comment-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS service_provider_product_application_comment
 ENABLE ROW LEVEL SECURITY;
 

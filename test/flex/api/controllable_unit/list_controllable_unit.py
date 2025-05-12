@@ -15,6 +15,7 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: Union[Unset, str] = UNSET,
+    accounting_point_id: Union[Unset, str] = UNSET,
     connecting_system_operator_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
@@ -39,6 +40,8 @@ def _get_kwargs(
     params: Dict[str, Any] = {}
 
     params["id"] = id
+
+    params["accounting_point_id"] = accounting_point_id
 
     params["connecting_system_operator_id"] = connecting_system_operator_id
 
@@ -146,6 +149,7 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    accounting_point_id: Union[Unset, str] = UNSET,
     connecting_system_operator_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
@@ -161,6 +165,7 @@ def sync_detailed(
 
     Args:
         id (Union[Unset, str]):
+        accounting_point_id (Union[Unset, str]):
         connecting_system_operator_id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
@@ -182,6 +187,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        accounting_point_id=accounting_point_id,
         connecting_system_operator_id=connecting_system_operator_id,
         name=name,
         business_id=business_id,
@@ -205,6 +211,7 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    accounting_point_id: Union[Unset, str] = UNSET,
     connecting_system_operator_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
@@ -220,6 +227,7 @@ def sync(
 
     Args:
         id (Union[Unset, str]):
+        accounting_point_id (Union[Unset, str]):
         connecting_system_operator_id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
@@ -242,6 +250,7 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
+        accounting_point_id=accounting_point_id,
         connecting_system_operator_id=connecting_system_operator_id,
         name=name,
         business_id=business_id,
@@ -259,6 +268,7 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    accounting_point_id: Union[Unset, str] = UNSET,
     connecting_system_operator_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
@@ -274,6 +284,7 @@ async def asyncio_detailed(
 
     Args:
         id (Union[Unset, str]):
+        accounting_point_id (Union[Unset, str]):
         connecting_system_operator_id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
@@ -295,6 +306,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        accounting_point_id=accounting_point_id,
         connecting_system_operator_id=connecting_system_operator_id,
         name=name,
         business_id=business_id,
@@ -316,6 +328,7 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    accounting_point_id: Union[Unset, str] = UNSET,
     connecting_system_operator_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
@@ -331,6 +344,7 @@ async def asyncio(
 
     Args:
         id (Union[Unset, str]):
+        accounting_point_id (Union[Unset, str]):
         connecting_system_operator_id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
@@ -354,6 +368,7 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
+            accounting_point_id=accounting_point_id,
             connecting_system_operator_id=connecting_system_operator_id,
             name=name,
             business_id=business_id,

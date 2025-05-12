@@ -25,7 +25,7 @@ ALTER TABLE IF EXISTS
 flex.service_providing_group_membership_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:service-providing-group-membership-history-rls-com endDelimiter:--
+-- changeset flex:service-providing-group-membership-history-rls-com runAlways:true endDelimiter:--
 -- RLS: SPGM-COM001
 GRANT SELECT ON flex.service_providing_group_membership_history
 TO flex_common;

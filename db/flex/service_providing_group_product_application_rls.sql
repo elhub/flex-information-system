@@ -1,3 +1,7 @@
+--liquibase formatted sql
+-- Manually managed file
+
+-- changeset flex:service-providing-group-product-application-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS service_providing_group_product_application
 ENABLE ROW LEVEL SECURITY;
 
