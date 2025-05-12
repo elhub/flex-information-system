@@ -33,12 +33,11 @@ SELECT unnest(
     )
 )::bigint
 FROM controllable_unit AS cu
-INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
-LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+LEFT JOIN accounting_point_end_user AS apeu
+ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cu.id = @resource_id
 AND apeu.valid_time_range @> current_timestamp;
 -- not using history on CU because AP ID is stable
--- not using history on AP because business ID is stable
 -- not using history on APEU because we take the latest knowledge we have to
 --   identify who to notify
 -- current timestamp because we take the relevant end user at the moment the
@@ -78,8 +77,7 @@ FROM (
     ORDER BY cusph.recorded_at DESC LIMIT 2
 ) AS cusph
 INNER JOIN controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
-INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
-LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE apeu.valid_time_range @> cusph.valid_from;
 -- using history on CU-SP because EU depends on valid time
 --   the subquery allows us to get only the 2 latest versions of CU-SP at the
@@ -103,13 +101,11 @@ SELECT unnest(
 )::bigint
 FROM controllable_unit_service_provider AS cusp
 INNER JOIN controllable_unit AS cu ON cu.id = cusp.controllable_unit_id
-INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
-LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cusp.id = @resource_id
 AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)');
 -- not using history on CU-SP for CU ID and SP ID because they are stable
 -- not using history on CU because AP ID is stable
--- not using history on AP because business ID is stable
 -- not using history on APEU or CU-SP for end user ID because we take the
 --   latest knowledge we have to identify who to notify and if it still
 --   makes sense
@@ -224,11 +220,9 @@ ON CONFLICT DO NOTHING;
 -- name: GetControllableUnitLookupNotificationRecipients :many
 SELECT apeu.end_user_id::bigint
 FROM controllable_unit AS cu
-INNER JOIN accounting_point AS ap ON ap.business_id = cu.accounting_point_id
-INNER JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = ap.id
+INNER JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cu.id = @resource_id
 AND apeu.valid_time_range @> @recorded_at::timestamptz;
 -- not using history on CU because AP ID is stable
--- not using history on AP because business ID is stable
 -- not using history on APEU because we take the latest knowledge we have to
 --   identify who to notify

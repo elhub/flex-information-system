@@ -95,11 +95,11 @@ components:
           type: string
           example: 'Car Charger #54'
         accounting_point_id:
-          description: The accounting point ID of the controllable unit.
-          format: text
-          type: string
-          pattern: '^[1-9][0-9]{17}$'
-          example: '709000000000000057'
+          description: >-
+            The technical ID of the controllable unit's accounting point.
+          format: bigint
+          type: integer
+          example: 100351
         technical_resources:
           description: >-
             The technical resources belonging to the controllable unit.

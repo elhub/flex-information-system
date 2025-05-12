@@ -12,7 +12,7 @@
         "maximum_duration": "The maximum activation duration in seconds.",
         "recovery_duration": "The minimum recovery duration between activations in seconds.",
         "ramp_rate": "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
-        "accounting_point_id": "The existing accounting point that the controllable unit is connected to.\n`GSRN` metering point id.",
+        "accounting_point_id": "Reference to the accounting point that the controllable unit is connected to.",
         "grid_node_id": "Reference to the node that the controllable unit is connected to.",
         "connecting_system_operator_id": "Reference to the `party` that is the connecting system operator. Derived from the `accounting_point_id`.",
         "grid_validation_status": "The grid validation status of the controllable unit.",
@@ -182,7 +182,7 @@
         "id": "The surrogate key of the controllable unit.",
         "business_id": "The business ID of the controllable unit.",
         "name": "The name of the controllable unit.",
-        "accounting_point_id": "The accounting point ID of the controllable unit.",
+        "accounting_point_id": "The technical ID of the controllable unit's accounting point.",
         "technical_resources": "The technical resources belonging to the controllable unit."
     }
 }

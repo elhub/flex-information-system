@@ -102,7 +102,7 @@ def test_cu_lookup(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="TEST-CU-LOOKUP",
-            accounting_point_id="133700000000010007",
+            accounting_point_id=1001,  # technical ID of AP 133700000000010007
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_available_capacity=3.5,
         ),

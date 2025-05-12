@@ -128,8 +128,8 @@ resources:
           connected to.
         format: bigint
         type: integer
-        readOnly: true
         nullable: false
+        x-no-update: true
         x-foreign-key:
           resource: accounting_point
           field: id

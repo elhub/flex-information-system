@@ -87,7 +87,7 @@ $$;
 CREATE OR REPLACE FUNCTION test_data.add_controllable_unit(
     cu_name text,
     so_id bigint,
-    accounting_point_id text,
+    accounting_point_id bigint,
     service_providers cu_sp []
 )
 RETURNS bigint
@@ -492,6 +492,7 @@ DECLARE
   asset_type text;
   accounting_point_prefix text := '1337000000' || user_seq_id_text;
   accounting_point_seq bigint := rpad(accounting_point_prefix, 17, '0')::bigint;
+  ap_id bigint;
 
   party_business_id_prefix text := '1337' || user_seq_id_text;
   party_business_id_seq bigint :=
@@ -722,10 +723,14 @@ BEGIN
   FOREACH asset_type in ARRAY ARRAY['Car Charger','Water Heater','Solar Panel']::text[]
   LOOP
 
+    SELECT id INTO ap_id
+    FROM flex.accounting_point
+    WHERE business_id = gs1.add_check_digit(accounting_point_seq::text);
+
     SELECT test_data.add_controllable_unit(
       entity_first_name || ' ' || asset_type,
       so_id,
-      gs1.add_check_digit(accounting_point_seq::text),
+      ap_id,
       ARRAY[
           (sp_id, '[2024-07-01 00:00:00 Europe/Oslo,2024-08-01 00:00:00 Europe/Oslo)'::tstzrange),
           (common_sp_id, '[2024-08-01 00:00:00 Europe/Oslo,2024-09-01 00:00:00 Europe/Oslo)'::tstzrange),

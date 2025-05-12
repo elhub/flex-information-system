@@ -199,11 +199,10 @@
                         "example": "Car Charger #54"
                     },
                     "accounting_point_id": {
-                        "description": "The accounting point ID of the controllable unit.",
-                        "format": "text",
-                        "type": "string",
-                        "pattern": "^[1-9][0-9]{17}$",
-                        "example": "709000000000000057"
+                        "description": "The technical ID of the controllable unit's accounting point.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 100351
                     },
                     "technical_resources": {
                         "description": "The technical resources belonging to the controllable unit.",
@@ -472,14 +471,6 @@
                         "nullable": true,
                         "example": 0.1
                     },
-                    "accounting_point_id": {
-                        "description": "The existing accounting point that the controllable unit is connected to.\n`GSRN` metering point id.",
-                        "format": "text",
-                        "type": "string",
-                        "pattern": "^[1-9][0-9]{17}$",
-                        "nullable": false,
-                        "example": "709000000000000057"
-                    },
                     "grid_node_id": {
                         "description": "Reference to the node that the controllable unit is connected to.",
                         "format": "text",
@@ -514,6 +505,17 @@
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_update_request"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_id": {
+                                "description": "Reference to the accounting point that the controllable unit is connected to.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "nullable": false,
+                                "example": 10289
+                            }
+                        }
                     },
                     {
                         "required": [
@@ -2694,6 +2696,16 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
+                        "description": "Reference to the accounting point that the controllable unit is connected to.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
                         "description": "Reference to the `party` that is the connecting system operator. Derived from the `accounting_point_id`.",
                         "name": "connecting_system_operator_id"
                     },
@@ -3015,6 +3027,13 @@
                         },
                         "description": "OK",
                         "links": {
+                            "accounting_point_id": {
+                                "operationId": "read_accounting_point",
+                                "parameters": {
+                                    "path.id": "$response.body#/accounting_point_id"
+                                },
+                                "description": "The `accounting_point_id` value returned in the response can be used as the `id` parameter in `GET /accounting_point/{id}`."
+                            },
                             "connecting_system_operator_id": {
                                 "operationId": "read_party",
                                 "parameters": {

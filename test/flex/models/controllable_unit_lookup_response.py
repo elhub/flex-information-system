@@ -20,7 +20,7 @@ class ControllableUnitLookupResponse:
         id (int): The surrogate key of the controllable unit. Example: 11.
         business_id (str): The business ID of the controllable unit. Example: 53919b79-876f-4dad-8bde-b29368367604.
         name (str): The name of the controllable unit. Example: Car Charger #54.
-        accounting_point_id (str): The accounting point ID of the controllable unit. Example: 709000000000000057.
+        accounting_point_id (int): The technical ID of the controllable unit's accounting point. Example: 100351.
         technical_resources (List['ControllableUnitLookupResponseTechnicalResourcesItem']): The technical resources
             belonging to the controllable unit.
     """
@@ -28,7 +28,7 @@ class ControllableUnitLookupResponse:
     id: int
     business_id: str
     name: str
-    accounting_point_id: str
+    accounting_point_id: int
     technical_resources: List["ControllableUnitLookupResponseTechnicalResourcesItem"]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
