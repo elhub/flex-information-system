@@ -101,6 +101,7 @@ services:
       NGINX_UPSTREAM_BACKEND: http://backend:7001
       NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
       NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
+      NGINX_REAL_IP_FROM: 172.16.0.0/12
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "idp.flex.internal:host-gateway"
