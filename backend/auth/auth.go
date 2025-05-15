@@ -31,6 +31,15 @@ import (
 const (
 	callbackPath     = "/auth/v0/callback"
 	sessionCookieKey = "__Host-flex_session"
+
+	defaultFailedLoginResponseDelay = 2 * time.Second
+
+	defaultLoginDelayerDurationBeforeReset  = 1 * time.Hour
+	defaultLoginDelayerMaxFailedLogins      = 20
+	defaultLoginDelayerNbLoginsWithoutDelay = 5
+	defaultLoginDelayerBaseDelay            = 2 * time.Minute
+	defaultLoginDelayerDelayIncreaseFactor  = 1.1
+	defaultLoginDelayerMaxDelay             = 1 * time.Hour
 )
 
 // API holds the authentication API handlers.
@@ -54,15 +63,36 @@ func NewAPI(
 	jwtSecret string,
 	oidcProvider *oidc.Provider,
 	ctxKey string,
-	failedLoginResponseDelay time.Duration,
-	loginDelayerConfig *LoginDelayerConfig,
+	isLoginLimitingDisabled bool,
 ) *API {
-	var loginDelayer *IPLoginDelayer
-	if loginDelayerConfig != nil {
-		loginDelayer = NewIPLoginDelayer(*loginDelayerConfig)
-	} else {
-		loginDelayer = nil
+	// default login limiting
+	failedLoginResponseDelay := defaultFailedLoginResponseDelay
+	loginDelayerConfig := LoginDelayerConfig{
+		DurationBeforeReset:  defaultLoginDelayerDurationBeforeReset,
+		MaxFailedLogins:      defaultLoginDelayerMaxFailedLogins,
+		NbLoginsWithoutDelay: defaultLoginDelayerNbLoginsWithoutDelay,
+		BaseDelay:            defaultLoginDelayerBaseDelay,
+		DelayIncreaseFactor:  defaultLoginDelayerDelayIncreaseFactor,
+		MaxDelay:             defaultLoginDelayerMaxDelay,
 	}
+
+	if isLoginLimitingDisabled {
+		failedLoginResponseDelay = 0
+		// A zero-delay delayer would make it impossible to test login delay.
+		// Here, we use something lax enough to be able to run all our API tests,
+		// but still finite, so that if we run requests in a loop, it will
+		// eventually block.
+		loginDelayerConfig = LoginDelayerConfig{
+			DurationBeforeReset:  5 * time.Second,
+			MaxFailedLogins:      6,
+			NbLoginsWithoutDelay: 2,
+			BaseDelay:            500 * time.Millisecond,
+			DelayIncreaseFactor:  2,
+			MaxDelay:             2 * time.Second,
+		}
+	}
+
+	loginDelayer := NewIPLoginDelayer(loginDelayerConfig)
 
 	return &API{
 		self:                     self,
@@ -904,13 +934,9 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
-	var delayer *loginDelayer
-	delayer = nil
-	if auth.loginDelayer != nil {
-		delayer = auth.loginDelayer.GetDelayerFromIP(ctx.Request.RemoteAddr)
-	}
+	delayer := auth.loginDelayer.GetDelayerFromIP(ctx.Request.RemoteAddr)
 
-	if delayer != nil && !delayer.Allow(ctx) {
+	if !delayer.Allow(ctx) {
 		ctx.Header(
 			"Retry-After",
 			strconv.Itoa(int(math.Ceil(time.Until(delayer.MinTimeForNextRequest()).Seconds()))),
@@ -937,9 +963,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 
 	// this makes sure valid logins are not delayed
-	if delayer != nil {
-		delayer.Cancel()
-	}
+	delayer.Cancel()
 
 	accessToken := accessToken{
 		EntityID:       entityID,
