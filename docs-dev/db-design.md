@@ -8,28 +8,6 @@ The following diagram is an auto-generated representation of the `flex` schema d
 
 ![database tables](../diagrams/tables.png)
 
-## Schema maintenance and migrations
-
-We are using liquibase for schema maintenance and migrations. Migrations are
-written in sql.
-
-Writing migrations and maintaining a schema with _incremental_ changesets is
-painful. It is neccessary, but not for all-the-things. As an example: tables
-must be incrementally managed while views can be recreated at any time.
-Incremental changesets also makes it harder to reason about the database objects
-by just looking at the code. As much as possible we try to avoid incremental
-changesets. To do this we have a few strategies:
-
-* leveraging `IF NOT EXISTS`, `CREATE OR REPLACE` and similar functionality in
-  PostgreSQL in combination with `runOnChange` in liquibase
-* dropping objects and using `runAlways` to create new ones for some types of
-  objects (e.g. policies)
-* updating actual definitions as well as adding incremental `ALTER TABLE` (or
-  simmilar) changesets so that the incremental changesets can be deleted once
-  deployed
-
-To clean out the local database and start over, use the `just reload` command.
-
 ## Foreign keys to tables with multiple types
 
 Some tables, like `party`, have multiple types within the same table. When a

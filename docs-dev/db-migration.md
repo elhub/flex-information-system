@@ -1,30 +1,39 @@
-# How to write a database migration
+# Schema maintenance and migrations
 
-Until later technical solutions, we write our migrations by hand.
+We are using Liquibase for schema maintenance and migrations.
 
 ## What requires a migration
 
-Any change to a _table_ in the `flex` schema requires a migration because it
-will touch the data on the live environment when deployed.
+Writing migrations and maintaining a schema with _incremental_ changesets is
+painful.
+It is necessary, but not for all-the-things.
+
+For example, any change to a _table_ in the `flex` schema requires a migration
+because it will touch the data on the live environment when deployed.
 On the contrary, changing a _view_ just changes the angle from which we see the
 underlying data, so it has no impact on this existing data and can be changed
 without a migration.
+
 Generally, anything that lives _around_ the tables but does not belong to their
 definition, like triggers, functions, _etc._, can be changed without a
 migration.
-This is also why such SQL statements are marked `runAlways` in Liquibase.
+This is also why a lot of SQL definitions leverage `IF NOT EXISTS`,
+`CREATE OR REPLACE`, _etc_, as well as `runOnChange` in Liquibase.
+Some types of objects (_e.g._, policies) are marked `runAlways` so we always
+drop and recreate them.
 
 ## Writing the migration
 
-Living with an initial table definition and stacking migrations on top of it to
-make this definition evolve over time arguably makes the database state hard to
-infer.
-Indeed, one would need to read all the migrations and update on the fly their
-mental model of what the table looks like.
+Incremental changesets makes it harder to reason about the database objects
+by just looking at the code.
+Indeed, one then needs to read an initial table definition _and_ all the
+migrations that were applied to it, to get an idea of what a table looks like.
 
 Instead, we choose to also make the definition evolve alongside the migrations,
-for documentation purposes, but this means the definition must only be run once,
-when the system is launched the first time.
+for documentation purposes, and also because this allows deleting the migrations
+over time, once they have been run on the live environment.
+However, this means the definition must only be run once, when the system is
+launched for the first time.
 Therefore, we mark the table definitions with `runOnChange:false`.
 
 In order to apply a migration to a database table, you need to add a new
