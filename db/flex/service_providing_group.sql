@@ -62,16 +62,16 @@ BEGIN
     FOR l_impacted_system_operator_id IN
         SELECT DISTINCT ap.system_operator_id
         FROM flex.service_providing_group_membership spgm
-        INNER JOIN flex.controllable_unit cu
-        ON spgm.controllable_unit_id = cu.id
-        INNER JOIN flex.accounting_point ap
-        ON ap.business_id = cu.accounting_point_id
+            INNER JOIN flex.controllable_unit cu
+                ON spgm.controllable_unit_id = cu.id
+            INNER JOIN flex.accounting_point ap
+                ON ap.id = cu.accounting_point_id
         WHERE spgm.service_providing_group_id = l_service_providing_group_id
-        -- CU still in the SPG in the future
-        AND (
-            upper(spgm.valid_time_range) IS NULL OR
-            upper(spgm.valid_time_range) > current_timestamp
-        )
+            -- CU still in the SPG in the future
+            AND (
+                upper(spgm.valid_time_range) IS NULL OR
+                upper(spgm.valid_time_range) > current_timestamp
+            )
     LOOP
         INSERT INTO flex.service_providing_group_grid_prequalification (
             service_providing_group_id,

@@ -65,7 +65,7 @@ def test_controllable_unit_fiso(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="TEST-CU-1",
-            accounting_point_id="133700000000010014",
+            accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_available_capacity=3.5,
         ),
@@ -192,7 +192,7 @@ def test_controllable_unit_so(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="TEST-CU-18",
-            accounting_point_id="133700000000010014",
+            accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.UP,
             maximum_available_capacity=2,
         ),
@@ -413,7 +413,7 @@ def test_controllable_unit_sp(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="TEST-CU-2",
-            accounting_point_id="133700000000010014",
+            accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_available_capacity=3.5,
         ),
@@ -457,7 +457,7 @@ def test_controllable_unit_sp(sts):
         client=client_sp1,
         body=ControllableUnitCreateRequest(
             name="TEST-CU-2",
-            accounting_point_id="133700000000010014",
+            accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_available_capacity=3.5,
         ),

@@ -34,7 +34,7 @@ USING (
     EXISTS (
         SELECT 1 FROM
             accounting_point
-        WHERE accounting_point.business_id = controllable_unit.accounting_point_id --noqa
+        WHERE accounting_point.id = controllable_unit.accounting_point_id -- noqa
             AND accounting_point.system_operator_id = current_party()
     )
 );

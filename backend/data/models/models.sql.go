@@ -14,7 +14,7 @@ SELECT
     id::bigint,
     business_id::text,
     name::text,
-    accounting_point_id::text,
+    accounting_point_id::bigint,
     technical_resources::jsonb
 FROM controllable_unit_lookup(
   $1,
@@ -28,7 +28,7 @@ type ControllableUnitLookupRow struct {
 	ID                 int
 	BusinessID         string
 	Name               string
-	AccountingPointID  string
+	AccountingPointID  int
 	TechnicalResources []byte
 }
 

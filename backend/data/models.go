@@ -27,7 +27,7 @@ type ControllableUnitLookup struct {
 	ID                 int                 `json:"id"`
 	BusinessID         string              `json:"business_id"`
 	Name               string              `json:"name"`
-	AccountingPointID  string              `json:"accounting_point_id"`
+	AccountingPointID  int                 `json:"accounting_point_id"`
 	TechnicalResources []technicalResource `json:"technical_resources"`
 }
 

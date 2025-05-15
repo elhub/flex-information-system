@@ -6,7 +6,11 @@ import {
   TextInput,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
-import { InputStack, useCreateOrUpdate } from "../auth";
+import {
+  AutocompleteReferenceInput,
+  InputStack,
+  useCreateOrUpdate,
+} from "../auth";
 import { Toolbar } from "../Toolbar";
 import { UnitInput } from "../unitComponents";
 import { DateTimeInput } from "../datetime";
@@ -63,7 +67,11 @@ export const ControllableUnitInput = () => {
           Locations
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <TextInput source="accounting_point_id" validate={required()} />
+          <AutocompleteReferenceInput
+            source="accounting_point_id"
+            reference="accounting_point"
+            field="business_id"
+          />
           <TextInput source="grid_node_id" />
         </InputStack>
 

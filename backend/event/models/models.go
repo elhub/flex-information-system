@@ -47,7 +47,7 @@ type ControllableUnit struct {
 	MaximumDuration            *int
 	RecoveryDuration           *int
 	RampRate                   *float64
-	AccountingPointID          string
+	AccountingPointID          int
 	GridNodeID                 *string
 	ConnectingSystemOperatorID int
 	GridValidationStatus       string
@@ -71,7 +71,7 @@ type ControllableUnitHistory struct {
 	MaximumDuration            *int
 	RecoveryDuration           *int
 	RampRate                   *float64
-	AccountingPointID          string
+	AccountingPointID          int
 	GridNodeID                 *string
 	ConnectingSystemOperatorID int
 	GridValidationStatus       string

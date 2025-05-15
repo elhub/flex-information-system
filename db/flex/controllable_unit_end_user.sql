@@ -8,10 +8,8 @@ CREATE OR REPLACE VIEW controllable_unit_end_user AS (
         apeu.end_user_id,
         apeu.valid_time_range
     FROM flex.controllable_unit AS cu
-        INNER JOIN flex.accounting_point AS ap
-            ON cu.accounting_point_id = ap.business_id
         LEFT JOIN flex.accounting_point_end_user AS apeu
-            ON ap.id = apeu.accounting_point_id
+            ON cu.accounting_point_id = apeu.accounting_point_id
 );
 
 -- changeset flex:controllable-unit-end-user-grants runOnChange:true endDelimiter:;

@@ -24,14 +24,14 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
-        apt.system_operator_id AS connecting_system_operator_id,
+        ap.system_operator_id AS connecting_system_operator_id,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         null AS replaced_by,
         null AS replaced_at
     FROM flex.controllable_unit AS cu
-        INNER JOIN flex.accounting_point AS apt
-            ON cu.accounting_point_id = apt.business_id
+        INNER JOIN flex.accounting_point AS ap
+            ON cu.accounting_point_id = ap.id
     UNION ALL
     SELECT
         cu.history_id AS id,
@@ -52,14 +52,14 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
-        apt.system_operator_id AS connecting_system_operator_id,
+        ap.system_operator_id AS connecting_system_operator_id,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         cu.replaced_by,
         upper(cu.record_time_range) AS replaced_at
     FROM flex.controllable_unit_history AS cu
-        INNER JOIN flex.accounting_point AS apt
-            ON cu.accounting_point_id = apt.business_id
+        INNER JOIN flex.accounting_point AS ap
+            ON cu.accounting_point_id = ap.id
 );
 
 -- changeset flex:api-controllable-unit-create endDelimiter:-- runAlways:true
@@ -186,13 +186,13 @@ BEGIN
             cu.regulation_direction,
             cu.start_date,
             cu.status,
-            apt.system_operator_id AS connecting_system_operator_id,
+            ap.system_operator_id AS connecting_system_operator_id,
             cu.recorded_by,
             lower(cu.record_time_range) AS recorded_at
         FROM flex.controllable_unit INTO l_old AS cu
-        INNER JOIN flex.accounting_point AS apt
-            ON cu.accounting_point_id = apt.business_id
-            WHERE cu.id = NEW.id;
+            INNER JOIN flex.accounting_point AS ap
+                ON cu.accounting_point_id = ap.id
+        WHERE cu.id = NEW.id;
 
         IF NOT FOUND THEN
             RAISE sqlstate 'PT401' using

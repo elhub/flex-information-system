@@ -75,7 +75,7 @@ def data():
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="New CU 1",
-            accounting_point_id="133700000000010014",
+            accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_available_capacity=3.5,
         ),
@@ -86,7 +86,7 @@ def data():
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="New CU 2",
-            accounting_point_id="133700000000010014",
+            accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_available_capacity=3.5,
         ),
@@ -102,7 +102,7 @@ def data():
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="New CU 3",
-            accounting_point_id="133700000000000022",
+            accounting_point_id=3,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_available_capacity=3.5,
         ),

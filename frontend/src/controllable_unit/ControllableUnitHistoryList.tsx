@@ -24,6 +24,12 @@ export const ControllableUnitHistoryList = () => {
         <TextField source="status" />
         <TextField source="regulation_direction" />
         <BooleanField source="is_small" />
+        <ReferenceField
+          source="accounting_point_id"
+          reference="accounting_point"
+        >
+          <TextField source="business_id" />
+        </ReferenceField>
         <TextField source="accounting_point_id" />
         <TextField source="grid_node_id" />
         <ReferenceField

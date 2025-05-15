@@ -123,14 +123,17 @@ resources:
         nullable: true
         example: 0.1
       accounting_point_id:
-        description: |-
-          The existing accounting point that the controllable unit is connected to.
-          `GSRN` metering point id.
-        format: text
-        type: string
-        pattern: '^[1-9][0-9]{17}$'
+        description: >-
+          Reference to the accounting point that the controllable unit is
+          connected to.
+        format: bigint
+        type: integer
         nullable: false
-        example: '709000000000000057'
+        x-no-update: true
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+        example: 10289
       grid_node_id:
         description: >-
           Reference to the node that the controllable unit is connected to.

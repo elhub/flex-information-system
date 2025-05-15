@@ -18,6 +18,8 @@ class ControllableUnitResponse:
     """Response schema for operations with return values - Controllable unit
 
     Attributes:
+        accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
+            Example: 10289.
         name (Union[Unset, str]): Free text name of the controllable unit. Example: Car Charger #34.
         start_date (Union[None, Unset, datetime.date]): The usage date when the controllable unit is first active.
             Example: 2024-05-17.
@@ -33,9 +35,6 @@ class ControllableUnitResponse:
             Example: 3600.
         ramp_rate (Union[None, Unset, float]): The rate of power per unit of time to reach empty or full power for the
             controllable unit, in kilowatts per minute. Example: 0.1.
-        accounting_point_id (Union[Unset, str]): The existing accounting point that the controllable unit is connected
-            to.
-            `GSRN` metering point id. Example: 709000000000000057.
         grid_node_id (Union[None, Unset, str]): Reference to the node that the controllable unit is connected to.
             Example: 53919b79-876f-4dad-8bde-b29368367604.
         grid_validation_status (Union[Unset, ControllableUnitGridValidationStatus]): The grid validation status of the
@@ -54,6 +53,7 @@ class ControllableUnitResponse:
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
+    accounting_point_id: int
     name: Union[Unset, str] = UNSET
     start_date: Union[None, Unset, datetime.date] = UNSET
     status: Union[Unset, ControllableUnitStatus] = UNSET
@@ -63,7 +63,6 @@ class ControllableUnitResponse:
     maximum_duration: Union[None, Unset, int] = UNSET
     recovery_duration: Union[None, Unset, int] = UNSET
     ramp_rate: Union[None, Unset, float] = UNSET
-    accounting_point_id: Union[Unset, str] = UNSET
     grid_node_id: Union[None, Unset, str] = UNSET
     grid_validation_status: Union[Unset, ControllableUnitGridValidationStatus] = UNSET
     grid_validation_notes: Union[None, Unset, str] = UNSET
@@ -77,6 +76,8 @@ class ControllableUnitResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        accounting_point_id = self.accounting_point_id
+
         name = self.name
 
         start_date: Union[None, Unset, str]
@@ -121,8 +122,6 @@ class ControllableUnitResponse:
         else:
             ramp_rate = self.ramp_rate
 
-        accounting_point_id = self.accounting_point_id
-
         grid_node_id: Union[None, Unset, str]
         if isinstance(self.grid_node_id, Unset):
             grid_node_id = UNSET
@@ -159,7 +158,11 @@ class ControllableUnitResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "accounting_point_id": accounting_point_id,
+            }
+        )
         if name is not UNSET:
             field_dict["name"] = name
         if start_date is not UNSET:
@@ -178,8 +181,6 @@ class ControllableUnitResponse:
             field_dict["recovery_duration"] = recovery_duration
         if ramp_rate is not UNSET:
             field_dict["ramp_rate"] = ramp_rate
-        if accounting_point_id is not UNSET:
-            field_dict["accounting_point_id"] = accounting_point_id
         if grid_node_id is not UNSET:
             field_dict["grid_node_id"] = grid_node_id
         if grid_validation_status is not UNSET:
@@ -206,6 +207,8 @@ class ControllableUnitResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        accounting_point_id = d.pop("accounting_point_id")
+
         name = d.pop("name", UNSET)
 
         def _parse_start_date(data: object) -> Union[None, Unset, datetime.date]:
@@ -277,8 +280,6 @@ class ControllableUnitResponse:
 
         ramp_rate = _parse_ramp_rate(d.pop("ramp_rate", UNSET))
 
-        accounting_point_id = d.pop("accounting_point_id", UNSET)
-
         def _parse_grid_node_id(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
@@ -326,6 +327,7 @@ class ControllableUnitResponse:
         recorded_by = d.pop("recorded_by", UNSET)
 
         controllable_unit_response = cls(
+            accounting_point_id=accounting_point_id,
             name=name,
             start_date=start_date,
             status=status,
@@ -335,7 +337,6 @@ class ControllableUnitResponse:
             maximum_duration=maximum_duration,
             recovery_duration=recovery_duration,
             ramp_rate=ramp_rate,
-            accounting_point_id=accounting_point_id,
             grid_node_id=grid_node_id,
             grid_validation_status=grid_validation_status,
             grid_validation_notes=grid_validation_notes,

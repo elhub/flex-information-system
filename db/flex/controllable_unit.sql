@@ -30,9 +30,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     maximum_duration bigint NULL CHECK (maximum_duration > 0),
     recovery_duration bigint NULL CHECK (recovery_duration > 0),
     ramp_rate decimal(9, 3) NULL CHECK (ramp_rate > 0),
-    accounting_point_id text NOT NULL CHECK (
-        validate_business_id(accounting_point_id, 'gsrn')
-    ),
+    accounting_point_id bigint NOT NULL,
     grid_node_id uuid NULL CHECK (
         grid_node_id IS NULL OR validate_business_id(grid_node_id::text, 'uuid')
     ),
@@ -58,9 +56,10 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
         localtimestamp, NULL, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
+
     CONSTRAINT controllable_unit_accounting_point_id_fkey FOREIGN KEY (
         accounting_point_id
-    ) REFERENCES accounting_point (business_id),
+    ) REFERENCES accounting_point (id),
     -- CU-VAL001
     CONSTRAINT controllable_unit_duration_check CHECK (
         minimum_duration <= maximum_duration
