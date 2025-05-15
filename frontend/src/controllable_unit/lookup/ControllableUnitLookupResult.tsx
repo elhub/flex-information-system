@@ -76,6 +76,7 @@ const ControllableUnitLookupResultItem = () => {
         >
           <TextField source="id" label="ID" />
           <TextField source="business_id" label="Business ID" />
+          <TextField source="accounting_point_id" label="Accounting point ID" />
           <ReferenceField
             source="accounting_point_id"
             reference="accounting_point"
