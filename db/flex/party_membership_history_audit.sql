@@ -25,7 +25,7 @@ ALTER TABLE IF EXISTS
 flex.party_membership_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:party-membership-history-rls-com endDelimiter:--
+-- changeset flex:party-membership-history-rls-com runAlways:true endDelimiter:--
 -- RLS: PTYM-COM001
 GRANT SELECT ON flex.party_membership_history
 TO flex_common;

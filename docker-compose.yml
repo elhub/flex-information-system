@@ -21,8 +21,7 @@ services:
       -c log_min_messages=debug1
       -c wal_level=logical
   postgrest:
-    # TODO: fix issues with v13 to allow using the latest version again
-    image: postgrest/postgrest:v12.2.12
+    image: postgrest/postgrest:latest
     expose:
       - "3000"
     ports:
@@ -102,6 +101,7 @@ services:
       NGINX_UPSTREAM_BACKEND: http://backend:7001
       NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
       NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
+      NGINX_REAL_IP_FROM: 172.16.0.0/12
     extra_hosts:
       - "host.docker.internal:host-gateway"
       - "idp.flex.internal:host-gateway"
