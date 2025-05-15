@@ -182,7 +182,7 @@
         "id": "The surrogate key of the controllable unit.",
         "business_id": "The business ID of the controllable unit.",
         "name": "The name of the controllable unit.",
-        "accounting_point_id": "The technical ID of the controllable unit's accounting point.",
+        "accounting_point_id": "The accounting point behind which the controllable unit is located.",
         "technical_resources": "The technical resources belonging to the controllable unit."
     }
 }

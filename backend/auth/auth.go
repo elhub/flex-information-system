@@ -14,6 +14,7 @@ import (
 	"flex/pgpool"
 	"fmt"
 	"log/slog"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -30,30 +31,78 @@ import (
 const (
 	callbackPath     = "/auth/v0/callback"
 	sessionCookieKey = "__Host-flex_session"
+
+	defaultFailedLoginResponseDelay = 2 * time.Second
+
+	defaultLoginDelayerDurationBeforeReset  = 1 * time.Hour
+	defaultLoginDelayerMaxFailedLogins      = 20
+	defaultLoginDelayerNbLoginsWithoutDelay = 5
+	defaultLoginDelayerBaseDelay            = 2 * time.Minute
+	defaultLoginDelayerDelayIncreaseFactor  = 1.1
+	defaultLoginDelayerMaxDelay             = 1 * time.Hour
 )
 
 // API holds the authentication API handlers.
 type API struct {
 	// self is the api service itself.
 	// Used as the issuer of access tokens and to validate the audience of incoming tokens.
-	self                 string
-	db                   *pgpool.Pool
-	jwtSecret            []byte
-	tokenDurationSeconds int
-	oidcProvider         *oidc.Provider
-	ctxKey               string
+	self                     string
+	db                       *pgpool.Pool
+	jwtSecret                []byte
+	tokenDurationSeconds     int
+	oidcProvider             *oidc.Provider
+	ctxKey                   string
+	failedLoginResponseDelay time.Duration // delay inside the handler on failed login
+	loginDelayer             *IPLoginDelayer
 }
 
 // NewAPI creates a new auth.API instance.
-func NewAPI(self string, db *pgpool.Pool, jwtSecret string, oidcProvider *oidc.Provider, ctxKey string) *API {
+func NewAPI(
+	self string,
+	db *pgpool.Pool,
+	jwtSecret string,
+	oidcProvider *oidc.Provider,
+	ctxKey string,
+	isLoginLimitingDisabled bool,
+) *API {
+	// default login limiting
+	failedLoginResponseDelay := defaultFailedLoginResponseDelay
+	loginDelayerConfig := LoginDelayerConfig{
+		DurationBeforeReset:  defaultLoginDelayerDurationBeforeReset,
+		MaxFailedLogins:      defaultLoginDelayerMaxFailedLogins,
+		NbLoginsWithoutDelay: defaultLoginDelayerNbLoginsWithoutDelay,
+		BaseDelay:            defaultLoginDelayerBaseDelay,
+		DelayIncreaseFactor:  defaultLoginDelayerDelayIncreaseFactor,
+		MaxDelay:             defaultLoginDelayerMaxDelay,
+	}
+
+	if isLoginLimitingDisabled {
+		failedLoginResponseDelay = 0
+		// A zero-delay delayer would make it impossible to test login delay.
+		// Here, we use something lax enough to be able to run all our API tests,
+		// but still finite, so that if we run requests in a loop, it will
+		// eventually block.
+		loginDelayerConfig = LoginDelayerConfig{
+			DurationBeforeReset:  5 * time.Second,
+			MaxFailedLogins:      6,
+			NbLoginsWithoutDelay: 2,
+			BaseDelay:            500 * time.Millisecond,
+			DelayIncreaseFactor:  2,
+			MaxDelay:             2 * time.Second,
+		}
+	}
+
+	loginDelayer := NewIPLoginDelayer(loginDelayerConfig)
+
 	return &API{
-		self:      self,
-		db:        db,
-		jwtSecret: []byte(jwtSecret),
-		// algorithm defined once and for all here
-		tokenDurationSeconds: 3600,
-		oidcProvider:         oidcProvider,
-		ctxKey:               ctxKey,
+		self:                     self,
+		db:                       db,
+		jwtSecret:                []byte(jwtSecret),
+		tokenDurationSeconds:     3600,
+		oidcProvider:             oidcProvider,
+		ctxKey:                   ctxKey,
+		failedLoginResponseDelay: failedLoginResponseDelay,
+		loginDelayer:             loginDelayer,
 	}
 }
 
@@ -885,10 +934,26 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
+	delayer := auth.loginDelayer.GetDelayerFromIP(ctx.Request.RemoteAddr)
+
+	if !delayer.Allow(ctx) {
+		ctx.Header(
+			"Retry-After",
+			strconv.Itoa(int(math.Ceil(time.Until(delayer.MinTimeForNextRequest()).Seconds()))),
+		)
+		ctx.AbortWithStatusJSON(http.StatusTooManyRequests, oauthErrorMessage{
+			Error:            oauthErrorAccessDenied,
+			ErrorDescription: "too many login attempts, try again later",
+		})
+		return
+	}
+
 	entityID, eid, err := models.GetEntityOfCredentials(
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
 	if err != nil {
+		time.Sleep(auth.failedLoginResponseDelay)
+
 		slog.InfoContext(ctx, "getting identity of credentials failed: ", "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
@@ -896,6 +961,9 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		})
 		return
 	}
+
+	// this makes sure valid logins are not delayed
+	delayer.Cancel()
 
 	accessToken := accessToken{
 		EntityID:       entityID,

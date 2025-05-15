@@ -96,7 +96,7 @@ components:
           example: 'Car Charger #54'
         accounting_point_id:
           description: >-
-            The technical ID of the controllable unit's accounting point.
+            The accounting point behind which the controllable unit is located.
           format: bigint
           type: integer
           example: 100351

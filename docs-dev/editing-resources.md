@@ -63,6 +63,10 @@ operations:
 If an operation should not be allowed, just remove it from this list and the
 associated endpoints will not be generated in the OpenAPI documentation.
 
+> [!WARNING]
+> Changes to existing tables should be made using a
+> [database migration](./db-migration.md).
+
 ## Fixing authorisation
 
 [Authorisation](../auth.md) is done in the database, both at the _row_ level

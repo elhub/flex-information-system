@@ -355,6 +355,7 @@ export const App = () => (
   >
     {(permissions = []) => (
       <>
+        <Resource name="accounting_point" recordRepresentation="business_id" />
         {permissions.includes("entity.read") ? (
           <Resource
             name="entity"
