@@ -7,6 +7,7 @@ import (
 	"flex/auth/oidc"
 	"flex/data"
 	"flex/event"
+	"flex/internal/middleware"
 	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
@@ -90,7 +91,7 @@ func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
 }
 
 // Run is the main entry point for the application.
-func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx
+func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx,gocyclo
 	// Sets the global TracerProvider.
 	trace.Init()
 
@@ -188,6 +189,15 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_OIDC_POST_LOGOUT_REDIRECT_URL", errMissingEnv)
 	}
 
+	isLoginLimitingDisabled := false
+	_, exists = lookupenv("FLEX_DISABLE_LOGIN_LIMITING")
+	if exists {
+		isLoginLimitingDisabled = true
+		slog.InfoContext(ctx, "Disabled login limiting")
+	} else {
+		slog.InfoContext(ctx, "Default login limiting")
+	}
+
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
 
@@ -230,7 +240,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	slog.DebugContext(ctx, "Creating auth API")
-	authAPI := auth.NewAPI(authAPIBaseURL, dbPool, jwtSecret, oidcProvider, requestDetailsContextKey)
+	authAPI := auth.NewAPI(
+		authAPIBaseURL,
+		dbPool,
+		jwtSecret,
+		oidcProvider,
+		requestDetailsContextKey,
+		isLoginLimitingDisabled,
+	)
 
 	slog.DebugContext(ctx, "Creating data API")
 	dataAPIHandler, err := data.NewAPIHandler(
@@ -339,6 +356,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
 	router.Use(cors.New(corsConfig))
+	router.Use(WrapMiddleware(middleware.RealIP))
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
