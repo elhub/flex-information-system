@@ -44,6 +44,20 @@ export async function httpClient(url: string, options: any = {}) {
     }
   });
 
+  // --- workaround for single-ID update/delete in PostgREST -------------------
+
+  // In PostgREST, updates and deletes are done on the same endpoint as the
+  // one used to fetch the list of items, just with an ID filter.
+  // In our API, we do not allow PATCH and DELETE requests on the list endpoint.
+  // Instead, we use single-ID endpoints. We just have to rewrite the URL to
+  // match this.
+
+  if (options.method == "PATCH" || options.method == "DELETE") {
+    u.href = u.href.replace(/\?id=eq.(\d+)$/, "/$1");
+  }
+
+  // ---
+
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
   }
