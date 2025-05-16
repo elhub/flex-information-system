@@ -65,33 +65,6 @@ In case of actual RPC style methods, we use the `Call` verb.
 [typicode/json-server](https://github.com/typicode/json-server) is very simple
 api design that has been used as a reference.
 
-## Hierarchies via redirects
-
-We do *not* use actual hierarchies in our API. Hierarchies are a common pattern in
-resource-oriented APIs. An example can be `technical_resource` and
-`controllable_unit`. A `controllable_unit` can have many `technical_resources`.
-In a hierarchy, the `technical_resource` would be a sub-resource of
-`controllable_unit`. This would lead to a path like
-`/controllable_unit/{cu_id}/technical_resource/{tr_id}`. It is also typical to
-have `technical_resource` as a top-level resource in addition to being a
-sub-resource of `controllable_unit`. This would lead to paths like
-`/technical_resource` and `/technical_resource/{id}`.
-
-This looks really nice, but it has some drawbacks. For us, the main drawbacks are
-
-* server and client side cache invalidation becomes harder
-* it is harder to rewrite parts of the api
-
-If one squints a bit, then hierarchies can be seen as syntactic sugar for the
-top-level resource. We add `307` redirects to give the impression of a hierarchy.
-
-Example:
-
-* `/controllable_unit/{cu_id}/technical_resource/{tr_id}` -> `/technical_resource/{tr_id}`
-* `/controllable_unit/{cu_id}/technical_resource` -> `/technical_resource?controllable_unit_id={cu_id}`
-
-Redirects are implemented in the reverse proxy.
-
 ## Common fields
 
 We implement a few common fields on all resources. These are
