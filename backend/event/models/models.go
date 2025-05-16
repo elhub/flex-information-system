@@ -212,11 +212,9 @@ type PartyMembershipHistory struct {
 type ProductType struct {
 	ID         int
 	BusinessID string
-	Category   string
-	Market     string
-	MarketType string
-	Examples   string
-	Notes      string
+	Name       string
+	Service    string
+	Products   string
 }
 
 type ServiceProviderProductApplication struct {

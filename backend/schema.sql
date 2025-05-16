@@ -254,11 +254,9 @@ CREATE TABLE accounting_point_balance_responsible_party (
 CREATE TABLE product_type (
     id bigint NOT NULL,
     business_id text NOT NULL,
-    category text NOT NULL,
-    market text NOT NULL,
-    market_type text NOT NULL,
-    examples text NOT NULL,
-    notes text NOT NULL
+    name text NOT NULL,
+    service text NOT NULL,
+    products text NOT NULL
 );
 CREATE TABLE system_operator_product_type (
     id bigint NOT NULL,
