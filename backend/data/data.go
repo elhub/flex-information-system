@@ -329,9 +329,8 @@ func writeErrorToResponseWriter(
 
 // postgRESTHandler forwards the request to the PostgREST API.
 func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
-	// regex for calls targeting a single ID and subresource/history pages,
-	// which are not valid formats in PostgREST
-	regexIDSubHistory := regexp.MustCompile("^/([a-z_]+)/([0-9]+)(/[a-z_]+)?$")
+	// regex for calls targeting single ID pages, not a valid format in PostgREST
+	regexSingleID := regexp.MustCompile("^/([a-z_]+)/([0-9]+)$")
 
 	ctx := req.Context()
 	url := req.URL.Path
@@ -351,27 +350,16 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// rewrite the URL and query to match the PostgREST format
-	if match := regexIDSubHistory.FindStringSubmatch(url); match != nil {
-		if match[3] != "" { // subresource or history
-			url = fmt.Sprintf("/%s_%s", match[1], match[3][1:])
-			query.Set(match[1]+"_id", "eq."+match[2])
-			slog.InfoContext(
-				ctx,
-				"API call targeting a subresource or history resource. "+
-					"Rewriting into PostgREST format.",
-				"new url", url, "new query", query.Encode(),
-			)
-		} else { // single ID
-			url = "/" + match[1]
-			query.Set("id", "eq."+match[2])
-			// force PostgREST to return a single object
-			header.Set("Accept", "application/vnd.pgrst.object+json")
-			slog.InfoContext(
-				ctx,
-				"API call targeting a single-ID record. Rewriting into PostgREST format.",
-				"new url", url, "new query", query.Encode(),
-			)
-		}
+	if match := regexSingleID.FindStringSubmatch(url); match != nil {
+		url = "/" + match[1]
+		query.Set("id", "eq."+match[2])
+		// force PostgREST to return a single object
+		header.Set("Accept", "application/vnd.pgrst.object+json")
+		slog.InfoContext(
+			ctx,
+			"API call targeting a single-ID record. Rewriting into PostgREST format.",
+			"new url", url, "new query", query.Encode(),
+		)
 	}
 
 	proxy := httputil.NewSingleHostReverseProxy(data.postgRESTURL)
