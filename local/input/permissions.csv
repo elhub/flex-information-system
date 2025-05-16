@@ -126,11 +126,9 @@ accounting_point_balance_responsible_party;valid_to;;R;R;R;R;R;R;R;R;;
 product_type;;;;;;;;;;;;
 product_type;id;;R;R;R;R;R;R;R;R;;
 product_type;business_id;;R;R;R;R;R;R;R;R;;
-product_type;category;;R;R;R;R;R;R;R;R;;
-product_type;market;;R;R;R;R;R;R;R;R;;
-product_type;market_type;;R;R;R;R;R;R;R;R;;
-product_type;examples;;R;R;R;R;R;R;R;R;;
-product_type;notes;;R;R;R;R;R;R;R;R;;
+product_type;name;;R;R;R;R;R;R;R;R;;
+product_type;service;;R;R;R;R;R;R;R;R;;
+product_type;products;;R;R;R;R;R;R;R;R;;
 system_operator_product_type;;;;;;;;;;;;R
 system_operator_product_type;id;;R;R;R;R;R;R;R;R;;
 system_operator_product_type;system_operator_id;;R;R;R;RC;R;RC;R;R;;

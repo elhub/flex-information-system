@@ -7,10 +7,8 @@ WITH (security_invoker = true) AS (
     SELECT
         id,
         business_id,
-        category,
-        examples,
-        market,
-        market_type,
-        notes
+        name,
+        products,
+        service
     FROM flex.product_type
 );

@@ -1662,48 +1662,29 @@
                                 "format": "text",
                                 "type": "string",
                                 "readOnly": true,
-                                "maxLength": 64,
-                                "example": "manual_congestion_activation"
+                                "example": "manual_congestion"
                             },
-                            "category": {
-                                "description": "The category of the product type.",
+                            "name": {
+                                "description": "The name of the product type.",
                                 "format": "text",
                                 "type": "string",
                                 "maxLength": 64,
                                 "readOnly": true,
-                                "example": "congestion"
+                                "example": "Manual Congestion"
                             },
-                            "market": {
-                                "description": "The market which the product type belongs to.",
+                            "service": {
+                                "description": "The service offered by the product type.",
                                 "format": "text",
                                 "type": "string",
-                                "maxLength": 64,
                                 "readOnly": true,
-                                "example": "local"
+                                "example": "congestion management"
                             },
-                            "market_type": {
-                                "description": "The type of market which the product type belongs to.",
-                                "format": "text",
-                                "type": "string",
-                                "maxLength": 64,
-                                "readOnly": true,
-                                "example": "activation"
-                            },
-                            "examples": {
+                            "products": {
                                 "description": "Examples of products belonging to this product type.",
                                 "format": "text",
                                 "type": "string",
-                                "maxLength": 128,
                                 "readOnly": true,
-                                "example": "ShortFlex"
-                            },
-                            "notes": {
-                                "description": "Additional information about a product type.",
-                                "format": "text",
-                                "type": "string",
-                                "maxLength": 1024,
-                                "readOnly": true,
-                                "example": ""
+                                "example": "LongFlex, ShortFlex"
                             }
                         }
                     }
@@ -11368,6 +11349,15 @@
                         "example": "eq.55",
                         "description": "Unique surrogate identifier.",
                         "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "The name of the product type."
                     },
                     {
                         "in": "query",

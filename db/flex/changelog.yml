@@ -99,6 +99,9 @@ databaseChangeLog:
       file: ./product_type.sql
       relativeToChangelogFile: true
   - include:
+      file: ./product_type_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_provider_product_application.sql
       relativeToChangelogFile: true
   - include:

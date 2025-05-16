@@ -21,23 +21,17 @@ as input.
     The list of product types is defined for discussion and will probably be
     adjusted/extended.
 
-| Type                                              | Category                  | Market      | Market type  |  Example              | Notes                                                                                                 |
-|---------------------------------------------------|---------------------------|-------------|--------------|-----------------------|-------------------------------------------------------------------------------------------------------|
-| `manual_congestion_activation` [^1]               | `congestion`              | `local`     | `activation` | ShortFlex             | Activation.                                                                                           |
-| `manual_congestion_capacity` [^1]                 | `congestion`              | `local`     | `capacity`   | LongFlex              | Capacity.                                                                                             |
-| `automatic_congestion_capacity`                   | `congestion`              | `local`     | `capped`     | MaxUsage              | Capacity restriction for a period.                                                                    |
-| `automatic_voltage_capacity`                      | `voltage`                 | `local`     | `capacity`   |                       | Automatic reserves for voltage control.                                                               |
-| `manual_voltage_capacity`                         | `voltage`                 | `local`     | `capacity`   |                       | Manual reserves for voltage control.                                                                  |
-| `automatic_fast_frequency_capacity`               | `balancing`               | `balancing` | `capacity`   | FRR Profil, FRR Flex  |                                                                                                       |
-| `automatic_frequency_containment_capacity`        | `balancing`               | `balancing` | `capacity`   | FCR-N, FCR-D          | For normal operation 49,9-50,1Hz. For disturbances outside normal.                                    |
-| `automatic_frequency_restoration_activation` [^1] | `balancing`               | `balancing` | `activation` | aFRR                  | There is currently no activation market for aFRR.                                                     |
-| `automatic_frequency_restoration_capacity` [^1]   | `balancing`               | `balancing` | `capacity`   | aFRR CM               | Capacity.                                                                                             |
-| `manual_frequency_restoration_activation` [^1]    | `balancing`, `congestion` | `balancing` | `activation` | mFRR EAM, mFRR-D, EAM | Activation, activation for larger disruptions, congestion due to "spesialreguleringer" from Statnett. |
-| `manual_frequency_restoration_capacity` [^1]      | `balancing`, `congestion` | `balancing` | `capacity`   | mFRR CM, mFRR-D CM    | Capacity, capacity for larger disruptions, congestion due to "spesialreguleringer" from Statnett.     |
-
-[^1]: The reason for having two product types for congestion, aFRR and mFRR is
-      that it might be easier to qualify for an activation product than a
-      capacity product.
+| Business ID                               | Name                            | Service               | Products             |
+|-------------------------------------------|---------------------------------|-----------------------|----------------------|
+| `manual_congestion`                       | Manual Congestion               | congestion management | LongFlex, ShortFlex  |
+| `automatic_congestion`                    | Automatic Congestion            | congestion management | MaxUsage             |
+| `automatic_voltage`                       | Automatic Voltage               | voltage control       |                      |
+| `manual_voltage`                          | Manual Voltage                  | voltage control       |                      |
+| `automatic_fast_frequency`                | Fast Frequency                  | balancing             | FFR Profil, FFR Flex |
+| `automatic_frequency_containment`         | Frequency Containment           | balancing             | FCR-N, FCR-D         |
+| `automatic_frequency_restoration`         | Automatic Frequency Restoration | balancing             | aFRR CM              |
+| `manual_frequency_restoration`            | Manual Frequency Restoration    | balancing             | mFRR EAM, mFRR CM    |
+| `manual_frequency_restoration_disruption` | Frequency Disruption            | balancing             | mFRR-D               |
 
 ## Relevant links
 
@@ -46,15 +40,13 @@ as input.
 
 ## Fields
 
-| Name                                                                  | Description                                           | Format                                    | Reference |
-|-----------------------------------------------------------------------|-------------------------------------------------------|-------------------------------------------|-----------|
-| <a name="field-id" href="#field-id">id</a>                            | Unique surrogate identifier.                          | bigint<br/>Read only                      |           |
-| <a name="field-business_id" href="#field-business_id">business_id</a> | The code for this product type.                       | text<br/>Max length: `64`<br/>Read only   |           |
-| <a name="field-category" href="#field-category">category</a>          | The category of the product type.                     | text<br/>Max length: `64`<br/>Read only   |           |
-| <a name="field-market" href="#field-market">market</a>                | The market which the product type belongs to.         | text<br/>Max length: `64`<br/>Read only   |           |
-| <a name="field-market_type" href="#field-market_type">market_type</a> | The type of market which the product type belongs to. | text<br/>Max length: `64`<br/>Read only   |           |
-| <a name="field-examples" href="#field-examples">examples</a>          | Examples of products belonging to this product type.  | text<br/>Max length: `128`<br/>Read only  |           |
-| <a name="field-notes" href="#field-notes">notes</a>                   | Additional information about a product type.          | text<br/>Max length: `1024`<br/>Read only |           |
+| Name                                                                  | Description                                          | Format                                  | Reference |
+|-----------------------------------------------------------------------|------------------------------------------------------|-----------------------------------------|-----------|
+| <a name="field-id" href="#field-id">id</a>                            | Unique surrogate identifier.                         | bigint<br/>Read only                    |           |
+| <a name="field-business_id" href="#field-business_id">business_id</a> | The code for this product type.                      | text<br/>Read only                      |           |
+| <a name="field-name" href="#field-name">name</a>                      | The name of the product type.                        | text<br/>Max length: `64`<br/>Read only |           |
+| <a name="field-service" href="#field-service">service</a>             | The service offered by the product type.             | text<br/>Read only                      |           |
+| <a name="field-products" href="#field-products">products</a>          | Examples of products belonging to this product type. | text<br/>Read only                      |           |
 
 ## Validation Rules
 
@@ -125,8 +117,6 @@ For party type abbreviations, check [the auth docs](../auth.md#party)
 |-------------|------|-----|----|----|------|----|----|----|----|
 | id          |      | R   | R  | R  | R    | R  | R  | R  | R  |
 | business_id |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| category    |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| market      |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| market_type |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| examples    |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| notes       |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| name        |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| service     |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| products    |      | R   | R  | R  | R    | R  | R  | R  | R  |

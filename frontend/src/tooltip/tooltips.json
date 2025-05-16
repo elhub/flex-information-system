@@ -121,11 +121,9 @@
     "product_type": {
         "id": "Unique surrogate identifier.",
         "business_id": "The code for this product type.",
-        "category": "The category of the product type.",
-        "market": "The market which the product type belongs to.",
-        "market_type": "The type of market which the product type belongs to.",
-        "examples": "Examples of products belonging to this product type.",
-        "notes": "Additional information about a product type."
+        "name": "The name of the product type.",
+        "service": "The service offered by the product type.",
+        "products": "Examples of products belonging to this product type."
     },
     "system_operator_product_type": {
         "id": "Unique surrogate identifier.",
