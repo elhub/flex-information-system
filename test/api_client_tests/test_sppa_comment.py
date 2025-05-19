@@ -13,6 +13,9 @@ from flex.models import (
     ServiceProviderProductApplicationCommentVisibility,
     ErrorMessage,
 )
+from flex.api.product_type import (
+    list_product_type,
+)
 from flex.api.system_operator_product_type import (
     create_system_operator_product_type,
 )
@@ -37,6 +40,9 @@ def data():
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
+    pts = list_product_type.sync(client=client_fiso)
+    assert isinstance(pts, list)
+
     # setup : create a SPPA
 
     # get fresh SO and ask for a product type
@@ -47,7 +53,7 @@ def data():
         client=client_fiso,
         body=SystemOperatorProductTypeCreateRequest(
             system_operator_id=so_id,
-            product_type_id=5,
+            product_type_id=cast(int, pts[4].id),
         ),
     )
     assert not isinstance(sopt, ErrorMessage)
@@ -61,7 +67,7 @@ def data():
         body=ServiceProviderProductApplicationCreateRequest(
             service_provider_id=sp_id,
             system_operator_id=so_id,
-            product_type_ids=[5],
+            product_type_ids=[cast(int, pts[4].id)],
         ),
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
