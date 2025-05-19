@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:product-type-create runOnChange:false endDelimiter:--
+--validCheckSum 9:f114c68992f56fb2b3fc647421a7ae9b
 CREATE TABLE IF NOT EXISTS product_type (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id text NOT NULL UNIQUE CHECK (

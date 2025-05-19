@@ -177,6 +177,7 @@ databaseChangeLog:
   - changeSet:
       id: product-type-reference-data
       author: flex
+      validCheckSum: 9:749705508d5eadeaf33d1848d22d5545
       changes:
         - loadUpdateData:
             file: ./reference_data/product_type.csv
