@@ -486,6 +486,8 @@ DECLARE
   cu_id bigint;
   so_id bigint;
 
+  pt_id bigint;
+
   so_mga_business_id text;
   so_mga_id bigint;
 
@@ -611,13 +613,17 @@ BEGIN
     );
   end if;
 
+  SELECT id INTO pt_id
+  FROM flex.product_type AS pt
+  WHERE pt.business_id = 'manual_congestion';
+
   -- Product type
   INSERT INTO flex.system_operator_product_type (
     system_operator_id,
     product_type_id
   ) VALUES (
     so_id,
-    1
+    pt_id
   );
 
   so_mga_business_id := test_data.forge_valid_eic(42, in_entity_name);
@@ -789,7 +795,7 @@ BEGIN
   INSERT INTO flex.service_provider_product_application (
     service_provider_id, system_operator_id, product_type_ids
   ) VALUES (
-    sp_id, so_id, array[1]
+    sp_id, so_id, array[pt_id]
   ) RETURNING id INTO sppa_id;
 
   UPDATE flex.service_provider_product_application
