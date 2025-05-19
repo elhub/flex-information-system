@@ -7,4 +7,4 @@ automatic_fast_frequency,Fast Frequency,balancing,"FFR Profil, FFR Flex"
 automatic_frequency_containment,Frequency Containment,balancing,"FCR-N, FCR-D"
 automatic_frequency_restoration,Automatic Frequency Restoration,balancing,aFRR CM
 manual_frequency_restoration,Manual Frequency Restoration,"balancing","mFRR EAM, mFRR CM"
-manual_frequency_restoration_disruption,Frequency Disruption,"balancing","mFRR-D"
+manual_frequency_restoration_disruption,Frequency Restoration Disruption,"balancing","mFRR-D"

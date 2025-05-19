@@ -84,7 +84,7 @@ WHERE business_id = 'manual_frequency_restoration_capacity';
 UPDATE flex.product_type
 SET
     business_id = 'manual_frequency_restoration_disruption',
-    name = 'Frequency Disruption',
+    name = 'Frequency Restoration Disruption',
     service = 'balancing',
     products = 'mFRR-D'
 WHERE business_id = 'manual_frequency_restoration_activation';
