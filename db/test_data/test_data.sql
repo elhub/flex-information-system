@@ -615,9 +615,10 @@ BEGIN
   INSERT INTO flex.system_operator_product_type (
     system_operator_id,
     product_type_id
-  ) SELECT so_id, id
-  FROM flex.product_type pt
-  WHERE pt.business_id in ('manual_congestion_activation', 'manual_congestion_capacity');
+  ) VALUES (
+    so_id,
+    1
+  );
 
   so_mga_business_id := test_data.forge_valid_eic(42, in_entity_name);
 

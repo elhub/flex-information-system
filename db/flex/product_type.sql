@@ -7,21 +7,9 @@ CREATE TABLE IF NOT EXISTS product_type (
     business_id text NOT NULL UNIQUE CHECK (
         char_length(business_id) <= 64
     ),
-    category text NOT NULL CHECK (
-        char_length(category) <= 64
-    ),
-    market text NOT NULL CHECK (
-        char_length(market) <= 64
-    ),
-    market_type text NOT NULL CHECK (
-        char_length(market_type) <= 64
-    ),
-    examples text NULL CHECK (
-        char_length(examples) <= 128
-    ),
-    notes text NULL CHECK (
-        char_length(notes) <= 1024
-    )
+    name text,
+    service text,
+    products text
 );
 
 -- changeset flex:product-type-ids-exists runOnChange:false endDelimiter:--
