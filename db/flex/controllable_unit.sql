@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:controllable-unit-create runOnChange:false endDelimiter:--
+--validCheckSum: 9:054c5c4905551cea0bb2299fd88b8fdf
 CREATE TABLE IF NOT EXISTS controllable_unit (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id uuid UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()) CHECK (
