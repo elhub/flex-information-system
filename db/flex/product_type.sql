@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS product_type (
     business_id text NOT NULL UNIQUE CHECK (
         char_length(business_id) <= 64
     ),
-    name text,
-    service text,
+    name text NOT NULL,
+    service text NOT NULL,
     products text
 );
 

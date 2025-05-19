@@ -199,3 +199,7 @@ ALTER TABLE flex.product_type DROP COLUMN market;
 ALTER TABLE flex.product_type DROP COLUMN market_type;
 ALTER TABLE flex.product_type DROP COLUMN examples;
 ALTER TABLE flex.product_type DROP COLUMN notes;
+
+-- also make the new fields non-nullable once they are filled
+ALTER TABLE flex.product_type ALTER COLUMN name SET NOT NULL;
+ALTER TABLE flex.product_type ALTER COLUMN service SET NOT NULL;
