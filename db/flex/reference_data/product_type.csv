@@ -1,12 +1,10 @@
-BUSINESS_ID,CATEGORY,MARKET,MARKET_TYPE,EXAMPLES,NOTES
-manual_congestion_activation,congestion,local,activation,ShortFlex,Activation
-manual_congestion_capacity,congestion,local,capacity,LongFlex,Capacity
-automatic_congestion_capacity,congestion,local,capped,MaxUsage,Capacity restriction for a period
-automatic_voltage_capacity,voltage,local,capacity,,Automatic reserves for voltage control
-manual_voltage_capacity,voltage,local,capacity,,Manual reserves for voltage control
-automatic_fast_frequency_capacity,balancing,balancing,capacity,"FRR Profil, FRR Flex",
-automatic_frequency_containment_capacity,balancing,balancing,capacity,"FCR-N, FCR-D","For normal operation 49,9-50,1Hz. For disturbances outside normal."
-automatic_frequency_restoration_activation,balancing,balancing,activation,aFRR,There is currently no activation market for aFFR
-automatic_frequency_restoration_capacity,balancing,balancing,capacity,aFRR CM,Capacity
-manual_frequency_restoration_activation,"balancing & congestion",balancing,activation,"mFRR EAM, mFRR-D, EAM","Activation, Activation for larger disruptions, Congestion due to “spesialreguleringer” from Statnett"
-manual_frequency_restoration_capacity,"balancing & congestion",balancing,capacity,"mFRR CM, mFRR-D CM","Capacity, Capacity for larger disruptions, Congestion due to “spesialreguleringer” from Statnett"
+BUSINESS_ID,NAME,SERVICE,PRODUCTS
+manual_congestion,Manual Congestion,congestion management,"LongFlex, ShortFlex"
+automatic_congestion,Automatic Congestion,congestion management,MaxUsage
+automatic_voltage,Automatic Voltage,voltage control,
+manual_voltage,Manual Voltage,voltage control,
+automatic_fast_frequency,Fast Frequency,balancing,"FFR Profil, FFR Flex"
+automatic_frequency_containment,Frequency Containment,balancing,"FCR-N, FCR-D"
+automatic_frequency_restoration,Automatic Frequency Restoration,balancing,aFRR CM
+manual_frequency_restoration,Manual Frequency Restoration,"balancing","mFRR EAM, mFRR CM"
+manual_frequency_restoration_disruption,Frequency Restoration Disruption,"balancing","mFRR-D"

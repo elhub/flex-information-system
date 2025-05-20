@@ -12,6 +12,9 @@ from flex.models import (
     ServiceProviderProductApplicationStatus,
     ErrorMessage,
 )
+from flex.api.product_type import (
+    list_product_type,
+)
 from flex.api.system_operator_product_type import (
     create_system_operator_product_type,
 )
@@ -46,13 +49,16 @@ def test_sppa_fiso(sts):
     client_so = sts.fresh_client(TestEntity.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
+    pts = list_product_type.sync(client=client_fiso)
+    assert isinstance(pts, list)
+
     # ask for some product types before creating SPPA for this SO
-    for pt_id in [1, 2, 3]:
+    for pt_id in [pt.id for pt in pts[:3]]:
         sopt = create_system_operator_product_type.sync(
             client=client_fiso,
             body=SystemOperatorProductTypeCreateRequest(
                 system_operator_id=so_id,
-                product_type_id=pt_id,
+                product_type_id=cast(int, pt_id),
             ),
         )
         assert isinstance(sopt, SystemOperatorProductTypeResponse)
@@ -64,7 +70,7 @@ def test_sppa_fiso(sts):
         body=ServiceProviderProductApplicationCreateRequest(
             service_provider_id=sp_id,
             system_operator_id=so_id,
-            product_type_ids=[1, 2],
+            product_type_ids=[cast(int, pt.id) for pt in pts[:2]],
         ),
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
@@ -103,14 +109,17 @@ def test_sppa_sp(sts):
     client_other_so = sts.fresh_client(TestEntity.TEST, "SO")
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
+    pts = list_product_type.sync(client=client_fiso)
+    assert isinstance(pts, list)
+
     # qualify the SP for 1 and 2 for the other SO
 
-    for pt_id in [1, 2]:
+    for pt_id in [pt.id for pt in pts[:2]]:
         sopt = create_system_operator_product_type.sync(
             client=client_fiso,
             body=SystemOperatorProductTypeCreateRequest(
                 system_operator_id=other_so_id,
-                product_type_id=pt_id,
+                product_type_id=cast(int, pt_id),
             ),
         )
         assert isinstance(sopt, SystemOperatorProductTypeResponse)
@@ -120,7 +129,7 @@ def test_sppa_sp(sts):
         body=ServiceProviderProductApplicationCreateRequest(
             service_provider_id=sp_id,
             system_operator_id=other_so_id,
-            product_type_ids=[1],
+            product_type_ids=[cast(int, pts[0].id)],
         ),
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
@@ -131,7 +140,7 @@ def test_sppa_sp(sts):
         client=client_sp,
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
-            product_type_ids=[1, 2],
+            product_type_ids=[cast(int, pt.id) for pt in pts[:2]],
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -156,14 +165,13 @@ def test_sppa_sp(sts):
         body=ServiceProviderProductApplicationCreateRequest(
             service_provider_id=sp_id,
             system_operator_id=so_id,
-            product_type_ids=[1, 2],
+            product_type_ids=[cast(int, pt.id) for pt in pts[:2]],
         ),
     )
     assert isinstance(sppa, ErrorMessage)
 
     # fix it by linking product types to the SO
-    # (product type 1 is already linked in the test data)
-    for pt_id in [1, 2, 6, 7, 8]:
+    for pt_id in [cast(int, pt.id) for pt in pts[:5]]:
         sopt = create_system_operator_product_type.sync(
             client=client_fiso,
             body=SystemOperatorProductTypeCreateRequest(
@@ -180,7 +188,7 @@ def test_sppa_sp(sts):
         body=ServiceProviderProductApplicationCreateRequest(
             service_provider_id=sp_id,
             system_operator_id=so_id,
-            product_type_ids=[1, 2],
+            product_type_ids=[cast(int, pt.id) for pt in pts[:2]],
         ),
     )
     assert isinstance(sppa, ErrorMessage)
@@ -191,7 +199,7 @@ def test_sppa_sp(sts):
         body=ServiceProviderProductApplicationCreateRequest(
             service_provider_id=sp_id,
             system_operator_id=so_id,
-            product_type_ids=[1, 2],
+            product_type_ids=[cast(int, pt.id) for pt in pts[:2]],
         ),
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
@@ -220,7 +228,7 @@ def test_sppa_sp(sts):
         client=client_sp,
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
-            product_type_ids=[1],
+            product_type_ids=[cast(int, pts[0].id)],
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -234,6 +242,9 @@ def test_sppa_so(sts):
 
     client_so = sts.fresh_client(TestEntity.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
+
+    pts = list_product_type.sync(client=client_fiso)
+    assert isinstance(pts, list)
 
     all_sppas = list_service_provider_product_application.sync(
         client=client_fiso,
@@ -256,7 +267,7 @@ def test_sppa_so(sts):
         client=client_fiso,
         body=SystemOperatorProductTypeCreateRequest(
             system_operator_id=so_id,
-            product_type_id=1,
+            product_type_id=cast(int, pts[0].id),
         ),
     )
     assert isinstance(sopt, SystemOperatorProductTypeResponse)
@@ -266,7 +277,7 @@ def test_sppa_so(sts):
         body=ServiceProviderProductApplicationCreateRequest(
             service_provider_id=sp_id,
             system_operator_id=so_id,
-            product_type_ids=[1],
+            product_type_ids=[cast(int, pts[0].id)],
         ),
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)

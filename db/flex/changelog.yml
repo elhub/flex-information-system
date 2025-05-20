@@ -99,6 +99,9 @@ databaseChangeLog:
       file: ./product_type.sql
       relativeToChangelogFile: true
   - include:
+      file: ./product_type_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_provider_product_application.sql
       relativeToChangelogFile: true
   - include:
@@ -174,6 +177,7 @@ databaseChangeLog:
   - changeSet:
       id: product-type-reference-data
       author: flex
+      validCheckSum: 9:749705508d5eadeaf33d1848d22d5545
       changes:
         - loadUpdateData:
             file: ./reference_data/product_type.csv

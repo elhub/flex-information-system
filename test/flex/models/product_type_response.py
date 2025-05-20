@@ -14,21 +14,17 @@ class ProductTypeResponse:
 
     Attributes:
         id (Union[Unset, int]): Unique surrogate identifier. Example: 4.
-        business_id (Union[Unset, str]): The code for this product type. Example: manual_congestion_activation.
-        category (Union[Unset, str]): The category of the product type. Example: congestion.
-        market (Union[Unset, str]): The market which the product type belongs to. Example: local.
-        market_type (Union[Unset, str]): The type of market which the product type belongs to. Example: activation.
-        examples (Union[Unset, str]): Examples of products belonging to this product type. Example: ShortFlex.
-        notes (Union[Unset, str]): Additional information about a product type.
+        business_id (Union[Unset, str]): The code for this product type. Example: manual_congestion.
+        name (Union[Unset, str]): The name of the product type. Example: Manual Congestion.
+        service (Union[Unset, str]): The service offered by the product type. Example: congestion management.
+        products (Union[Unset, str]): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
     """
 
     id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
-    category: Union[Unset, str] = UNSET
-    market: Union[Unset, str] = UNSET
-    market_type: Union[Unset, str] = UNSET
-    examples: Union[Unset, str] = UNSET
-    notes: Union[Unset, str] = UNSET
+    name: Union[Unset, str] = UNSET
+    service: Union[Unset, str] = UNSET
+    products: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -36,15 +32,11 @@ class ProductTypeResponse:
 
         business_id = self.business_id
 
-        category = self.category
+        name = self.name
 
-        market = self.market
+        service = self.service
 
-        market_type = self.market_type
-
-        examples = self.examples
-
-        notes = self.notes
+        products = self.products
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -53,16 +45,12 @@ class ProductTypeResponse:
             field_dict["id"] = id
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
-        if category is not UNSET:
-            field_dict["category"] = category
-        if market is not UNSET:
-            field_dict["market"] = market
-        if market_type is not UNSET:
-            field_dict["market_type"] = market_type
-        if examples is not UNSET:
-            field_dict["examples"] = examples
-        if notes is not UNSET:
-            field_dict["notes"] = notes
+        if name is not UNSET:
+            field_dict["name"] = name
+        if service is not UNSET:
+            field_dict["service"] = service
+        if products is not UNSET:
+            field_dict["products"] = products
 
         return field_dict
 
@@ -73,24 +61,18 @@ class ProductTypeResponse:
 
         business_id = d.pop("business_id", UNSET)
 
-        category = d.pop("category", UNSET)
+        name = d.pop("name", UNSET)
 
-        market = d.pop("market", UNSET)
+        service = d.pop("service", UNSET)
 
-        market_type = d.pop("market_type", UNSET)
-
-        examples = d.pop("examples", UNSET)
-
-        notes = d.pop("notes", UNSET)
+        products = d.pop("products", UNSET)
 
         product_type_response = cls(
             id=id,
             business_id=business_id,
-            category=category,
-            market=market,
-            market_type=market_type,
-            examples=examples,
-            notes=notes,
+            name=name,
+            service=service,
+            products=products,
         )
 
         product_type_response.additional_properties = d

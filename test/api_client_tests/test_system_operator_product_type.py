@@ -10,6 +10,9 @@ from flex.models import (
     SystemOperatorProductTypeHistoryResponse,
     ErrorMessage,
 )
+from flex.api.product_type import (
+    list_product_type,
+)
 from flex.api.system_operator_product_type import (
     list_system_operator_product_type,
     list_system_operator_product_type_history,
@@ -82,6 +85,9 @@ def test_sopt_common(sts):
 def test_sopt_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
+    pts = list_product_type.sync(client=client_fiso)
+    assert isinstance(pts, list)
+
     sopts = list_system_operator_product_type.sync(client=client_fiso)
     assert isinstance(sopts, list)
 
@@ -100,7 +106,7 @@ def test_sopt_fiso(sts):
         client=client_fiso,
         body=SystemOperatorProductTypeCreateRequest(
             system_operator_id=so_id,
-            product_type_id=5,
+            product_type_id=cast(int, pts[4].id),
         ),
     )
     assert isinstance(sopt, SystemOperatorProductTypeResponse)
@@ -125,12 +131,15 @@ def test_sopt_so(sts):
     client_other_so = sts.fresh_client(TestEntity.COMMON, "SO")
     other_so_id = sts.get_userinfo(client_other_so)["party_id"]
 
+    pts = list_product_type.sync(client=client_so)
+    assert isinstance(pts, list)
+
     # SO1 creates a SOPT with SO2 as SO: ko
     sopt = create_system_operator_product_type.sync(
         client=client_so,
         body=SystemOperatorProductTypeCreateRequest(
             system_operator_id=other_so_id,
-            product_type_id=3,
+            product_type_id=cast(int, pts[2].id),
         ),
     )
     assert isinstance(sopt, ErrorMessage)
@@ -140,7 +149,7 @@ def test_sopt_so(sts):
         client=client_so,
         body=SystemOperatorProductTypeCreateRequest(
             system_operator_id=so_id,
-            product_type_id=3,
+            product_type_id=cast(int, pts[2].id),
         ),
     )
     assert isinstance(sopt, SystemOperatorProductTypeResponse)
