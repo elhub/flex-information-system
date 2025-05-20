@@ -984,6 +984,11 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		Role:           "flex_entity",
 	}
 
+	slog.InfoContext(
+		ctx, "successful client credentials login",
+		"entity", entityID, "eid", eid,
+	)
+
 	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
@@ -1113,6 +1118,11 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 		EntityID:       entityID,
 		ExternalID:     eid,
 	}
+
+	slog.InfoContext(
+		ctx, "successful token exchange login",
+		"entity", entityID, "party", assumePartyID, "eid", eid,
+	)
 
 	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
@@ -1302,6 +1312,11 @@ func (auth *API) jwtBearerHandler(
 		PartyID:        partyID,
 		Role:           "flex_entity",
 	}
+
+	slog.InfoContext(
+		ctx, "successful JWT bearer login",
+		"entity", entityID, "party", partyID, "eid", externalID,
+	)
 
 	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
