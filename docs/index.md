@@ -15,4 +15,11 @@ Elhub AS.
     offers authentication and authorisation features, it should _not_ be
     considered as a production-level system. Please make sure the data used
     while testing is _fictitious_ and does not contain _any_ sensitive
-    information.
+    information (_e.g._, health data, sexual orientation, _etc_).
+
+    Our system stores read-only [historical data](./time.md#record-time) for
+    some of its resources. This means that wrong data will remain in the system
+    even though the last version of the resource is corrected.
+    Should you inadvertently add sensitive data to a resource, please
+    [contact us](mailto:post@elhub.no) so that we can manually clean the
+    problematic records.

@@ -23,7 +23,19 @@ export const Dashboard = () => {
             though it offers authentication and authorisation features, it
             should <i>not</i> be considered as a production-level system. Please
             make sure the data used while testing is <i>fictitious</i> and does
-            not contain <i>any</i> sensitive information.
+            not contain <i>any</i> sensitive information (<i>e.g.</i>, health
+            data, sexual orientation, <i>etc</i>).
+            <br />
+            <br />
+            Our system stores read-only{" "}
+            <a href={`${serverURL}/docs/time/#record-time`}>
+              historical data
+            </a>{" "}
+            for some of its resources. This means that wrong data will remain in
+            the system even though the last version of the resource is
+            corrected. Should you inadvertently add sensitive data to a
+            resource, please <a href="mailto:post@elhub.no">contact us</a> so
+            that we can manually clean the problematic records.
             <br />
             <br />
             As a test system, it is also subject to frequent updates, and
