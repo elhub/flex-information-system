@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW controllable_unit_end_user AS (
             ON cu.accounting_point_id = apeu.accounting_point_id
 );
 
--- changeset flex:controllable-unit-end-user-grants runOnChange:true endDelimiter:;
+-- changeset flex:controllable-unit-end-user-grants runAlways:true endDelimiter:;
 GRANT SELECT ON TABLE controllable_unit_end_user
 TO flex_common;
 
