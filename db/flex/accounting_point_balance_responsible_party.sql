@@ -24,7 +24,7 @@ WITH (security_invoker = true) AS (
                 AND ap_es.valid_time_range && es_br.valid_time_range
 );
 
--- changeset flex:accounting-point-balance-responsible-party-grants runOnChange:true endDelimiter:;
+-- changeset flex:accounting-point-balance-responsible-party-grants runAlways:true endDelimiter:;
 GRANT SELECT ON TABLE accounting_point_balance_responsible_party
 TO flex_internal_event_notification;
 

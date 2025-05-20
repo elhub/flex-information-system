@@ -2,7 +2,8 @@
 -- Manually managed file
 
 -- changeset flex:accounting-point-service-provider-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW accounting_point_service_provider AS (
+CREATE OR REPLACE VIEW accounting_point_service_provider
+WITH (security_invoker = false) AS (
     SELECT
         cu.accounting_point_id,
         cusp.service_provider_id,
@@ -13,7 +14,7 @@ CREATE OR REPLACE VIEW accounting_point_service_provider AS (
     WHERE cusp.valid_time_range IS NOT null
 );
 
--- changeset flex:accounting-point-service-provider-grants runOnChange:true endDelimiter:;
+-- changeset flex:accounting-point-service-provider-grants runAlways:true endDelimiter:;
 GRANT SELECT ON TABLE accounting_point_service_provider
 TO flex_common;
 

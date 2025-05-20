@@ -3,7 +3,10 @@
 
 -- changeset flex:api-accounting-point-balance-responsible-party-create endDelimiter:-- runAlways:true
 CREATE OR REPLACE VIEW api.accounting_point_balance_responsible_party
-WITH (security_invoker = true) AS (
+-- We are enforching "RLS" in the view definition. Therefore we want
+--  * security definer (invoker = false) to avoid the performance hit of RLS
+--  * security barrier since it is considered good practice ref https://www.postgresql.org/docs/current/rules-privileges.html
+WITH (security_invoker = false, security_barrier = true) AS (
     -- RLS: APBRP-FISO001
     SELECT
         id,

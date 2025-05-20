@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW controllable_unit_energy_supplier AS (
             ON cu.accounting_point_id = apes.accounting_point_id
 );
 
--- changeset flex:controllable-unit-energy-supplier-grants runOnChange:true endDelimiter:;
+-- changeset flex:controllable-unit-energy-supplier-grants runAlways:true endDelimiter:;
 GRANT SELECT ON TABLE controllable_unit_energy_supplier
 TO flex_common;
 
