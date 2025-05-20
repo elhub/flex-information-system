@@ -106,8 +106,6 @@ func NewAPI(
 	}
 }
 
-const tokenDecodingLogContext = "token decoding"
-
 // TokenDecodingMiddleware decodes the token and sets it as RequestDetails in the context.
 //
 //nolint:funlen
@@ -124,10 +122,7 @@ func (auth *API) TokenDecodingMiddleware(
 			// Empty auth header and missing cookie means anonymous user.
 			rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
 			authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
-			slog.InfoContext(
-				ctx, "no auth header/cookie: user will be anonymous",
-				"context", tokenDecodingLogContext,
-			)
+			slog.InfoContext(ctx, "no auth header/cookie: user will be anonymous")
 			next.ServeHTTP(w, req.WithContext(authenticatedCtx))
 			return
 		}
@@ -151,16 +146,10 @@ func (auth *API) TokenDecodingMiddleware(
 				})
 				return
 			}
-			slog.InfoContext(
-				ctx, "found token in auth header",
-				"context", tokenDecodingLogContext,
-			)
+			slog.DebugContext(ctx, "found token in auth header")
 		} else { // no authorization header means we must use the cookie
 			tokenStr = sessionCookie.Value
-			slog.InfoContext(
-				ctx, "found token in cookie",
-				"context", tokenDecodingLogContext,
-			)
+			slog.DebugContext(ctx, "found token in cookie")
 
 			// we set the header for cases where the request is proxied or forwarded
 			// to another upstream service
@@ -181,10 +170,7 @@ func (auth *API) TokenDecodingMiddleware(
 				Error:            oauthErrorInvalidRequest,
 				ErrorDescription: "unable to verify and validate token",
 			})
-			slog.InfoContext(
-				ctx, "invalid token",
-				"context", tokenDecodingLogContext,
-			)
+			slog.InfoContext(ctx, "invalid token")
 			return
 		}
 
@@ -197,7 +183,6 @@ func (auth *API) TokenDecodingMiddleware(
 			ctx, "token-validated user",
 			"role", token.Role,
 			"externalID", token.ExternalID,
-			"context", tokenDecodingLogContext,
 		)
 		next.ServeHTTP(w, req.WithContext(authenticatedCtx))
 	})
