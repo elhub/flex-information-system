@@ -42,9 +42,9 @@ WITH REPLICATION NOINHERIT LOGIN PASSWORD 'replication_password';
 -- without having to add them all-over-the-place.
 CREATE ROLE flex_internal WITH NOINHERIT NOLOGIN;
 
--- flex_inspect is used for read-only access to the production database, for
--- debug purposes, without risk of interfering with the production data.
-CREATE ROLE flex_inspect WITH NOINHERIT NOLOGIN BYPASSRLS;
+-- flex_operation_readonly is used for read-only access to the production
+-- database, for debug purposes, without risk of interfering with the data.
+CREATE ROLE flex_operation_readonly WITH NOINHERIT NOLOGIN BYPASSRLS;
 
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
 GRANT flex_internal TO flex_internal_event_notification;

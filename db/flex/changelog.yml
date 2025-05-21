@@ -5,7 +5,7 @@ databaseChangeLog:
       author: flex
       runAlways: true
       changes:
-        - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous, flex_internal, flex_inspect
+        - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous, flex_internal, flex_operation_readonly
   # Dropping policies to provide a clean slate on every migration
   - changeSet:
       id: drop-policies
@@ -194,8 +194,8 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - changeSet:
-      id: flex-inspect-grant
+      id: flex-operation-readonly-grant
       author: flex
       runAlways: true
       changes:
-        - sql: GRANT SELECT ON ALL TABLES IN SCHEMA flex TO flex_inspect
+        - sql: GRANT SELECT ON ALL TABLES IN SCHEMA flex TO flex_operation_readonly
