@@ -42,7 +42,7 @@ import { apiURL, serverURL, httpClient, authURL } from "./httpConfig";
 import { authProvider, sessionInfoKey } from "./auth";
 
 import { Dashboard } from "./Dashboard";
-import { Breadcrumbs } from "./Breadcrumbs";
+import { Breadcrumbs } from "./components/Breadcrumbs";
 import { elhubTheme } from "./theme";
 
 import { LoginPage } from "./LoginPage";

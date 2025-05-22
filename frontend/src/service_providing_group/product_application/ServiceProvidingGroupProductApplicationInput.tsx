@@ -8,14 +8,14 @@ import {
   useTranslateLabel,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
-import { Toolbar } from "../../Toolbar";
+import { Toolbar } from "../../components/Toolbar";
 import { useLocation } from "react-router-dom";
 import {
   PartyReferenceInput,
   InputStack,
   AutocompleteReferenceInput,
 } from "../../auth";
-import { DateTimeInput } from "../../datetime";
+import { DateTimeInput } from "../../components/datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

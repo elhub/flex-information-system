@@ -13,7 +13,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { DateField } from "../../datetime";
+import { DateField } from "../../components/datetime";
 
 export const ServiceProvidingGroupGridPrequalificationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)

@@ -3,7 +3,7 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 import { styled } from "@mui/material/styles";
 import * as React from "react";
-import { serverURL } from "./httpConfig";
+import { serverURL } from "../httpConfig";
 
 export const ValidTimeTooltip = styled(({ className, ...props }: any) => {
   const docsURL = `${serverURL}/docs/time`;

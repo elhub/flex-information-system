@@ -13,12 +13,12 @@ import {
   ResourceHistoryButton,
   NestedResourceHistoryButton,
   RestoreButton,
-} from "../history";
-import { DateField } from "../datetime";
+} from "../components/history";
+import { DateField } from "../components/datetime";
 import { TechnicalResourceList } from "./technical_resource/TechnicalResourceList";
-import { UnitField } from "../unitComponents";
+import { UnitField } from "../components/unitComponents";
 import { EventButton } from "../event/EventButton";
-import { IdentityField } from "../IdentityField";
+import { IdentityField } from "../components/IdentityField";
 import { ControllableUnitBalanceResponsiblePartyList } from "./balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 
 export const ControllableUnitShow = () => {

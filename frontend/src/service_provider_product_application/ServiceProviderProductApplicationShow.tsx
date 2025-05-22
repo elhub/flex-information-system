@@ -11,11 +11,14 @@ import {
 } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack, Chip } from "@mui/material";
-import { NestedResourceHistoryButton, ResourceHistoryButton } from "../history";
-import { DateField } from "../datetime";
+import {
+  NestedResourceHistoryButton,
+  ResourceHistoryButton,
+} from "../components/history";
+import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { ServiceProviderProductApplicationCommentList } from "./comment/ServiceProviderProductApplicationCommentList";
-import { IdentityField } from "../IdentityField";
+import { IdentityField } from "../components/IdentityField";
 
 export const ServiceProviderProductApplicationShow = () => {
   const resource = useResourceContext()!;

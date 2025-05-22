@@ -6,7 +6,7 @@ import {
 } from "react-admin";
 import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../Toolbar";
+import { Toolbar } from "../../components/Toolbar";
 
 // common layout to create and edit pages
 export const EntityClientInput = () => {

@@ -4,7 +4,7 @@ import {
   Datagrid,
   PartyReferenceInput,
 } from "../auth";
-import { DateField } from "../datetime";
+import { DateField } from "../components/datetime";
 
 export const PartyList = () => {
   const partyFilters = [

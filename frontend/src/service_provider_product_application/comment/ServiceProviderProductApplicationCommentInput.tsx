@@ -8,7 +8,7 @@ import {
 import { Typography, Stack } from "@mui/material";
 import { InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../Toolbar";
+import { Toolbar } from "../../components/Toolbar";
 import { RichTextInput } from "ra-input-rich-text";
 
 // keep only the fields that map to the UI

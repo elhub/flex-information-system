@@ -11,8 +11,8 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
-import { DateField } from "../../datetime";
-import { IdentityField } from "../../IdentityField";
+import { DateField } from "../../components/datetime";
+import { IdentityField } from "../../components/IdentityField";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 

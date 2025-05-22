@@ -8,8 +8,8 @@ import {
   useTranslateLabel,
 } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
-import { DateField } from "../datetime";
-import { QuickFilter } from "../QuickFilter";
+import { DateField } from "../components/datetime";
+import { QuickFilter } from "../components/QuickFilter";
 
 export const SystemOperatorProductTypeList = () => {
   const translateLabel = useTranslateLabel();

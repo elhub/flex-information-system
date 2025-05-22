@@ -14,7 +14,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { DateField } from "../../datetime";
+import { DateField } from "../../components/datetime";
 
 export const ControllableUnitServiceProviderList = () => {
   // id of the controllable unit whose relations we want to get

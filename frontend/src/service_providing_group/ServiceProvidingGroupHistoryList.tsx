@@ -1,8 +1,8 @@
 import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
-import { historyRowClick } from "../history";
-import { DateField } from "../datetime";
+import { historyRowClick } from "../components/history";
+import { DateField } from "../components/datetime";
 
 export const ServiceProvidingGroupHistoryList = () => {
   const { service_providing_group_id } = useParams();

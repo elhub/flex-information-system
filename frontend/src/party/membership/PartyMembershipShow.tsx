@@ -1,10 +1,10 @@
 import { ReferenceField, Show, SimpleShowLayout, TextField } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
-import { DateField } from "../../datetime";
-import { NestedResourceHistoryButton } from "../../history";
+import { DateField } from "../../components/datetime";
+import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../IdentityField";
+import { IdentityField } from "../../components/IdentityField";
 
 export const PartyMembershipShow = () => (
   <Show>

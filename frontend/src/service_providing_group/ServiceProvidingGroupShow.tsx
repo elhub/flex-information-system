@@ -7,13 +7,16 @@ import {
 } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
-import { NestedResourceHistoryButton, ResourceHistoryButton } from "../history";
+import {
+  NestedResourceHistoryButton,
+  ResourceHistoryButton,
+} from "../components/history";
 import { ServiceProvidingGroupMembershipList } from "./membership/ServiceProvidingGroupMembershipList";
-import { DateField } from "../datetime";
+import { DateField } from "../components/datetime";
 import { ServiceProvidingGroupGridPrequalificationList } from "./grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
 import { EventButton } from "../event/EventButton";
 import { ServiceProvidingGroupProductApplicationList } from "./product_application/ServiceProvidingGroupProductApplicationList";
-import { IdentityField } from "../IdentityField";
+import { IdentityField } from "../components/IdentityField";
 
 export const ServiceProvidingGroupShow = () => {
   const resource = useResourceContext()!;

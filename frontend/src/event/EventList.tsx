@@ -1,6 +1,6 @@
 import { List, TextField } from "react-admin";
 import { Datagrid } from "../auth";
-import { DateField } from "../datetime";
+import { DateField } from "../components/datetime";
 
 export const EventList = () => (
   <List perPage={25} sort={{ field: "id", order: "DESC" }} empty={false}>

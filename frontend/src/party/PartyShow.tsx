@@ -8,10 +8,13 @@ import {
 import { PartyMembershipList } from "./membership/PartyMembershipList";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
-import { NestedResourceHistoryButton, ResourceHistoryButton } from "../history";
-import { DateField } from "../datetime";
+import {
+  NestedResourceHistoryButton,
+  ResourceHistoryButton,
+} from "../components/history";
+import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
-import { IdentityField } from "../IdentityField";
+import { IdentityField } from "../components/IdentityField";
 
 export const PartyShow = () => {
   const resource = useResourceContext()!;

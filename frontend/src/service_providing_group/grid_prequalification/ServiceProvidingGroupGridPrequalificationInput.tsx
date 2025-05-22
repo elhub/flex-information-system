@@ -13,8 +13,8 @@ import {
   useCreateOrUpdate,
 } from "../../auth";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../Toolbar";
-import { DateTimeInput } from "../../datetime";
+import { Toolbar } from "../../components/Toolbar";
+import { DateTimeInput } from "../../components/datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

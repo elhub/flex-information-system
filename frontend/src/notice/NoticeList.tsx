@@ -6,7 +6,7 @@ import {
   useRecordContext,
 } from "react-admin";
 import { Datagrid } from "../auth";
-import { ResourceButton } from "../ResourceButton";
+import { ResourceButton } from "../components/ResourceButton";
 
 export const NoticeResourceButton = () => {
   const noticeRecord = useRecordContext()!;
