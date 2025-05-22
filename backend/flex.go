@@ -377,6 +377,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
 	)
 
+	// health check endpoints
+	router.GET("/readyz", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
+
 	slog.InfoContext(ctx, "Running server on server on"+addr)
 
 	err = router.RunWithContext(ctx)
