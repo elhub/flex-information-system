@@ -5,7 +5,7 @@ import {
   AutocompleteReferenceInput,
   useCreateOrUpdate,
 } from "../auth";
-import { Toolbar } from "../Toolbar";
+import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { roleNames } from "../roles";
 import { useEffect } from "react";

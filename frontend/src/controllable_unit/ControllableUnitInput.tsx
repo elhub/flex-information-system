@@ -11,9 +11,9 @@ import {
   InputStack,
   useCreateOrUpdate,
 } from "../auth";
-import { Toolbar } from "../Toolbar";
-import { UnitInput } from "../unitComponents";
-import { DateTimeInput } from "../datetime";
+import { Toolbar } from "../components/Toolbar";
+import { UnitInput } from "../components/unitComponents";
+import { DateTimeInput } from "../components/datetime";
 
 // common layout to create and edit pages
 export const ControllableUnitInput = () => {

@@ -11,12 +11,15 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
-import { NestedResourceHistoryButton, RestoreButton } from "../../history";
+import {
+  NestedResourceHistoryButton,
+  RestoreButton,
+} from "../../components/history";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { DateField } from "../../datetime";
+import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../IdentityField";
+import { IdentityField } from "../../components/IdentityField";
 
 export const ControllableUnitServiceProviderShow = () => {
   const resource = useResourceContext()!;

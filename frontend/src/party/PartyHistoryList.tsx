@@ -1,8 +1,8 @@
 import { List, TextField, ReferenceField } from "react-admin";
 import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
-import { historyRowClick } from "../history";
-import { DateField } from "../datetime";
+import { historyRowClick } from "../components/history";
+import { DateField } from "../components/datetime";
 
 export const PartyHistoryList = () => {
   const { party_id } = useParams();

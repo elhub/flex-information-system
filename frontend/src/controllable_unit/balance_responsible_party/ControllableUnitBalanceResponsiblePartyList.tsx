@@ -8,7 +8,7 @@ import {
   useRecordContext,
 } from "react-admin";
 import { Datagrid } from "../../auth";
-import { DateField } from "../../datetime";
+import { DateField } from "../../components/datetime";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
   // accounting point id of the controllable unit whose BRPs we want to get

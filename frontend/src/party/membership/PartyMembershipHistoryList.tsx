@@ -1,8 +1,8 @@
 import { List, NumberInput, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
-import { DateField } from "../../datetime";
-import { IdentityField } from "../../IdentityField";
+import { DateField } from "../../components/datetime";
+import { IdentityField } from "../../components/IdentityField";
 
 export const PartyMembershipHistoryList = () => {
   const params = useParams();

@@ -9,7 +9,7 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
-import { Toolbar } from "../Toolbar";
+import { Toolbar } from "../components/Toolbar";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

@@ -14,11 +14,11 @@ import {
 import { Typography, Stack } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { NestedResourceHistoryButton } from "../../history";
+import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
-import { DateField } from "../../datetime";
+import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-import { IdentityField } from "../../IdentityField";
+import { IdentityField } from "../../components/IdentityField";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;

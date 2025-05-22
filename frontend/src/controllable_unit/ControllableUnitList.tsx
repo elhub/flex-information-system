@@ -11,7 +11,7 @@ import {
   TopToolbar,
 } from "react-admin";
 import { Datagrid } from "../auth";
-import { DateField } from "../datetime";
+import { DateField } from "../components/datetime";
 import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";

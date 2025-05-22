@@ -11,12 +11,12 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
-import { NestedResourceHistoryButton } from "../../history";
+import { NestedResourceHistoryButton } from "../../components/history";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { DateField } from "../../datetime";
+import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../IdentityField";
+import { IdentityField } from "../../components/IdentityField";
 
 export const ServiceProvidingGroupMembershipShow = () => {
   const resource = useResourceContext()!;

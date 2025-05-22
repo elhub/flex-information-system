@@ -5,7 +5,7 @@ import {
   ReferenceManyField,
 } from "react-admin";
 import { Datagrid } from "../auth";
-import { DateField } from "../datetime";
+import { DateField } from "../components/datetime";
 
 export const ServiceProvidingGroupList = () => (
   <List perPage={25} sort={{ field: "id", order: "DESC" }} empty={false}>

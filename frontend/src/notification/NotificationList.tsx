@@ -6,8 +6,8 @@ import {
   useGetIdentity,
 } from "react-admin";
 import { Datagrid } from "../auth";
-import { DateField } from "../datetime";
-import { QuickFilter } from "../QuickFilter";
+import { DateField } from "../components/datetime";
+import { QuickFilter } from "../components/QuickFilter";
 
 export const NotificationList = () => {
   const { data: identity, isPending } = useGetIdentity();

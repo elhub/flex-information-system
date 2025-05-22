@@ -13,9 +13,9 @@ import {
   InputStack,
 } from "../../auth";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../Toolbar";
-import { ValidTimeTooltip } from "../../ValidTimeTooltip";
-import { MidnightDateInput } from "../../datetime";
+import { Toolbar } from "../../components/Toolbar";
+import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
+import { MidnightDateInput } from "../../components/datetime";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

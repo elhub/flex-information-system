@@ -7,8 +7,8 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
-import { DateField } from "../../datetime";
-import { IdentityField } from "../../IdentityField";
+import { DateField } from "../../components/datetime";
+import { IdentityField } from "../../components/IdentityField";
 
 export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
   const params = useParams();

@@ -7,7 +7,7 @@ import {
 } from "react-admin";
 import { InputStack, useCreateOrUpdate, PartyReferenceInput } from "../auth";
 import { Stack } from "@mui/material";
-import { Toolbar } from "../Toolbar";
+import { Toolbar } from "../components/Toolbar";
 
 // common layout to create and edit pages
 export const ServiceProvidingGroupInput = () => {

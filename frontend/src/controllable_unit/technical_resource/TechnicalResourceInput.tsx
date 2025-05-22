@@ -2,7 +2,7 @@ import { SimpleForm, TextInput, useRecordContext } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../Toolbar";
+import { Toolbar } from "../../components/Toolbar";
 
 const filterRecord = ({ name, controllable_unit_id, details }: any) => ({
   name,

@@ -10,10 +10,10 @@ import {
 } from "react-admin";
 import { Typography, Stack, CircularProgress } from "@mui/material";
 import { FieldStack } from "../auth";
-import { DateField } from "../datetime";
+import { DateField } from "../components/datetime";
 import { AcknowledgeButton } from "./AcknowledgeButton";
-import { ResourceButton } from "../ResourceButton";
-import { IdentityField } from "../IdentityField";
+import { ResourceButton } from "../components/ResourceButton";
+import { IdentityField } from "../components/IdentityField";
 
 export const EventResourceButton = () => {
   const eventRecord = useRecordContext()!;
