@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, createElement } from "react";
 import {
   Admin,
   Resource,
@@ -17,6 +17,8 @@ import {
   useGetIdentity,
   useRedirect,
   useUserMenu,
+  useCreatePath,
+  MenuItemLink,
 } from "react-admin";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -35,6 +37,13 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import Collapse from "@mui/material/Collapse";
+
+import DefaultIcon from "@mui/icons-material/ViewList";
+import {
+  useResourceDefinitions,
+  useGetResourceLabel,
+  useCanAccess,
+} from "ra-core";
 
 import { Route, Navigate } from "react-router-dom";
 import { apiURL, serverURL, httpClient, authURL } from "./httpConfig";
@@ -256,22 +265,83 @@ const SubMenu = ({
   );
 };
 
+// ResourceMenuItem + label override
+export const LabelledResourceMenuItem = ({
+  name,
+  label,
+}: {
+  name: string;
+  label: string;
+}) => {
+  const resources = useResourceDefinitions();
+  const { canAccess, error, isPending } = useCanAccess({
+    action: "list",
+    resource: name,
+  });
+  const getResourceLabel = useGetResourceLabel();
+  const createPath = useCreatePath();
+  if (
+    !resources ||
+    !resources[name] ||
+    isPending ||
+    canAccess === false ||
+    error != null
+  )
+    return null;
+
+  return (
+    <MenuItemLink
+      to={createPath({ resource: name, type: "list" })}
+      state={{ _scrollToTop: true }}
+      primaryText={label ?? <>{getResourceLabel(name, 2)}</>}
+      leftIcon={
+        resources[name]?.icon ? (
+          createElement(resources[name]?.icon)
+        ) : (
+          <DefaultIcon />
+        )
+      }
+    />
+  );
+};
+
 const MainMenu = () => (
   <Menu>
     <Menu.DashboardItem />
     <SubMenu text="Basic resources" defaultOpen>
-      <Menu.ResourceItem name="controllable_unit" />
-      <Menu.ResourceItem name="service_providing_group" />
-      <Menu.ResourceItem name="service_providing_group_membership" />
-      <Menu.ResourceItem name="service_providing_group_grid_prequalification" />
+      <LabelledResourceMenuItem
+        name="controllable_unit"
+        label="CU registrations"
+      />
+      <LabelledResourceMenuItem
+        name="service_providing_group"
+        label="SPG registrations"
+      />
+      <LabelledResourceMenuItem
+        name="service_providing_group_membership"
+        label="SPG memberships"
+      />
+      <LabelledResourceMenuItem
+        name="service_providing_group_grid_prequalification"
+        label="SPG grid prequalifications"
+      />
     </SubMenu>
     <SubMenu text="Product application" defaultOpen>
-      <Menu.ResourceItem name="service_provider_product_application" />
-      <Menu.ResourceItem name="service_providing_group_product_application" />
+      <LabelledResourceMenuItem
+        name="service_provider_product_application"
+        label="SP product applications"
+      />
+      <LabelledResourceMenuItem
+        name="service_providing_group_product_application"
+        label="SPG product applications"
+      />
     </SubMenu>
     <SubMenu text="Product type">
       <Menu.ResourceItem name="product_type" />
-      <Menu.ResourceItem name="system_operator_product_type" />
+      <LabelledResourceMenuItem
+        name="system_operator_product_type"
+        label="SO product types"
+      />
     </SubMenu>
     <SubMenu text="Identity">
       <Menu.ResourceItem name="entity" />
