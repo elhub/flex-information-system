@@ -378,7 +378,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	)
 
 	// health check endpoints
-	router.GET("/readyz", func(ctx *gin.Context) {
+	router.Match([]string{"GET", "HEAD"}, "/readyz", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
