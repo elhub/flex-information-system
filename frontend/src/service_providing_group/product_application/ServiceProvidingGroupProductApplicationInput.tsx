@@ -3,9 +3,7 @@ import {
   SelectInput,
   SimpleForm,
   TextInput,
-  useGetList,
   useRecordContext,
-  useTranslateLabel,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { Toolbar } from "../../components/Toolbar";
@@ -16,6 +14,7 @@ import {
   AutocompleteReferenceInput,
 } from "../../auth";
 import { DateTimeInput } from "../../components/datetime";
+import { ProductTypeInput } from "../../product_type/components";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -42,17 +41,6 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
   const actualRecord = useRecordContext();
   const record = filterRecord({ ...actualRecord, ...overrideRecord });
 
-  const { data } = useGetList("product_type");
-  const translateLabel = useTranslateLabel();
-
-  const productTypes = data?.map((product_type) => {
-    return {
-      id: product_type.id,
-      name: translateLabel({ source: product_type.business_id }),
-    };
-  });
-  productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
-
   return (
     <SimpleForm
       record={record}
@@ -73,11 +61,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             source="procuring_system_operator_id"
             filter={{ type: "system_operator" }}
           />
-          <SelectInput
-            source="product_type_id"
-            validate={required()}
-            choices={productTypes}
-          />
+          <ProductTypeInput source="product_type_id" validate={required()} />
         </InputStack>
         <Typography variant="h6" gutterBottom>
           Application process

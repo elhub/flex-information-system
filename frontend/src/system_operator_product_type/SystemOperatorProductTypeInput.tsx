@@ -3,13 +3,12 @@ import {
   SelectInput,
   SimpleForm,
   useGetIdentity,
-  useGetList,
   useRecordContext,
-  useTranslateLabel,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
 import { Toolbar } from "../components/Toolbar";
+import { ProductTypeInput } from "../product_type/components";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -27,9 +26,6 @@ export const SystemOperatorProductTypeInput = () => {
   const currentRecord = useRecordContext();
   const createOrUpdate = useCreateOrUpdate();
 
-  const { data } = useGetList("product_type");
-  const translateLabel = useTranslateLabel();
-
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   if (identityLoading) return <>Loading...</>;
 
@@ -43,14 +39,6 @@ export const SystemOperatorProductTypeInput = () => {
         ? identity?.partyID
         : currentRecord?.system_operator_id,
   });
-
-  const productTypes = data?.map((product_type) => {
-    return {
-      id: product_type.id,
-      name: translateLabel({ source: product_type.business_id }),
-    };
-  });
-  productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
 
   return (
     <SimpleForm
@@ -67,11 +55,7 @@ export const SystemOperatorProductTypeInput = () => {
             source="system_operator_id"
             readOnly={isSystemOperator}
           />
-          <SelectInput
-            source="product_type_id"
-            validate={required()}
-            choices={productTypes}
-          />
+          <ProductTypeInput source="product_type_id" validate={required()} />
           <SelectInput
             source="status"
             validate={required()}

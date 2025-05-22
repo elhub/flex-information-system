@@ -1,6 +1,5 @@
 import {
   Button,
-  FunctionField,
   ReferenceField,
   Show,
   SimpleShowLayout,
@@ -9,7 +8,6 @@ import {
   usePermissions,
   useRecordContext,
   useResourceContext,
-  useTranslateLabel,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,6 +17,7 @@ import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
+import { ProductTypeField } from "../../product_type/components";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -37,8 +36,6 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       />
     );
   };
-
-  const translateLabel = useTranslateLabel();
 
   return (
     <Show
@@ -72,14 +69,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField source="product_type_id" reference="product_type">
-              <FunctionField
-                source="business_id"
-                render={(record) =>
-                  translateLabel({ source: record.business_id })
-                }
-              />
-            </ReferenceField>
+            <ProductTypeField source="product_type_id" />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>

@@ -1,13 +1,11 @@
 import {
   required,
-  SelectArrayInput,
   SelectInput,
   SimpleForm,
   TextInput,
   useGetIdentity,
   useGetList,
   useRecordContext,
-  useTranslateLabel,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
@@ -15,6 +13,7 @@ import { useFormContext } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { DateTimeInput } from "../components/datetime";
 import { Toolbar } from "../components/Toolbar";
+import { ProductTypeArrayInput } from "../product_type/components";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -37,7 +36,6 @@ const filterRecord = ({
 // already selected system operator
 const ProductTypesInput = (props: any) => {
   const formContext = useFormContext();
-  const translateLabel = useTranslateLabel();
 
   const systemOperatorID = formContext.watch("system_operator_id");
 
@@ -60,7 +58,6 @@ const ProductTypesInput = (props: any) => {
     }
   }, [systemOperatorID]);
 
-  const { data: allProductTypes } = useGetList("product_type");
   const { data: systemOperatorProductTypes } = useGetList(
     "system_operator_product_type",
     {
@@ -68,26 +65,14 @@ const ProductTypesInput = (props: any) => {
     },
   );
 
-  const productTypes = (
-    systemOperatorID
-      ? // if SO ID is given, allow only to select the product types this SO asked for
-        allProductTypes?.filter(
-          (pt) =>
-            systemOperatorProductTypes?.find(
-              (sopt) => sopt.product_type_id == pt.id,
-            ) != undefined,
-        )
-      : // otherwise allow all product types
-        allProductTypes
-  )?.map((productType) => {
-    return {
-      id: productType.id,
-      name: translateLabel({ source: productType.business_id }),
-    };
-  });
-  productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
+  const filter = systemOperatorID
+    ? (pt: any) =>
+        systemOperatorProductTypes?.find(
+          (sopt: any) => sopt.product_type_id == pt.id,
+        ) != undefined
+    : undefined;
 
-  return <SelectArrayInput choices={productTypes} {...props} />;
+  return <ProductTypeArrayInput filter={filter} {...props} />;
 };
 
 // common layout to create and edit pages

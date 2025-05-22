@@ -1,39 +1,23 @@
-import {
-  FunctionField,
-  List,
-  ReferenceField,
-  SelectArrayInput,
-  TextField,
-  useGetList,
-  useTranslateLabel,
-} from "react-admin";
+import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { QuickFilter } from "../components/QuickFilter";
+import {
+  ProductTypeArrayInput,
+  ProductTypeField,
+} from "../product_type/components";
 
 export const SystemOperatorProductTypeList = () => {
-  const translateLabel = useTranslateLabel();
-
-  const { data } = useGetList("product_type");
-  const productTypes = data?.map((product_type) => {
-    return {
-      id: product_type.id,
-      name: translateLabel({ source: product_type.business_id }),
-    };
-  });
-  productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
-
   const SystemOperatorProductTypeListFilters = [
     <PartyReferenceInput
       key="system_operator_id"
       source="system_operator_id"
       alwaysOn
     />,
-    <SelectArrayInput
+    <ProductTypeArrayInput
       key="product_type_id"
-      label="Product type"
+      label="Product types"
       source="product_type_id@in"
-      choices={productTypes}
       alwaysOn
     />,
     <QuickFilter
@@ -56,11 +40,7 @@ export const SystemOperatorProductTypeList = () => {
         <ReferenceField source="system_operator_id" reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="product_type_id" reference="product_type">
-          <FunctionField
-            render={(record) => translateLabel({ source: record.business_id })}
-          />
-        </ReferenceField>
+        <ProductTypeField source="product_type_id" />
         <TextField source="status" />
         <DateField source="recorded_at" showTime />
       </Datagrid>
