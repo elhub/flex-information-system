@@ -1,11 +1,9 @@
 import {
-  FunctionField,
   List,
   NumberInput,
   ReferenceField,
   TextField,
   useGetOne,
-  useTranslateLabel,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
@@ -21,8 +19,6 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const { data } = useGetOne("service_providing_group", {
     id: params.service_providing_group_id,
   });
-
-  const translateLabel = useTranslateLabel();
 
   const ServiceProvidingGroupProductApplicationHistoryListFilters = [
     <NumberInput
@@ -53,12 +49,7 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
         <ReferenceField source="procuring_system_operator_id" reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="product_type_id" reference="product_type">
-          <FunctionField
-            source="business_id"
-            render={(record) => translateLabel({ source: record.business_id })}
-          />
-        </ReferenceField>
+        <ReferenceField reference="product_type" source="product_type_id" />
         <TextField source="status" />
         <DateField source="last_prequalified" showTime />
         <DateField source="last_verified" showTime />

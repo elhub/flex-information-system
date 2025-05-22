@@ -9,8 +9,6 @@ import {
   useGetList,
   usePermissions,
   useRecordContext,
-  useTranslateLabel,
-  FunctionField,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
@@ -21,7 +19,6 @@ export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
-  const translateLabel = useTranslateLabel();
 
   const { data, isLoading } = useGetList(
     "service_providing_group_product_application",
@@ -85,14 +82,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField source="product_type_id" reference="product_type">
-              <FunctionField
-                source="business_id"
-                render={(record) =>
-                  translateLabel({ source: record.business_id })
-                }
-              />
-            </ReferenceField>
+            <ReferenceField reference="product_type" source="product_type_id" />
             <TextField source="status" />
             {permissions.includes(
               "service_providing_group_product_application.delete",

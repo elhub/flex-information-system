@@ -1,11 +1,9 @@
 import {
-  FunctionField,
   ReferenceField,
   Show,
   SimpleShowLayout,
   TextField,
   useResourceContext,
-  useTranslateLabel,
 } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
@@ -16,7 +14,6 @@ import { IdentityField } from "../components/IdentityField";
 
 export const SystemOperatorProductTypeShow = () => {
   const resource = useResourceContext()!;
-  const translateLabel = useTranslateLabel();
 
   const isHistory = resource.endsWith("_history");
 
@@ -32,13 +29,7 @@ export const SystemOperatorProductTypeShow = () => {
             <ReferenceField source="system_operator_id" reference="party">
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField source="product_type_id" reference="product_type">
-              <FunctionField
-                render={(record) =>
-                  translateLabel({ source: record.business_id })
-                }
-              />
-            </ReferenceField>
+            <ReferenceField reference="product_type" source="product_type_id" />
             <TextField source="status" />
           </FieldStack>
           <Typography variant="h6" gutterBottom>

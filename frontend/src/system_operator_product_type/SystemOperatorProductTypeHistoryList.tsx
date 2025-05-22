@@ -22,9 +22,7 @@ export const SystemOperatorProductTypeHistoryList = () => {
         <ReferenceField source="system_operator_id" reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="product_type_id" reference="product_type">
-          <TextField source="business_id" />
-        </ReferenceField>
+        <ReferenceField reference="product_type" source="product_type_id" />
         <TextField source="status" />
         <DateField source="recorded_at" showTime />
         <DateField source="replaced_at" showTime />
