@@ -1,7 +1,5 @@
 import {
   ArrayField,
-  FunctionField,
-  ReferenceField,
   SelectArrayInput,
   SelectInput,
   useGetList,
@@ -10,12 +8,9 @@ import {
 import { Stack, Chip } from "@mui/material";
 
 // display a product type with name and example products if present
-function displayProductType(productType: any) {
-  return (
-    productType.name +
-    (productType.products ? ` (${productType.products})` : "")
-  );
-}
+export const displayProductType = (productType: any) =>
+  productType?.name +
+  (productType?.products ? ` (${productType?.products})` : "");
 
 // hook to get all possible product types sorted by ID
 function useGetAllProductTypes() {
@@ -31,18 +26,6 @@ function useGetAllProductTypes() {
 
   return productTypes;
 }
-
-// field component to display ONE product type
-export const ProductTypeField = (props: any) => {
-  const { source, ...rest } = props;
-
-  // operations done by the system have 0 as identity (cf db/flex_users.sql)
-  return (
-    <ReferenceField reference="product_type" source={source} {...rest}>
-      <FunctionField render={displayProductType} />
-    </ReferenceField>
-  );
-};
 
 // input component to select ONE product type
 export const ProductTypeInput = (props: any) => {

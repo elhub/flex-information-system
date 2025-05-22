@@ -3,7 +3,6 @@ import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
-import { ProductTypeField } from "../product_type/components";
 
 export const SystemOperatorProductTypeHistoryList = () => {
   const { system_operator_product_type_id } = useParams();
@@ -23,7 +22,7 @@ export const SystemOperatorProductTypeHistoryList = () => {
         <ReferenceField source="system_operator_id" reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <ProductTypeField source="product_type_id" />
+        <ReferenceField reference="product_type" source="product_type_id" />
         <TextField source="status" />
         <DateField source="recorded_at" showTime />
         <DateField source="replaced_at" showTime />

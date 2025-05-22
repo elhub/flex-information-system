@@ -2,10 +2,7 @@ import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { QuickFilter } from "../components/QuickFilter";
-import {
-  ProductTypeArrayInput,
-  ProductTypeField,
-} from "../product_type/components";
+import { ProductTypeArrayInput } from "../product_type/components";
 
 export const SystemOperatorProductTypeList = () => {
   const SystemOperatorProductTypeListFilters = [
@@ -40,7 +37,7 @@ export const SystemOperatorProductTypeList = () => {
         <ReferenceField source="system_operator_id" reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <ProductTypeField source="product_type_id" />
+        <ReferenceField reference="product_type" source="product_type_id" />
         <TextField source="status" />
         <DateField source="recorded_at" showTime />
       </Datagrid>

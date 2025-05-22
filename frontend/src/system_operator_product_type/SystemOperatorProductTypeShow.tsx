@@ -11,7 +11,6 @@ import { ResourceHistoryButton } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
-import { ProductTypeField } from "../product_type/components";
 
 export const SystemOperatorProductTypeShow = () => {
   const resource = useResourceContext()!;
@@ -30,7 +29,7 @@ export const SystemOperatorProductTypeShow = () => {
             <ReferenceField source="system_operator_id" reference="party">
               <TextField source="name" />
             </ReferenceField>
-            <ProductTypeField source="product_type_id" />
+            <ReferenceField reference="product_type" source="product_type_id" />
             <TextField source="status" />
           </FieldStack>
           <Typography variant="h6" gutterBottom>

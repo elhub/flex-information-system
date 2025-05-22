@@ -13,7 +13,6 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { ProductTypeField } from "../../product_type/components";
 
 export const ServiceProvidingGroupProductApplicationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
@@ -83,7 +82,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ProductTypeField source="product_type_id" />
+            <ReferenceField reference="product_type" source="product_type_id" />
             <TextField source="status" />
             {permissions.includes(
               "service_providing_group_product_application.delete",

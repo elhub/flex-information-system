@@ -119,6 +119,7 @@ import { ControllableUnitLookupInput } from "./controllable_unit/lookup/Controll
 import { ControllableUnitLookupResult } from "./controllable_unit/lookup/ControllableUnitLookupResult";
 import { EntityClientInput } from "./entity/client/EntityClientInput";
 import { EntityClientShow } from "./entity/client/EntityClientShow";
+import { displayProductType } from "./product_type/components";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1045,6 +1046,7 @@ export const App = () => (
             name="product_type"
             list={ProductTypeList}
             show={ProductTypeShow}
+            recordRepresentation={displayProductType}
           />
         ) : null}
         {permissions.includes("system_operator_product_type.read") ? (
