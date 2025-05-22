@@ -9,6 +9,7 @@ import {
 } from "react-admin";
 import { Stack, Chip } from "@mui/material";
 
+// display a product type with name and example products if present
 function displayProductType(productType: any) {
   return (
     productType.name +
@@ -16,18 +17,7 @@ function displayProductType(productType: any) {
   );
 }
 
-// field to display a product type as human-readable information
-export const ProductTypeField = (props: any) => {
-  const { source, ...rest } = props;
-
-  // operations done by the system have 0 as identity (cf db/flex_users.sql)
-  return (
-    <ReferenceField reference="product_type" source={source} {...rest}>
-      <FunctionField render={displayProductType} />
-    </ReferenceField>
-  );
-};
-
+// hook to get all possible product types sorted by ID
 function useGetAllProductTypes() {
   const { data } = useGetList("product_type");
 
@@ -42,24 +32,26 @@ function useGetAllProductTypes() {
   return productTypes;
 }
 
+// field component to display ONE product type
+export const ProductTypeField = (props: any) => {
+  const { source, ...rest } = props;
+
+  // operations done by the system have 0 as identity (cf db/flex_users.sql)
+  return (
+    <ReferenceField reference="product_type" source={source} {...rest}>
+      <FunctionField render={displayProductType} />
+    </ReferenceField>
+  );
+};
+
+// input component to select ONE product type
 export const ProductTypeInput = (props: any) => {
   const productTypes = useGetAllProductTypes();
 
   return <SelectInput choices={productTypes} {...props} />;
 };
 
-export const ProductTypeArrayInput = (props: any) => {
-  const { filter, ...rest } = props;
-  const productTypes = useGetAllProductTypes();
-
-  return (
-    <SelectArrayInput
-      choices={filter ? productTypes?.filter(filter) : productTypes}
-      {...rest}
-    />
-  );
-};
-
+// field component to display MULTIPLE product types
 export const ProductTypeArrayField = (props: any) => {
   const productTypes = useGetAllProductTypes();
 
@@ -81,5 +73,18 @@ export const ProductTypeArrayField = (props: any) => {
         )}
       />
     </ArrayField>
+  );
+};
+
+// input component to select MULTIPLE product types
+export const ProductTypeArrayInput = (props: any) => {
+  const { filter, ...rest } = props;
+  const productTypes = useGetAllProductTypes();
+
+  return (
+    <SelectArrayInput
+      choices={filter ? productTypes?.filter(filter) : productTypes}
+      {...rest}
+    />
   );
 };
