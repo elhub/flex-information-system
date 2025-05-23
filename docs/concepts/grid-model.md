@@ -44,7 +44,7 @@ lines or cables, and are drawn as lines with arrows. The the arrows on the edge
 indicate the direction of flow. The color of the edge indicate if the edge
 and/direction direction is active (green) or not (red)
 
-![A meshy grid](./diagrams/grid_real_world.png).
+![A meshy grid](../diagrams/grid_real_world.png).
 
 If a node represents a transformer (station), then it might be important to know
 on which side of the transformer the edges are connected. In the following
@@ -61,7 +61,7 @@ which side the edges are connected is important since we see in the second graph
 that disconnecting/lowering consumption in `U` does not actually help the
 transformer.
 
-![Examples for modeling transformer](./diagrams/grid_transformer.png).
+![Examples for modeling transformer](../diagrams/grid_transformer.png).
 
 ## Existing models
 
@@ -74,7 +74,7 @@ define one or more grid *areas*. An area is then divided into grid *nodes*.
 Nodes can exist in a hierarchy, where a node *can be* a parent to other nodes.
 The following diagram shows this.
 
-![NODES Grid Model](./diagrams/grid_nodes.png)
+![NODES Grid Model](../diagrams/grid_nodes.png)
 
 Assets (controllable units) are connected to the "lowest level" node, and the
 node hierarchy is used when aggregating assets into portfolios. If assets in a
@@ -119,7 +119,7 @@ the bids suggests three high-level solutions:
 
 The grid model used in balance settlement is described here.
 
-![Balance Settlement Grid Model](./diagrams/grid_balance.png)
+![Balance Settlement Grid Model](../diagrams/grid_balance.png)
 
 The model consists of three types of areas:
 
@@ -174,7 +174,7 @@ The following is an example derived from the FNN model definition (and not from
 model data itself). It just provides another view on how the model i structured
 and how different types are connected.
 
-![FNN Grid Model example](./diagrams/grid_fnn.png)
+![FNN Grid Model example](../diagrams/grid_fnn.png)
 
 ## System operators and ownership
 
@@ -191,7 +191,7 @@ operators, even if we are only considering the hierarchy of the grid model (and
 not defining adjacent system operators as "impacted"). The following is an
 example drawn from the analysis.
 
-![System Operators and Ownership](./diagrams/grid_ownership.png)
+![System Operators and Ownership](../diagrams/grid_ownership.png)
 
 In the diagram, the controllable unit can be used to deliver services for all
 the system operators. Activation can also impact all the system operators.
@@ -244,7 +244,7 @@ And a grid model can be used to aggregate these resources. In a simple case,
 where the grid is a tree, the aggregation can be done by aggregating the
 resources in the same branch up to a certain node where services are needed.
 
-![Tree Grid](./diagrams/grid_tree.png)
+![Tree Grid](../diagrams/grid_tree.png)
 
 > Example: CUs connected to M,N,O and P can be used to deliver services in node
 > M, if there is a congestion issue on the edge between F and M.

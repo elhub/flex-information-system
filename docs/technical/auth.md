@@ -1,4 +1,4 @@
-# Auth
+# Authorisation
 
 This document describes the authentication and authorization model principles we
 are following in the Flexibility Information System.
@@ -331,7 +331,7 @@ Inspiration for this step is taken from [Altinn](https://info.altinn.no/en/),
 where one is presented with a list of parties upon login. The Elhub portal also
 has the same type of logical mechanism.
 
-![Altinn select party](assets/altinn-choose-party.png).
+![Altinn select party](../assets/altinn-choose-party.png).
 
 The concept is also inspired by [AWS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html).
 
@@ -389,7 +389,7 @@ Below is an example of realistic login sequence:
 * they ask for a token exchange in the second call to the `/token` endpoint,
   in order to assume one of the possible parties.
 
-![Login Sequence](diagrams/login_sequence.png)
+![Login Sequence](../diagrams/login_sequence.png)
 
 ## User information
 
@@ -424,7 +424,7 @@ access to resources `3`, `4` and `5`, and update access to only `5`.
 Together, these policies allow the party type to read all fields except `A` of resources
 `3`, `4` and `5`, and update only field `D` of resource `5`.
 
-![Resource and Field Level Authorization](diagrams/auth-table.drawio.png)
+![Resource and Field Level Authorization](../diagrams/auth-table.drawio.png)
 
 More information about the policies and their implementation can be found in the
 following sections.
@@ -521,7 +521,7 @@ to provide access when doing _read_ operations on the main collection/resource.
 This means that we authorize data stored with record time based on the valid
 time. Lets look at an example.
 
-![Time-dependent RLA](diagrams/time_dependent_authorization.png)
+![Time-dependent RLA](../diagrams/time_dependent_authorization.png)
 
 In this example we have 3 records in the data history for the CU. `3` is the
 current record. Two service providers, `A` and `B`, have had contracts on the

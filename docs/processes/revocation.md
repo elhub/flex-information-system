@@ -1,4 +1,4 @@
-# Service Provider Contract Revocation and Termination
+# SP Contract Revocation and Termination
 
 This process is used to terminate the service provider contract for the
 controllable unit. The process can be triggered by one of the following:

@@ -1,4 +1,4 @@
-# End users
+# End Users
 
 !!! note "Work in progress"
 

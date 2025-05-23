@@ -1,4 +1,4 @@
-# Time series
+# Time Series
 
 This document is an overview of time-series in the context of a flexibility
 value chain. It is by no means exhaustive or final, but an attempt to capture

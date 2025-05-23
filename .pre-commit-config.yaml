@@ -44,7 +44,7 @@ repos:
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: "test/flex/.*"
+        exclude: "(test/flex/.*)|(docs/.*)"
       - id: end-of-file-fixer
         exclude: "test/flex/.*"
       - id: check-executables-have-shebangs

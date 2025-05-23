@@ -1,4 +1,4 @@
-# Controllable unit service provider
+# Controllable Unit Service Provider
 
 The relation that links a controllable unit to a service provider. It represents
 a contract in the real world. A controllable unit shall be assigned to a maximum
@@ -41,7 +41,7 @@ of one service provider per activation period.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -98,7 +98,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party)
 
 | FIELD                | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
 |----------------------|------|-----|----|----|------|----|----|-----|----|

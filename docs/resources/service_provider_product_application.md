@@ -1,4 +1,4 @@
-# Service provider product application
+# Service Provider Product Application
 
 The relation that links a service provider to a system operator, for the SP to
 apply for delivering the SO some of the types of product they want to buy on a
@@ -56,7 +56,7 @@ application is updated as the process and lifecycle of the application progresse
 
 ### Resource Level Authorization
 
-Below is the [RLA](../auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -111,7 +111,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party)
 
 | FIELD               | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
 |---------------------|------|-----|----|----|------|----|----|-----|----|

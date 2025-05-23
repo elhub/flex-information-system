@@ -1,4 +1,4 @@
-# Getting started
+# Getting Started
 
 This page contains some help to get started using the Flexibility Information
 System Portal.
@@ -38,7 +38,7 @@ On this page, you must choose a party in the list and click
 _dashboard_.
 
 For more detailed information about authentication, please head to the
-[dedicated documentation page](../auth.md).
+[dedicated documentation page](../technical/auth.md).
 
 ## User interface of the Flexibility Information System
 

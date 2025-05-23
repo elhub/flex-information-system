@@ -1,4 +1,4 @@
-# Privacy and cookies
+# Privacy and Cookies
 
 This documentation and the flexibility pilot platform is developed by Elhub.
 Please read the general

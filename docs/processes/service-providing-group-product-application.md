@@ -1,4 +1,4 @@
-# Service providing group product application and prequalification
+# SPG Product Application and Prequalification
 
 A service provider applies for a combination of a SPG and a product type with a
 specific procuring system operator.

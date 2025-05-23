@@ -90,7 +90,7 @@ The diagram below shows the example of a contract resource whose timeline is
 frozen after 6 days. Frozen contracts or parts of contracts are shown in blue,
 and non-frozen in green. Orange is used for errors / unacceptable contracts.
 
-![valid_time_freeze](diagrams/valid_time_freeze.png)
+![valid_time_freeze](../diagrams/valid_time_freeze.png)
 
 The freeze time is _midnight-aligned_, meaning that the exact freeze time is the
 _nearest Norwegian midnight_ before the freeze interval computed from now.
@@ -126,7 +126,7 @@ check should work with all kinds of contracts, midnight-aligned or not.
 The diagram below shows the example of a contract resource with a timeline
 window of one week placed one week ahead of time.
 
-![valid_time_window](diagrams/valid_time_window.png)
+![valid_time_window](../diagrams/valid_time_window.png)
 
 In this example, we consider operations made on 30.06. This means the window
 starts on 07.07 Norwegian midnight and lasts for one week, that is, it ends on

@@ -1,4 +1,4 @@
-# Service provider product application and qualification
+# SP Product Application and Qualification
 
 A service provider applies for products with a specific procuring system
 operator. The application includes all the product types the service provider
