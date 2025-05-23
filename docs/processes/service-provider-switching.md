@@ -1,4 +1,4 @@
-# Service provider switching initiated by the new service provider
+# SP Switching Initiated by New SP
 
 The end user contacts a new service provider in order to obtain a new contract
 for controllable unit services and ending of the contract with the present

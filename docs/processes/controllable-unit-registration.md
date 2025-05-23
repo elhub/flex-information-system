@@ -1,4 +1,4 @@
-# Controllable Unit Registration
+# CU Registration
 
 This process describes the registration of a controllable unit (CU) in the
 flexibility register as a Service Provider. It also includes grid validation for

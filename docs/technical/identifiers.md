@@ -5,7 +5,7 @@ specific resource in the real world and/or in an IT system.
 
 This document discusses different types of identifiers. What business
 identifiers are used on the resources are detailed in the
-[documentation for the specific resources](./resources/index.md).
+[documentation for the specific resources](../resources/index.md).
 
 ## Surrogate vs natural keys
 

@@ -110,9 +110,9 @@ The server then turns events into *notifications* that the user can read and
 acknowledge as part of the processes supported by the Flexibility Information
 System.
 
-[Events](resources/event.md) and [notifications](resources/notification.md) are
-reachable in the API as regular resources like the others, *i.e.*, through the
-`/event` and `/notification` endpoint families.
+[Events](../resources/event.md) and [notifications](../resources/notification.md)
+are reachable in the API as regular resources like the others, *i.e.*, through
+the `/event` and `/notification` endpoint families.
 
 ## Notices
 
@@ -127,10 +127,10 @@ advantages, such as *sparing* us the need for advanced *rollback* mechanisms.
 
 However, even if we do not enforce it as strictly in the database, we consider
 that such issues *should* be fixed eventually. This is the purpose of the
-[*notice*](resources/notice.md) resource. It detects inconsistencies or invalid
-states in ongoing processes and exposes them through the API for each user to
-see what actions on the system are expected from them. This allows making
-mistakes but also detecting and fixing them in a decent time, ensuring
+[*notice*](../resources/notice.md) resource. It detects inconsistencies or
+invalid states in ongoing processes and exposes them through the API for each
+user to see what actions on the system are expected from them. This allows
+making mistakes but also detecting and fixing them in a decent time, ensuring
 *eventually strong* consistency between the resources in the system in a
 flexible way.
 
@@ -158,7 +158,7 @@ entry is identified by the `id`.
 The following diagram shows how
 these three entries are layed out in the timeline.
 
-![time dependent basic diagram](diagrams/time_dependent_basic.png)
+![time dependent basic diagram](../diagrams/time_dependent_basic.png)
 
 ### Reading a timeline
 
@@ -189,7 +189,7 @@ Say we want to add the following entry to our example timeline:
 The following diagram shows the timeline before and after adding the entry. The
 entries are identified by the id.
 
-![time dependent create diagram](diagrams/time_dependent_create.png)
+![time dependent create diagram](../diagrams/time_dependent_create.png)
 
 As shown, entry `2` is removed and entry `1` and `3` is modified to fit with the
 new resource.
@@ -199,7 +199,7 @@ will result in a gap in the timeline. As seen in the following diagram, entry
 `4` is modified and limited to the start of the new entry `5`, leaving a gap
 between `5` and `3`.
 
-![time_dependent_contains](diagrams/time_dependent_contains.png)
+![time_dependent_contains](../diagrams/time_dependent_contains.png)
 
 Updating a entry is similar to adding a new entry. If the valid time range is
 increased, then other entries will be modified or deleted to ensure a
@@ -226,7 +226,7 @@ resource.
 
 We provide history on time-dependent resources as well. This follows the same
 pattern as the [regular history](#history). Time dependent resources with
-history provides [bi-temporal](time.md#bi-temporal-data) data.
+history provides [bi-temporal](../technical/time.md#bi-temporal-data) data.
 
 ### Restoring a timeline
 

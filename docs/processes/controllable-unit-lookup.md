@@ -1,4 +1,4 @@
-# Controllable Unit Lookup
+# CU Lookup
 
 This process is used to look up information on controllable units before
 initiating controllable unit registration or service provider switching.

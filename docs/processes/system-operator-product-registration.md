@@ -1,4 +1,4 @@
-# System operator product registration
+# SO Product Registration
 
 The procuring system operator register what product types they intend to procure.
 

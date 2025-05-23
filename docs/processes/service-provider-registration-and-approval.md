@@ -1,4 +1,4 @@
-# Service provider registration and approval
+# SP Registration and Approval
 
 Service provider registration is the process of registering the service provider
 with the Flexibility Information System. It starts with a new service provider

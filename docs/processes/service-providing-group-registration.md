@@ -1,4 +1,4 @@
-# Service Providing Group Registration
+# SPG Registration
 
 Service Providing Group registration is the process of registering a new SPG,
 adding CUs and ends once grid prequalification is completed. The process is
