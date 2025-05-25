@@ -46,6 +46,10 @@ CREATE ROLE flex_internal WITH NOINHERIT NOLOGIN;
 -- database, for debug purposes, without risk of interfering with the data.
 CREATE ROLE flex_operation_readonly WITH NOINHERIT NOLOGIN BYPASSRLS;
 
+-- user to test the role right above
+CREATE ROLE test_flex_operation_readonly WITH LOGIN NOINHERIT PASSWORD '1234';
+GRANT flex_operation_readonly TO test_flex_operation_readonly;
+
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
 GRANT flex_internal TO flex_internal_event_notification;
 
