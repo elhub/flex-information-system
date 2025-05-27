@@ -32,10 +32,11 @@ FOR ALL
 TO flex_system_operator
 USING (
     EXISTS (
-        SELECT 1 FROM
-            accounting_point
-        WHERE accounting_point.id = controllable_unit.accounting_point_id -- noqa
-            AND accounting_point.system_operator_id = current_party()
+        SELECT 1
+        FROM accounting_point_system_operator AS ap_so
+        WHERE ap_so.accounting_point_id = controllable_unit.accounting_point_id -- noqa
+            AND ap_so.system_operator_id = current_party()
+            AND ap_so.valid_time_range @> current_timestamp
     )
 );
 

@@ -1,5 +1,5 @@
 --liquibase formatted sql
--- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
+-- Manually managed file
 
 -- changeset flex:api-controllable-unit-history-create endDelimiter:-- runAlways:true
 CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
@@ -24,42 +24,69 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
-        ap.system_operator_id AS connecting_system_operator_id,
+        ap_so.system_operator_id AS connecting_system_operator_id,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         null AS replaced_by,
         null AS replaced_at
     FROM flex.controllable_unit AS cu
-        INNER JOIN flex.accounting_point AS ap
-            ON cu.accounting_point_id = ap.id
+        INNER JOIN flex.accounting_point_system_operator AS ap_so
+            ON cu.accounting_point_id = ap_so.accounting_point_id
+                AND ap_so.valid_time_range @> current_timestamp
     UNION ALL
     SELECT
-        cu.history_id AS id,
-        cu.id AS controllable_unit_id,
-        cu.accounting_point_id,
-        cu.business_id,
-        cu.grid_node_id,
-        cu.grid_validation_notes,
-        cu.grid_validation_status,
-        cu.last_validated,
-        cu.maximum_available_capacity,
-        cu.is_small,
-        cu.maximum_duration,
-        cu.minimum_duration,
-        cu.name,
-        cu.ramp_rate,
-        cu.recovery_duration,
-        cu.regulation_direction,
-        cu.start_date,
-        cu.status,
-        ap.system_operator_id AS connecting_system_operator_id,
-        cu.recorded_by,
-        lower(cu.record_time_range) AS recorded_at,
-        cu.replaced_by,
-        upper(cu.record_time_range) AS replaced_at
-    FROM flex.controllable_unit_history AS cu
-        INNER JOIN flex.accounting_point AS ap
-            ON cu.accounting_point_id = ap.id
+        id,
+        controllable_unit_id,
+        accounting_point_id,
+        business_id,
+        grid_node_id,
+        grid_validation_notes,
+        grid_validation_status,
+        last_validated,
+        maximum_available_capacity,
+        is_small,
+        maximum_duration,
+        minimum_duration,
+        name,
+        ramp_rate,
+        recovery_duration,
+        regulation_direction,
+        start_date,
+        status,
+        connecting_system_operator_id,
+        recorded_by,
+        lower(record_time_range) AS recorded_at,
+        replaced_by,
+        upper(record_time_range) AS replaced_at
+    FROM (
+        SELECT
+            cu.history_id AS id,
+            cu.id AS controllable_unit_id,
+            cu.accounting_point_id,
+            cu.business_id,
+            cu.grid_node_id,
+            cu.grid_validation_notes,
+            cu.grid_validation_status,
+            cu.last_validated,
+            cu.maximum_available_capacity,
+            cu.is_small,
+            cu.maximum_duration,
+            cu.minimum_duration,
+            cu.name,
+            cu.ramp_rate,
+            cu.recovery_duration,
+            cu.regulation_direction,
+            cu.start_date,
+            cu.status,
+            ap_so.system_operator_id AS connecting_system_operator_id,
+            cu.recorded_by,
+            cu.replaced_by,
+            (cu.record_time_range * ap_so.valid_time_range) AS record_time_range
+        FROM flex.controllable_unit_history AS cu
+            INNER JOIN flex.accounting_point_system_operator AS ap_so
+                ON cu.accounting_point_id = ap_so.id
+                    AND cu.record_time_range && ap_so.valid_time_range
+    ) AS cuh
 );
 
 -- changeset flex:api-controllable-unit-create endDelimiter:-- runAlways:true
@@ -186,12 +213,13 @@ BEGIN
             cu.regulation_direction,
             cu.start_date,
             cu.status,
-            ap.system_operator_id AS connecting_system_operator_id,
+            ap_so.system_operator_id AS connecting_system_operator_id,
             cu.recorded_by,
             lower(cu.record_time_range) AS recorded_at
         FROM flex.controllable_unit INTO l_old AS cu
-            INNER JOIN flex.accounting_point AS ap
-                ON cu.accounting_point_id = ap.id
+            INNER JOIN flex.accounting_point_system_operator AS ap_so
+                ON cu.accounting_point_id = ap_so.accounting_point_id
+                    AND ap_so.valid_time_range @> current_timestamp
         WHERE cu.id = NEW.id;
 
         IF NOT FOUND THEN

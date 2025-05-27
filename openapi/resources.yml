@@ -924,7 +924,7 @@ resources:
     operations:
       - read
       - list
-    generate_views: true
+    generate_views: false
     audit: true
     properties:
       id:
