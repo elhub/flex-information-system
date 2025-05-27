@@ -102,7 +102,7 @@ CREATE OR REPLACE VIEW notice AS (
         UNION ALL
         SELECT
             sp_id AS party_id,
-            'no.elhub.flex.service_providing_group.brp.multiple' AS type, -- noqa
+            'no.elhub.flex.service_providing_group.balance_responsible_party.multiple' AS type, -- noqa
             '/service_providing_group/' || spg_id AS source,
             null AS data -- noqa
         FROM (
@@ -113,13 +113,14 @@ CREATE OR REPLACE VIEW notice AS (
             FROM flex.service_providing_group AS spg
                 INNER JOIN flex.service_providing_group_membership AS spgm
                     ON spg.id = spgm.service_providing_group_id
+                        AND spgm.valid_time_range @> current_timestamp
                 INNER JOIN flex.controllable_unit AS cu
                     ON spgm.controllable_unit_id = cu.id
                 INNER JOIN
                     flex.accounting_point_balance_responsible_party AS apbrp
                     ON cu.accounting_point_id = apbrp.accounting_point_id
+                        AND apbrp.valid_time_range @> current_timestamp
             WHERE spgm.valid_time_range && apbrp.valid_time_range
-                AND spgm.valid_time_range @> current_timestamp
             GROUP BY spg.id
         ) AS spg_brp_count
         WHERE nb_brp > 1
