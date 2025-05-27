@@ -16,6 +16,7 @@ from the responsible party.
 | no.elhub.flex.service_providing_group_membership.valid_time.outside_contract  | Inconsistency: SPG contains expired CU(s)     | SP                | Validate and update SPG membership                      |
 | no.elhub.flex.service_providing_group_product_application.status.requested    | SPG product application status requested      | PSO               | Initiate SPG product prequalification and update status |
 | no.elhub.flex.service_providing_group_grid_prequalification.status.requested  | SPG grid prequalification status requested    | ISO               | Initiate SPG grid prequalification and update status    |
+| no.elhub.flex.service_providing_group.balance_responsible_party.multiple      | Inconsistency: Multiple BRPs in a single SPG  | SP                | Make sure the SPG only contains CU currently associated to the same BRP on their accounting point     |
 
 ## Relevant links
 
