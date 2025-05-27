@@ -99,6 +99,8 @@ CREATE OR REPLACE VIEW notice AS (
         WHERE spggp.status = 'requested'
 
         -- SPG containing CUs with more than one BRP
+        -- TODO: consider energy direction in the check
+        --       (cf. https://elhub.atlassian.net/browse/FLEX-615)
         UNION ALL
         SELECT
             sp_id AS party_id,
@@ -120,7 +122,6 @@ CREATE OR REPLACE VIEW notice AS (
                     flex.accounting_point_balance_responsible_party AS apbrp
                     ON cu.accounting_point_id = apbrp.accounting_point_id
                         AND apbrp.valid_time_range @> current_timestamp
-            WHERE spgm.valid_time_range && apbrp.valid_time_range
             GROUP BY spg.id
         ) AS spg_brp_count
         WHERE nb_brp > 1
