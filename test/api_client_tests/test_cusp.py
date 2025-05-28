@@ -307,21 +307,11 @@ def test_cusp_so(data):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
-    so_id = sts.get_userinfo(client_so)["party_id"]
-
+    # SO can read the CUs where they are CSO
+    # Test SO manages all CUs in the test data so all CUSPs should be visible
     cusps = list_controllable_unit_service_provider.sync(client=client_fiso)
     assert isinstance(cusps, list)
-    cusps_where_so_is_cso = []
     for cusp in cusps:
-        cu = read_controllable_unit.sync(
-            client=client_fiso, id=cast(int, cusp.controllable_unit_id)
-        )
-        assert isinstance(cu, ControllableUnitResponse)
-        if cu.connecting_system_operator_id == so_id:
-            cusps_where_so_is_cso.append(cusp)
-
-    # SO can read the CUs where they are CSO
-    for cusp in cusps_where_so_is_cso:
         cu = read_controllable_unit.sync(
             client=client_so, id=cast(int, cusp.controllable_unit_id)
         )

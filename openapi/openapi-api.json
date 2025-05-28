@@ -561,13 +561,6 @@
                                 "readOnly": true,
                                 "example": true
                             },
-                            "connecting_system_operator_id": {
-                                "description": "Reference to the `party` that is the connecting system operator. Derived from the `accounting_point_id`.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 5
-                            },
                             "recorded_at": {
                                 "description": "When the resource was recorded (created or updated) in the system.",
                                 "format": "timestamp with time zone",
@@ -2682,16 +2675,6 @@
                     },
                     {
                         "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
-                        },
-                        "example": "eq.55",
-                        "description": "Reference to the `party` that is the connecting system operator. Derived from the `accounting_point_id`.",
-                        "name": "connecting_system_operator_id"
-                    },
-                    {
-                        "in": "query",
                         "name": "name",
                         "schema": {
                             "type": "string"
@@ -3014,13 +2997,6 @@
                                     "path.id": "$response.body#/accounting_point_id"
                                 },
                                 "description": "The `accounting_point_id` value returned in the response can be used as the `id` parameter in `GET /accounting_point/{id}`."
-                            },
-                            "connecting_system_operator_id": {
-                                "operationId": "read_party",
-                                "parameters": {
-                                    "path.id": "$response.body#/connecting_system_operator_id"
-                                },
-                                "description": "The `connecting_system_operator_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
                             }
                         }
                     },

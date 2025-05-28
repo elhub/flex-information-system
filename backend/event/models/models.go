@@ -35,52 +35,50 @@ type AccountingPointEndUser struct {
 }
 
 type ControllableUnit struct {
-	ID                         int
-	BusinessID                 string
-	Name                       string
-	StartDate                  pgtype.Date
-	Status                     string
-	RegulationDirection        string
-	MaximumAvailableCapacity   float64
-	IsSmall                    bool
-	MinimumDuration            *int
-	MaximumDuration            *int
-	RecoveryDuration           *int
-	RampRate                   *float64
-	AccountingPointID          int
-	GridNodeID                 *string
-	ConnectingSystemOperatorID int
-	GridValidationStatus       string
-	GridValidationNotes        *string
-	LastValidated              pgtype.Timestamptz
-	RecordedBy                 int
-	RecordedAt                 pgtype.Timestamptz
+	ID                       int
+	BusinessID               string
+	Name                     string
+	StartDate                pgtype.Date
+	Status                   string
+	RegulationDirection      string
+	MaximumAvailableCapacity float64
+	IsSmall                  bool
+	MinimumDuration          *int
+	MaximumDuration          *int
+	RecoveryDuration         *int
+	RampRate                 *float64
+	AccountingPointID        int
+	GridNodeID               *string
+	GridValidationStatus     string
+	GridValidationNotes      *string
+	LastValidated            pgtype.Timestamptz
+	RecordedBy               int
+	RecordedAt               pgtype.Timestamptz
 }
 
 type ControllableUnitHistory struct {
-	ControllableUnitID         int
-	ID                         int
-	BusinessID                 string
-	Name                       string
-	StartDate                  pgtype.Date
-	Status                     string
-	RegulationDirection        string
-	MaximumAvailableCapacity   float64
-	IsSmall                    bool
-	MinimumDuration            *int
-	MaximumDuration            *int
-	RecoveryDuration           *int
-	RampRate                   *float64
-	AccountingPointID          int
-	GridNodeID                 *string
-	ConnectingSystemOperatorID int
-	GridValidationStatus       string
-	GridValidationNotes        *string
-	LastValidated              pgtype.Timestamptz
-	RecordedBy                 int
-	RecordedAt                 pgtype.Timestamptz
-	ReplacedBy                 *int
-	ReplacedAt                 pgtype.Timestamptz
+	ControllableUnitID       int
+	ID                       int
+	BusinessID               string
+	Name                     string
+	StartDate                pgtype.Date
+	Status                   string
+	RegulationDirection      string
+	MaximumAvailableCapacity float64
+	IsSmall                  bool
+	MinimumDuration          *int
+	MaximumDuration          *int
+	RecoveryDuration         *int
+	RampRate                 *float64
+	AccountingPointID        int
+	GridNodeID               *string
+	GridValidationStatus     string
+	GridValidationNotes      *string
+	LastValidated            pgtype.Timestamptz
+	RecordedBy               int
+	RecordedAt               pgtype.Timestamptz
+	ReplacedBy               *int
+	ReplacedAt               pgtype.Timestamptz
 }
 
 type ControllableUnitServiceProvider struct {

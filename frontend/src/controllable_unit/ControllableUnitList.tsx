@@ -83,12 +83,6 @@ export const ControllableUnitList = () => {
           <TextField source="business_id" />
         </ReferenceField>
         <TextField source="grid_node_id" />
-        <ReferenceField
-          source="connecting_system_operator_id"
-          reference="party"
-        >
-          <TextField source="name" />
-        </ReferenceField>
         <TextField source="grid_validation_status" />
         <DateField source="recorded_at" showTime />
       </Datagrid>

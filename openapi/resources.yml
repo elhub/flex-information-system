@@ -143,17 +143,6 @@ resources:
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
         nullable: true
         example: '53919b79-876f-4dad-8bde-b29368367604'
-      connecting_system_operator_id:
-        description: >-
-          Reference to the `party` that is the connecting system operator.
-          Derived from the `accounting_point_id`.
-        format: bigint
-        type: integer
-        readOnly: true
-        x-foreign-key:
-          resource: party
-          field: id
-        example: 5
       grid_validation_status:
         description: The grid validation status of the controllable unit.
         format: text
