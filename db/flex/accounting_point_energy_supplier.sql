@@ -41,3 +41,8 @@ accounting_point_energy_supplier_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON accounting_point_energy_supplier
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
+
+-- changeset flex:accounting-point-energy-supplier-accounting-point-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+accounting_point_energy_supplier_accounting_point_idx
+ON accounting_point_energy_supplier (accounting_point_id);
