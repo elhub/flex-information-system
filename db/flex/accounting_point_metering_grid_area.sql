@@ -35,3 +35,8 @@ CREATE OR REPLACE TRIGGER accounting_point_mga_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON accounting_point_metering_grid_area
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
+
+-- changeset flex:accounting-point-metering-grid-area-accounting-point-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+accounting_point_metering_grid_area_accounting_point_idx
+ON accounting_point_metering_grid_area (accounting_point_id);

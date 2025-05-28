@@ -39,3 +39,8 @@ CREATE OR REPLACE TRIGGER accounting_point_end_user_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON accounting_point_end_user
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
+
+-- changeset flex:accounting-point-end-user-accounting-point-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+accounting_point_end_user_accounting_point_idx
+ON accounting_point_end_user (accounting_point_id);

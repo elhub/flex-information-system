@@ -39,6 +39,72 @@ CREATE TABLE x (
 The `system_operator_party_type` column is considered internal and should not
 _necessarily_ be exposed externally.
 
+## Indexing
+
+We are using an index-if-needed approach. However, indexing foreign keys is
+generally
+[considered a good practice](https://mohyusufz.medium.com/how-to-check-for-indexes-on-foreign-key-columns-in-postgresql-450159772f8e),
+so we follow that up specifically.
+
+We can use the following statement to check for missing indexes on foreign keys:
+
+```sql
+WITH fk_constraints AS (
+    SELECT
+        c.conrelid::regclass AS table,
+        c.conname AS constraint,
+        string_agg(a.attname, ',' ORDER BY x.n) AS columns,
+        pg_catalog.pg_size_pretty(pg_catalog.pg_relation_size(c.conrelid)) AS size,
+        c.confrelid::regclass AS referenced_table,
+        c.conkey AS conkey,
+        c.conrelid AS conrelid
+    FROM
+        pg_catalog.pg_constraint c
+        /* Enumerated key column numbers per foreign key */
+        CROSS JOIN LATERAL unnest(c.conkey) WITH ORDINALITY AS x(attnum, n)
+        /* Join to get the column names */
+        INNER JOIN pg_catalog.pg_attribute a
+            ON a.attnum = x.attnum
+            AND a.attrelid = c.conrelid
+            /* Filter out the _party_type columns we use in foreign keys to party table */
+            AND a.attname NOT LIKE '%_party_type'
+    WHERE
+        /* Ensure the constraint is a foreign key */
+        c.contype = 'f'
+    GROUP BY
+        c.conrelid, c.conname, c.confrelid, c.conkey
+), fk_index AS (
+SELECT
+    fk.table,
+    fk.columns,
+    fk.referenced_table,
+    /* Retrieve the index name or mark as Unindexed */
+    COALESCE(
+        (
+            SELECT i.indexrelid::regclass::text
+            FROM pg_catalog.pg_index i
+            WHERE
+                i.indrelid = fk.conrelid
+                AND i.indpred IS NULL
+                AND (i.indkey::smallint[])[0:cardinality(fk.conkey)-1] OPERATOR(pg_catalog.@>) fk.conkey
+            LIMIT 1
+        ),
+        'Unindexed'
+    ) AS index_name,
+    fk.constraint,
+    fk.size
+FROM
+    fk_constraints fk
+ORDER BY
+    pg_catalog.pg_relation_size(fk.conrelid) DESC
+)
+SELECT
+    *
+FROM fk_index
+WHERE
+    index_name = 'Unindexed';
+```
+
 ## Enumerations
 
 There are
