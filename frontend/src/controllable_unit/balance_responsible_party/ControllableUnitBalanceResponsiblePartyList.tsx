@@ -27,9 +27,9 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
           exporter={false}
           empty={false}
           filter={filter}
+          sort={sort}
         >
-          <Datagrid bulkActionButtons={false} sort={sort}>
-            <TextField source="id" label="ID" />
+          <Datagrid bulkActionButtons={false}>
             <ReferenceField
               source="balance_responsible_party_id"
               reference="party"

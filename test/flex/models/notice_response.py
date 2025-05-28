@@ -14,7 +14,6 @@ class NoticeResponse:
     them.
 
         Attributes:
-            id (Union[Unset, int]): NON-STABLE unique identifier. Example: 8.
             party_id (Union[Unset, int]): Reference to the party targeted by the notice. Example: 18.
             type (Union[Unset, str]): The type of the notice. Example:
                 no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
@@ -23,7 +22,6 @@ class NoticeResponse:
             data (Union[None, Unset, str]): The data of the notice.
     """
 
-    id: Union[Unset, int] = UNSET
     party_id: Union[Unset, int] = UNSET
     type: Union[Unset, str] = UNSET
     source: Union[Unset, str] = UNSET
@@ -31,8 +29,6 @@ class NoticeResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        id = self.id
-
         party_id = self.party_id
 
         type = self.type
@@ -48,8 +44,6 @@ class NoticeResponse:
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if id is not UNSET:
-            field_dict["id"] = id
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
         if type is not UNSET:
@@ -64,8 +58,6 @@ class NoticeResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        id = d.pop("id", UNSET)
-
         party_id = d.pop("party_id", UNSET)
 
         type = d.pop("type", UNSET)
@@ -82,7 +74,6 @@ class NoticeResponse:
         data = _parse_data(d.pop("data", UNSET))
 
         notice_response = cls(
-            id=id,
             party_id=party_id,
             type=type,
             source=source,

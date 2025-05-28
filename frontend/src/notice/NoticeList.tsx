@@ -14,9 +14,10 @@ export const NoticeResourceButton = () => {
 };
 
 export const NoticeList = () => (
-  <List perPage={25} sort={{ field: "id", order: "DESC" }} empty={false}>
+  // a defined sort parameter is required there because notice has no ID field
+  // cf https://github.com/marmelab/react-admin/blob/27dccfb8519de551ef7e236355860aacef36ef56/packages/ra-core/src/controller/list/useListController.ts#L451-L454
+  <List perPage={25} sort={{ field: "type", order: "ASC" }} empty={false}>
     <Datagrid>
-      <TextField source="id" label="ID" />
       <ReferenceField source="party_id" reference="party">
         <TextField source="name" />
       </ReferenceField>

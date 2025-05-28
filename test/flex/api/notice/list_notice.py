@@ -14,7 +14,6 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -35,8 +34,6 @@ def _get_kwargs(
         headers["Prefer"] = str(prefer)
 
     params: Dict[str, Any] = {}
-
-    params["id"] = id
 
     params["party_id"] = party_id
 
@@ -139,7 +136,6 @@ def _build_response(
 def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -152,7 +148,6 @@ def sync_detailed(
     """List Notice
 
     Args:
-        id (Union[Unset, str]):
         party_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -171,7 +166,6 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        id=id,
         party_id=party_id,
         select=select,
         order=order,
@@ -192,7 +186,6 @@ def sync_detailed(
 def sync(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -205,7 +198,6 @@ def sync(
     """List Notice
 
     Args:
-        id (Union[Unset, str]):
         party_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -225,7 +217,6 @@ def sync(
 
     return sync_detailed(
         client=client,
-        id=id,
         party_id=party_id,
         select=select,
         order=order,
@@ -240,7 +231,6 @@ def sync(
 async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -253,7 +243,6 @@ async def asyncio_detailed(
     """List Notice
 
     Args:
-        id (Union[Unset, str]):
         party_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -272,7 +261,6 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        id=id,
         party_id=party_id,
         select=select,
         order=order,
@@ -291,7 +279,6 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -304,7 +291,6 @@ async def asyncio(
     """List Notice
 
     Args:
-        id (Union[Unset, str]):
         party_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -325,7 +311,6 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
-            id=id,
             party_id=party_id,
             select=select,
             order=order,

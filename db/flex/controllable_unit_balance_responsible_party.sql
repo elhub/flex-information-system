@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:accounting-point-balance-responsible-party-create runOnChange:true endDelimiter:--
+-- changeset flex:accounting-point-balance-responsible-party-create runAlways:true endDelimiter:--
 CREATE OR REPLACE VIEW controllable_unit_balance_responsible_party AS (
     SELECT
         cu.id AS controllable_unit_id,

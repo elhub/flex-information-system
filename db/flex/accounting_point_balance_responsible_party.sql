@@ -2,13 +2,14 @@
 -- Manually managed file
 
 -- changeset flex:accounting-point-balance-responsible-party-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW accounting_point_balance_responsible_party
+-- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
+DROP VIEW IF EXISTS accounting_point_balance_responsible_party CASCADE;
+CREATE VIEW accounting_point_balance_responsible_party
 WITH (security_invoker = true) AS (
     SELECT
         ap_es.accounting_point_id,
         es_br.balance_responsible_party_id,
         es_br.energy_direction,
-        row_number() OVER () AS id,
         (
             ap_es.valid_time_range
             * ap_mga.valid_time_range
