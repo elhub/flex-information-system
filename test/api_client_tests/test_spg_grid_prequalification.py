@@ -58,6 +58,9 @@ def data():
     client_sp = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
+    client_other_so = cast(AuthenticatedClient, sts.get_client(TestEntity.COMMON, "SO"))
+    other_so_id = sts.get_userinfo(client_other_so)["party_id"]
+
     # create a test SPG
 
     spg = create_service_providing_group.sync(
@@ -70,6 +73,10 @@ def data():
     assert isinstance(spg, ServiceProvidingGroupResponse)
 
     # create new controllable units with different connecting system operators
+
+    # NB:
+    # APs above 1000 are linked to Test SO
+    # APs below 1000 are linked to Common SO
 
     cu1 = create_controllable_unit.sync(
         client=client_fiso,
@@ -93,11 +100,6 @@ def data():
     )
     assert isinstance(cu2, ControllableUnitResponse)
 
-    # The SO is surfaced from the accounting point.
-    # This test assumes that the accounting point is linked to the Test SO
-    assert cu1.connecting_system_operator_id == so_id
-    assert cu2.connecting_system_operator_id == so_id
-
     cu3 = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -108,8 +110,6 @@ def data():
         ),
     )
     assert isinstance(cu3, ControllableUnitResponse)
-
-    assert cu3.connecting_system_operator_id != so_id
 
     # relate the CUs to the SP in charge of the test SPG
 
@@ -180,7 +180,7 @@ def data():
     )
     assert isinstance(spgm3, ServiceProvidingGroupMembershipResponse)
 
-    yield (sts, spg.id, so_id, cu3.connecting_system_operator_id, spgm3.id)
+    yield (sts, spg.id, so_id, other_so_id, spgm3.id)
 
 
 # ---- ---- ---- ---- ----

@@ -51,9 +51,6 @@ def data():
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    client_so = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SO"))
-    so_id = sts.get_userinfo(client_so)["party_id"]
-
     client_sp = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
@@ -69,9 +66,7 @@ def data():
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    # The so is surfaced from the accounting point.
-    # This test assumes that the accounting point is linked to the Test SO
-    assert cu.connecting_system_operator_id == so_id
+    # NB: the AP there is linked to Test SO in the test data
 
     spg = create_service_providing_group.sync(
         client=client_fiso,

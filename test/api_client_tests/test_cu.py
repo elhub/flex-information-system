@@ -138,26 +138,22 @@ def test_controllable_unit_fiso(sts):
 
 def test_controllable_unit_so(sts):
     client_so = sts.get_client(TestEntity.TEST, "SO")
-    so_id = sts.get_userinfo(client_so)["party_id"]
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    cus_where_cso = list_controllable_unit.sync(
-        client=client_fiso, connecting_system_operator_id=f"eq.{so_id}"
-    )
-    assert isinstance(cus_where_cso, list)
     all_cus = list_controllable_unit.sync(client=client_fiso)
     assert isinstance(all_cus, list)
 
     client_iso = sts.get_client(TestEntity.COMMON, "SO")
 
     # RLS: CU-SO001
-    # check SO can see some CUs but not all of them
+    # all test CUs are on APs within one MGA belonging to Test SO, so this
+    # SO should see all CUs
     cus = list_controllable_unit.sync(client=client_so)
     assert isinstance(cus, list)
-    assert len(cus) >= len(cus_where_cso) and len(cus) <= len(all_cus)
+    assert len(cus) == len(all_cus)
 
     # check SO can update the last validation of a CU
-    cu = cus_where_cso[0]
+    cu = cus[0]
     u = update_controllable_unit.sync(
         client=client_so,
         id=cast(int, cu.id),
