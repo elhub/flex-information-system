@@ -178,6 +178,7 @@
         "business_id": "The business ID of the controllable unit.",
         "name": "The name of the controllable unit.",
         "accounting_point_id": "The accounting point behind which the controllable unit is located.",
+        "end_user_id": "Technical ID of the end user on the accounting point where the controllable unit is located.",
         "technical_resources": "The technical resources belonging to the controllable unit."
     }
 }
