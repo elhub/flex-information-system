@@ -4,6 +4,7 @@ SELECT
     business_id::text,
     name::text,
     accounting_point_id::bigint,
+    end_user_id::bigint,
     technical_resources::jsonb
 FROM controllable_unit_lookup(
   @end_user_business_id,

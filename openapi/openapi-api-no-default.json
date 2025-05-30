@@ -204,6 +204,12 @@
                         "type": "integer",
                         "example": 100351
                     },
+                    "end_user_id": {
+                        "description": "Technical ID of the end user on the accounting point where the controllable unit is located.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 11
+                    },
                     "technical_resources": {
                         "description": "The technical resources belonging to the controllable unit.",
                         "type": "array",
@@ -241,6 +247,7 @@
                     "business_id",
                     "name",
                     "accounting_point_id",
+                    "end_user_id",
                     "technical_resources"
                 ]
             },
