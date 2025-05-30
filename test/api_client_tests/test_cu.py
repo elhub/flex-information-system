@@ -146,11 +146,17 @@ def test_controllable_unit_so(sts):
     client_iso = sts.get_client(TestEntity.COMMON, "SO")
 
     # RLS: CU-SO001
-    # all test CUs are on APs within one MGA belonging to Test SO, so this
-    # SO should see all CUs
+    # all test CUs on APs > 1000 are within one MGA belonging to Test SO,
+    # so the test SO should see them all
+    n_cus_so = len([cu for cu in all_cus if cast(int, cu.accounting_point_id) > 1000])
+
     cus = list_controllable_unit.sync(client=client_so)
     assert isinstance(cus, list)
-    assert len(cus) == len(all_cus)
+
+    # greater or equal here, because it is possible that the SO can read more
+    # CUs due to SPG grid prequalification targeting them, opening visibility of
+    # what is in the SPG
+    assert len(cus) >= n_cus_so
 
     # check SO can update the last validation of a CU
     cu = cus[0]
