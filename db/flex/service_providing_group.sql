@@ -60,12 +60,13 @@ BEGIN
     -- TODO: update when a grid model is implemented
 
     FOR l_impacted_system_operator_id IN
-        SELECT DISTINCT ap.system_operator_id
-        FROM flex.service_providing_group_membership spgm
+        SELECT DISTINCT ap_so.system_operator_id
+        FROM flex.service_providing_group_membership AS spgm
             INNER JOIN flex.controllable_unit cu
                 ON spgm.controllable_unit_id = cu.id
-            INNER JOIN flex.accounting_point ap
-                ON ap.id = cu.accounting_point_id
+            INNER JOIN flex.accounting_point_system_operator AS ap_so
+                ON ap_so.accounting_point_id = cu.accounting_point_id
+                    AND ap_so.valid_time_range @> current_timestamp
         WHERE spgm.service_providing_group_id = l_service_providing_group_id
             -- CU still in the SPG in the future
             AND (

@@ -37,7 +37,7 @@ databaseChangeLog:
       file: ./business_id_type.sql
       relativeToChangelogFile: true
 
-  # Tables - order is important!
+  # Tables & views - order is important!
   - include:
       file: ./event.sql
       relativeToChangelogFile: true
@@ -69,6 +69,9 @@ databaseChangeLog:
       file: ./accounting_point.sql
       relativeToChangelogFile: true
   - include:
+      file: ./accounting_point_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./accounting_point_metering_grid_area.sql
       relativeToChangelogFile: true
   - include:
@@ -82,6 +85,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./accounting_point_balance_responsible_party.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_system_operator.sql
       relativeToChangelogFile: true
   - include:
       file: ./controllable_unit.sql

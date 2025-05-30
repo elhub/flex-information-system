@@ -46,8 +46,6 @@ class ControllableUnitHistoryResponse:
         business_id (Union[Unset, str]): Unique business identifier for the controllable unit. Example:
             53919b79-876f-4dad-8bde-b29368367604.
         is_small (Union[Unset, bool]): Whether the controllable unit is small or not, following NCDR. Example: True.
-        connecting_system_operator_id (Union[Unset, int]): Reference to the `party` that is the connecting system
-            operator. Derived from the `accounting_point_id`. Example: 5.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
@@ -74,7 +72,6 @@ class ControllableUnitHistoryResponse:
     id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
     is_small: Union[Unset, bool] = UNSET
-    connecting_system_operator_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
     controllable_unit_id: Union[Unset, int] = UNSET
@@ -157,8 +154,6 @@ class ControllableUnitHistoryResponse:
 
         is_small = self.is_small
 
-        connecting_system_operator_id = self.connecting_system_operator_id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
@@ -216,8 +211,6 @@ class ControllableUnitHistoryResponse:
             field_dict["business_id"] = business_id
         if is_small is not UNSET:
             field_dict["is_small"] = is_small
-        if connecting_system_operator_id is not UNSET:
-            field_dict["connecting_system_operator_id"] = connecting_system_operator_id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
@@ -347,8 +340,6 @@ class ControllableUnitHistoryResponse:
 
         is_small = d.pop("is_small", UNSET)
 
-        connecting_system_operator_id = d.pop("connecting_system_operator_id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
@@ -391,7 +382,6 @@ class ControllableUnitHistoryResponse:
             id=id,
             business_id=business_id,
             is_small=is_small,
-            connecting_system_operator_id=connecting_system_operator_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             controllable_unit_id=controllable_unit_id,
