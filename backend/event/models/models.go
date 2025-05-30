@@ -84,6 +84,7 @@ type ControllableUnitServiceProvider struct {
 	ID                 int
 	ControllableUnitID int
 	ServiceProviderID  int
+	EndUserID          int
 	ContractReference  string
 	ValidFrom          pgtype.Timestamptz
 	ValidTo            pgtype.Timestamptz
@@ -96,6 +97,7 @@ type ControllableUnitServiceProviderHistory struct {
 	ID                                int
 	ControllableUnitID                int
 	ServiceProviderID                 int
+	EndUserID                         int
 	ContractReference                 string
 	ValidFrom                         pgtype.Timestamptz
 	ValidTo                           pgtype.Timestamptz

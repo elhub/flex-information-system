@@ -3,12 +3,17 @@
 
 -- changeset flex:controllable-unit-service-provider-create runOnChange:false endDelimiter:--
 -- SP relation for controllable unit
+--validCheckSum: 9:ce9768392d0c1975d766a5cf1dc11e36
 CREATE TABLE IF NOT EXISTS controllable_unit_service_provider (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     controllable_unit_id bigint NOT NULL,
     service_provider_id bigint NOT NULL,
     service_provider_party_type text GENERATED ALWAYS AS (
         'service_provider'
+    ) STORED,
+    end_user_id bigint NOT NULL,
+    end_user_party_type text GENERATED ALWAYS AS (
+        'end_user'
     ) STORED,
     contract_reference text NOT NULL CHECK (
         char_length(contract_reference) <= 128
@@ -32,6 +37,10 @@ CREATE TABLE IF NOT EXISTS controllable_unit_service_provider (
     CONSTRAINT controllable_unit_service_provider_service_provider_fkey
     FOREIGN KEY (
         service_provider_id, service_provider_party_type
+    ) REFERENCES party (id, type),
+    CONSTRAINT controllable_unit_service_provider_end_user_fkey
+    FOREIGN KEY (
+        end_user_id, end_user_party_type
     ) REFERENCES party (id, type),
     CONSTRAINT controllable_unit_service_provider_valid_time_overlap
     EXCLUDE USING gist (

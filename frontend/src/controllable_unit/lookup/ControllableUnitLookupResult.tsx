@@ -83,6 +83,7 @@ const ControllableUnitLookupResultItem = () => {
           >
             <TextField source="business_id" />
           </ReferenceField>
+          <TextField source="end_user_id" />
           <TextField source="name" />
         </FieldStack>
         <FieldStack

@@ -17,6 +17,7 @@ class ControllableUnitServiceProviderResponse:
             Example: 2.
         service_provider_id (int): Reference to the `party` (service provider) this relation links to a controllable
             unit. Example: 78.
+        end_user_id (int): Technical ID of the end user behind the accounting point.
         contract_reference (Union[Unset, str]): The service providers internal reference to the contract with the end
             user. Typically an internal identifier to a stored document or consent record. Example:
             123e4567-e89b-12d3-a456-426614174000.
@@ -32,6 +33,7 @@ class ControllableUnitServiceProviderResponse:
 
     controllable_unit_id: int
     service_provider_id: int
+    end_user_id: int
     contract_reference: Union[Unset, str] = UNSET
     valid_from: Union[None, Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
@@ -44,6 +46,8 @@ class ControllableUnitServiceProviderResponse:
         controllable_unit_id = self.controllable_unit_id
 
         service_provider_id = self.service_provider_id
+
+        end_user_id = self.end_user_id
 
         contract_reference = self.contract_reference
 
@@ -71,6 +75,7 @@ class ControllableUnitServiceProviderResponse:
             {
                 "controllable_unit_id": controllable_unit_id,
                 "service_provider_id": service_provider_id,
+                "end_user_id": end_user_id,
             }
         )
         if contract_reference is not UNSET:
@@ -94,6 +99,8 @@ class ControllableUnitServiceProviderResponse:
         controllable_unit_id = d.pop("controllable_unit_id")
 
         service_provider_id = d.pop("service_provider_id")
+
+        end_user_id = d.pop("end_user_id")
 
         contract_reference = d.pop("contract_reference", UNSET)
 
@@ -124,6 +131,7 @@ class ControllableUnitServiceProviderResponse:
         controllable_unit_service_provider_response = cls(
             controllable_unit_id=controllable_unit_id,
             service_provider_id=service_provider_id,
+            end_user_id=end_user_id,
             contract_reference=contract_reference,
             valid_from=valid_from,
             valid_to=valid_to,

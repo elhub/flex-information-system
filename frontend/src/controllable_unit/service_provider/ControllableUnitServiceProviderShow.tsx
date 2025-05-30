@@ -67,6 +67,7 @@ export const ControllableUnitServiceProviderShow = () => {
             <ReferenceField source="service_provider_id" reference="party">
               <TextField source="name" />
             </ReferenceField>
+            <TextField source="end_user_id" />
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="contract_reference" />

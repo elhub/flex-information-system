@@ -12,6 +12,7 @@ RETURNS TABLE (
     business_id text,
     name text,
     accounting_point_id bigint,
+    end_user_id bigint,
     technical_resources jsonb
 )
 SECURITY DEFINER
@@ -30,6 +31,7 @@ BEGIN
         business_id,
         name,
         accounting_point_id,
+        end_user_id,
         technical_resources
     IN (
         SELECT
@@ -37,6 +39,7 @@ BEGIN
             cu.business_id::text,
             cu.name,
             cu.accounting_point_id,
+            apeu.end_user_id,
             (
                 SELECT json_agg(row_to_json(tr))
                 FROM (
