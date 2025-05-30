@@ -5,7 +5,6 @@
 CREATE OR REPLACE VIEW api.notice
 WITH (security_invoker = true) AS (
     SELECT
-        id,
         data,
         party_id,
         source,

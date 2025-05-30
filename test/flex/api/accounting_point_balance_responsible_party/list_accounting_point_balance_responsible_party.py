@@ -16,7 +16,6 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    id: Union[Unset, str] = UNSET,
     accounting_point_id: Union[Unset, str] = UNSET,
     balance_responsible_party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -38,8 +37,6 @@ def _get_kwargs(
         headers["Prefer"] = str(prefer)
 
     params: Dict[str, Any] = {}
-
-    params["id"] = id
 
     params["accounting_point_id"] = accounting_point_id
 
@@ -152,7 +149,6 @@ def _build_response(
 def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     accounting_point_id: Union[Unset, str] = UNSET,
     balance_responsible_party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -170,7 +166,6 @@ def sync_detailed(
     """List Accounting Point Balance Responsible Party
 
     Args:
-        id (Union[Unset, str]):
         accounting_point_id (Union[Unset, str]):
         balance_responsible_party_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -190,7 +185,6 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
-        id=id,
         accounting_point_id=accounting_point_id,
         balance_responsible_party_id=balance_responsible_party_id,
         select=select,
@@ -212,7 +206,6 @@ def sync_detailed(
 def sync(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     accounting_point_id: Union[Unset, str] = UNSET,
     balance_responsible_party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -230,7 +223,6 @@ def sync(
     """List Accounting Point Balance Responsible Party
 
     Args:
-        id (Union[Unset, str]):
         accounting_point_id (Union[Unset, str]):
         balance_responsible_party_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -251,7 +243,6 @@ def sync(
 
     return sync_detailed(
         client=client,
-        id=id,
         accounting_point_id=accounting_point_id,
         balance_responsible_party_id=balance_responsible_party_id,
         select=select,
@@ -267,7 +258,6 @@ def sync(
 async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     accounting_point_id: Union[Unset, str] = UNSET,
     balance_responsible_party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -285,7 +275,6 @@ async def asyncio_detailed(
     """List Accounting Point Balance Responsible Party
 
     Args:
-        id (Union[Unset, str]):
         accounting_point_id (Union[Unset, str]):
         balance_responsible_party_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -305,7 +294,6 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
-        id=id,
         accounting_point_id=accounting_point_id,
         balance_responsible_party_id=balance_responsible_party_id,
         select=select,
@@ -325,7 +313,6 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
-    id: Union[Unset, str] = UNSET,
     accounting_point_id: Union[Unset, str] = UNSET,
     balance_responsible_party_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
@@ -343,7 +330,6 @@ async def asyncio(
     """List Accounting Point Balance Responsible Party
 
     Args:
-        id (Union[Unset, str]):
         accounting_point_id (Union[Unset, str]):
         balance_responsible_party_id (Union[Unset, str]):
         select (Union[Unset, str]):
@@ -365,7 +351,6 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
-            id=id,
             accounting_point_id=accounting_point_id,
             balance_responsible_party_id=balance_responsible_party_id,
             select=select,

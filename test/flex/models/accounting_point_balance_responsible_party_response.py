@@ -19,7 +19,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
         Attributes:
             energy_direction (Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]): The direction of the
                 effect on the balance that the BRP takes responsibility for. Example: consumption.
-            id (Union[Unset, int]): NON-STABLE unique identifier. Example: 8.
             accounting_point_id (Union[Unset, int]): The ID of the accounting point. Example: 245.
             balance_responsible_party_id (Union[Unset, int]): The balance responsible party of the accounting point.
                 Example: 37.
@@ -30,7 +29,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
     """
 
     energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection] = UNSET
-    id: Union[Unset, int] = UNSET
     accounting_point_id: Union[Unset, int] = UNSET
     balance_responsible_party_id: Union[Unset, int] = UNSET
     valid_from: Union[Unset, str] = UNSET
@@ -41,8 +39,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
         energy_direction: Union[Unset, str] = UNSET
         if not isinstance(self.energy_direction, Unset):
             energy_direction = self.energy_direction.value
-
-        id = self.id
 
         accounting_point_id = self.accounting_point_id
 
@@ -61,8 +57,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
         field_dict.update({})
         if energy_direction is not UNSET:
             field_dict["energy_direction"] = energy_direction
-        if id is not UNSET:
-            field_dict["id"] = id
         if accounting_point_id is not UNSET:
             field_dict["accounting_point_id"] = accounting_point_id
         if balance_responsible_party_id is not UNSET:
@@ -84,8 +78,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
         else:
             energy_direction = AccountingPointBalanceResponsiblePartyEnergyDirection(_energy_direction)
 
-        id = d.pop("id", UNSET)
-
         accounting_point_id = d.pop("accounting_point_id", UNSET)
 
         balance_responsible_party_id = d.pop("balance_responsible_party_id", UNSET)
@@ -103,7 +95,6 @@ class AccountingPointBalanceResponsiblePartyResponse:
 
         accounting_point_balance_responsible_party_response = cls(
             energy_direction=energy_direction,
-            id=id,
             accounting_point_id=accounting_point_id,
             balance_responsible_party_id=balance_responsible_party_id,
             valid_from=valid_from,

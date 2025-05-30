@@ -336,10 +336,13 @@ def link_template(target_resource, field):
 def generate_list_parameters(resource, foreign_key_fields):
     endpoint_parameters = []
 
+    query_filter_fields = []
+    if "id" in resource["properties"]:
+        query_filter_fields.append(("id", resource["properties"]["id"]))
+    query_filter_fields += foreign_key_fields
+
     # add id and all the foreign key fields
-    for field, field_info in [
-        ("id", resource["properties"]["id"])
-    ] + foreign_key_fields:
+    for field, field_info in query_filter_fields:
         parameter_template = id_query_parameter_template(
             field, field_info["description"]
         )

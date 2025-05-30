@@ -1598,13 +1598,6 @@
                     },
                     {
                         "properties": {
-                            "id": {
-                                "description": "NON-STABLE unique identifier.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 8
-                            },
                             "accounting_point_id": {
                                 "description": "The ID of the accounting point.",
                                 "format": "bigint",
@@ -2093,13 +2086,6 @@
                     },
                     {
                         "properties": {
-                            "id": {
-                                "description": "NON-STABLE unique identifier.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 8
-                            },
                             "party_id": {
                                 "description": "Reference to the party targeted by the notice.",
                                 "format": "bigint",
@@ -11148,16 +11134,6 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "NON-STABLE unique identifier.",
-                        "name": "id"
-                    },
-                    {
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
-                        },
-                        "example": "eq.55",
                         "description": "The ID of the accounting point.",
                         "name": "accounting_point_id"
                     },
@@ -14671,16 +14647,6 @@
                     "notice"
                 ],
                 "parameters": [
-                    {
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
-                        },
-                        "example": "eq.55",
-                        "description": "NON-STABLE unique identifier.",
-                        "name": "id"
-                    },
                     {
                         "in": "query",
                         "schema": {

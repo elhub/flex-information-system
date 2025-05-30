@@ -2968,7 +2968,6 @@ TO flex_internal_event_notification;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -2979,7 +2978,6 @@ TO flex_balance_responsible_party;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-es-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -2990,7 +2988,6 @@ TO flex_energy_supplier;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-eu-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -3001,7 +2998,6 @@ TO flex_end_user;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-fiso-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -3012,7 +3008,6 @@ TO flex_flexibility_information_system_operator;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-mo-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -3023,7 +3018,6 @@ TO flex_market_operator;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-so-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -3034,7 +3028,6 @@ TO flex_system_operator;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-sp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -3045,7 +3038,6 @@ TO flex_service_provider;
 
 -- changeset flex:api-grant-accounting-point-balance-responsible-party-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     accounting_point_id,
     balance_responsible_party_id,
     energy_direction,
@@ -4246,7 +4238,6 @@ TO flex_internal_event_notification;
 
 -- changeset flex:api-grant-notice-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,
@@ -4256,7 +4247,6 @@ TO flex_balance_responsible_party;
 
 -- changeset flex:api-grant-notice-es-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,
@@ -4266,7 +4256,6 @@ TO flex_energy_supplier;
 
 -- changeset flex:api-grant-notice-eu-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,
@@ -4276,7 +4265,6 @@ TO flex_end_user;
 
 -- changeset flex:api-grant-notice-fiso-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,
@@ -4286,7 +4274,6 @@ TO flex_flexibility_information_system_operator;
 
 -- changeset flex:api-grant-notice-mo-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,
@@ -4296,7 +4283,6 @@ TO flex_market_operator;
 
 -- changeset flex:api-grant-notice-so-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,
@@ -4306,7 +4292,6 @@ TO flex_system_operator;
 
 -- changeset flex:api-grant-notice-sp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,
@@ -4316,7 +4301,6 @@ TO flex_service_provider;
 
 -- changeset flex:api-grant-notice-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
-    id,
     party_id,
     type,
     source,

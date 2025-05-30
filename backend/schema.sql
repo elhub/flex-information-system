@@ -242,7 +242,6 @@ CREATE TABLE accounting_point (
     recorded_at timestamp with time zone NOT NULL
 );
 CREATE TABLE accounting_point_balance_responsible_party (
-    id bigint NOT NULL,
     accounting_point_id bigint NOT NULL,
     balance_responsible_party_id bigint NOT NULL,
     energy_direction text NOT NULL,
@@ -351,7 +350,6 @@ CREATE TABLE service_providing_group_product_application_history (
     replaced_at timestamp with time zone NULL
 );
 CREATE TABLE notice (
-    id bigint NOT NULL,
     party_id bigint NOT NULL,
     type text NOT NULL,
     source text NOT NULL,

@@ -17,7 +17,6 @@ type AccountingPoint struct {
 }
 
 type AccountingPointBalanceResponsibleParty struct {
-	ID                        int
 	AccountingPointID         int
 	BalanceResponsiblePartyID int
 	EnergyDirection           string
@@ -134,7 +133,6 @@ type Identity struct {
 }
 
 type Notice struct {
-	ID      int
 	PartyID int
 	Type    string
 	Source  string

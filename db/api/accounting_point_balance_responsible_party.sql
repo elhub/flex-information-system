@@ -3,13 +3,12 @@
 
 -- changeset flex:api-accounting-point-balance-responsible-party-create endDelimiter:-- runAlways:true
 CREATE OR REPLACE VIEW api.accounting_point_balance_responsible_party
--- We are enforching "RLS" in the view definition. Therefore we want
+-- We are enforcing "RLS" in the view definition. Therefore we want
 --  * security definer (invoker = false) to avoid the performance hit of RLS
 --  * security barrier since it is considered good practice ref https://www.postgresql.org/docs/current/rules-privileges.html
 WITH (security_invoker = false, security_barrier = true) AS (
     -- RLS: APBRP-FISO001
     SELECT
-        id,
         accounting_point_id,
         balance_responsible_party_id,
         energy_direction,
@@ -20,7 +19,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
     -- RLS: APBRP-SO001
     UNION ALL
     SELECT
-        id,
         accounting_point_id,
         balance_responsible_party_id,
         energy_direction,
@@ -28,7 +26,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
         upper(valid_time_range) AS valid_to
     FROM (
         SELECT
-            ap_brp.id,
             ap_brp.accounting_point_id,
             ap_brp.balance_responsible_party_id,
             ap_brp.energy_direction,
@@ -44,7 +41,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
         WHERE current_role = 'flex_system_operator'
             AND ap_so.system_operator_id = flex.current_party()
         GROUP BY
-            ap_brp.id,
             ap_brp.accounting_point_id,
             ap_brp.balance_responsible_party_id,
             ap_brp.energy_direction,
@@ -53,7 +49,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
     -- RLS: APBRP-SP001
     UNION ALL
     SELECT
-        id,
         accounting_point_id,
         balance_responsible_party_id,
         energy_direction,
@@ -65,7 +60,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
         END AS valid_to
     FROM ( -- noqa
         SELECT
-            ap_brp.id,
             ap_brp.accounting_point_id,
             ap_brp.balance_responsible_party_id,
             ap_brp.energy_direction,
@@ -81,7 +75,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
         WHERE current_role = 'flex_service_provider'
             AND ap_sp.service_provider_id = flex.current_party()
         GROUP BY
-            ap_brp.id,
             ap_brp.accounting_point_id,
             ap_brp.balance_responsible_party_id,
             ap_brp.energy_direction,

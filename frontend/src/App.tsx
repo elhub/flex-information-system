@@ -43,6 +43,7 @@ import {
   useResourceDefinitions,
   useGetResourceLabel,
   useCanAccess,
+  DataProvider,
 } from "ra-core";
 
 import { Route, Navigate } from "react-router-dom";
@@ -138,7 +139,22 @@ const config: IDataProviderConfig = {
   schema: defaultSchema,
 };
 
-const dataProvider = postgrestRestProvider(config);
+const postgrestDataProvider = postgrestRestProvider(config);
+
+// Some API resources that are not backed by a DB table have no IDs in their
+// rows. For such cases to work properly, the getList must be overriden so that
+// we add a dummy ID there and satisfy internal React Admin typing constraints.
+// cf https://github.com/marmelab/react-admin/blob/27dccfb8519de551ef7e236355860aacef36ef56/packages/ra-core/src/types.ts#L12-L15
+const dataProvider: DataProvider = {
+  ...postgrestDataProvider,
+  getList: (resource, params) =>
+    postgrestDataProvider.getList(resource, params).then((response) => {
+      const newData = response.data.map((record, i) =>
+        record?.id ? record : { ...record, id: i },
+      );
+      return { ...response, data: newData };
+    }),
+};
 
 const RedirectMenuButton = (props: { label: string; url: string }) => {
   const redirect = useRedirect();
