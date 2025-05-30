@@ -19,16 +19,33 @@ WITH (security_invoker = false, security_barrier = true) AS (
     -- RLS: APBRP-SO001
     UNION ALL
     SELECT
-        ap_brp.accounting_point_id,
-        ap_brp.balance_responsible_party_id,
-        ap_brp.energy_direction,
-        lower(ap_brp.valid_time_range) AS valid_from,
-        upper(ap_brp.valid_time_range) AS valid_to
-    FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
-        INNER JOIN flex.accounting_point AS ap
-            ON ap.id = ap_brp.accounting_point_id
-    WHERE current_role = 'flex_system_operator'
-        AND ap.system_operator_id = flex.current_party()
+        accounting_point_id,
+        balance_responsible_party_id,
+        energy_direction,
+        lower(valid_time_range) AS valid_from,
+        upper(valid_time_range) AS valid_to
+    FROM (
+        SELECT
+            ap_brp.accounting_point_id,
+            ap_brp.balance_responsible_party_id,
+            ap_brp.energy_direction,
+            -- only keep the parts of AP-BRP where SO is SO on the AP
+            unnest(
+                multirange(ap_brp.valid_time_range)
+                * range_agg(ap_so.valid_time_range)
+            ) AS valid_time_range
+        FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
+            INNER JOIN flex.accounting_point_system_operator AS ap_so
+                ON ap_so.accounting_point_id = ap_brp.accounting_point_id
+                    AND ap_so.valid_time_range && ap_brp.valid_time_range
+        WHERE current_role = 'flex_system_operator'
+            AND ap_so.system_operator_id = flex.current_party()
+        GROUP BY
+            ap_brp.accounting_point_id,
+            ap_brp.balance_responsible_party_id,
+            ap_brp.energy_direction,
+            ap_brp.valid_time_range
+    ) AS ap_brp_for_so
     -- RLS: APBRP-SP001
     UNION ALL
     SELECT

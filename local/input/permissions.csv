@@ -50,7 +50,6 @@ controllable_unit;recovery_duration;;R;R;R;RCU;R;R;RCU;R;;
 controllable_unit;ramp_rate;;R;R;R;RCU;R;R;RCU;R;;
 controllable_unit;accounting_point_id;;R;R;R;RC;R;R;RC;R;;
 controllable_unit;grid_node_id;;R;R;R;RCU;R;RU;R;R;;
-controllable_unit;connecting_system_operator_id;;R;R;R;R;R;R;R;R;;
 controllable_unit;grid_validation_status;;R;R;R;RCU;R;RU;R;R;;
 controllable_unit;grid_validation_notes;;R;R;R;RCU;R;RU;R;R;;
 controllable_unit;last_validated;;R;R;R;RCU;R;RU;R;R;;

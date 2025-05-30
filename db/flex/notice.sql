@@ -5,25 +5,27 @@
 CREATE OR REPLACE VIEW notice AS (
     -- CU grid node ID missing
     SELECT
-        ap.system_operator_id AS party_id,
+        ap_so.system_operator_id AS party_id,
         'no.elhub.flex.controllable_unit.grid_node_id.missing' AS type, -- noqa
         '/controllable_unit/' || cu.id AS source,
         null AS data -- noqa
     FROM controllable_unit AS cu
-        INNER JOIN accounting_point AS ap
-            ON cu.accounting_point_id = ap.id
+        INNER JOIN accounting_point_system_operator AS ap_so
+            ON cu.accounting_point_id = ap_so.accounting_point_id
+                AND ap_so.valid_time_range @> current_timestamp
     WHERE cu.grid_node_id IS null
 
     -- CU grid validation status pending
     UNION ALL
     SELECT
-        ap.system_operator_id AS party_id,
+        ap_so.system_operator_id AS party_id,
         'no.elhub.flex.controllable_unit.grid_validation_status.pending' AS type, -- noqa
         '/controllable_unit/' || cu.id AS source,
         null AS data -- noqa
     FROM controllable_unit AS cu
-        INNER JOIN accounting_point AS ap
-            ON cu.accounting_point_id = ap.id
+        INNER JOIN accounting_point_system_operator AS ap_so
+            ON cu.accounting_point_id = ap_so.accounting_point_id
+                AND ap_so.valid_time_range @> current_timestamp
     WHERE cu.grid_validation_status = 'pending'
 
     -- CU grid validation status incomplete information

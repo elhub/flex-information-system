@@ -32,12 +32,6 @@ export const ControllableUnitHistoryList = () => {
         </ReferenceField>
         <TextField source="accounting_point_id" />
         <TextField source="grid_node_id" />
-        <ReferenceField
-          source="connecting_system_operator_id"
-          reference="party"
-        >
-          <TextField source="name" />
-        </ReferenceField>
         <TextField source="grid_validation_status" />
         <DateField source="recorded_at" showTime />
         <DateField source="replaced_at" showTime />

@@ -1,5 +1,6 @@
 import {
   BooleanField,
+  FunctionField,
   ReferenceField,
   Show,
   SimpleShowLayout,
@@ -62,18 +63,6 @@ export const ControllableUnitShow = () => {
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
-            Relationships
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <ReferenceField
-              source="connecting_system_operator_id"
-              reference="party"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-          </FieldStack>
-
-          <Typography variant="h6" gutterBottom>
             Locations
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
@@ -81,7 +70,14 @@ export const ControllableUnitShow = () => {
               source="accounting_point_id"
               reference="accounting_point"
             >
-              <TextField source="business_id" />
+              <Stack direction="row" spacing={1}>
+                <TextField source="business_id" />
+                {!isHistory && (
+                  <ReferenceField source="system_operator_id" reference="party">
+                    <FunctionField render={(record) => `(${record.name})`} />
+                  </ReferenceField>
+                )}
+              </Stack>
             </ReferenceField>
             <TextField source="grid_node_id" />
           </FieldStack>

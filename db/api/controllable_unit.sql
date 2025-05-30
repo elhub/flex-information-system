@@ -1,5 +1,5 @@
 --liquibase formatted sql
--- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
+-- Manually managed file
 
 -- changeset flex:api-controllable-unit-history-create endDelimiter:-- runAlways:true
 CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
@@ -24,14 +24,11 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
-        ap.system_operator_id AS connecting_system_operator_id,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         null AS replaced_by,
         null AS replaced_at
     FROM flex.controllable_unit AS cu
-        INNER JOIN flex.accounting_point AS ap
-            ON cu.accounting_point_id = ap.id
     UNION ALL
     SELECT
         cu.history_id AS id,
@@ -52,14 +49,11 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
-        ap.system_operator_id AS connecting_system_operator_id,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         cu.replaced_by,
         upper(cu.record_time_range) AS replaced_at
     FROM flex.controllable_unit_history AS cu
-        INNER JOIN flex.accounting_point AS ap
-            ON cu.accounting_point_id = ap.id
 );
 
 -- changeset flex:api-controllable-unit-create endDelimiter:-- runAlways:true
@@ -83,7 +77,6 @@ WITH (security_invoker = true) AS (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
-        cu.connecting_system_operator_id,
         cu.recorded_by,
         cu.recorded_at
     FROM (
@@ -186,12 +179,9 @@ BEGIN
             cu.regulation_direction,
             cu.start_date,
             cu.status,
-            ap.system_operator_id AS connecting_system_operator_id,
             cu.recorded_by,
             lower(cu.record_time_range) AS recorded_at
         FROM flex.controllable_unit INTO l_old AS cu
-            INNER JOIN flex.accounting_point AS ap
-                ON cu.accounting_point_id = ap.id
         WHERE cu.id = NEW.id;
 
         IF NOT FOUND THEN

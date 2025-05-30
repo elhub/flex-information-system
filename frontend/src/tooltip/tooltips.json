@@ -14,7 +14,6 @@
         "ramp_rate": "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
         "accounting_point_id": "Reference to the accounting point that the controllable unit is connected to.",
         "grid_node_id": "Reference to the node that the controllable unit is connected to.",
-        "connecting_system_operator_id": "Reference to the `party` that is the connecting system operator. Derived from the `accounting_point_id`.",
         "grid_validation_status": "The grid validation status of the controllable unit.",
         "grid_validation_notes": "Free text notes on the current grid validation status.",
         "last_validated": "When the controllable unit was last validated."

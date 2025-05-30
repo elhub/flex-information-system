@@ -360,11 +360,9 @@ BEGIN
       )
   LOOP
     INSERT INTO flex.accounting_point (
-      business_id,
-      system_operator_id
+      business_id
     ) VALUES (
-      gs1.add_check_digit(partial_gsrn::text),
-      so_id
+      gs1.add_check_digit(partial_gsrn::text)
     ) RETURNING id INTO ap_id;
 
     INSERT INTO flex.accounting_point_metering_grid_area (

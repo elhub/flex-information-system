@@ -14,10 +14,12 @@ import (
 const getControllableUnitCreateNotificationRecipients = `-- name: GetControllableUnitCreateNotificationRecipients :many
 SELECT unnest(
     array_remove(
-        array[cu.connecting_system_operator_id, apeu.end_user_id], null
+        array[ap.system_operator_id, apeu.end_user_id], null
     )
 )::bigint
 FROM controllable_unit AS cu
+INNER JOIN accounting_point AS ap
+ON cu.accounting_point_id = ap.id
 LEFT JOIN accounting_point_end_user AS apeu
 ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cu.id = $1
@@ -78,7 +80,7 @@ SELECT unnest(
     array_remove(
         array[
             cusp.service_provider_id,
-            cu.connecting_system_operator_id,
+            ap.system_operator_id,
             apeu.end_user_id
         ],
         null
@@ -86,6 +88,7 @@ SELECT unnest(
 )::bigint
 FROM controllable_unit_service_provider AS cusp
 INNER JOIN controllable_unit AS cu ON cu.id = cusp.controllable_unit_id
+INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
 LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cusp.id = $1
 AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
@@ -97,6 +100,7 @@ AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
 //	time of the event (i.e., both versions before and after the update)
 //
 // not using history on CU because AP ID is stable
+// using the latest SO because AP.SO is not time-dependent
 // just checking the start of the CU-SP valid time because functionally
 //
 //	speaking, this valid time should actually be aligned with the end user
@@ -127,7 +131,7 @@ SELECT DISTINCT unnest(
     array_remove(
         array[
             cusph.service_provider_id,
-            cu.connecting_system_operator_id,
+            ap.system_operator_id,
             apeu.end_user_id
         ],
         null
@@ -143,6 +147,7 @@ FROM (
     ORDER BY cusph.recorded_at DESC LIMIT 2
 ) AS cusph
 INNER JOIN controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
+INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
 LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE apeu.valid_time_range @> cusph.valid_from
 `
@@ -169,8 +174,10 @@ func (q *Queries) GetControllableUnitServiceProviderUpdateDeleteNotificationReci
 
 const getControllableUnitUpdateNotificationRecipients = `-- name: GetControllableUnitUpdateNotificationRecipients :many
 
-SELECT connecting_system_operator_id
-FROM controllable_unit cu
+SELECT ap.system_operator_id
+FROM controllable_unit AS cu
+INNER JOIN accounting_point AS ap
+ON cu.accounting_point_id = ap.id
 WHERE cu.id = $1
 AND cu.status != 'new'
 UNION
@@ -183,6 +190,7 @@ AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> $2::timestamptz
 `
 
 // not using history on CU because AP ID is stable
+// using the latest SO because AP.SO is not time-dependent
 // not using history on APEU because we take the latest knowledge we have to
 //
 //	identify who to notify
@@ -197,11 +205,11 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 	defer rows.Close()
 	var items []int
 	for rows.Next() {
-		var connecting_system_operator_id int
-		if err := rows.Scan(&connecting_system_operator_id); err != nil {
+		var system_operator_id int
+		if err := rows.Scan(&system_operator_id); err != nil {
 			return nil, err
 		}
-		items = append(items, connecting_system_operator_id)
+		items = append(items, system_operator_id)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -251,6 +259,7 @@ AND tstzrange(recorded_at, replaced_at, '[)') @> $2::timestamptz
 
 // not using history on CU-SP for CU ID and SP ID because they are stable
 // not using history on CU because AP ID is stable
+// using the latest SO because AP.SO is not time-dependent
 // not using history on APEU or CU-SP for end user ID because we take the
 //
 //	latest knowledge we have to identify who to notify and if it still
@@ -418,8 +427,9 @@ SELECT service_provider_id
 FROM service_providing_group spg
 WHERE spg.id = $1
 UNION
-SELECT connecting_system_operator_id
-FROM controllable_unit cu
+SELECT ap.system_operator_id
+FROM controllable_unit AS cu
+INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
 WHERE cu.id in (
     SELECT controllable_unit_id
     FROM service_providing_group_membership_history spgmh
@@ -521,8 +531,9 @@ AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> $2::timestamptz
 AND cusph.valid_from IS NOT NULL
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> $2::timestamptz
 UNION
-SELECT connecting_system_operator_id
-FROM controllable_unit cu
+SELECT ap.system_operator_id
+FROM controllable_unit AS cu
+INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
 WHERE cu.id = (
     SELECT controllable_unit_id
     FROM technical_resource_history trh
