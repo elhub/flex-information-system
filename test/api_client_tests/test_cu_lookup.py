@@ -144,6 +144,7 @@ def test_cu_lookup(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cul[0].id,
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(20),
         ),

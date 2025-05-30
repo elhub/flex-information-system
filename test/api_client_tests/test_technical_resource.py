@@ -376,6 +376,7 @@ def test_tr_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=common_sp_id,
+            end_user_id=11,
             contract_reference="1111r4128",
             valid_from=f"{date.today().isoformat()} Europe/Oslo",
         ),

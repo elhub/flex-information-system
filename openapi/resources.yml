@@ -213,6 +213,15 @@ resources:
           resource: party
           field: id
         example: 78
+      end_user_id:
+        description: >-
+          Technical ID of the end user behind the accounting point.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
       contract_reference:
         description: >-
           The service providers internal reference to the contract with the

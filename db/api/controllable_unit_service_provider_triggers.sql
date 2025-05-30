@@ -8,5 +8,5 @@ ON api.controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE PROCEDURE timeline.upsert(
     'flex.controllable_unit_service_provider',
-    'controllable_unit_id,service_provider_id,contract_reference'
+    'controllable_unit_id,service_provider_id,end_user_id,contract_reference'
 );

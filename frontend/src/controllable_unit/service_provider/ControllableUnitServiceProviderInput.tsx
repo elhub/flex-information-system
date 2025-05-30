@@ -83,6 +83,7 @@ export const ControllableUnitServiceProviderInput = () => {
             source="service_provider_id"
             readOnly={isServiceProvider}
           />
+          <NumberInput source="end_user_id" />
         </InputStack>
         <InputStack direction="row" flexWrap="wrap">
           <TextInput source="contract_reference" validate={required()} />
