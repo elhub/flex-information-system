@@ -413,7 +413,11 @@ BEGIN
       ), (
         ap_id,
         energy_supplier.new_id,
-        tstzrange('2024-01-01 00:00:00 Europe/Oslo', null, '[)')
+        tstzrange(
+          '2024-01-01 00:00:00 Europe/Oslo',
+          '2099-01-01 00:00:00 Europe/Oslo',
+          '[)'
+        )
       );
     END IF;
   END LOOP;

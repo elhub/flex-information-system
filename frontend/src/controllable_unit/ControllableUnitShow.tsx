@@ -21,6 +21,7 @@ import { UnitField } from "../components/unitComponents";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
 import { ControllableUnitBalanceResponsiblePartyList } from "./balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
+import { ControllableUnitEnergySupplierList } from "./energy_supplier/ControllableUnitEnergySupplierList";
 
 export const ControllableUnitShow = () => {
   const resource = useResourceContext()!;
@@ -126,6 +127,10 @@ export const ControllableUnitShow = () => {
               Balance responsible parties
             </Typography>
             <ControllableUnitBalanceResponsiblePartyList />
+            <Typography variant="h6" gutterBottom>
+              Energy suppliers
+            </Typography>
+            <ControllableUnitEnergySupplierList />
           </>
         )}
         {isHistory && <RestoreButton />}

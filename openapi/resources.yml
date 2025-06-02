@@ -999,6 +999,52 @@ resources:
         nullable: true
         example: null
 
+  - id: accounting_point_energy_supplier
+    acronym: APES
+    summary: Accounting Point Energy Supplier
+    description: >-
+      Relation linking an energy supplier to an accounting point.
+    operations:
+      - list
+    generate_views: false
+    audit: false
+    properties:
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 45
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+      energy_supplier_id:
+        description: The energy supplier of the accounting point.
+        format: bigint
+        type: integer
+        example: 7
+        readOnly: true
+        x-foreign-key:
+          resource: party
+          field: id
+      valid_from:
+        description: >-
+          The date from which the relation between the accounting point and
+          the energy supplier is valid. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2023-09-09 00:00:00 CET
+      valid_to:
+        description: >-
+          The date until which the relation between the accounting point and
+          the energy supplier is valid. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+
   - id: product_type
     acronym: PT
     summary: Product Type

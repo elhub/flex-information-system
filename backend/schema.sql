@@ -248,6 +248,12 @@ CREATE TABLE accounting_point_balance_responsible_party (
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL
 );
+CREATE TABLE accounting_point_energy_supplier (
+    accounting_point_id bigint NOT NULL,
+    energy_supplier_id bigint NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL
+);
 CREATE TABLE product_type (
     id bigint NOT NULL,
     business_id text NOT NULL,
