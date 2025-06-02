@@ -123,4 +123,33 @@ CREATE OR REPLACE VIEW notice AS (
         GROUP BY spg.id
     ) AS spg_brp_count
     WHERE nb_brp > 1
+
+    -- CUSPs not fully covered by the end user contract
+    UNION ALL
+    SELECT
+        service_provider_id AS party_id,
+        'no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract' AS type, -- noqa
+        '/controllable_unit_service_provider/' || id AS source,
+        jsonb_build_object(
+            'invalid_timeline',
+            valid_time_range - end_user_timeline
+        )::text AS data -- noqa
+    FROM (
+        SELECT
+            cusp.id,
+            cusp.service_provider_id,
+            multirange(cusp.valid_time_range) AS valid_time_range,
+            coalesce(
+                range_agg(apeu.valid_time_range), '{}'::tstzmultirange
+            ) AS end_user_timeline
+        FROM flex.controllable_unit_service_provider AS cusp
+            INNER JOIN flex.controllable_unit AS cu
+                ON cusp.controllable_unit_id = cu.id
+            LEFT JOIN flex.accounting_point_end_user AS apeu
+                ON cu.accounting_point_id = apeu.accounting_point_id
+                    AND cusp.end_user_id = apeu.end_user_id
+                    AND cusp.valid_time_range && apeu.valid_time_range
+        GROUP BY cusp.id
+    ) AS cusp_with_eu
+    WHERE NOT end_user_timeline @> valid_time_range
 );
