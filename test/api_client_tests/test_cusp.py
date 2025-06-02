@@ -314,13 +314,20 @@ def test_cusp_so(data):
 
     # SO can read the CUs where they are CSO
     # Test SO manages all CUs in the test data so all CUSPs should be visible
+    # (excepted the ones created during the test runs on APs < 1000)
     cusps = list_controllable_unit_service_provider.sync(client=client_fiso)
     assert isinstance(cusps, list)
     for cusp in cusps:
         cu = read_controllable_unit.sync(
-            client=client_so, id=cast(int, cusp.controllable_unit_id)
+            client=client_fiso, id=cast(int, cusp.controllable_unit_id)
         )
         assert isinstance(cu, ControllableUnitResponse)
+
+        if cu.accounting_point_id > 1000:
+            cusp = read_controllable_unit_service_provider.sync(
+                client=client_so, id=cast(int, cusp.id)
+            )
+            assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
 
 # RLS: CUSP-FISO002
