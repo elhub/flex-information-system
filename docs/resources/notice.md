@@ -17,7 +17,7 @@ from the responsible party.
 | no.elhub.flex.service_providing_group_product_application.status.requested    | SPG product application status requested                        | PSO               | Initiate SPG product prequalification and update status                                           |
 | no.elhub.flex.service_providing_group_grid_prequalification.status.requested  | SPG grid prequalification status requested                      | ISO               | Initiate SPG grid prequalification and update status                                              |
 | no.elhub.flex.service_providing_group.balance_responsible_party.multiple      | Inconsistency: Multiple BRPs in a single SPG                    | SP                | Make sure the SPG only contains CU currently associated to the same BRP on their accounting point |
-| no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract  | Inconsistency: CUSP valid while end user is not valid on the AP | SP                | Reduce the valid time of the CUSP to match the updated end user data from Elhub                   |
+| no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract  | Inconsistency: CUSP valid while end user is not valid on the AP | SP                | Update CUSP to match the updated end user data from Elhub                                         |
 
 ## Relevant links
 
