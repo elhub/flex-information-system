@@ -76,6 +76,7 @@ def test_cusp_fiso(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2020-01-01T00:00:00+1",
             valid_to=None,
@@ -213,6 +214,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(-5),
         ),
@@ -226,6 +228,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(1),
         ),
@@ -239,6 +242,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp2_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(0),
         ),
@@ -252,6 +256,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(16),
         ),

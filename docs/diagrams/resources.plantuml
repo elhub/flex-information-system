@@ -8,6 +8,7 @@ digraph flex {
     controllable_unit_service_provider    [label="{controllable_unit_service_provider}|{Relation between controllable unit\nand service provider}|{🕰️}" shape=record style=solid]
     controllable_unit_service_provider -> controllable_unit     [label=controllable_unit_id]
     controllable_unit_service_provider -> party     [label=service_provider_id]
+    controllable_unit_service_provider -> party     [label=end_user_id]
     service_providing_group    [label="{service_providing_group}|{Group of controllable\nunits}|{🕰️}" shape=record style=solid]
     service_providing_group -> party     [label=service_provider_id]
     service_providing_group_membership    [label="{service_providing_group_membership}|{Membership relation of\ncontrollable unit in service\nproviding group}|{🕰️}" shape=record style=solid]

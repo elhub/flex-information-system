@@ -118,6 +118,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu1.id),
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),
@@ -129,6 +130,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu2.id),
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),
@@ -140,6 +142,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu3.id),
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),

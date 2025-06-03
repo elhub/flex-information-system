@@ -17,6 +17,7 @@ def _get_kwargs(
     id: Union[Unset, str] = UNSET,
     controllable_unit_id: Union[Unset, str] = UNSET,
     service_provider_id: Union[Unset, str] = UNSET,
+    end_user_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -42,6 +43,8 @@ def _get_kwargs(
     params["controllable_unit_id"] = controllable_unit_id
 
     params["service_provider_id"] = service_provider_id
+
+    params["end_user_id"] = end_user_id
 
     params["select"] = select
 
@@ -149,6 +152,7 @@ def sync_detailed(
     id: Union[Unset, str] = UNSET,
     controllable_unit_id: Union[Unset, str] = UNSET,
     service_provider_id: Union[Unset, str] = UNSET,
+    end_user_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -165,6 +169,7 @@ def sync_detailed(
         id (Union[Unset, str]):
         controllable_unit_id (Union[Unset, str]):
         service_provider_id (Union[Unset, str]):
+        end_user_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -185,6 +190,7 @@ def sync_detailed(
         id=id,
         controllable_unit_id=controllable_unit_id,
         service_provider_id=service_provider_id,
+        end_user_id=end_user_id,
         select=select,
         order=order,
         offset=offset,
@@ -207,6 +213,7 @@ def sync(
     id: Union[Unset, str] = UNSET,
     controllable_unit_id: Union[Unset, str] = UNSET,
     service_provider_id: Union[Unset, str] = UNSET,
+    end_user_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -223,6 +230,7 @@ def sync(
         id (Union[Unset, str]):
         controllable_unit_id (Union[Unset, str]):
         service_provider_id (Union[Unset, str]):
+        end_user_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -244,6 +252,7 @@ def sync(
         id=id,
         controllable_unit_id=controllable_unit_id,
         service_provider_id=service_provider_id,
+        end_user_id=end_user_id,
         select=select,
         order=order,
         offset=offset,
@@ -260,6 +269,7 @@ async def asyncio_detailed(
     id: Union[Unset, str] = UNSET,
     controllable_unit_id: Union[Unset, str] = UNSET,
     service_provider_id: Union[Unset, str] = UNSET,
+    end_user_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -276,6 +286,7 @@ async def asyncio_detailed(
         id (Union[Unset, str]):
         controllable_unit_id (Union[Unset, str]):
         service_provider_id (Union[Unset, str]):
+        end_user_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -296,6 +307,7 @@ async def asyncio_detailed(
         id=id,
         controllable_unit_id=controllable_unit_id,
         service_provider_id=service_provider_id,
+        end_user_id=end_user_id,
         select=select,
         order=order,
         offset=offset,
@@ -316,6 +328,7 @@ async def asyncio(
     id: Union[Unset, str] = UNSET,
     controllable_unit_id: Union[Unset, str] = UNSET,
     service_provider_id: Union[Unset, str] = UNSET,
+    end_user_id: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -332,6 +345,7 @@ async def asyncio(
         id (Union[Unset, str]):
         controllable_unit_id (Union[Unset, str]):
         service_provider_id (Union[Unset, str]):
+        end_user_id (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -354,6 +368,7 @@ async def asyncio(
             id=id,
             controllable_unit_id=controllable_unit_id,
             service_provider_id=service_provider_id,
+            end_user_id=end_user_id,
             select=select,
             order=order,
             offset=offset,

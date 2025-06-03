@@ -98,6 +98,7 @@ def test_cusp_spgm_consistency_not_ok(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-08T00:00:00+1",
             valid_to="2024-01-12T00:00:00+1",
@@ -162,6 +163,7 @@ def test_spgm_sp002(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-08T00:00:00+1",
             valid_to="2024-01-12T00:00:00+1",
@@ -222,6 +224,7 @@ def test_spgm(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-08T00:00:00+1",
             valid_to="2024-01-12T00:00:00+1",
@@ -322,6 +325,7 @@ def test_spgm_so(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
+            end_user_id=11,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-09T00:00:00+1",
         ),

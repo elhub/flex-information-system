@@ -59,6 +59,7 @@ controllable_unit_service_provider;;;;;;D;;;D;;;R
 controllable_unit_service_provider;id;;R;R;R;R;R;R;R;R;;
 controllable_unit_service_provider;controllable_unit_id;;R;R;R;RC;R;R;RC;R;;
 controllable_unit_service_provider;service_provider_id;;R;R;R;RC;R;R;RC;R;;
+controllable_unit_service_provider;end_user_id;;R;R;R;RC;R;R;RC;R;;
 controllable_unit_service_provider;contract_reference;;R;R;R;RCU;R;R;RCU;R;;
 controllable_unit_service_provider;valid_from;;R;R;R;RCU;R;R;RCU;R;;
 controllable_unit_service_provider;valid_to;;R;R;R;RCU;R;R;RCU;R;;
