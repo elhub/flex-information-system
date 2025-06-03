@@ -81,6 +81,10 @@
             "description": "Accounting Point Balance Responsible Party"
         },
         {
+            "name": "accounting_point_energy_supplier",
+            "description": "Accounting Point Energy Supplier"
+        },
+        {
             "name": "product_type",
             "description": "Product Type"
         },
@@ -1624,6 +1628,54 @@
                             },
                             "valid_to": {
                                 "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "nullable": true,
+                                "example": null
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_energy_supplier_update_request": {
+                "summary": "Update - Accounting Point Energy Supplier",
+                "description": "Request schema for update operations - Relation linking an energy supplier to an accounting point.",
+                "type": "object"
+            },
+            "accounting_point_energy_supplier_response": {
+                "summary": "Response - Accounting Point Energy Supplier",
+                "description": "Response schema for operations with return values - Relation linking an energy supplier to an accounting point.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_energy_supplier_update_request"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_id": {
+                                "description": "The ID of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 45
+                            },
+                            "energy_supplier_id": {
+                                "description": "The energy supplier of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 7,
+                                "readOnly": true
+                            },
+                            "valid_from": {
+                                "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2023-09-09 00:00:00 CET"
+                            },
+                            "valid_to": {
+                                "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "readOnly": true,
@@ -11220,6 +11272,195 @@
                                 "schema": {
                                     "items": {
                                         "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/accounting_point_energy_supplier": {
+            "summary": "Accounting Point Energy Supplier",
+            "description": "",
+            "get": {
+                "operationId": "list_accounting_point_energy_supplier",
+                "summary": "List Accounting Point Energy Supplier",
+                "description": "",
+                "tags": [
+                    "accounting_point_energy_supplier"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The ID of the accounting point.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The energy supplier of the accounting point.",
+                        "name": "energy_supplier_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
                                     },
                                     "type": "array"
                                 }

@@ -3064,6 +3064,78 @@ GRANT SELECT (
 ) ON TABLE api.accounting_point_balance_responsible_party
 TO flex_third_party;
 
+-- changeset flex:api-grant-accounting-point-energy-supplier-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-accounting-point-energy-supplier-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-accounting-point-energy-supplier-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_end_user;
+
+-- changeset flex:api-grant-accounting-point-energy-supplier-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-accounting-point-energy-supplier-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_market_operator;
+
+-- changeset flex:api-grant-accounting-point-energy-supplier-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_system_operator;
+
+-- changeset flex:api-grant-accounting-point-energy-supplier-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_service_provider;
+
+-- changeset flex:api-grant-accounting-point-energy-supplier-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    energy_supplier_id,
+    valid_from,
+    valid_to
+) ON TABLE api.accounting_point_energy_supplier
+TO flex_third_party;
+
 -- changeset flex:api-grant-product-type-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,

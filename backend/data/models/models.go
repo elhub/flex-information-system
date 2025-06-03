@@ -24,6 +24,13 @@ type AccountingPointBalanceResponsibleParty struct {
 	ValidTo                   pgtype.Timestamptz
 }
 
+type AccountingPointEnergySupplier struct {
+	AccountingPointID int
+	EnergySupplierID  int
+	ValidFrom         pgtype.Timestamptz
+	ValidTo           pgtype.Timestamptz
+}
+
 type ControllableUnit struct {
 	ID                       int
 	BusinessID               string

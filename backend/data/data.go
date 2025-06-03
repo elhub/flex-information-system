@@ -59,6 +59,8 @@ func NewAPIHandler(
 
 	mux.HandleFunc("GET /accounting_point_balance_responsible_party", data.postgRESTHandler)
 
+	mux.HandleFunc("GET /accounting_point_energy_supplier", data.postgRESTHandler)
+
 	mux.HandleFunc("GET /controllable_unit", data.postgRESTHandler)
 	mux.HandleFunc("POST /controllable_unit", data.postgRESTHandler)
 	mux.HandleFunc("GET /controllable_unit/{id}", data.postgRESTHandler)

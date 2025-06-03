@@ -33,6 +33,13 @@ type AccountingPointEndUser struct {
 	RecordedBy        int
 }
 
+type AccountingPointEnergySupplier struct {
+	AccountingPointID int
+	EnergySupplierID  int
+	ValidFrom         pgtype.Timestamptz
+	ValidTo           pgtype.Timestamptz
+}
+
 type ControllableUnit struct {
 	ID                       int
 	BusinessID               string

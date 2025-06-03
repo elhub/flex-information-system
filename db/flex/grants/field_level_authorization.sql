@@ -1018,6 +1018,38 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.accounting_point_balance_responsible_party
 TO flex_third_party;
 
+-- changeset flex:flex-grant-accounting-point-energy-supplier-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-accounting-point-energy-supplier-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-accounting-point-energy-supplier-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_end_user;
+
+-- changeset flex:flex-grant-accounting-point-energy-supplier-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-energy-supplier-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-accounting-point-energy-supplier-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-energy-supplier-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-accounting-point-energy-supplier-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.accounting_point_energy_supplier
+TO flex_third_party;
+
 -- changeset flex:flex-grant-product-type-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.product_type
 TO flex_balance_responsible_party;
