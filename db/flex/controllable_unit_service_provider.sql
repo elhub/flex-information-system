@@ -57,7 +57,7 @@ EXECUTE PROCEDURE timeline.make_room(
     'controllable_unit_id'
 );
 
--- changeset flex:controllable-unit-service-provider-soft-delete runOnChange:true endDelimiter:--
+-- changeset flex:controllable-unit-service-provider-soft-delete runAlways:true endDelimiter:--
 -- rule because INSTEAD OF triggers on tables are not possible,
 -- and we want all the trigger logic here, not in the api schema file
 -- noqa: disable=all
