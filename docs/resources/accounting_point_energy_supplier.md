@@ -75,9 +75,7 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                                                         | Status |
-|------------|----------------------------------------------------------------|--------|
-| APES-SP001 | Read APES on periods where they are related to a CU on the AP. | DONE   |
+No policies.
 
 #### Third Party
 
