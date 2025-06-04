@@ -221,13 +221,27 @@ liquibase pghost='localhost' password='flex_password' action='update' changelog=
     --log-level=warning \
     {{ action }}
 
+# check that we are on the main branch and that it is clean
+_check_main:
+    #!/usr/bin/env bash
+    set -eu
+    cd $(git rev-parse --show-toplevel)
+
+    git fetch
+    if [ $(git rev-list HEAD...origin/main --count) != 0 ] || [ -n "$(git status --short)" ]
+    then
+        echo "It seems like you are applying something that differs from origin/main."
+        echo "Never do that ;)"
+        exit 1
+    fi
+
 # generate documentation using mkdocs
 mkdocs: _venv _mkdocs
 _mkdocs:
     .venv/bin/mkdocs serve
 
 # deploy documentation to GitHub Pages (run from main in clean state)
-mkdocs_deploy: _venv _mkdocs_deploy
+mkdocs_deploy: _check_main _venv _mkdocs_deploy
 _mkdocs_deploy:
     .venv/bin/mkdocs gh-deploy
 
