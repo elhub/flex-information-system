@@ -4,6 +4,7 @@ set -euxo pipefail
 # ensure that we are in the root of the repository
 cd "$(git rev-parse --show-toplevel)"
 rm -rf dist/*
+mkdir -p dist
 
 # Print usage information
 function usage() {
