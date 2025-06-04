@@ -5,8 +5,8 @@ methods. An entity can have several clients registered.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_entity_client)
-* [Download docx](/docs/download/entity_client.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_entity_client)
+* [Download docx](https://flex-test.elhub.no/docs/download/entity_client.docx)
 
 ## Fields
 

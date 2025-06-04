@@ -5,8 +5,8 @@ persons or organisations to parties.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_party_membership)
-* [Download docx](/docs/download/party_membership.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_party_membership)
+* [Download docx](https://flex-test.elhub.no/docs/download/party_membership.docx)
 
 ## Fields
 

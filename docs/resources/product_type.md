@@ -35,8 +35,8 @@ as input.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_product_type)
-* [Download docx](/docs/download/product_type.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_product_type)
+* [Download docx](https://flex-test.elhub.no/docs/download/product_type.docx)
 
 ## Fields
 

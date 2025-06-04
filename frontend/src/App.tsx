@@ -418,7 +418,7 @@ const Layout = ({ children }: LayoutProps) => (
       >
         <FooterButton href={serverURL} label="Portal" />
         <FooterButton
-          href={`${serverURL}/docs`}
+          href="https://elhub.github.io/flex-information-system"
           label="Project documentation"
         />
         <FooterButton href={apiURL} label="Main API documentation" />

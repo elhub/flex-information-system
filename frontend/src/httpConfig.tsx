@@ -3,6 +3,7 @@ import { fetchUtils } from "react-admin";
 export const serverURL = import.meta.env.VITE_FLEX_URL;
 export const apiURL = serverURL + "/api/v0";
 export const authURL = serverURL + "/auth/v0";
+export const docsURL = "https://elhub.github.io/flex-information-system";
 
 export async function httpClient(url: string, options: any = {}) {
   // --- workaround for array filter in the URL query --------------------------

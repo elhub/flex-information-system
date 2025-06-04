@@ -3,10 +3,9 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
 import { styled } from "@mui/material/styles";
 import * as React from "react";
-import { serverURL } from "../httpConfig";
+import { docsURL } from "../httpConfig";
 
 export const ValidTimeTooltip = styled(({ className, ...props }: any) => {
-  const docsURL = `${serverURL}/docs/time`;
   return (
     <Tooltip
       {...props}
@@ -20,7 +19,7 @@ export const ValidTimeTooltip = styled(({ className, ...props }: any) => {
             accordingly. Time interval gaps or duplications due to daylight\
             saving time are not handled. You can also visit our "
           }
-          <a href={docsURL} style={{ color: "white" }}>
+          <a href={`${docsURL}/technical/time`} style={{ color: "white" }}>
             documentation
           </a>
           {

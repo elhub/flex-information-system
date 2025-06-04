@@ -353,8 +353,8 @@ openapi-to-md:
 
         table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
 
-        api_link="/api/v0/#/operations/list_$resource"
-        docx_link="/docs/download/${resource}.docx"
+        api_link="https://flex-test.elhub.no/api/v0/#/operations/list_$resource"
+        docx_link="https://flex-test.elhub.no/docs/download/${resource}.docx"
 
         ed -s "./docs/resources/${resource}.md" <<EOF
     /## Relevant links/+,/## Fields/-d

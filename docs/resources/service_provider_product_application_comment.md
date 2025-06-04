@@ -5,8 +5,8 @@ Several comments can be added to a given application.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_service_provider_product_application_comment)
-* [Download docx](/docs/download/service_provider_product_application_comment.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_service_provider_product_application_comment)
+* [Download docx](https://flex-test.elhub.no/docs/download/service_provider_product_application_comment.docx)
 
 ## Fields
 

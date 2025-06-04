@@ -4,8 +4,8 @@ An event happening in the system.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_event)
-* [Download docx](/docs/download/event.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_event)
+* [Download docx](https://flex-test.elhub.no/docs/download/event.docx)
 
 ## Fields
 

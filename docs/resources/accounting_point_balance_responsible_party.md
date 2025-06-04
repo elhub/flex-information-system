@@ -6,8 +6,8 @@ Data from Elhub.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_accounting_point_balance_responsible_party)
-* [Download docx](/docs/download/accounting_point_balance_responsible_party.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_accounting_point_balance_responsible_party)
+* [Download docx](https://flex-test.elhub.no/docs/download/accounting_point_balance_responsible_party.docx)
 
 ## Fields
 

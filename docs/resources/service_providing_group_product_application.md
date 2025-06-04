@@ -25,8 +25,8 @@ again.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_service_providing_group_product_application)
-* [Download docx](/docs/download/service_providing_group_product_application.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_service_providing_group_product_application)
+* [Download docx](https://flex-test.elhub.no/docs/download/service_providing_group_product_application.docx)
 
 ## Fields
 

@@ -6,8 +6,8 @@ of one service provider per activation period.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_controllable_unit_service_provider)
-* [Download docx](/docs/download/controllable_unit_service_provider.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_controllable_unit_service_provider)
+* [Download docx](https://flex-test.elhub.no/docs/download/controllable_unit_service_provider.docx)
 
 ## Fields
 
