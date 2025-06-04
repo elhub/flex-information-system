@@ -31,21 +31,6 @@ env_long_name() {
 	echo "${env_map[$env_short_name]}"
 }
 
-# build documentation
-function docs() {
-	.venv/bin/mkdocs build
-
-	mkdir -p dist/docs/download
-
-	for resource in $(find docs/resources/ -type f -not -name "index.md" -exec basename {} \; | cut -d. -f1); do
-		pandoc -o "./dist/docs/download/${resource}.docx" \
-			-f markdown \
-			-t docx \
-			--reference-doc local/mkdocs/style.docx \
-			"docs/resources/${resource}.md"
-	done
-}
-
 # build frontend
 function frontend() {
 	local env_short=$1
@@ -91,7 +76,6 @@ env_long=$(env_long_name "$env_short")
 echo "Building for $env_long ($env_short) environment"
 
 # build
-docs "$env_short" "$env_long"
 frontend "$env_short" "$env_long"
 openapi "$env_short" "$env_long" "api" "Flexibility Information System Main API Documentation"
 openapi "$env_short" "$env_long" "auth" "Flexibility Information System Auth API Documentation"

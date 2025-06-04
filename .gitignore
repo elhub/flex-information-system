@@ -40,6 +40,8 @@ logs
 
 # Temp directories
 dist
+dist-docs
+docs/download
 out
 dist-ssr
 

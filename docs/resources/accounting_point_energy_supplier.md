@@ -7,7 +7,7 @@ Data from Elhub.
 ## Relevant links
 
 * [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_accounting_point_energy_supplier)
-* [Download docx](https://flex-test.elhub.no/docs/download/accounting_point_energy_supplier.docx)
+* [Download docx](../download/accounting_point_energy_supplier.docx)
 
 ## Fields
 

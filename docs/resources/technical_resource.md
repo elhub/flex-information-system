@@ -9,7 +9,7 @@ identical. A controllable unit can contain several technical resources.
 ## Relevant links
 
 * [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_technical_resource)
-* [Download docx](https://flex-test.elhub.no/docs/download/technical_resource.docx)
+* [Download docx](../download/technical_resource.docx)
 
 ## Fields
 

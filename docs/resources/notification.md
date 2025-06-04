@@ -5,7 +5,7 @@ A notification of an event happening in the system.
 ## Relevant links
 
 * [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_notification)
-* [Download docx](https://flex-test.elhub.no/docs/download/notification.docx)
+* [Download docx](../download/notification.docx)
 
 ## Fields
 
