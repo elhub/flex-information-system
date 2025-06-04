@@ -21,6 +21,8 @@ ADD COLUMN end_user_party_type text GENERATED ALWAYS AS ('end_user') STORED;
 ALTER TABLE flex.controllable_unit_service_provider_history
 ADD COLUMN end_user_id bigint;
 
+-- NB: this should not have been GENERATED because the trigger inserting in
+--     history copies all the fields, see next changeset
 ALTER TABLE flex.controllable_unit_service_provider_history
 ADD COLUMN end_user_party_type text GENERATED ALWAYS AS ('end_user') STORED;
 
@@ -62,3 +64,9 @@ FOREIGN KEY (
 
 ALTER TABLE flex.controllable_unit_service_provider
 ENABLE TRIGGER USER;
+
+-- changeset flex:cusp-correct-end-user-party-type runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:'ALWAYS' SELECT is_generated FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit_service_provider_history' AND column_name = 'end_user_party_type';
+ALTER TABLE flex.controllable_unit_service_provider_history
+ALTER COLUMN end_user_party_type DROP EXPRESSION;
