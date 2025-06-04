@@ -85,7 +85,7 @@
             
             
     <span>This documentation is work-in-progress and part of the <a href="https://www.euroflex.no/">EuroFlex research project</a>.</span>
-    <span>Read more about <a href="/docs/privacy/">privacy and cookies</a></span>
+    <span>Read more about <a href="/technical/privacy/">privacy and cookies</a></span>
 
           </div>
           
@@ -2313,6 +2313,21 @@ occurred due to a specific <code>PATCH</code> or <code>POST</code>. Rollback ope
 to get right in situations where there could be multiple changes to the
 timeline since the point in time you want to rollback to.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Delete operations &amp; time-dependent access policies</p>
+<p>In some cases, read access to a resource is restricted based on <em>time</em>, for
+instance the presence of a contract allowing the user to see another
+resource during the valid time of this contract.
+This means that any stateful operations happening outside of these periods
+of time should not be visible to this user.</p>
+<p>To achieve this behaviour, in such cases we implement the access policy on
+the <em>history</em> table and define the record shown in the <em>main</em> resource
+exposed on the API as the <em>latest version</em> visible in the history resource,
+for each row ID.</p>
+<p>One side effect of this is that after deleting a record, it is internally
+transferred from the main table to the history table, but externally it will
+still be visible in the main resource.</p>
+</div>
 <h2 id="rich-text-fields">Rich text fields</h2>
 <p>Some text fields actually support <em>rich text</em> content. For simplicity, we chose
 HTML as the format of rich text fields, as it is a very common format readily
@@ -2420,52 +2435,15 @@ schemas.</p>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <!-- Mkdocs allows overriding components from the base theme chosen for the
-     documentation. Everything is stated in the configuration file (mkdocs.yml).
-     We want to override a component to add a footer with links, but in the
-     Material theme, the bottom-most component is the copyright component, the
-     component called `footer` just adding links to the previous/next page,
-     _above_ the copyright component. We make sure our footer is always at the
-     bottom of the page by overriding the _copyright_ component. -->
-<footer id="link-footer">
-  <form style="display: flex; gap: 10px">
-    <a class="link-footer-button" href="/">
-      Portal
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
     </a>
-    <a class="link-footer-button" href="/docs">
-      Project documentation
-    </a>
-    <a class="link-footer-button" href="/api/v0">
-      Main API documentation
-    </a>
-    <a class="link-footer-button" href="/auth/v0">
-      Auth API documentation
-    </a>
-  </form>
-</footer>
-<style>
-  #link-footer {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background-color: #0b3c28;
-    text-align: center;
-  }
-  .link-footer-button {
-    display: inline-block;
-    padding: 2px 8px;
-    border: 1px solid #f6f6f6;
-    color: #f6f6f6;
-    border-radius: 3px;
-    text-decoration: none;
-  }
-</style>
+  
+</div>
       
     </div>
   </div>

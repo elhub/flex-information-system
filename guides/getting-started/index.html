@@ -85,7 +85,7 @@
             
             
     <span>This documentation is work-in-progress and part of the <a href="https://www.euroflex.no/">EuroFlex research project</a>.</span>
-    <span>Read more about <a href="/docs/privacy/">privacy and cookies</a></span>
+    <span>Read more about <a href="/technical/privacy/">privacy and cookies</a></span>
 
           </div>
           
@@ -1839,52 +1839,15 @@ right-most component and going back to the <em>Assume Party page</em>.</p>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <!-- Mkdocs allows overriding components from the base theme chosen for the
-     documentation. Everything is stated in the configuration file (mkdocs.yml).
-     We want to override a component to add a footer with links, but in the
-     Material theme, the bottom-most component is the copyright component, the
-     component called `footer` just adding links to the previous/next page,
-     _above_ the copyright component. We make sure our footer is always at the
-     bottom of the page by overriding the _copyright_ component. -->
-<footer id="link-footer">
-  <form style="display: flex; gap: 10px">
-    <a class="link-footer-button" href="/">
-      Portal
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
     </a>
-    <a class="link-footer-button" href="/docs">
-      Project documentation
-    </a>
-    <a class="link-footer-button" href="/api/v0">
-      Main API documentation
-    </a>
-    <a class="link-footer-button" href="/auth/v0">
-      Auth API documentation
-    </a>
-  </form>
-</footer>
-<style>
-  #link-footer {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    background-color: #0b3c28;
-    text-align: center;
-  }
-  .link-footer-button {
-    display: inline-block;
-    padding: 2px 8px;
-    border: 1px solid #f6f6f6;
-    color: #f6f6f6;
-    border-radius: 3px;
-    text-decoration: none;
-  }
-</style>
+  
+</div>
       
     </div>
   </div>
