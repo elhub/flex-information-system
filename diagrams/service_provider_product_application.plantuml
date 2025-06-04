@@ -1,0 +1,134 @@
+@startuml service_provider_product_application
+
+!theme plain
+
+title Service Provider Product Application and Qualification
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator" as SO
+
+== Identify relevant Procuring System Operator (PSO) ==
+
+activate SP
+
+note over SP
+    The SP needs to identify the PSO
+    to which it wants to offer its services.
+
+    This can be done in multiple ways.
+    Below are some examples.
+end note
+
+alt "Identify PSO as SO of accounting point"
+    |||
+    SP -> FIS: Get accounting point data
+    activate FIS
+    FIS --> SP: SO of accounting point
+    deactivate FIS
+    |||
+else "Identify PSO as CSO of controllable unit"
+    |||
+    SP -> FIS: List relevant CUs
+    activate FIS
+    FIS --> SP: List of CUs w/ CSO
+    deactivate FIS
+    |||
+else "Identify PSO by name"
+    |||
+    SP -> FIS: List SOs filtered by name
+    activate FIS
+    FIS --> SP: List of PSOs
+    deactivate FIS
+    |||
+end
+
+note over SP
+    The SP then needs to check what
+    product types the PSO are asking for.
+end note
+
+SP -> FIS: List product types requested by PSO
+activate FIS
+FIS --> SP: List of product types for the PSO
+deactivate FIS
+
+== Apply for product ==
+
+SP -> FIS: Register SP product application
+
+note left
+    Registers:
+    - System operator
+    - List of product types
+end note
+
+activate FIS
+FIS -> FIS: Set status to "pending"\n or "communication_test"
+note left
+    The status can be set to
+    "communication_test" if the
+    SP is already qualified for the same
+    product types by another PSO.
+end note
+FIS --> SP: Registered data
+deactivate SP
+FIS --> SO: Notify PSO of new product application
+deactivate FIS
+activate SO
+
+== Service Provider Qualification ==
+
+note over SO
+    PSO initiates qualification
+    without undue delay and
+    starts by requesting data
+    from FIS.
+end note
+
+SO -> FIS: Get SP data
+activate FIS
+FIS --> SO: SP data
+deactivate FIS
+
+SO -> FIS: Get SP product applications
+note left
+    The PSO should check if the
+    SP is already qualified
+    for the same product type(s)
+    by another PSO.
+end note
+activate FIS
+FIS --> SO: SP product applications
+deactivate FIS
+
+loop When status changes
+    SO -> FIS: Update FIS with status
+    note left
+        Relevant statuses:
+
+        - in_progress
+        - communication_test
+        - qualified
+        - not_qualified
+
+        The PSO should add notes and update
+        last qualified time when relevant.
+    end note
+    activate FIS
+    FIS --> SO: OK
+
+    deactivate SO
+    FIS --> SP: Notify SP qualification status updated
+    deactivate FIS
+    activate SP
+    |||
+end
+
+
+@enduml

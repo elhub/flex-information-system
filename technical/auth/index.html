@@ -1,0 +1,2910 @@
+<!-- https://squidfunk.github.io/mkdocs-material/customization/#overriding-blocks -->
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Flexibility Information System">
+      
+      
+      
+      
+        <link rel="prev" href="../api-design/">
+      
+      
+        <link rel="next" href="../identifiers/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Authorisation - Flexibility Information System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../style.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#authorisation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+    <span>This documentation is work-in-progress and part of the <a href="https://www.euroflex.no/">EuroFlex research project</a>.</span>
+    <span>Read more about <a href="/docs/privacy/">privacy and cookies</a></span>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Flexibility Information System Documentation" class="md-header__button md-logo" aria-label="Flexibility Information System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Flexibility Information System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Authorisation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Flexibility Information System Documentation" class="md-nav__button md-logo" aria-label="Flexibility Information System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Flexibility Information System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Concepts
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/end-user/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    End Users
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/grid-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grid Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/time-series/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Time Series
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/test-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Test Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../processes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Processes
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Processes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/controllable-unit-lookup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CU Lookup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/controllable-unit-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CU Registration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/revocation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Contract Revocation and Termination
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-provider-product-application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Product Application and Qualification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-provider-registration-and-approval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Registration and Approval
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-provider-switching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Switching Initiated by New SP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-providing-group-product-application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPG Product Application and Prequalification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-providing-group-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPG Registration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/system-operator-product-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SO Product Registration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Resources
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/accounting_point/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Accounting Point
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/accounting_point_balance_responsible_party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Accounting Point Balance Responsible Party
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/accounting_point_energy_supplier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Accounting Point Energy Supplier
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controllable_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Controllable Unit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controllable_unit_service_provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Controllable Unit Service Provider
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/entity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Entity
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/entity_client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Entity Client
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Event
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/identity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/notice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notice
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/notification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Party
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/party_membership/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Party Membership
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/product_type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Product Type
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_provider_product_application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Provider Product Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_provider_product_application_comment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Provider Product Application Comment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_grid_prequalification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group Grid Prequalification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_membership/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group Membership
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_product_application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group Product Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/system_operator_product_type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System Operator Product Type
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/technical_resource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Resource
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Technical
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Technical
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Authorisation
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authorisation
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Identity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entity-individuals-and-organisations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity - individuals and organisations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#party-market-actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Party - market actors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Party - market actors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#balance-responsible-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      Balance Responsible Party
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#end-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      End User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#energy-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Energy Supplier
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flexibility-information-system-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flexibility Information System Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#market-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Market Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      Third Party
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anonymous-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anonymous users
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-using-oauth-20-and-openid-connect-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation using OAuth 2.0 and OpenID Connect standards
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openid-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenID Connect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client credentials
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jwt-bearer" class="md-nav__link">
+    <span class="md-ellipsis">
+      JWT Bearer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assuming-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assuming party
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assuming party">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token exchange
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-client-credentials-and-token-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example - client credentials and token exchange
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      User information
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authorization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authorization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#field-level-authorization-fla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Field Level Authorization (FLA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-level-authorization-rla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Level Authorization (RLA)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resource Level Authorization (RLA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-dependent-rla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time-dependent RLA
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identifiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identifiers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Privacy and Cookies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Time
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Identity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entity-individuals-and-organisations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity - individuals and organisations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#party-market-actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Party - market actors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Party - market actors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#balance-responsible-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      Balance Responsible Party
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#end-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      End User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#energy-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Energy Supplier
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flexibility-information-system-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flexibility Information System Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#market-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Market Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Provider
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      Third Party
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anonymous-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anonymous users
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-using-oauth-20-and-openid-connect-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation using OAuth 2.0 and OpenID Connect standards
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openid-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenID Connect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client credentials
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jwt-bearer" class="md-nav__link">
+    <span class="md-ellipsis">
+      JWT Bearer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assuming-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assuming party
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assuming party">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token exchange
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-client-credentials-and-token-exchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example - client credentials and token exchange
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      User information
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authorization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authorization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#field-level-authorization-fla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Field Level Authorization (FLA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-level-authorization-rla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Level Authorization (RLA)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resource Level Authorization (RLA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-dependent-rla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time-dependent RLA
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="authorisation">Authorisation</h1>
+<p>This document describes the authentication and authorization model principles we
+are following in the Flexibility Information System.</p>
+<h2 id="authentication-model">Authentication model</h2>
+<p>In this section, we describe the authentication model in the Flexibility
+Information System.</p>
+<h3 id="identity">Identity</h3>
+<p>Any system or person interacting with the Flexibility Information System will
+always be authenticated as a legal og natural <em>entity</em>, possibly assuming the
+role of a market <em>party</em>. The entity and party together make up the <em>identity</em>
+of the user.</p>
+<h4 id="entity-individuals-and-organisations">Entity - individuals and organisations</h4>
+<p>The <em>entity</em> is the natural or legal person using the system. This is the "raw"
+identity of the user when it enters the system.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Natural_person">Natural entities</a> are
+  <em>individuals</em> identified by their national identity number (fødselsnummer) or
+  D-number.</li>
+<li><a href="https://en.wikipedia.org/wiki/Legal_person">Legal entities</a> are
+  <em>organisations</em> identified by their organisation number (organisasjonsnummer).</li>
+</ul>
+<p>In a production setting, the identity of the entity will be established through
+mechanisms such as IDPorten, Maskinporten or enterprise certificates.</p>
+<h4 id="party-market-actors">Party - market actors</h4>
+<p>This is the market party like a system operator or service provider. Parties in
+the European energy sector are typically identified by a GLN or <code>EIC-X</code>. After
+being authenticated as an entity, the user can assume a party to
+interact with the system.</p>
+<p>We also model end users as parties. An end user is either
+<a href="https://www.nve.no/reguleringsmyndigheten/regulering/kraftmarkedet/sluttbrukermarkedet/">a person or an organisation</a>.
+This means that when logging in as an entity, a user will have to choose to act
+as themselves as an end user party. This is a way to standardize (and thus
+simplify) the authorization framework and make authentication/delegation explicit.</p>
+<p>We have the following party types in the Flexibility Information System:</p>
+<table>
+<thead>
+<tr>
+<th>Abbreviation</th>
+<th>Code</th>
+<th>Name</th>
+<th>Norwegian name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BRP</td>
+<td>balance_responsible_party</td>
+<td>Balance Responsible Party</td>
+<td><em>Balanseansvarlig</em></td>
+</tr>
+<tr>
+<td>EU</td>
+<td>end_user</td>
+<td>End User</td>
+<td><em>Sluttbruker</em></td>
+</tr>
+<tr>
+<td>ES</td>
+<td>energy_supplier</td>
+<td>Energy Supplier</td>
+<td><em>Kraftleverandør</em></td>
+</tr>
+<tr>
+<td>FISO</td>
+<td>flexibility_information_system_operator</td>
+<td>Flexibility Information System Operator</td>
+<td><em>Fleksibilitetsinformasjonssystem Operatør</em></td>
+</tr>
+<tr>
+<td>MO</td>
+<td>market_operator</td>
+<td>Market Operator</td>
+<td><em>Markedoperatør</em></td>
+</tr>
+<tr>
+<td>SO</td>
+<td>system_operator</td>
+<td>System Operator</td>
+<td><em>Systemoperatør</em></td>
+</tr>
+<tr>
+<td>SP</td>
+<td>service_provider</td>
+<td>Service Provider</td>
+<td><em>Tjenesteleverandør</em></td>
+</tr>
+<tr>
+<td>TP</td>
+<td>third_party</td>
+<td>Third Party</td>
+<td><em>Tredjepart</em></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Common policies</p>
+<p>In addition to these we also write policies and grant access that are common
+for all authenticated party types. This is referred to as <code>Common</code>,
+abbreviated as <code>COM</code>. All party types inherit the policies from <code>Common</code>.</p>
+</div>
+<p>The following sub-sections provides a brief description of each party type.</p>
+<h5 id="balance-responsible-party">Balance Responsible Party</h5>
+<p>A party responsible for its imbalances.</p>
+<p>Based on: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02017R2195-20220619">Consolidated text: Commission Regulation (EU) 2017/2195 - Art.2 Definitions</a>.</p>
+<h5 id="end-user">End User</h5>
+<p>Synonyms:</p>
+<ul>
+<li><em>Final Customer</em> (<em>Sluttkunde</em>)</li>
+<li><em>Flexible Customer</em></li>
+<li><em>System User</em></li>
+</ul>
+<p>The entity at the lower end of the chain, willing to make their own technical
+resources available on the flexibility market.</p>
+<h5 id="energy-supplier">Energy Supplier</h5>
+<p>Synonyms:</p>
+<ul>
+<li><em>Balance Supplier</em></li>
+<li><em>Supplier</em></li>
+</ul>
+<p>A party delivering to or taking energy from a party connected to the grid at an
+accounting point.</p>
+<h5 id="flexibility-information-system-operator">Flexibility Information System Operator</h5>
+<p>Synonyms:</p>
+<ul>
+<li><em>Flexibility Register Operator</em></li>
+</ul>
+<p>We use this as an administrator role for the Flexibility Information System, as
+a last resort tool to have full authorisation on the system or perform special
+operations.</p>
+<h5 id="market-operator">Market Operator</h5>
+<p>Sub-types:</p>
+<ul>
+<li><em>Local Market Operator</em></li>
+<li><em>Balancing Market Operator</em></li>
+</ul>
+<p>A party that provides a service whereby the offers to sell energy are matched
+with bids to buy energy.</p>
+<p>Based on: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019R0943-20220623">Consolidated text: Regulation (EU) 2019/943</a>.</p>
+<h5 id="system-operator">System Operator</h5>
+<p>Synonyms:</p>
+<ul>
+<li><em>Grid Owner</em></li>
+</ul>
+<p>Sub-types:</p>
+<ul>
+<li><em>Distribution System Operator</em></li>
+<li><em>Transmission System Operator</em></li>
+<li><em>Connecting System Operator</em></li>
+<li><em>Requesting System Operator</em></li>
+<li><em>Procuring System Operator</em></li>
+<li><em>Impacted System Operator</em></li>
+</ul>
+<p>A party responsible for operating, ensuring the maintenance of and, if
+necessary, developing the system in a given area and, where applicable, its
+interconnections with other systems, and for ensuring the long-term ability of
+the system to meet reasonable demands for the distribution or transmission of
+energy.</p>
+<p>Based on: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019L0944-20220623">Consolidated text: Directive (EU) 2019/944</a>.</p>
+<h5 id="service-provider">Service Provider</h5>
+<p>Sub-types:</p>
+<ul>
+<li><em>Balancing Service Provider</em></li>
+<li><em>Flexibility Service Provider</em></li>
+</ul>
+<p>A party that offers local or balancing services to other parties in the market,
+after having successfully passed a qualification process.</p>
+<h5 id="third-party">Third Party</h5>
+<p>A party that does not have an actual responsibility in the value chain, but
+<em>can be</em> delegated authority to, <em>e.g.</em>, perform tasks or access data.</p>
+<h3 id="roles">Roles</h3>
+<p>Parties in the Energy sector act in different "roles". For some examples, see
+the
+<a href="https://elhub.no/aktorer-og-markedsstruktur/aktorenes-roller/rollemodell/">Elhub role model</a>.
+This level is mostly used for delegation. As of now, this level is <strong>NOT</strong> part of
+the authentication or authorization model.</p>
+<div class="admonition note">
+<p class="admonition-title">The word 'role' can be seen in the system</p>
+<p>Our database and API service does sometime refer to something called
+"roles". This is just how we model parties and entities in the system and is
+not related to the conceptual authentication or authorization model as
+described here.</p>
+</div>
+<h3 id="anonymous-users">Anonymous users</h3>
+<p>Some data (like party lists) and actions (such as login) will be available for
+un-authenticated users. We refer to these as <code>Anonymous</code>, abbreviated as <code>ANON</code>.</p>
+<div class="admonition info">
+<p class="admonition-title">Policy inheritance</p>
+<p>Policies for <code>Anonymous</code>/<code>ANON</code> are inherited by <em>all authenticated users</em>.</p>
+</div>
+<h2 id="implementation-using-oauth-20-and-openid-connect-standards">Implementation using OAuth 2.0 and OpenID Connect standards</h2>
+<p>We are relying on the patterns and flows established as part of multiple RFCs
+related to OAuth 2.0 as well as
+<a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect</a>.
+Relevant RFCs are listed below, but you can also check the
+<a href="https://www.oauth.com/oauth2-servers/map-oauth-2-0-specs/">map of OAuth 2.0 specs from Okta</a>.</p>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6749">RFC6749 - The OAuth 2.0 Authorization Framework</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6750">RFC6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7636">RFC7636 - Proof Key for Code Exchange by OAuth Public Clients</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7523">RFC7523 - JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc8693">RFC8693 - OAuth 2.0 Token Exchange</a></li>
+</ul>
+<p>The implementation
+follows only parts of these standards, but we are trying to comply with the
+specification for the parts we actually implement.</p>
+<p>We are also relying heavily on the JOSE (Javascript Object Signing and Encryption)
+<a href="https://datatracker.ietf.org/wg/jose/about/">suite of specifications</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Distinct API for authentication</p>
+<p>Note that authentication and the rest of the Flexibility Information System
+work as two <em>separate</em> services, and as such, are exposed through <em>distinct</em>
+APIs. The endpoints can be reached by using the <code>/api</code> or
+<code>/auth/</code> prefixes in the URL used to access the Flexibility Information
+System APIs. In the rest of this page, we use the terms <em>main API</em> and <em>auth API</em>
+to distinguish these distinct roots of API endpoints.</p>
+</div>
+<h2 id="authentication">Authentication</h2>
+<p>Authentication is the process of establishing the "raw" identity of the user.
+For us, this means identifying the <em>entity</em>, i.e. the individual or organisation
+using the system. We provide different ways of authentication, depending on how
+you want to interact with the system.</p>
+<p>Individuals what want to log into the portal will log in using the
+<code>OpenID Connect</code> protocol with an identity provider. In a production setting the
+identity provider will be IDPorten.</p>
+<p>Entities that want to use the API will have to create and attach clients to
+their entity resource in the system. Creating a client generates a unique
+identifier and allows setting a password and/or a public key associated to this
+client. From there, users have two ways of authenticating.</p>
+<ul>
+<li><code>JWT Bearer</code> - The entity uploads a public key to one of its clients and uses
+  a self-signed JWT Authorization grant to authenticate.</li>
+<li><code>Client Credentials</code> - The entity uses a client_id and client_secret to
+  authenticate. The client_id is the UUID of one of the clients added by the
+  entity in the system, and client_secret is basically a password that must be
+  set on this client.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Possible future use of enterprise certificates</p>
+<p>We are considering the use of enterprise certificates and/or Maskinporten in
+a production setting.</p>
+</div>
+<h3 id="openid-connect">OpenID Connect</h3>
+<p>A regular user in the portal will be authenticated via a OpenID Connect
+compatible provider. We believe that IDPorten is the most likely candidate for a
+production system. In test we are using Oracle Cloud Identity and
+Access Management (IAM).</p>
+<p>The OpenID connect flow is based on redirects between the portal and the Idenity
+provider, and as part of the process, the Flexibility Information System will
+obtain the identity of the user from the Identity provider and issue an access
+token for the portal.</p>
+<h3 id="client-credentials">Client credentials</h3>
+<div class="admonition warning">
+<p class="admonition-title">Deprecated</p>
+<p>This is a temporary solution that will be removed in later versions of the
+FIS. Use the <code>JWT Bearer</code> method instead.</p>
+</div>
+<p>To use this method, first log in to the portal and add a new client to the
+entity. Then, write down the generated Client ID on the created client, because
+you will need it to log in, and set the Client Secret on the client. This should
+be a strong password. Consider generating a random password using some kind of
+online generator.</p>
+<p>Once Client Secret is set in the portal, the connection is established through
+basic authentication on the auth API's <code>/token</code> endpoint, using the
+<a href="https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/">client_credentials</a>
+<code>grant_type</code> with
+<a href="https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1">Client Password</a>,
+in a URL-encoded body.</p>
+<p>Set <code>Content-Type</code> header as <code>application/x-www-form-urlencoded</code>.</p>
+<p>Example body:</p>
+<div class="highlight"><pre><span></span><code>grant_type=client_credentials&amp;client_id=&lt;client_id&gt;&amp;client_secret=&lt;client_secret&gt;
+</code></pre></div>
+<p>The result is a JWT access token for the entity that can be used to access the API.</p>
+<h3 id="jwt-bearer">JWT Bearer</h3>
+<p>This is the preferred method for authenticating towards the API. The method
+uses
+<a href="https://datatracker.ietf.org/doc/html/rfc7523#section-2.1">JWTs as authorization grants</a>
+as defined by RFC7523. This the same method as <a href="https://docs.digdir.no/docs/Maskinporten/maskinporten_auth_server-to-server-oauth2">used by Maskinporten</a>.</p>
+<p>To authenticate, the client must send a request with <code>Content-Type</code> header as
+<code>application/x-www-form-urlencoded</code> and a body similar to the following:</p>
+<div class="highlight"><pre><span></span><code>grant_type: urn:ietf:params:oauth:grant-type:jwt-bearer&amp;assertion=&lt;authorization grant JWT&gt;
+</code></pre></div>
+<p>The magic is in the assertion JWT. Use the following payload.</p>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Name</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aud</code></td>
+<td>Audience</td>
+<td>The URL of the token endpoint.</td>
+<td><code>https://flex-test.elhub.no/auth/v0/</code></td>
+</tr>
+<tr>
+<td><code>exp</code></td>
+<td>Expiration Time</td>
+<td>The expiration time of the JWT. Maximum 120 seconds after <code>iat</code>.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>iat</code></td>
+<td>Issued At</td>
+<td>The time the JWT was issued. Only tokens with <code>iat</code> within 10 seconds of server time will be accepted.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>iss</code></td>
+<td>Issuer</td>
+<td>The issuer of the token on the format. <code>no:entity:uuid:&lt;client_id&gt;</code>. <code>client_id</code> is the UUID of the client whose key is used to sign the token.</td>
+<td><code>no:entity:uuid:2fc014f2-e9b4-41d4-ad6b-c360b8ee6229</code></td>
+</tr>
+<tr>
+<td><code>jti</code></td>
+<td>JWT</td>
+<td>A unique identifier for the JWT. For (future) protection against replay attacks.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sub</code></td>
+<td>Subject</td>
+<td>Optional. Use if the client wants to assume party as part of the request. Format <code>no:entity:&lt;id_type&gt;:&lt;id&gt;</code>. <code>id_type</code> is either <code>uuid</code> or <code>gln</code>.</td>
+<td><code>no:party:gln:1234567890123</code></td>
+</tr>
+</tbody>
+</table>
+<p>The JWT must be signed by the entity client's RSA private key. The public key
+must be uploaded to the client in the portal prior to making the request. An
+example of how to generate a key pair is shown below. Upload the contents of the
+file <code>.flex.pub.pem</code> in the portal.</p>
+<div class="highlight"><pre><span></span><code>openssl<span class="w"> </span>genrsa<span class="w"> </span>-out<span class="w"> </span>.flex.key.pem<span class="w"> </span><span class="m">3072</span>
+openssl<span class="w"> </span>rsa<span class="w"> </span>-in<span class="w"> </span>.flex.key.pem<span class="w"> </span>-pubout<span class="w"> </span>-out<span class="w"> </span>.flex.pub.pem
+</code></pre></div>
+<p>How to sign a JWT using the private key depends on your programming
+language/system of choice. Here are a few examples/guides:</p>
+<ul>
+<li>Python - <a href="https://pyjwt.readthedocs.io/en/stable/usage.html#encoding-decoding-tokens-with-rs256-rsa">PyJWT</a></li>
+<li>Bash - See this <a href="https://gist.github.com/shu-yusa/213901a5a0902de5ad3f62a61036f4ce?permalink_comment_id=4263484#gistcomment-4263484">gist</a></li>
+<li>Go - <a href="https://github.com/lestrrat-go/jwx/blob/develop/v3/docs/02-jws.md#verification-using-a-jwks">jwx</a></li>
+</ul>
+<p>The response from the endpoint will be a JWT access token that can be used to
+access the API.</p>
+<h2 id="assuming-party">Assuming party</h2>
+<p>The entity has very little functionality available in the system, most
+functionality will be available after assuming a <em>party</em>. The identity of the
+user is then the combination of the entity and the party they are acting as. As
+a result, in order to interact properly with the Flexibility Information System,
+an entity must assume a party.</p>
+<p>Inspiration for this step is taken from <a href="https://info.altinn.no/en/">Altinn</a>,
+where one is presented with a list of parties upon login. The Elhub portal also
+has the same type of logical mechanism.</p>
+<p><img alt="Altinn select party" src="../../assets/altinn-choose-party.png" />.</p>
+<p>The concept is also inspired by <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html">AWS AssumeRole</a>.</p>
+<p>Assuming a party is done using <code>Token Exchange</code>.</p>
+<h3 id="token-exchange">Token exchange</h3>
+<p>In API terms, assuming a party is done by doing a
+<a href="https://datatracker.ietf.org/doc/html/rfc8693">OAuth 2.0 Token Exchange</a> that
+lets an entity "impersonate" a party with the returned token. This is done by
+calling the same <code>/token</code> endpoint, this time with the <code>grant_type</code>
+<code>urn:ietf:params:oauth:grant-type:token-exchange</code>.</p>
+<p>RFC8693 does <em>not</em> cover the case where the client that does token exchange
+doesn't have a valid token for the party it wants to impersonate. The spec is
+mostly covering use-cases of backends calling other backends, but is flexible
+enough to fit our needs.</p>
+<div class="admonition quote">
+<p class="admonition-title">RFC8693</p>
+<p>Additional profiles may provide more detailed requirements around the specific
+nature of the parties and trust involved, such as <strong>whether signing and/or
+encryption of tokens is needed</strong> or if proof-of-possession-style tokens will be
+required or issued. However, <strong>such details will often be policy decisions made
+with respect to the specific needs of individual deployments</strong> and will be
+configured or implemented accordingly.</p>
+</div>
+<p>Other systems have met this gap by loosely implementing the RFC, e.g. by
+<a href="https://zitadel.com/docs/guides/integrate/token-exchange#impersonation-by-user-id-example">using a custom token type</a>
+or adding
+<a href="https://www.keycloak.org/docs/23.0.2/securing_apps/#form-parameters">additional form parameters</a>.
+We do it by using the access token obtained in step 1 as the <code>actor_token</code>.
+Instead of using another token (<em>i.e.</em>, <code>subject_token</code>) to specify the party
+the user wants to assume, we just expect the party ID in an additional <code>scope</code>
+parameter in the URL-encoded body of the request.</p>
+<div class="highlight"><pre><span></span><code>grant_type=urn:ietf:params:oauth:grant-type:token-exchange
+&amp;actor_token=&lt;token from step 1&gt;&amp;
+&amp;actor_token_type=urn:ietf:params:oauth:token-type:jwt
+&amp;scope=assume:party:&lt;desired_party_id&gt;
+</code></pre></div>
+<p>The response from the endpoint will be a JWT access token that can be used to
+access the API.</p>
+<h2 id="example-client-credentials-and-token-exchange">Example - client credentials and token exchange</h2>
+<p>Below is an example of realistic login sequence:</p>
+<ul>
+<li>a user logs in as an entity by giving their credentials in the first call to
+  the <code>/token</code> endpoint;</li>
+<li>they now have sufficient authorisation to read information about themselves,
+  including which parties they are allowed to assume;</li>
+<li>they ask for a token exchange in the second call to the <code>/token</code> endpoint,
+  in order to assume one of the possible parties.</li>
+</ul>
+<p><img alt="Login Sequence" src="../../diagrams/login_sequence.png" /></p>
+<h2 id="user-information">User information</h2>
+<p>OIDC provides a way to get user information. This is done by calling the
+<code>/userinfo</code> endpoint with the access token. The response is a JSON object
+with a set of claims about the user.</p>
+<h2 id="authorization">Authorization</h2>
+<p>We are providing a <a href="../api-design/">resource-oriented main API</a>. Authorization is
+understood as allowing a user access to do an action on a resource or its field.</p>
+<p>Our authorization model is based on a deny-by-default principle. This means that
+authorization is denied unless explicitly allowed. We then allow certain
+<em>actions</em> on <em>resource</em> or <em>field</em> level for a specific <em>party type</em>.</p>
+<p>You can think of a resource collection as a table. Each rows is a resource. Each
+column is a field. We then specify Field Level and Resource Level Authorization
+to give access to these resources.</p>
+<p>The following examples shows a collection of resources <code>1</code>-<code>5</code>. The resources
+have the fields <code>ID</code>, <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code> and <code>E</code>. The colored boxes are read
+(green) and update (yellow) policies for <em>one party type</em>. Dotted lines are
+field level policies while solid lines are resource level policies.</p>
+<p>There are three field level policies that allows read
+access to all fields except <code>A</code> and update access to only <code>D</code>.</p>
+<p>There are two resource level policies that allows read
+access to resources <code>3</code>, <code>4</code> and <code>5</code>, and update access to only <code>5</code>.</p>
+<p>Together, these policies allow the party type to read all fields except <code>A</code> of resources
+<code>3</code>, <code>4</code> and <code>5</code>, and update only field <code>D</code> of resource <code>5</code>.</p>
+<p><img alt="Resource and Field Level Authorization" src="../../diagrams/auth-table.drawio.png" /></p>
+<p>More information about the policies and their implementation can be found in the
+following sections.</p>
+<h3 id="actions">Actions</h3>
+<p>When we talk about authorization we usually talk about performing "actions" on
+resources or fields. The table below shows the actions and their corresponding
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">HTTP methods</a> and
+<a href="https://www.postgresql.org/docs/15/sql-grant.html">database grants</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>HTTP verb</th>
+<th>Database grant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C</strong>reate</td>
+<td>POST</td>
+<td>INSERT</td>
+</tr>
+<tr>
+<td><strong>R</strong>ead</td>
+<td>GET</td>
+<td>SELECT</td>
+</tr>
+<tr>
+<td><strong>U</strong>pdate</td>
+<td>PATCH</td>
+<td>UPDATE</td>
+</tr>
+<tr>
+<td><strong>D</strong>elete</td>
+<td>DELETE</td>
+<td>DELETE</td>
+</tr>
+</tbody>
+</table>
+<p>We do not model <code>List</code> as a specific action even tho it is a verb - someting a
+user can do - on the <a href="../api-design/">API</a>. It is covered by <code>Read</code>.</p>
+<h3 id="field-level-authorization-fla">Field Level Authorization (FLA)</h3>
+<p>We are basing FLA on an "authorization matrix". It is a table that shows which
+actions are allowed for each party type on each resource field. The matrix shows
+what each party type or anonymous users can do on each of the fields of the resource.</p>
+<p>An example of an authorization matrix is shown below. This table shows that the
+<code>id</code> field of resource <code>entity</code> is readable by all. The <code>name</code> field is
+readable by all and can be updated and created by the <code>Service Provider</code>.
+The <code>number</code> field of resource <code>invoice</code> can be created and read by
+<code>Service Provider</code>, and read by <code>End User</code>, but <code>System Operator</code> cannot
+interact with this field at all.</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Field</th>
+<th>Service Provider</th>
+<th>System Operator</th>
+<th>End User</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>entity</td>
+<td>id</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+</tr>
+<tr>
+<td>entity</td>
+<td>name</td>
+<td>CRU</td>
+<td>R</td>
+<td>R</td>
+</tr>
+<tr>
+<td>invoice</td>
+<td>number</td>
+<td>RC</td>
+<td></td>
+<td>R</td>
+</tr>
+</tbody>
+</table>
+<p>The permission matrix is displayed as a markdown table in the give resources
+docs page.</p>
+<p>History resources inherit the authorizations from the main resource.</p>
+<h3 id="resource-level-authorization-rla">Resource Level Authorization (RLA)</h3>
+<p>Resource level authorization is a way to control access to each resource as a
+whole. As an example, a service provider should only be able to see the
+controllable units that are assigned to them.</p>
+<p>RLA is documented as a set of policies per resource and party type. We document this
+as a list of textual policies per type, as shown for Service Provider (SP) and
+System Operator (SO) in the example below.</p>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CU-SP001</td>
+<td>Read CU where they are SP. Only for the contract period.</td>
+<td>PARTIAL</td>
+</tr>
+<tr>
+<td>CU-SP002</td>
+<td>Create new CU.</td>
+<td>PARTIAL</td>
+</tr>
+<tr>
+<td>CU-SP003</td>
+<td>Update CU where they are current SP.</td>
+<td>PARTIAL</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CU-SO001</td>
+<td>Read and update CU that are connected to AP belonging to SO.</td>
+<td>PARTIAL</td>
+</tr>
+</tbody>
+</table>
+<p>We name the policies in the format
+<code>&lt;Resource&gt;-&lt;Party Type Abbreviation&gt;&lt;Number&gt;</code>. The number is just used as a key
+during discussions and serves as a way for us to document in the code what
+policy is being implemented. It is also handy for code search.</p>
+<p>Status can be one of:</p>
+<ul>
+<li><code>PROPOSED</code> means that the policy is proposed but not decided.</li>
+<li><code>TODO</code> means that the policy is not implemented yet.</li>
+<li><code>PARTIAL</code> means that the policy is partially implemented.</li>
+<li><code>DONE</code> means that the policy is fully implemented.</li>
+</ul>
+<p>Policies can be in <code>TODO</code> or <code>PARTIAL</code> state either if we have not gotten to it
+yet or the current platform does not support it (e.g. we are missing a
+relation/entity).</p>
+<h4 id="time-dependent-rla">Time-dependent RLA</h4>
+<p>Some combinations of party type and resource have time-dependent access
+policies. A typical example is the service provider (SP) on a controllable unit
+(CU). The SPs contract on the CU is time-dependent, with a valid from an to
+date. This in turn means that the SP should only have update privileges to the
+CU during the contract period, but should see the CU even after the contract has
+ended. However, an old SP should not be able to see updates to the CU fields
+done by a new SP, after their contract has ended.</p>
+<p>When fields on the resource are <em>not</em> time-dependent, we must use audit history
+to provide access when doing <em>read</em> operations on the main collection/resource.
+This means that we authorize data stored with record time based on the valid
+time. Lets look at an example.</p>
+<p><img alt="Time-dependent RLA" src="../../diagrams/time_dependent_authorization.png" /></p>
+<p>In this example we have 3 records in the data history for the CU. <code>3</code> is the
+current record. Two service providers, <code>A</code> and <code>B</code>, have had contracts on the
+CU. <code>B</code> is the current SP. Each of the service providers will see the latest
+record that <em>overlaps with the end date on their latest contract</em>.</p>
+<p>So, when each of the service providers does a <code>GET /controllable_unit/{id}</code> they
+will see different records.</p>
+<ul>
+<li><code>A</code> will see record <code>2</code>.</li>
+<li><code>B</code> will see record <code>3</code>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <!-- Mkdocs allows overriding components from the base theme chosen for the
+     documentation. Everything is stated in the configuration file (mkdocs.yml).
+     We want to override a component to add a footer with links, but in the
+     Material theme, the bottom-most component is the copyright component, the
+     component called `footer` just adding links to the previous/next page,
+     _above_ the copyright component. We make sure our footer is always at the
+     bottom of the page by overriding the _copyright_ component. -->
+<footer id="link-footer">
+  <form style="display: flex; gap: 10px">
+    <a class="link-footer-button" href="/">
+      Portal
+    </a>
+    <a class="link-footer-button" href="/docs">
+      Project documentation
+    </a>
+    <a class="link-footer-button" href="/api/v0">
+      Main API documentation
+    </a>
+    <a class="link-footer-button" href="/auth/v0">
+      Auth API documentation
+    </a>
+  </form>
+</footer>
+<style>
+  #link-footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #0b3c28;
+    text-align: center;
+  }
+  .link-footer-button {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #f6f6f6;
+    color: #f6f6f6;
+    border-radius: 3px;
+    text-decoration: none;
+  }
+</style>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

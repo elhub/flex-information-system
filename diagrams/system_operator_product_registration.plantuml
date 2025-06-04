@@ -1,0 +1,30 @@
+@startuml system_operator_product_registration
+
+!theme plain
+
+title System Operator Product Registration
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator" as SO
+
+activate SO
+SO -> FIS: Register product type\nfor SO
+activate FIS
+FIS --> SO: OK
+deactivate SO
+FIS --> SP: Notify
+note left
+  Notifying the SP so that they are made
+  aware of a new market opportunity.
+
+  All approved SPs are notified.
+end note
+deactivate FIS
+
+@enduml

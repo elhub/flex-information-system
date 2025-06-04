@@ -1,0 +1,54 @@
+@startuml revocation
+!theme plain
+
+title Service Provider Contract Revocation and Termination
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "End User (EU)" AS EU
+actor "Service Provider (SP)" as SP
+participant "Flexibility Information System (FIS)" as FIS
+actor "Metering Point Administrator (Elhub)" as Elhub
+
+|||
+
+alt "Revocation by end user"
+    |||
+    EU -> SP: Revoke contract
+    |||
+else "Implicit contract termination"
+    |||
+    Elhub -> FIS: Update on End user from Elhub
+    activate FIS
+    FIS --> SP: Notify
+    deactivate FIS
+    activate SP
+    SP -> EU: Verify updated end user information
+    deactivate SP
+    |||
+else "Termination by service provider"
+    |||
+    SP -> EU: Terminate contract
+    |||
+end
+    |||
+
+== Revocation and Termination ==
+
+SP -> FIS: Update existing contract
+activate SP
+note left SP
+    Data:
+    - End date
+end note
+activate FIS
+FIS --> SP: OK
+deactivate SP
+FIS --> EU: Notify
+deactivate FIS
+
+|||
+@enduml

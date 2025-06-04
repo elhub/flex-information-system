@@ -1,0 +1,90 @@
+@startdot registration_happy_path
+digraph G {
+    layout=dot
+    rankdir=TD;
+    node [shape=box];
+    splines=curved;
+
+    start [label="Empty FIS", shape=ellipse];
+
+
+    // Service Provider styling
+    register_sp,
+    register_cu,
+    register_spg,
+    sp_application,
+    product_application [shape=box, style="filled", fillcolor="lightblue"];
+
+    // System Operator styling
+    register_so,
+    product_registration,
+    grid_valid_cu,
+    grid_preq_spg,
+    sp_qualification,
+    product_prequalification [shape=box, style="filled", fillcolor="lightgreen"];
+
+    // FISO styling
+    approve_sp [shape=box, style="filled", fillcolor="lightpink"];
+
+    // Processes
+    subgraph cluster_sp_registration{
+        label="Service provider\nregistration and approval"
+        register_sp [label="Service provider\nregistration", style="filled,dotted", width="2.5"];
+        approve_sp [label="Service provider\napproval", style="filled,dotted", width="2.5"];
+    }
+
+    register_so [label="System operator\nregistration"];
+
+    subgraph cluster_sp_qualification {
+        label="Service provider product\napplication and qualification";
+        sp_application [label="Service provider\nproduct application", style="filled,dotted", width="3"];
+        sp_qualification [label="Service provider\nproduct qualification", style="filled,dotted", width="3"];
+    }
+
+    subgraph cluster_cu_reg {
+        label="Controllable unit\nregistration";
+        register_cu [label="Register\ncontrollable unit", style="filled,dotted"];
+        grid_valid_cu [label="Grid validate\ncontrollable unit", style="filled,dotted"];
+    }
+
+    subgraph cluster_spg_registration {
+        label="Service providing group\nregistration";
+        register_spg [label="Register\nservice providing group", style="filled,dotted"];
+        grid_preq_spg [label="Grid prequalify\nservice providing group", style="filled,dotted"];
+    }
+
+    product_registration [label="System operator\nproduct registration"];
+
+    subgraph cluster_product_application {
+        label="Service providing group\nproduct application\nand prequalification";
+        product_application [label="Service providing group\nproduct application", style="filled,dotted"];
+        product_prequalification [label="Service providing group\nproduct prequalification", style="filled,dotted"];
+    }
+
+    // End of process
+    end [label="Ready for market", shape=ellipse];
+
+    // Flow
+    start -> register_sp;
+    register_sp -> approve_sp;
+    start -> register_so;
+    register_so -> product_registration
+    product_registration -> sp_application;
+
+    approve_sp -> register_cu;
+    register_cu -> register_spg;
+    register_cu -> grid_valid_cu
+    grid_valid_cu -> end;
+    register_spg -> grid_preq_spg;
+    grid_preq_spg -> end;
+
+    approve_sp -> sp_application;
+    sp_application -> sp_qualification;
+
+    sp_qualification -> product_application;
+    register_spg -> product_application;
+    product_application -> product_prequalification;
+
+    product_prequalification -> end;
+}
+@enddot

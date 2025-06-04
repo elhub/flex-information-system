@@ -1,0 +1,43 @@
+@startdot service_providing_group_product_application_status
+digraph G {
+    layout=dot;
+    overlap=false;
+
+    node [shape=rect,width=0.1,height=0.1,margin=0.04];
+
+    start [shape=point];
+
+    // status
+    requested;
+    {
+        rank = same;
+        prequalification_pending;
+        temporary_qualified;
+    }
+    in_progress;
+    {
+        rank = same;
+        verified;
+        prequalified;
+        rejected;
+    }
+
+
+    start -> requested [label="", color="pink"];
+    requested ->  prequalification_pending [label="Prequalification\nrequired", color="green"];
+    prequalification_pending -> in_progress [label="Prequalification\nstarted", color="green"];
+    requested -> temporary_qualified [label="Verification only", color="green"];
+
+    prequalification_pending -> prequalified [label="Prequalified\nby other PSO", color="green"];
+    prequalification_pending -> prequalified [label="Contain only\nsmall\nand/or already \nprequalified CUs", color="green"];
+    temporary_qualified -> rejected [label="Verification\nfailed", color="green"];
+    temporary_qualified -> verified [color="green"];
+
+    in_progress -> prequalified [color="green"];
+    in_progress -> rejected [color="green"];
+
+    prequalified -> requested [label="SPG has changed\nsignificantly", color="green"];
+    verified -> requested [label="SPG has changed\nsignificantly", color="green"];
+    rejected -> requested [label="SP had made \nupdates to \ncomply", color="blue"];
+}
+@enddot

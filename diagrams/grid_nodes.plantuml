@@ -1,0 +1,27 @@
+@startdot grid_nodes
+digraph G {
+    layout=dot;
+    compound=true;
+
+    node [shape=rect];
+
+    subgraph cluster_GA_A {
+        graph [label="Area A"];
+
+        NODE_A [label="Node A"];
+        NODE_B [label="Node B"];
+        NODE_C [label="Node C"];
+        NODE_D [label="Node D"];
+        NODE_E [label="Node E"];
+        NODE_F [label="Node F"];
+        NODE_G [label="Node G"];
+        NODE_H [label="Node H"];
+        NODE_I [label="Node I"];
+
+
+        NODE_A -> NODE_B -> NODE_C;
+        NODE_B -> NODE_D;
+        NODE_H -> NODE_I;
+    }
+}
+@enddot

@@ -1,0 +1,2081 @@
+<!-- https://squidfunk.github.io/mkdocs-material/customization/#overriding-blocks -->
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Flexibility Information System">
+      
+      
+      
+      
+        <link rel="prev" href="../privacy/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Time - Flexibility Information System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../style.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#time" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+    <span>This documentation is work-in-progress and part of the <a href="https://www.euroflex.no/">EuroFlex research project</a>.</span>
+    <span>Read more about <a href="/docs/privacy/">privacy and cookies</a></span>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Flexibility Information System Documentation" class="md-header__button md-logo" aria-label="Flexibility Information System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Flexibility Information System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Time
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Flexibility Information System Documentation" class="md-nav__button md-logo" aria-label="Flexibility Information System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Flexibility Information System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Concepts
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/end-user/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    End Users
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/grid-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grid Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/time-series/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Time Series
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/test-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Test Data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../processes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Processes
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Processes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/controllable-unit-lookup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CU Lookup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/controllable-unit-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CU Registration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/revocation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Contract Revocation and Termination
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-provider-product-application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Product Application and Qualification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-provider-registration-and-approval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Registration and Approval
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-provider-switching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SP Switching Initiated by New SP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-providing-group-product-application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPG Product Application and Prequalification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/service-providing-group-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPG Registration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/system-operator-product-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SO Product Registration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Resources
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/accounting_point/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Accounting Point
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/accounting_point_balance_responsible_party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Accounting Point Balance Responsible Party
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/accounting_point_energy_supplier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Accounting Point Energy Supplier
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controllable_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Controllable Unit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controllable_unit_service_provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Controllable Unit Service Provider
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/entity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Entity
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/entity_client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Entity Client
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Event
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/identity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/notice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notice
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/notification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Party
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/party_membership/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Party Membership
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/product_type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Product Type
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_provider_product_application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Provider Product Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_provider_product_application_comment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Provider Product Application Comment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_grid_prequalification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group Grid Prequalification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_membership/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group Membership
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_product_application/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Providing Group Product Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/system_operator_product_type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System Operator Product Type
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/technical_resource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Resource
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Technical
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Technical
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authorisation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identifiers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identifiers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Privacy and Cookies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Time
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Time
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clusivity-in-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clusivity in intervals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bi-temporal-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bi-temporal data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bi-temporal data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Record time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Valid time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frozen-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frozen timeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeline-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timeline window
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timezones" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timezones
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Timezones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-in-the-user-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time in the user interface
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clusivity-in-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clusivity in intervals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bi-temporal-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bi-temporal data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bi-temporal data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Record time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Valid time
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frozen-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frozen timeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeline-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timeline window
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timezones" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timezones
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Timezones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-in-the-user-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time in the user interface
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="time">Time</h1>
+<p>This section describes how we handle time in the Flexibility Information System.</p>
+<h2 id="clusivity-in-intervals">Clusivity in intervals</h2>
+<p>In general, all time ranges are <em>half-open</em> intervals. This means that the start
+time is inclusive and the end time is exclusive. This is also known as
+<a href="https://en.wikipedia.org/wiki/Interval_(mathematics)">left-closed right-open</a>.</p>
+<p>We follow the
+<a href="https://www.postgresql.org/docs/15/rangetypes.html#RANGETYPES-IO">notation used in the PostgreSQL range type</a>.
+This means that the convention we follow is <code>[start, end)</code>. <code>null</code> means
+unbounded, and only the upper bound can be unbounded.</p>
+<h2 id="bi-temporal-data">Bi-temporal data</h2>
+<p>For a good primer read this article on
+<a href="https://martinfowler.com/articles/bitemporal-history.html">bi-temporal history on the Martin Fowler blog</a>.
+We are using the bi-temporal data model to store and make available the data in
+the flexibility information system. With that model, we can answer questions
+like:</p>
+<blockquote>
+<p>Who did we have as the service provider for controllable unit X on 2021-01-14
+<strong>as of</strong> 2022-03-01?</p>
+</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Bi-temporal only when needed</p>
+<p>Not all data in the system is bi-temporal. We generally provide history
+(record time) on all resources, but only some data (that needs it) have valid
+time timeline.</p>
+</div>
+<p>The following sections outline how we think about and implement
+bi-temporal data.</p>
+<h3 id="record-time">Record time</h3>
+<p>One of the requirements in NCDR is that the Flexibility Information System
+should be able to provide "historic" data for the resources in the system. This
+means that we need to be able to provide data that was valid at a certain point
+in time. We understand this to be related to the <strong>append-only history</strong> of when
+the data was recorded, updated and replaced in the system. In temporal data
+modelling we call this time axis <em>record time</em>. A common concept related to
+record time is to be able to provide data <strong>as of</strong> a point in time.</p>
+<div class="admonition note">
+<p class="admonition-title">Other names for record time</p>
+<p>There are other names for this time axis, such as <em>transaction</em> or <em>system</em> time.</p>
+</div>
+<p>Record time is typically implemented using a time range.</p>
+<table>
+<thead>
+<tr>
+<th>Bound</th>
+<th>Clusivity</th>
+<th>Name</th>
+<th>Alt name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lower</td>
+<td>Inclusive</td>
+<td>Record time start</td>
+<td>Updated at</td>
+</tr>
+<tr>
+<td>Upper</td>
+<td>Exclusive</td>
+<td>Record time end</td>
+<td>Replaced at</td>
+</tr>
+</tbody>
+</table>
+<h3 id="valid-time">Valid time</h3>
+<p>The other time axis we deal with is <em>valid time</em>. This can for example be when a
+contract is valid, or when a party is a member of a market. This time axis is
+related to the <strong>timeline</strong> of the data itself. When we say that something is
+<strong>time-dependent</strong>, we talk about the valid time timeline.</p>
+<div class="admonition note">
+<p class="admonition-title">Other names for valid time</p>
+<p>This time axis is also commonly referred to as <em>application</em>, <em>actual</em>, <em>business</em> or <em>effective</em> time.</p>
+</div>
+<p>Valid time is typically implemented using a time range.</p>
+<table>
+<thead>
+<tr>
+<th>Bound</th>
+<th>Clusivity</th>
+<th>Name</th>
+<th>Alt name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lower</td>
+<td>Inclusive</td>
+<td>Valid time start</td>
+<td>Valid from</td>
+</tr>
+<tr>
+<td>Upper</td>
+<td>Exclusive</td>
+<td>Valid time end</td>
+<td>Valid to</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Midnight alignment</p>
+<p>We represent valid time as <em>midnight-aligned</em>. This constraint allows
+planning and performing operations more easily. However, we still store full
+timestamps for uniformity and to allow exceptional updates. This means that
+insert/update operations on the API should always have their valid time
+values aligned with the Norwegian midnight.</p>
+</div>
+<h3 id="frozen-timeline">Frozen timeline</h3>
+<p>The timeline of some contracts can be <em>frozen</em> for some roles in the system.
+This means that the part of the past that is older than a given <em>time interval</em>
+from now is a <em>frozen past</em> where nothing can be <em>added or edited</em>.</p>
+<p>The diagram below shows the example of a contract resource whose timeline is
+frozen after 6 days. Frozen contracts or parts of contracts are shown in blue,
+and non-frozen in green. Orange is used for errors / unacceptable contracts.</p>
+<p><img alt="valid_time_freeze" src="../../diagrams/valid_time_freeze.png" /></p>
+<p>The freeze time is <em>midnight-aligned</em>, meaning that the exact freeze time is the
+<em>nearest Norwegian midnight</em> before the freeze interval computed from now.
+If we consider an operation being made on 17.07 (highlighted in green in the
+diagram), the freeze time will be 6 days before, that is 11.07, at Norwegian
+midnight. The exact freeze time is <em>not frozen</em>, so contracts can start there.</p>
+<p>Creating a new contract (number <code>4</code>) in the past can only be done in the
+non-frozen past. In the diagram, only the second proposal (<code>4''</code>) is acceptable,
+both others overlapping with frozen time partially or fully.</p>
+<p>The frozen past cannot be edited, meaning that updating a contract (number <code>5</code>)
+cannot change its start date if it is already in this frozen past. The two first
+updates in the diagram (<code>5'</code> and <code>5''</code>) are therefore invalid, even though the
+second one puts the contract in the non-frozen past. The start date of contract
+<code>5</code> is simply frozen and cannot move.</p>
+<p>The end date of this partially frozen contract can be moved anywhere in the
+non-frozen past, so the third update (<code>5'''</code>) is invalid, but the last one is.</p>
+<h3 id="timeline-window">Timeline window</h3>
+<p>For some contracts, <em>insertion</em> can be restricted to a fixed <em>window</em> from the
+current time. This means that new contracts can start <em>only</em> in this interval.</p>
+<p>The window is <em>midnight-aligned</em>, meaning that start and end times for the
+window are aligned to the <em>nearest previous Norwegian midnight</em>. The start time
+is <em>inclusive</em> but the end time is <em>exclusive</em>. The timeline window check only
+makes sure the contract starts between those bounds, but does not check the
+exact <em>time</em> of the contract, as this is a separate constraint. The current
+check should work with all kinds of contracts, midnight-aligned or not.</p>
+<p>The diagram below shows the example of a contract resource with a timeline
+window of one week placed one week ahead of time.</p>
+<p><img alt="valid_time_window" src="../../diagrams/valid_time_window.png" /></p>
+<p>In this example, we consider operations made on 30.06. This means the window
+starts on 07.07 Norwegian midnight and lasts for one week, that is, it ends on
+14.07 Norwegian midnight. The start date is inclusive so contracts can start on
+07.07, but the end date is exclusive, so no contract can start on 14.07.</p>
+<p>The three first contracts are therefore invalid, even if number <code>2</code> starts at
+midnight on 14.07, and the three last ones are valid, and number <code>5</code> can start
+as soon as midnight on 07.07. The end date of these contracts does not matter.</p>
+<h2 id="timezones">Timezones</h2>
+<p>In the context of storing datetime-related information, a timestamp only has
+meaning if it is considered in a given timezone.</p>
+<h3 id="storage-format">Storage format</h3>
+<p>Datetime data is stored in the system in the standard <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+format (date + time + timezone), so that information in the database is complete
+and does not depend on any user configuration.</p>
+<h3 id="time-in-the-user-interface">Time in the user interface</h3>
+<p>As the Flexibility Information System is expected to only handle data related to
+the Norwegian flexibility market, it makes sense to use Norwegian time. This
+means both displaying dates in Norwegian format (<code>DD.MM.YYYY</code> and 24-hour time)
+and in the Norwegian timezone (CET in winter, CEST in summer).</p>
+<p>However, as the system is only a prototype, we do not want to roll our own
+mechanism to compute timezone offsets and we keep things simple. Therefore, we
+assume that our test users will use the software from the area using the
+Norwegian timezone, so times are displayed in the browser's local timezone. If
+a user is accessing the system from abroad, it is advised to change the
+browser's timezone to the Norwegian one, so that the data displayed keeps making
+sense.</p>
+<p>We also use default datetime input components that do not handle the
+specificities of seasonal transitions between time offsets happening in Norway
+(gap of an hour when transitioning from winter to summer, duplication of an
+hour when transitioning from summer to winter). Any information entered around
+the times these transitions happen is not particularly checked and we are
+relying on whatever default behaviour of the browser's datetime API. This may
+change in a production setting but we are delaying this effort to later.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <!-- Mkdocs allows overriding components from the base theme chosen for the
+     documentation. Everything is stated in the configuration file (mkdocs.yml).
+     We want to override a component to add a footer with links, but in the
+     Material theme, the bottom-most component is the copyright component, the
+     component called `footer` just adding links to the previous/next page,
+     _above_ the copyright component. We make sure our footer is always at the
+     bottom of the page by overriding the _copyright_ component. -->
+<footer id="link-footer">
+  <form style="display: flex; gap: 10px">
+    <a class="link-footer-button" href="/">
+      Portal
+    </a>
+    <a class="link-footer-button" href="/docs">
+      Project documentation
+    </a>
+    <a class="link-footer-button" href="/api/v0">
+      Main API documentation
+    </a>
+    <a class="link-footer-button" href="/auth/v0">
+      Auth API documentation
+    </a>
+  </form>
+</footer>
+<style>
+  #link-footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #0b3c28;
+    text-align: center;
+  }
+  .link-footer-button {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #f6f6f6;
+    color: #f6f6f6;
+    border-radius: 3px;
+    text-decoration: none;
+  }
+</style>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

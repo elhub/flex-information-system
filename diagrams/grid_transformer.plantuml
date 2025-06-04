@@ -1,0 +1,35 @@
+@startdot grid_transformer
+digraph FlexReg {
+    graph [direction=TD];
+    node [label="\N",
+        shape=circle,
+        style=filled
+    ];
+    edge [color=green,
+        dir=forward
+    ];
+    subgraph cluster_C {
+        graph [label="Transformer X"];
+        C    [shape=doublecircle];
+    }
+    subgraph cluster_U {
+        graph [label="Transformer X"];
+        {
+            graph [rank=same];
+            T1    [shape=point,
+                width=0.1];
+            T    [shape=doublecircle];
+            T2    [shape=point,
+                width=0.1];
+        }
+        T1 -> T    [label=5];
+        T -> T2    [label=6];
+    }
+    C -> B    [label=2];
+    C -> D    [label=3];
+    T1 -> U    [label=7];
+    T2 -> V    [label=8];
+    A -> C    [label=1];
+    R -> T1    [label=4];
+}
+@enddot
