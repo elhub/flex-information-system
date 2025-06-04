@@ -226,6 +226,11 @@ mkdocs: _venv _mkdocs
 _mkdocs:
     .venv/bin/mkdocs serve
 
+# deploy documentation to GitHub Pages (run from main in clean state)
+mkdocs_deploy: _venv _mkdocs_deploy
+_mkdocs_deploy:
+    .venv/bin/mkdocs gh-deploy
+
 diagrams: tbls plantuml
 
 tbls:
