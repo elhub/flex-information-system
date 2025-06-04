@@ -252,6 +252,23 @@ value.
     to get right in situations where there could be multiple changes to the
     timeline since the point in time you want to rollback to.
 
+!!! note "Delete operations & time-dependent access policies"
+
+    In some cases, read access to a resource is restricted based on _time_, for
+    instance the presence of a contract allowing the user to see another
+    resource during the valid time of this contract.
+    This means that any stateful operations happening outside of these periods
+    of time should not be visible to this user.
+
+    To achieve this behaviour, in such cases we implement the access policy on
+    the _history_ table and define the record shown in the _main_ resource
+    exposed on the API as the _latest version_ visible in the history resource,
+    for each row ID.
+
+    One side effect of this is that after deleting a record, it is internally
+    transferred from the main table to the history table, but externally it will
+    still be visible in the main resource.
+
 ## Rich text fields
 
 Some text fields actually support *rich text* content. For simplicity, we chose
