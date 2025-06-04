@@ -95,7 +95,7 @@ No policies.
     where the user is not allowed to read the fields from the other resource,
     null values will be showed in the `identity` resource.
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |-------------|------|-----|----|----|------|----|----|----|----|

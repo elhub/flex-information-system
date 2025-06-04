@@ -18,7 +18,7 @@ After termination, the status can only be edited by a FIS operator.
 |
 [Plantuml description](../diagrams/service_providing_group_status.plantuml)
 |
-[How to read the diagram](./index.md#status-and-transitions)
+[How to read the diagram](./index.md#status)
 
 ![Service Providing Group Registration Status](../diagrams/service_providing_group_status.png)
 
@@ -109,7 +109,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD               | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
 |---------------------|------|-----|----|----|------|----|----|-----|----|

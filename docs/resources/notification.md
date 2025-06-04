@@ -79,7 +79,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD        | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |--------------|------|-----|----|----|------|----|----|----|----|

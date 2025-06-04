@@ -19,7 +19,7 @@ again.
 |
 [Graphviz description](../diagrams/service_providing_group_product_application_status.plantuml)
 |
-[How to read the diagram](./index.md#status-and-transitions)
+[How to read the diagram](./index.md#status)
 
 ![Service provider product application status transitions](../diagrams/service_providing_group_product_application_status.png)
 
@@ -114,7 +114,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD                        | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |------------------------------|------|-----|----|----|------|----|----|----|----|
