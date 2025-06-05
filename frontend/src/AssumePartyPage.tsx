@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useState, useEffect } from "react";
-import { serverURL } from "./httpConfig";
+import { docsURL } from "./httpConfig";
 
 export const AssumePartyPage = () => {
   const [loading, setLoading] = useState(false);
@@ -101,9 +101,8 @@ export const AssumePartyPage = () => {
           one of them to act on behalf of it.
           <p>
             You can also check the{" "}
-            <a href={`${serverURL}/docs/tutorials/getting-started`}>tutorial</a>{" "}
-            or the <a href={`${serverURL}/docs`}>documentation</a> to get
-            started.
+            <a href={`${docsURL}/guides/getting-started`}>tutorial</a> or the{" "}
+            <a href={docsURL}>documentation</a> to get started.
           </p>
         </CardContent>
       </Card>

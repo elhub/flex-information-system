@@ -34,7 +34,7 @@ technical resources, the grid validation status is reset if not already
 |
 [Plantuml description](../diagrams/controllable_unit_grid_validation_status.plantuml)
 |
-[How to read the diagram](./index.md#status-and-transitions)
+[How to read the diagram](./index.md#status)
 
 ![Controllable Unit Registration Status](../diagrams/controllable_unit_grid_validation_status.png)
 
@@ -51,14 +51,14 @@ can only be edited by a FIS operator.
 |
 [Plantuml description](../diagrams/controllable_unit_status.plantuml)
 |
-[How to read the diagram](./index.md#status-and-transitions)
+[How to read the diagram](./index.md#status)
 
 ![Controllable Unit Registration Status](../diagrams/controllable_unit_status.png)
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_controllable_unit)
-* [Download docx](/docs/download/controllable_unit.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_controllable_unit)
+* [Download docx](../download/controllable_unit.docx)
 
 ## Fields
 
@@ -173,7 +173,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD                      | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
 |----------------------------|------|-----|----|----|------|----|----|-----|----|

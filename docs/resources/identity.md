@@ -5,8 +5,8 @@ assumed party.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_identity)
-* [Download docx](/docs/download/identity.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_identity)
+* [Download docx](../download/identity.docx)
 
 ## Fields
 
@@ -95,7 +95,7 @@ No policies.
     where the user is not allowed to read the fields from the other resource,
     null values will be showed in the `identity` resource.
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |-------------|------|-----|----|----|------|----|----|----|----|

@@ -9,14 +9,14 @@ group. One SPG grid prequalification per impacted system operator.
 |
 [Plantuml description](../diagrams/service_providing_group_prequalification_status.plantuml)
 |
-[How to read the diagram](./index.md#status-and-transitions)
+[How to read the diagram](./index.md#status)
 
 ![Service Providing Group prequalification](../diagrams/service_providing_group_prequalification_status.png)
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_service_providing_group_grid_prequalification)
-* [Download docx](/docs/download/service_providing_group_grid_prequalification.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_service_providing_group_grid_prequalification)
+* [Download docx](../download/service_providing_group_grid_prequalification.docx)
 
 ## Fields
 
@@ -99,7 +99,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD                       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |-----------------------------|------|-----|----|----|------|----|----|----|----|

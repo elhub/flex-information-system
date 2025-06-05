@@ -35,8 +35,8 @@ as input.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_product_type)
-* [Download docx](/docs/download/product_type.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_product_type)
+* [Download docx](../download/product_type.docx)
 
 ## Fields
 
@@ -111,7 +111,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |-------------|------|-----|----|----|------|----|----|----|----|

@@ -195,7 +195,7 @@ megalinter:
 coverage:
     .venv/bin/python test/check_coverage.py
 
-# build docs and frontend for local
+# build frontend for local
 build:
     #!/usr/bin/env bash
     set -euxo pipefail
@@ -240,8 +240,20 @@ mkdocs: _venv _mkdocs
 _mkdocs:
     .venv/bin/mkdocs serve
 
-# deploy documentation to GitHub Pages (run from main in clean state)
-mkdocs_deploy: _check_main _venv _mkdocs_deploy
+build_resource_docx:
+    #!/usr/bin/env bash
+    mkdir -p docs/download
+
+    for resource in $(find docs/resources/ -type f -not -name "index.md" -exec basename {} \; | cut -d. -f1); do
+        pandoc -o "./docs/download/${resource}.docx" \
+            -f markdown \
+            -t docx \
+            --reference-doc local/mkdocs/style.docx \
+            "docs/resources/${resource}.md"
+    done
+
+# deploy documentation to GitHub Pages
+mkdocs_deploy: _check_main _venv build_resource_docx _mkdocs_deploy
 _mkdocs_deploy:
     .venv/bin/mkdocs gh-deploy
 
@@ -372,8 +384,8 @@ openapi-to-md:
 
         table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
 
-        api_link="/api/v0/#/operations/list_$resource"
-        docx_link="/docs/download/${resource}.docx"
+        api_link="https://flex-test.elhub.no/api/v0/#/operations/list_$resource"
+        docx_link="../download/${resource}.docx"
 
         ed -s "./docs/resources/${resource}.md" <<EOF
     /## Relevant links/+,/## Fields/-d
@@ -457,7 +469,7 @@ permissions-to-md:
 
         sed -i '/^For party type abbreviations/,$d' docs/resources/${resource}.md
 
-        echo "For party type abbreviations, check [the auth docs](../technical/auth.md#party)" >> docs/resources/${resource}.md
+        echo "For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)" >> docs/resources/${resource}.md
         echo "" >> docs/resources/${resource}.md
 
         grep -E "^((${resource})|(RESOURCE))\;" local/input/permissions.csv \

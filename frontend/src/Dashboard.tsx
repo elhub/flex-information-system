@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from "@mui/material";
 import { Title, Toolbar, useAuthenticated } from "react-admin";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { apiURL, authURL, serverURL } from "./httpConfig";
+import { apiURL, authURL, docsURL } from "./httpConfig";
 
 export const Dashboard = () => {
   useAuthenticated();
@@ -28,14 +28,12 @@ export const Dashboard = () => {
             <br />
             <br />
             Our system stores read-only{" "}
-            <a href={`${serverURL}/docs/time/#record-time`}>
-              historical data
-            </a>{" "}
-            for some of its resources. This means that wrong data will remain in
-            the system even though the last version of the resource is
-            corrected. Should you inadvertently add sensitive data to a
-            resource, please <a href="mailto:post@elhub.no">contact us</a> so
-            that we can manually clean the problematic records.
+            <a href={`${docsURL}/time/#record-time`}>historical data</a> for
+            some of its resources. This means that wrong data will remain in the
+            system even though the last version of the resource is corrected.
+            Should you inadvertently add sensitive data to a resource, please{" "}
+            <a href="mailto:post@elhub.no">contact us</a> so that we can
+            manually clean the problematic records.
             <br />
             <br />
             As a test system, it is also subject to frequent updates, and
@@ -43,8 +41,7 @@ export const Dashboard = () => {
             into the system may be lost at any time.
           </Alert>
           <p>
-            Check the{" "}
-            <a href={`${serverURL}/docs/tutorials/getting-started`}>tutorial</a>{" "}
+            Check the <a href={`${docsURL}/guides/getting-started`}>tutorial</a>{" "}
             to get started.
           </p>
 
@@ -52,7 +49,7 @@ export const Dashboard = () => {
 
           <ul>
             <li>
-              <a href={`${serverURL}/docs`}>Documentation</a>
+              <a href={docsURL}>Documentation</a>
             </li>
             <li>
               <a href={apiURL}>Main API documentation</a>

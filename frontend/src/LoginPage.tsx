@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, CardActions } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import { Form, useRedirect } from "react-admin";
-import { authURL } from "./httpConfig";
+import { authURL, docsURL } from "./httpConfig";
 
 import Box from "@mui/material/Box";
 
@@ -74,7 +74,7 @@ export const LoginPage = () => {
               color: (theme) => theme.palette.grey[500],
             }}
           >
-            <a href={`/docs/privacy/`}>Privacy and cookies</a>
+            <a href={`${docsURL}/technical/privacy/`}>Privacy and cookies</a>
           </Box>
         </Card>
       </Box>

@@ -6,8 +6,8 @@ Data from Elhub.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_accounting_point_energy_supplier)
-* [Download docx](/docs/download/accounting_point_energy_supplier.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_accounting_point_energy_supplier)
+* [Download docx](../download/accounting_point_energy_supplier.docx)
 
 ## Fields
 
@@ -83,7 +83,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD               | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |---------------------|------|-----|----|----|------|----|----|----|----|

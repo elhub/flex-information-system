@@ -4,8 +4,8 @@ A notification of an event happening in the system.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_notification)
-* [Download docx](/docs/download/notification.docx)
+* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_notification)
+* [Download docx](../download/notification.docx)
 
 ## Fields
 
@@ -79,7 +79,7 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party)
+For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
 | FIELD        | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |--------------|------|-----|----|----|------|----|----|----|----|
