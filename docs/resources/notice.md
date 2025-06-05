@@ -21,7 +21,7 @@ from the responsible party.
 
 ## Relevant links
 
-* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_notice)
+* [API Documentation](/api/v0/#/operations/list_notice)
 * [Download docx](../download/notice.docx)
 
 ## Fields

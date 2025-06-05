@@ -5,7 +5,7 @@ assumed party.
 
 ## Relevant links
 
-* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_identity)
+* [API Documentation](/api/v0/#/operations/list_identity)
 * [Download docx](../download/identity.docx)
 
 ## Fields

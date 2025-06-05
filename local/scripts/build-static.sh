@@ -58,6 +58,10 @@ function openapi() {
 		'.servers = [$servers.'"$api_name.$env_short"']' <"openapi/openapi-${api_name}.json" \
 		>"./dist/$api_name/v0/openapi.json"
 
+	mkdir -p "./docs/$api_name/v0"
+	cp "./dist/$api_name/v0/openapi.json" "./docs/$api_name/v0"
+	cp "./dist/$api_name/v0/index.html" "./docs/$api_name/v0"
+
 	# Scrub server name from openapi.json
 
 }

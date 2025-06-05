@@ -47,7 +47,7 @@ import {
 } from "ra-core";
 
 import { Route, Navigate } from "react-router-dom";
-import { apiURL, serverURL, httpClient, authURL } from "./httpConfig";
+import { apiURL, serverURL, httpClient, authURL, docsURL } from "./httpConfig";
 
 import { authProvider, sessionInfoKey } from "./auth";
 
@@ -417,10 +417,7 @@ const Layout = ({ children }: LayoutProps) => (
         }}
       >
         <FooterButton href={serverURL} label="Portal" />
-        <FooterButton
-          href="https://elhub.github.io/flex-information-system"
-          label="Project documentation"
-        />
+        <FooterButton href={docsURL} label="Project documentation" />
         <FooterButton href={apiURL} label="Main API documentation" />
         <FooterButton href={authURL} label="Auth API documentation" />
       </form>

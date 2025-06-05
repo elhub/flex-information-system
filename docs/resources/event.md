@@ -4,7 +4,7 @@ An event happening in the system.
 
 ## Relevant links
 
-* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_event)
+* [API Documentation](/api/v0/#/operations/list_event)
 * [Download docx](../download/event.docx)
 
 ## Fields
