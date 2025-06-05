@@ -20,9 +20,12 @@ def test_apes_fiso(sts):
     # check they can read all APES
 
     # endpoint: GET /accounting_point_energy_supplier
-    apess = list_accounting_point_energy_supplier.sync(client=client_fiso)
+    apess = list_accounting_point_energy_supplier.sync(
+        client=client_fiso,
+        offset="1950",
+    )
     assert isinstance(apess, list)
-    assert len(apess) == 2000  # all APES in the test data
+    assert len(apess) == 50  # 2000 APES in the test data
 
 
 # RLS: APES-SO001
@@ -31,9 +34,12 @@ def test_apes_so(sts):
 
     # test data is created from one MGA belonging to Test SO
 
-    apess = list_accounting_point_energy_supplier.sync(client=client_so)
+    apess = list_accounting_point_energy_supplier.sync(
+        client=client_so,
+        offset="1950",
+    )
     assert isinstance(apess, list)
-    assert len(apess) == 2000  # all APES in the test data
+    assert len(apess) == 50  # 2000 APES in the test data
 
 
 def test_rla_absence(sts):
