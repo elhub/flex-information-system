@@ -243,6 +243,7 @@ def test_rla_absence(sts):
                 list,
                 list_party.sync(
                     client=sts.get_client(TestEntity.TEST, "FISO"),
+                    limit="10000",
                 ),
             )
             if p.type != "end_user"
@@ -254,6 +255,7 @@ def test_rla_absence(sts):
     for role in roles_without_rla:
         ps = list_party.sync(
             client=sts.get_client(TestEntity.TEST, role),
+            limit="10000",
         )
         assert isinstance(ps, list)
         # end user can see one more party because of PTY-COM003 and PTYM-COM002

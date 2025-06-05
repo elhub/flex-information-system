@@ -259,6 +259,7 @@ def test_spggp_sp(data):
 
     spggps_sp = list_service_providing_group_grid_prequalification.sync(
         client=client_sp,
+        limit="10000",
     )
     assert isinstance(spggps_sp, list)
 
@@ -273,6 +274,7 @@ def test_spggp_sp(data):
 
     spggps_sp2 = list_service_providing_group_grid_prequalification.sync(
         client=client_sp,
+        limit="10000",
     )
     assert isinstance(spggps_sp2, list)
     assert len(spggps_sp2) == len(spggps_sp) + 1
@@ -290,6 +292,7 @@ def test_spggp_so(data):
 
     spggps_so = list_service_providing_group_grid_prequalification.sync(
         client=client_so,
+        limit="10000",
     )
     assert isinstance(spggps_so, list)
 
@@ -323,6 +326,7 @@ def test_spggp_so(data):
 
     spggps_so2 = list_service_providing_group_grid_prequalification.sync(
         client=client_so,
+        limit="10000",
     )
     assert isinstance(spggps_so2, list)
     assert len(spggps_so2) == len(spggps_so) + 2

@@ -41,7 +41,9 @@ from .identity_update_request import IdentityUpdateRequest
 from .list_accounting_point_balance_responsible_party_prefer import ListAccountingPointBalanceResponsiblePartyPrefer
 from .list_accounting_point_energy_supplier_prefer import ListAccountingPointEnergySupplierPrefer
 from .list_accounting_point_prefer import ListAccountingPointPrefer
+from .list_controllable_unit_history_prefer import ListControllableUnitHistoryPrefer
 from .list_controllable_unit_prefer import ListControllableUnitPrefer
+from .list_controllable_unit_service_provider_history_prefer import ListControllableUnitServiceProviderHistoryPrefer
 from .list_controllable_unit_service_provider_prefer import ListControllableUnitServiceProviderPrefer
 from .list_entity_client_prefer import ListEntityClientPrefer
 from .list_entity_prefer import ListEntityPrefer
@@ -49,18 +51,34 @@ from .list_event_prefer import ListEventPrefer
 from .list_identity_prefer import ListIdentityPrefer
 from .list_notice_prefer import ListNoticePrefer
 from .list_notification_prefer import ListNotificationPrefer
+from .list_party_history_prefer import ListPartyHistoryPrefer
+from .list_party_membership_history_prefer import ListPartyMembershipHistoryPrefer
 from .list_party_membership_prefer import ListPartyMembershipPrefer
 from .list_party_prefer import ListPartyPrefer
 from .list_product_type_prefer import ListProductTypePrefer
+from .list_service_provider_product_application_comment_history_prefer import (
+    ListServiceProviderProductApplicationCommentHistoryPrefer,
+)
 from .list_service_provider_product_application_comment_prefer import ListServiceProviderProductApplicationCommentPrefer
+from .list_service_provider_product_application_history_prefer import ListServiceProviderProductApplicationHistoryPrefer
 from .list_service_provider_product_application_prefer import ListServiceProviderProductApplicationPrefer
+from .list_service_providing_group_grid_prequalification_history_prefer import (
+    ListServiceProvidingGroupGridPrequalificationHistoryPrefer,
+)
 from .list_service_providing_group_grid_prequalification_prefer import (
     ListServiceProvidingGroupGridPrequalificationPrefer,
 )
+from .list_service_providing_group_history_prefer import ListServiceProvidingGroupHistoryPrefer
+from .list_service_providing_group_membership_history_prefer import ListServiceProvidingGroupMembershipHistoryPrefer
 from .list_service_providing_group_membership_prefer import ListServiceProvidingGroupMembershipPrefer
 from .list_service_providing_group_prefer import ListServiceProvidingGroupPrefer
+from .list_service_providing_group_product_application_history_prefer import (
+    ListServiceProvidingGroupProductApplicationHistoryPrefer,
+)
 from .list_service_providing_group_product_application_prefer import ListServiceProvidingGroupProductApplicationPrefer
+from .list_system_operator_product_type_history_prefer import ListSystemOperatorProductTypeHistoryPrefer
 from .list_system_operator_product_type_prefer import ListSystemOperatorProductTypePrefer
+from .list_technical_resource_history_prefer import ListTechnicalResourceHistoryPrefer
 from .list_technical_resource_prefer import ListTechnicalResourcePrefer
 from .notice_response import NoticeResponse
 from .notice_update_request import NoticeUpdateRequest
@@ -172,7 +190,9 @@ __all__ = (
     "ListAccountingPointBalanceResponsiblePartyPrefer",
     "ListAccountingPointEnergySupplierPrefer",
     "ListAccountingPointPrefer",
+    "ListControllableUnitHistoryPrefer",
     "ListControllableUnitPrefer",
+    "ListControllableUnitServiceProviderHistoryPrefer",
     "ListControllableUnitServiceProviderPrefer",
     "ListEntityClientPrefer",
     "ListEntityPrefer",
@@ -180,16 +200,26 @@ __all__ = (
     "ListIdentityPrefer",
     "ListNoticePrefer",
     "ListNotificationPrefer",
+    "ListPartyHistoryPrefer",
+    "ListPartyMembershipHistoryPrefer",
     "ListPartyMembershipPrefer",
     "ListPartyPrefer",
     "ListProductTypePrefer",
+    "ListServiceProviderProductApplicationCommentHistoryPrefer",
     "ListServiceProviderProductApplicationCommentPrefer",
+    "ListServiceProviderProductApplicationHistoryPrefer",
     "ListServiceProviderProductApplicationPrefer",
+    "ListServiceProvidingGroupGridPrequalificationHistoryPrefer",
     "ListServiceProvidingGroupGridPrequalificationPrefer",
+    "ListServiceProvidingGroupHistoryPrefer",
+    "ListServiceProvidingGroupMembershipHistoryPrefer",
     "ListServiceProvidingGroupMembershipPrefer",
     "ListServiceProvidingGroupPrefer",
+    "ListServiceProvidingGroupProductApplicationHistoryPrefer",
     "ListServiceProvidingGroupProductApplicationPrefer",
+    "ListSystemOperatorProductTypeHistoryPrefer",
     "ListSystemOperatorProductTypePrefer",
+    "ListTechnicalResourceHistoryPrefer",
     "ListTechnicalResourcePrefer",
     "NoticeResponse",
     "NoticeUpdateRequest",

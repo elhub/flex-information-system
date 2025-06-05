@@ -7,6 +7,9 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.list_service_provider_product_application_history_prefer import (
+    ListServiceProviderProductApplicationHistoryPrefer,
+)
 from ...models.service_provider_product_application_history_response import (
     ServiceProviderProductApplicationHistoryResponse,
 )
@@ -16,11 +19,45 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: Union[Unset, str] = UNSET,
+    service_provider_id: Union[Unset, str] = UNSET,
+    system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     service_provider_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProviderProductApplicationHistoryPrefer] = UNSET,
 ) -> Dict[str, Any]:
+    headers: Dict[str, Any] = {}
+    if not isinstance(range_, Unset):
+        headers["Range"] = range_
+
+    if not isinstance(range_unit, Unset):
+        headers["Range-Unit"] = range_unit
+
+    if not isinstance(prefer, Unset):
+        headers["Prefer"] = str(prefer)
+
     params: Dict[str, Any] = {}
 
     params["id"] = id
+
+    params["service_provider_id"] = service_provider_id
+
+    params["system_operator_id"] = system_operator_id
+
+    params["product_type_ids"] = product_type_ids
+
+    params["select"] = select
+
+    params["order"] = order
+
+    params["offset"] = offset
+
+    params["limit"] = limit
 
     params["service_provider_product_application_id"] = service_provider_product_application_id
 
@@ -32,6 +69,7 @@ def _get_kwargs(
         "params": params,
     }
 
+    _kwargs["headers"] = headers
     return _kwargs
 
 
@@ -129,7 +167,17 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    service_provider_id: Union[Unset, str] = UNSET,
+    system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     service_provider_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProviderProductApplicationHistoryPrefer] = UNSET,
 ) -> Response[
     Union[
         Any,
@@ -142,7 +190,17 @@ def sync_detailed(
 
     Args:
         id (Union[Unset, str]):
+        service_provider_id (Union[Unset, str]):
+        system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         service_provider_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProviderProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -154,7 +212,17 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        service_provider_id=service_provider_id,
+        system_operator_id=system_operator_id,
+        product_type_ids=product_type_ids,
+        select=select,
+        order=order,
+        offset=offset,
+        limit=limit,
         service_provider_product_application_id=service_provider_product_application_id,
+        range_=range_,
+        range_unit=range_unit,
+        prefer=prefer,
     )
 
     response = client.get_httpx_client().request(
@@ -168,7 +236,17 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    service_provider_id: Union[Unset, str] = UNSET,
+    system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     service_provider_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProviderProductApplicationHistoryPrefer] = UNSET,
 ) -> Optional[
     Union[
         Any,
@@ -181,7 +259,17 @@ def sync(
 
     Args:
         id (Union[Unset, str]):
+        service_provider_id (Union[Unset, str]):
+        system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         service_provider_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProviderProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -194,7 +282,17 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
+        service_provider_id=service_provider_id,
+        system_operator_id=system_operator_id,
+        product_type_ids=product_type_ids,
+        select=select,
+        order=order,
+        offset=offset,
+        limit=limit,
         service_provider_product_application_id=service_provider_product_application_id,
+        range_=range_,
+        range_unit=range_unit,
+        prefer=prefer,
     ).parsed
 
 
@@ -202,7 +300,17 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    service_provider_id: Union[Unset, str] = UNSET,
+    system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     service_provider_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProviderProductApplicationHistoryPrefer] = UNSET,
 ) -> Response[
     Union[
         Any,
@@ -215,7 +323,17 @@ async def asyncio_detailed(
 
     Args:
         id (Union[Unset, str]):
+        service_provider_id (Union[Unset, str]):
+        system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         service_provider_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProviderProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -227,7 +345,17 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        service_provider_id=service_provider_id,
+        system_operator_id=system_operator_id,
+        product_type_ids=product_type_ids,
+        select=select,
+        order=order,
+        offset=offset,
+        limit=limit,
         service_provider_product_application_id=service_provider_product_application_id,
+        range_=range_,
+        range_unit=range_unit,
+        prefer=prefer,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -239,7 +367,17 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    service_provider_id: Union[Unset, str] = UNSET,
+    system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     service_provider_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProviderProductApplicationHistoryPrefer] = UNSET,
 ) -> Optional[
     Union[
         Any,
@@ -252,7 +390,17 @@ async def asyncio(
 
     Args:
         id (Union[Unset, str]):
+        service_provider_id (Union[Unset, str]):
+        system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         service_provider_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProviderProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -266,6 +414,16 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
+            service_provider_id=service_provider_id,
+            system_operator_id=system_operator_id,
+            product_type_ids=product_type_ids,
+            select=select,
+            order=order,
+            offset=offset,
+            limit=limit,
             service_provider_product_application_id=service_provider_product_application_id,
+            range_=range_,
+            range_unit=range_unit,
+            prefer=prefer,
         )
     ).parsed

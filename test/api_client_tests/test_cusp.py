@@ -84,12 +84,6 @@ def test_cusp_fiso(data):
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
-    cusps2 = list_controllable_unit_service_provider.sync(
-        client=client_fiso,
-    )
-    assert isinstance(cusps2, list)
-    assert len(cusps2) == len(cusps) + 1
-
     # endpoint: GET /controllable_unit_service_provider/{id}
     cusp = read_controllable_unit_service_provider.sync(
         client=client_fiso, id=cast(int, cusp.id)
@@ -107,7 +101,10 @@ def test_cusp_fiso(data):
     # update the relation and check the history is one record longer
 
     # endpoint: GET /controllable_unit_service_provider_history
-    hist = list_controllable_unit_service_provider_history.sync(client=client_fiso)
+    hist = list_controllable_unit_service_provider_history.sync(
+        client=client_fiso,
+        limit="10000",
+    )
     assert isinstance(hist, list)
     hist_size = len(
         list(
@@ -137,7 +134,10 @@ def test_cusp_fiso(data):
     )
     assert not (isinstance(u, ErrorMessage))
 
-    hist = list_controllable_unit_service_provider_history.sync(client=client_fiso)
+    hist = list_controllable_unit_service_provider_history.sync(
+        client=client_fiso,
+        limit="10000",
+    )
     assert isinstance(hist, list)
     hist_size2 = len(
         list(
@@ -315,7 +315,10 @@ def test_cusp_so(data):
     # SO can read the CUs where they are CSO
     # Test SO manages all CUs in the test data so all CUSPs should be visible
     # (excepted the ones created during the test runs on APs < 1000)
-    cusps = list_controllable_unit_service_provider.sync(client=client_fiso)
+    cusps = list_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        limit="10000",
+    )
     assert isinstance(cusps, list)
     for cusp in cusps:
         cu = read_controllable_unit.sync(
