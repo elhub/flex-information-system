@@ -13,7 +13,7 @@ operator product type resource always starts as `active`, but it can be marked
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_system_operator_product_type)
+* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_system_operator_product_type)
 * [Download docx](../download/system_operator_product_type.docx)
 
 ## Fields

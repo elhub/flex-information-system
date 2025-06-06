@@ -22,7 +22,7 @@ generate a UUID as the business identifier.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_party)
+* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_party)
 * [Download docx](../download/party.docx)
 
 ## Fields

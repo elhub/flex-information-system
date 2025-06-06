@@ -6,7 +6,7 @@ controllable unit can belong to several groups at the same time.
 
 ## Relevant links
 
-* [API Documentation](/api/v0/#/operations/list_service_providing_group_membership)
+* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_service_providing_group_membership)
 * [Download docx](../download/service_providing_group_membership.docx)
 
 ## Fields

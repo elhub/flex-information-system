@@ -27,15 +27,19 @@
       >
     </header>
     <elements-api
-      apiDescriptionUrl="/API_NAME/v0/openapi.json"
+      apiDescriptionUrl="BASE_URL/API_NAME/v0/openapi.json"
       router="hash"
       layout="sidebar"
     />
     <footer id="link-footer">
       <form style="display: flex; gap: 10px">
-        <a class="link-footer-button" href="/">← Back</a>
-        <a class="link-footer-button" href="/api/v0">Main API documentation</a>
-        <a class="link-footer-button" href="/auth/v0">Auth API documentation</a>
+        <a class="link-footer-button" href="BASE_URL/">← Back</a>
+        <a class="link-footer-button" href="BASE_URL/api/v0"
+          >Main API documentation</a
+        >
+        <a class="link-footer-button" href="BASE_URL/auth/v0"
+          >Auth API documentation</a
+        >
       </form>
     </footer>
   </body>
