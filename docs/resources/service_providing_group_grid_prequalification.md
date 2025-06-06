@@ -15,7 +15,7 @@ group. One SPG grid prequalification per impacted system operator.
 
 ## Relevant links
 
-* [API Documentation](/flex-information-system/api/v0/#/operations/list_service_providing_group_grid_prequalification)
+* [API Documentation](../api/v0/index.html#/operations/list_service_providing_group_grid_prequalification)
 * [Download docx](../download/service_providing_group_grid_prequalification.docx)
 
 ## Fields

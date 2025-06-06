@@ -403,7 +403,7 @@ openapi-to-md:
 
         table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
 
-        api_link="/flex-information-system/api/v0/#/operations/list_$resource"
+        api_link="../api/v0/index.html#/operations/list_$resource"
         docx_link="../download/${resource}.docx"
 
         ed -s "./docs/resources/${resource}.md" <<EOF

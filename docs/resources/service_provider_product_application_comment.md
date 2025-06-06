@@ -5,7 +5,7 @@ Several comments can be added to a given application.
 
 ## Relevant links
 
-* [API Documentation](/flex-information-system/api/v0/#/operations/list_service_provider_product_application_comment)
+* [API Documentation](../api/v0/index.html#/operations/list_service_provider_product_application_comment)
 * [Download docx](../download/service_provider_product_application_comment.docx)
 
 ## Fields
