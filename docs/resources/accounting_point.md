@@ -13,7 +13,7 @@ The business identifier is the GSRN metering point id.
 
 ## Relevant links
 
-* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_accounting_point)
+* [API Documentation](/flex-information-system/api/v0/#/operations/list_accounting_point)
 * [Download docx](../download/accounting_point.docx)
 
 ## Fields

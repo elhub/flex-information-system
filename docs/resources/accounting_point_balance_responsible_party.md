@@ -6,7 +6,7 @@ Data from Elhub.
 
 ## Relevant links
 
-* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_accounting_point_balance_responsible_party)
+* [API Documentation](/flex-information-system/api/v0/#/operations/list_accounting_point_balance_responsible_party)
 * [Download docx](../download/accounting_point_balance_responsible_party.docx)
 
 ## Fields

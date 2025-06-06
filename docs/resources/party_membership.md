@@ -5,7 +5,7 @@ persons or organisations to parties.
 
 ## Relevant links
 
-* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_party_membership)
+* [API Documentation](/flex-information-system/api/v0/#/operations/list_party_membership)
 * [Download docx](../download/party_membership.docx)
 
 ## Fields

@@ -51,8 +51,7 @@ function openapi() {
 
 	mkdir -p "./dist/$api_name/v0"
 
-	sed "s/API_TITLE/$api_title/g; s/API_NAME/$api_name/g; s/BASE_URL//g" \
-		./local/elements/index.html \
+	sed "s/API_TITLE/$api_title/g; s/API_NAME/$api_name/g" ./local/elements/index.html \
 		>"./dist/$api_name/v0/index.html"
 
 	jq --argjson servers "$(yq -o=json openapi/servers.yml)" \

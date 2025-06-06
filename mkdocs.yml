@@ -7,6 +7,7 @@ theme:
     - navigation.indexes
     - announce.dismiss
   custom_dir: ./local/mkdocs/overrides
+site_url: https://elhub.github.io/flex-information-system/
 site_dir: dist-docs
 extra_css:
   - style.css

@@ -257,14 +257,11 @@ _mkdocs_build_elements:
     mkdir -p docs/api/v0
     mkdir -p docs/auth/v0
 
-    base_url="https:\/\/elhub.github.io\/flex-information-system"
     api_title="Flexibility Information System Main API Documentation"
-    sed "s/API_TITLE/$api_title/g; s/API_NAME/api/g; s/BASE_URL/$base_url/g" \
-        ./local/elements/index.html \
+    sed "s/API_TITLE/$api_title/g; s/API_NAME/api/g" ./local/elements/index.html \
         >"./docs/api/v0/index.html"
     api_title="Flexibility Information System Auth API Documentation"
-    sed "s/API_TITLE/$api_title/g; s/API_NAME/auth/g; s/BASE_URL/$base_url/g" \
-        ./local/elements/index.html \
+    sed "s/API_TITLE/$api_title/g; s/API_NAME/auth/g" ./local/elements/index.html \
         >"./docs/auth/v0/index.html"
 
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
@@ -406,7 +403,7 @@ openapi-to-md:
 
         table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
 
-        api_link="https://elhub.github.io/flex-information-system/api/v0/#/operations/list_$resource"
+        api_link="/flex-information-system/api/v0/#/operations/list_$resource"
         docx_link="../download/${resource}.docx"
 
         ed -s "./docs/resources/${resource}.md" <<EOF

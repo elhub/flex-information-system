@@ -25,7 +25,7 @@ again.
 
 ## Relevant links
 
-* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_service_providing_group_product_application)
+* [API Documentation](/flex-information-system/api/v0/#/operations/list_service_providing_group_product_application)
 * [Download docx](../download/service_providing_group_product_application.docx)
 
 ## Fields

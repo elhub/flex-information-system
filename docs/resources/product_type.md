@@ -35,7 +35,7 @@ as input.
 
 ## Relevant links
 
-* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_product_type)
+* [API Documentation](/flex-information-system/api/v0/#/operations/list_product_type)
 * [Download docx](../download/product_type.docx)
 
 ## Fields

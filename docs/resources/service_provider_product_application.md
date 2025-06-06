@@ -22,7 +22,7 @@ application is updated as the process and lifecycle of the application progresse
 
 ## Relevant links
 
-* [API Documentation](https://elhub.github.io/flex-information-system/api/v0/#/operations/list_service_provider_product_application)
+* [API Documentation](/flex-information-system/api/v0/#/operations/list_service_provider_product_application)
 * [Download docx](../download/service_provider_product_application.docx)
 
 ## Fields
