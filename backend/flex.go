@@ -371,11 +371,9 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	authRouter.GET("/logout", authAPI.GetLogoutHandler)
 
 	// data API endpoint
-	dataRouter := router.Group("/api/v0")
-	dataRouter.Use(WrapMiddleware(middleware.Limit))
-	dataRouter.Match(
+	router.Match(
 		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		"/*url",
+		"/api/v0/*url",
 		WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
 	)
 
