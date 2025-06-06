@@ -14,3 +14,6 @@ a2e03e98dd070447283fb25649eab499ceae5cec:openapi/openapi-auth.json:jwt:541
 6ba0d5d9719f2b47a3c256c6974ac95b7c89b90d:openapi/openapi-auth.json:jwt:273
 6ba0d5d9719f2b47a3c256c6974ac95b7c89b90d:openapi/openapi-auth.json:jwt:506
 6ba0d5d9719f2b47a3c256c6974ac95b7c89b90d:openapi/openapi-auth.json:jwt:541
+874c8d1a46172883c2c4099643132c8919f730f6:auth/v0/openapi.json:jwt:181
+874c8d1a46172883c2c4099643132c8919f730f6:auth/v0/openapi.json:jwt:625
+874c8d1a46172883c2c4099643132c8919f730f6:auth/v0/openapi.json:jwt:660
