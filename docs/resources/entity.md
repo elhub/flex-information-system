@@ -4,7 +4,7 @@ A legal (organisation) or natural person. Used in authentication.
 
 ## Relevant links
 
-* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_entity)
+* [API Documentation](../api/v0/index.html#/operations/list_entity)
 * [Download docx](../download/entity.docx)
 
 ## Fields

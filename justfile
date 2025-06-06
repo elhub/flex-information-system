@@ -240,7 +240,7 @@ mkdocs: _venv _mkdocs
 _mkdocs:
     .venv/bin/mkdocs serve
 
-build_resource_docx:
+_mkdocs_build_resource_docx:
     #!/usr/bin/env bash
     mkdir -p docs/download
 
@@ -252,8 +252,27 @@ build_resource_docx:
             "docs/resources/${resource}.md"
     done
 
+_mkdocs_build_elements:
+    #!/usr/bin/env bash
+    mkdir -p docs/api/v0
+    mkdir -p docs/auth/v0
+
+    api_title="Flexibility Information System Main API Documentation"
+    sed "s/API_TITLE/$api_title/g; s/API_NAME/api/g" ./local/elements/index.html \
+        >"./docs/api/v0/index.html"
+    api_title="Flexibility Information System Auth API Documentation"
+    sed "s/API_TITLE/$api_title/g; s/API_NAME/auth/g" ./local/elements/index.html \
+        >"./docs/auth/v0/index.html"
+
+    jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
+        '.servers = [$servers.api.test]' <"openapi/openapi-api.json" \
+        >"./docs/api/v0/openapi.json"
+    jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
+        '.servers = [$servers.auth.test]' <"openapi/openapi-auth.json" \
+        >"./docs/auth/v0/openapi.json"
+
 # deploy documentation to GitHub Pages
-mkdocs_deploy: _check_main _venv build_resource_docx _mkdocs_deploy
+mkdocs_deploy: _check_main _venv _mkdocs_build_resource_docx _mkdocs_build_elements _mkdocs_deploy
 _mkdocs_deploy:
     .venv/bin/mkdocs gh-deploy
 
@@ -384,7 +403,7 @@ openapi-to-md:
 
         table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
 
-        api_link="https://flex-test.elhub.no/api/v0/#/operations/list_$resource"
+        api_link="../api/v0/index.html#/operations/list_$resource"
         docx_link="../download/${resource}.docx"
 
         ed -s "./docs/resources/${resource}.md" <<EOF

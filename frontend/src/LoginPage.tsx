@@ -74,7 +74,7 @@ export const LoginPage = () => {
               color: (theme) => theme.palette.grey[500],
             }}
           >
-            <a href={`${docsURL}/technical/privacy/`}>Privacy and cookies</a>
+            <a href={`${docsURL}/privacy/`}>Privacy and cookies</a>
           </Box>
         </Card>
       </Box>

@@ -24,7 +24,7 @@ After termination, the status can only be edited by a FIS operator.
 
 ## Relevant links
 
-* [API Documentation](https://flex-test.elhub.no/api/v0/#/operations/list_service_providing_group)
+* [API Documentation](../api/v0/index.html#/operations/list_service_providing_group)
 * [Download docx](../download/service_providing_group.docx)
 
 ## Fields

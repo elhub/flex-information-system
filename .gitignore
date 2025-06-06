@@ -42,6 +42,8 @@ logs
 dist
 dist-docs
 docs/download
+docs/api
+docs/auth
 out
 dist-ssr
 
