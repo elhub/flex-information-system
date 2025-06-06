@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Flexibility Information System Auth API Documentation</title>
+    <!-- Embed elements Elements via Web Component -->
+    <script src="https://cdn.jsdelivr.net/npm/@stoplight/elements/web-components.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@stoplight/elements/styles.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <span class="left"
+        >This documentation is work-in-progress and part of the
+        <a href="https://www.euroflex.no/">EuroFlex research project</a>.</span
+      >
+      <span class="right"
+        ><a href="https://elhub.github.io/flex-information-system/privacy/"
+          >Privacy and cookies</a
+        ></span
+      >
+    </header>
+    <elements-api
+      apiDescriptionUrl="/auth/v0/openapi.json"
+      router="hash"
+      layout="sidebar"
+    />
+    <footer id="link-footer">
+      <form style="display: flex; gap: 10px">
+        <a class="link-footer-button" href="/">← Back</a>
+        <a class="link-footer-button" href="/api/v0">Main API documentation</a>
+        <a class="link-footer-button" href="/auth/v0">Auth API documentation</a>
+      </form>
+    </footer>
+  </body>
+  <style>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #0b3c28;
+      color: #f6f6f6;
+    }
+    header .left,
+    header .right {
+      flex: 1;
+    }
+    header .right {
+      text-align: right;
+    }
+    #link-footer {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      background-color: #0b3c28;
+      text-align: center;
+    }
+    .link-footer-button {
+      display: inline-block;
+      padding: 2px 8px;
+      border: 1px solid #f6f6f6;
+      color: #f6f6f6;
+      border-radius: 3px;
+      text-decoration: none;
+    }
+  </style>
+</html>

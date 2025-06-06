@@ -1,0 +1,794 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Flexibility Information System Authentication API",
+    "description": "Norwegian Flexibility Information System Authentication API",
+    "contact": {
+      "name": "Elhub AS",
+      "url": "https://elhub.no",
+      "email": "post@elhub.no"
+    },
+    "version": "0.0.1"
+  },
+  "externalDocs": {
+    "description": "TODO",
+    "url": "https://todo.example.com"
+  },
+  "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
+  "tags": [
+    {
+      "name": "authentication",
+      "description": "Authentication"
+    },
+    {
+      "name": "introspection",
+      "description": "Introspection"
+    }
+  ],
+  "components": {
+    "parameters": {},
+    "schemas": {
+      "flex_role": {
+        "description": "The auth role in the Flexibility Information System",
+        "format": "text",
+        "type": "string",
+        "enum": [
+          "flex_anonymous",
+          "flex_balance_responsible_party",
+          "flex_end_user",
+          "flex_energy_supplier",
+          "flex_entity",
+          "flex_flexibility_information_system_operator",
+          "flex_market_operator",
+          "flex_system_operator",
+          "flex_service_provider",
+          "flex_third_party"
+        ],
+        "example": "flex_system_operator"
+      },
+      "oauth_error_message": {
+        "description": "Error message returned from the API for oAuth errors.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "The error code.",
+            "example": "invalid_request"
+          },
+          "error_description": {
+            "type": "string",
+            "description": "Detailed information about the error.",
+            "example": "The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed."
+          },
+          "error_uri": {
+            "type": "string",
+            "description": "A URL to a page with information about the error code.",
+            "example": "https://tools.ietf.org/html/rfc6749#section-1"
+          },
+          "scope": {
+            "type": "string",
+            "description": "The scope of the error.",
+            "example": "assume:party:1"
+          }
+        }
+      },
+      "error_message": {
+        "description": "Error message returned from the API.",
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9]+$",
+            "description": "The error code.",
+            "example": "PT418"
+          },
+          "details": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Detailed information about the error.",
+            "example": null
+          },
+          "hint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A hint to help resolve the error.",
+            "example": null
+          },
+          "message": {
+            "type": "string",
+            "description": "The error message.",
+            "example": "error"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "client_credentials_request": {
+        "description": "Client credentials body",
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "enum": [
+              "client_credentials"
+            ],
+            "description": "The grant type of the request signals which step of the login process we want to use.",
+            "example": "client_credentials"
+          },
+          "client_id": {
+            "type": "string",
+            "description": "The identifier of the entity that logs in.",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "example": "2854fee6-4591-4b1f-8726-af04475ef047"
+          },
+          "client_secret": {
+            "type": "string",
+            "description": "The password of the entity that logs in.",
+            "example": "1234"
+          }
+        },
+        "example": "grant_type=client_credentials&client_id=2854fee6-4591-4b1f-8726-af04475ef047&client_secret=1234",
+        "required": [
+          "grant_type",
+          "client_id",
+          "client_secret"
+        ]
+      },
+      "jwt_bearer_request": {
+        "description": "JWT Bearer authorization grant request",
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "enum": [
+              "urn:ietf:params:oauth:grant-type:jwt-bearer"
+            ],
+            "description": "The grant type for JWT Bearer authorization grant requests.",
+            "example": "urn:ietf:params:oauth:grant-type:jwt-bearer"
+          },
+          "assertion": {
+            "type": "string",
+            "description": "The JWT grant to exchange for an access token.",
+            "example": "a.jwt.token"
+          }
+        },
+        "example": "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=a.jwt.token",
+        "required": [
+          "grant_type",
+          "assertion"
+        ]
+      },
+      "token_exchange_request": {
+        "description": "Token exchange body",
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "enum": [
+              "urn:ietf:params:oauth:grant-type:token-exchange"
+            ],
+            "description": "The grant type of the request signals which step of the login process we want to use.",
+            "example": "urn:ietf:params:oauth:grant-type:token-exchange"
+          },
+          "actor_token": {
+            "type": "string",
+            "format": "jwt",
+            "description": "The token to exchange, given in the client credentials step of the login process.",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleGFtcGxlIjoiZXhhbXBsZSJ9.SpEIIhfG-3SD21BJqf3NFK0kPz2p3xOppnbRkFYBLWE"
+          },
+          "actor_token_type": {
+            "type": "string",
+            "enum": [
+              "urn:ietf:params:oauth:token-type:jwt"
+            ],
+            "description": "The type of the token to exchange. Always JWT.",
+            "example": "urn:ietf:params:oauth:token-type:jwt"
+          },
+          "scope": {
+            "type": "string",
+            "pattern": "assume:party:[0-9]+",
+            "description": "The party the client wants to assume.",
+            "example": "assume:party:1"
+          }
+        },
+        "required": [
+          "grant_type",
+          "actor_token",
+          "actor_token_type",
+          "scope"
+        ]
+      },
+      "userinfo_response": {
+        "description": "Information about the current user",
+        "type": "object",
+        "required": [
+          "sub"
+        ],
+        "properties": {
+          "sub": {
+            "description": "The identity of the user, uniquely identifying who they are and which party they are assuming.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 36
+          },
+          "entity_id": {
+            "description": "The entity associated to the user.",
+            "format": "bigint",
+            "type": "integer",
+            "x-foreign-key": {
+              "resource": "entity",
+              "field": "id"
+            },
+            "example": 13
+          },
+          "entity_name": {
+            "description": "The name of the entity associated to the user.",
+            "format": "text",
+            "type": "string",
+            "x-foreign-key": {
+              "resource": "entity",
+              "field": "name"
+            },
+            "example": "Austin Mason"
+          },
+          "party_id": {
+            "description": "The party assumed by the user.",
+            "format": "bigint",
+            "type": "integer",
+            "x-foreign-key": {
+              "resource": "party",
+              "field": "id"
+            },
+            "example": 99
+          },
+          "party_name": {
+            "description": "The name of the party assumed by the user.",
+            "format": "text",
+            "type": "string",
+            "x-foreign-key": {
+              "resource": "party",
+              "field": "name"
+            },
+            "example": "Flex System Operator"
+          },
+          "current_role": {
+            "$ref": "#/components/schemas/flex_role"
+          }
+        }
+      },
+      "session_response": {
+        "description": "Session response",
+        "type": "object",
+        "required": [
+          "entity_id",
+          "entity_name",
+          "exp",
+          "role"
+        ],
+        "properties": {
+          "entity_id": {
+            "type": "integer",
+            "description": "The entity associated to the user.",
+            "example": 13
+          },
+          "entity_name": {
+            "type": "string",
+            "description": "The name of the entity associated to the user.",
+            "example": "Austin Mason"
+          },
+          "exp": {
+            "type": "integer",
+            "description": "The expiration time of the session in Unix time.",
+            "example": 1617187200
+          },
+          "party_id": {
+            "type": "integer",
+            "description": "The party assumed by the user.",
+            "example": 99,
+            "nullable": true
+          },
+          "party_name": {
+            "type": "string",
+            "description": "The name of the party assumed by the user.",
+            "example": "Flex System Operator",
+            "nullable": true
+          },
+          "role": {
+            "$ref": "#/components/schemas/flex_role"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "description": "Add the token prepending \"Bearer \" (without quotes) to it",
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey"
+      }
+    }
+  },
+  "paths": {
+    "/openapi.json": {
+      "get": {
+        "operationId": "read_openapi_json",
+        "summary": "Read OpenAPI JSON Document",
+        "description": "Introspection for the Flexibility Information System authentication API. The document is following the OpenAPI 3.1 spec.",
+        "tags": [
+          "introspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/session": {
+      "get": {
+        "operationId": "read_session",
+        "summary": "Read session from cookie",
+        "description": "Extracts the session information from the session cookie, including the access token if the session is valid.",
+        "tags": [
+          "authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/session_response"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content\n\nReturned when no session cookie is present."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/assume": {
+      "post": {
+        "operationId": "call_assume",
+        "summary": "Call assume",
+        "description": "As an entity, assume a party by ID.",
+        "tags": [
+          "authentication"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-url-encoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "party_id": {
+                    "type": "integer",
+                    "description": "The party the user wants to assume.",
+                    "example": 1
+                  }
+                },
+                "required": [
+                  "party_id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/session_response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_assume",
+        "summary": "Delete assume",
+        "description": "Stop assuming a party and return to the entity's own party.",
+        "tags": [
+          "authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/session_response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "operationId": "call_login",
+        "summary": "Call login",
+        "description": "Starts the authentication code flow with the external identity provider. Pushes an authorisation request to the external identity provider before redirecting the user to it.",
+        "tags": [
+          "authentication"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "return_url",
+            "required": true,
+            "example": "/#/login/assumeParty",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The URL the user wants to access after logging in."
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Found\n\nReturned to redirect the user to the external identity provider when the PAR is successful."
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oauth_error_message"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/callback": {
+      "get": {
+        "operationId": "call_callback",
+        "summary": "Call callback",
+        "description": "Handles the callback from the external identity provider. Exchanges the authorisation code for an access token and sets the session cookie.",
+        "tags": [
+          "authentication"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The authorisation code returned by the external identity provider."
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "An opaque value used to maintain a link between the request and callback in the OIDC login process."
+          },
+          {
+            "in": "query",
+            "name": "iss",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The identifier of OpenID Connect Provider issuing tokens."
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Found\n\nReturned to redirect the user after a successful login process."
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oauth_error_message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized\n\nReturned when the personal identifier is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "operationId": "call_logout",
+        "summary": "Call logout",
+        "description": "Unsets the __Host-flex_session cookie.",
+        "tags": [
+          "authentication"
+        ],
+        "responses": {
+          "302": {
+            "description": "Found\n\nAlways returned to redirect the user to the root after logout."
+          }
+        }
+      }
+    },
+    "/token": {
+      "post": {
+        "operationId": "call_token",
+        "summary": "Call token",
+        "description": "Returns a JWT that can be used in subsequent calls.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string",
+              "format": "jwt",
+              "pattern": "^Bearer [\\w-]+\\.[\\w-]+\\.[\\w-]+$"
+            },
+            "description": "The token to exchange, given in the client credentials step of the login process. This header is not present in the client credentials request.",
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleGFtcGxlIjoiZXhhbXBsZSJ9.SpEIIhfG-3SD21BJqf3NFK0kPz2p3xOppnbRkFYBLWE"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-url-encoded": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/client_credentials_request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/token_exchange_request"
+                  },
+                  {
+                    "$ref": "#/components/schemas/jwt_bearer_request"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "format": "jwt",
+                      "description": "The generated token for use in subsequent requests.",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleGFtcGxlIjoiZXhhbXBsZSJ9.SpEIIhfG-3SD21BJqf3NFK0kPz2p3xOppnbRkFYBLWE"
+                    },
+                    "issued_token_type": {
+                      "type": "string",
+                      "enum": [
+                        "urn:ietf:params:oauth:token-type:jwt"
+                      ],
+                      "description": "The format of the generated token. Always JWT. Field only present in the response when the request concerns the token exchange login step.",
+                      "example": "urn:ietf:params:oauth:token-type:jwt"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "enum": [
+                        "Bearer"
+                      ],
+                      "description": "The type of the token. Always `Bearer`.",
+                      "example": "Bearer"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "description": "The time in seconds until the token expires.",
+                      "example": 3600
+                    }
+                  },
+                  "required": [
+                    "access_token",
+                    "issued_token_type",
+                    "token_type",
+                    "expires_in"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/oauth_error_message"
+                }
+              }
+            },
+            "description": "Bad Request\n\nIn the client credentials step, returned for invalid `grant_type`.\nIn the token exchange step, returned for all errors."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized\n\nReturned when the client credentials are invalid."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Too Many Requests\n\nReturned after too many failures with the client credentials login.\nFurther requests are allowed again after a while."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "authentication"
+        ]
+      }
+    },
+    "/userinfo": {
+      "get": {
+        "operationId": "call_userinfo",
+        "summary": "Call userinfo",
+        "description": "Returns client details about the current user.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userinfo_response"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized\n\nReturned when the client is not logged in."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "authentication"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "JWT": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://flex-test.elhub.no/auth/v0",
+      "description": "Test"
+    }
+  ]
+}
