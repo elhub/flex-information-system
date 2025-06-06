@@ -29,9 +29,10 @@ def test_apbrp_fiso(sts):
     # endpoint: GET /accounting_point_balance_responsible_party
     apbrps = list_accounting_point_balance_responsible_party.sync(
         client=client_fiso,
+        offset="2950",
     )
     assert isinstance(apbrps, list)
-    assert len(apbrps) == 3000  # all APBRP in the test data
+    assert len(apbrps) == 50  # 3000 APBRP in the test data
 
 
 # RLS: APBRP-SO001
@@ -42,9 +43,10 @@ def test_apbrp_so(sts):
 
     apbrps = list_accounting_point_balance_responsible_party.sync(
         client=client_so,
+        offset="2950",
     )
     assert isinstance(apbrps, list)
-    assert len(apbrps) == 3000  # all APBRP in the test data
+    assert len(apbrps) == 50  # 3000 APBRP in the test data
 
 
 # RLS: APBRP-SP001

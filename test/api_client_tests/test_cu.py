@@ -56,7 +56,10 @@ def test_controllable_unit_fiso(sts):
     # create a CU and check the list of visible CUs is one CU longer
 
     # endpoint: GET /controllable_unit
-    cus = list_controllable_unit.sync(client=client_fiso)
+    cus = list_controllable_unit.sync(
+        client=client_fiso,
+        limit="10000",
+    )
     assert isinstance(cus, list)
     n_cus = len(cus)
 
@@ -72,7 +75,10 @@ def test_controllable_unit_fiso(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    cus = list_controllable_unit.sync(client=client_fiso)
+    cus = list_controllable_unit.sync(
+        client=client_fiso,
+        limit="10000",
+    )
     assert isinstance(cus, list)
     n_cus2 = len(cus)
     assert n_cus2 == n_cus + 1
@@ -140,7 +146,7 @@ def test_controllable_unit_so(sts):
     client_so = sts.get_client(TestEntity.TEST, "SO")
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    all_cus = list_controllable_unit.sync(client=client_fiso)
+    all_cus = list_controllable_unit.sync(client=client_fiso, limit="10000")
     assert isinstance(all_cus, list)
 
     client_iso = sts.get_client(TestEntity.COMMON, "SO")
@@ -150,7 +156,7 @@ def test_controllable_unit_so(sts):
     # so the test SO should see them all
     n_cus_so = len([cu for cu in all_cus if cast(int, cu.accounting_point_id) > 1000])
 
-    cus = list_controllable_unit.sync(client=client_so)
+    cus = list_controllable_unit.sync(client=client_so, limit="10000")
     assert isinstance(cus, list)
 
     # greater or equal here, because it is possible that the SO can read more
@@ -184,7 +190,7 @@ def test_controllable_unit_so(sts):
     # NB: use common SO in this test
     # so that the accounting point RLS does not apply
     iso_id = sts.get_userinfo(client_iso)["party_id"]
-    cus_iso = list_controllable_unit.sync(client=client_iso)
+    cus_iso = list_controllable_unit.sync(client=client_iso, limit="10000")
     assert isinstance(cus_iso, list)
 
     # create CU and SPG, link CU to SP in charge of the SPG,
@@ -244,7 +250,7 @@ def test_controllable_unit_so(sts):
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     # check ISO can read the CU
-    cus_iso2 = list_controllable_unit.sync(client=client_iso)
+    cus_iso2 = list_controllable_unit.sync(client=client_iso, limit="10000")
     assert isinstance(cus_iso2, list)
     assert len(cus_iso2) == len(cus_iso) + 1
 
@@ -270,7 +276,10 @@ def test_controllable_unit_eu(sts):
 
     client_former_eu = sts.get_client(TestEntity.COMMON, "EU")
 
-    cuhs_former_eu = list_controllable_unit_history.sync(client=client_former_eu)
+    cuhs_former_eu = list_controllable_unit_history.sync(
+        client=client_former_eu,
+        limit="10000",
+    )
     assert isinstance(cuhs_former_eu, list)
 
     assert len(cuhs_former_eu) > 0
@@ -301,7 +310,10 @@ def test_controllable_unit_eu(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    cuhs_eu = list_controllable_unit_history.sync(client=client_eu)
+    cuhs_eu = list_controllable_unit_history.sync(
+        client=client_eu,
+        limit="10000",
+    )
     assert isinstance(cuhs_eu, list)
 
     old_cuhs = list(
@@ -321,7 +333,10 @@ def test_controllable_unit_es(sts):
 
     client_former_es = sts.get_client(TestEntity.COMMON, "ES")
 
-    cuhs_former_es = list_controllable_unit_history.sync(client=client_former_es)
+    cuhs_former_es = list_controllable_unit_history.sync(
+        client=client_former_es,
+        limit="10000",
+    )
     assert isinstance(cuhs_former_es, list)
 
     assert len(cuhs_former_es) > 0
@@ -352,13 +367,16 @@ def test_controllable_unit_es(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    cuhs_eu = list_controllable_unit_history.sync(client=client_es)
-    assert isinstance(cuhs_eu, list)
+    cuhs_es = list_controllable_unit_history.sync(
+        client=client_es,
+        limit="10000",
+    )
+    assert isinstance(cuhs_es, list)
 
     old_cuhs = list(
         filter(
             lambda cuh: "FORMER NAME" in cast(str, cuh.name),
-            cuhs_eu,
+            cuhs_es,
         )
     )
     assert len(old_cuhs) == 0
@@ -397,7 +415,10 @@ def test_controllable_unit_brp(sts):
     assert isinstance(cu, ControllableUnitResponse)
     assert "TEST-APBRP" not in cast(str, cu.name)
 
-    cuhs = list_controllable_unit_history.sync(client=client_brp)
+    cuhs = list_controllable_unit_history.sync(
+        client=client_brp,
+        limit="10000",
+    )
     assert isinstance(cuhs, list)
 
     assert all("TEST-APBRP" not in cast(str, cuh.name) for cuh in cuhs)

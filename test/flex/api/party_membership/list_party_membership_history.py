@@ -7,6 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.list_party_membership_history_prefer import ListPartyMembershipHistoryPrefer
 from ...models.party_membership_history_response import PartyMembershipHistoryResponse
 from ...types import UNSET, Response, Unset
 
@@ -14,11 +15,42 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
+    entity_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     party_membership_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListPartyMembershipHistoryPrefer] = UNSET,
 ) -> Dict[str, Any]:
+    headers: Dict[str, Any] = {}
+    if not isinstance(range_, Unset):
+        headers["Range"] = range_
+
+    if not isinstance(range_unit, Unset):
+        headers["Range-Unit"] = range_unit
+
+    if not isinstance(prefer, Unset):
+        headers["Prefer"] = str(prefer)
+
     params: Dict[str, Any] = {}
 
     params["id"] = id
+
+    params["party_id"] = party_id
+
+    params["entity_id"] = entity_id
+
+    params["select"] = select
+
+    params["order"] = order
+
+    params["offset"] = offset
+
+    params["limit"] = limit
 
     params["party_membership_id"] = party_membership_id
 
@@ -30,6 +62,7 @@ def _get_kwargs(
         "params": params,
     }
 
+    _kwargs["headers"] = headers
     return _kwargs
 
 
@@ -113,13 +146,31 @@ def sync_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
+    entity_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     party_membership_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListPartyMembershipHistoryPrefer] = UNSET,
 ) -> Response[Union[Any, ErrorMessage, List["PartyMembershipHistoryResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     """List Party Membership - history
 
     Args:
         id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
+        entity_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         party_membership_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListPartyMembershipHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -131,7 +182,16 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        party_id=party_id,
+        entity_id=entity_id,
+        select=select,
+        order=order,
+        offset=offset,
+        limit=limit,
         party_membership_id=party_membership_id,
+        range_=range_,
+        range_unit=range_unit,
+        prefer=prefer,
     )
 
     response = client.get_httpx_client().request(
@@ -145,13 +205,31 @@ def sync(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
+    entity_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     party_membership_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListPartyMembershipHistoryPrefer] = UNSET,
 ) -> Optional[Union[Any, ErrorMessage, List["PartyMembershipHistoryResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     """List Party Membership - history
 
     Args:
         id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
+        entity_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         party_membership_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListPartyMembershipHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -164,7 +242,16 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
+        party_id=party_id,
+        entity_id=entity_id,
+        select=select,
+        order=order,
+        offset=offset,
+        limit=limit,
         party_membership_id=party_membership_id,
+        range_=range_,
+        range_unit=range_unit,
+        prefer=prefer,
     ).parsed
 
 
@@ -172,13 +259,31 @@ async def asyncio_detailed(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
+    entity_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     party_membership_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListPartyMembershipHistoryPrefer] = UNSET,
 ) -> Response[Union[Any, ErrorMessage, List["PartyMembershipHistoryResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     """List Party Membership - history
 
     Args:
         id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
+        entity_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         party_membership_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListPartyMembershipHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -190,7 +295,16 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        party_id=party_id,
+        entity_id=entity_id,
+        select=select,
+        order=order,
+        offset=offset,
+        limit=limit,
         party_membership_id=party_membership_id,
+        range_=range_,
+        range_unit=range_unit,
+        prefer=prefer,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -202,13 +316,31 @@ async def asyncio(
     *,
     client: Union[AuthenticatedClient, Client],
     id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
+    entity_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
     party_membership_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListPartyMembershipHistoryPrefer] = UNSET,
 ) -> Optional[Union[Any, ErrorMessage, List["PartyMembershipHistoryResponse"], Union["EmptyObject", "ErrorMessage"]]]:
     """List Party Membership - history
 
     Args:
         id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
+        entity_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
         party_membership_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListPartyMembershipHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -222,6 +354,15 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
+            party_id=party_id,
+            entity_id=entity_id,
+            select=select,
+            order=order,
+            offset=offset,
+            limit=limit,
             party_membership_id=party_membership_id,
+            range_=range_,
+            range_unit=range_unit,
+            prefer=prefer,
         )
     ).parsed

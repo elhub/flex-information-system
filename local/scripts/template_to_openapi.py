@@ -697,6 +697,11 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 f"{resource['summary']} - history",
             )
 
+            if operation == "list":
+                endpoint_template["parameters"] = generate_list_parameters(
+                    resource, foreign_key_fields
+                )
+
             endpoint_response_codes = endpoint_template["g-responses"]
             del endpoint_template["g-responses"]
 
