@@ -20,12 +20,10 @@ TO flex_end_user
 USING (
     source_resource = 'controllable_unit' AND EXISTS (
         SELECT 1
-        FROM flex.controllable_unit AS cu
-            INNER JOIN flex.accounting_point_end_user AS apeu
-                ON cu.accounting_point_id = apeu.accounting_point_id
-                    AND apeu.valid_time_range @> lower(event.record_time_range) -- noqa
-        WHERE cu.id = event.source_id -- noqa
-            AND apeu.end_user_id = flex.current_party()
+        FROM flex.controllable_unit_end_user AS cueu
+        WHERE cueu.controllable_unit_id = event.source_id -- noqa
+            AND cueu.end_user_id = flex.current_party()
+            AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
     )
 );
 
@@ -37,13 +35,11 @@ USING (
     source_resource = 'controllable_unit_service_provider' AND EXISTS (
         SELECT 1
         FROM flex.controllable_unit_service_provider AS cusp
-            INNER JOIN flex.controllable_unit AS cu
-                ON cusp.controllable_unit_id = cu.id
-            INNER JOIN flex.accounting_point_end_user AS apeu
-                ON cu.accounting_point_id = apeu.accounting_point_id
-                    AND apeu.valid_time_range @> lower(event.record_time_range) -- noqa
-        WHERE cusp.controllable_unit_id = event.source_id -- noqa
-            AND apeu.end_user_id = flex.current_party()
+            INNER JOIN flex.controllable_unit_end_user AS cueu
+                ON cusp.controllable_unit_id = cueu.controllable_unit_id
+                    AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
+                    AND cueu.end_user_id = flex.current_party()
+        WHERE cusp.id = event.source_id -- noqa
     )
 );
 
@@ -55,13 +51,11 @@ USING (
     source_resource = 'technical_resource' AND EXISTS (
         SELECT 1
         FROM flex.technical_resource AS tr
-            INNER JOIN flex.controllable_unit AS cu
-                ON tr.controllable_unit_id = cu.id
-            INNER JOIN flex.accounting_point_end_user AS apeu
-                ON cu.accounting_point_id = apeu.accounting_point_id
-                    AND apeu.valid_time_range @> lower(event.record_time_range) -- noqa
+            INNER JOIN flex.controllable_unit_end_user AS cueu
+                ON tr.controllable_unit_id = cueu.controllable_unit_id
+                    AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
+                    AND cueu.end_user_id = flex.current_party()
         WHERE tr.id = event.source_id -- noqa
-            AND apeu.end_user_id = flex.current_party()
     )
 );
 
