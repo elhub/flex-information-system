@@ -30,7 +30,7 @@ time.
   on continuously updated end user information from Elhub.
 - A controllable unit service provider contract is decoupled from the end user
   and can span multiple end users from Elhub.
-- The service provider must verify the information given by FIS when notified
+- The service provider must verify the information given by FIS when informed
   of an implicit contract termination.
 - The service provider must update affected service providing groups if the CU
   contract is revoked or terminated.
