@@ -23,7 +23,7 @@ else "Implicit contract termination"
     |||
     Elhub -> FIS: Update on End user from Elhub
     activate FIS
-    FIS --> SP: Notify
+    FIS --> SP: Notice
     deactivate FIS
     activate SP
     SP -> EU: Verify updated end user information
