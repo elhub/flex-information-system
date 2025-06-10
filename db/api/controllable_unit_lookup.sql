@@ -75,11 +75,13 @@ BEGIN
     LOOP
         INSERT INTO flex.event (
             type,
-            source,
+            source_resource,
+            source_id,
             data
         ) VALUES (
             text2ltree('no.elhub.flex.controllable_unit.lookup'),
-            '/controllable_unit/' || id,
+            'controllable_unit',
+            id,
             l_event_data
         );
 

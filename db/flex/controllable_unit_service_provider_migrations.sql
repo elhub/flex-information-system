@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:cusp-add-end-user runOnChange:false endDelimiter:;
+--validCheckSum: 9:9ef9e5e878fc6955632e944e5692d295
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit_service_provider' AND column_name = 'end_user_id'
 

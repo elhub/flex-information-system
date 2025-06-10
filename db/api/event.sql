@@ -8,8 +8,8 @@ WITH (security_invoker = true) AS (
         id,
         '1.0' AS specversion,
         type,
-        source,
         data,
+        '/' || source_resource || '/' || source_id AS source,
         lower(record_time_range) AS time -- noqa
     FROM flex.event
 );
