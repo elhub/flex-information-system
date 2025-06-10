@@ -47,9 +47,7 @@ No policies.
 
 #### Balance Responsible Party
 
-| Policy key    | Policy                                                                                        | Status |
-|---------------|-----------------------------------------------------------------------------------------------|--------|
-| EVENT-BRP001  | Read events related to controllable units or technical resources when they are BRP on the AP. | TODO   |
+No policies.
 
 #### End User
 
@@ -59,9 +57,7 @@ No policies.
 
 #### Energy Supplier
 
-| Policy key   | Policy                                                                                       | Status |
-|--------------|----------------------------------------------------------------------------------------------|--------|
-| EVENT-ES001  | Read events related to controllable units or technical resources when they are ES on the AP. | TODO   |
+No policies.
 
 #### Flexibility Information System Operator
 
@@ -75,19 +71,15 @@ No policies.
 
 #### System Operator
 
-| Policy key   | Policy                                                                                                                                                                                                                                        | Status |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
-| EVENT-SO001  | Read events related to controllable units, CUSP, or technical resources when they own the AP or the CU is in an SPG they can see.                                                                                                             | TODO   |
-| EVENT-SO002  | Read events related to SOPT concerning themselves.                                                                                                                                                                                            | TODO   |
-| EVENT-SO003  | Read events related to SPPA targeting them.                                                                                                                                                                                                   | TODO   |
-| EVENT-SO004  | Read events related to comments on SPPA targeting them, when they can see the comments.                                                                                                                                                       | TODO   |
-| EVENT-SO005  | Read events related to SPG, including memberships, grid prequalifications, and product applications, when one of the product applications target them or they are one of the impacted system operators for one of the grid prequalifications. | TODO   |
+| Policy key   | Policy                                                                               | Status |
+|--------------|--------------------------------------------------------------------------------------|--------|
+| EVENT-SO001  | Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPAC, SPG, SPGM, SPGGP, SPGPA. | TODO   |
 
 #### Service Provider
 
 | Policy key   | Policy                                                                                                                      | Status |
 |--------------|-----------------------------------------------------------------------------------------------------------------------------|--------|
-| EVENT-SP001  | Read events related to controllable units or technical resources when they are SP on the CU.                                | TODO   |
+| EVENT-SP001  | Read events related to controllable units (except lookup) or technical resources when they are SP on the CU.                | TODO   |
 | EVENT-SP002  | Read events related to CUSP when they are the SP.                                                                           | TODO   |
 | EVENT-SP003  | Read events related to SPPA concerning themselves.                                                                          | TODO   |
 | EVENT-SP004  | Read events related to comments on SPPA concerning themselves, when they can see the comments.                              | TODO   |
