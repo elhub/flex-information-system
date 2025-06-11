@@ -2,11 +2,9 @@
 -- Manually managed file
 
 -- changeset flex:cusp-add-end-user runOnChange:false endDelimiter:;
---validCheckSum: 9:9ef9e5e878fc6955632e944e5692d295
+--validCheckSum: 9:b57c38628146bb30f4f033851d7fc802
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit_service_provider' AND column_name = 'end_user_id'
-
--- SELECT set_config('flex.current_identity', '0', false);
 
 -- disable triggers to prevent the system from adding history/event records
 ALTER TABLE flex.controllable_unit_service_provider
