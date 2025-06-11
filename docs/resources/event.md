@@ -53,9 +53,9 @@ No policies.
 
 | Policy key  | Policy                                                                 | Status |
 |-------------|------------------------------------------------------------------------|--------|
-| EVENT-EU001 | Read events related to controllable units when they are EU on the AP.  | TODO   |
-| EVENT-EU002 | Read events related to CUSP when they are EU on the AP.                | TODO   |
-| EVENT-EU003 | Read events related to technical resources when they are EU on the AP. | TODO   |
+| EVENT-EU001 | Read events related to controllable units when they are EU on the AP.  | DONE   |
+| EVENT-EU002 | Read events related to CUSP when they are EU on the AP.                | DONE   |
+| EVENT-EU003 | Read events related to technical resources when they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
@@ -65,7 +65,7 @@ No policies.
 
 | Policy key    | Policy           | Status |
 |---------------|------------------|--------|
-| EVENT-FISO001 | Read all events. | TODO   |
+| EVENT-FISO001 | Read all events. | DONE   |
 
 #### Market Operator
 
@@ -75,21 +75,21 @@ No policies.
 
 | Policy key  | Policy                                                                               | Status |
 |-------------|--------------------------------------------------------------------------------------|--------|
-| EVENT-SO001 | Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPAC, SPG, SPGM, SPGGP, SPGPA. | TODO   |
+| EVENT-SO001 | Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPAC, SPG, SPGM, SPGGP, SPGPA. | DONE   |
 
 #### Service Provider
 
 | Policy key  | Policy                                                                                         | Status |
 |-------------|------------------------------------------------------------------------------------------------|--------|
-| EVENT-SP001 | Read events related to controllable units (except lookup) when they are SP on the CU.          | TODO   |
-| EVENT-SP002 | Read events related to technical resources when they are SP on the CU.                         | TODO   |
-| EVENT-SP003 | Read events related to CUSP when they are the SP.                                              | TODO   |
-| EVENT-SP004 | Read events related to SPPA concerning themselves.                                             | TODO   |
-| EVENT-SP005 | Read events related to comments on SPPA concerning themselves, when they can see the comments. | TODO   |
-| EVENT-SP006 | Read events related to service providing groups when they own them.                            | TODO   |
-| EVENT-SP007 | Read events related to SPG memberships when they own the SPG.                                  | TODO   |
-| EVENT-SP008 | Read events related to SPG grid prequalifications when they own the SPG.                       | TODO   |
-| EVENT-SP009 | Read events related to SPG product applications when they own the SPG.                         | TODO   |
+| EVENT-SP001 | Read events related to controllable units (except lookup) when they are SP on the CU.          | DONE   |
+| EVENT-SP002 | Read events related to technical resources when they are SP on the CU.                         | DONE   |
+| EVENT-SP003 | Read events related to CUSP when they are the SP.                                              | DONE   |
+| EVENT-SP004 | Read events related to SPPA concerning themselves.                                             | DONE   |
+| EVENT-SP005 | Read events related to comments on SPPA concerning themselves, when they can see the comments. | DONE   |
+| EVENT-SP006 | Read events related to service providing groups when they own them.                            | DONE   |
+| EVENT-SP007 | Read events related to SPG memberships when they own the SPG.                                  | DONE   |
+| EVENT-SP008 | Read events related to SPG grid prequalifications when they own the SPG.                       | DONE   |
+| EVENT-SP009 | Read events related to SPG product applications when they own the SPG.                         | DONE   |
 
 #### Third Party
 
