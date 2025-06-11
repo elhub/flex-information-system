@@ -151,7 +151,7 @@ BEGIN
                 'service provider is not qualified for product type ' || (
                     SELECT business_id FROM product_type
                     WHERE id = NEW.product_type_id
-                ) || 'for this system operator';
+                ) || ' for this system operator';
         RETURN null;
     END IF;
 
