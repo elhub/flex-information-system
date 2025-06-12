@@ -258,10 +258,12 @@ _mkdocs_build_elements:
     mkdir -p docs/auth/v0
 
     api_title="Flexibility Information System Main API Documentation"
-    sed "s/API_TITLE/$api_title/g; s/API_NAME/api/g" ./local/elements/index.html \
+    sed "s/API_TITLE/$api_title/g; s/API_NAME/api/g; s/BASE_URL/\/flex-information-system/g" \
+        ./local/elements/index.html \
         >"./docs/api/v0/index.html"
     api_title="Flexibility Information System Auth API Documentation"
-    sed "s/API_TITLE/$api_title/g; s/API_NAME/auth/g" ./local/elements/index.html \
+    sed "s/API_TITLE/$api_title/g; s/API_NAME/auth/g; s/BASE_URL/\/flex-information-system/g" \
+        ./local/elements/index.html \
         >"./docs/auth/v0/index.html"
 
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
