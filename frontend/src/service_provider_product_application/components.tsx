@@ -9,11 +9,11 @@ import FolderSharedIcon from "@mui/icons-material/FolderShared";
 export const ServiceProviderProductApplicationAlreadyQualified = () => {
   const record = useRecordContext()!;
 
-  const { data: spParty, isLoading: isLoading1 } = useGetOne("party", {
+  const { data: spParty, isLoading: isLoadingParty } = useGetOne("party", {
     id: record.service_provider_id,
   });
 
-  const { data, isLoading: isLoading2 } = useGetList(
+  const { data, isLoading: isLoadingSPPA } = useGetList(
     "service_provider_product_application",
     {
       filter: {
@@ -23,7 +23,7 @@ export const ServiceProviderProductApplicationAlreadyQualified = () => {
     },
   );
 
-  if (isLoading1 || isLoading2) return null;
+  if (isLoadingParty || isLoadingSPPA) return null;
 
   // if the record is already qualified, this component is useless
   if (record.status == "qualified") return null;
@@ -63,7 +63,7 @@ export const ServiceProviderProductApplicationAlreadyQualified = () => {
   if (qualifyingProductTypesInCurrentSPPA.size > 0)
     return (
       <Alert severity="info">
-        <AlertTitle>Ongoing application</AlertTitle>
+        <AlertTitle>Ongoing application(s)</AlertTitle>
         {spParty.name} is currently being qualified by another system operator
         for some of the product types in this application.
       </Alert>
@@ -92,7 +92,7 @@ export const SPPAForSPButton = () => {
       component={Link}
       to={`/service_provider_product_application${filter}`}
       startIcon={<FolderSharedIcon />}
-      label="Applications from the same service provider"
+      label="See all applications from this service provider to any system operator"
     />
   );
 };
