@@ -64,8 +64,8 @@ export const ServiceProviderProductApplicationAlreadyQualified = () => {
     return (
       <Alert severity="info">
         <AlertTitle>Ongoing application</AlertTitle>
-        {spParty.name} is currently being qualified by another SO for some of
-        the product types in this application.
+        {spParty.name} is currently being qualified by another system operator
+        for some of the product types in this application.
       </Alert>
     );
 
