@@ -47,10 +47,11 @@ export const ServiceProviderProductApplicationAlreadyQualified = () => {
   const qualifiedProductTypesInCurrentSPPA =
     productTypesInCurrentSPPA.intersection(qualifiedProductTypes);
 
-  const qualifyingProductTypesInCurrentSPPA = productTypesInCurrentSPPA
-    .difference(qualifiedProductTypesInCurrentSPPA)
-    .intersection(qualifyingProductTypes);
+  const newProductTypesInCurrentSPPA = productTypesInCurrentSPPA
+    .difference(qualifiedProductTypes)
+    .difference(qualifyingProductTypes);
 
+  // all PT already qualified before
   if (qualifiedProductTypesInCurrentSPPA.size == productTypesInCurrentSPPA.size)
     return (
       <Alert severity="success">
@@ -60,20 +61,22 @@ export const ServiceProviderProductApplicationAlreadyQualified = () => {
       </Alert>
     );
 
-  if (qualifyingProductTypesInCurrentSPPA.size > 0)
+  // some PT are new
+  if (newProductTypesInCurrentSPPA.size > 0)
     return (
       <Alert severity="info">
-        <AlertTitle>Ongoing application(s)</AlertTitle>
-        {spParty.name} is currently being qualified by another system operator
-        for some of the product types in this application.
+        <AlertTitle>First application</AlertTitle>
+        {spParty.name} has never been qualified, for some of the product types
+        in this application.
       </Alert>
     );
 
+  // none of the above, so no PT is new but some are not qualified yet (ongoing)
   return (
     <Alert severity="info">
-      <AlertTitle>First application</AlertTitle>
-      {spParty.name} has never been qualified for the product types in this
-      application.
+      <AlertTitle>Ongoing application(s)</AlertTitle>
+      {spParty.name} is currently being qualified by another system operator for
+      some of the product types in this application.
     </Alert>
   );
 };
