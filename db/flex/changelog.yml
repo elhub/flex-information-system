@@ -42,6 +42,9 @@ databaseChangeLog:
       file: ./event.sql
       relativeToChangelogFile: true
   - include:
+      file: ./event_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./entity.sql
       relativeToChangelogFile: true
   - include:

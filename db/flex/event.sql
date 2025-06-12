@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:event-create runOnChange:false endDelimiter:--
+--validCheckSum: 9:526c626b33806895131a9e3537b5b1d6
 CREATE TABLE IF NOT EXISTS event (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- reverse DNS style identifier
@@ -10,10 +11,8 @@ CREATE TABLE IF NOT EXISTS event (
     type ltree NOT NULL CHECK (
         type ~ 'no.elhub.flex.*'
     ),
-    source text NOT NULL CHECK (
-        -- source is a local URI used in the project
-        source ~ '^(\/([a-z][a-z_]*|[0-9]+))+$'
-    ),
+    source_resource text NOT NULL,
+    source_id bigint NOT NULL,
     data jsonb NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
@@ -21,6 +20,7 @@ CREATE TABLE IF NOT EXISTS event (
     recorded_by bigint NOT NULL DEFAULT current_identity()
 );
 
+-- changeset flex:event-capture runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION capture_event()
 RETURNS trigger
 SECURITY DEFINER
@@ -58,13 +58,15 @@ BEGIN
         operation := 'create';
     END IF;
 
-    INSERT INTO event (
+    INSERT INTO flex.event (
         type,
-        source,
+        source_resource,
+        source_id,
         data
     ) VALUES (
         public.text2ltree('no.elhub.flex.' || TG_ARGV[0] || '.' || operation),
-        '/' || TG_ARGV[0] || '/' || id,
+        TG_ARGV[0],
+        id,
         event_data
     );
 
