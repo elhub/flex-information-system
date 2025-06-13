@@ -16,6 +16,10 @@ import { EventButton } from "../event/EventButton";
 import { ServiceProviderProductApplicationCommentList } from "./comment/ServiceProviderProductApplicationCommentList";
 import { IdentityField } from "../components/IdentityField";
 import { ProductTypeArrayField } from "../product_type/components";
+import {
+  ServiceProviderProductApplicationAlreadyQualified,
+  SPPAForSPButton,
+} from "./components";
 
 export const ServiceProviderProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -50,6 +54,12 @@ export const ServiceProviderProductApplicationShow = () => {
             <TextField source="status" />
             <TextField source="notes" />
             <DateField source="last_qualified" showTime />
+          </FieldStack>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
+            <ServiceProviderProductApplicationAlreadyQualified />
+          </FieldStack>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
+            <SPPAForSPButton />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
