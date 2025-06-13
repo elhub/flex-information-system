@@ -66,8 +66,8 @@ export const ServiceProviderProductApplicationAlreadyQualified = () => {
     return (
       <Alert severity="info">
         <AlertTitle>First application</AlertTitle>
-        {spParty.name} has never been qualified, for some of the product types
-        in this application.
+        {spParty.name} is applying for qualification for the first time, for
+        some of the product types in this application.
       </Alert>
     );
 
@@ -75,8 +75,8 @@ export const ServiceProviderProductApplicationAlreadyQualified = () => {
   return (
     <Alert severity="info">
       <AlertTitle>Ongoing application(s)</AlertTitle>
-      {spParty.name} is currently being qualified by another system operator for
-      some of the product types in this application.
+      There exist other applications from {spParty.name} to other system
+      operators for some of the product types in this application.
     </Alert>
   );
 };
