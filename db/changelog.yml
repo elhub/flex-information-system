@@ -44,3 +44,7 @@ databaseChangeLog:
   - include:
       file: ./users.sql
       relativeToChangelogFile: true
+  # locally, this must run after loading the test data
+  - include:
+      file: ./flex/party_sync.sql
+      relativeToChangelogFile: true
