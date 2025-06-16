@@ -157,15 +157,14 @@ CREATE OR REPLACE VIEW notice AS (
     UNION ALL
     SELECT
         p_fiso.id AS party_id,
-        'no.elhub.flex.party.new' AS type, -- noqa
+        'no.elhub.flex.party.missing' AS type, -- noqa
         null AS source, -- no source because the party does not exist yet
         jsonb_build_object(
             'business_id', p_stg.gln,
             'business_id_type', 'gln',
             'entity_id', e_stg.id,
             'name', p_stg.name,
-            'type', p_stg.type,
-            'role', 'flex_' || p_stg.type
+            'type', p_stg.type
         )::text AS data -- noqa
     FROM flex.party_staging AS p_stg -- noqa
         INNER JOIN flex.entity AS e_stg
@@ -182,12 +181,19 @@ CREATE OR REPLACE VIEW notice AS (
     UNION ALL
     SELECT
         p_fiso.id AS party_id,
-        'no.elhub.flex.party.updated' AS type, -- noqa
+        'no.elhub.flex.party.outdated' AS type, -- noqa
         '/party/' || p.id AS source,
-        jsonb_build_object(
-            'name', p_stg.name,
-            'entity_id', e_stg.id
-        )::text AS data -- noqa
+        ((
+            CASE WHEN p_stg.name != p.name
+                    THEN jsonb_build_object('name', p_stg.name)
+                ELSE '{}'::jsonb
+            END
+        ) || (
+            CASE WHEN p_stg.org != e.business_id
+                    THEN jsonb_build_object('entity_id', e_stg.id)
+                ELSE '{}'::jsonb
+            END
+        ))::text AS data -- noqa
     FROM flex.party AS p -- noqa
         INNER JOIN flex.entity AS e
             ON p.entity_id = e.id
@@ -205,7 +211,7 @@ CREATE OR REPLACE VIEW notice AS (
     UNION ALL
     SELECT
         p_fiso.id AS party_id,
-        'no.elhub.flex.party.deleted' AS type, -- noqa
+        'no.elhub.flex.party.residual' AS type, -- noqa
         '/party/' || p.id AS source,
         null AS data -- noqa
     FROM flex.party AS p -- noqa
