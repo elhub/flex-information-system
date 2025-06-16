@@ -2043,6 +2043,10 @@ resource. The default policy is <strong>deny</strong>.</p>
 <h4 id="entity">Entity</h4>
 <p>No policies.</p>
 <h4 id="common">Common</h4>
+<p>No policies.</p>
+<h4 id="balance-responsible-party">Balance Responsible Party</h4>
+<p>No policies.</p>
+<h4 id="end-user">End User</h4>
 <table>
 <thead>
 <tr>
@@ -2053,26 +2057,117 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>EVENT-COM001</td>
+<td>EVENT-EU001</td>
+<td>Read events related to controllable units when they are EU on the AP.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-EU002</td>
+<td>Read events related to CUSP when they are EU on the AP.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-EU003</td>
+<td>Read events related to technical resources when they are EU on the AP.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
+<h4 id="energy-supplier">Energy Supplier</h4>
+<p>No policies.</p>
+<h4 id="flexibility-information-system-operator">Flexibility Information System Operator</h4>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EVENT-FISO001</td>
 <td>Read all events.</td>
 <td>DONE</td>
 </tr>
 </tbody>
 </table>
-<h4 id="balance-responsible-party">Balance Responsible Party</h4>
-<p>No policies.</p>
-<h4 id="end-user">End User</h4>
-<p>No policies.</p>
-<h4 id="energy-supplier">Energy Supplier</h4>
-<p>No policies.</p>
-<h4 id="flexibility-information-system-operator">Flexibility Information System Operator</h4>
-<p>No policies.</p>
 <h4 id="market-operator">Market Operator</h4>
 <p>No policies.</p>
 <h4 id="system-operator">System Operator</h4>
-<p>No policies.</p>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EVENT-SO001</td>
+<td>Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPAC, SPG, SPGM, SPGGP, SPGPA.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
 <h4 id="service-provider">Service Provider</h4>
-<p>No policies.</p>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EVENT-SP001</td>
+<td>Read events related to controllable units (except lookup) when they are SP on the CU.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP002</td>
+<td>Read events related to technical resources when they are SP on the CU.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP003</td>
+<td>Read events related to CUSP when they are the SP.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP004</td>
+<td>Read events related to SPPA concerning themselves.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP005</td>
+<td>Read events related to comments on SPPA concerning themselves, when they can see the comments.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP006</td>
+<td>Read events related to service providing groups when they own them.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP007</td>
+<td>Read events related to SPG memberships when they own the SPG.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP008</td>
+<td>Read events related to SPG grid prequalifications when they own the SPG.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>EVENT-SP009</td>
+<td>Read events related to SPG product applications when they own the SPG.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
 <h4 id="third-party">Third Party</h4>
 <p>No policies.</p>
 <h3 id="field-level-authorization">Field Level Authorization</h3>
