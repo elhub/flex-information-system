@@ -167,7 +167,7 @@ CREATE OR REPLACE VIEW notice AS (
             'type', p_stg.type
         )::text AS data -- noqa
     FROM flex.party_staging AS p_stg -- noqa
-        INNER JOIN flex.entity AS e_stg
+        LEFT JOIN flex.entity AS e_stg
             ON e_stg.business_id = p_stg.org
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
