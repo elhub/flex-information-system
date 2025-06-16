@@ -6,8 +6,8 @@
 -- changeset flex:party-staging-create runOnChange:false endDelimiter:--
 CREATE TABLE IF NOT EXISTS party_staging (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    party_gln text CHECK (validate_business_id(party_gln, 'gln')),
-    entity_org text NOT NULL CHECK (validate_business_id(entity_org, 'org')),
+    gln text CHECK (validate_business_id(gln, 'gln')),
+    org text NOT NULL CHECK (validate_business_id(org, 'org')),
     name text NOT NULL,
     type text NOT NULL CHECK (
         type IN (
@@ -22,5 +22,5 @@ CREATE TABLE IF NOT EXISTS party_staging (
         )
     ),
 
-    CONSTRAINT uk_party_staging_gln_type UNIQUE (party_gln, type)
+    CONSTRAINT uk_party_staging_gln_type UNIQUE (gln, type)
 );

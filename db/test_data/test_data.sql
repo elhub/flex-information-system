@@ -846,16 +846,17 @@ CREATE OR REPLACE FUNCTION test_data.fill_party_staging()
 RETURNS void
 AS $$
 BEGIN
-  INSERT INTO flex.party_staging (party_gln, entity_org, name, type)
+  INSERT INTO flex.party_staging (gln, org, name, type)
   SELECT
-      p.business_id AS party_gln,
-      e.business_id AS entity_org,
+      p.business_id AS gln,
+      e.business_id AS org,
       p.name,
       p.type
   FROM flex.party AS p
       INNER JOIN flex.entity AS e ON p.entity_id = e.id
   WHERE p.business_id_type = 'gln'
       AND e.business_id_type = 'org'
-      AND p.status != 'terminated';
+      AND p.status != 'terminated'
+  ON CONFLICT DO NOTHING;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
