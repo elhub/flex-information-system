@@ -82,6 +82,9 @@ begin
   if exists (
     select 1 from flex.party_membership pm
     where pm.entity_id = _entity_id and pm.party_id = _party_id
+  ) or exists (
+    select 1 from flex.party as p
+    where p.id = _party_id and p.entity_id = _entity_id
   ) then
     select flex.identity_external_id(_entity_id, _party_id) into eid;
   else
