@@ -66,31 +66,21 @@ types that we think are relevant in the context of a flexibility value chain.
   </tr>
   <tr>
     <td>Baseline</td>
-    <td>Prognosert volum over en tidsperiode</td>
+    <td>Prognose / Prognosert volum over en tidsperiode</td>
     <td>
-      <p>A counterfactual reference about the electrical quantities that
-      would have</p>
-      <p>been withdrawn or injected if there had been no activation of
-      services.</p>
+      A counterfactual reference about the electrical quantities that
+      would have been withdrawn or injected if there had been no activation of
+      services.
     </td>
     <td>
-      <p>The calculation of baseline can be done by the service provider
+      The calculation of baseline can be done by the service provider
       (or its baseline provider), system operator(s) or by a trusted/neutral
-      entity like FIS or third party/marketplace.</p>
-      <p>It is assumed that there will be standard methods for calculating
-      baselines in the long run.</p>
-      <p>At the current state we should consider that all of these might
-      provide baselines but acknowledge that the different providers have
-      different tradeoffs for the value chain. Service providers know the
-      assets, probably have easier access to high-frequency measurements, but
-      might lack direct access to metered data and trust (“Bukken og
-      havresekken”). System operators and trusted/neutral entities do not have
-      knowledge or easy access to measurements. </p>
+      entity like FIS or third party/marketplace system.
     </td>
   </tr>
   <tr>
     <td>Consumption plan</td>
-    <td>Produksjonsplan</td>
+    <td>Forbruksplan</td>
     <td>
       These are plans for consumption of energy that are set
       <em>before</em> any activation happens for system, balancing, local or
@@ -100,13 +90,13 @@ types that we think are relevant in the context of a flexibility value chain.
   </tr>
   <tr>
     <td>Production plan</td>
-    <td>Forbruksplan</td>
+    <td>Produksjonsplan</td>
     <td>
       These are plans for production of energy that are set
       <em>before</em> any activation happens for system, balancing, local or
       voltage services.
     </td>
-    <td>Plans are provided by service providers.</td>
+    <td>Plans are provided by balance responsible parties or service providers.</td>
   </tr>
   <tr>
     <td>Timetable</td>
@@ -248,34 +238,37 @@ correctness - it is counterfactural after all. We must rather determine a
 strategy that helps us to agree that the baseline is trustworthy or acceptable.
 There some main strategies to do this that can be used on their own or in combination:
 
-- **Standard method** - where the baseline is calculated using a standard,
-  deterministic, agreed-upon method where input data is trusted and the
-  calculation can be repeted at any point in time. This will allow anyone to do
-  it, lowering the need for data flow.
-- **Auditable method** - where the baseline is calculated using a method that
-  can be audited, e.g. by providing the input data and method.
-- **Trusted party** - where the baseline is calculated by a trusted
-  (third-)party with no vested interest in the outcome
-- **Validate over time** - where the baseline is calculated and communicated
-  ahead-of-time and validated continiously/over time by comparing it to actual
-  metered values when no trade is going on. This requires that the baseline is
-  calculated continously.
+- **Standard method** - calculated using a standard, deterministic, agreed-upon
+  method where input data is trusted and the calculation can be repeted at any
+  point in time.
+- **Auditable method** - calculated using a method that can be audited, e.g. by
+  providing the input data and method.
+- **Trusted party** - calculated by a trusted (third-)party with no vested
+  interest in the outcome
+- **Validate over time** - calculated and communicated ahead-of-time and
+  validated continiously/over time by comparing it to actual metered values when
+  no trade is going on. This requires that the baseline is calculated
+  continously.
 
 Each of these strategies allows different methods of calculating baselines as
 well as put different requirements on the systems and the service provider.
 
 ### Baseline methods
 
-The following sections outline some of the methods that can be used to
-calculate baselines.
+The following sections outline some of the methods that can be used to calculate
+baselines. These are methods that has been surfaced in our work group
+discussions.
 
 #### Black box
 
 The baseline is calculated using a unspecified method that is concidered a "black
-box" by the value chain. This is typically done by the service provider (SP)
-based on confidential input using a proprietary algorithm.
+box" by the value chain. This is typically done by the service provider (SP), potentially
+based on confidential input, using a proprietary algorithm.
 
-Ensuring trust is this baseline can only be done by validating it over time.
+The black box method is the one that allows for the most innovation and allows
+the SP to use the best available data and methods, e.g. machine learning.
+However, it is also the most opaque and ensuring trust in this baseline can only
+be done by validating it over time.
 
 #### Meter before
 
@@ -293,27 +286,26 @@ before and after.
 
 A sliding window baseline is a baseline that is calculated using a sliding
 window of historical data. The window is typically a fixed time period, e.g.
-the last 30 days, and the baseline is calculated using the data in that window.
+the last 5 days, and the baseline is calculated using the data in that window.
 
 This method can also use other inputs such as weather data, holidays,
 and other factors that can impact the consumption or production of energy.
 
-In NODES, this method is used with data from the last 5 days.
-
 #### Zero
 
-The zero baseline is a baseline that is set to zero. Could be useful e.g. for
-fossil fuel generators or batteries.
+The baseline is set to zero. Could be useful e.g. for fossil fuel generators or
+batteries. It can only be used if the asset is in contracted to not consume and/or
+produce energy for the periods it is part of a reservation contract.
 
 ## Quantification and verification
 
-When talking about establishing the activated volume, conceptually split the
-activity in two: quantification and verification. These look very much similar -
+When establishing how much flex has been delivered we conceptually split the
+activity in two: *quantification* and *verification*. These look very similar -
 and can sometime be one and the same - but does have different purposes.
 
 ### Quantification
 
-Quantification the continious activity of calculating the activated volume after
+Quantification is the continious activity of calculating the activated volume after
 *each and every* activation. The purpose of quantification is to be able to do
 settlement of the activated volume.
 
@@ -324,19 +316,27 @@ There are three main methods for quantifying the activated volume:
 - **Baseline comparison** - where the activated volume is calculated by comparing
   the baseline to the metered values.
 - **Reported delivery** - where the activated volume is reported by the
-  service provider based on an agreed upon terms.
+  service provider based on agreed upon terms.
 
-Quantification is done to support two types of settlement:
+Quantification is done to support three types of settlement:
 
 - **Quantification for service settlement** - must end up on the SPG
   level since that is where the bids are.
-- **Quantification for imbalance settlement and compensation** - must be done at
-  the level of accounting point (AP) or lower (CU/TR). NOTE - See the section
+- **Quantification for imbalance adjustment and financial transfer** - must be
+  done at the level of accounting point (AP) or lower (CU/TR). NOTE - See the
+  section
   [Non- or over-consumed energy due to activation of flexibility](#non--or-over-consumed-energy-due-to-activation-of-flexibility)
   for more details about imbalance settlement.
+- **Quantification for end user compensation** - must be done at the level of
+  the accounting point (AP) or lower (CU/TR), since that is where the end user
+  is linked. While it is the service provider that is responsible for this and
+  has the agreement with the end user, it is important that any potential
+  flexibility volumes shown in a flexibility information system matches the
+  quantities that SP is using to compensate the end user, to avoid confusion and
+  distrust.
 
 For some assets it is easy and practical to quantify the activated volume on
-the CU or AP level, e.g. a single battery facility or boilers.
+the CU or AP level, e.g. a single battery facility or large boilers.
 
 For other cases, such as a group of many small assets, it might not be practical
 to quantify the activated volume on the CU/AP level. By quantifying on the SPG
@@ -362,11 +362,6 @@ Allocation can be done with:
     - assigned by SP per bid/activation - this required [activation data](#activation-data)
     - assigned by doing an approximate quantification on the lower level
 
-Compensation will be done between
-
-- Energy Supplier and Balance Responsible Party
-- Service Provider and End User
-
 ### Verification
 
 Verification is the process where the system operator verifies the
@@ -383,12 +378,14 @@ The verification might include
 - getting additional data from the service provider - e.g. high granularity data
 
 It is at the system operator's discretion to decide how and when to verify the
-quantified volume, as long as it does not put an additional/undue burden on the
+service delivery, as long as it does not put an additional/undue burden on the
 service provider.
 
 ## Activation data
 
-Activation data includes information about
+Activation data is the data related to an activation of a flexible resource. For
+manual activation markets this is bid acceptance. For automatic reserves it is
+when thresholds for delivering service was met. It includes information about
 
 - activated volume
 - time period
@@ -750,22 +747,31 @@ and end user.</td>
     <td></td>
   </tr>
   <tr>
-    <th>System operator</th>
-    <th>Updated baseline</th>
-    <th>-</th>
-    <th>Ahead of trading</th>
-    <th>When baseline change</th>
-    <th>To have the best available data for verification</th>
-    <th></th>
+    <td>System operator</td>
+    <td>Updated baseline</td>
+    <td>-</td>
+    <td>Ahead of trading</td>
+    <td>When baseline change</td>
+    <td>To have the best available data for verification</td>
+    <td></td>
   </tr>
   <tr>
-    <th>System operator</th>
-    <th>Corrected baseline</th>
-    <th>-</th>
-    <th>After trading</th>
-    <th>When baseline have errors</th>
-    <th>To be able to correct in case of errors</th>
-    <th></th>
+    <td>System operator</td>
+    <td>Corrected baseline</td>
+    <td>-</td>
+    <td>After trading</td>
+    <td>When baseline have errors</td>
+    <td>To be able to correct in case of errors</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>System operator</td>
+    <td>Parallell baselines</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>Assess different baseline methods over time</td>
+    <td></td>
   </tr>
   <tr>
     <td>System operator</td>
