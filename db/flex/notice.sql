@@ -152,4 +152,76 @@ CREATE OR REPLACE VIEW notice AS (
         GROUP BY cusp.id
     ) AS cusp_with_eu
     WHERE NOT end_user_timeline @> valid_time_range
+
+    -- new staging parties synced from external source but not in the system yet
+    UNION ALL
+    SELECT
+        p_fiso.id AS party_id,
+        'no.elhub.flex.party.missing' AS type, -- noqa
+        null AS source, -- no source because the party does not exist yet
+        jsonb_build_object(
+            'business_id', p_stg.gln,
+            'business_id_type', 'gln',
+            'entity_id', e_stg.id,
+            'name', p_stg.name,
+            'type', p_stg.type
+        )::text AS data -- noqa
+    FROM flex.party_staging AS p_stg -- noqa
+        LEFT JOIN flex.entity AS e_stg
+            ON e_stg.business_id = p_stg.org
+        -- warn all FISOs
+        INNER JOIN flex.party AS p_fiso
+            ON p_fiso.type = 'flexibility_information_system_operator'
+    WHERE NOT EXISTS (
+            SELECT 1 FROM flex.party AS p
+            WHERE p.business_id = p_stg.gln
+        )
+
+    -- parties already in the system, but with staging updates
+    UNION ALL
+    SELECT
+        p_fiso.id AS party_id,
+        'no.elhub.flex.party.outdated' AS type, -- noqa
+        '/party/' || p.id AS source,
+        ((
+            CASE WHEN p_stg.name != p.name
+                    THEN jsonb_build_object('name', p_stg.name)
+                ELSE '{}'::jsonb
+            END
+        ) || (
+            CASE WHEN p_stg.org != e.business_id
+                    THEN jsonb_build_object('entity_id', e_stg.id)
+                ELSE '{}'::jsonb
+            END
+        ))::text AS data -- noqa
+    FROM flex.party AS p -- noqa
+        INNER JOIN flex.entity AS e
+            ON p.entity_id = e.id
+        INNER JOIN flex.party_staging AS p_stg
+            ON p_stg.gln = p.business_id
+                -- party has changed name or owning entity
+                AND (p_stg.name != p.name OR p_stg.org != e.business_id)
+        INNER JOIN flex.entity AS e_stg
+            ON p_stg.org = e_stg.business_id
+        -- warn all FISOs
+        INNER JOIN flex.party AS p_fiso
+            ON p_fiso.type = 'flexibility_information_system_operator'
+
+    -- parties deleted after sync, but still actually in the system
+    UNION ALL
+    SELECT
+        p_fiso.id AS party_id,
+        'no.elhub.flex.party.residual' AS type, -- noqa
+        '/party/' || p.id AS source,
+        null AS data -- noqa
+    FROM flex.party AS p -- noqa
+        -- warn all FISOs
+        INNER JOIN flex.party AS p_fiso
+            ON p_fiso.type = 'flexibility_information_system_operator'
+    WHERE p.business_id_type = 'gln'
+        AND p.status != 'terminated'
+        AND NOT EXISTS (
+            SELECT 1 FROM flex.party_staging AS p_stg
+            WHERE p_stg.gln = p.business_id
+        )
 );

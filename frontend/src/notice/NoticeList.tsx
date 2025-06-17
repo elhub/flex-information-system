@@ -10,7 +10,9 @@ import { ResourceButton } from "../components/ResourceButton";
 
 export const NoticeResourceButton = () => {
   const noticeRecord = useRecordContext()!;
-  return <ResourceButton source={noticeRecord.source} />;
+  return noticeRecord.source ? (
+    <ResourceButton source={noticeRecord.source} />
+  ) : null;
 };
 
 export const NoticeList = () => (
