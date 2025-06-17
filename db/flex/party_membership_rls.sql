@@ -26,7 +26,12 @@ GRANT SELECT ON party_membership TO flex_entity;
 CREATE POLICY "PTYM_ENT001" ON party_membership
 FOR SELECT
 TO flex_entity
-USING (entity_id = current_entity());
+USING (
+    EXISTS (
+        SELECT 1 FROM flex.party AS p
+        WHERE p.id = party_membership.party_id -- noqa
+    )
+);
 
 -- RLS: PTYM-COM002
 GRANT SELECT ON party_membership TO flex_common;

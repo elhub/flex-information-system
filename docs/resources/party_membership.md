@@ -35,9 +35,9 @@ resource. The default policy is **deny**.
 
 #### Entity
 
-| Policy key  | Policy                                          | Status |
-|-------------|-------------------------------------------------|--------|
-| PTYM-ENT001 | Read all the PTYM concerning the current entity | DONE   |
+| Policy key  | Policy                                     | Status |
+|-------------|--------------------------------------------|--------|
+| PTYM-ENT001 | Read all the PTYM on parties they can read | DONE   |
 
 #### Anonymous
 

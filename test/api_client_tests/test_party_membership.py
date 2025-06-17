@@ -9,6 +9,9 @@ from flex.models import (
     ErrorMessage,
     EmptyObject,
 )
+from flex.api.party import (
+    list_party,
+)
 from flex.api.party_membership import (
     create_party_membership,
     list_party_membership,
@@ -86,16 +89,20 @@ def test_ptym_fiso(sts):
 def test_ptym_ent(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_ent = sts.get_client(TestEntity.TEST, "ENT")
-    ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
-    pms_concerning_ent = list_party_membership.sync(
-        client=client_fiso, entity_id=f"eq.{ent_id}"
-    )
-    assert isinstance(pms_concerning_ent, list)
+    parties = list_party.sync(client=client_ent)
+    assert isinstance(parties, list)
+    assert len(parties) > 0
 
-    pms = list_party_membership.sync(client=client_ent)
-    assert isinstance(pms, list)
-    assert len(pms) == len(pms_concerning_ent)
+    for party in parties:
+        pms = list_party_membership.sync(client=client_fiso, party_id=f"eq.{party.id}")
+        assert isinstance(pms, list)
+
+        pms_ent = list_party_membership.sync(
+            client=client_ent, party_id=f"eq.{party.id}"
+        )
+        assert isinstance(pms_ent, list)
+        assert len(pms_ent) == len(pms)
 
 
 def test_ptym_common(sts):
