@@ -10,7 +10,6 @@ import { Datagrid } from "../auth";
 import { ResourceButton } from "../components/ResourceButton";
 import { Link } from "react-router-dom";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import PersonOffIcon from "@mui/icons-material/PersonOff";
 import EditIcon from "@mui/icons-material/Edit";
 
 const NoticeResourceButton = () => {
@@ -42,17 +41,6 @@ const NoticeActionButton = () => {
           label="Update party"
           state={JSON.parse(noticeRecord.data)}
           startIcon={<EditIcon />}
-        />
-      );
-    case "no.elhub.flex.party.residual":
-      return (
-        <Button
-          component={Link}
-          to={`/party/${noticeRecord.source.split("/")[2]}`}
-          color="warning"
-          label="Terminate party"
-          state={{ status: "terminated" }}
-          startIcon={<PersonOffIcon />}
         />
       );
     default:
