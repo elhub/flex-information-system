@@ -3,6 +3,7 @@ import {
   Datagrid,
   List,
   ReferenceField,
+  ResourceContextProvider,
   TextField,
   useGetIdentity,
   useLogin,
@@ -53,11 +54,11 @@ export const AssumePartyPage = () => {
     }
   }, [identity.isPending]);
 
-  const AssumePartyButton = () => {
-    const { party_id } = useRecordContext()!;
+  const AssumePartyButton = ({ field }: any) => {
+    const record = useRecordContext()!;
     const assumeParty = async () => {
       setLoading(true);
-      return login({ party_id })
+      return login({ party_id: record[field] })
         .then(() => {
           identity?.refetch();
           permissions.refetch();
@@ -108,7 +109,7 @@ export const AssumePartyPage = () => {
       </Card>
       <Box m={1} />
       <Typography variant="h6" margin={1}>
-        Accessible parties
+        Parties you belong to
       </Typography>
       {identity.isLoading ? (
         <CircularProgress size={25} thickness={2} />
@@ -121,15 +122,15 @@ export const AssumePartyPage = () => {
           filter={{ entity_id: identity.data!.entityID }}
           empty={
             <Box textAlign="center" m={1}>
-              <Typography variant="h4" paragraph>
-                You cannot assume any party.
+              <Typography variant="h5">
+                You do not belong to any party.
               </Typography>
             </Box>
           }
         >
           <Datagrid bulkActionButtons={false}>
             <TextField label="ID" source="party_id" />
-            <AssumePartyButton />
+            <AssumePartyButton field="party_id" />
             <ReferenceField label="Name" source="party_id" reference="party">
               <TextField source="name" />
             </ReferenceField>
@@ -138,6 +139,34 @@ export const AssumePartyPage = () => {
             </ReferenceField>
           </Datagrid>
         </List>
+      )}
+      <Typography variant="h6" margin={1}>
+        Parties you own
+      </Typography>
+      {identity.isLoading ? (
+        <CircularProgress size={25} thickness={2} />
+      ) : (
+        <ResourceContextProvider value="party">
+          <List
+            title={false}
+            actions={false}
+            perPage={5}
+            sort={{ field: "id", order: "ASC" }}
+            filter={{ entity_id: identity.data!.entityID }}
+            empty={
+              <Box textAlign="center" m={1}>
+                <Typography variant="h5">You do not own any party.</Typography>
+              </Box>
+            }
+          >
+            <Datagrid bulkActionButtons={false}>
+              <TextField label="ID" source="id" />
+              <AssumePartyButton field="id" />
+              <TextField source="name" />
+              <TextField source="type" />
+            </Datagrid>
+          </List>
+        </ResourceContextProvider>
       )}
     </>
   );
