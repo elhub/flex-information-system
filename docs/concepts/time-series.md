@@ -4,13 +4,11 @@ This document is an overview of time-series in the context of a flexibility
 value chain. It is by no means exhaustive or final, but an attempt to capture
 some important aspects and needs.
 
-## Primer on time-series
-
 By time series we mean a sequence of data points collected, recorded or stored
 at successive points in time, often at regular intervals. The value of a data
 point is, in our context, electrical quantities.
 
-### Types
+## Types
 
 Time series can be of different types. The following is the definition of the
 types that we think are relevant in the context of a flexibility value chain.
@@ -29,87 +27,96 @@ types that we think are relevant in the context of a flexibility value chain.
   <tr>
     <td>Measured values</td>
     <td>Målte verdier, uavhenging av metode</td>
-    <td>A measure is a sampling/one-time value of a quantity or capacity. It
-is typically done by a sensor or dedicated metering device.</td>
-    <td><p>The service provider (technical aggregator) or end user has DMD
-data.</p>
-<p>The system operator also has so-called SCADA-data from sensors/local
-control system/IED.</p></td>
+    <td>
+      A measure is a sampling/one-time value of a quantity or capacity. It
+      is typically done by a sensor or dedicated metering device.
+    </td>
+    <td>
+      <p>The service provider (technical aggregator) or end user has DMD
+      data.</p>
+      <p>The system operator also has so-called SCADA-data from sensors/local
+      control system/IED.</p>
+    </td>
   </tr>
   <tr>
     <td>Metering values</td>
     <td>Målte verdier fra en måler</td>
-    <td>Metering is about keeping track of e.g. the flow of energy over a
-period using a <em>meter</em>. The recorded values are metered values
-and typically comes from smart metersAMS or sub meters.</td>
-    <td><p>The system operator has data from conventional and smart meters.
-The metering values on accounting points are sent to Elhub and available
-there. The system operator also has meter data from other meters in the
-grid, e.g. on transformers.</p>
-<p>Sub-meter data might be from service providers, system operators or
-third parties such as sub-grid owners (malls/industrial parks).
-</p></td>
+    <td>
+      Metering is about keeping track of e.g. the flow of energy over a
+      period using a <em>meter</em>. The recorded values are metered values
+      and typically comes from smart meters (often referred to as AMS) or
+      dedicated meters.
+    </td>
+    <td>
+      <p>The system operator has data from conventional and smart meters.
+      The metering values on accounting points are sent to Elhub and available
+      there. The system operator also has meter data from other meters in the
+      grid, e.g. on transformers.</p>
+    </td>
   </tr>
   <tr>
     <td>Calculated values</td>
     <td>Beregnede verdier</td>
-    <td>A general term for values that are based on some kind of formula or
-calculation. The consumption of a certain asset might be calculated by
-using a combination of values from AMS and sub-meters.</td>
+    <td>
+      A general term for values that are based on some kind of formula or
+      calculation. The consumption of a certain asset might be calculated by
+      using a combination timeseries from different sources.
+    </td>
     <td></td>
   </tr>
   <tr>
     <td>Baseline</td>
-    <td>Prognosert volum over en tidsperiode</td>
-    <td><p>A counterfactual reference about the electrical quantities that
-would have</p>
-<p>been withdrawn or injected if there had been no activation of
-services.</p></td>
-    <td><p>The calculation of baseline can be done by the service provider
-(or its baseline provider), system operator(s) or by a trusted/neutral
-entity like FIS or third party/marketplace.</p>
-<p>It is assumed that there will be standard methods for calculating
-baselines in the long run.</p>
-<p>At the current state we should consider that all of these might
-provide baselines but acknowledge that the different providers have
-different tradeoffs for the value chain. Service providers know the
-assets, probably have easier access to high-frequency measurements, but
-might lack direct access to metered data and trust (“Bukken og
-havresekken”). System operators and trusted/neutral entities do not have
-knowledge or easy access to measurements. </p></td>
+    <td>Prognose / Prognosert volum over en tidsperiode</td>
+    <td>
+      A counterfactual reference about the electrical quantities that
+      would have been withdrawn or injected if there had been no activation of
+      services.
+    </td>
+    <td>
+      The calculation of baseline can be done by the service provider
+      (or its baseline provider), system operator(s) or by a trusted/neutral
+      entity like FIS or third party/marketplace system.
+    </td>
   </tr>
   <tr>
     <td>Consumption plan</td>
-    <td>Produksjonsplan</td>
-    <td>These are plans for consumption of energy that are set
-<em>before</em> any activation happens for system, balancing, local or
-voltage services. </td>
+    <td>Forbruksplan</td>
+    <td>
+      These are plans for consumption of energy that are set
+      <em>before</em> any activation happens for system, balancing, local or
+      voltage services.
+    </td>
     <td>Plans are provided by service providers. </td>
   </tr>
   <tr>
     <td>Production plan</td>
-    <td>Forbruksplan</td>
-    <td>These are plans for production of energy that are set
-<em>before</em> any activation happens for system, balancing, local or
-voltage services.</td>
-    <td>Plans are provided by service providers.</td>
+    <td>Produksjonsplan</td>
+    <td>
+      These are plans for production of energy that are set
+      <em>before</em> any activation happens for system, balancing, local or
+      voltage services.
+    </td>
+    <td>Plans are provided by balance responsible parties or service providers.</td>
   </tr>
   <tr>
     <td>Timetable</td>
     <td>Kjøreplan</td>
-    <td><p>This is the plan, after considering the delivery of services –
-the actual, continuously updated plan.</p>
-<p>Mostly useful for service providers but could also be relevant to
-communicate to system operators.</p></td>
+    <td>
+      <p>This is the plan, after considering the delivery of services –
+      the actual, continuously updated plan.</p>
+      <p>Mostly useful for service providers but could also be relevant to
+      communicate to system operators.</p>
+    </td>
     <td></td>
   </tr>
   <tr>
     <td>Activated volume</td>
     <td>Aktivert volum</td>
-    <td><p>The delivered volume. Calculated using the respective
-baseline,</p>
-<p>when necessary, and taking into account compensation effects, if
-applicable</p></td>
+    <td>
+      The delivered volume. Calculated using the respective
+      baseline, when necessary, and taking into account compensation effects, if
+      applicable
+    </td>
     <td></td>
   </tr>
   <tr>
@@ -119,17 +126,27 @@ applicable</p></td>
     <td></td>
   </tr>
   <tr>
+    <td>Quantified volume</td>
+    <td>Kvantifisert volum</td>
+    <td>Same as activated volume.</td>
+    <td></td>
+  </tr>
+  <tr>
     <td>Verified volume</td>
     <td>Verifisert volum</td>
-    <td>Same as activated volume but with additional verification done by
-system operator.</td>
+    <td>
+      Same as activated volume but with additional verification done by
+      system operator.
+    </td>
     <td></td>
   </tr>
   <tr>
     <td>Traded volume</td>
     <td>Handlet volum</td>
-    <td>This is the volume as agreed in the market/bids. Useful to compare
-against the actually activated volume.</td>
+    <td>
+      This is the volume as agreed in the market/bids. Useful to compare
+      against the actually activated volume.
+    </td>
     <td></td>
   </tr>
 </tbody>
@@ -140,26 +157,52 @@ for baselining or optimization but is not included because we believe
 that it is not relevant for others in the value chain. Examples are
 weather data, moving holidays, spot-prices, grid-tariffs and so on.
 
-### Levels
+## Logical levels
 
-Time series may come from various resources or assets and may be
-referred to logical or physical levels based on what they represent,
-whether that being individual, grouped of combined. The logical levels
-are:
+Time series are usually linked to logical levels, typically the
+resources we use to model the flexibility domain. These logical levels are:
 
 - Service Providing Group (**SPG**) / Portfolio
 - Accounting Point (**AP**) / Metering point (MP)
-- Controllable Unit (**CU**)
+- Controllable Unit (**CU**) / Asset
 - Technical Resource (**TR**)
 
-There are also some *physical* levels, represented by meters or
-measurement devices:
+## Origins
 
-- Advanced Metering System (**AMS**) meters
-- Sub-Meters (**SM**) – *meters that are not AMS*
-- Dedicated measurement device (**DMD**)
+The origin of a time-series is the physical or concrete source of the data, i.e.
+where it comes from. We are using this nomenclature to distinguish between the
+different types of time-series origins.
 
-### Characteristics
+| Origin                       | Abbr | Type        | Typical granularity      | Responsible                | Comment                                                                                                                               |
+|------------------------------|------|-------------|--------------------------|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| Smart meter                  | SM   | Meter       | 15M/60M                  | Connecting System Operator | Often talked about as AMS                                                                                                             |
+| Home Area Network-port       | HAN  | Measurement | Minimum every 10 seconds | Service Provider           | HAN port of SM                                                                                                                        |
+| Sub meter                    | SUB  | Meter       | 15M/60M                  | Service Provider           | Typically a MID compliant meter used to improve energy transparency and encourage energy-saving behaviors or a meter used in subgrid. |
+| Dedicated Measurement Device | DMD  | Measurement |                          | Service Provider           | See below                                                                                                                             |
+| Dedicated Meter              | DM   | Meter       | Realtime/1M/15M          | Service Provider           | See below                                                                                                                             |
+| Calculated                   | CALC | Virtual     | Realtime/1M/15M          | Service Provider           |                                                                                                                                       |
+
+### DMD vs DM
+
+[Regulation (EU) 2024/1747](https://eur-lex.europa.eu/eli/reg/2024/1747/oj/eng)
+defines a Dedicated Measurement Device (DMD) as
+
+> a device linked to or embedded in an asset that provides demand response or
+> flexibility services on the electricity market or to system operators
+
+We have chose to "split" this term in two, depending on the nature of the
+measurement. If the measurement is a meter, i.e. a device that measures
+cumulative flow of energy, then we call it a Dedicated Meter (DM).
+
+### Measuring Instrument Directive (MID)
+
+Directive 2014/32/EU is known as the
+[Measuring Instrument Directive](https://en.wikipedia.org/wiki/Measuring_Instruments_Directive)
+and outlines the requirements for a wide range of measuring instruments,
+including active electrical energy meters. MID compliance means that the meter
+gone through an independent conformity assessment.
+
+## Characteristics
 
 The nature of a time-series can vary greatly, some characteristics to
 consider are
@@ -172,6 +215,188 @@ consider are
 - **Frequency** – delay in the data stream
 - **Timeline** – e.g. future or historic data
 - **Audit** – essentially bi-temporal data
+
+## Baselines
+
+As defined above, a baseline is a counterfactual reference about the
+electrical quantities that would have been withdrawn or injected if there had
+been no activation of services.
+
+Baseline can be calculated on any logical level or origin, depending on the use.
+It is typically the service provider that has access to the most reliable (and
+possibly market sensitive) data that can be used to calculate an accurate
+baseline. They also often know the most about the assets general usage patterns.
+In situations where there is other loads on the same accounting point, it is
+unlikely that the service provider (or anyone else for that matter) can
+calculate a baseline that is accurate enough to be used for settlement.
+
+Depending on method, baseline can also be calculated by another party, but that
+might require data from the service provider to be transferred in advance.
+
+The fundamental problem with a baseline is that it is not possible to verify its
+correctness - it is counterfactural after all. We must rather determine a
+strategy that helps us to agree that the baseline is trustworthy or acceptable.
+There some main strategies to do this that can be used on their own or in combination:
+
+- **Standard method** - calculated using a standard, deterministic, agreed-upon
+  method where input data is trusted and the calculation can be repeted at any
+  point in time.
+- **Auditable method** - calculated using a method that can be audited, e.g. by
+  providing the input data and method.
+- **Trusted party** - calculated by a trusted (third-)party with no vested
+  interest in the outcome
+- **Validate over time** - calculated and communicated ahead-of-time and
+  validated continiously/over time by comparing it to actual metered values when
+  no trade is going on. This requires that the baseline is calculated
+  continously.
+
+Each of these strategies allows different methods of calculating baselines as
+well as put different requirements on the systems and the service provider.
+
+### Baseline methods
+
+The following sections outline some of the methods that can be used to calculate
+baselines. These are methods that has been surfaced in our work group
+discussions.
+
+#### Black box
+
+The baseline is calculated using a unspecified method that is concidered a "black
+box" by the value chain. This is typically done by the service provider (SP), potentially
+based on confidential input, using a proprietary algorithm.
+
+The black box method is the one that allows for the most innovation and allows
+the SP to use the best available data and methods, e.g. machine learning.
+However, it is also the most opaque and ensuring trust in this baseline can only
+be done by validating it over time.
+
+#### Meter before
+
+The "Meter before" method uses the metered values before the activation as the
+baseline. This method should use the metered values for the same time period as
+the Imbalance Settlement Period (ISP) - 1h or 15m - as values typically will
+fluctuate between the ISPs.
+
+#### Meter before and after
+
+Similar to the "Meter before" method, but uses an average of the metered values
+before and after.
+
+#### Sliding window
+
+A sliding window baseline is a baseline that is calculated using a sliding
+window of historical data. The window is typically a fixed time period, e.g.
+the last 5 days, and the baseline is calculated using the data in that window.
+
+This method can also use other inputs such as weather data, holidays,
+and other factors that can impact the consumption or production of energy.
+
+#### Zero
+
+The baseline is set to zero. Could be useful e.g. for fossil fuel generators or
+batteries. It can only be used if the asset is in contracted to not consume and/or
+produce energy for the periods it is part of a reservation contract.
+
+## Quantification and verification
+
+When establishing how much flex has been delivered we conceptually split the
+activity in two: *quantification* and *verification*. These look very similar -
+and can sometime be one and the same - but does have different purposes.
+
+### Quantification
+
+Quantification is the continious activity of calculating the activated volume after
+*each and every* activation. The purpose of quantification is to be able to do
+settlement of the activated volume.
+
+There are three main methods for quantifying the activated volume:
+
+- **Assumed delivery** - where the activated volume is assumed to be the
+  same as what was traded in the market.
+- **Baseline comparison** - where the activated volume is calculated by comparing
+  the baseline to the metered values.
+- **Reported delivery** - where the activated volume is reported by the
+  service provider based on agreed upon terms.
+
+Quantification is done to support three types of settlement:
+
+- **Quantification for service settlement** - must end up on the SPG
+  level since that is where the bids are.
+- **Quantification for imbalance adjustment and financial transfer** - must be
+  done at the level of accounting point (AP) or lower (CU/TR). NOTE - See the
+  section
+  [Non- or over-consumed energy due to activation of flexibility](#non--or-over-consumed-energy-due-to-activation-of-flexibility)
+  for more details about imbalance settlement.
+- **Quantification for end user compensation** - must be done at the level of
+  the accounting point (AP) or lower (CU/TR), since that is where the end user
+  is linked. While it is the service provider that is responsible for this and
+  has the agreement with the end user, it is important that any potential
+  flexibility volumes shown in a flexibility information system matches the
+  quantities that SP is using to compensate the end user, to avoid confusion and
+  distrust.
+
+For some assets it is easy and practical to quantify the activated volume on
+the CU or AP level, e.g. a single battery facility or large boilers.
+
+For other cases, such as a group of many small assets, it might not be practical
+to quantify the activated volume on the CU/AP level. By quantifying on the SPG
+level, we can use the "law of large numbers" to get a good prediction of the
+baseline (and thus the activated volume). Also, if quantification is done using
+the *assumed delivery* method, then the quantification happens on the SPG level
+per definition.
+
+Having consistent quantification (e.i. the quantification "add up" between the
+levels) can follow one one of two main strategies:
+
+- **aggregate** - *sum* - quantification is done on the lower level, e.g. CU or
+  TR, and then aggregated to the SPG level.
+- **allocate** - *split* . the quantification is done on the SPG level and then
+  allocated to the lower levels, using some kind of distribution factor.
+
+Allocation can be done with:
+
+- fixed factors
+    - even split
+    - per SPG
+- dynamic factors
+    - assigned by SP per bid/activation - this required [activation data](#activation-data)
+    - assigned by doing an approximate quantification on the lower level
+
+### Verification
+
+Verification is the process where the system operator verifies the
+quantified volume and that the service was delivered in compliance with the
+product requirements of the specific products.
+
+This verification can be done for every trade or activation, but it is also
+appropriate to do this once at application time and then ad-hoc or at certain
+intervals during the lifetime of the service providing group.
+
+The verification might include
+
+- comparing the quantified volume to what is observed in the accounting point
+- getting additional data from the service provider - e.g. high granularity data
+
+It is at the system operator's discretion to decide how and when to verify the
+service delivery, as long as it does not put an additional/undue burden on the
+service provider.
+
+## Activation data
+
+Activation data is the data related to an activation of a flexible resource. For
+manual activation markets this is bid acceptance. For automatic reserves it is
+when thresholds for delivering service was met. It includes information about
+
+- activated volume
+- time period
+- service providing group
+
+To be able to quantify the activated volume for imbalance settlement, we might
+need to know, after the delivery of service, which CU that was actually
+activated. This can be:
+
+- simple boolean - `yes`/`no`
+- an actual contribution factor
 
 ## Non- or over-consumed energy due to activation of flexibility
 
@@ -296,6 +521,19 @@ ultimately regulation that will decide, but we can investigate if
 centrally handled imbalance adjustment and financial transfer is
 feasible at a reasonable complexity/cost.
 
+## Metered/Measured Data Administrators
+
+We find the definition of Metered Data Administrator (MDA) e.g. in
+[Implementing Regulation (EU) 2023/1162](https://eur-lex.europa.eu/eli/reg_impl/2023/1162/oj/eng).
+
+> means a party responsible for storing validated historical metering and
+> consumption data and distributing these data to final customers and/or
+> eligible parties;
+
+Elhub is the de-facto MDA in Norway for smart meters on the accounting point
+level. There is specific party assigned as administrators for sub-meter or
+dedicated meter/measurement device data.
+
 ## Challenges
 
 The following are some challenges that has been identified and must be
@@ -306,13 +544,6 @@ addressed but are not directly in scope to “solve” in this overview.
 The higher the granularity of data, the more sensitive it becomes. This is
 relevant only for personal data, i.e. values tied to a private address or a sole
 proprietorship company.
-
-### Trust
-
-The baseline and metered/measured values form the basis for settlement, so we
-must have high trust in them. Ensuring trust can be done by making it auditable,
-verifiable, follow standard methods and/or vet over time. One can also rely on
-“trusted (third-)parties” or requiring baselines in advance.
 
 ### Data access and flow
 
@@ -525,7 +756,34 @@ and end user.</td>
     <td>CU/AP</td>
     <td>At least ISP</td>
     <td>Same day</td>
-    <td>Validate the provision of the service</td>
+    <td>Verifiy the provision of the service</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>System operator</td>
+    <td>Updated baseline</td>
+    <td>-</td>
+    <td>Ahead of trading</td>
+    <td>When baseline change</td>
+    <td>To have the best available data for verification</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>System operator</td>
+    <td>Corrected baseline</td>
+    <td>-</td>
+    <td>After trading</td>
+    <td>When baseline have errors</td>
+    <td>To be able to correct in case of errors</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>System operator</td>
+    <td>Parallell baselines</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>Assess different baseline methods over time</td>
     <td></td>
   </tr>
   <tr>
@@ -546,7 +804,7 @@ and end user.</td>
     <td>AP/AMS</td>
     <td>At least ISP</td>
     <td></td>
-    <td>Validate the provision of the service</td>
+    <td>Verify the provision of the service</td>
     <td>
         Procuring system operator might not be the connecting system
         operator, so they might not have this data.
