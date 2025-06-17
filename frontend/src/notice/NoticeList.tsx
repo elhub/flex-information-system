@@ -4,15 +4,60 @@ import {
   ReferenceField,
   TextField,
   useRecordContext,
+  Button,
 } from "react-admin";
 import { Datagrid } from "../auth";
 import { ResourceButton } from "../components/ResourceButton";
+import { Link } from "react-router-dom";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
+import EditIcon from "@mui/icons-material/Edit";
 
-export const NoticeResourceButton = () => {
+const NoticeResourceButton = () => {
   const noticeRecord = useRecordContext()!;
   return noticeRecord.source ? (
     <ResourceButton source={noticeRecord.source} />
   ) : null;
+};
+
+const NoticeActionButton = () => {
+  const noticeRecord = useRecordContext()!;
+
+  switch (noticeRecord.type) {
+    case "no.elhub.flex.party.missing":
+      return (
+        <Button
+          component={Link}
+          to="/party/create"
+          label="Create party"
+          state={JSON.parse(noticeRecord.data)}
+          startIcon={<PersonAddIcon />}
+        />
+      );
+    case "no.elhub.flex.party.outdated":
+      return (
+        <Button
+          component={Link}
+          to={`/party/${noticeRecord.source.split("/")[2]}`}
+          label="Update party"
+          state={JSON.parse(noticeRecord.data)}
+          startIcon={<EditIcon />}
+        />
+      );
+    case "no.elhub.flex.party.residual":
+      return (
+        <Button
+          component={Link}
+          to={`/party/${noticeRecord.source.split("/")[2]}`}
+          color="warning"
+          label="Terminate party"
+          state={{ status: "terminated" }}
+          startIcon={<PersonOffIcon />}
+        />
+      );
+    default:
+      return null;
+  }
 };
 
 export const NoticeList = () => (
@@ -27,8 +72,11 @@ export const NoticeList = () => (
       <TextField source="source" />
       <FunctionField
         source="data"
-        render={(record) => (record.data ? JSON.stringify(record.data) : "{}")}
+        render={(record) =>
+          record.data ? JSON.stringify(JSON.parse(record.data)) : "{}"
+        }
       />
+      <NoticeActionButton />
       <NoticeResourceButton />
     </Datagrid>
   </List>

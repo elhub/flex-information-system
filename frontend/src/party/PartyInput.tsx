@@ -1,4 +1,10 @@
-import { required, SelectInput, SimpleForm, TextInput } from "react-admin";
+import {
+  required,
+  SelectInput,
+  SimpleForm,
+  TextInput,
+  useRecordContext,
+} from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import {
   InputStack,
@@ -9,15 +15,22 @@ import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { roleNames } from "../roles";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 // component updating the role field automatically based on the type field
 const PartyTypeInput = (props: any) => {
   const formContext = useFormContext();
+  const record = useRecordContext();
 
   // all roles can be chosen except anonymous and entity
   const roles = { ...roleNames };
   delete roles.flex_anonymous;
   delete roles.flex_entity;
+
+  // if the form is filled from an existing record, make sure role is defined
+  useEffect(() => {
+    if (record?.type) formContext.setValue("role", `flex_${record.type}`);
+  });
 
   return (
     <SelectInput
@@ -73,12 +86,41 @@ const PartyBusinessIDTypeInput = (props: any) => {
   );
 };
 
+// keep only the fields that map to the UI
+const filterRecord = ({
+  name,
+  business_id,
+  business_id_type,
+  entity_id,
+  type,
+  role,
+  status,
+}: any) => ({
+  name,
+  business_id,
+  business_id_type,
+  entity_id,
+  type,
+  role,
+  status,
+});
+
 // common layout to create and edit pages
 export const PartyInput = () => {
   const createOrUpdate = useCreateOrUpdate();
 
+  const actualRecord = useRecordContext();
+  const { state: overrideRecord } = useLocation();
+
+  // priority to the values coming from notice buttons if they exist
+  const record = filterRecord({ ...actualRecord, ...overrideRecord });
+
   return (
-    <SimpleForm maxWidth={1280} toolbar={<Toolbar saveAlwaysEnabled />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      toolbar={<Toolbar saveAlwaysEnabled />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
