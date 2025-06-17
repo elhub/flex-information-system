@@ -521,6 +521,19 @@ ultimately regulation that will decide, but we can investigate if
 centrally handled imbalance adjustment and financial transfer is
 feasible at a reasonable complexity/cost.
 
+## Metered/Measured Data Administrators
+
+We find the definition of Metered Data Administrator (MDA) e.g. in
+[Implementing Regulation (EU) 2023/1162](https://eur-lex.europa.eu/eli/reg_impl/2023/1162/oj/eng).
+
+> means a party responsible for storing validated historical metering and
+> consumption data and distributing these data to final customers and/or
+> eligible parties;
+
+Elhub is the de-facto MDA in Norway for smart meters on the accounting point
+level. There is specific party assigned as administrators for sub-meter or
+dedicated meter/measurement device data.
+
 ## Challenges
 
 The following are some challenges that has been identified and must be
