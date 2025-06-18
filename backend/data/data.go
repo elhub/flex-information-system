@@ -2,10 +2,12 @@ package data
 
 import (
 	"bytes"
+	_ "embed"
 	"encoding/json"
 	"flex/auth"
 	"flex/data/models"
 	"flex/internal/middleware"
+	"flex/internal/openapi"
 	"flex/pgpool"
 	"fmt"
 	"io"
@@ -18,6 +20,9 @@ import (
 	"strconv"
 	"strings"
 )
+
+//go:embed static/openapi.json
+var openapiInput []byte
 
 // api gathers handlers for all endpoints of the data API.
 type api struct {
@@ -33,6 +38,7 @@ var _ http.Handler = &api{} //nolint:exhaustruct
 //
 //nolint:funlen
 func NewAPIHandler(
+	baseURL string,
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
@@ -50,6 +56,15 @@ func NewAPIHandler(
 		mux:          mux,
 		ctxKey:       ctxKey,
 	}
+
+	// OpenAPI documentation handlers
+	mux.HandleFunc("GET /", openapi.ElementsHandlerFunc("Flex Data API"))
+
+	mux.HandleFunc("GET /openapi.json", openapi.HandlerFunc(
+		openapiInput,
+		baseURL,
+		"Flex Data API",
+	))
 
 	// controllable unit lookup
 	mux.HandleFunc("POST /controllable_unit/lookup", data.controllableUnitLookupHandler)
@@ -461,6 +476,6 @@ func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 // notFoundHandler writes a 404 Not Found response in PostgREST format.
 func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
 	writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
-		Message: "Not Found" + req.URL.Path,
+		Message: "Not Found " + req.URL.Path,
 	})
 }

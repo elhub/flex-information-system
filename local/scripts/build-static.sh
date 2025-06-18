@@ -43,26 +43,6 @@ function frontend() {
 	cd ..
 }
 
-function openapi() {
-	local env_short=$1
-	local env_long=$2
-	local api_name=$3
-	local api_title=$4
-
-	mkdir -p "./dist/$api_name/v0"
-
-	sed "s/API_TITLE/$api_title/g; s/API_NAME/$api_name/g; s/BASE_URL//g" \
-		./local/elements/index.html \
-		>"./dist/$api_name/v0/index.html"
-
-	jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
-		'.servers = [$servers.'"$api_name.$env_short"']' <"openapi/openapi-${api_name}.json" \
-		>"./dist/$api_name/v0/openapi.json"
-
-	# Scrub server name from openapi.json
-
-}
-
 # script start
 env_short=$1
 if [ -z "$env_short" ]; then
@@ -79,8 +59,6 @@ echo "Building for $env_long ($env_short) environment"
 
 # build
 frontend "$env_short" "$env_long"
-openapi "$env_short" "$env_long" "api" "Flexibility Information System Main API Documentation"
-openapi "$env_short" "$env_long" "auth" "Flexibility Information System Auth API Documentation"
 
 # package
 cd dist
