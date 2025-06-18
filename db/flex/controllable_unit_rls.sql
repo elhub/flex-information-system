@@ -35,7 +35,7 @@ USING (
         SELECT 1
         FROM accounting_point_system_operator AS ap_so
         WHERE ap_so.accounting_point_id = controllable_unit.accounting_point_id -- noqa
-            AND ap_so.system_operator_id = current_party()
+            AND ap_so.system_operator_id = (SELECT current_party())
             AND ap_so.valid_time_range @> current_timestamp
     )
 );
@@ -65,12 +65,12 @@ USING (
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit.id -- noqa
             AND controllable_unit_service_provider.service_provider_id
-            = current_party()
+            = (SELECT current_party())
             AND controllable_unit_service_provider.valid_time_range
             && controllable_unit.record_time_range -- noqa
     ) OR (
         -- the SP created the CU
-        created_by_party_id = current_party()
+        created_by_party_id = (SELECT current_party())
     )
 );
 
@@ -90,7 +90,7 @@ USING (
         SELECT 1 FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit.id -- noqa
             AND controllable_unit_service_provider.service_provider_id
-            = current_party()
+            = (SELECT current_party())
             AND controllable_unit_service_provider.valid_time_range
             @> current_timestamp
     )
@@ -106,7 +106,7 @@ USING (
         SELECT 1
         FROM controllable_unit_end_user AS cueu
         WHERE cueu.controllable_unit_id = controllable_unit.id -- noqa
-            AND cueu.end_user_id = current_party()
+            AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
@@ -121,7 +121,7 @@ USING (
         SELECT 1
         FROM controllable_unit_energy_supplier AS cues
         WHERE cues.controllable_unit_id = controllable_unit.id -- noqa
-            AND cues.energy_supplier_id = current_party()
+            AND cues.energy_supplier_id = (SELECT current_party())
             AND cues.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
@@ -136,7 +136,7 @@ USING (
         SELECT 1
         FROM controllable_unit_balance_responsible_party AS cubrp
         WHERE cubrp.controllable_unit_id = controllable_unit.id -- noqa
-            AND cubrp.balance_responsible_party_id = current_party()
+            AND cubrp.balance_responsible_party_id = (SELECT current_party())
             AND cubrp.valid_time_range && controllable_unit.record_time_range -- noqa
     )
 );
@@ -157,7 +157,7 @@ USING (
         WHERE cueu.controllable_unit_id = controllable_unit_history.id -- noqa
             -- this version of the CU in the history was in effect
             -- when the current party was the end user of its AP
-            AND cueu.end_user_id = current_party()
+            AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
@@ -175,7 +175,7 @@ USING (
         WHERE cues.controllable_unit_id = controllable_unit_history.id -- noqa
             -- this version of the CU in the history was in effect
             -- when the current party was the energy supplier of its AP
-            AND cues.energy_supplier_id = current_party()
+            AND cues.energy_supplier_id = (SELECT current_party())
             AND cues.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
@@ -193,7 +193,7 @@ USING (
         WHERE cubrp.controllable_unit_id = controllable_unit_history.id -- noqa
             -- this version of the CU in the history was in effect when
             -- the current party was the balance responsible party of its AP
-            AND cubrp.balance_responsible_party_id = current_party()
+            AND cubrp.balance_responsible_party_id = (SELECT current_party())
             AND cubrp.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
 );
@@ -235,7 +235,7 @@ USING (
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit_history.id -- noqa
             AND controllable_unit_service_provider.service_provider_id
-            = current_party()
+            = (SELECT current_party())
             AND controllable_unit_service_provider.valid_time_range
             && controllable_unit_history.record_time_range -- noqa
     )
