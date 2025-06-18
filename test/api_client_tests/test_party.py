@@ -217,29 +217,8 @@ def test_party_common(sts):
 
 
 # RLS: PTY-ENT001
-def test_party_ent001(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_ent = sts.get_client(TestEntity.TEST, "ENT")
-
-    ent_id = sts.get_userinfo(client_ent)["entity_id"]
-
-    # check entity can see parties they own
-
-    parties_visible = list_party.sync(
-        client=client_fiso,
-        entity_id=f"eq.{ent_id}",
-    )
-    assert isinstance(parties_visible, list)
-    assert len(parties_visible) > 0
-
-    for p in parties_visible[:5]:
-        p = read_party.sync(client=client_ent, id=cast(int, p.id))
-        assert isinstance(p, PartyResponse)
-
-
-# RLS: PTY-ENT002
 # RLS: PTY-COM003
-def test_party_com_ent002(sts):
+def test_party_ent(sts):
     for role in sts.COMMON_ROLES + ["ENT"]:
         client = sts.get_client(TestEntity.TEST, role)
         # can read parties they belong to
@@ -253,6 +232,23 @@ def test_party_com_ent002(sts):
         for pm in pms_visible[:5]:
             p = read_party.sync(client=client, id=cast(int, pm.party_id))
             assert isinstance(p, PartyResponse)
+
+
+# RLS: PTY-ENT002
+def test_party_ent002(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_ent = sts.get_client(TestEntity.TEST, "ENT")
+    ent_id = sts.get_userinfo(client_ent)["entity_id"]
+
+    parties_owned_by_ent = list_party.sync(
+        client=client_fiso,
+        entity_id=f"eq.{ent_id}",
+    )
+    assert isinstance(parties_owned_by_ent, list)
+
+    for p in parties_owned_by_ent:
+        p = read_party.sync(client=client_ent, id=cast(int, p.id))
+        assert isinstance(p, PartyResponse)
 
 
 def test_rla_absence(sts):

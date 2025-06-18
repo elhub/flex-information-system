@@ -26,12 +26,28 @@ GRANT SELECT ON party_membership TO flex_entity;
 CREATE POLICY "PTYM_ENT001" ON party_membership
 FOR SELECT
 TO flex_entity
-USING (
-    EXISTS (
+USING (entity_id = current_entity());
+
+-- security definer function to avoid round trips in RLS policies
+CREATE FUNCTION entity_owns_party(
+    in_entity_id bigint,
+    in_party_id bigint
+)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+    SELECT EXISTS (
         SELECT 1 FROM flex.party AS p
-        WHERE p.id = party_membership.party_id -- noqa
+        WHERE p.id = in_party_id AND p.entity_id = in_entity_id
     )
-);
+$$;
+
+-- RLS: PTYM-ENT002
+CREATE POLICY "PTYM_ENT002" ON party_membership
+FOR SELECT
+TO flex_entity
+USING (entity_owns_party(current_entity(), party_id));
 
 -- RLS: PTYM-COM002
 GRANT SELECT ON party_membership TO flex_common;

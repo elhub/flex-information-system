@@ -60,10 +60,10 @@ resource. The default policy is **deny**.
 
 #### Entity
 
-| Policy key | Policy                           | Status |
-|------------|----------------------------------|--------|
-| PTY-ENT001 | Read all PTY that they own       | DONE   |
-| PTY-ENT002 | Read all PTY that they belong to | DONE   |
+| Policy key | Policy                                       | Status |
+|------------|----------------------------------------------|--------|
+| PTY-ENT001 | Read all PTY whose memberships they can read | DONE   |
+| PTY-ENT002 | Read all PTY that they own                   | DONE   |
 
 #### Anonymous
 
