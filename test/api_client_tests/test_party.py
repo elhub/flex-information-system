@@ -234,6 +234,23 @@ def test_party_ent(sts):
             assert isinstance(p, PartyResponse)
 
 
+# RLS: PTY-ENT002
+def test_party_ent002(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_ent = sts.get_client(TestEntity.TEST, "ENT")
+    ent_id = sts.get_userinfo(client_ent)["entity_id"]
+
+    parties_owned_by_ent = list_party.sync(
+        client=client_fiso,
+        entity_id=f"eq.{ent_id}",
+    )
+    assert isinstance(parties_owned_by_ent, list)
+
+    for p in parties_owned_by_ent:
+        p = read_party.sync(client=client_ent, id=cast(int, p.id))
+        assert isinstance(p, PartyResponse)
+
+
 def test_rla_absence(sts):
     # PTY-COM002 gives access to part of the parties to everybody
     nb_default_visible_parties = len(

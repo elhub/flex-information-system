@@ -9,6 +9,9 @@ from flex.models import (
     ErrorMessage,
     EmptyObject,
 )
+from flex.api.party import (
+    list_party,
+)
 from flex.api.party_membership import (
     create_party_membership,
     list_party_membership,
@@ -82,12 +85,12 @@ def test_ptym_fiso(sts):
     assert not (isinstance(d, ErrorMessage))
 
 
-# RLS: PTYM-ENT001
 def test_ptym_ent(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_ent = sts.get_client(TestEntity.TEST, "ENT")
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
+    # RLS: PTYM-ENT001
     pms_concerning_ent = list_party_membership.sync(
         client=client_fiso, entity_id=f"eq.{ent_id}"
     )
@@ -96,6 +99,25 @@ def test_ptym_ent(sts):
     pms = list_party_membership.sync(client=client_ent)
     assert isinstance(pms, list)
     assert len(pms) == len(pms_concerning_ent)
+
+    # RLS: PTYM-ENT002
+    parties_owned_by_ent = list_party.sync(
+        client=client_fiso,
+        entity_id=f"eq.{ent_id}",
+    )
+    assert isinstance(parties_owned_by_ent, list)
+    parties_owned_by_ent = [p.id for p in parties_owned_by_ent]
+
+    all_pms = list_party_membership.sync(
+        client=client_fiso,
+        limit="10000",
+    )
+    assert isinstance(all_pms, list)
+
+    for pm in all_pms:
+        if pm.party_id in parties_owned_by_ent:
+            pm = read_party_membership.sync(client=client_ent, id=cast(int, pm.id))
+            assert isinstance(pm, PartyMembershipResponse)
 
 
 def test_ptym_common(sts):
