@@ -27,14 +27,14 @@ elhubProject(Group.FLEX, "flex-information-system") {
             dockerBuild {
                 dockerBuildNameSuffix = "backend"
                 dockerfileName = "path_to_dockerfile"
-            }.triggerOnVcsChange { triggerRules = "+:backend/**" }
+            }
 
             liquiBuild {
                 registrySettings = {
                     repository = imageRepo
                 }
                 changelogDirectory = "path_to_changelog_directory"
-            }.triggerOnVcsChange { triggerRules = "+:db/**" }
+            }
 
             gitOps {
                 clusters = setOf(KubeCluster.TEST11) // TODO: Change this to relevant cluster
@@ -57,7 +57,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 dockerBuild {
                     dockerBuildNameSuffix = "frontend"
                     dockerfileName = "path_to_dockerfile"
-                }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+                }
 
                 gitOps {
                     clusters = setOf(KubeCluster.TEST13) // TODO: Change this to relevant cluster
