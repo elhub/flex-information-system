@@ -39,6 +39,7 @@ logs
 *-error.log*
 
 # Temp directories
+build
 dist
 dist-docs
 docs/download
