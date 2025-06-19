@@ -23,7 +23,7 @@ DECLARE
 BEGIN
     SELECT ('{"requesting_party_name": "' || p.name || '"}')::jsonb
     INTO l_event_data
-    FROM flex.party AS p WHERE p.id = flex.current_party();
+    FROM flex.party AS p WHERE p.id = (SELECT flex.current_party());
 
     FOR
         -- define all the fields of the row to return

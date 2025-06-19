@@ -30,7 +30,7 @@ USING (
 CREATE POLICY "PTY_ENT002" ON party
 FOR SELECT
 TO flex_entity
-USING (entity_id = current_entity());
+USING (entity_id = (SELECT current_entity()));
 
 -- RLS: PTY-COM002
 -- RLS: PTY-COM003

@@ -39,7 +39,7 @@ ON service_provider_product_application
 FOR ALL
 TO flex_service_provider
 USING (
-    service_provider_id = flex.current_party()
+    service_provider_id = (SELECT flex.current_party())
 );
 
 -- RLS: SPPA-SO001
@@ -57,5 +57,5 @@ ON service_provider_product_application
 FOR UPDATE
 TO flex_system_operator
 USING (
-    system_operator_id = flex.current_party()
+    system_operator_id = (SELECT flex.current_party())
 );

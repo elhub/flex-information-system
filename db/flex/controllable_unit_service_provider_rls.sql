@@ -54,7 +54,7 @@ CREATE POLICY controllable_unit_service_provider_sp
 ON controllable_unit_service_provider
 FOR ALL
 TO flex_service_provider
-USING (service_provider_id = current_party());
+USING (service_provider_id = (SELECT current_party()));
 
 -- RLS: CUSP-EU001
 GRANT SELECT ON controllable_unit_service_provider TO flex_end_user;
@@ -67,7 +67,7 @@ USING (
         SELECT 1
         FROM controllable_unit_end_user AS cueu
         WHERE cueu.controllable_unit_id = controllable_unit_service_provider.controllable_unit_id -- noqa
-            AND cueu.end_user_id = current_party()
+            AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_service_provider.valid_time_range -- noqa
     )
 );
@@ -89,7 +89,7 @@ USING (
         WHERE cueu.controllable_unit_id = controllable_unit_service_provider_history.controllable_unit_id -- noqa
             -- this version of the CUSP in the history puts the contract in the
             -- period when the current party is the end user of the AP
-            AND cueu.end_user_id = current_party()
+            AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_service_provider_history.valid_time_range -- noqa
     )
 );

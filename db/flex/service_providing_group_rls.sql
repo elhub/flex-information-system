@@ -35,7 +35,7 @@ TO flex_service_provider;
 CREATE POLICY "SPG_SP001" ON service_providing_group
 FOR ALL
 TO flex_service_provider
-USING (service_provider_id = current_party());
+USING (service_provider_id = (SELECT current_party()));
 
 -- RLS: SPG-SO001
 GRANT SELECT ON service_providing_group
@@ -58,6 +58,6 @@ USING (
     EXISTS (
         SELECT 1 FROM service_providing_group_product_application spgpa -- noqa
         WHERE spgpa.service_providing_group_id = service_providing_group.id -- noqa
-        AND spgpa.procuring_system_operator_id = current_party() -- noqa
+        AND spgpa.procuring_system_operator_id = (SELECT current_party()) -- noqa
     )
 );

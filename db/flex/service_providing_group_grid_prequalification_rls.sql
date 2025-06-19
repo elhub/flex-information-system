@@ -44,7 +44,8 @@ USING (
     EXISTS (
         SELECT 1 FROM service_providing_group
         WHERE service_providing_group_grid_prequalification.service_providing_group_id = service_providing_group.id -- noqa
-            AND service_providing_group.service_provider_id = current_party()
+            AND service_providing_group.service_provider_id
+            = (SELECT current_party())
     )
 );
 
@@ -57,7 +58,7 @@ ON service_providing_group_grid_prequalification
 FOR ALL
 TO flex_system_operator
 USING (
-    impacted_system_operator_id = current_party()
+    impacted_system_operator_id = (SELECT current_party())
 );
 
 -- RLS: SPGGP-SO002
@@ -77,7 +78,7 @@ AS $$
 SELECT EXISTS (
     SELECT 1 FROM service_providing_group_grid_prequalification
     WHERE service_providing_group_id = spg_id
-    AND impacted_system_operator_id = current_party()
+    AND impacted_system_operator_id = (SELECT current_party())
 )
 $$;
 

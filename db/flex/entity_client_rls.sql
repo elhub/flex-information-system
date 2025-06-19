@@ -10,7 +10,7 @@ CREATE POLICY "ECL_ENT001" ON entity_client
 FOR ALL
 TO flex_entity
 USING (
-    entity_id = flex.current_entity()
+    entity_id = (SELECT flex.current_entity())
 );
 
 -- RLS: ECL-FISO001

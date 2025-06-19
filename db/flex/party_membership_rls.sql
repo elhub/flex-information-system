@@ -54,10 +54,10 @@ GRANT SELECT ON party_membership TO flex_common;
 CREATE POLICY "PTYM_COM002" ON party_membership
 FOR SELECT
 TO flex_common
-USING (party_id = current_party());
+USING (party_id = (SELECT current_party()));
 
 -- RLS: PTYM-COM003
 CREATE POLICY "PTYM_COM003" ON party_membership_history
 FOR SELECT
 TO flex_common
-USING (party_id = current_party());
+USING (party_id = (SELECT current_party()));
