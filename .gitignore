@@ -17,6 +17,7 @@
 !.golangci*.yml
 !.spectral.yaml
 !.eslintrc.js
+!.dockerfilelintrc
 *.dot
 !.air.toml
 # draw.io
