@@ -23,8 +23,12 @@ output_file_backend_schema = "backend/schema.sql"
 
 def sql_type_of_field_attr(attr):
     if attr["type"] == "array":
+        if "format" not in attr["items"]:
+            return "jsonb []"
         return attr["items"]["format"] + " []"
     else:
+        if "format" not in attr:
+            return "jsonb"
         return attr["format"]
 
 

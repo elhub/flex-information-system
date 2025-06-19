@@ -29,7 +29,7 @@ const NoticeActionButton = () => {
           component={Link}
           to="/party/create"
           label="Create party"
-          state={JSON.parse(noticeRecord.data)}
+          state={noticeRecord.data}
           startIcon={<PersonAddIcon />}
         />
       );
@@ -39,7 +39,7 @@ const NoticeActionButton = () => {
           component={Link}
           to={`/party/${noticeRecord.source.split("/")[2]}`}
           label="Update party"
-          state={JSON.parse(noticeRecord.data)}
+          state={noticeRecord.data}
           startIcon={<EditIcon />}
         />
       );
@@ -60,9 +60,7 @@ export const NoticeList = () => (
       <TextField source="source" />
       <FunctionField
         source="data"
-        render={(record) =>
-          record.data ? JSON.stringify(JSON.parse(record.data)) : "{}"
-        }
+        render={(record) => (record.data ? JSON.stringify(record.data) : "{}")}
       />
       <NoticeActionButton />
       <NoticeResourceButton />

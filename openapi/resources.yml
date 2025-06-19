@@ -1414,9 +1414,26 @@ resources:
         readOnly: true
         example: '/service_providing_group_membership/4'
       data:
-        description: The data of the notice.
-        format: text
-        type: string
+        description: >-
+          The data of the notice. The format depends on the type of notice.
+        type: object
+        oneOf:
+          - properties:
+              invalid_timeline:
+                description: >-
+                  Section of the resource's valid time that is not covered by a
+                  required contract.
+                format: text
+                type: string
+          - properties:
+              missing_record:
+                type: object
+                description: Data of the record missing in the database.
+          - properties:
+              updated_fields:
+                type: object
+                description: >-
+                  Values of fields that have been updated in a later version of
+                  the resource.
         readOnly: true
         nullable: true
-        example: null

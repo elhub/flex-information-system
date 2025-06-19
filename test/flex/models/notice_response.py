@@ -1,9 +1,21 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.notice_response_data_type_0 import NoticeResponseDataType0
+    from ..models.notice_response_data_type_1 import NoticeResponseDataType1
+    from ..models.notice_response_data_type_2 import NoticeResponseDataType2
+    from ..models.notice_response_data_type_3_type_0 import NoticeResponseDataType3Type0
+    from ..models.notice_response_data_type_3_type_1 import NoticeResponseDataType3Type1
+    from ..models.notice_response_data_type_3_type_2 import NoticeResponseDataType3Type2
+    from ..models.notice_response_data_type_4_type_0 import NoticeResponseDataType4Type0
+    from ..models.notice_response_data_type_4_type_1 import NoticeResponseDataType4Type1
+    from ..models.notice_response_data_type_4_type_2 import NoticeResponseDataType4Type2
+
 
 T = TypeVar("T", bound="NoticeResponse")
 
@@ -19,27 +31,66 @@ class NoticeResponse:
                 no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
             source (Union[Unset, str]): The URI of the resource concerned by the event. Example:
                 /service_providing_group_membership/4.
-            data (Union[None, Unset, str]): The data of the notice.
+            data (Union['NoticeResponseDataType0', 'NoticeResponseDataType1', 'NoticeResponseDataType2',
+                'NoticeResponseDataType3Type0', 'NoticeResponseDataType3Type1', 'NoticeResponseDataType3Type2',
+                'NoticeResponseDataType4Type0', 'NoticeResponseDataType4Type1', 'NoticeResponseDataType4Type2', Unset]): The
+                data of the notice. The format depends on the type of notice.
     """
 
     party_id: Union[Unset, int] = UNSET
     type: Union[Unset, str] = UNSET
     source: Union[Unset, str] = UNSET
-    data: Union[None, Unset, str] = UNSET
+    data: Union[
+        "NoticeResponseDataType0",
+        "NoticeResponseDataType1",
+        "NoticeResponseDataType2",
+        "NoticeResponseDataType3Type0",
+        "NoticeResponseDataType3Type1",
+        "NoticeResponseDataType3Type2",
+        "NoticeResponseDataType4Type0",
+        "NoticeResponseDataType4Type1",
+        "NoticeResponseDataType4Type2",
+        Unset,
+    ] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        from ..models.notice_response_data_type_0 import NoticeResponseDataType0
+        from ..models.notice_response_data_type_1 import NoticeResponseDataType1
+        from ..models.notice_response_data_type_2 import NoticeResponseDataType2
+        from ..models.notice_response_data_type_3_type_0 import NoticeResponseDataType3Type0
+        from ..models.notice_response_data_type_3_type_1 import NoticeResponseDataType3Type1
+        from ..models.notice_response_data_type_3_type_2 import NoticeResponseDataType3Type2
+        from ..models.notice_response_data_type_4_type_0 import NoticeResponseDataType4Type0
+        from ..models.notice_response_data_type_4_type_1 import NoticeResponseDataType4Type1
+
         party_id = self.party_id
 
         type = self.type
 
         source = self.source
 
-        data: Union[None, Unset, str]
+        data: Union[Dict[str, Any], Unset]
         if isinstance(self.data, Unset):
             data = UNSET
+        elif isinstance(self.data, NoticeResponseDataType0):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeResponseDataType1):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeResponseDataType2):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeResponseDataType3Type0):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeResponseDataType3Type1):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeResponseDataType3Type2):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeResponseDataType4Type0):
+            data = self.data.to_dict()
+        elif isinstance(self.data, NoticeResponseDataType4Type1):
+            data = self.data.to_dict()
         else:
-            data = self.data
+            data = self.data.to_dict()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -57,6 +108,16 @@ class NoticeResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.notice_response_data_type_0 import NoticeResponseDataType0
+        from ..models.notice_response_data_type_1 import NoticeResponseDataType1
+        from ..models.notice_response_data_type_2 import NoticeResponseDataType2
+        from ..models.notice_response_data_type_3_type_0 import NoticeResponseDataType3Type0
+        from ..models.notice_response_data_type_3_type_1 import NoticeResponseDataType3Type1
+        from ..models.notice_response_data_type_3_type_2 import NoticeResponseDataType3Type2
+        from ..models.notice_response_data_type_4_type_0 import NoticeResponseDataType4Type0
+        from ..models.notice_response_data_type_4_type_1 import NoticeResponseDataType4Type1
+        from ..models.notice_response_data_type_4_type_2 import NoticeResponseDataType4Type2
+
         d = src_dict.copy()
         party_id = d.pop("party_id", UNSET)
 
@@ -64,12 +125,91 @@ class NoticeResponse:
 
         source = d.pop("source", UNSET)
 
-        def _parse_data(data: object) -> Union[None, Unset, str]:
-            if data is None:
-                return data
+        def _parse_data(
+            data: object,
+        ) -> Union[
+            "NoticeResponseDataType0",
+            "NoticeResponseDataType1",
+            "NoticeResponseDataType2",
+            "NoticeResponseDataType3Type0",
+            "NoticeResponseDataType3Type1",
+            "NoticeResponseDataType3Type2",
+            "NoticeResponseDataType4Type0",
+            "NoticeResponseDataType4Type1",
+            "NoticeResponseDataType4Type2",
+            Unset,
+        ]:
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_0 = NoticeResponseDataType0.from_dict(data)
+
+                return data_type_0
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_1 = NoticeResponseDataType1.from_dict(data)
+
+                return data_type_1
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_2 = NoticeResponseDataType2.from_dict(data)
+
+                return data_type_2
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_3_type_0 = NoticeResponseDataType3Type0.from_dict(data)
+
+                return data_type_3_type_0
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_3_type_1 = NoticeResponseDataType3Type1.from_dict(data)
+
+                return data_type_3_type_1
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_3_type_2 = NoticeResponseDataType3Type2.from_dict(data)
+
+                return data_type_3_type_2
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_4_type_0 = NoticeResponseDataType4Type0.from_dict(data)
+
+                return data_type_4_type_0
+            except:  # noqa: E722
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_4_type_1 = NoticeResponseDataType4Type1.from_dict(data)
+
+                return data_type_4_type_1
+            except:  # noqa: E722
+                pass
+            if not isinstance(data, dict):
+                raise TypeError()
+            data_type_4_type_2 = NoticeResponseDataType4Type2.from_dict(data)
+
+            return data_type_4_type_2
 
         data = _parse_data(d.pop("data", UNSET))
 

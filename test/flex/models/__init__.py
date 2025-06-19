@@ -81,6 +81,21 @@ from .list_system_operator_product_type_prefer import ListSystemOperatorProductT
 from .list_technical_resource_history_prefer import ListTechnicalResourceHistoryPrefer
 from .list_technical_resource_prefer import ListTechnicalResourcePrefer
 from .notice_response import NoticeResponse
+from .notice_response_data_type_0 import NoticeResponseDataType0
+from .notice_response_data_type_1 import NoticeResponseDataType1
+from .notice_response_data_type_1_missing_record import NoticeResponseDataType1MissingRecord
+from .notice_response_data_type_2 import NoticeResponseDataType2
+from .notice_response_data_type_2_updated_fields import NoticeResponseDataType2UpdatedFields
+from .notice_response_data_type_3_type_0 import NoticeResponseDataType3Type0
+from .notice_response_data_type_3_type_1 import NoticeResponseDataType3Type1
+from .notice_response_data_type_3_type_1_missing_record import NoticeResponseDataType3Type1MissingRecord
+from .notice_response_data_type_3_type_2 import NoticeResponseDataType3Type2
+from .notice_response_data_type_3_type_2_updated_fields import NoticeResponseDataType3Type2UpdatedFields
+from .notice_response_data_type_4_type_0 import NoticeResponseDataType4Type0
+from .notice_response_data_type_4_type_1 import NoticeResponseDataType4Type1
+from .notice_response_data_type_4_type_1_missing_record import NoticeResponseDataType4Type1MissingRecord
+from .notice_response_data_type_4_type_2 import NoticeResponseDataType4Type2
+from .notice_response_data_type_4_type_2_updated_fields import NoticeResponseDataType4Type2UpdatedFields
 from .notice_update_request import NoticeUpdateRequest
 from .notification_response import NotificationResponse
 from .notification_update_request import NotificationUpdateRequest
@@ -222,6 +237,21 @@ __all__ = (
     "ListTechnicalResourceHistoryPrefer",
     "ListTechnicalResourcePrefer",
     "NoticeResponse",
+    "NoticeResponseDataType0",
+    "NoticeResponseDataType1",
+    "NoticeResponseDataType1MissingRecord",
+    "NoticeResponseDataType2",
+    "NoticeResponseDataType2UpdatedFields",
+    "NoticeResponseDataType3Type0",
+    "NoticeResponseDataType3Type1",
+    "NoticeResponseDataType3Type1MissingRecord",
+    "NoticeResponseDataType3Type2",
+    "NoticeResponseDataType3Type2UpdatedFields",
+    "NoticeResponseDataType4Type0",
+    "NoticeResponseDataType4Type1",
+    "NoticeResponseDataType4Type1MissingRecord",
+    "NoticeResponseDataType4Type2",
+    "NoticeResponseDataType4Type2UpdatedFields",
     "NoticeUpdateRequest",
     "NotificationResponse",
     "NotificationUpdateRequest",

@@ -22,6 +22,19 @@ from the responsible party.
 | no.elhub.flex.service_providing_group_membership.valid_time.outside_contract  | Inconsistency: SPG contains expired CU(s)                            | SP                | Validate and update SPG membership                                                                |
 | no.elhub.flex.service_providing_group_product_application.status.requested    | SPG product application status requested                             | PSO               | Initiate SPG product prequalification and update status                                           |
 
+## Data
+
+This resource may contain data to better describe the database inconsistency
+that lead to the creation of the notice, and guide the user in resolving it.
+When such information is present, it is given in the `data` field of the notice,
+and its format depends on the type of notice.
+
+| Type                                     | Attached data                        |
+|------------------------------------------|--------------------------------------|
+| `[resource].valid_time.outside_contract` | Part of the timeline that is invalid |
+| `[resource].missing`                     | Missing record                       |
+| `[resource].outdated`                    | Updated fields                       |
+
 ## Relevant links
 
 * [API Documentation](../api/v0/index.html#/operations/list_notice)
@@ -29,12 +42,12 @@ from the responsible party.
 
 ## Fields
 
-| Name                                                         | Description                                     | Format                                                          | Reference                     |
-|--------------------------------------------------------------|-------------------------------------------------|-----------------------------------------------------------------|-------------------------------|
-| <a name="field-party_id" href="#field-party_id">party_id</a> | Reference to the party targeted by the notice.  | bigint<br/>Read only                                            | [party.id](party.md#field-id) |
-| <a name="field-type" href="#field-type">type</a>             | The type of the notice.                         | text<br/>Pattern: `^no.elhub.flex.`<br/>Read only               |                               |
-| <a name="field-source" href="#field-source">source</a>       | The URI of the resource concerned by the event. | text<br/>Pattern: `^(\/([a-z][a-z_]*\|[0-9]+))+$`<br/>Read only |                               |
-| <a name="field-data" href="#field-data">data</a>             | The data of the notice.                         | text<br/>Read only                                              |                               |
+| Name                                                         | Description                                                       | Format                                                          | Reference                     |
+|--------------------------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------------------------|-------------------------------|
+| <a name="field-party_id" href="#field-party_id">party_id</a> | Reference to the party targeted by the notice.                    | bigint<br/>Read only                                            | [party.id](party.md#field-id) |
+| <a name="field-type" href="#field-type">type</a>             | The type of the notice.                                           | text<br/>Pattern: `^no.elhub.flex.`<br/>Read only               |                               |
+| <a name="field-source" href="#field-source">source</a>       | The URI of the resource concerned by the event.                   | text<br/>Pattern: `^(\/([a-z][a-z_]*\|[0-9]+))+$`<br/>Read only |                               |
+| <a name="field-data" href="#field-data">data</a>             | The data of the notice. The format depends on the type of notice. | <br/>Read only                                                  |                               |
 
 ## Validation Rules
 

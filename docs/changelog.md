@@ -2,6 +2,12 @@
 
 <!-- markdownlint-disable MD013 -->
 
+## 19.06.2025
+
+* **Added specification for the `data` field for notices.**  
+  The field has turned from a generic `string` into an `object` and has now a
+  documented format in the OpenAPI specification.
+
 ## 03.06.2025
 
 * **Added _Accounting Point Energy Supplier_ resource.**
