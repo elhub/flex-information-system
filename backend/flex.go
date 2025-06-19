@@ -377,7 +377,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// data API endpoint
 	router.Match(
-		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		"/api/v0/*url",
 		WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
 	)
