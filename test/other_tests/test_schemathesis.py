@@ -24,7 +24,7 @@ token = SecurityTokenService().get_client(TestEntity.TEST, "FISO").token
 
 # We are reading the file from local instead of the URL to be able to
 # iterate faster on the OpenAPI file while developing
-openapi_document = open("openapi/openapi-api.json", "r").read()
+openapi_document = open("backend/data/static/openapi.json", "r").read()
 
 api_url = os.environ["FLEX_URL_BASE"] + "/api/v0"
 

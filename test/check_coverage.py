@@ -18,7 +18,7 @@ api_test_files = list(Path("test/api_client_tests").rglob("*.py"))
 db_files = list(Path("db").rglob("*.sql"))
 
 defined_endpoints = set()
-with open("openapi/openapi-api.json", "r") as file:
+with open("backend/data/static/openapi.json", "r") as file:
     openapi_document = json.load(file)
     for endpoint, obj in openapi_document["paths"].items():
         for attr in obj:
