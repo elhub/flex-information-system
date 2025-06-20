@@ -12,35 +12,48 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
 elhubProject(Group.FLEX, "flex-information-system") {
 
     val gitOpsRepo = "https://github.com/elhub/flex"
-    val imageRepo = "elhub/flex-information-system"
+    val imageRepoPrefix = "flex/information-system"
+    val imageRepoFrontend = "$imageRepoPrefix-frontend"
+    val imageRepoBackend = "$imageRepoPrefix-backend"
+
 
     pipeline {
-        sequential {
-            makeVerify {
-                workingDir = "backend"
-                sonarScanSettings = {
-                    sonarProjectSources = "backend"
+        parallel {
+            sequential {
+                makeVerify {
                     workingDir = "backend"
+                    sonarScanSettings = {
+                        sonarProjectSources = "backend"
+                        workingDir = "backend"
+                    }
+                }
+
+                dockerBuild {
+                    registrySettings = {
+                        repository = imageRepoBackend
+                    }
+                    contextDirectory = "backend"
+                    dockerBuildNameSuffix = "Backend"
+                    dockerfileName = "./backend/Dockerfile"
+                }
+
+                liquiBuild {
+                    registrySettings = {
+                        repository = imageRepoBackend
+                    }
+                    changelogDirectory = "./db"
+                }
+
+                gitOps {
+                    clusters = setOf(KubeCluster.TEST9)
+                    gitOpsRepository = gitOpsRepo
+                }.triggerOnVcsChange { triggerRules = """
+                            -:*
+                            +:backend/**
+                            +:db/**
+                    """.trimIndent()
                 }
             }
-
-            dockerBuild {
-                dockerBuildNameSuffix = "backend"
-                dockerfileName = "path_to_dockerfile"
-            }
-
-            liquiBuild {
-                registrySettings = {
-                    repository = imageRepo
-                }
-                changelogDirectory = "path_to_changelog_directory"
-            }
-
-            gitOps {
-                clusters = setOf(KubeCluster.TEST11) // TODO: Change this to relevant cluster
-                gitOpsRepository = gitOpsRepo
-            }.triggerOnVcsChange { triggerRules = "+:backend/**" }
-
             sequential {
                 npmVerify {
                     workingDir = "frontend"
@@ -55,12 +68,16 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 }
 
                 dockerBuild {
-                    dockerBuildNameSuffix = "frontend"
-                    dockerfileName = "path_to_dockerfile"
+                    registrySettings = {
+                        repository = imageRepoFrontend
+                    }
+                    contextDirectory = "frontend"
+                    dockerBuildNameSuffix = "Frontend"
+                    dockerfileName = "./frontend/Dockerfile"
                 }
 
                 gitOps {
-                    clusters = setOf(KubeCluster.TEST13) // TODO: Change this to relevant cluster
+                    clusters = setOf(KubeCluster.TEST9)
                     gitOpsRepository = gitOpsRepo
                 }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
             }
