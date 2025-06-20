@@ -559,17 +559,16 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "type": "object",
             }
 
-        # add rawdata schema (all nullable, nothing required) for inclusion/embedding in other
+        # add optional schema (nothing required) for inclusion/embedding in other
         # responses in the API, such as notices
-        if "generate_rawdata" in resource and resource["generate_rawdata"]:
+        if "generate_optional" in resource and resource["generate_optional"]:
             properties = deepcopy(resource["properties"])
             for field, data in properties.items():
-                data["nullable"] = True
                 if "readOnly" in data:
                     del data["readOnly"]
-            schemas[f"{resource['id']}_rawdata"] = {
-                "summary": f"Raw data - {resource['summary']}",
-                "description": f"Raw data for embedding - {resource['description']}",
+            schemas[f"{resource['id']}_optional"] = {
+                "summary": f"Optional - {resource['summary']}",
+                "description": f"Schema with optional fields for embedding - {resource['description']}",
                 "properties": properties,
             }
 

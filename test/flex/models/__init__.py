@@ -31,7 +31,7 @@ from .empty_object import EmptyObject
 from .entity_client_create_request import EntityClientCreateRequest
 from .entity_client_response import EntityClientResponse
 from .entity_client_update_request import EntityClientUpdateRequest
-from .entity_rawdata import EntityRawdata
+from .entity_optional import EntityOptional
 from .entity_response import EntityResponse
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
@@ -96,7 +96,7 @@ from .party_membership_create_request import PartyMembershipCreateRequest
 from .party_membership_history_response import PartyMembershipHistoryResponse
 from .party_membership_response import PartyMembershipResponse
 from .party_membership_update_request import PartyMembershipUpdateRequest
-from .party_rawdata import PartyRawdata
+from .party_optional import PartyOptional
 from .party_response import PartyResponse
 from .party_status import PartyStatus
 from .party_update_request import PartyUpdateRequest
@@ -159,7 +159,7 @@ from .technical_resource_create_request import TechnicalResourceCreateRequest
 from .technical_resource_history_response import TechnicalResourceHistoryResponse
 from .technical_resource_response import TechnicalResourceResponse
 from .technical_resource_update_request import TechnicalResourceUpdateRequest
-from .timeline_data_item import TimelineDataItem
+from .timeline_multi_range_item import TimelineMultiRangeItem
 
 __all__ = (
     "AccountingPointBalanceResponsiblePartyEnergyDirection",
@@ -187,7 +187,7 @@ __all__ = (
     "EntityClientCreateRequest",
     "EntityClientResponse",
     "EntityClientUpdateRequest",
-    "EntityRawdata",
+    "EntityOptional",
     "EntityResponse",
     "EntityUpdateRequest",
     "ErrorMessage",
@@ -244,7 +244,7 @@ __all__ = (
     "PartyMembershipHistoryResponse",
     "PartyMembershipResponse",
     "PartyMembershipUpdateRequest",
-    "PartyRawdata",
+    "PartyOptional",
     "PartyResponse",
     "PartyStatus",
     "PartyUpdateRequest",
@@ -289,5 +289,5 @@ __all__ = (
     "TechnicalResourceHistoryResponse",
     "TechnicalResourceResponse",
     "TechnicalResourceUpdateRequest",
-    "TimelineDataItem",
+    "TimelineMultiRangeItem",
 )

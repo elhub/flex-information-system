@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.timeline_data_item import TimelineDataItem
+    from ..models.timeline_multi_range_item import TimelineMultiRangeItem
 
 
 T = TypeVar("T", bound="NoticeDataCuspValidTimeOutsideContract")
@@ -18,20 +18,20 @@ class NoticeDataCuspValidTimeOutsideContract:
     no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
 
         Attributes:
-            invalid_timeline (Union[Unset, List['TimelineDataItem']]): Partial timeline data that is relevant to mention, in
-                a notice for instance. Multirange format, i.e., array of start/end timestamp pairs.
+            invalid_timeline (Union[Unset, List['TimelineMultiRangeItem']]): Partial timeline data that is relevant to
+                mention, in a notice for instance. Multirange format, i.e., array of start/end timestamp pairs.
     """
 
-    invalid_timeline: Union[Unset, List["TimelineDataItem"]] = UNSET
+    invalid_timeline: Union[Unset, List["TimelineMultiRangeItem"]] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         invalid_timeline: Union[Unset, List[Dict[str, Any]]] = UNSET
         if not isinstance(self.invalid_timeline, Unset):
             invalid_timeline = []
-            for componentsschemastimeline_data_item_data in self.invalid_timeline:
-                componentsschemastimeline_data_item = componentsschemastimeline_data_item_data.to_dict()
-                invalid_timeline.append(componentsschemastimeline_data_item)
+            for componentsschemastimeline_multi_range_item_data in self.invalid_timeline:
+                componentsschemastimeline_multi_range_item = componentsschemastimeline_multi_range_item_data.to_dict()
+                invalid_timeline.append(componentsschemastimeline_multi_range_item)
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -43,15 +43,17 @@ class NoticeDataCuspValidTimeOutsideContract:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.timeline_data_item import TimelineDataItem
+        from ..models.timeline_multi_range_item import TimelineMultiRangeItem
 
         d = src_dict.copy()
         invalid_timeline = []
         _invalid_timeline = d.pop("invalid_timeline", UNSET)
-        for componentsschemastimeline_data_item_data in _invalid_timeline or []:
-            componentsschemastimeline_data_item = TimelineDataItem.from_dict(componentsschemastimeline_data_item_data)
+        for componentsschemastimeline_multi_range_item_data in _invalid_timeline or []:
+            componentsschemastimeline_multi_range_item = TimelineMultiRangeItem.from_dict(
+                componentsschemastimeline_multi_range_item_data
+            )
 
-            invalid_timeline.append(componentsschemastimeline_data_item)
+            invalid_timeline.append(componentsschemastimeline_multi_range_item)
 
         notice_data_cusp_valid_time_outside_contract = cls(
             invalid_timeline=invalid_timeline,

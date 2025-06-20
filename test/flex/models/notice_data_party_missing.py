@@ -6,8 +6,8 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.entity_rawdata import EntityRawdata
-    from ..models.party_rawdata import PartyRawdata
+    from ..models.entity_optional import EntityOptional
+    from ..models.party_optional import PartyOptional
 
 
 T = TypeVar("T", bound="NoticeDataPartyMissing")
@@ -18,7 +18,8 @@ class NoticeDataPartyMissing:
     """Format of the data field in a notice of type no.elhub.flex.party.missing
 
     Attributes:
-        entity (Union[Unset, EntityRawdata]): Raw data for embedding - Entity - Natural or legal person
+        entity (Union[Unset, EntityOptional]): Schema with optional fields for embedding - Entity - Natural or legal
+            person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information System.
 
@@ -26,8 +27,8 @@ class NoticeDataPartyMissing:
 
             * Person
             * Organisation
-        party (Union[Unset, PartyRawdata]): Raw data for embedding - The body that interacts with the Flexibility
-            Information System
+        party (Union[Unset, PartyOptional]): Schema with optional fields for embedding - The body that interacts with
+            the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
 
@@ -38,8 +39,8 @@ class NoticeDataPartyMissing:
             * End User
     """
 
-    entity: Union[Unset, "EntityRawdata"] = UNSET
-    party: Union[Unset, "PartyRawdata"] = UNSET
+    entity: Union[Unset, "EntityOptional"] = UNSET
+    party: Union[Unset, "PartyOptional"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -63,23 +64,23 @@ class NoticeDataPartyMissing:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.entity_rawdata import EntityRawdata
-        from ..models.party_rawdata import PartyRawdata
+        from ..models.entity_optional import EntityOptional
+        from ..models.party_optional import PartyOptional
 
         d = src_dict.copy()
         _entity = d.pop("entity", UNSET)
-        entity: Union[Unset, EntityRawdata]
+        entity: Union[Unset, EntityOptional]
         if isinstance(_entity, Unset):
             entity = UNSET
         else:
-            entity = EntityRawdata.from_dict(_entity)
+            entity = EntityOptional.from_dict(_entity)
 
         _party = d.pop("party", UNSET)
-        party: Union[Unset, PartyRawdata]
+        party: Union[Unset, PartyOptional]
         if isinstance(_party, Unset):
             party = UNSET
         else:
-            party = PartyRawdata.from_dict(_party)
+            party = PartyOptional.from_dict(_party)
 
         notice_data_party_missing = cls(
             entity=entity,

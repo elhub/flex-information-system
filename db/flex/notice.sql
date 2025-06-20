@@ -139,8 +139,8 @@ CREATE VIEW notice AS (
                     array_to_json(
                         array_agg(
                             jsonb_build_object(
-                                'from', lower(timeline_section),
-                                'to', upper(timeline_section)
+                                'valid_from', lower(timeline_section),
+                                'valid_to', upper(timeline_section)
                             )
                         )
                     )
@@ -177,16 +177,22 @@ CREATE VIEW notice AS (
         'no.elhub.flex.party.missing' AS type, -- noqa
         null AS source, -- no source because the party does not exist yet
         jsonb_build_object(
-            'entity', jsonb_build_object(
-                'business_id', p_stg.org,
-                'name', e_stg.name
+            'entity', jsonb_strip_nulls(
+                jsonb_build_object(
+                    'business_id', p_stg.org,
+                    'business_id_type', e_stg.business_id_type,
+                    'name', e_stg.name,
+                    'type', e_stg.type
+                )
             ),
-            'party', jsonb_build_object(
-                'business_id', p_stg.gln,
-                'business_id_type', 'gln',
-                'entity_id', e_stg.id,
-                'name', p_stg.name,
-                'type', p_stg.type
+            'party', jsonb_strip_nulls(
+                jsonb_build_object(
+                    'business_id', p_stg.gln,
+                    'business_id_type', 'gln',
+                    'entity_id', e_stg.id,
+                    'name', p_stg.name,
+                    'type', p_stg.type
+                )
             )
         ) AS data -- noqa
     FROM flex.party_staging AS p_stg -- noqa
@@ -206,15 +212,11 @@ CREATE VIEW notice AS (
         p_fiso.id AS party_id,
         'no.elhub.flex.party.outdated' AS type, -- noqa
         '/party/' || p.id AS source,
-        CASE WHEN p_stg.name != p.name
-                THEN jsonb_build_object(
-                        'party', jsonb_build_object(
-                            'name', p_stg.name
-                        )
-                    )
-            ELSE null::jsonb
-        END
-        AS data -- noqa
+        jsonb_build_object(
+            'party', jsonb_build_object(
+                'name', p_stg.name
+            )
+        ) AS data -- noqa
     FROM flex.party AS p -- noqa
         INNER JOIN flex.entity AS e
             ON p.entity_id = e.id
@@ -222,8 +224,6 @@ CREATE VIEW notice AS (
             ON p_stg.gln = p.business_id
                 -- party has changed name
                 AND p_stg.name != p.name
-        INNER JOIN flex.entity AS e_stg
-            ON p_stg.org = e_stg.business_id
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'

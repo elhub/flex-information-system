@@ -140,7 +140,7 @@ components:
         - accounting_point_id
         - end_user_id
         - technical_resources
-    timeline_data:
+    timeline_multi_range:
       description: >-
         Partial timeline data that is relevant to mention, in a notice for
         instance. Multirange format, i.e., array of start/end timestamp pairs.
@@ -148,12 +148,12 @@ components:
       items:
         type: object
         properties:
-          from:
+          valid_from:
             type: string
             format: date-time
             description: The start time of the timeline section.
             example: '2023-01-01T00:00:00Z'
-          to:
+          valid_to:
             type: string
             format: date-time
             description: The end time of the timeline section.
@@ -164,17 +164,20 @@ components:
         no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
       properties:
         invalid_timeline:
-          $ref: '#/components/schemas/timeline_data'
+          description: >-
+            Part of the timeline where the end user on the CUSP relation does
+            not match the end user on the accounting point.
+          $ref: '#/components/schemas/timeline_multi_range'
     notice_data_party_missing:
       description: >-
         Format of the data field in a notice of type no.elhub.flex.party.missing
       properties:
         entity:
           description: Details about the entity owning the missing party.
-          $ref: '#/components/schemas/entity_rawdata'
+          $ref: '#/components/schemas/entity_optional'
         party:
           description: Details about the missing party.
-          $ref: '#/components/schemas/party_rawdata'
+          $ref: '#/components/schemas/party_optional'
     notice_data_party_outdated:
       description: >-
         Format of the data field in a notice of type
@@ -182,7 +185,7 @@ components:
       properties:
         party:
           description: Updated fields of the party.
-          $ref: '#/components/schemas/party_rawdata'
+          $ref: '#/components/schemas/party_optional'
     notice_data:
       oneOf:
         - $ref: '#/components/schemas/notice_data_cusp_valid_time_outside_contract'
