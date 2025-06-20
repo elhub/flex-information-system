@@ -139,8 +139,8 @@ CREATE VIEW notice AS (
                     array_to_json(
                         array_agg(
                             jsonb_build_object(
-                                'start_time', lower(timeline_section),
-                                'end_time', upper(timeline_section)
+                                'from', lower(timeline_section),
+                                'to', upper(timeline_section)
                             )
                         )
                     )

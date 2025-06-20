@@ -14,54 +14,53 @@ T = TypeVar("T", bound="TimelineDataItem")
 class TimelineDataItem:
     """
     Attributes:
-        start_time (Union[Unset, datetime.datetime]): The start time of the timeline section. Example:
-            2023-01-01T00:00:00Z.
-        end_time (Union[Unset, datetime.datetime]): The end time of the timeline section. Example: 2023-01-02T00:00:00Z.
+        from_ (Union[Unset, datetime.datetime]): The start time of the timeline section. Example: 2023-01-01T00:00:00Z.
+        to (Union[Unset, datetime.datetime]): The end time of the timeline section. Example: 2023-01-02T00:00:00Z.
     """
 
-    start_time: Union[Unset, datetime.datetime] = UNSET
-    end_time: Union[Unset, datetime.datetime] = UNSET
+    from_: Union[Unset, datetime.datetime] = UNSET
+    to: Union[Unset, datetime.datetime] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        start_time: Union[Unset, str] = UNSET
-        if not isinstance(self.start_time, Unset):
-            start_time = self.start_time.isoformat()
+        from_: Union[Unset, str] = UNSET
+        if not isinstance(self.from_, Unset):
+            from_ = self.from_.isoformat()
 
-        end_time: Union[Unset, str] = UNSET
-        if not isinstance(self.end_time, Unset):
-            end_time = self.end_time.isoformat()
+        to: Union[Unset, str] = UNSET
+        if not isinstance(self.to, Unset):
+            to = self.to.isoformat()
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if start_time is not UNSET:
-            field_dict["start_time"] = start_time
-        if end_time is not UNSET:
-            field_dict["end_time"] = end_time
+        if from_ is not UNSET:
+            field_dict["from"] = from_
+        if to is not UNSET:
+            field_dict["to"] = to
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        _start_time = d.pop("start_time", UNSET)
-        start_time: Union[Unset, datetime.datetime]
-        if isinstance(_start_time, Unset):
-            start_time = UNSET
+        _from_ = d.pop("from", UNSET)
+        from_: Union[Unset, datetime.datetime]
+        if isinstance(_from_, Unset):
+            from_ = UNSET
         else:
-            start_time = isoparse(_start_time)
+            from_ = isoparse(_from_)
 
-        _end_time = d.pop("end_time", UNSET)
-        end_time: Union[Unset, datetime.datetime]
-        if isinstance(_end_time, Unset):
-            end_time = UNSET
+        _to = d.pop("to", UNSET)
+        to: Union[Unset, datetime.datetime]
+        if isinstance(_to, Unset):
+            to = UNSET
         else:
-            end_time = isoparse(_end_time)
+            to = isoparse(_to)
 
         timeline_data_item = cls(
-            start_time=start_time,
-            end_time=end_time,
+            from_=from_,
+            to=to,
         )
 
         timeline_data_item.additional_properties = d

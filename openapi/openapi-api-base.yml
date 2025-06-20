@@ -148,12 +148,12 @@ components:
       items:
         type: object
         properties:
-          start_time:
+          from:
             type: string
             format: date-time
             description: The start time of the timeline section.
             example: '2023-01-01T00:00:00Z'
-          end_time:
+          to:
             type: string
             format: date-time
             description: The end time of the timeline section.
