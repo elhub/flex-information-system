@@ -465,6 +465,7 @@ resources:
       - list
       - read
     generate_views: true
+    generate_rawdata: true
     properties:
       id:
         description: |-
@@ -598,6 +599,7 @@ resources:
       - read
     history_rls: true
     audit: true
+    generate_rawdata: true
     generate_views: true
     properties:
       id:
