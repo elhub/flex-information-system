@@ -2,7 +2,9 @@
 -- Manually managed file
 
 -- changeset flex:notice runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW notice AS (
+-- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
+DROP VIEW IF EXISTS notice CASCADE;
+CREATE VIEW notice AS (
     -- CU grid node ID missing
     SELECT
         ap_so.system_operator_id AS party_id,
