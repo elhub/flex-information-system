@@ -187,5 +187,19 @@
         "accounting_point_id": "The accounting point behind which the controllable unit is located.",
         "end_user_id": "Technical ID of the end user on the accounting point where the controllable unit is located.",
         "technical_resources": "The technical resources belonging to the controllable unit."
-    }
+    },
+    "timeline_data": null,
+    "notice_data_cusp_valid_time_outside_contract": {
+        "invalid_timeline": {
+            "$ref": "#/components/schemas/timeline_data"
+        }
+    },
+    "notice_data_party_missing": {
+        "entity": "Details about the entity owning the missing party.",
+        "party": "Details about the missing party."
+    },
+    "notice_data_party_outdated": {
+        "party": "Updated fields of the party."
+    },
+    "notice_data": null
 }

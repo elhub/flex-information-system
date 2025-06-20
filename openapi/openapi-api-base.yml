@@ -140,6 +140,54 @@ components:
         - accounting_point_id
         - end_user_id
         - technical_resources
+    timeline_data:
+      description: >-
+        Partial timeline data that is relevant to mention, in a notice for
+        instance. Multirange format, i.e., array of start/end timestamp pairs.
+      type: array
+      items:
+        type: object
+        properties:
+          start_time:
+            type: string
+            format: date-time
+            description: The start time of the timeline section.
+            example: '2023-01-01T00:00:00Z'
+          end_time:
+            type: string
+            format: date-time
+            description: The end time of the timeline section.
+            example: '2023-01-02T00:00:00Z'
+    notice_data_cusp_valid_time_outside_contract:
+      description: >-
+        Format of the data field in a notice of type
+        no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
+      properties:
+        invalid_timeline:
+          $ref: '#/components/schemas/timeline_data'
+    notice_data_party_missing:
+      description: >-
+        Format of the data field in a notice of type no.elhub.flex.party.missing
+      properties:
+        entity:
+          description: Details about the entity owning the missing party.
+          $ref: '#/components/schemas/entity_rawdata'
+        party:
+          description: Details about the missing party.
+          $ref: '#/components/schemas/party_rawdata'
+    notice_data_party_outdated:
+      description: >-
+        Format of the data field in a notice of type
+        no.elhub.flex.party.outdated
+      properties:
+        party:
+          description: Updated fields of the party.
+          $ref: '#/components/schemas/party_rawdata'
+    notice_data:
+      oneOf:
+        - $ref: '#/components/schemas/notice_data_cusp_valid_time_outside_contract'
+        - $ref: '#/components/schemas/notice_data_party_missing'
+        - $ref: '#/components/schemas/notice_data_party_outdated'
 paths:
   /openapi.json:
     get:

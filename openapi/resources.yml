@@ -1417,8 +1417,8 @@ resources:
         example: '/service_providing_group_membership/4'
       data:
         description: The data of the notice.
-        format: text
-        type: string
+        type: object
+        $ref: '#/components/schemas/notice_data'
         readOnly: true
         nullable: true
         example: null

@@ -34,7 +34,7 @@ from the responsible party.
 | <a name="field-party_id" href="#field-party_id">party_id</a> | Reference to the party targeted by the notice.  | bigint<br/>Read only                                            | [party.id](party.md#field-id) |
 | <a name="field-type" href="#field-type">type</a>             | The type of the notice.                         | text<br/>Pattern: `^no.elhub.flex.`<br/>Read only               |                               |
 | <a name="field-source" href="#field-source">source</a>       | The URI of the resource concerned by the event. | text<br/>Pattern: `^(\/([a-z][a-z_]*\|[0-9]+))+$`<br/>Read only |                               |
-| <a name="field-data" href="#field-data">data</a>             | The data of the notice.                         | text<br/>Read only                                              |                               |
+| <a name="field-data" href="#field-data">data</a>             | The data of the notice.                         | <br/>Read only                                                  |                               |
 
 ## Validation Rules
 
