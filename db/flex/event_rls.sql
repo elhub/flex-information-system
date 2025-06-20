@@ -22,7 +22,7 @@ USING (
         SELECT 1
         FROM flex.controllable_unit_end_user AS cueu
         WHERE cueu.controllable_unit_id = event.source_id -- noqa
-            AND cueu.end_user_id = flex.current_party()
+            AND cueu.end_user_id = (SELECT flex.current_party())
             AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
     )
 );
@@ -38,7 +38,7 @@ USING (
             INNER JOIN flex.controllable_unit_end_user AS cueu
                 ON cusp.controllable_unit_id = cueu.controllable_unit_id
                     AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
-                    AND cueu.end_user_id = flex.current_party()
+                    AND cueu.end_user_id = (SELECT flex.current_party())
         WHERE cusp.id = event.source_id -- noqa
     )
 );
@@ -54,7 +54,7 @@ USING (
             INNER JOIN flex.controllable_unit_end_user AS cueu
                 ON tr.controllable_unit_id = cueu.controllable_unit_id
                     AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
-                    AND cueu.end_user_id = flex.current_party()
+                    AND cueu.end_user_id = (SELECT flex.current_party())
         WHERE tr.id = event.source_id -- noqa
     )
 );
@@ -100,7 +100,7 @@ USING (
         FROM flex.controllable_unit_service_provider AS cusp
         WHERE cusp.controllable_unit_id = event.source_id -- noqa
             AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
-            AND cusp.service_provider_id = flex.current_party()
+            AND cusp.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -113,7 +113,7 @@ USING (
         SELECT 1
         FROM flex.controllable_unit_service_provider AS cusp
         WHERE cusp.id = event.source_id -- noqa
-            AND cusp.service_provider_id = flex.current_party()
+            AND cusp.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -132,7 +132,7 @@ USING (
                 ON cu.id = cusp.controllable_unit_id
                     AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
         WHERE tr.id = event.source_id -- noqa
-            AND cusp.service_provider_id = flex.current_party()
+            AND cusp.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -145,7 +145,7 @@ USING (
         SELECT 1
         FROM flex.service_provider_product_application AS sppa
         WHERE sppa.id = event.source_id -- noqa
-            AND sppa.service_provider_id = flex.current_party()
+            AND sppa.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -161,7 +161,7 @@ USING (
             INNER JOIN flex.service_provider_product_application AS sppa
                 ON sppac.service_provider_product_application_id = sppa.id
         WHERE sppac.id = event.source_id -- noqa
-            AND sppa.service_provider_id = flex.current_party()
+            AND sppa.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -174,7 +174,7 @@ USING (
         SELECT 1
         FROM flex.service_providing_group AS spg
         WHERE spg.id = event.source_id -- noqa
-            AND spg.service_provider_id = flex.current_party()
+            AND spg.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -189,7 +189,7 @@ USING (
             INNER JOIN flex.service_providing_group AS spg
                 ON spgm.service_providing_group_id = spg.id
         WHERE spgm.id = event.source_id -- noqa
-            AND spg.service_provider_id = flex.current_party()
+            AND spg.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -205,7 +205,7 @@ USING (
             INNER JOIN flex.service_providing_group AS spg
                 ON spggp.service_providing_group_id = spg.id
         WHERE spggp.id = event.source_id -- noqa
-            AND spg.service_provider_id = flex.current_party()
+            AND spg.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -220,6 +220,6 @@ USING (
             INNER JOIN flex.service_providing_group AS spg
                 ON spgpa.service_providing_group_id = spg.id
         WHERE spgpa.id = event.source_id -- noqa
-            AND spg.service_provider_id = flex.current_party()
+            AND spg.service_provider_id = (SELECT flex.current_party())
     )
 );

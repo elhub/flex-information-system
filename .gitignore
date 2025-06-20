@@ -1,4 +1,5 @@
 .*
+
 !.gitignore
 !.gitattributes
 !.gitkeep
@@ -17,6 +18,8 @@
 !.golangci*.yml
 !.spectral.yaml
 !.eslintrc.js
+!.dockerfilelintrc
+!.dockerignore
 *.dot
 !.air.toml
 # draw.io
@@ -39,6 +42,7 @@ logs
 *-error.log*
 
 # Temp directories
+build
 dist
 dist-docs
 docs/download

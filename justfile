@@ -267,10 +267,10 @@ _mkdocs_build_elements:
         >"./docs/auth/v0/index.html"
 
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
-        '.servers = [$servers.api.test]' <"openapi/openapi-api.json" \
+        '.servers = [$servers.api.test]' <"backend/data/static/openapi.json" \
         >"./docs/api/v0/openapi.json"
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
-        '.servers = [$servers.auth.test]' <"openapi/openapi-auth.json" \
+        '.servers = [$servers.auth.test]' <"backend/auth/static/openapi.json" \
         >"./docs/auth/v0/openapi.json"
 
 # deploy documentation to GitHub Pages
@@ -335,7 +335,7 @@ template-to-openapi:
     .venv/bin/python3 local/scripts/template_to_openapi.py \
     --base-file openapi/openapi-api-base.yml \
     --servers-file openapi/servers.yml \
-    --resources-file openapi/resources.yml > openapi/openapi-api.json
+    --resources-file openapi/resources.yml > backend/data/static/openapi.json
 
     # remove custom fields from the final OpenAPI specification
     jq '( .components.schemas // empty )
@@ -345,21 +345,21 @@ template-to-openapi:
                 else . end
             )' \
         --indent 4 \
-        < openapi/openapi-api.json \
+        < backend/data/static/openapi.json \
         > openapi/openapi-api-clean.json
-    mv openapi/openapi-api-clean.json openapi/openapi-api.json
+    mv openapi/openapi-api-clean.json backend/data/static/openapi.json
 
-    yq -o=json --indent 4 openapi/openapi-auth.yml > openapi/openapi-auth.json
-
-    spectral lint \
-        --fail-severity warn \
-        --verbose \
-        openapi/openapi-api.json
+    yq -o=json --indent 4 openapi/openapi-auth.yml > backend/auth/static/openapi.json
 
     spectral lint \
         --fail-severity warn \
         --verbose \
-        openapi/openapi-auth.json
+        backend/data/static/openapi.json
+
+    spectral lint \
+        --fail-severity warn \
+        --verbose \
+        backend/auth/static/openapi.json
 
 resources-to-diagram:
     #!/usr/bin/env bash
@@ -445,7 +445,7 @@ openapi-client:
     jq '( .components.schemas // empty, .paths[].get.parameters // empty )
             |= walk(if type == "object" then del(.default) else . end)' \
         --indent 4 \
-        < openapi/openapi-api.json \
+        < backend/data/static/openapi.json \
         > openapi/openapi-api-no-default.json
 
     ./.venv/bin/openapi-python-client generate \

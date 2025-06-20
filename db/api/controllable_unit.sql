@@ -221,7 +221,7 @@ BEGIN
                     SELECT 1
                     FROM flex.controllable_unit_service_provider
                     WHERE controllable_unit_id = NEW.id
-                    AND service_provider_id = flex.current_party()
+                    AND service_provider_id = (SELECT flex.current_party())
                     AND valid_time_range @> current_timestamp
                 )
             THEN

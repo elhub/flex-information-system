@@ -33,7 +33,7 @@ WITH (security_invoker = false, security_barrier = true) AS ( -- cf AP-BRP
                 ON ap_so.accounting_point_id = ap_es.accounting_point_id
                     AND ap_so.valid_time_range && ap_es.valid_time_range
         WHERE current_role = 'flex_system_operator'
-            AND ap_so.system_operator_id = flex.current_party()
+            AND ap_so.system_operator_id = (SELECT flex.current_party())
         GROUP BY
             ap_es.accounting_point_id,
             ap_es.energy_supplier_id,

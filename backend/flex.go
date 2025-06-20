@@ -8,6 +8,7 @@ import (
 	"flex/data"
 	"flex/event"
 	"flex/internal/middleware"
+	"flex/internal/openapi"
 	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
@@ -159,10 +160,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_UPSTREAM_POSTGREST", errMissingEnv)
 	}
 
-	authAPIBaseURL, exists := lookupenv("FLEX_AUTH_API_BASE_URL")
+	baseURL, exists := lookupenv("FLEX_BASE_URL")
 	if !exists {
-		return fmt.Errorf("%w: FLEX_AUTH_API_BASE_URL", errMissingEnv)
+		return fmt.Errorf("%w: FLEX_BASE_URL", errMissingEnv)
 	}
+	authAPIBaseURL := baseURL + "auth/v0/"
+	dataAPIBaseURL := baseURL + "api/v0/"
 
 	oidcIssuer, exists := lookupenv("FLEX_OIDC_ISSUER")
 	if !exists {
@@ -251,7 +254,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	slog.DebugContext(ctx, "Creating data API")
 	dataAPIHandler, err := data.NewAPIHandler(
-		postgRESTUpstream, dbPool, requestDetailsContextKey,
+		dataAPIBaseURL, postgRESTUpstream, dbPool, requestDetailsContextKey,
 	)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
@@ -361,6 +364,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
+	authRouter.GET("/", WrapHandlerFunc(openapi.ElementsHandlerFunc("Auth API")))                              //nolint:contextcheck
+	authRouter.GET("/openapi.json", WrapHandlerFunc(auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))) //nolint:contextcheck
 	authRouter.POST("/token", authAPI.PostTokenHandler)
 	authRouter.GET("/userinfo", authAPI.GetUserInfoHandler)
 	authRouter.GET("/session", WrapHandlerFunc(authAPI.GetSessionHandler))     //nolint:contextcheck
@@ -372,7 +377,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// data API endpoint
 	router.Match(
-		[]string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 		"/api/v0/*url",
 		WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
 	)

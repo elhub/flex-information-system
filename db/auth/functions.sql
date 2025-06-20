@@ -167,7 +167,7 @@ $$
     FROM flex.identity i
     INNER JOIN flex.entity e ON i.entity_id = e.id
     LEFT JOIN flex.party p ON i.party_id = p.id
-    WHERE i.id = flex.current_identity();
+    WHERE i.id = (SELECT flex.current_identity());
 $$;
 
 -- changeset flex:auth-current-user-info-execute runAlways:true endDelimiter:;

@@ -34,7 +34,7 @@ CREATE POLICY "SPPAC_COM002"
 ON service_provider_product_application_comment
 FOR UPDATE
 TO flex_common
-USING (created_by = flex.current_identity());
+USING (created_by = (SELECT flex.current_identity()));
 
 -- RLS: SPPAC-COM003
 CREATE POLICY "SPPAC_COM003"
@@ -42,7 +42,7 @@ ON service_provider_product_application_comment
 FOR INSERT
 TO flex_common
 WITH CHECK (
-    flex.current_party() IN (
+    (SELECT flex.current_party()) IN (
         SELECT unnest(ARRAY[sppa.system_operator_id, sppa.service_provider_id])
         FROM service_provider_product_application AS sppa
         WHERE sppa.id = service_provider_product_application_comment.service_provider_product_application_id -- noqa
@@ -59,14 +59,14 @@ USING (
     visibility = 'same_party' AND (
         party_of_identity(
             service_provider_product_application_comment.created_by
-        ) = flex.current_party()
+        ) = (SELECT flex.current_party())
     )
     OR visibility = 'same_party_type' AND (
         -- check current party and created_by party are of the same type
         SELECT count(DISTINCT p.type) = 1
         FROM party AS p
         WHERE p.id IN (
-                flex.current_party(),
+                (SELECT flex.current_party()),
                 party_of_identity(
                     service_provider_product_application_comment.created_by -- noqa
                 )

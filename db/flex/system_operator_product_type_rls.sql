@@ -48,5 +48,5 @@ ON system_operator_product_type
 FOR ALL
 TO flex_system_operator
 USING (
-    system_operator_id = flex.current_party()
+    system_operator_id = (SELECT flex.current_party())
 );
