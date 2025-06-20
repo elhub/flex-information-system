@@ -559,6 +559,19 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "type": "object",
             }
 
+        # add optional schema (nothing required) for inclusion/embedding in other
+        # responses in the API, such as notices
+        if "generate_optional" in resource and resource["generate_optional"]:
+            properties = deepcopy(resource["properties"])
+            for field, data in properties.items():
+                if "readOnly" in data:
+                    del data["readOnly"]
+            schemas[f"{resource['id']}_optional"] = {
+                "summary": f"Optional - {resource['summary']}",
+                "description": f"Schema with optional fields for embedding - {resource['description']}",
+                "properties": properties,
+            }
+
     # generate the history schemas from the template
 
     for resource in resources:

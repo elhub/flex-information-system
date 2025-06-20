@@ -464,6 +464,7 @@ resources:
     operations:
       - list
       - read
+    generate_optional: true
     generate_views: true
     properties:
       id:
@@ -598,6 +599,7 @@ resources:
       - read
     history_rls: true
     audit: true
+    generate_optional: true
     generate_views: true
     properties:
       id:
@@ -1415,8 +1417,8 @@ resources:
         example: '/service_providing_group_membership/4'
       data:
         description: The data of the notice.
-        format: text
-        type: string
+        type: object
+        $ref: '#/components/schemas/notice_data'
         readOnly: true
         nullable: true
         example: null
