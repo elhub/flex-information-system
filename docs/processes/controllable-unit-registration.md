@@ -14,6 +14,8 @@ inform SP about missing details.
 
 ## Prerequisites
 
+* The service provider runs controllable unit lookup to check if CU exists in
+  the flexibility information system
 * Controllable Unit does not exist in the flexibility information system
 * Service Provider knows the metering point id of the accounting point for the
   controllable unit
