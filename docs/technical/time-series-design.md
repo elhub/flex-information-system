@@ -70,8 +70,8 @@ experts in the metering value and/or time series domain.
 
 * Elhub - MeteringPoint, MeasurementDefinition, IntervalVolume
 * CIM - MeterReading, ReadingType, IntervalReading, MeasurementValue, Schedule
-* NODES *
-  [Shyft](https://shyft.readthedocs.io/en/latest/content/time_series/concepts/time_series.html)
+* NODES - TODO
+* [Shyft](https://shyft.readthedocs.io/en/latest/content/time_series/concepts/time_series.html)
   -"*A time series in Shyft is considered to be a function of time, f(t) ->
   float.*"
 
