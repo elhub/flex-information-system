@@ -50,6 +50,7 @@ const ProductTypesInput = (props: any) => {
   //   the new SO is not asking for, which will hide them from the UI but keep
   //   them in the form value, thus potentially leading to an API error that is
   //   hard to fix in the UI.
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (freshPage) {
       setFreshPage(false);
@@ -57,6 +58,7 @@ const ProductTypesInput = (props: any) => {
       formContext.setValue("product_type_ids", []);
     }
   }, [systemOperatorID]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const { data: systemOperatorProductTypes } = useGetList(
     "system_operator_product_type",

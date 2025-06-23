@@ -39,6 +39,7 @@ export const AssumePartyPage = () => {
   // refresh pagination information in resources after assuming a party
   const resetStore = useResetStore();
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (identity.isPending) return;
     if (!unAssumed && identity.data!.role !== "flex_entity") {
@@ -53,6 +54,7 @@ export const AssumePartyPage = () => {
         });
     }
   }, [identity.isPending]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const AssumePartyButton = ({ field }: any) => {
     const record = useRecordContext()!;
