@@ -189,7 +189,7 @@
         "technical_resources": "The technical resources belonging to the controllable unit."
     },
     "timeline_multi_range": null,
-    "notice_data_cusp_valid_time_outside_contract": {
+    "notice_data_valid_time_outside_contract": {
         "invalid_timeline": "Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point."
     },
     "notice_data_party_missing": {

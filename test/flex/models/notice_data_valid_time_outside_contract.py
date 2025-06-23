@@ -9,17 +9,16 @@ if TYPE_CHECKING:
     from ..models.timeline_multi_range_item import TimelineMultiRangeItem
 
 
-T = TypeVar("T", bound="NoticeDataCuspValidTimeOutsideContract")
+T = TypeVar("T", bound="NoticeDataValidTimeOutsideContract")
 
 
 @_attrs_define
-class NoticeDataCuspValidTimeOutsideContract:
-    """Format of the data field in a notice of type
-    no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
+class NoticeDataValidTimeOutsideContract:
+    """Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
 
-        Attributes:
-            invalid_timeline (Union[Unset, List['TimelineMultiRangeItem']]): Partial timeline data that is relevant to
-                mention, in a notice for instance. Multirange format, i.e., array of start/end timestamp pairs.
+    Attributes:
+        invalid_timeline (Union[Unset, List['TimelineMultiRangeItem']]): Partial timeline data that is relevant to
+            mention, in a notice for instance. Multirange format, i.e., array of start/end timestamp pairs.
     """
 
     invalid_timeline: Union[Unset, List["TimelineMultiRangeItem"]] = UNSET
@@ -55,12 +54,12 @@ class NoticeDataCuspValidTimeOutsideContract:
 
             invalid_timeline.append(componentsschemastimeline_multi_range_item)
 
-        notice_data_cusp_valid_time_outside_contract = cls(
+        notice_data_valid_time_outside_contract = cls(
             invalid_timeline=invalid_timeline,
         )
 
-        notice_data_cusp_valid_time_outside_contract.additional_properties = d
-        return notice_data_cusp_valid_time_outside_contract
+        notice_data_valid_time_outside_contract.additional_properties = d
+        return notice_data_valid_time_outside_contract
 
     @property
     def additional_keys(self) -> List[str]:

@@ -81,9 +81,9 @@ from .list_system_operator_product_type_history_prefer import ListSystemOperator
 from .list_system_operator_product_type_prefer import ListSystemOperatorProductTypePrefer
 from .list_technical_resource_history_prefer import ListTechnicalResourceHistoryPrefer
 from .list_technical_resource_prefer import ListTechnicalResourcePrefer
-from .notice_data_cusp_valid_time_outside_contract import NoticeDataCuspValidTimeOutsideContract
 from .notice_data_party_missing import NoticeDataPartyMissing
 from .notice_data_party_outdated import NoticeDataPartyOutdated
+from .notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
 from .notice_response import NoticeResponse
 from .notice_response_data_type_0 import NoticeResponseDataType0
 from .notice_update_request import NoticeUpdateRequest
@@ -229,9 +229,9 @@ __all__ = (
     "ListSystemOperatorProductTypePrefer",
     "ListTechnicalResourceHistoryPrefer",
     "ListTechnicalResourcePrefer",
-    "NoticeDataCuspValidTimeOutsideContract",
     "NoticeDataPartyMissing",
     "NoticeDataPartyOutdated",
+    "NoticeDataValidTimeOutsideContract",
     "NoticeResponse",
     "NoticeResponseDataType0",
     "NoticeUpdateRequest",

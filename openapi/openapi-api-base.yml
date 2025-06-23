@@ -158,10 +158,10 @@ components:
             format: date-time
             description: The end time of the timeline section.
             example: '2023-01-02T00:00:00Z'
-    notice_data_cusp_valid_time_outside_contract:
+    notice_data_valid_time_outside_contract:
       description: >-
         Format of the data field in a notice of type
-        no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
+        no.elhub.flex.*.valid_time.outside_contract
       properties:
         invalid_timeline:
           description: >-
@@ -188,7 +188,7 @@ components:
           $ref: '#/components/schemas/party_optional'
     notice_data:
       oneOf:
-        - $ref: '#/components/schemas/notice_data_cusp_valid_time_outside_contract'
+        - $ref: '#/components/schemas/notice_data_valid_time_outside_contract'
         - $ref: '#/components/schemas/notice_data_party_missing'
         - $ref: '#/components/schemas/notice_data_party_outdated'
 paths:
