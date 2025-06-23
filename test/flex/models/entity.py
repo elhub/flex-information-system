@@ -5,12 +5,12 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="EntityOptional")
+T = TypeVar("T", bound="Entity")
 
 
 @_attrs_define
-class EntityOptional:
-    """Schema with optional fields for embedding - Entity - Natural or legal person
+class Entity:
+    """Data of the response schema for operations with return values - Entity - Natural or legal person
 
     An entity is a natural or legal person that can be a party in the Flexibility Information System.
 
@@ -78,7 +78,7 @@ class EntityOptional:
 
         type = d.pop("type", UNSET)
 
-        entity_optional = cls(
+        entity = cls(
             id=id,
             business_id=business_id,
             business_id_type=business_id_type,
@@ -86,8 +86,8 @@ class EntityOptional:
             type=type,
         )
 
-        entity_optional.additional_properties = d
-        return entity_optional
+        entity.additional_properties = d
+        return entity
 
     @property
     def additional_keys(self) -> List[str]:

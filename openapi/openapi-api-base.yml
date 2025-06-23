@@ -174,10 +174,10 @@ components:
       properties:
         entity:
           description: Details about the entity owning the missing party.
-          $ref: '#/components/schemas/entity_optional'
+          $ref: '#/components/schemas/entity'
         party:
           description: Details about the missing party.
-          $ref: '#/components/schemas/party_optional'
+          $ref: '#/components/schemas/party'
     notice_data_party_outdated:
       description: >-
         Format of the data field in a notice of type
@@ -185,7 +185,7 @@ components:
       properties:
         party:
           description: Updated fields of the party.
-          $ref: '#/components/schemas/party_optional'
+          $ref: '#/components/schemas/party'
     notice_data:
       oneOf:
         - $ref: '#/components/schemas/notice_data_valid_time_outside_contract'

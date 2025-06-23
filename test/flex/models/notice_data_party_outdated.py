@@ -6,7 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.party_optional import PartyOptional
+    from ..models.party import Party
 
 
 T = TypeVar("T", bound="NoticeDataPartyOutdated")
@@ -17,8 +17,8 @@ class NoticeDataPartyOutdated:
     """Format of the data field in a notice of type no.elhub.flex.party.outdated
 
     Attributes:
-        party (Union[Unset, PartyOptional]): Schema with optional fields for embedding - The body that interacts with
-            the Flexibility Information System
+        party (Union[Unset, Party]): Data of the response schema for operations with return values - The body that
+            interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
 
@@ -29,7 +29,7 @@ class NoticeDataPartyOutdated:
             * End User
     """
 
-    party: Union[Unset, "PartyOptional"] = UNSET
+    party: Union[Unset, "Party"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -47,15 +47,15 @@ class NoticeDataPartyOutdated:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.party_optional import PartyOptional
+        from ..models.party import Party
 
         d = src_dict.copy()
         _party = d.pop("party", UNSET)
-        party: Union[Unset, PartyOptional]
+        party: Union[Unset, Party]
         if isinstance(_party, Unset):
             party = UNSET
         else:
-            party = PartyOptional.from_dict(_party)
+            party = Party.from_dict(_party)
 
         notice_data_party_outdated = cls(
             party=party,

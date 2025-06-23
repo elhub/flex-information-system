@@ -290,11 +290,11 @@
                 "properties": {
                     "entity": {
                         "description": "Details about the entity owning the missing party.",
-                        "$ref": "#/components/schemas/entity_optional"
+                        "$ref": "#/components/schemas/entity"
                     },
                     "party": {
                         "description": "Details about the missing party.",
-                        "$ref": "#/components/schemas/party_optional"
+                        "$ref": "#/components/schemas/party"
                     }
                 }
             },
@@ -303,7 +303,7 @@
                 "properties": {
                     "party": {
                         "description": "Updated fields of the party.",
-                        "$ref": "#/components/schemas/party_optional"
+                        "$ref": "#/components/schemas/party"
                     }
                 }
             },
@@ -1063,41 +1063,54 @@
                 ],
                 "type": "object"
             },
-            "entity_optional": {
-                "summary": "Optional - Entity",
-                "description": "Schema with optional fields for embedding - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
-                "properties": {
-                    "id": {
-                        "description": "Unique surrogate identifier.\n\nNote:\nThis is a Primary Key.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 14
+            "entity": {
+                "summary": "Response data - Entity",
+                "description": "Data of the response schema for operations with return values - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/entity_update_request"
                     },
-                    "business_id": {
-                        "description": "The business identifier of the entity. Format depends on `business_id_type`.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "13370000000"
-                    },
-                    "business_id_type": {
-                        "description": "The type of the business identifier.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "pid"
-                    },
-                    "name": {
-                        "description": "Name of the entity. Maximum 128 characters.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "John Smith"
-                    },
-                    "type": {
-                        "description": "The type of the entity, e.g Person, Organisation",
-                        "format": "text",
-                        "type": "string",
-                        "example": "person"
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "Unique surrogate identifier.\n\nNote:\nThis is a Primary Key.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 14
+                            },
+                            "business_id": {
+                                "description": "The business identifier of the entity. Format depends on `business_id_type`.",
+                                "format": "text",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "13370000000"
+                            },
+                            "business_id_type": {
+                                "description": "The type of the business identifier.",
+                                "format": "text",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "pid"
+                            },
+                            "name": {
+                                "description": "Name of the entity. Maximum 128 characters.",
+                                "format": "text",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "John Smith"
+                            },
+                            "type": {
+                                "description": "The type of the entity, e.g Person, Organisation",
+                                "format": "text",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "person"
+                            }
+                        }
                     }
-                }
+                ],
+                "type": "object"
             },
             "entity_client_update_request": {
                 "summary": "Update - Entity client",
@@ -1216,6 +1229,79 @@
                     }
                 }
             },
+            "party_create_data": {
+                "summary": "Create data - Party",
+                "description": "Data of the request schema for create operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/party_update_request"
+                    },
+                    {
+                        "properties": {
+                            "business_id": {
+                                "description": "The business identifier of the party. Format depends on `business_id_type`.",
+                                "format": "text",
+                                "type": "string",
+                                "example": "1337099000000"
+                            },
+                            "entity_id": {
+                                "description": "Reference to the entity that is the parent of the party.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 30
+                            },
+                            "role": {
+                                "description": "The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.",
+                                "format": "text",
+                                "type": "string",
+                                "example": "flex_energy_supplier"
+                            },
+                            "type": {
+                                "description": "The type of the party, e.g SystemOperator, ServiceProvider",
+                                "format": "text",
+                                "type": "string",
+                                "example": "energy_supplier"
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "party": {
+                "summary": "Response data - Party",
+                "description": "Data of the response schema for operations with return values - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/party_create_data"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "Unique surrogate identifier.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 11
+                            },
+                            "recorded_at": {
+                                "description": "When the resource was recorded (created or updated) in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2023-12-31 23:59:00 CET"
+                            },
+                            "recorded_by": {
+                                "description": "The identity that recorded the resource.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 145
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
             "party_create_request": {
                 "summary": "Create - Party",
                 "description": "Request schema for create operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
@@ -1298,66 +1384,6 @@
                     }
                 ],
                 "type": "object"
-            },
-            "party_optional": {
-                "summary": "Optional - Party",
-                "description": "Schema with optional fields for embedding - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
-                "properties": {
-                    "id": {
-                        "description": "Unique surrogate identifier.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 11
-                    },
-                    "business_id": {
-                        "description": "The business identifier of the party. Format depends on `business_id_type`.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "1337099000000"
-                    },
-                    "business_id_type": {
-                        "$ref": "#/components/schemas/party_business_id_type"
-                    },
-                    "entity_id": {
-                        "description": "Reference to the entity that is the parent of the party.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 30
-                    },
-                    "name": {
-                        "description": "Name of the party. Maximum 128 characters.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "Flex Energy Supplier"
-                    },
-                    "role": {
-                        "description": "The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "flex_energy_supplier"
-                    },
-                    "type": {
-                        "description": "The type of the party, e.g SystemOperator, ServiceProvider",
-                        "format": "text",
-                        "type": "string",
-                        "example": "energy_supplier"
-                    },
-                    "status": {
-                        "$ref": "#/components/schemas/party_status"
-                    },
-                    "recorded_at": {
-                        "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
-                        "type": "string",
-                        "example": "2023-12-31 23:59:00 CET"
-                    },
-                    "recorded_by": {
-                        "description": "The identity that recorded the resource.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 145
-                    }
-                }
             },
             "party_membership_update_request": {
                 "summary": "Update - Party Membership",

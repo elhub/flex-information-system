@@ -515,23 +515,47 @@ def generate_openapi_document(base_file, resources_file, servers_file):
         schemas[f"{resource['id']}_update_request"] = update_schema
 
         if "create" in resource["operations"]:
-            # add create schema (update schema + non-updatable + required)
             create_subschemas: list[dict] = [
                 {"$ref": f"#/components/schemas/{resource['id']}_update_request"},
             ]
             # do not add properties if empty
             if len(non_updatable_properties) > 0:
                 create_subschemas.append({"properties": non_updatable_properties})
-            # add required list only if non empty
+
+            if "generate_data_schema" in resource and resource["generate_data_schema"]:
+                # add create data schema (update schema + non-updatable)
+                schemas[f"{resource['id']}_create_data"] = {
+                    "summary": f"Create data - {resource['summary']}",
+                    "description": f"Data of the request schema for create operations - {resource['description']}",
+                    "allOf": create_subschemas,
+                    "type": "object",
+                }
+
+                # add response data schema (create_data schema + read-only)
+                schemas[resource["id"]] = {
+                    "summary": f"Response data - {resource['summary']}",
+                    "description": f"Data of the response schema for operations with return values - {resource['description']}",
+                    "allOf": [
+                        {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
+                        {"properties": readonly_properties},
+                    ],
+                    "type": "object",
+                }
+
+            # add schemas with required list only if non empty
             # (empty lists make the OpenAPI spec ill formed)
             if len(required_properties) > 0:
+                create_subschemas = deepcopy(create_subschemas)
                 create_subschemas.append({"required": required_properties})
+
+            # add create schema (create_data schema [+ required])
             schemas[f"{resource['id']}_create_request"] = {
                 "summary": f"Create - {resource['summary']}",
                 "description": f"Request schema for create operations - {resource['description']}",
                 "allOf": create_subschemas,
                 "type": "object",
             }
+
             # add response schema (create schema + read-only)
             schemas[f"{resource['id']}_response"] = {
                 "summary": f"Response - {resource['summary']}",
@@ -559,18 +583,23 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "type": "object",
             }
 
-        # add optional schema (nothing required) for inclusion/embedding in other
-        # responses in the API, such as notices
-        if "generate_optional" in resource and resource["generate_optional"]:
-            properties = deepcopy(resource["properties"])
-            for field, data in properties.items():
-                if "readOnly" in data:
-                    del data["readOnly"]
-            schemas[f"{resource['id']}_optional"] = {
-                "summary": f"Optional - {resource['summary']}",
-                "description": f"Schema with optional fields for embedding - {resource['description']}",
-                "properties": properties,
-            }
+            if "generate_data_schema" in resource and resource["generate_data_schema"]:
+                schemas[resource["id"]] = {
+                    "summary": f"Response data - {resource['summary']}",
+                    "description": f"Data of the response schema for operations with return values - {resource['description']}",
+                    "allOf": [
+                        {
+                            "$ref": f"#/components/schemas/{resource['id']}_update_request"
+                        },
+                        {
+                            "properties": {
+                                **non_updatable_properties,
+                                **readonly_properties,
+                            }
+                        },
+                    ],
+                    "type": "object",
+                }
 
     # generate the history schemas from the template
 
