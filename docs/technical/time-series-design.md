@@ -15,6 +15,11 @@ series data. The first use cases we want to support are:
 1. calculate and report imbalance settlement adjustments to eSett
 2. enable end users to securely access their data in compliance with GDPR
 
+It is not *given* that FIS will become a data administrator for timeseries other
+than accounting meter data. We do not know exactly what data will flow through
+FIS. This design is therefore a light-weight, general purpose starting point and
+conceptual design for a time series service using our existing stack.
+
 ## Audience
 
 This document is intended for developers and architects, but also functional
@@ -28,7 +33,8 @@ experts in the metering value and/or time series domain.
       related to time series data before we should consider other data store(s)
     * it will also likely take quite some time before we have enough data to
       warrant a change
-* decouple time series as its own service/module
+* decouple time series as its own service/module for easier evolvement and
+  possible replacement
 
 ### Requirements
 
@@ -52,7 +58,7 @@ experts in the metering value and/or time series domain.
 
 * The OCI PostgreSQL service does not support
   [extensions](https://docs.oracle.com/en-us/iaas/Content/postgresql/extensions.htm)
-  that allow for efficient column-major storage, such as citus and TimescaleDB.
+  that allow for efficient column-major storage, such as Citus and TimescaleDB.
   We are therefore forced to use the row-major storage.
 
 ### Non-Requirements
@@ -101,19 +107,22 @@ We model the timeseries as three resources.
 
 The relevant API actions will be
 
-* `GET /timeseries` - list all time series
-* `GET /timeseries/{id}` - get a specific time series
-* `POST /timeseries` - create a new time series
-* `PATCH /timeseries/{id}` - update a time series
-* `GET /timeseries_values?timeseries_id={id}` - list all values for a time series
-* `GET /timeseries_values?timeseries_id={id}&time={time}` - get a specific value
-* `POST /timeseries_values` - add a timeseries value
-* `PATCH /timeseries_values?timeseries_id={id}&time={time}` - update a value for
+* `POST /timeseries` - create a new time series metadata
+* `GET /timeseries` - list all time series metadata
+* `GET /timeseries/{id}` - get a specific time series metadata
+* `PATCH /timeseries/{id}` - update a time series metadata
+* `GET /timeseries_value?timeseries_id={id}` - list all values for a time series
+* `GET /timeseries_value?timeseries_id={id}&time={time}` - get a specific value
+* `POST /timeseries_value` - add a timeseries value
+* `PATCH /timeseries_value?timeseries_id={id}&time={time}` - update a value for
   a time series
-* `DELETE /timeseries_values?timeseries_id={id}&time={time}` - delete a value
+* `DELETE /timeseries_value?timeseries_id={id}&time={time}` - delete a value
   for a time series
 
-### Events
+### Events or distribution
+
+We can use our existing event system, but need to figure out a way to add a
+reasonable amount of events. Cannot do event-per-value.
 
 TODO
 
@@ -190,7 +199,7 @@ Why?
 * Indexes take up space and time to maintain. Using one index for both
   the primary key and the covering index saves space and time.
 
-#### Numeric vs interval
+#### Numeric vs integer
 
 The jury is out. Int is a good choice for exactness, but numeric is good for its
 `varlena` storage.
@@ -214,8 +223,9 @@ TODO. Maybe weekly.
 We will start with implementing the timeseries service to provide a starting
 point for adding the time series relations in the FIS module.
 
-Examples of resources that *might* exist at some point and *might* have references
-to `timeseries` are
+Examples of resources that *might* exist at some point and *might* have
+references to `timeseries` are. This is just to show how we can use the
+timeseries in our other resources.
 
 * `baseline`
     * `timeseries_id` - the time series for the baseline
