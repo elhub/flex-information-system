@@ -205,7 +205,9 @@ repos:
     hooks:
       - id: eslint
         additional_dependencies:
-          - "eslint@9.26.0"
+          - eslint@9.26.0
+          - eslint-plugin-react@7.37.5
+          - eslint-plugin-react-hooks@5.2.0
         files: \.[t]sx?$  # *.js, *.jsx, *.ts and *.tsx
         args:
           - "--config"
