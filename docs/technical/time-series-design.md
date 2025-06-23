@@ -97,6 +97,22 @@ We model the timeseries as three resources.
     * etc
 * `timeseries_value` - the values of the time series
 
+### API
+
+The relevant API actions will be
+
+* `GET /timeseries` - list all time series
+* `GET /timeseries/{id}` - get a specific time series
+* `POST /timeseries` - create a new time series
+* `PATCH /timeseries/{id}` - update a time series
+* `GET /timeseries_values?timeseries_id={id}` - list all values for a time series
+* `GET /timeseries_values?timeseries_id={id}&time={time}` - get a specific value
+* `POST /timeseries_values` - add a timeseries value
+* `PATCH /timeseries_values?timeseries_id={id}&time={time}` - update a value for
+  a time series
+* `DELETE /timeseries_values?timeseries_id={id}&time={time}` - delete a value
+  for a time series
+
 ### Events
 
 TODO
@@ -125,7 +141,6 @@ Our `timeseries_value` table will look something like this.
 | Column Name     | Type        | Nullable | Size | Description                           |
 |-----------------|-------------|----------|------|---------------------------------------|
 | -               | Row header  |          | 24   | -                                     |
-| id              | bigint      | No       | 8    | Unique identifier for the row         |
 | timeseries_id   | bigint      | No       | 8    | Unique identifier for the time series |
 | time            | timestamptz | No       | 8    | The time of the value                 |
 | recorded_by     | bigint      | No       | 8    | The identity that recorded the value  |
@@ -136,9 +151,9 @@ Our `timeseries_value` table will look something like this.
 | estimation_code | smallint    | Yes      | 2    | Whether the value is an estimation    |
 | -               | padding     |          | 2    |                                       |
 
-At a grand total of 88 bytes per row. It does not seem like much but storing a
-measly 100k timeseries with an interval of 15 over a year will take up close to
-300GB of storage.
+At a grand total of 80 bytes per row. It does not seem like much but storing a
+measly 100k timeseries with an interval of 15 over a year will take up over 260
+GB of storage.
 
 > [!INFO]
 >
@@ -148,6 +163,32 @@ measly 100k timeseries with an interval of 15 over a year will take up close to
 > * No bounds: 6 byte
 > * Lower bound only: 14 byte
 > * Upper bound only: 22 byte
+
+Notice that we are not including an `id` column. This allows us to save 8 bytes
+per row, plus avoid having the automatically created primary key index. What
+will we do instead? See below.
+
+#### Indexing and primary key
+
+We will use a covering index on the time series table, to speed up read and
+update operations. By making it a unique index we can use it as a primary key.
+
+```sql
+CREATE UNIQUE INDEX timeseries_value_pkey
+ON timeseries_value (timeseries_id, time)
+INCLUDE (value);
+
+ALTER TABLE timeseries_value
+ADD CONSTRAINT timeseries_value_pkey
+PRIMARY KEY USING INDEX timeseries_value_pkey;
+```
+
+Why?
+
+* Going to the heap takes time/io - including value is low overhead, but
+  potentially saves a lot of time.
+* Indexes take up space and time to maintain. Using one index for both
+  the primary key and the covering index saves space and time.
 
 #### Numeric vs interval
 
@@ -167,17 +208,6 @@ PostgreSQL docs on
 #### Partitioning
 
 TODO. Maybe weekly.
-
-#### Indexing
-
-We will use a covering index on the time series table, to speed up read and
-update operations. We are including the value to avoid having to go to the heap.
-
-```sql
-CREATE UNIQUE INDEX timeseries_idx
-ON timeseries_value (timeseries_id, time)
-INCLUDE (value);
-```
 
 ## Implementation plan
 
