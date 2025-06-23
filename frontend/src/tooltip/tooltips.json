@@ -197,6 +197,7 @@
         "party": "Details about the missing party."
     },
     "notice_data_party_outdated": {
+        "entity": "Details about the possibly new entity owning the party.",
         "party": "Updated fields of the party."
     },
     "notice_data": null

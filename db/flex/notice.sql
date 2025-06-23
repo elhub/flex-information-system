@@ -212,9 +212,25 @@ CREATE VIEW notice AS (
         p_fiso.id AS party_id,
         'no.elhub.flex.party.outdated' AS type, -- noqa
         '/party/' || p.id AS source,
-        jsonb_build_object(
-            'party', jsonb_build_object(
-                'name', p_stg.name
+        jsonb_strip_nulls(
+            jsonb_build_object(
+                'entity',
+                (CASE WHEN p_stg.org != e.business_id
+                        THEN jsonb_build_object(
+                                'business_id', p_stg.org,
+                                'business_id_type', e_stg.business_id_type,
+                                'name', e_stg.name,
+                                'type', e_stg.type
+                            )
+                END),
+                'party', jsonb_build_object(
+                    'name', (
+                        CASE WHEN p_stg.name != p.name THEN p_stg.name END
+                    ),
+                    'entity_id', (
+                        CASE WHEN p_stg.org != e.business_id THEN e_stg.id END
+                    )
+                )
             )
         ) AS data -- noqa
     FROM flex.party AS p -- noqa
@@ -222,8 +238,10 @@ CREATE VIEW notice AS (
             ON p.entity_id = e.id
         INNER JOIN flex.party_staging AS p_stg
             ON p_stg.gln = p.business_id
-                -- party has changed name
-                AND p_stg.name != p.name
+                -- party has changed name or owning entity
+                AND (p_stg.name != p.name OR p_stg.org != e.business_id)
+        LEFT JOIN flex.entity AS e_stg
+            ON e_stg.business_id = p_stg.org
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'

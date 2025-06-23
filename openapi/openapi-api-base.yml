@@ -183,6 +183,9 @@ components:
         Format of the data field in a notice of type
         no.elhub.flex.party.outdated
       properties:
+        entity:
+          description: Details about the possibly new entity owning the party.
+          $ref: '#/components/schemas/entity'
         party:
           description: Updated fields of the party.
           $ref: '#/components/schemas/party'

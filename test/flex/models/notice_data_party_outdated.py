@@ -6,6 +6,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.entity import Entity
     from ..models.party import Party
 
 
@@ -17,6 +18,15 @@ class NoticeDataPartyOutdated:
     """Format of the data field in a notice of type no.elhub.flex.party.outdated
 
     Attributes:
+        entity (Union[Unset, Entity]): Data of the response schema for operations with return values - Entity - Natural
+            or legal person
+
+            An entity is a natural or legal person that can be a party in the Flexibility Information System.
+
+            Example entity types:
+
+            * Person
+            * Organisation
         party (Union[Unset, Party]): Data of the response schema for operations with return values - The body that
             interacts with the Flexibility Information System
 
@@ -29,10 +39,15 @@ class NoticeDataPartyOutdated:
             * End User
     """
 
+    entity: Union[Unset, "Entity"] = UNSET
     party: Union[Unset, "Party"] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        entity: Union[Unset, Dict[str, Any]] = UNSET
+        if not isinstance(self.entity, Unset):
+            entity = self.entity.to_dict()
+
         party: Union[Unset, Dict[str, Any]] = UNSET
         if not isinstance(self.party, Unset):
             party = self.party.to_dict()
@@ -40,6 +55,8 @@ class NoticeDataPartyOutdated:
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if entity is not UNSET:
+            field_dict["entity"] = entity
         if party is not UNSET:
             field_dict["party"] = party
 
@@ -47,9 +64,17 @@ class NoticeDataPartyOutdated:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.entity import Entity
         from ..models.party import Party
 
         d = src_dict.copy()
+        _entity = d.pop("entity", UNSET)
+        entity: Union[Unset, Entity]
+        if isinstance(_entity, Unset):
+            entity = UNSET
+        else:
+            entity = Entity.from_dict(_entity)
+
         _party = d.pop("party", UNSET)
         party: Union[Unset, Party]
         if isinstance(_party, Unset):
@@ -58,6 +83,7 @@ class NoticeDataPartyOutdated:
             party = Party.from_dict(_party)
 
         notice_data_party_outdated = cls(
+            entity=entity,
             party=party,
         )
 
