@@ -6,12 +6,12 @@ from attrs import field as _attrs_field
 from ..models.service_provider_product_application_status import ServiceProviderProductApplicationStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProviderProductApplicationResponse")
+T = TypeVar("T", bound="ServiceProviderProductApplicationCreateData")
 
 
 @_attrs_define
-class ServiceProviderProductApplicationResponse:
-    """Response schema for operations with return values - Relation between a service provider and a system operator, for
+class ServiceProviderProductApplicationCreateData:
+    """Data of the request schema for create operations - Relation between a service provider and a system operator, for
     the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
 
         Attributes:
@@ -23,10 +23,6 @@ class ServiceProviderProductApplicationResponse:
                 12:00:00 CET.
             service_provider_id (Union[Unset, int]): Reference to the service provider. Example: 18.
             system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 39.
-            id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
-            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31 23:59:00 CET.
-            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
     product_type_ids: Union[Unset, List[int]] = UNSET
@@ -35,9 +31,6 @@ class ServiceProviderProductApplicationResponse:
     last_qualified: Union[None, Unset, str] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -65,12 +58,6 @@ class ServiceProviderProductApplicationResponse:
 
         system_operator_id = self.system_operator_id
 
-        id = self.id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -86,12 +73,6 @@ class ServiceProviderProductApplicationResponse:
             field_dict["service_provider_id"] = service_provider_id
         if system_operator_id is not UNSET:
             field_dict["system_operator_id"] = system_operator_id
-        if id is not UNSET:
-            field_dict["id"] = id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
 
         return field_dict
 
@@ -129,26 +110,17 @@ class ServiceProviderProductApplicationResponse:
 
         system_operator_id = d.pop("system_operator_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        service_provider_product_application_response = cls(
+        service_provider_product_application_create_data = cls(
             product_type_ids=product_type_ids,
             status=status,
             notes=notes,
             last_qualified=last_qualified,
             service_provider_id=service_provider_id,
             system_operator_id=system_operator_id,
-            id=id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
         )
 
-        service_provider_product_application_response.additional_properties = d
-        return service_provider_product_application_response
+        service_provider_product_application_create_data.additional_properties = d
+        return service_provider_product_application_create_data
 
     @property
     def additional_keys(self) -> List[str]:

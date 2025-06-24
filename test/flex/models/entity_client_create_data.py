@@ -5,12 +5,12 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="EntityClientCreateRequest")
+T = TypeVar("T", bound="EntityClientCreateData")
 
 
 @_attrs_define
-class EntityClientCreateRequest:
-    """Request schema for create operations - Client linked to an entity for client credentials and JWT grant
+class EntityClientCreateData:
+    """Data of the request schema for create operations - Client linked to an entity for client credentials and JWT grant
     authentication methods.
 
         Attributes:
@@ -110,7 +110,7 @@ class EntityClientCreateRequest:
 
         entity_id = d.pop("entity_id", UNSET)
 
-        entity_client_create_request = cls(
+        entity_client_create_data = cls(
             name=name,
             client_id=client_id,
             client_secret=client_secret,
@@ -118,8 +118,8 @@ class EntityClientCreateRequest:
             entity_id=entity_id,
         )
 
-        entity_client_create_request.additional_properties = d
-        return entity_client_create_request
+        entity_client_create_data.additional_properties = d
+        return entity_client_create_data
 
     @property
     def additional_keys(self) -> List[str]:

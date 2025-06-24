@@ -14,14 +14,14 @@ class ServiceProviderProductApplicationHistoryResponse:
     """Service Provider Product Application - history
 
     Attributes:
-        service_provider_id (int): Reference to the service provider. Example: 18.
-        system_operator_id (int): Reference to the system operator. Example: 39.
         product_type_ids (Union[Unset, List[int]]): References to the product types. Example: [2, 4, 5].
         status (Union[Unset, ServiceProviderProductApplicationStatus]): The status of the application. Example:
             in_progress.
         notes (Union[None, Unset, str]): Free text notes on the current product application status.
         last_qualified (Union[None, Unset, str]): When the product application was last validated. Example: 2022-08-08
             12:00:00 CET.
+        service_provider_id (Union[Unset, int]): Reference to the service provider. Example: 18.
+        system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 39.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
@@ -33,12 +33,12 @@ class ServiceProviderProductApplicationHistoryResponse:
             10:00:00 CET.
     """
 
-    service_provider_id: int
-    system_operator_id: int
     product_type_ids: Union[Unset, List[int]] = UNSET
     status: Union[Unset, ServiceProviderProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     last_qualified: Union[None, Unset, str] = UNSET
+    service_provider_id: Union[Unset, int] = UNSET
+    system_operator_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
@@ -48,10 +48,6 @@ class ServiceProviderProductApplicationHistoryResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        service_provider_id = self.service_provider_id
-
-        system_operator_id = self.system_operator_id
-
         product_type_ids: Union[Unset, List[int]] = UNSET
         if not isinstance(self.product_type_ids, Unset):
             product_type_ids = self.product_type_ids
@@ -71,6 +67,10 @@ class ServiceProviderProductApplicationHistoryResponse:
             last_qualified = UNSET
         else:
             last_qualified = self.last_qualified
+
+        service_provider_id = self.service_provider_id
+
+        system_operator_id = self.system_operator_id
 
         id = self.id
 
@@ -94,12 +94,7 @@ class ServiceProviderProductApplicationHistoryResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "service_provider_id": service_provider_id,
-                "system_operator_id": system_operator_id,
-            }
-        )
+        field_dict.update({})
         if product_type_ids is not UNSET:
             field_dict["product_type_ids"] = product_type_ids
         if status is not UNSET:
@@ -108,6 +103,10 @@ class ServiceProviderProductApplicationHistoryResponse:
             field_dict["notes"] = notes
         if last_qualified is not UNSET:
             field_dict["last_qualified"] = last_qualified
+        if service_provider_id is not UNSET:
+            field_dict["service_provider_id"] = service_provider_id
+        if system_operator_id is not UNSET:
+            field_dict["system_operator_id"] = system_operator_id
         if id is not UNSET:
             field_dict["id"] = id
         if recorded_at is not UNSET:
@@ -126,10 +125,6 @@ class ServiceProviderProductApplicationHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        service_provider_id = d.pop("service_provider_id")
-
-        system_operator_id = d.pop("system_operator_id")
-
         product_type_ids = cast(List[int], d.pop("product_type_ids", UNSET))
 
         _status = d.pop("status", UNSET)
@@ -156,6 +151,10 @@ class ServiceProviderProductApplicationHistoryResponse:
             return cast(Union[None, Unset, str], data)
 
         last_qualified = _parse_last_qualified(d.pop("last_qualified", UNSET))
+
+        service_provider_id = d.pop("service_provider_id", UNSET)
+
+        system_operator_id = d.pop("system_operator_id", UNSET)
 
         id = d.pop("id", UNSET)
 
@@ -184,12 +183,12 @@ class ServiceProviderProductApplicationHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_provider_product_application_history_response = cls(
-            service_provider_id=service_provider_id,
-            system_operator_id=system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
             notes=notes,
             last_qualified=last_qualified,
+            service_provider_id=service_provider_id,
+            system_operator_id=system_operator_id,
             id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,

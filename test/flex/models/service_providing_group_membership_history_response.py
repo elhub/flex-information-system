@@ -13,14 +13,14 @@ class ServiceProvidingGroupMembershipHistoryResponse:
     """Membership relation of controllable unit in service providing group - history
 
     Attributes:
-        controllable_unit_id (int): Reference to the controllable unit this relation links to a service providing group.
-            Example: 6.
-        service_providing_group_id (int): Reference to the service providing group this relation links to a controllable
-            unit. Example: 55.
         valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
             providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
             service providing group is valid. Midnight aligned on Norwegian timezone.
+        controllable_unit_id (Union[Unset, int]): Reference to the controllable unit this relation links to a service
+            providing group. Example: 6.
+        service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
+            a controllable unit. Example: 55.
         id (Union[Unset, int]): Unique surrogate key. Example: 27.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
@@ -32,10 +32,10 @@ class ServiceProvidingGroupMembershipHistoryResponse:
             10:00:00 CET.
     """
 
-    controllable_unit_id: int
-    service_providing_group_id: int
     valid_from: Union[Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
+    controllable_unit_id: Union[Unset, int] = UNSET
+    service_providing_group_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
@@ -45,10 +45,6 @@ class ServiceProvidingGroupMembershipHistoryResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        controllable_unit_id = self.controllable_unit_id
-
-        service_providing_group_id = self.service_providing_group_id
-
         valid_from = self.valid_from
 
         valid_to: Union[None, Unset, str]
@@ -56,6 +52,10 @@ class ServiceProvidingGroupMembershipHistoryResponse:
             valid_to = UNSET
         else:
             valid_to = self.valid_to
+
+        controllable_unit_id = self.controllable_unit_id
+
+        service_providing_group_id = self.service_providing_group_id
 
         id = self.id
 
@@ -79,16 +79,15 @@ class ServiceProvidingGroupMembershipHistoryResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "controllable_unit_id": controllable_unit_id,
-                "service_providing_group_id": service_providing_group_id,
-            }
-        )
+        field_dict.update({})
         if valid_from is not UNSET:
             field_dict["valid_from"] = valid_from
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
+        if controllable_unit_id is not UNSET:
+            field_dict["controllable_unit_id"] = controllable_unit_id
+        if service_providing_group_id is not UNSET:
+            field_dict["service_providing_group_id"] = service_providing_group_id
         if id is not UNSET:
             field_dict["id"] = id
         if recorded_at is not UNSET:
@@ -107,10 +106,6 @@ class ServiceProvidingGroupMembershipHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        controllable_unit_id = d.pop("controllable_unit_id")
-
-        service_providing_group_id = d.pop("service_providing_group_id")
-
         valid_from = d.pop("valid_from", UNSET)
 
         def _parse_valid_to(data: object) -> Union[None, Unset, str]:
@@ -121,6 +116,10 @@ class ServiceProvidingGroupMembershipHistoryResponse:
             return cast(Union[None, Unset, str], data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
+
+        controllable_unit_id = d.pop("controllable_unit_id", UNSET)
+
+        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
 
         id = d.pop("id", UNSET)
 
@@ -149,10 +148,10 @@ class ServiceProvidingGroupMembershipHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_providing_group_membership_history_response = cls(
-            controllable_unit_id=controllable_unit_id,
-            service_providing_group_id=service_providing_group_id,
             valid_from=valid_from,
             valid_to=valid_to,
+            controllable_unit_id=controllable_unit_id,
+            service_providing_group_id=service_providing_group_id,
             id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,

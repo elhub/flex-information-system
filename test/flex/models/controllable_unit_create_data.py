@@ -10,12 +10,12 @@ from ..models.controllable_unit_regulation_direction import ControllableUnitRegu
 from ..models.controllable_unit_status import ControllableUnitStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ControllableUnitCreateRequest")
+T = TypeVar("T", bound="ControllableUnitCreateData")
 
 
 @_attrs_define
-class ControllableUnitCreateRequest:
-    """Request schema for create operations - Controllable unit
+class ControllableUnitCreateData:
+    """Data of the request schema for create operations - Controllable unit
 
     Attributes:
         name (Union[Unset, str]): Free text name of the controllable unit. Example: Car Charger #34.
@@ -273,7 +273,7 @@ class ControllableUnitCreateRequest:
 
         accounting_point_id = d.pop("accounting_point_id", UNSET)
 
-        controllable_unit_create_request = cls(
+        controllable_unit_create_data = cls(
             name=name,
             start_date=start_date,
             status=status,
@@ -290,8 +290,8 @@ class ControllableUnitCreateRequest:
             accounting_point_id=accounting_point_id,
         )
 
-        controllable_unit_create_request.additional_properties = d
-        return controllable_unit_create_request
+        controllable_unit_create_data.additional_properties = d
+        return controllable_unit_create_data
 
     @property
     def additional_keys(self) -> List[str]:

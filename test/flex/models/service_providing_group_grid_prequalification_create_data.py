@@ -8,12 +8,12 @@ from ..models.service_providing_group_grid_prequalification_status import (
 )
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationCreateRequest")
+T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationCreateData")
 
 
 @_attrs_define
-class ServiceProvidingGroupGridPrequalificationCreateRequest:
-    """Request schema for create operations - Grid prequalification for service providing group
+class ServiceProvidingGroupGridPrequalificationCreateData:
+    """Data of the request schema for create operations - Grid prequalification for service providing group
 
     Attributes:
         status (Union[Unset, ServiceProvidingGroupGridPrequalificationStatus]): The status of the grid prequalification
@@ -103,7 +103,7 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
 
         impacted_system_operator_id = d.pop("impacted_system_operator_id", UNSET)
 
-        service_providing_group_grid_prequalification_create_request = cls(
+        service_providing_group_grid_prequalification_create_data = cls(
             status=status,
             notes=notes,
             last_prequalified=last_prequalified,
@@ -111,8 +111,8 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
             impacted_system_operator_id=impacted_system_operator_id,
         )
 
-        service_providing_group_grid_prequalification_create_request.additional_properties = d
-        return service_providing_group_grid_prequalification_create_request
+        service_providing_group_grid_prequalification_create_data.additional_properties = d
+        return service_providing_group_grid_prequalification_create_data
 
     @property
     def additional_keys(self) -> List[str]:

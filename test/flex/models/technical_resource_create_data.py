@@ -5,12 +5,12 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="TechnicalResourceCreateRequest")
+T = TypeVar("T", bound="TechnicalResourceCreateData")
 
 
 @_attrs_define
-class TechnicalResourceCreateRequest:
-    """Request schema for create operations - Technical unit being part of a controllable unit.
+class TechnicalResourceCreateData:
+    """Data of the request schema for create operations - Technical unit being part of a controllable unit.
 
     Attributes:
         name (Union[Unset, str]): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
@@ -64,14 +64,14 @@ class TechnicalResourceCreateRequest:
 
         controllable_unit_id = d.pop("controllable_unit_id", UNSET)
 
-        technical_resource_create_request = cls(
+        technical_resource_create_data = cls(
             name=name,
             details=details,
             controllable_unit_id=controllable_unit_id,
         )
 
-        technical_resource_create_request.additional_properties = d
-        return technical_resource_create_request
+        technical_resource_create_data.additional_properties = d
+        return technical_resource_create_data
 
     @property
     def additional_keys(self) -> List[str]:

@@ -14,9 +14,10 @@ class ServiceProvidingGroupHistoryResponse:
     """Service providing group - history
 
     Attributes:
-        service_provider_id (int): Reference to the `party` (service provider) managing the group. Example: 17.
         name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
         status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
+        service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) managing the group.
+            Example: 17.
         id (Union[Unset, int]): Unique surrogate key. Example: 4.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
@@ -27,9 +28,9 @@ class ServiceProvidingGroupHistoryResponse:
             10:00:00 CET.
     """
 
-    service_provider_id: int
     name: Union[Unset, str] = UNSET
     status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
+    service_provider_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
@@ -39,13 +40,13 @@ class ServiceProvidingGroupHistoryResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        service_provider_id = self.service_provider_id
-
         name = self.name
 
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
+
+        service_provider_id = self.service_provider_id
 
         id = self.id
 
@@ -69,15 +70,13 @@ class ServiceProvidingGroupHistoryResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "service_provider_id": service_provider_id,
-            }
-        )
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if status is not UNSET:
             field_dict["status"] = status
+        if service_provider_id is not UNSET:
+            field_dict["service_provider_id"] = service_provider_id
         if id is not UNSET:
             field_dict["id"] = id
         if recorded_at is not UNSET:
@@ -96,8 +95,6 @@ class ServiceProvidingGroupHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        service_provider_id = d.pop("service_provider_id")
-
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
@@ -106,6 +103,8 @@ class ServiceProvidingGroupHistoryResponse:
             status = UNSET
         else:
             status = ServiceProvidingGroupStatus(_status)
+
+        service_provider_id = d.pop("service_provider_id", UNSET)
 
         id = d.pop("id", UNSET)
 
@@ -134,9 +133,9 @@ class ServiceProvidingGroupHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_providing_group_history_response = cls(
-            service_provider_id=service_provider_id,
             name=name,
             status=status,
+            service_provider_id=service_provider_id,
             id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,

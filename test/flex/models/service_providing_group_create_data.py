@@ -6,12 +6,12 @@ from attrs import field as _attrs_field
 from ..models.service_providing_group_status import ServiceProvidingGroupStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupCreateRequest")
+T = TypeVar("T", bound="ServiceProvidingGroupCreateData")
 
 
 @_attrs_define
-class ServiceProvidingGroupCreateRequest:
-    """Request schema for create operations - Group of controllable units
+class ServiceProvidingGroupCreateData:
+    """Data of the request schema for create operations - Group of controllable units
 
     Attributes:
         name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
@@ -60,14 +60,14 @@ class ServiceProvidingGroupCreateRequest:
 
         service_provider_id = d.pop("service_provider_id", UNSET)
 
-        service_providing_group_create_request = cls(
+        service_providing_group_create_data = cls(
             name=name,
             status=status,
             service_provider_id=service_provider_id,
         )
 
-        service_providing_group_create_request.additional_properties = d
-        return service_providing_group_create_request
+        service_providing_group_create_data.additional_properties = d
+        return service_providing_group_create_data
 
     @property
     def additional_keys(self) -> List[str]:

@@ -5,22 +5,23 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupMembershipCreateRequest")
+T = TypeVar("T", bound="ServiceProvidingGroupMembershipCreateData")
 
 
 @_attrs_define
-class ServiceProvidingGroupMembershipCreateRequest:
-    """Request schema for create operations - Membership relation of controllable unit in service providing group
+class ServiceProvidingGroupMembershipCreateData:
+    """Data of the request schema for create operations - Membership relation of controllable unit in service providing
+    group
 
-    Attributes:
-        valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
-            providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
-        valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
-            service providing group is valid. Midnight aligned on Norwegian timezone.
-        controllable_unit_id (Union[Unset, int]): Reference to the controllable unit this relation links to a service
-            providing group. Example: 6.
-        service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
-            a controllable unit. Example: 55.
+        Attributes:
+            valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
+                providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+            valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
+                service providing group is valid. Midnight aligned on Norwegian timezone.
+            controllable_unit_id (Union[Unset, int]): Reference to the controllable unit this relation links to a service
+                providing group. Example: 6.
+            service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
+                a controllable unit. Example: 55.
     """
 
     valid_from: Union[Unset, str] = UNSET
@@ -74,15 +75,15 @@ class ServiceProvidingGroupMembershipCreateRequest:
 
         service_providing_group_id = d.pop("service_providing_group_id", UNSET)
 
-        service_providing_group_membership_create_request = cls(
+        service_providing_group_membership_create_data = cls(
             valid_from=valid_from,
             valid_to=valid_to,
             controllable_unit_id=controllable_unit_id,
             service_providing_group_id=service_providing_group_id,
         )
 
-        service_providing_group_membership_create_request.additional_properties = d
-        return service_providing_group_membership_create_request
+        service_providing_group_membership_create_data.additional_properties = d
+        return service_providing_group_membership_create_data
 
     @property
     def additional_keys(self) -> List[str]:

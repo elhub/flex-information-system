@@ -6,12 +6,12 @@ from attrs import field as _attrs_field
 from ..models.service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupProductApplicationResponse")
+T = TypeVar("T", bound="ServiceProvidingGroupProductApplicationCreateData")
 
 
 @_attrs_define
-class ServiceProvidingGroupProductApplicationResponse:
-    """Response schema for operations with return values - Relation between a service providing group and a system operator
+class ServiceProvidingGroupProductApplicationCreateData:
+    """Data of the request schema for create operations - Relation between a service providing group and a system operator
     for a product type, for the SPG to deliver a product to the SO later.
 
         Attributes:
@@ -25,10 +25,6 @@ class ServiceProvidingGroupProductApplicationResponse:
             service_providing_group_id (Union[Unset, int]): Reference to the service providing group. Example: 18.
             procuring_system_operator_id (Union[Unset, int]): Reference to the procuring system operator. Example: 39.
             product_type_id (Union[Unset, int]): References to the product type. Example: 2.
-            id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
-            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31 23:59:00 CET.
-            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
     status: Union[Unset, ServiceProvidingGroupProductApplicationStatus] = UNSET
@@ -38,9 +34,6 @@ class ServiceProvidingGroupProductApplicationResponse:
     service_providing_group_id: Union[Unset, int] = UNSET
     procuring_system_operator_id: Union[Unset, int] = UNSET
     product_type_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,12 +65,6 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         product_type_id = self.product_type_id
 
-        id = self.id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -95,12 +82,6 @@ class ServiceProvidingGroupProductApplicationResponse:
             field_dict["procuring_system_operator_id"] = procuring_system_operator_id
         if product_type_id is not UNSET:
             field_dict["product_type_id"] = product_type_id
-        if id is not UNSET:
-            field_dict["id"] = id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
 
         return field_dict
 
@@ -147,13 +128,7 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         product_type_id = d.pop("product_type_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        service_providing_group_product_application_response = cls(
+        service_providing_group_product_application_create_data = cls(
             status=status,
             notes=notes,
             last_prequalified=last_prequalified,
@@ -161,13 +136,10 @@ class ServiceProvidingGroupProductApplicationResponse:
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_id=product_type_id,
-            id=id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
         )
 
-        service_providing_group_product_application_response.additional_properties = d
-        return service_providing_group_product_application_response
+        service_providing_group_product_application_create_data.additional_properties = d
+        return service_providing_group_product_application_create_data
 
     @property
     def additional_keys(self) -> List[str]:

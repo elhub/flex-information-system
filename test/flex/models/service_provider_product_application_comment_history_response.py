@@ -16,11 +16,11 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
     """Service Provider Product Application Comment - history
 
     Attributes:
-        service_provider_product_application_id (int): Reference to the service provider product application. Example:
-            7.
         visibility (Union[Unset, ServiceProviderProductApplicationCommentVisibility]): The level of visibility of the
             comment. Example: same_party.
         content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
+        service_provider_product_application_id (Union[Unset, int]): Reference to the service provider product
+            application. Example: 7.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
         created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
         created_at (Union[Unset, str]): When the comment was added to the application. Example: 2022-08-08 12:00:00 CET.
@@ -34,9 +34,9 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
             10:00:00 CET.
     """
 
-    service_provider_product_application_id: int
     visibility: Union[Unset, ServiceProviderProductApplicationCommentVisibility] = UNSET
     content: Union[Unset, str] = UNSET
+    service_provider_product_application_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     created_by: Union[Unset, int] = UNSET
     created_at: Union[Unset, str] = UNSET
@@ -48,13 +48,13 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        service_provider_product_application_id = self.service_provider_product_application_id
-
         visibility: Union[Unset, str] = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
         content = self.content
+
+        service_provider_product_application_id = self.service_provider_product_application_id
 
         id = self.id
 
@@ -82,15 +82,13 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "service_provider_product_application_id": service_provider_product_application_id,
-            }
-        )
+        field_dict.update({})
         if visibility is not UNSET:
             field_dict["visibility"] = visibility
         if content is not UNSET:
             field_dict["content"] = content
+        if service_provider_product_application_id is not UNSET:
+            field_dict["service_provider_product_application_id"] = service_provider_product_application_id
         if id is not UNSET:
             field_dict["id"] = id
         if created_by is not UNSET:
@@ -115,8 +113,6 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        service_provider_product_application_id = d.pop("service_provider_product_application_id")
-
         _visibility = d.pop("visibility", UNSET)
         visibility: Union[Unset, ServiceProviderProductApplicationCommentVisibility]
         if isinstance(_visibility, Unset):
@@ -125,6 +121,8 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
             visibility = ServiceProviderProductApplicationCommentVisibility(_visibility)
 
         content = d.pop("content", UNSET)
+
+        service_provider_product_application_id = d.pop("service_provider_product_application_id", UNSET)
 
         id = d.pop("id", UNSET)
 
@@ -159,9 +157,9 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_provider_product_application_comment_history_response = cls(
-            service_provider_product_application_id=service_provider_product_application_id,
             visibility=visibility,
             content=content,
+            service_provider_product_application_id=service_provider_product_application_id,
             id=id,
             created_by=created_by,
             created_at=created_at,

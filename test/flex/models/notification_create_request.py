@@ -5,51 +5,60 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="PartyMembershipCreateRequest")
+T = TypeVar("T", bound="NotificationCreateRequest")
 
 
 @_attrs_define
-class PartyMembershipCreateRequest:
-    """Request schema for create operations - The relation between a party and entity.
+class NotificationCreateRequest:
+    """Request schema for create operations - Notification about an event happening in the system.
 
     Attributes:
-        party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
+        acknowledged (Union[Unset, bool]): Whether the notification was acknowledged by the target user.
+        event_id (Union[Unset, int]): Reference to the event notified by this resource. Example: 37.
+        party_id (Union[Unset, int]): Reference to the party concerned by this notification. Example: 37.
     """
 
+    acknowledged: Union[Unset, bool] = UNSET
+    event_id: Union[Unset, int] = UNSET
     party_id: Union[Unset, int] = UNSET
-    entity_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        party_id = self.party_id
+        acknowledged = self.acknowledged
 
-        entity_id = self.entity_id
+        event_id = self.event_id
+
+        party_id = self.party_id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if acknowledged is not UNSET:
+            field_dict["acknowledged"] = acknowledged
+        if event_id is not UNSET:
+            field_dict["event_id"] = event_id
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        acknowledged = d.pop("acknowledged", UNSET)
+
+        event_id = d.pop("event_id", UNSET)
+
         party_id = d.pop("party_id", UNSET)
 
-        entity_id = d.pop("entity_id", UNSET)
-
-        party_membership_create_request = cls(
+        notification_create_request = cls(
+            acknowledged=acknowledged,
+            event_id=event_id,
             party_id=party_id,
-            entity_id=entity_id,
         )
 
-        party_membership_create_request.additional_properties = d
-        return party_membership_create_request
+        notification_create_request.additional_properties = d
+        return notification_create_request
 
     @property
     def additional_keys(self) -> List[str]:

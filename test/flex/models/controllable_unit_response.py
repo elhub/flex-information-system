@@ -18,8 +18,6 @@ class ControllableUnitResponse:
     """Response schema for operations with return values - Controllable unit
 
     Attributes:
-        accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
-            Example: 10289.
         name (Union[Unset, str]): Free text name of the controllable unit. Example: Car Charger #34.
         start_date (Union[None, Unset, datetime.date]): The usage date when the controllable unit is first active.
             Example: 2024-05-17.
@@ -42,6 +40,8 @@ class ControllableUnitResponse:
         grid_validation_notes (Union[None, Unset, str]): Free text notes on the current grid validation status.
         last_validated (Union[None, Unset, str]): When the controllable unit was last validated. Example: 2022-08-08
             12:00:00 CET.
+        accounting_point_id (Union[Unset, int]): Reference to the accounting point that the controllable unit is
+            connected to. Example: 10289.
         id (Union[Unset, int]): Unique surrogate key. Example: 12.
         business_id (Union[Unset, str]): Unique business identifier for the controllable unit. Example:
             53919b79-876f-4dad-8bde-b29368367604.
@@ -51,7 +51,6 @@ class ControllableUnitResponse:
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
-    accounting_point_id: int
     name: Union[Unset, str] = UNSET
     start_date: Union[None, Unset, datetime.date] = UNSET
     status: Union[Unset, ControllableUnitStatus] = UNSET
@@ -65,6 +64,7 @@ class ControllableUnitResponse:
     grid_validation_status: Union[Unset, ControllableUnitGridValidationStatus] = UNSET
     grid_validation_notes: Union[None, Unset, str] = UNSET
     last_validated: Union[None, Unset, str] = UNSET
+    accounting_point_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
     is_small: Union[Unset, bool] = UNSET
@@ -73,8 +73,6 @@ class ControllableUnitResponse:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        accounting_point_id = self.accounting_point_id
-
         name = self.name
 
         start_date: Union[None, Unset, str]
@@ -141,6 +139,8 @@ class ControllableUnitResponse:
         else:
             last_validated = self.last_validated
 
+        accounting_point_id = self.accounting_point_id
+
         id = self.id
 
         business_id = self.business_id
@@ -153,11 +153,7 @@ class ControllableUnitResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "accounting_point_id": accounting_point_id,
-            }
-        )
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if start_date is not UNSET:
@@ -184,6 +180,8 @@ class ControllableUnitResponse:
             field_dict["grid_validation_notes"] = grid_validation_notes
         if last_validated is not UNSET:
             field_dict["last_validated"] = last_validated
+        if accounting_point_id is not UNSET:
+            field_dict["accounting_point_id"] = accounting_point_id
         if id is not UNSET:
             field_dict["id"] = id
         if business_id is not UNSET:
@@ -200,8 +198,6 @@ class ControllableUnitResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        accounting_point_id = d.pop("accounting_point_id")
-
         name = d.pop("name", UNSET)
 
         def _parse_start_date(data: object) -> Union[None, Unset, datetime.date]:
@@ -307,6 +303,8 @@ class ControllableUnitResponse:
 
         last_validated = _parse_last_validated(d.pop("last_validated", UNSET))
 
+        accounting_point_id = d.pop("accounting_point_id", UNSET)
+
         id = d.pop("id", UNSET)
 
         business_id = d.pop("business_id", UNSET)
@@ -318,7 +316,6 @@ class ControllableUnitResponse:
         recorded_by = d.pop("recorded_by", UNSET)
 
         controllable_unit_response = cls(
-            accounting_point_id=accounting_point_id,
             name=name,
             start_date=start_date,
             status=status,
@@ -332,6 +329,7 @@ class ControllableUnitResponse:
             grid_validation_status=grid_validation_status,
             grid_validation_notes=grid_validation_notes,
             last_validated=last_validated,
+            accounting_point_id=accounting_point_id,
             id=id,
             business_id=business_id,
             is_small=is_small,

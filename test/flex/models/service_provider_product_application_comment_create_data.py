@@ -8,19 +8,20 @@ from ..models.service_provider_product_application_comment_visibility import (
 )
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProviderProductApplicationCommentCreateRequest")
+T = TypeVar("T", bound="ServiceProviderProductApplicationCommentCreateData")
 
 
 @_attrs_define
-class ServiceProviderProductApplicationCommentCreateRequest:
-    """Request schema for create operations - Comment made by a party involved in a service provider product application.
+class ServiceProviderProductApplicationCommentCreateData:
+    """Data of the request schema for create operations - Comment made by a party involved in a service provider product
+    application.
 
-    Attributes:
-        visibility (Union[Unset, ServiceProviderProductApplicationCommentVisibility]): The level of visibility of the
-            comment. Example: same_party.
-        content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
-        service_provider_product_application_id (Union[Unset, int]): Reference to the service provider product
-            application. Example: 7.
+        Attributes:
+            visibility (Union[Unset, ServiceProviderProductApplicationCommentVisibility]): The level of visibility of the
+                comment. Example: same_party.
+            content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
+            service_provider_product_application_id (Union[Unset, int]): Reference to the service provider product
+                application. Example: 7.
     """
 
     visibility: Union[Unset, ServiceProviderProductApplicationCommentVisibility] = UNSET
@@ -63,14 +64,14 @@ class ServiceProviderProductApplicationCommentCreateRequest:
 
         service_provider_product_application_id = d.pop("service_provider_product_application_id", UNSET)
 
-        service_provider_product_application_comment_create_request = cls(
+        service_provider_product_application_comment_create_data = cls(
             visibility=visibility,
             content=content,
             service_provider_product_application_id=service_provider_product_application_id,
         )
 
-        service_provider_product_application_comment_create_request.additional_properties = d
-        return service_provider_product_application_comment_create_request
+        service_provider_product_application_comment_create_data.additional_properties = d
+        return service_provider_product_application_comment_create_data
 
     @property
     def additional_keys(self) -> List[str]:

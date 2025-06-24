@@ -16,35 +16,32 @@ class ServiceProvidingGroupGridPrequalificationResponse:
     """Response schema for operations with return values - Grid prequalification for service providing group
 
     Attributes:
-        service_providing_group_id (int): Reference to the service providing group whose grid prequalification is
-            tracked by the current resource. Example: 55.
-        impacted_system_operator_id (int): Reference to the `party` that is the impacted system operator. Example: 7.
         status (Union[Unset, ServiceProvidingGroupGridPrequalificationStatus]): The status of the grid prequalification
             for this service providing group. Example: in_progress.
         notes (Union[None, Unset, str]): Free text notes on the current prequalification status.
         last_prequalified (Union[None, Unset, str]): When the current grid prequalification was last approved. Example:
             2023-01-08 10:00:00 CET.
+        service_providing_group_id (Union[Unset, int]): Reference to the service providing group whose grid
+            prequalification is tracked by the current resource. Example: 55.
+        impacted_system_operator_id (Union[Unset, int]): Reference to the `party` that is the impacted system operator.
+            Example: 7.
         id (Union[Unset, int]): Unique surrogate key. Example: 27.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
-    service_providing_group_id: int
-    impacted_system_operator_id: int
     status: Union[Unset, ServiceProvidingGroupGridPrequalificationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     last_prequalified: Union[None, Unset, str] = UNSET
+    service_providing_group_id: Union[Unset, int] = UNSET
+    impacted_system_operator_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        service_providing_group_id = self.service_providing_group_id
-
-        impacted_system_operator_id = self.impacted_system_operator_id
-
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -61,6 +58,10 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         else:
             last_prequalified = self.last_prequalified
 
+        service_providing_group_id = self.service_providing_group_id
+
+        impacted_system_operator_id = self.impacted_system_operator_id
+
         id = self.id
 
         recorded_at = self.recorded_at
@@ -69,18 +70,17 @@ class ServiceProvidingGroupGridPrequalificationResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "service_providing_group_id": service_providing_group_id,
-                "impacted_system_operator_id": impacted_system_operator_id,
-            }
-        )
+        field_dict.update({})
         if status is not UNSET:
             field_dict["status"] = status
         if notes is not UNSET:
             field_dict["notes"] = notes
         if last_prequalified is not UNSET:
             field_dict["last_prequalified"] = last_prequalified
+        if service_providing_group_id is not UNSET:
+            field_dict["service_providing_group_id"] = service_providing_group_id
+        if impacted_system_operator_id is not UNSET:
+            field_dict["impacted_system_operator_id"] = impacted_system_operator_id
         if id is not UNSET:
             field_dict["id"] = id
         if recorded_at is not UNSET:
@@ -93,10 +93,6 @@ class ServiceProvidingGroupGridPrequalificationResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        service_providing_group_id = d.pop("service_providing_group_id")
-
-        impacted_system_operator_id = d.pop("impacted_system_operator_id")
-
         _status = d.pop("status", UNSET)
         status: Union[Unset, ServiceProvidingGroupGridPrequalificationStatus]
         if isinstance(_status, Unset):
@@ -122,6 +118,10 @@ class ServiceProvidingGroupGridPrequalificationResponse:
 
         last_prequalified = _parse_last_prequalified(d.pop("last_prequalified", UNSET))
 
+        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
+
+        impacted_system_operator_id = d.pop("impacted_system_operator_id", UNSET)
+
         id = d.pop("id", UNSET)
 
         recorded_at = d.pop("recorded_at", UNSET)
@@ -129,11 +129,11 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         recorded_by = d.pop("recorded_by", UNSET)
 
         service_providing_group_grid_prequalification_response = cls(
-            service_providing_group_id=service_providing_group_id,
-            impacted_system_operator_id=impacted_system_operator_id,
             status=status,
             notes=notes,
             last_prequalified=last_prequalified,
+            service_providing_group_id=service_providing_group_id,
+            impacted_system_operator_id=impacted_system_operator_id,
             id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
