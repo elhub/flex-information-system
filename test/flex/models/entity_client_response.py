@@ -27,10 +27,10 @@ class EntityClientResponse:
                 0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
                 -----END PUBLIC KEY-----.
             entity_id (Union[Unset, int]): Reference to the entity that this client is attached to. Example: 30.
-            id (Union[Unset, int]): Unique surrogate identifier. Example: 14.
             recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31 23:59:00 CET.
             recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+            id (Union[Unset, int]): Unique surrogate identifier. Example: 14.
     """
 
     name: Union[None, Unset, str] = UNSET
@@ -38,9 +38,9 @@ class EntityClientResponse:
     client_secret: Union[None, Unset, str] = UNSET
     public_key: Union[None, Unset, str] = UNSET
     entity_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -66,11 +66,11 @@ class EntityClientResponse:
 
         entity_id = self.entity_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -85,12 +85,12 @@ class EntityClientResponse:
             field_dict["public_key"] = public_key
         if entity_id is not UNSET:
             field_dict["entity_id"] = entity_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
 
         return field_dict
 
@@ -129,11 +129,11 @@ class EntityClientResponse:
 
         entity_id = d.pop("entity_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         entity_client_response = cls(
             name=name,
@@ -141,9 +141,9 @@ class EntityClientResponse:
             client_secret=client_secret,
             public_key=public_key,
             entity_id=entity_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
         )
 
         entity_client_response.additional_properties = d

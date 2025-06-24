@@ -32,10 +32,10 @@ class PartyResponse:
             role (Union[Unset, str]): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
                 service_provider. Example: flex_energy_supplier.
             type (Union[Unset, str]): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
-            id (Union[Unset, int]): Unique surrogate identifier. Example: 11.
             recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31 23:59:00 CET.
             recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+            id (Union[Unset, int]): Unique surrogate identifier. Example: 11.
     """
 
     business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
@@ -45,9 +45,9 @@ class PartyResponse:
     entity_id: Union[Unset, int] = UNSET
     role: Union[Unset, str] = UNSET
     type: Union[Unset, str] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +69,11 @@ class PartyResponse:
 
         type = self.type
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -92,12 +92,12 @@ class PartyResponse:
             field_dict["role"] = role
         if type is not UNSET:
             field_dict["type"] = type
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
 
         return field_dict
 
@@ -128,11 +128,11 @@ class PartyResponse:
 
         type = d.pop("type", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         party_response = cls(
             business_id_type=business_id_type,
@@ -142,9 +142,9 @@ class PartyResponse:
             entity_id=entity_id,
             role=role,
             type=type,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
         )
 
         party_response.additional_properties = d

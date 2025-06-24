@@ -25,10 +25,10 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
             prequalification is tracked by the current resource. Example: 55.
         impacted_system_operator_id (Union[Unset, int]): Reference to the `party` that is the impacted system operator.
             Example: 7.
-        id (Union[Unset, int]): Unique surrogate key. Example: 27.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate key. Example: 27.
         service_providing_group_grid_prequalification_id (Union[Unset, int]): Reference to the resource that was
             updated. Example: 48.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
@@ -41,9 +41,9 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
     last_prequalified: Union[None, Unset, str] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
     impacted_system_operator_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     service_providing_group_grid_prequalification_id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
@@ -70,11 +70,11 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         impacted_system_operator_id = self.impacted_system_operator_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         service_providing_group_grid_prequalification_id = self.service_providing_group_grid_prequalification_id
 
@@ -103,12 +103,12 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
             field_dict["service_providing_group_id"] = service_providing_group_id
         if impacted_system_operator_id is not UNSET:
             field_dict["impacted_system_operator_id"] = impacted_system_operator_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
         if service_providing_group_grid_prequalification_id is not UNSET:
             field_dict["service_providing_group_grid_prequalification_id"] = (
                 service_providing_group_grid_prequalification_id
@@ -152,11 +152,11 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         impacted_system_operator_id = d.pop("impacted_system_operator_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         service_providing_group_grid_prequalification_id = d.pop(
             "service_providing_group_grid_prequalification_id", UNSET
@@ -186,9 +186,9 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
             last_prequalified=last_prequalified,
             service_providing_group_id=service_providing_group_id,
             impacted_system_operator_id=impacted_system_operator_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
             service_providing_group_grid_prequalification_id=service_providing_group_grid_prequalification_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,

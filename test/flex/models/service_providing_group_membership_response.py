@@ -22,19 +22,19 @@ class ServiceProvidingGroupMembershipResponse:
                 providing group. Example: 6.
             service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
                 a controllable unit. Example: 55.
-            id (Union[Unset, int]): Unique surrogate key. Example: 27.
             recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31 23:59:00 CET.
             recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+            id (Union[Unset, int]): Unique surrogate key. Example: 27.
     """
 
     valid_from: Union[Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
     controllable_unit_id: Union[Unset, int] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -50,11 +50,11 @@ class ServiceProvidingGroupMembershipResponse:
 
         service_providing_group_id = self.service_providing_group_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -67,12 +67,12 @@ class ServiceProvidingGroupMembershipResponse:
             field_dict["controllable_unit_id"] = controllable_unit_id
         if service_providing_group_id is not UNSET:
             field_dict["service_providing_group_id"] = service_providing_group_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
 
         return field_dict
 
@@ -94,20 +94,20 @@ class ServiceProvidingGroupMembershipResponse:
 
         service_providing_group_id = d.pop("service_providing_group_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         service_providing_group_membership_response = cls(
             valid_from=valid_from,
             valid_to=valid_to,
             controllable_unit_id=controllable_unit_id,
             service_providing_group_id=service_providing_group_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
         )
 
         service_providing_group_membership_response.additional_properties = d

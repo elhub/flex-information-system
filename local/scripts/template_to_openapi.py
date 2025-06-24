@@ -32,23 +32,6 @@ from copy import deepcopy
 
 # templates
 
-audit_fields_template = {
-    "recorded_at": {
-        "description": "When the resource was recorded (created or updated) in the system.",
-        "format": "timestamp with time zone",
-        "type": "string",
-        "readOnly": True,
-        "example": "2023-12-31 23:59:00 CET",
-    },
-    "recorded_by": {
-        "description": "The identity that recorded the resource.",
-        "format": "bigint",
-        "type": "integer",
-        "readOnly": True,
-        "example": 145,
-    },
-}
-
 
 def history_schema_template(resource, resource_summary):
     return {
@@ -466,10 +449,6 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     # complete the non-history schemas
 
     for resource in resources:
-        if resource.get("audit"):
-            for field, data in audit_fields_template.items():
-                resource["properties"][field] = data
-
         # update schema: no readOnly or non-updatable properties
         properties_without_non_updatable_or_readonly = deepcopy(resource["properties"])
         # keep a copy of these properties (for the other schemas)
@@ -529,11 +508,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             "type": "object",
         }
 
-        create_subschemas: list[dict] = [
-            {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
-        ]
-
         if "create" in resource["operations"]:
+            create_subschemas: list[dict] = [
+                {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
+            ]
             # add schemas with required list only if non empty
             # (empty lists make the OpenAPI spec ill formed)
             if len(required_properties) > 0:
@@ -547,14 +525,19 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "type": "object",
             }
 
+        response_subschemas: list[dict] = [
+            {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
+            {"properties": readonly_properties},
+        ]
+
+        if resource.get("audit"):
+            response_subschemas.append({"$ref": "#/components/schemas/audit_fields"})
+
         # add response schema (create schema + read-only)
         schemas[f"{resource['id']}_response"] = {
             "summary": f"Response - {resource['summary']}",
             "description": f"Response schema for operations with return values - {resource['description']}",
-            "allOf": [
-                {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
-                {"properties": readonly_properties},
-            ],
+            "allOf": response_subschemas,
             "type": "object",
         }
 

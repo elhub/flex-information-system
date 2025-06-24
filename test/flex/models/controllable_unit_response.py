@@ -42,13 +42,13 @@ class ControllableUnitResponse:
             12:00:00 CET.
         accounting_point_id (Union[Unset, int]): Reference to the accounting point that the controllable unit is
             connected to. Example: 10289.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31 23:59:00 CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate key. Example: 12.
         business_id (Union[Unset, str]): Unique business identifier for the controllable unit. Example:
             53919b79-876f-4dad-8bde-b29368367604.
         is_small (Union[Unset, bool]): Whether the controllable unit is small or not, following NCDR. Example: True.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
     """
 
     name: Union[Unset, str] = UNSET
@@ -65,11 +65,11 @@ class ControllableUnitResponse:
     grid_validation_notes: Union[None, Unset, str] = UNSET
     last_validated: Union[None, Unset, str] = UNSET
     accounting_point_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
     is_small: Union[Unset, bool] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -141,15 +141,15 @@ class ControllableUnitResponse:
 
         accounting_point_id = self.accounting_point_id
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         id = self.id
 
         business_id = self.business_id
 
         is_small = self.is_small
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -182,16 +182,16 @@ class ControllableUnitResponse:
             field_dict["last_validated"] = last_validated
         if accounting_point_id is not UNSET:
             field_dict["accounting_point_id"] = accounting_point_id
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
         if is_small is not UNSET:
             field_dict["is_small"] = is_small
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
 
         return field_dict
 
@@ -305,15 +305,15 @@ class ControllableUnitResponse:
 
         accounting_point_id = d.pop("accounting_point_id", UNSET)
 
+        recorded_at = d.pop("recorded_at", UNSET)
+
+        recorded_by = d.pop("recorded_by", UNSET)
+
         id = d.pop("id", UNSET)
 
         business_id = d.pop("business_id", UNSET)
 
         is_small = d.pop("is_small", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
 
         controllable_unit_response = cls(
             name=name,
@@ -330,11 +330,11 @@ class ControllableUnitResponse:
             grid_validation_notes=grid_validation_notes,
             last_validated=last_validated,
             accounting_point_id=accounting_point_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
             business_id=business_id,
             is_small=is_small,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
         )
 
         controllable_unit_response.additional_properties = d

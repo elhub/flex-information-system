@@ -22,10 +22,10 @@ class ServiceProviderProductApplicationHistoryResponse:
             12:00:00 CET.
         service_provider_id (Union[Unset, int]): Reference to the service provider. Example: 18.
         system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 39.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
         service_provider_product_application_id (Union[Unset, int]): Reference to the resource that was updated.
             Example: 48.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
@@ -39,9 +39,9 @@ class ServiceProviderProductApplicationHistoryResponse:
     last_qualified: Union[None, Unset, str] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     service_provider_product_application_id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
@@ -72,11 +72,11 @@ class ServiceProviderProductApplicationHistoryResponse:
 
         system_operator_id = self.system_operator_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         service_provider_product_application_id = self.service_provider_product_application_id
 
@@ -107,12 +107,12 @@ class ServiceProviderProductApplicationHistoryResponse:
             field_dict["service_provider_id"] = service_provider_id
         if system_operator_id is not UNSET:
             field_dict["system_operator_id"] = system_operator_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
         if service_provider_product_application_id is not UNSET:
             field_dict["service_provider_product_application_id"] = service_provider_product_application_id
         if replaced_by is not UNSET:
@@ -156,11 +156,11 @@ class ServiceProviderProductApplicationHistoryResponse:
 
         system_operator_id = d.pop("system_operator_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         service_provider_product_application_id = d.pop("service_provider_product_application_id", UNSET)
 
@@ -189,9 +189,9 @@ class ServiceProviderProductApplicationHistoryResponse:
             last_qualified=last_qualified,
             service_provider_id=service_provider_id,
             system_operator_id=system_operator_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
             service_provider_product_application_id=service_provider_product_application_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,

@@ -149,6 +149,24 @@
                     "message"
                 ]
             },
+            "audit_fields": {
+                "properties": {
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "timestamp with time zone",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31 23:59:00 CET"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    }
+                }
+            },
             "controllable_unit_lookup_request": {
                 "summary": "Controllable unit lookup",
                 "description": "Request schema for controllable unit lookup operations",
@@ -640,22 +658,11 @@
                                 "type": "boolean",
                                 "readOnly": true,
                                 "example": true
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -753,22 +760,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 7
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -842,22 +838,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 4
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -940,22 +925,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 27
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1043,22 +1017,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 27
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1215,22 +1178,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 14
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1327,22 +1279,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 11
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1409,22 +1350,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 44
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1567,22 +1497,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1715,22 +1634,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1779,22 +1687,11 @@
                                 "format": "bigint",
                                 "type": "integer",
                                 "readOnly": true
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -2053,22 +1950,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -2170,22 +2056,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -2273,22 +2148,11 @@
                                 "type": "string",
                                 "readOnly": true,
                                 "example": "2022-08-08 12:00:00 CET"
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -2390,22 +2254,11 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"

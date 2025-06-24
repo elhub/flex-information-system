@@ -11,6 +11,7 @@ from .accounting_point_energy_supplier_response import AccountingPointEnergySupp
 from .accounting_point_energy_supplier_update_request import AccountingPointEnergySupplierUpdateRequest
 from .accounting_point_response import AccountingPointResponse
 from .accounting_point_update_request import AccountingPointUpdateRequest
+from .audit_fields import AuditFields
 from .controllable_unit_create_data import ControllableUnitCreateData
 from .controllable_unit_create_request import ControllableUnitCreateRequest
 from .controllable_unit_grid_validation_status import ControllableUnitGridValidationStatus
@@ -183,6 +184,7 @@ __all__ = (
     "AccountingPointEnergySupplierUpdateRequest",
     "AccountingPointResponse",
     "AccountingPointUpdateRequest",
+    "AuditFields",
     "ControllableUnitCreateData",
     "ControllableUnitCreateRequest",
     "ControllableUnitGridValidationStatus",

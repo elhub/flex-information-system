@@ -25,10 +25,10 @@ class ServiceProvidingGroupGridPrequalificationResponse:
             prequalification is tracked by the current resource. Example: 55.
         impacted_system_operator_id (Union[Unset, int]): Reference to the `party` that is the impacted system operator.
             Example: 7.
-        id (Union[Unset, int]): Unique surrogate key. Example: 27.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate key. Example: 27.
     """
 
     status: Union[Unset, ServiceProvidingGroupGridPrequalificationStatus] = UNSET
@@ -36,9 +36,9 @@ class ServiceProvidingGroupGridPrequalificationResponse:
     last_prequalified: Union[None, Unset, str] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
     impacted_system_operator_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -62,11 +62,11 @@ class ServiceProvidingGroupGridPrequalificationResponse:
 
         impacted_system_operator_id = self.impacted_system_operator_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -81,12 +81,12 @@ class ServiceProvidingGroupGridPrequalificationResponse:
             field_dict["service_providing_group_id"] = service_providing_group_id
         if impacted_system_operator_id is not UNSET:
             field_dict["impacted_system_operator_id"] = impacted_system_operator_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
 
         return field_dict
 
@@ -122,11 +122,11 @@ class ServiceProvidingGroupGridPrequalificationResponse:
 
         impacted_system_operator_id = d.pop("impacted_system_operator_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         service_providing_group_grid_prequalification_response = cls(
             status=status,
@@ -134,9 +134,9 @@ class ServiceProvidingGroupGridPrequalificationResponse:
             last_prequalified=last_prequalified,
             service_providing_group_id=service_providing_group_id,
             impacted_system_operator_id=impacted_system_operator_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
         )
 
         service_providing_group_grid_prequalification_response.additional_properties = d

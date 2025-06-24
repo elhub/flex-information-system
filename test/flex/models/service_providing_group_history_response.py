@@ -18,10 +18,10 @@ class ServiceProvidingGroupHistoryResponse:
         status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
         service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) managing the group.
             Example: 17.
-        id (Union[Unset, int]): Unique surrogate key. Example: 4.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate key. Example: 4.
         service_providing_group_id (Union[Unset, int]): Reference to the resource that was updated. Example: 48.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
@@ -31,9 +31,9 @@ class ServiceProvidingGroupHistoryResponse:
     name: Union[Unset, str] = UNSET
     status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
@@ -48,11 +48,11 @@ class ServiceProvidingGroupHistoryResponse:
 
         service_provider_id = self.service_provider_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         service_providing_group_id = self.service_providing_group_id
 
@@ -77,12 +77,12 @@ class ServiceProvidingGroupHistoryResponse:
             field_dict["status"] = status
         if service_provider_id is not UNSET:
             field_dict["service_provider_id"] = service_provider_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
         if service_providing_group_id is not UNSET:
             field_dict["service_providing_group_id"] = service_providing_group_id
         if replaced_by is not UNSET:
@@ -106,11 +106,11 @@ class ServiceProvidingGroupHistoryResponse:
 
         service_provider_id = d.pop("service_provider_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         service_providing_group_id = d.pop("service_providing_group_id", UNSET)
 
@@ -136,9 +136,9 @@ class ServiceProvidingGroupHistoryResponse:
             name=name,
             status=status,
             service_provider_id=service_provider_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
             service_providing_group_id=service_providing_group_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,

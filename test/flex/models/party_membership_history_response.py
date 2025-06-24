@@ -15,10 +15,10 @@ class PartyMembershipHistoryResponse:
     Attributes:
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
         entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
         party_membership_id (Union[Unset, int]): Reference to the resource that was updated. Example: 48.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
@@ -27,9 +27,9 @@ class PartyMembershipHistoryResponse:
 
     party_id: Union[Unset, int] = UNSET
     entity_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     party_membership_id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
@@ -40,11 +40,11 @@ class PartyMembershipHistoryResponse:
 
         entity_id = self.entity_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         party_membership_id = self.party_membership_id
 
@@ -67,12 +67,12 @@ class PartyMembershipHistoryResponse:
             field_dict["party_id"] = party_id
         if entity_id is not UNSET:
             field_dict["entity_id"] = entity_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
         if party_membership_id is not UNSET:
             field_dict["party_membership_id"] = party_membership_id
         if replaced_by is not UNSET:
@@ -89,11 +89,11 @@ class PartyMembershipHistoryResponse:
 
         entity_id = d.pop("entity_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         party_membership_id = d.pop("party_membership_id", UNSET)
 
@@ -118,9 +118,9 @@ class PartyMembershipHistoryResponse:
         party_membership_history_response = cls(
             party_id=party_id,
             entity_id=entity_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
             party_membership_id=party_membership_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
