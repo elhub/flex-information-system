@@ -13,6 +13,9 @@ class ControllableUnitServiceProviderResponse:
     """Response schema for operations with return values - Relation between controllable unit and service provider
 
     Attributes:
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         contract_reference (Union[Unset, str]): The service providers internal reference to the contract with the end
             user. Typically an internal identifier to a stored document or consent record. Example:
             123e4567-e89b-12d3-a456-426614174000.
@@ -25,24 +28,25 @@ class ControllableUnitServiceProviderResponse:
         service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) this relation links to a
             controllable unit. Example: 78.
         end_user_id (Union[Unset, int]): Technical ID of the end user behind the accounting point.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate key. Example: 7.
     """
 
+    recorded_at: str
+    recorded_by: int
     contract_reference: Union[Unset, str] = UNSET
     valid_from: Union[None, Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
     controllable_unit_id: Union[Unset, int] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
     end_user_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         contract_reference = self.contract_reference
 
         valid_from: Union[None, Unset, str]
@@ -63,15 +67,16 @@ class ControllableUnitServiceProviderResponse:
 
         end_user_id = self.end_user_id
 
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
         if contract_reference is not UNSET:
             field_dict["contract_reference"] = contract_reference
         if valid_from is not UNSET:
@@ -84,10 +89,6 @@ class ControllableUnitServiceProviderResponse:
             field_dict["service_provider_id"] = service_provider_id
         if end_user_id is not UNSET:
             field_dict["end_user_id"] = end_user_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -96,6 +97,10 @@ class ControllableUnitServiceProviderResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
         contract_reference = d.pop("contract_reference", UNSET)
 
         def _parse_valid_from(data: object) -> Union[None, Unset, str]:
@@ -122,21 +127,17 @@ class ControllableUnitServiceProviderResponse:
 
         end_user_id = d.pop("end_user_id", UNSET)
 
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
         id = d.pop("id", UNSET)
 
         controllable_unit_service_provider_response = cls(
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             contract_reference=contract_reference,
             valid_from=valid_from,
             valid_to=valid_to,
             controllable_unit_id=controllable_unit_id,
             service_provider_id=service_provider_id,
             end_user_id=end_user_id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             id=id,
         )
 

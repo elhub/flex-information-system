@@ -5,27 +5,26 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupMembershipResponse")
+T = TypeVar("T", bound="ServiceProvidingGroupMembership")
 
 
 @_attrs_define
-class ServiceProvidingGroupMembershipResponse:
-    """Response schema for operations with return values - Membership relation of controllable unit in service providing
-    group
+class ServiceProvidingGroupMembership:
+    """Data schema - Membership relation of controllable unit in service providing group
 
-        Attributes:
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
-            valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
-                providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
-            valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
-                service providing group is valid. Midnight aligned on Norwegian timezone.
-            controllable_unit_id (Union[Unset, int]): Reference to the controllable unit this relation links to a service
-                providing group. Example: 6.
-            service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
-                a controllable unit. Example: 55.
-            id (Union[Unset, int]): Unique surrogate key. Example: 27.
+    Attributes:
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
+            providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+        valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
+            service providing group is valid. Midnight aligned on Norwegian timezone.
+        controllable_unit_id (Union[Unset, int]): Reference to the controllable unit this relation links to a service
+            providing group. Example: 6.
+        service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
+            a controllable unit. Example: 55.
+        id (Union[Unset, int]): Unique surrogate key. Example: 27.
     """
 
     recorded_at: str
@@ -101,7 +100,7 @@ class ServiceProvidingGroupMembershipResponse:
 
         id = d.pop("id", UNSET)
 
-        service_providing_group_membership_response = cls(
+        service_providing_group_membership = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             valid_from=valid_from,
@@ -111,8 +110,8 @@ class ServiceProvidingGroupMembershipResponse:
             id=id,
         )
 
-        service_providing_group_membership_response.additional_properties = d
-        return service_providing_group_membership_response
+        service_providing_group_membership.additional_properties = d
+        return service_providing_group_membership
 
     @property
     def additional_keys(self) -> List[str]:

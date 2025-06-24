@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -6,45 +6,36 @@ from attrs import field as _attrs_field
 from ..models.service_providing_group_status import ServiceProvidingGroupStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupHistoryResponse")
+T = TypeVar("T", bound="ServiceProvidingGroup")
 
 
 @_attrs_define
-class ServiceProvidingGroupHistoryResponse:
-    """Service providing group - history
+class ServiceProvidingGroup:
+    """Data schema - Group of controllable units
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
             23:59:00 CET.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        service_providing_group_id (int): Reference to the resource that was updated. Example: 48.
         name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
         status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
         service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) managing the group.
             Example: 17.
         id (Union[Unset, int]): Unique surrogate key. Example: 4.
-        replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
-            10:00:00 CET.
     """
 
     recorded_at: str
     recorded_by: int
-    service_providing_group_id: int
     name: Union[Unset, str] = UNSET
     status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
-    replaced_by: Union[None, Unset, int] = UNSET
-    replaced_at: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
-
-        service_providing_group_id = self.service_providing_group_id
 
         name = self.name
 
@@ -56,25 +47,12 @@ class ServiceProvidingGroupHistoryResponse:
 
         id = self.id
 
-        replaced_by: Union[None, Unset, int]
-        if isinstance(self.replaced_by, Unset):
-            replaced_by = UNSET
-        else:
-            replaced_by = self.replaced_by
-
-        replaced_at: Union[None, Unset, str]
-        if isinstance(self.replaced_at, Unset):
-            replaced_at = UNSET
-        else:
-            replaced_at = self.replaced_at
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
-                "service_providing_group_id": service_providing_group_id,
             }
         )
         if name is not UNSET:
@@ -85,10 +63,6 @@ class ServiceProvidingGroupHistoryResponse:
             field_dict["service_provider_id"] = service_provider_id
         if id is not UNSET:
             field_dict["id"] = id
-        if replaced_by is not UNSET:
-            field_dict["replaced_by"] = replaced_by
-        if replaced_at is not UNSET:
-            field_dict["replaced_at"] = replaced_at
 
         return field_dict
 
@@ -98,8 +72,6 @@ class ServiceProvidingGroupHistoryResponse:
         recorded_at = d.pop("recorded_at")
 
         recorded_by = d.pop("recorded_by")
-
-        service_providing_group_id = d.pop("service_providing_group_id")
 
         name = d.pop("name", UNSET)
 
@@ -114,38 +86,17 @@ class ServiceProvidingGroupHistoryResponse:
 
         id = d.pop("id", UNSET)
 
-        def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(Union[None, Unset, int], data)
-
-        replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
-
-        def _parse_replaced_at(data: object) -> Union[None, Unset, str]:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(Union[None, Unset, str], data)
-
-        replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
-
-        service_providing_group_history_response = cls(
+        service_providing_group = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            service_providing_group_id=service_providing_group_id,
             name=name,
             status=status,
             service_provider_id=service_provider_id,
             id=id,
-            replaced_by=replaced_by,
-            replaced_at=replaced_at,
         )
 
-        service_providing_group_history_response.additional_properties = d
-        return service_providing_group_history_response
+        service_providing_group.additional_properties = d
+        return service_providing_group
 
     @property
     def additional_keys(self) -> List[str]:

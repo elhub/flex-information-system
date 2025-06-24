@@ -8,12 +8,12 @@ from ..models.service_providing_group_grid_prequalification_status import (
 )
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationResponse")
+T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalification")
 
 
 @_attrs_define
-class ServiceProvidingGroupGridPrequalificationResponse:
-    """Response schema for operations with return values - Grid prequalification for service providing group
+class ServiceProvidingGroupGridPrequalification:
+    """Data schema - Grid prequalification for service providing group
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
@@ -129,7 +129,7 @@ class ServiceProvidingGroupGridPrequalificationResponse:
 
         id = d.pop("id", UNSET)
 
-        service_providing_group_grid_prequalification_response = cls(
+        service_providing_group_grid_prequalification = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             status=status,
@@ -140,8 +140,8 @@ class ServiceProvidingGroupGridPrequalificationResponse:
             id=id,
         )
 
-        service_providing_group_grid_prequalification_response.additional_properties = d
-        return service_providing_group_grid_prequalification_response
+        service_providing_group_grid_prequalification.additional_properties = d
+        return service_providing_group_grid_prequalification
 
     @property
     def additional_keys(self) -> List[str]:

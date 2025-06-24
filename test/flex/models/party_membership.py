@@ -5,12 +5,12 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="PartyMembershipResponse")
+T = TypeVar("T", bound="PartyMembership")
 
 
 @_attrs_define
-class PartyMembershipResponse:
-    """Response schema for operations with return values - The relation between a party and entity.
+class PartyMembership:
+    """Data schema - The relation between a party and entity.
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
@@ -69,7 +69,7 @@ class PartyMembershipResponse:
 
         id = d.pop("id", UNSET)
 
-        party_membership_response = cls(
+        party_membership = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             party_id=party_id,
@@ -77,8 +77,8 @@ class PartyMembershipResponse:
             id=id,
         )
 
-        party_membership_response.additional_properties = d
-        return party_membership_response
+        party_membership.additional_properties = d
+        return party_membership
 
     @property
     def additional_keys(self) -> List[str]:

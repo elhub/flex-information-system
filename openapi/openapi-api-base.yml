@@ -62,6 +62,9 @@ components:
           type: integer
           readOnly: True
           example: 145
+      required:
+        - recorded_at
+        - recorded_by
     controllable_unit_lookup_request:
       summary: Controllable unit lookup
       description: Request schema for controllable unit lookup operations
@@ -189,10 +192,10 @@ components:
       properties:
         entity:
           description: Details about the entity owning the missing party.
-          $ref: '#/components/schemas/entity_response'
+          $ref: '#/components/schemas/entity'
         party:
           description: Details about the missing party.
-          $ref: '#/components/schemas/party_response'
+          $ref: '#/components/schemas/party'
     notice_data_party_outdated:
       description: >-
         Format of the data field in a notice of type
@@ -200,10 +203,10 @@ components:
       properties:
         entity:
           description: Details about the possibly new entity owning the party.
-          $ref: '#/components/schemas/entity_response'
+          $ref: '#/components/schemas/entity'
         party:
           description: Updated fields of the party.
-          $ref: '#/components/schemas/party_response'
+          $ref: '#/components/schemas/party'
     notice_data:
       oneOf:
         - $ref: '#/components/schemas/notice_data_valid_time_outside_contract'

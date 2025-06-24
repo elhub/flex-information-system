@@ -3,11 +3,11 @@ from typing import Any, Dict, List, Type, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="NoticeResponseDataType0")
+T = TypeVar("T", bound="NoticeDataType0")
 
 
 @_attrs_define
-class NoticeResponseDataType0:
+class NoticeDataType0:
     """The data of the notice."""
 
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -21,10 +21,10 @@ class NoticeResponseDataType0:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        notice_response_data_type_0 = cls()
+        notice_data_type_0 = cls()
 
-        notice_response_data_type_0.additional_properties = d
-        return notice_response_data_type_0
+        notice_data_type_0.additional_properties = d
+        return notice_data_type_0
 
     @property
     def additional_keys(self) -> List[str]:

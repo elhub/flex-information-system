@@ -5,27 +5,28 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="PartyMembershipResponse")
+T = TypeVar("T", bound="AccountingPoint")
 
 
 @_attrs_define
-class PartyMembershipResponse:
-    """Response schema for operations with return values - The relation between a party and entity.
+class AccountingPoint:
+    """Data schema - Accounting point for a controllable unit.
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
             23:59:00 CET.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
+        business_id (Union[Unset, str]): The GSRN metering point id of the accounting point. Example:
+            709000000000000057.
+        system_operator_id (Union[Unset, int]): The system operator of the accounting point.
     """
 
     recorded_at: str
     recorded_by: int
-    party_id: Union[Unset, int] = UNSET
-    entity_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
+    business_id: Union[Unset, str] = UNSET
+    system_operator_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -33,11 +34,11 @@ class PartyMembershipResponse:
 
         recorded_by = self.recorded_by
 
-        party_id = self.party_id
-
-        entity_id = self.entity_id
-
         id = self.id
+
+        business_id = self.business_id
+
+        system_operator_id = self.system_operator_id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -47,12 +48,12 @@ class PartyMembershipResponse:
                 "recorded_by": recorded_by,
             }
         )
-        if party_id is not UNSET:
-            field_dict["party_id"] = party_id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
         if id is not UNSET:
             field_dict["id"] = id
+        if business_id is not UNSET:
+            field_dict["business_id"] = business_id
+        if system_operator_id is not UNSET:
+            field_dict["system_operator_id"] = system_operator_id
 
         return field_dict
 
@@ -63,22 +64,22 @@ class PartyMembershipResponse:
 
         recorded_by = d.pop("recorded_by")
 
-        party_id = d.pop("party_id", UNSET)
-
-        entity_id = d.pop("entity_id", UNSET)
-
         id = d.pop("id", UNSET)
 
-        party_membership_response = cls(
+        business_id = d.pop("business_id", UNSET)
+
+        system_operator_id = d.pop("system_operator_id", UNSET)
+
+        accounting_point = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            party_id=party_id,
-            entity_id=entity_id,
             id=id,
+            business_id=business_id,
+            system_operator_id=system_operator_id,
         )
 
-        party_membership_response.additional_properties = d
-        return party_membership_response
+        accounting_point.additional_properties = d
+        return accounting_point
 
     @property
     def additional_keys(self) -> List[str]:

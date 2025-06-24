@@ -61,7 +61,8 @@ def history_schema_template(resource, resource_summary):
                         "nullable": True,
                         "example": "2024-07-07 10:00:00 CET",
                     },
-                }
+                },
+                "required": [f"{resource}_id"],
             },
         ],
     }
@@ -456,12 +457,17 @@ def generate_openapi_document(base_file, resources_file, servers_file):
         readonly_properties = {}
         # keep a list of required properties (for the create schema)
         required_properties = []
+        # keep a list of non-nullable properties (for the response schema)
+        non_nullable_properties = []
 
         for field, data in resource["properties"].items():
             is_nonupdatable = data.get("x-no-update", False)
             is_readonly = data.get("readOnly", False)
             is_nullable = data.get("nullable", False)
             has_default = data.get("default") is not None
+
+            if not is_nullable:
+                non_nullable_properties.append(field)
 
             required = data.get("required")
             is_not_required = required is not None and not required
@@ -493,18 +499,18 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             update_schema["properties"] = properties_without_non_updatable_or_readonly
         schemas[f"{resource['id']}_update_request"] = update_schema
 
-        create_subschemas: list[dict] = [
+        create_data_subschemas: list[dict] = [
             {"$ref": f"#/components/schemas/{resource['id']}_update_request"},
         ]
         # do not add properties if empty
         if len(non_updatable_properties) > 0:
-            create_subschemas.append({"properties": non_updatable_properties})
+            create_data_subschemas.append({"properties": non_updatable_properties})
 
         # add create data schema (update schema + non-updatable)
         schemas[f"{resource['id']}_create_data"] = {
             "summary": f"Create data - {resource['summary']}",
             "description": f"Data of the request schema for create operations - {resource['description']}",
-            "allOf": create_subschemas,
+            "allOf": create_data_subschemas,
             "type": "object",
         }
 
@@ -525,19 +531,30 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "type": "object",
             }
 
-        response_subschemas: list[dict] = [
+        data_subschemas: list[dict] = [
             {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
             {"properties": readonly_properties},
         ]
 
         if resource.get("audit"):
-            response_subschemas.append({"$ref": "#/components/schemas/audit_fields"})
+            data_subschemas.append({"$ref": "#/components/schemas/audit_fields"})
 
-        # add response schema (create schema + read-only)
+        # add data schema (create schema + read-only)
+        schemas[resource["id"]] = {
+            "summary": f"Data - {resource['summary']}",
+            "description": f"Data schema - {resource['description']}",
+            "allOf": data_subschemas,
+            "type": "object",
+        }
+
+        # add response schema (data schema + marking all fields required except the nullable ones)
         schemas[f"{resource['id']}_response"] = {
             "summary": f"Response - {resource['summary']}",
             "description": f"Response schema for operations with return values - {resource['description']}",
-            "allOf": response_subschemas,
+            "allOf": [
+                {"$ref": f"#/components/schemas/{resource['id']}"},
+                {"required": non_nullable_properties},
+            ],
             "type": "object",
         }
 

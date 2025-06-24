@@ -13,17 +13,17 @@ class AccountingPointResponse:
     """Response schema for operations with return values - Accounting point for a controllable unit.
 
     Attributes:
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
         business_id (Union[Unset, str]): The GSRN metering point id of the accounting point. Example:
             709000000000000057.
         system_operator_id (Union[Unset, int]): The system operator of the accounting point.
     """
 
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
+    recorded_at: str
+    recorded_by: int
     id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
@@ -42,11 +42,12 @@ class AccountingPointResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
+        field_dict.update(
+            {
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
         if id is not UNSET:
             field_dict["id"] = id
         if business_id is not UNSET:
@@ -59,9 +60,9 @@ class AccountingPointResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        recorded_at = d.pop("recorded_at", UNSET)
+        recorded_at = d.pop("recorded_at")
 
-        recorded_by = d.pop("recorded_by", UNSET)
+        recorded_by = d.pop("recorded_by")
 
         id = d.pop("id", UNSET)
 

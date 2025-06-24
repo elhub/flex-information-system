@@ -15,6 +15,9 @@ class ServiceProviderProductApplicationResponse:
     the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
 
         Attributes:
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+                23:59:00 CET.
+            recorded_by (int): The identity that recorded the resource. Example: 145.
             product_type_ids (Union[Unset, List[int]]): References to the product types. Example: [2, 4, 5].
             status (Union[Unset, ServiceProviderProductApplicationStatus]): The status of the application. Example:
                 in_progress.
@@ -23,24 +26,25 @@ class ServiceProviderProductApplicationResponse:
                 12:00:00 CET.
             service_provider_id (Union[Unset, int]): Reference to the service provider. Example: 18.
             system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 39.
-            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31 23:59:00 CET.
-            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
             id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
+    recorded_at: str
+    recorded_by: int
     product_type_ids: Union[Unset, List[int]] = UNSET
     status: Union[Unset, ServiceProviderProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     last_qualified: Union[None, Unset, str] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         product_type_ids: Union[Unset, List[int]] = UNSET
         if not isinstance(self.product_type_ids, Unset):
             product_type_ids = self.product_type_ids
@@ -65,15 +69,16 @@ class ServiceProviderProductApplicationResponse:
 
         system_operator_id = self.system_operator_id
 
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
         if product_type_ids is not UNSET:
             field_dict["product_type_ids"] = product_type_ids
         if status is not UNSET:
@@ -86,10 +91,6 @@ class ServiceProviderProductApplicationResponse:
             field_dict["service_provider_id"] = service_provider_id
         if system_operator_id is not UNSET:
             field_dict["system_operator_id"] = system_operator_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -98,6 +99,10 @@ class ServiceProviderProductApplicationResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
         product_type_ids = cast(List[int], d.pop("product_type_ids", UNSET))
 
         _status = d.pop("status", UNSET)
@@ -129,21 +134,17 @@ class ServiceProviderProductApplicationResponse:
 
         system_operator_id = d.pop("system_operator_id", UNSET)
 
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
         id = d.pop("id", UNSET)
 
         service_provider_product_application_response = cls(
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             product_type_ids=product_type_ids,
             status=status,
             notes=notes,
             last_qualified=last_qualified,
             service_provider_id=service_provider_id,
             system_operator_id=system_operator_id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             id=id,
         )
 

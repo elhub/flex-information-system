@@ -1,34 +1,34 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.service_providing_group_status import ServiceProvidingGroupStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupResponse")
+T = TypeVar("T", bound="TechnicalResource")
 
 
 @_attrs_define
-class ServiceProvidingGroupResponse:
-    """Response schema for operations with return values - Group of controllable units
+class TechnicalResource:
+    """Data schema - Technical unit being part of a controllable unit.
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
             23:59:00 CET.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
-        status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
-        service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) managing the group.
-            Example: 17.
-        id (Union[Unset, int]): Unique surrogate key. Example: 4.
+        name (Union[Unset, str]): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
+        details (Union[None, Unset, str]): Free text details about the technical resource. Example: Make: ACME
+            Model: Car Charger 3000.
+        controllable_unit_id (Union[Unset, int]): Reference to the controllable unit that this technical resource
+            belongs to. Example: 37.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
     recorded_at: str
     recorded_by: int
     name: Union[Unset, str] = UNSET
-    status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
-    service_provider_id: Union[Unset, int] = UNSET
+    details: Union[None, Unset, str] = UNSET
+    controllable_unit_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -39,11 +39,13 @@ class ServiceProvidingGroupResponse:
 
         name = self.name
 
-        status: Union[Unset, str] = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
+        details: Union[None, Unset, str]
+        if isinstance(self.details, Unset):
+            details = UNSET
+        else:
+            details = self.details
 
-        service_provider_id = self.service_provider_id
+        controllable_unit_id = self.controllable_unit_id
 
         id = self.id
 
@@ -57,10 +59,10 @@ class ServiceProvidingGroupResponse:
         )
         if name is not UNSET:
             field_dict["name"] = name
-        if status is not UNSET:
-            field_dict["status"] = status
-        if service_provider_id is not UNSET:
-            field_dict["service_provider_id"] = service_provider_id
+        if details is not UNSET:
+            field_dict["details"] = details
+        if controllable_unit_id is not UNSET:
+            field_dict["controllable_unit_id"] = controllable_unit_id
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -75,28 +77,30 @@ class ServiceProvidingGroupResponse:
 
         name = d.pop("name", UNSET)
 
-        _status = d.pop("status", UNSET)
-        status: Union[Unset, ServiceProvidingGroupStatus]
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = ServiceProvidingGroupStatus(_status)
+        def _parse_details(data: object) -> Union[None, Unset, str]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(Union[None, Unset, str], data)
 
-        service_provider_id = d.pop("service_provider_id", UNSET)
+        details = _parse_details(d.pop("details", UNSET))
+
+        controllable_unit_id = d.pop("controllable_unit_id", UNSET)
 
         id = d.pop("id", UNSET)
 
-        service_providing_group_response = cls(
+        technical_resource = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             name=name,
-            status=status,
-            service_provider_id=service_provider_id,
+            details=details,
+            controllable_unit_id=controllable_unit_id,
             id=id,
         )
 
-        service_providing_group_response.additional_properties = d
-        return service_providing_group_response
+        technical_resource.additional_properties = d
+        return technical_resource
 
     @property
     def additional_keys(self) -> List[str]:

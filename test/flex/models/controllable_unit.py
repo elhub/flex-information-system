@@ -10,12 +10,12 @@ from ..models.controllable_unit_regulation_direction import ControllableUnitRegu
 from ..models.controllable_unit_status import ControllableUnitStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ControllableUnitResponse")
+T = TypeVar("T", bound="ControllableUnit")
 
 
 @_attrs_define
-class ControllableUnitResponse:
-    """Response schema for operations with return values - Controllable unit
+class ControllableUnit:
+    """Data schema - Controllable unit
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
@@ -316,7 +316,7 @@ class ControllableUnitResponse:
 
         is_small = d.pop("is_small", UNSET)
 
-        controllable_unit_response = cls(
+        controllable_unit = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             name=name,
@@ -338,8 +338,8 @@ class ControllableUnitResponse:
             is_small=is_small,
         )
 
-        controllable_unit_response.additional_properties = d
-        return controllable_unit_response
+        controllable_unit.additional_properties = d
+        return controllable_unit
 
     @property
     def additional_keys(self) -> List[str]:

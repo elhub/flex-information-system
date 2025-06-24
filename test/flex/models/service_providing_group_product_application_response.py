@@ -15,6 +15,9 @@ class ServiceProvidingGroupProductApplicationResponse:
     for a product type, for the SPG to deliver a product to the SO later.
 
         Attributes:
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+                23:59:00 CET.
+            recorded_by (int): The identity that recorded the resource. Example: 145.
             status (Union[Unset, ServiceProvidingGroupProductApplicationStatus]): The status of the application. Example:
                 in_progress.
             notes (Union[None, Unset, str]): Free text notes on the current product application status.
@@ -25,12 +28,11 @@ class ServiceProvidingGroupProductApplicationResponse:
             service_providing_group_id (Union[Unset, int]): Reference to the service providing group. Example: 18.
             procuring_system_operator_id (Union[Unset, int]): Reference to the procuring system operator. Example: 39.
             product_type_id (Union[Unset, int]): References to the product type. Example: 2.
-            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31 23:59:00 CET.
-            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
             id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
+    recorded_at: str
+    recorded_by: int
     status: Union[Unset, ServiceProvidingGroupProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     last_prequalified: Union[None, Unset, str] = UNSET
@@ -38,12 +40,14 @@ class ServiceProvidingGroupProductApplicationResponse:
     service_providing_group_id: Union[Unset, int] = UNSET
     procuring_system_operator_id: Union[Unset, int] = UNSET
     product_type_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -72,15 +76,16 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         product_type_id = self.product_type_id
 
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
         if status is not UNSET:
             field_dict["status"] = status
         if notes is not UNSET:
@@ -95,10 +100,6 @@ class ServiceProvidingGroupProductApplicationResponse:
             field_dict["procuring_system_operator_id"] = procuring_system_operator_id
         if product_type_id is not UNSET:
             field_dict["product_type_id"] = product_type_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -107,6 +108,10 @@ class ServiceProvidingGroupProductApplicationResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
         _status = d.pop("status", UNSET)
         status: Union[Unset, ServiceProvidingGroupProductApplicationStatus]
         if isinstance(_status, Unset):
@@ -147,13 +152,11 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         product_type_id = d.pop("product_type_id", UNSET)
 
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
         id = d.pop("id", UNSET)
 
         service_providing_group_product_application_response = cls(
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             status=status,
             notes=notes,
             last_prequalified=last_prequalified,
@@ -161,8 +164,6 @@ class ServiceProvidingGroupProductApplicationResponse:
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_id=product_type_id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             id=id,
         )
 

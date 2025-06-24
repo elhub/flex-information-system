@@ -9,21 +9,20 @@ if TYPE_CHECKING:
     from ..models.notice_data_type_0 import NoticeDataType0
 
 
-T = TypeVar("T", bound="NoticeResponse")
+T = TypeVar("T", bound="Notice")
 
 
 @_attrs_define
-class NoticeResponse:
-    """Response schema for operations with return values - Notice to users about various issues or actions expected from
-    them.
+class Notice:
+    """Data schema - Notice to users about various issues or actions expected from them.
 
-        Attributes:
-            party_id (Union[Unset, int]): Reference to the party targeted by the notice. Example: 18.
-            type (Union[Unset, str]): The type of the notice. Example:
-                no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
-            source (Union[Unset, str]): The URI of the resource concerned by the event. Example:
-                /service_providing_group_membership/4.
-            data (Union['NoticeDataType0', None, Unset]): The data of the notice.
+    Attributes:
+        party_id (Union[Unset, int]): Reference to the party targeted by the notice. Example: 18.
+        type (Union[Unset, str]): The type of the notice. Example:
+            no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
+        source (Union[Unset, str]): The URI of the resource concerned by the event. Example:
+            /service_providing_group_membership/4.
+        data (Union['NoticeDataType0', None, Unset]): The data of the notice.
     """
 
     party_id: Union[Unset, int] = UNSET
@@ -91,15 +90,15 @@ class NoticeResponse:
 
         data = _parse_data(d.pop("data", UNSET))
 
-        notice_response = cls(
+        notice = cls(
             party_id=party_id,
             type=type,
             source=source,
             data=data,
         )
 
-        notice_response.additional_properties = d
-        return notice_response
+        notice.additional_properties = d
+        return notice
 
     @property
     def additional_keys(self) -> List[str]:

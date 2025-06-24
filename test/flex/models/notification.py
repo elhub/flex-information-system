@@ -5,26 +5,28 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="PartyMembershipResponse")
+T = TypeVar("T", bound="Notification")
 
 
 @_attrs_define
-class PartyMembershipResponse:
-    """Response schema for operations with return values - The relation between a party and entity.
+class Notification:
+    """Data schema - Notification about an event happening in the system.
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
             23:59:00 CET.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
+        acknowledged (Union[Unset, bool]): Whether the notification was acknowledged by the target user.
+        event_id (Union[Unset, int]): Reference to the event notified by this resource. Example: 37.
+        party_id (Union[Unset, int]): Reference to the party concerned by this notification. Example: 37.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
     recorded_at: str
     recorded_by: int
+    acknowledged: Union[Unset, bool] = UNSET
+    event_id: Union[Unset, int] = UNSET
     party_id: Union[Unset, int] = UNSET
-    entity_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -33,9 +35,11 @@ class PartyMembershipResponse:
 
         recorded_by = self.recorded_by
 
-        party_id = self.party_id
+        acknowledged = self.acknowledged
 
-        entity_id = self.entity_id
+        event_id = self.event_id
+
+        party_id = self.party_id
 
         id = self.id
 
@@ -47,10 +51,12 @@ class PartyMembershipResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if acknowledged is not UNSET:
+            field_dict["acknowledged"] = acknowledged
+        if event_id is not UNSET:
+            field_dict["event_id"] = event_id
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -63,22 +69,25 @@ class PartyMembershipResponse:
 
         recorded_by = d.pop("recorded_by")
 
-        party_id = d.pop("party_id", UNSET)
+        acknowledged = d.pop("acknowledged", UNSET)
 
-        entity_id = d.pop("entity_id", UNSET)
+        event_id = d.pop("event_id", UNSET)
+
+        party_id = d.pop("party_id", UNSET)
 
         id = d.pop("id", UNSET)
 
-        party_membership_response = cls(
+        notification = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            acknowledged=acknowledged,
+            event_id=event_id,
             party_id=party_id,
-            entity_id=entity_id,
             id=id,
         )
 
-        party_membership_response.additional_properties = d
-        return party_membership_response
+        notification.additional_properties = d
+        return notification
 
     @property
     def additional_keys(self) -> List[str]:

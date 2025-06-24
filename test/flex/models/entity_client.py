@@ -5,32 +5,31 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="EntityClientResponse")
+T = TypeVar("T", bound="EntityClient")
 
 
 @_attrs_define
-class EntityClientResponse:
-    """Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant
-    authentication methods.
+class EntityClient:
+    """Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
 
-        Attributes:
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
-            name (Union[None, Unset, str]): Name of the client. Example: Laptop.
-            client_id (Union[Unset, str]): The identifier of the entity. For use with client credentials authentication
-                method. Example: addr@flex.test.
-            client_secret (Union[None, Unset, str]): The secret of the entity. For use with client credentials
-                authentication method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
-            public_key (Union[None, Unset, str]): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with
-                JWT grant authentication method. Example: -----BEGIN PUBLIC KEY-----
-                MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
-                TozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V
-                kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
-                0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
-                -----END PUBLIC KEY-----.
-            entity_id (Union[Unset, int]): Reference to the entity that this client is attached to. Example: 30.
-            id (Union[Unset, int]): Unique surrogate identifier. Example: 14.
+    Attributes:
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        name (Union[None, Unset, str]): Name of the client. Example: Laptop.
+        client_id (Union[Unset, str]): The identifier of the entity. For use with client credentials authentication
+            method. Example: addr@flex.test.
+        client_secret (Union[None, Unset, str]): The secret of the entity. For use with client credentials
+            authentication method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
+        public_key (Union[None, Unset, str]): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with
+            JWT grant authentication method. Example: -----BEGIN PUBLIC KEY-----
+            MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAq3DnhgYgLVJknvDA3clA
+            TozPtjI7yauqD/ZuqgZn4KzzzkQ4BzJar4jRygpzbghlFn0Luk1mdVKzPUgYj0V
+            kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
+            0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
+            -----END PUBLIC KEY-----.
+        entity_id (Union[Unset, int]): Reference to the entity that this client is attached to. Example: 30.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 14.
     """
 
     recorded_at: str
@@ -135,7 +134,7 @@ class EntityClientResponse:
 
         id = d.pop("id", UNSET)
 
-        entity_client_response = cls(
+        entity_client = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             name=name,
@@ -146,8 +145,8 @@ class EntityClientResponse:
             id=id,
         )
 
-        entity_client_response.additional_properties = d
-        return entity_client_response
+        entity_client.additional_properties = d
+        return entity_client
 
     @property
     def additional_keys(self) -> List[str]:

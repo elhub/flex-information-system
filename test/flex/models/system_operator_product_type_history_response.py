@@ -14,31 +14,37 @@ class SystemOperatorProductTypeHistoryResponse:
     """System Operator Product Type - history
 
     Attributes:
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        system_operator_product_type_id (int): Reference to the resource that was updated. Example: 48.
         status (Union[Unset, SystemOperatorProductTypeStatus]): The status of the relation. Example: active.
         system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 37.
         product_type_id (Union[Unset, int]): Reference to the product type. Example: 8.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
-        system_operator_product_type_id (Union[Unset, int]): Reference to the resource that was updated. Example: 48.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
             10:00:00 CET.
     """
 
+    recorded_at: str
+    recorded_by: int
+    system_operator_product_type_id: int
     status: Union[Unset, SystemOperatorProductTypeStatus] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
     product_type_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
-    system_operator_product_type_id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
+        system_operator_product_type_id = self.system_operator_product_type_id
+
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -47,13 +53,7 @@ class SystemOperatorProductTypeHistoryResponse:
 
         product_type_id = self.product_type_id
 
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         id = self.id
-
-        system_operator_product_type_id = self.system_operator_product_type_id
 
         replaced_by: Union[None, Unset, int]
         if isinstance(self.replaced_by, Unset):
@@ -69,21 +69,21 @@ class SystemOperatorProductTypeHistoryResponse:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+                "system_operator_product_type_id": system_operator_product_type_id,
+            }
+        )
         if status is not UNSET:
             field_dict["status"] = status
         if system_operator_id is not UNSET:
             field_dict["system_operator_id"] = system_operator_id
         if product_type_id is not UNSET:
             field_dict["product_type_id"] = product_type_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
-        if system_operator_product_type_id is not UNSET:
-            field_dict["system_operator_product_type_id"] = system_operator_product_type_id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -94,6 +94,12 @@ class SystemOperatorProductTypeHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
+        system_operator_product_type_id = d.pop("system_operator_product_type_id")
+
         _status = d.pop("status", UNSET)
         status: Union[Unset, SystemOperatorProductTypeStatus]
         if isinstance(_status, Unset):
@@ -105,13 +111,7 @@ class SystemOperatorProductTypeHistoryResponse:
 
         product_type_id = d.pop("product_type_id", UNSET)
 
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
         id = d.pop("id", UNSET)
-
-        system_operator_product_type_id = d.pop("system_operator_product_type_id", UNSET)
 
         def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
             if data is None:
@@ -132,13 +132,13 @@ class SystemOperatorProductTypeHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         system_operator_product_type_history_response = cls(
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
+            system_operator_product_type_id=system_operator_product_type_id,
             status=status,
             system_operator_id=system_operator_id,
             product_type_id=product_type_id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             id=id,
-            system_operator_product_type_id=system_operator_product_type_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

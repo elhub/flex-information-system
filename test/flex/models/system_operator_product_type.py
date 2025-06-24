@@ -3,32 +3,31 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.service_providing_group_status import ServiceProvidingGroupStatus
+from ..models.system_operator_product_type_status import SystemOperatorProductTypeStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ServiceProvidingGroupResponse")
+T = TypeVar("T", bound="SystemOperatorProductType")
 
 
 @_attrs_define
-class ServiceProvidingGroupResponse:
-    """Response schema for operations with return values - Group of controllable units
+class SystemOperatorProductType:
+    """Data schema - Relation between a system operator and a product type they want to buy.
 
     Attributes:
         recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
             23:59:00 CET.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
-        status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
-        service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) managing the group.
-            Example: 17.
-        id (Union[Unset, int]): Unique surrogate key. Example: 4.
+        status (Union[Unset, SystemOperatorProductTypeStatus]): The status of the relation. Example: active.
+        system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 37.
+        product_type_id (Union[Unset, int]): Reference to the product type. Example: 8.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
     recorded_at: str
     recorded_by: int
-    name: Union[Unset, str] = UNSET
-    status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
-    service_provider_id: Union[Unset, int] = UNSET
+    status: Union[Unset, SystemOperatorProductTypeStatus] = UNSET
+    system_operator_id: Union[Unset, int] = UNSET
+    product_type_id: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -37,13 +36,13 @@ class ServiceProvidingGroupResponse:
 
         recorded_by = self.recorded_by
 
-        name = self.name
-
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        service_provider_id = self.service_provider_id
+        system_operator_id = self.system_operator_id
+
+        product_type_id = self.product_type_id
 
         id = self.id
 
@@ -55,12 +54,12 @@ class ServiceProvidingGroupResponse:
                 "recorded_by": recorded_by,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
         if status is not UNSET:
             field_dict["status"] = status
-        if service_provider_id is not UNSET:
-            field_dict["service_provider_id"] = service_provider_id
+        if system_operator_id is not UNSET:
+            field_dict["system_operator_id"] = system_operator_id
+        if product_type_id is not UNSET:
+            field_dict["product_type_id"] = product_type_id
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -73,30 +72,30 @@ class ServiceProvidingGroupResponse:
 
         recorded_by = d.pop("recorded_by")
 
-        name = d.pop("name", UNSET)
-
         _status = d.pop("status", UNSET)
-        status: Union[Unset, ServiceProvidingGroupStatus]
+        status: Union[Unset, SystemOperatorProductTypeStatus]
         if isinstance(_status, Unset):
             status = UNSET
         else:
-            status = ServiceProvidingGroupStatus(_status)
+            status = SystemOperatorProductTypeStatus(_status)
 
-        service_provider_id = d.pop("service_provider_id", UNSET)
+        system_operator_id = d.pop("system_operator_id", UNSET)
+
+        product_type_id = d.pop("product_type_id", UNSET)
 
         id = d.pop("id", UNSET)
 
-        service_providing_group_response = cls(
+        system_operator_product_type = cls(
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            name=name,
             status=status,
-            service_provider_id=service_provider_id,
+            system_operator_id=system_operator_id,
+            product_type_id=product_type_id,
             id=id,
         )
 
-        service_providing_group_response.additional_properties = d
-        return service_providing_group_response
+        system_operator_product_type.additional_properties = d
+        return system_operator_product_type
 
     @property
     def additional_keys(self) -> List[str]:
