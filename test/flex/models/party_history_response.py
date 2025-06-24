@@ -15,9 +15,6 @@ class PartyHistoryResponse:
     """Party - history
 
     Attributes:
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
-        recorded_by (int): The identity that recorded the resource. Example: 145.
         party_id (int): Reference to the resource that was updated. Example: 48.
         business_id_type (Union[Unset, PartyBusinessIdType]): The type of the business identifier. Example: gln.
         name (Union[Unset, str]): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
@@ -28,14 +25,15 @@ class PartyHistoryResponse:
         role (Union[Unset, str]): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
             service_provider. Example: flex_energy_supplier.
         type (Union[Unset, str]): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31 23:59:00 CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 11.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
             10:00:00 CET.
     """
 
-    recorded_at: str
-    recorded_by: int
     party_id: int
     business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
     name: Union[Unset, str] = UNSET
@@ -44,16 +42,14 @@ class PartyHistoryResponse:
     entity_id: Union[Unset, int] = UNSET
     role: Union[Unset, str] = UNSET
     type: Union[Unset, str] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         party_id = self.party_id
 
         business_id_type: Union[Unset, str] = UNSET
@@ -74,6 +70,10 @@ class PartyHistoryResponse:
 
         type = self.type
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         id = self.id
 
         replaced_by: Union[None, Unset, int]
@@ -92,8 +92,6 @@ class PartyHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "recorded_at": recorded_at,
-                "recorded_by": recorded_by,
                 "party_id": party_id,
             }
         )
@@ -111,6 +109,10 @@ class PartyHistoryResponse:
             field_dict["role"] = role
         if type is not UNSET:
             field_dict["type"] = type
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
         if replaced_by is not UNSET:
@@ -123,10 +125,6 @@ class PartyHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        recorded_at = d.pop("recorded_at")
-
-        recorded_by = d.pop("recorded_by")
-
         party_id = d.pop("party_id")
 
         _business_id_type = d.pop("business_id_type", UNSET)
@@ -153,6 +151,10 @@ class PartyHistoryResponse:
 
         type = d.pop("type", UNSET)
 
+        recorded_at = d.pop("recorded_at", UNSET)
+
+        recorded_by = d.pop("recorded_by", UNSET)
+
         id = d.pop("id", UNSET)
 
         def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
@@ -174,8 +176,6 @@ class PartyHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         party_history_response = cls(
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             party_id=party_id,
             business_id_type=business_id_type,
             name=name,
@@ -184,6 +184,8 @@ class PartyHistoryResponse:
             entity_id=entity_id,
             role=role,
             type=type,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,

@@ -14,9 +14,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     """Service Providing Group Product Application - history
 
     Attributes:
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
-        recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_product_application_id (int): Reference to the resource that was updated. Example: 48.
         status (Union[Unset, ServiceProvidingGroupProductApplicationStatus]): The status of the application. Example:
             in_progress.
@@ -28,14 +25,15 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         service_providing_group_id (Union[Unset, int]): Reference to the service providing group. Example: 18.
         procuring_system_operator_id (Union[Unset, int]): Reference to the procuring system operator. Example: 39.
         product_type_id (Union[Unset, int]): References to the product type. Example: 2.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31 23:59:00 CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
             10:00:00 CET.
     """
 
-    recorded_at: str
-    recorded_by: int
     service_providing_group_product_application_id: int
     status: Union[Unset, ServiceProvidingGroupProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
@@ -44,16 +42,14 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     service_providing_group_id: Union[Unset, int] = UNSET
     procuring_system_operator_id: Union[Unset, int] = UNSET
     product_type_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         service_providing_group_product_application_id = self.service_providing_group_product_application_id
 
         status: Union[Unset, str] = UNSET
@@ -84,6 +80,10 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         product_type_id = self.product_type_id
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         id = self.id
 
         replaced_by: Union[None, Unset, int]
@@ -102,8 +102,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "recorded_at": recorded_at,
-                "recorded_by": recorded_by,
                 "service_providing_group_product_application_id": service_providing_group_product_application_id,
             }
         )
@@ -121,6 +119,10 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             field_dict["procuring_system_operator_id"] = procuring_system_operator_id
         if product_type_id is not UNSET:
             field_dict["product_type_id"] = product_type_id
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
         if replaced_by is not UNSET:
@@ -133,10 +135,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        recorded_at = d.pop("recorded_at")
-
-        recorded_by = d.pop("recorded_by")
-
         service_providing_group_product_application_id = d.pop("service_providing_group_product_application_id")
 
         _status = d.pop("status", UNSET)
@@ -179,6 +177,10 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         product_type_id = d.pop("product_type_id", UNSET)
 
+        recorded_at = d.pop("recorded_at", UNSET)
+
+        recorded_by = d.pop("recorded_by", UNSET)
+
         id = d.pop("id", UNSET)
 
         def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
@@ -200,8 +202,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_providing_group_product_application_history_response = cls(
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             service_providing_group_product_application_id=service_providing_group_product_application_id,
             status=status,
             notes=notes,
@@ -210,6 +210,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_id=product_type_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,

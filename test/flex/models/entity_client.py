@@ -13,9 +13,6 @@ class EntityClient:
     """Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
 
     Attributes:
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
-        recorded_by (int): The identity that recorded the resource. Example: 145.
         name (Union[None, Unset, str]): Name of the client. Example: Laptop.
         client_id (Union[Unset, str]): The identifier of the entity. For use with client credentials authentication
             method. Example: addr@flex.test.
@@ -29,24 +26,23 @@ class EntityClient:
             0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
             -----END PUBLIC KEY-----.
         entity_id (Union[Unset, int]): Reference to the entity that this client is attached to. Example: 30.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31 23:59:00 CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 14.
     """
 
-    recorded_at: str
-    recorded_by: int
     name: Union[None, Unset, str] = UNSET
     client_id: Union[Unset, str] = UNSET
     client_secret: Union[None, Unset, str] = UNSET
     public_key: Union[None, Unset, str] = UNSET
     entity_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         name: Union[None, Unset, str]
         if isinstance(self.name, Unset):
             name = UNSET
@@ -69,16 +65,15 @@ class EntityClient:
 
         entity_id = self.entity_id
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "recorded_at": recorded_at,
-                "recorded_by": recorded_by,
-            }
-        )
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if client_id is not UNSET:
@@ -89,6 +84,10 @@ class EntityClient:
             field_dict["public_key"] = public_key
         if entity_id is not UNSET:
             field_dict["entity_id"] = entity_id
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -97,9 +96,6 @@ class EntityClient:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        recorded_at = d.pop("recorded_at")
-
-        recorded_by = d.pop("recorded_by")
 
         def _parse_name(data: object) -> Union[None, Unset, str]:
             if data is None:
@@ -132,16 +128,20 @@ class EntityClient:
 
         entity_id = d.pop("entity_id", UNSET)
 
+        recorded_at = d.pop("recorded_at", UNSET)
+
+        recorded_by = d.pop("recorded_by", UNSET)
+
         id = d.pop("id", UNSET)
 
         entity_client = cls(
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             name=name,
             client_id=client_id,
             client_secret=client_secret,
             public_key=public_key,
             entity_id=entity_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
         )
 

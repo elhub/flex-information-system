@@ -13,30 +13,26 @@ class TechnicalResourceResponse:
     """Response schema for operations with return values - Technical unit being part of a controllable unit.
 
     Attributes:
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
-        recorded_by (int): The identity that recorded the resource. Example: 145.
         name (Union[Unset, str]): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
         details (Union[None, Unset, str]): Free text details about the technical resource. Example: Make: ACME
             Model: Car Charger 3000.
         controllable_unit_id (Union[Unset, int]): Reference to the controllable unit that this technical resource
             belongs to. Example: 37.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31 23:59:00 CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
-    recorded_at: str
-    recorded_by: int
     name: Union[Unset, str] = UNSET
     details: Union[None, Unset, str] = UNSET
     controllable_unit_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         name = self.name
 
         details: Union[None, Unset, str]
@@ -47,22 +43,25 @@ class TechnicalResourceResponse:
 
         controllable_unit_id = self.controllable_unit_id
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "recorded_at": recorded_at,
-                "recorded_by": recorded_by,
-            }
-        )
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if details is not UNSET:
             field_dict["details"] = details
         if controllable_unit_id is not UNSET:
             field_dict["controllable_unit_id"] = controllable_unit_id
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -71,10 +70,6 @@ class TechnicalResourceResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        recorded_at = d.pop("recorded_at")
-
-        recorded_by = d.pop("recorded_by")
-
         name = d.pop("name", UNSET)
 
         def _parse_details(data: object) -> Union[None, Unset, str]:
@@ -88,14 +83,18 @@ class TechnicalResourceResponse:
 
         controllable_unit_id = d.pop("controllable_unit_id", UNSET)
 
+        recorded_at = d.pop("recorded_at", UNSET)
+
+        recorded_by = d.pop("recorded_by", UNSET)
+
         id = d.pop("id", UNSET)
 
         technical_resource_response = cls(
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             name=name,
             details=details,
             controllable_unit_id=controllable_unit_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
         )
 

@@ -165,11 +165,7 @@
                         "readOnly": true,
                         "example": 145
                     }
-                },
-                "required": [
-                    "recorded_at",
-                    "recorded_by"
-                ]
+                }
             },
             "controllable_unit_lookup_request": {
                 "summary": "Controllable unit lookup",
@@ -688,7 +684,9 @@
                             "maximum_available_capacity",
                             "is_small",
                             "accounting_point_id",
-                            "grid_validation_status"
+                            "grid_validation_status",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -809,7 +807,9 @@
                             "controllable_unit_id",
                             "service_provider_id",
                             "end_user_id",
-                            "contract_reference"
+                            "contract_reference",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -905,7 +905,9 @@
                             "id",
                             "name",
                             "service_provider_id",
-                            "status"
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1010,7 +1012,9 @@
                             "id",
                             "controllable_unit_id",
                             "service_providing_group_id",
-                            "valid_from"
+                            "valid_from",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1120,7 +1124,9 @@
                             "id",
                             "service_providing_group_id",
                             "impacted_system_operator_id",
-                            "status"
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1317,7 +1323,9 @@
                         "required": [
                             "id",
                             "entity_id",
-                            "client_id"
+                            "client_id",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1440,7 +1448,9 @@
                             "name",
                             "role",
                             "type",
-                            "status"
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1528,7 +1538,9 @@
                         "required": [
                             "id",
                             "party_id",
-                            "entity_id"
+                            "entity_id",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1709,7 +1721,9 @@
                         "required": [
                             "id",
                             "name",
-                            "controllable_unit_id"
+                            "controllable_unit_id",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1883,7 +1897,9 @@
                             "id",
                             "acknowledged",
                             "event_id",
-                            "party_id"
+                            "party_id",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -1953,7 +1969,9 @@
                         "required": [
                             "id",
                             "business_id",
-                            "system_operator_id"
+                            "system_operator_id",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -2288,7 +2306,9 @@
                             "id",
                             "system_operator_id",
                             "product_type_id",
-                            "status"
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -2413,7 +2433,9 @@
                             "service_provider_id",
                             "system_operator_id",
                             "product_type_ids",
-                            "status"
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -2525,7 +2547,9 @@
                             "created_by",
                             "created_at",
                             "visibility",
-                            "content"
+                            "content",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -2650,7 +2674,9 @@
                             "service_providing_group_id",
                             "procuring_system_operator_id",
                             "product_type_id",
-                            "status"
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],

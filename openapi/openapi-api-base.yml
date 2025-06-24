@@ -62,9 +62,6 @@ components:
           type: integer
           readOnly: True
           example: 145
-      required:
-        - recorded_at
-        - recorded_by
     controllable_unit_lookup_request:
       summary: Controllable unit lookup
       description: Request schema for controllable unit lookup operations

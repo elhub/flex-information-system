@@ -538,6 +538,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
 
         if resource.get("audit"):
             data_subschemas.append({"$ref": "#/components/schemas/audit_fields"})
+            non_nullable_properties += ["recorded_at", "recorded_by"]
 
         # add data schema (create schema + read-only)
         schemas[resource["id"]] = {

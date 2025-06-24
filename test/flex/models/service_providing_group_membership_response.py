@@ -14,9 +14,6 @@ class ServiceProvidingGroupMembershipResponse:
     group
 
         Attributes:
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
             valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
                 providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
             valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
@@ -25,23 +22,22 @@ class ServiceProvidingGroupMembershipResponse:
                 providing group. Example: 6.
             service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
                 a controllable unit. Example: 55.
+            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31 23:59:00 CET.
+            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
             id (Union[Unset, int]): Unique surrogate key. Example: 27.
     """
 
-    recorded_at: str
-    recorded_by: int
     valid_from: Union[Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
     controllable_unit_id: Union[Unset, int] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         valid_from = self.valid_from
 
         valid_to: Union[None, Unset, str]
@@ -54,16 +50,15 @@ class ServiceProvidingGroupMembershipResponse:
 
         service_providing_group_id = self.service_providing_group_id
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "recorded_at": recorded_at,
-                "recorded_by": recorded_by,
-            }
-        )
+        field_dict.update({})
         if valid_from is not UNSET:
             field_dict["valid_from"] = valid_from
         if valid_to is not UNSET:
@@ -72,6 +67,10 @@ class ServiceProvidingGroupMembershipResponse:
             field_dict["controllable_unit_id"] = controllable_unit_id
         if service_providing_group_id is not UNSET:
             field_dict["service_providing_group_id"] = service_providing_group_id
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -80,10 +79,6 @@ class ServiceProvidingGroupMembershipResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        recorded_at = d.pop("recorded_at")
-
-        recorded_by = d.pop("recorded_by")
-
         valid_from = d.pop("valid_from", UNSET)
 
         def _parse_valid_to(data: object) -> Union[None, Unset, str]:
@@ -99,15 +94,19 @@ class ServiceProvidingGroupMembershipResponse:
 
         service_providing_group_id = d.pop("service_providing_group_id", UNSET)
 
+        recorded_at = d.pop("recorded_at", UNSET)
+
+        recorded_by = d.pop("recorded_by", UNSET)
+
         id = d.pop("id", UNSET)
 
         service_providing_group_membership_response = cls(
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             valid_from=valid_from,
             valid_to=valid_to,
             controllable_unit_id=controllable_unit_id,
             service_providing_group_id=service_providing_group_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
         )
 

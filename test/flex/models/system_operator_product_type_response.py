@@ -15,28 +15,24 @@ class SystemOperatorProductTypeResponse:
     to buy.
 
         Attributes:
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
             status (Union[Unset, SystemOperatorProductTypeStatus]): The status of the relation. Example: active.
             system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 37.
             product_type_id (Union[Unset, int]): Reference to the product type. Example: 8.
+            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31 23:59:00 CET.
+            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
             id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
-    recorded_at: str
-    recorded_by: int
     status: Union[Unset, SystemOperatorProductTypeStatus] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
     product_type_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -45,22 +41,25 @@ class SystemOperatorProductTypeResponse:
 
         product_type_id = self.product_type_id
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "recorded_at": recorded_at,
-                "recorded_by": recorded_by,
-            }
-        )
+        field_dict.update({})
         if status is not UNSET:
             field_dict["status"] = status
         if system_operator_id is not UNSET:
             field_dict["system_operator_id"] = system_operator_id
         if product_type_id is not UNSET:
             field_dict["product_type_id"] = product_type_id
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
 
@@ -69,10 +68,6 @@ class SystemOperatorProductTypeResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        recorded_at = d.pop("recorded_at")
-
-        recorded_by = d.pop("recorded_by")
-
         _status = d.pop("status", UNSET)
         status: Union[Unset, SystemOperatorProductTypeStatus]
         if isinstance(_status, Unset):
@@ -84,14 +79,18 @@ class SystemOperatorProductTypeResponse:
 
         product_type_id = d.pop("product_type_id", UNSET)
 
+        recorded_at = d.pop("recorded_at", UNSET)
+
+        recorded_by = d.pop("recorded_by", UNSET)
+
         id = d.pop("id", UNSET)
 
         system_operator_product_type_response = cls(
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             status=status,
             system_operator_id=system_operator_id,
             product_type_id=product_type_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
         )
 
