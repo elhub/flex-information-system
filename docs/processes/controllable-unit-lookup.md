@@ -1,7 +1,8 @@
 # CU Lookup
 
-This process is used to look up information on controllable units before
-initiating controllable unit registration or service provider switching.
+This process is used to look up information about controllable units before
+initiating controllable unit registration or service provider switching, in
+order to verify whether the unit is already registered in the system.
 
 Before starting the CU registration or switching process, the service provider
 needs to verify the linkage between the end user and the accounting point / CU, as

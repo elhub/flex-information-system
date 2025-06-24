@@ -58,7 +58,7 @@ repos:
         entry: Only files that have formatters/linters configured are allowed
         language: fail
         # yamllint disable-line rule:line-length
-        exclude: ^(.*ignore|.gitattributes|CODEOWNERS|LICENSE.*|.*justfile|\.teamcity.*|.sqlfluff|.yamlfmt|.*\.npmrc|.*\.tmpl|.*\.ico|.*\.dot|.*\.conf|.*\.cfg|.*\.ini|.*/dhparam|.*Makefile.*|.*Dockerfile.*|.*.docx|.*\.psql|.*\.hurl|.*\.plantuml|.*\.env(\..*)?|.*\.service|.*py.typed|.*.mod|.*.sum|.*authelia/secrets/.*)$
+        exclude: ^(.*ignore|.gitattributes|CODEOWNERS|LICENSE.*|.*justfile|\.teamcity.*|.sqlfluff|.yamlfmt|.*\.npmrc|.*\.tmpl|.*\.ico|.*\.dot|.*\.conf|.*\.cfg|.*\.ini|.*/dhparam|.*Makefile.*|.*Dockerfile.*|.*\.dockerfilelintrc|.*.docx|.*\.psql|.*\.hurl|.*\.plantuml|.*\.env(\..*)?|.*\.service|.*py.typed|.*.mod|.*.sum|.*authelia/secrets/.*)$
         # https://github.com/pre-commit/identify/blob/main/identify/extensions.py
         exclude_types:
           - json
@@ -166,11 +166,16 @@ repos:
   #
   ## Docker
   #
-  - repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
-    rev: v0.1.0
+  - repo: local
     hooks:
       - id: dockerfilelint
+        name: Dockerfile linter
+        entry: dockerfilelint
+        language: node
         language_version: lts
+        additional_dependencies: [dockerfilelint]
+        files: Dockerfile.*
+
   - repo: https://github.com/iamthefij/docker-pre-commit
     rev: v3.0.1
     hooks:
@@ -200,9 +205,13 @@ repos:
     hooks:
       - id: eslint
         additional_dependencies:
-          - eslint@^8.43.0
-          - eslint-plugin-react@^7.32.2
+          - eslint@9.26.0
+          - eslint-plugin-react@7.37.5
+          - eslint-plugin-react-hooks@5.2.0
         files: \.[t]sx?$  # *.js, *.jsx, *.ts and *.tsx
+        args:
+          - "--config"
+          - "frontend/eslint.config.js"
         types: [file]
 
   - repo: local
