@@ -464,7 +464,6 @@ resources:
     operations:
       - list
       - read
-    generate_data_schema: true
     generate_views: true
     properties:
       id:
@@ -599,7 +598,6 @@ resources:
       - read
     history_rls: true
     audit: true
-    generate_data_schema: true
     generate_views: true
     properties:
       id:

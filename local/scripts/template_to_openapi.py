@@ -529,41 +529,30 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             "type": "object",
         }
 
-        if "generate_data_schema" in resource and resource["generate_data_schema"]:
-            # add response data schema (create_data schema + read-only)
-            schemas[resource["id"]] = {
-                "summary": f"Response data - {resource['summary']}",
-                "description": f"Data of the response schema for operations with return values - {resource['description']}",
-                "allOf": [
-                    {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
-                    {"properties": readonly_properties},
-                ],
-                "type": "object",
-            }
-
         create_subschemas: list[dict] = [
             {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
         ]
 
-        # add schemas with required list only if non empty
-        # (empty lists make the OpenAPI spec ill formed)
-        if len(required_properties) > 0:
-            create_subschemas.append({"required": required_properties})
+        if "create" in resource["operations"]:
+            # add schemas with required list only if non empty
+            # (empty lists make the OpenAPI spec ill formed)
+            if len(required_properties) > 0:
+                create_subschemas.append({"required": required_properties})
 
-        # add create schema (create_data schema [+ required])
-        schemas[f"{resource['id']}_create_request"] = {
-            "summary": f"Create - {resource['summary']}",
-            "description": f"Request schema for create operations - {resource['description']}",
-            "allOf": create_subschemas,
-            "type": "object",
-        }
+            # add create schema (create_data schema [+ required])
+            schemas[f"{resource['id']}_create_request"] = {
+                "summary": f"Create - {resource['summary']}",
+                "description": f"Request schema for create operations - {resource['description']}",
+                "allOf": create_subschemas,
+                "type": "object",
+            }
 
         # add response schema (create schema + read-only)
         schemas[f"{resource['id']}_response"] = {
             "summary": f"Response - {resource['summary']}",
             "description": f"Response schema for operations with return values - {resource['description']}",
             "allOf": [
-                {"$ref": f"#/components/schemas/{resource['id']}_create_request"},
+                {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
                 {"properties": readonly_properties},
             ],
             "type": "object",

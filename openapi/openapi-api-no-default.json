@@ -290,11 +290,11 @@
                 "properties": {
                     "entity": {
                         "description": "Details about the entity owning the missing party.",
-                        "$ref": "#/components/schemas/entity"
+                        "$ref": "#/components/schemas/entity_response"
                     },
                     "party": {
                         "description": "Details about the missing party.",
-                        "$ref": "#/components/schemas/party"
+                        "$ref": "#/components/schemas/party_response"
                     }
                 }
             },
@@ -303,11 +303,11 @@
                 "properties": {
                     "entity": {
                         "description": "Details about the possibly new entity owning the party.",
-                        "$ref": "#/components/schemas/entity"
+                        "$ref": "#/components/schemas/entity_response"
                     },
                     "party": {
                         "description": "Updated fields of the party.",
-                        "$ref": "#/components/schemas/party"
+                        "$ref": "#/components/schemas/party_response"
                     }
                 }
             },
@@ -615,7 +615,7 @@
                 "description": "Response schema for operations with return values - Controllable unit",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/controllable_unit_create_request"
+                        "$ref": "#/components/schemas/controllable_unit_create_data"
                     },
                     {
                         "properties": {
@@ -743,7 +743,7 @@
                 "description": "Response schema for operations with return values - Relation between controllable unit and service provider",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/controllable_unit_service_provider_create_request"
+                        "$ref": "#/components/schemas/controllable_unit_service_provider_create_data"
                     },
                     {
                         "properties": {
@@ -832,7 +832,7 @@
                 "description": "Response schema for operations with return values - Group of controllable units",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_create_data"
                     },
                     {
                         "properties": {
@@ -930,7 +930,7 @@
                 "description": "Response schema for operations with return values - Membership relation of controllable unit in service providing group",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_membership_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_membership_create_data"
                     },
                     {
                         "properties": {
@@ -1033,7 +1033,7 @@
                 "description": "Response schema for operations with return values - Grid prequalification for service providing group",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_create_data"
                     },
                     {
                         "properties": {
@@ -1078,71 +1078,12 @@
                 ],
                 "type": "object"
             },
-            "entity": {
-                "summary": "Response data - Entity",
-                "description": "Data of the response schema for operations with return values - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/entity_create_data"
-                    },
-                    {
-                        "properties": {
-                            "id": {
-                                "description": "Unique surrogate identifier.\n\nNote:\nThis is a Primary Key.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 14
-                            },
-                            "business_id": {
-                                "description": "The business identifier of the entity. Format depends on `business_id_type`.",
-                                "format": "text",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "13370000000"
-                            },
-                            "business_id_type": {
-                                "description": "The type of the business identifier.",
-                                "format": "text",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "pid"
-                            },
-                            "name": {
-                                "description": "Name of the entity. Maximum 128 characters.",
-                                "format": "text",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "John Smith"
-                            },
-                            "type": {
-                                "description": "The type of the entity, e.g Person, Organisation",
-                                "format": "text",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "person"
-                            }
-                        }
-                    }
-                ],
-                "type": "object"
-            },
-            "entity_create_request": {
-                "summary": "Create - Entity",
-                "description": "Request schema for create operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/entity_create_data"
-                    }
-                ],
-                "type": "object"
-            },
             "entity_response": {
                 "summary": "Response - Entity",
                 "description": "Response schema for operations with return values - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/entity_create_request"
+                        "$ref": "#/components/schemas/entity_create_data"
                     },
                     {
                         "properties": {
@@ -1264,7 +1205,7 @@
                 "description": "Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/entity_client_create_request"
+                        "$ref": "#/components/schemas/entity_client_create_data"
                     },
                     {
                         "properties": {
@@ -1351,41 +1292,6 @@
                 ],
                 "type": "object"
             },
-            "party": {
-                "summary": "Response data - Party",
-                "description": "Data of the response schema for operations with return values - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/party_create_data"
-                    },
-                    {
-                        "properties": {
-                            "id": {
-                                "description": "Unique surrogate identifier.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 11
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
-                            }
-                        }
-                    }
-                ],
-                "type": "object"
-            },
             "party_create_request": {
                 "summary": "Create - Party",
                 "description": "Request schema for create operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
@@ -1411,7 +1317,7 @@
                 "description": "Response schema for operations with return values - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/party_create_request"
+                        "$ref": "#/components/schemas/party_create_data"
                     },
                     {
                         "properties": {
@@ -1493,7 +1399,7 @@
                 "description": "Response schema for operations with return values - The relation between a party and entity.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/party_membership_create_request"
+                        "$ref": "#/components/schemas/party_membership_create_data"
                     },
                     {
                         "properties": {
@@ -1538,22 +1444,12 @@
                 ],
                 "type": "object"
             },
-            "identity_create_request": {
-                "summary": "Create - Identity",
-                "description": "Request schema for create operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/identity_create_data"
-                    }
-                ],
-                "type": "object"
-            },
             "identity_response": {
                 "summary": "Response - Identity",
                 "description": "Response schema for operations with return values - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/identity_create_request"
+                        "$ref": "#/components/schemas/identity_create_data"
                     },
                     {
                         "properties": {
@@ -1661,7 +1557,7 @@
                 "description": "Response schema for operations with return values - Technical unit being part of a controllable unit.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/technical_resource_create_request"
+                        "$ref": "#/components/schemas/technical_resource_create_data"
                     },
                     {
                         "properties": {
@@ -1706,22 +1602,12 @@
                 ],
                 "type": "object"
             },
-            "event_create_request": {
-                "summary": "Create - Event",
-                "description": "Request schema for create operations - Event happening in the system.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/event_create_data"
-                    }
-                ],
-                "type": "object"
-            },
             "event_response": {
                 "summary": "Response - Event",
                 "description": "Response schema for operations with return values - Event happening in the system.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/event_create_request"
+                        "$ref": "#/components/schemas/event_create_data"
                     },
                     {
                         "properties": {
@@ -1814,29 +1700,12 @@
                 ],
                 "type": "object"
             },
-            "notification_create_request": {
-                "summary": "Create - Notification",
-                "description": "Request schema for create operations - Notification about an event happening in the system.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/notification_create_data"
-                    },
-                    {
-                        "required": [
-                            "acknowledged",
-                            "event_id",
-                            "party_id"
-                        ]
-                    }
-                ],
-                "type": "object"
-            },
             "notification_response": {
                 "summary": "Response - Notification",
                 "description": "Response schema for operations with return values - Notification about an event happening in the system.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/notification_create_request"
+                        "$ref": "#/components/schemas/notification_create_data"
                     },
                     {
                         "properties": {
@@ -1881,22 +1750,12 @@
                 ],
                 "type": "object"
             },
-            "accounting_point_create_request": {
-                "summary": "Create - Accounting Point",
-                "description": "Request schema for create operations - Accounting point for a controllable unit.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/accounting_point_create_data"
-                    }
-                ],
-                "type": "object"
-            },
             "accounting_point_response": {
                 "summary": "Response - Accounting Point",
                 "description": "Response schema for operations with return values - Accounting point for a controllable unit.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/accounting_point_create_request"
+                        "$ref": "#/components/schemas/accounting_point_create_data"
                     },
                     {
                         "properties": {
@@ -1960,27 +1819,12 @@
                 ],
                 "type": "object"
             },
-            "accounting_point_balance_responsible_party_create_request": {
-                "summary": "Create - Accounting Point Balance Responsible Party",
-                "description": "Request schema for create operations - Relation linking a balance responsible party to an accounting point.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_create_data"
-                    },
-                    {
-                        "required": [
-                            "energy_direction"
-                        ]
-                    }
-                ],
-                "type": "object"
-            },
             "accounting_point_balance_responsible_party_response": {
                 "summary": "Response - Accounting Point Balance Responsible Party",
                 "description": "Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_create_request"
+                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_create_data"
                     },
                     {
                         "properties": {
@@ -2033,22 +1877,12 @@
                 ],
                 "type": "object"
             },
-            "accounting_point_energy_supplier_create_request": {
-                "summary": "Create - Accounting Point Energy Supplier",
-                "description": "Request schema for create operations - Relation linking an energy supplier to an accounting point.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/accounting_point_energy_supplier_create_data"
-                    }
-                ],
-                "type": "object"
-            },
             "accounting_point_energy_supplier_response": {
                 "summary": "Response - Accounting Point Energy Supplier",
                 "description": "Response schema for operations with return values - Relation linking an energy supplier to an accounting point.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/accounting_point_energy_supplier_create_request"
+                        "$ref": "#/components/schemas/accounting_point_energy_supplier_create_data"
                     },
                     {
                         "properties": {
@@ -2101,22 +1935,12 @@
                 ],
                 "type": "object"
             },
-            "product_type_create_request": {
-                "summary": "Create - Product Type",
-                "description": "Request schema for create operations - Product type.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/product_type_create_data"
-                    }
-                ],
-                "type": "object"
-            },
             "product_type_response": {
                 "summary": "Response - Product Type",
                 "description": "Response schema for operations with return values - Product type.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/product_type_create_request"
+                        "$ref": "#/components/schemas/product_type_create_data"
                     },
                     {
                         "properties": {
@@ -2219,7 +2043,7 @@
                 "description": "Response schema for operations with return values - Relation between a system operator and a product type they want to buy.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/system_operator_product_type_create_request"
+                        "$ref": "#/components/schemas/system_operator_product_type_create_data"
                     },
                     {
                         "properties": {
@@ -2336,7 +2160,7 @@
                 "description": "Response schema for operations with return values - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_provider_product_application_create_request"
+                        "$ref": "#/components/schemas/service_provider_product_application_create_data"
                     },
                     {
                         "properties": {
@@ -2425,7 +2249,7 @@
                 "description": "Response schema for operations with return values - Comment made by a party involved in a service provider product application.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_provider_product_application_comment_create_request"
+                        "$ref": "#/components/schemas/service_provider_product_application_comment_create_data"
                     },
                     {
                         "properties": {
@@ -2556,7 +2380,7 @@
                 "description": "Response schema for operations with return values - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_product_application_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_product_application_create_data"
                     },
                     {
                         "properties": {
@@ -2601,22 +2425,12 @@
                 ],
                 "type": "object"
             },
-            "notice_create_request": {
-                "summary": "Create - Notice",
-                "description": "Request schema for create operations - Notice to users about various issues or actions expected from them.",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/notice_create_data"
-                    }
-                ],
-                "type": "object"
-            },
             "notice_response": {
                 "summary": "Response - Notice",
                 "description": "Response schema for operations with return values - Notice to users about various issues or actions expected from them.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/notice_create_request"
+                        "$ref": "#/components/schemas/notice_create_data"
                     },
                     {
                         "properties": {
