@@ -47,6 +47,21 @@ components:
       required:
         - code
         - message
+    audit_fields:
+      properties:
+        recorded_at:
+          description: >-
+            When the resource was recorded (created or updated) in the system.
+          format: timestamp with time zone
+          type: string
+          readOnly: True
+          example: 2023-12-31 23:59:00 CET
+        recorded_by:
+          description: The identity that recorded the resource.
+          format: bigint
+          type: integer
+          readOnly: True
+          example: 145
     controllable_unit_lookup_request:
       summary: Controllable unit lookup
       description: Request schema for controllable unit lookup operations
@@ -140,6 +155,60 @@ components:
         - accounting_point_id
         - end_user_id
         - technical_resources
+    timeline_multi_range:
+      description: >-
+        Partial timeline data that is relevant to mention, in a notice for
+        instance. Multirange format, i.e., array of start/end timestamp pairs.
+      type: array
+      items:
+        type: object
+        properties:
+          valid_from:
+            type: string
+            format: date-time
+            description: The start time of the timeline section.
+            example: '2023-01-01T00:00:00Z'
+          valid_to:
+            type: string
+            format: date-time
+            description: The end time of the timeline section.
+            example: '2023-01-02T00:00:00Z'
+    notice_data_valid_time_outside_contract:
+      description: >-
+        Format of the data field in a notice of type
+        no.elhub.flex.*.valid_time.outside_contract
+      properties:
+        invalid_timeline:
+          description: >-
+            Part of the timeline where the end user on the CUSP relation does
+            not match the end user on the accounting point.
+          $ref: '#/components/schemas/timeline_multi_range'
+    notice_data_party_missing:
+      description: >-
+        Format of the data field in a notice of type no.elhub.flex.party.missing
+      properties:
+        entity:
+          description: Details about the entity owning the missing party.
+          $ref: '#/components/schemas/entity'
+        party:
+          description: Details about the missing party.
+          $ref: '#/components/schemas/party'
+    notice_data_party_outdated:
+      description: >-
+        Format of the data field in a notice of type
+        no.elhub.flex.party.outdated
+      properties:
+        entity:
+          description: Details about the possibly new entity owning the party.
+          $ref: '#/components/schemas/entity'
+        party:
+          description: Updated fields of the party.
+          $ref: '#/components/schemas/party'
+    notice_data:
+      oneOf:
+        - $ref: '#/components/schemas/notice_data_valid_time_outside_contract'
+        - $ref: '#/components/schemas/notice_data_party_missing'
+        - $ref: '#/components/schemas/notice_data_party_outdated'
 paths:
   /openapi.json:
     get:

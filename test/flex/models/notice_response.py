@@ -1,9 +1,13 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.notice_data_type_0 import NoticeDataType0
+
 
 T = TypeVar("T", bound="NoticeResponse")
 
@@ -19,25 +23,29 @@ class NoticeResponse:
                 no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
             source (Union[Unset, str]): The URI of the resource concerned by the event. Example:
                 /service_providing_group_membership/4.
-            data (Union[None, Unset, str]): The data of the notice.
+            data (Union['NoticeDataType0', None, Unset]): The data of the notice.
     """
 
     party_id: Union[Unset, int] = UNSET
     type: Union[Unset, str] = UNSET
     source: Union[Unset, str] = UNSET
-    data: Union[None, Unset, str] = UNSET
+    data: Union["NoticeDataType0", None, Unset] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        from ..models.notice_data_type_0 import NoticeDataType0
+
         party_id = self.party_id
 
         type = self.type
 
         source = self.source
 
-        data: Union[None, Unset, str]
+        data: Union[Dict[str, Any], None, Unset]
         if isinstance(self.data, Unset):
             data = UNSET
+        elif isinstance(self.data, NoticeDataType0):
+            data = self.data.to_dict()
         else:
             data = self.data
 
@@ -57,6 +65,8 @@ class NoticeResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.notice_data_type_0 import NoticeDataType0
+
         d = src_dict.copy()
         party_id = d.pop("party_id", UNSET)
 
@@ -64,12 +74,20 @@ class NoticeResponse:
 
         source = d.pop("source", UNSET)
 
-        def _parse_data(data: object) -> Union[None, Unset, str]:
+        def _parse_data(data: object) -> Union["NoticeDataType0", None, Unset]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                data_type_0 = NoticeDataType0.from_dict(data)
+
+                return data_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union["NoticeDataType0", None, Unset], data)
 
         data = _parse_data(d.pop("data", UNSET))
 

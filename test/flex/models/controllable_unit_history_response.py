@@ -18,8 +18,7 @@ class ControllableUnitHistoryResponse:
     """Controllable unit - history
 
     Attributes:
-        accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
-            Example: 10289.
+        controllable_unit_id (int): Reference to the resource that was updated. Example: 48.
         name (Union[Unset, str]): Free text name of the controllable unit. Example: Car Charger #34.
         start_date (Union[None, Unset, datetime.date]): The usage date when the controllable unit is first active.
             Example: 2024-05-17.
@@ -42,20 +41,21 @@ class ControllableUnitHistoryResponse:
         grid_validation_notes (Union[None, Unset, str]): Free text notes on the current grid validation status.
         last_validated (Union[None, Unset, str]): When the controllable unit was last validated. Example: 2022-08-08
             12:00:00 CET.
+        accounting_point_id (Union[Unset, int]): Reference to the accounting point that the controllable unit is
+            connected to. Example: 10289.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31 23:59:00 CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate key. Example: 12.
         business_id (Union[Unset, str]): Unique business identifier for the controllable unit. Example:
             53919b79-876f-4dad-8bde-b29368367604.
         is_small (Union[Unset, bool]): Whether the controllable unit is small or not, following NCDR. Example: True.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        controllable_unit_id (Union[Unset, int]): Reference to the resource that was updated. Example: 48.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
             10:00:00 CET.
     """
 
-    accounting_point_id: int
+    controllable_unit_id: int
     name: Union[Unset, str] = UNSET
     start_date: Union[None, Unset, datetime.date] = UNSET
     status: Union[Unset, ControllableUnitStatus] = UNSET
@@ -69,18 +69,18 @@ class ControllableUnitHistoryResponse:
     grid_validation_status: Union[Unset, ControllableUnitGridValidationStatus] = UNSET
     grid_validation_notes: Union[None, Unset, str] = UNSET
     last_validated: Union[None, Unset, str] = UNSET
+    accounting_point_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
     is_small: Union[Unset, bool] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    controllable_unit_id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        accounting_point_id = self.accounting_point_id
+        controllable_unit_id = self.controllable_unit_id
 
         name = self.name
 
@@ -148,17 +148,17 @@ class ControllableUnitHistoryResponse:
         else:
             last_validated = self.last_validated
 
-        id = self.id
-
-        business_id = self.business_id
-
-        is_small = self.is_small
+        accounting_point_id = self.accounting_point_id
 
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
 
-        controllable_unit_id = self.controllable_unit_id
+        id = self.id
+
+        business_id = self.business_id
+
+        is_small = self.is_small
 
         replaced_by: Union[None, Unset, int]
         if isinstance(self.replaced_by, Unset):
@@ -176,7 +176,7 @@ class ControllableUnitHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "accounting_point_id": accounting_point_id,
+                "controllable_unit_id": controllable_unit_id,
             }
         )
         if name is not UNSET:
@@ -205,18 +205,18 @@ class ControllableUnitHistoryResponse:
             field_dict["grid_validation_notes"] = grid_validation_notes
         if last_validated is not UNSET:
             field_dict["last_validated"] = last_validated
+        if accounting_point_id is not UNSET:
+            field_dict["accounting_point_id"] = accounting_point_id
+        if recorded_at is not UNSET:
+            field_dict["recorded_at"] = recorded_at
+        if recorded_by is not UNSET:
+            field_dict["recorded_by"] = recorded_by
         if id is not UNSET:
             field_dict["id"] = id
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
         if is_small is not UNSET:
             field_dict["is_small"] = is_small
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if controllable_unit_id is not UNSET:
-            field_dict["controllable_unit_id"] = controllable_unit_id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -227,7 +227,7 @@ class ControllableUnitHistoryResponse:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        accounting_point_id = d.pop("accounting_point_id")
+        controllable_unit_id = d.pop("controllable_unit_id")
 
         name = d.pop("name", UNSET)
 
@@ -334,17 +334,17 @@ class ControllableUnitHistoryResponse:
 
         last_validated = _parse_last_validated(d.pop("last_validated", UNSET))
 
-        id = d.pop("id", UNSET)
-
-        business_id = d.pop("business_id", UNSET)
-
-        is_small = d.pop("is_small", UNSET)
+        accounting_point_id = d.pop("accounting_point_id", UNSET)
 
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
 
-        controllable_unit_id = d.pop("controllable_unit_id", UNSET)
+        id = d.pop("id", UNSET)
+
+        business_id = d.pop("business_id", UNSET)
+
+        is_small = d.pop("is_small", UNSET)
 
         def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
             if data is None:
@@ -365,7 +365,7 @@ class ControllableUnitHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         controllable_unit_history_response = cls(
-            accounting_point_id=accounting_point_id,
+            controllable_unit_id=controllable_unit_id,
             name=name,
             start_date=start_date,
             status=status,
@@ -379,12 +379,12 @@ class ControllableUnitHistoryResponse:
             grid_validation_status=grid_validation_status,
             grid_validation_notes=grid_validation_notes,
             last_validated=last_validated,
+            accounting_point_id=accounting_point_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             id=id,
             business_id=business_id,
             is_small=is_small,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
-            controllable_unit_id=controllable_unit_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

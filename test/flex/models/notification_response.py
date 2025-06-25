@@ -16,18 +16,18 @@ class NotificationResponse:
         acknowledged (Union[Unset, bool]): Whether the notification was acknowledged by the target user.
         event_id (Union[Unset, int]): Reference to the event notified by this resource. Example: 37.
         party_id (Union[Unset, int]): Reference to the party concerned by this notification. Example: 37.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
     acknowledged: Union[Unset, bool] = UNSET
     event_id: Union[Unset, int] = UNSET
     party_id: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -37,11 +37,11 @@ class NotificationResponse:
 
         party_id = self.party_id
 
-        id = self.id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
+
+        id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -52,12 +52,12 @@ class NotificationResponse:
             field_dict["event_id"] = event_id
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
-        if id is not UNSET:
-            field_dict["id"] = id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
             field_dict["recorded_by"] = recorded_by
+        if id is not UNSET:
+            field_dict["id"] = id
 
         return field_dict
 
@@ -70,19 +70,19 @@ class NotificationResponse:
 
         party_id = d.pop("party_id", UNSET)
 
-        id = d.pop("id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
+
+        id = d.pop("id", UNSET)
 
         notification_response = cls(
             acknowledged=acknowledged,
             event_id=event_id,
             party_id=party_id,
-            id=id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            id=id,
         )
 
         notification_response.additional_properties = d

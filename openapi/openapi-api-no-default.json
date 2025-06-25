@@ -149,6 +149,24 @@
                     "message"
                 ]
             },
+            "audit_fields": {
+                "properties": {
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "timestamp with time zone",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31 23:59:00 CET"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    }
+                }
+            },
             "controllable_unit_lookup_request": {
                 "summary": "Controllable unit lookup",
                 "description": "Request schema for controllable unit lookup operations",
@@ -253,6 +271,75 @@
                     "accounting_point_id",
                     "end_user_id",
                     "technical_resources"
+                ]
+            },
+            "timeline_multi_range": {
+                "description": "Partial timeline data that is relevant to mention, in a notice for instance. Multirange format, i.e., array of start/end timestamp pairs.",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "valid_from": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "The start time of the timeline section.",
+                            "example": "2023-01-01T00:00:00Z"
+                        },
+                        "valid_to": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "The end time of the timeline section.",
+                            "example": "2023-01-02T00:00:00Z"
+                        }
+                    }
+                }
+            },
+            "notice_data_valid_time_outside_contract": {
+                "description": "Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract",
+                "properties": {
+                    "invalid_timeline": {
+                        "description": "Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point.",
+                        "$ref": "#/components/schemas/timeline_multi_range"
+                    }
+                }
+            },
+            "notice_data_party_missing": {
+                "description": "Format of the data field in a notice of type no.elhub.flex.party.missing",
+                "properties": {
+                    "entity": {
+                        "description": "Details about the entity owning the missing party.",
+                        "$ref": "#/components/schemas/entity"
+                    },
+                    "party": {
+                        "description": "Details about the missing party.",
+                        "$ref": "#/components/schemas/party"
+                    }
+                }
+            },
+            "notice_data_party_outdated": {
+                "description": "Format of the data field in a notice of type no.elhub.flex.party.outdated",
+                "properties": {
+                    "entity": {
+                        "description": "Details about the possibly new entity owning the party.",
+                        "$ref": "#/components/schemas/entity"
+                    },
+                    "party": {
+                        "description": "Updated fields of the party.",
+                        "$ref": "#/components/schemas/party"
+                    }
+                }
+            },
+            "notice_data": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/notice_data_valid_time_outside_contract"
+                    },
+                    {
+                        "$ref": "#/components/schemas/notice_data_party_missing"
+                    },
+                    {
+                        "$ref": "#/components/schemas/notice_data_party_outdated"
+                    }
                 ]
             },
             "empty_object": {
@@ -500,9 +587,9 @@
                     }
                 }
             },
-            "controllable_unit_create_request": {
-                "summary": "Create - Controllable unit",
-                "description": "Request schema for create operations - Controllable unit",
+            "controllable_unit_create_data": {
+                "summary": "Create data - Controllable unit",
+                "description": "Data of the request schema for create operations - Controllable unit",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_update_request"
@@ -517,6 +604,16 @@
                                 "example": 10289
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_create_request": {
+                "summary": "Create - Controllable unit",
+                "description": "Request schema for create operations - Controllable unit",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_create_data"
                     },
                     {
                         "required": [
@@ -531,12 +628,12 @@
                 ],
                 "type": "object"
             },
-            "controllable_unit_response": {
-                "summary": "Response - Controllable unit",
-                "description": "Response schema for operations with return values - Controllable unit",
+            "controllable_unit": {
+                "summary": "Data - Controllable unit",
+                "description": "Data schema - Controllable unit",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/controllable_unit_create_request"
+                        "$ref": "#/components/schemas/controllable_unit_create_data"
                     },
                     {
                         "properties": {
@@ -561,22 +658,36 @@
                                 "type": "boolean",
                                 "readOnly": true,
                                 "example": true
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_response": {
+                "summary": "Response - Controllable unit",
+                "description": "Response schema for operations with return values - Controllable unit",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "business_id",
+                            "name",
+                            "status",
+                            "regulation_direction",
+                            "maximum_available_capacity",
+                            "is_small",
+                            "accounting_point_id",
+                            "grid_validation_status",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -610,9 +721,9 @@
                     }
                 }
             },
-            "controllable_unit_service_provider_create_request": {
-                "summary": "Create - Relation between controllable unit and service provider",
-                "description": "Request schema for create operations - Relation between controllable unit and service provider",
+            "controllable_unit_service_provider_create_data": {
+                "summary": "Create data - Relation between controllable unit and service provider",
+                "description": "Data of the request schema for create operations - Relation between controllable unit and service provider",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_service_provider_update_request"
@@ -637,6 +748,16 @@
                                 "type": "integer"
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_service_provider_create_request": {
+                "summary": "Create - Relation between controllable unit and service provider",
+                "description": "Request schema for create operations - Relation between controllable unit and service provider",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_service_provider_create_data"
                     },
                     {
                         "required": [
@@ -649,12 +770,12 @@
                 ],
                 "type": "object"
             },
-            "controllable_unit_service_provider_response": {
-                "summary": "Response - Relation between controllable unit and service provider",
-                "description": "Response schema for operations with return values - Relation between controllable unit and service provider",
+            "controllable_unit_service_provider": {
+                "summary": "Data - Relation between controllable unit and service provider",
+                "description": "Data schema - Relation between controllable unit and service provider",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/controllable_unit_service_provider_create_request"
+                        "$ref": "#/components/schemas/controllable_unit_service_provider_create_data"
                     },
                     {
                         "properties": {
@@ -664,22 +785,32 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 7
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_service_provider_response": {
+                "summary": "Response - Relation between controllable unit and service provider",
+                "description": "Response schema for operations with return values - Relation between controllable unit and service provider",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_service_provider"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "controllable_unit_id",
+                            "service_provider_id",
+                            "end_user_id",
+                            "contract_reference",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -701,9 +832,9 @@
                     }
                 }
             },
-            "service_providing_group_create_request": {
-                "summary": "Create - Service providing group",
-                "description": "Request schema for create operations - Group of controllable units",
+            "service_providing_group_create_data": {
+                "summary": "Create data - Service providing group",
+                "description": "Data of the request schema for create operations - Group of controllable units",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_update_request"
@@ -717,6 +848,16 @@
                                 "example": 17
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_create_request": {
+                "summary": "Create - Service providing group",
+                "description": "Request schema for create operations - Group of controllable units",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_create_data"
                     },
                     {
                         "required": [
@@ -728,12 +869,12 @@
                 ],
                 "type": "object"
             },
-            "service_providing_group_response": {
-                "summary": "Response - Service providing group",
-                "description": "Response schema for operations with return values - Group of controllable units",
+            "service_providing_group": {
+                "summary": "Data - Service providing group",
+                "description": "Data schema - Group of controllable units",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_create_data"
                     },
                     {
                         "properties": {
@@ -743,22 +884,31 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 4
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_response": {
+                "summary": "Response - Service providing group",
+                "description": "Response schema for operations with return values - Group of controllable units",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "name",
+                            "service_provider_id",
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -783,9 +933,9 @@
                     }
                 }
             },
-            "service_providing_group_membership_create_request": {
-                "summary": "Create - Membership relation of controllable unit in service providing group",
-                "description": "Request schema for create operations - Membership relation of controllable unit in service providing group",
+            "service_providing_group_membership_create_data": {
+                "summary": "Create data - Membership relation of controllable unit in service providing group",
+                "description": "Data of the request schema for create operations - Membership relation of controllable unit in service providing group",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_membership_update_request"
@@ -805,6 +955,16 @@
                                 "example": 55
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_membership_create_request": {
+                "summary": "Create - Membership relation of controllable unit in service providing group",
+                "description": "Request schema for create operations - Membership relation of controllable unit in service providing group",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_membership_create_data"
                     },
                     {
                         "required": [
@@ -816,12 +976,12 @@
                 ],
                 "type": "object"
             },
-            "service_providing_group_membership_response": {
-                "summary": "Response - Membership relation of controllable unit in service providing group",
-                "description": "Response schema for operations with return values - Membership relation of controllable unit in service providing group",
+            "service_providing_group_membership": {
+                "summary": "Data - Membership relation of controllable unit in service providing group",
+                "description": "Data schema - Membership relation of controllable unit in service providing group",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_membership_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_membership_create_data"
                     },
                     {
                         "properties": {
@@ -831,22 +991,31 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 27
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_membership_response": {
+                "summary": "Response - Membership relation of controllable unit in service providing group",
+                "description": "Response schema for operations with return values - Membership relation of controllable unit in service providing group",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_membership"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "controllable_unit_id",
+                            "service_providing_group_id",
+                            "valid_from",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -876,9 +1045,9 @@
                     }
                 }
             },
-            "service_providing_group_grid_prequalification_create_request": {
-                "summary": "Create - Grid prequalification for service providing group",
-                "description": "Request schema for create operations - Grid prequalification for service providing group",
+            "service_providing_group_grid_prequalification_create_data": {
+                "summary": "Create data - Grid prequalification for service providing group",
+                "description": "Data of the request schema for create operations - Grid prequalification for service providing group",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_prequalification_update_request"
@@ -898,6 +1067,16 @@
                                 "example": 7
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_grid_prequalification_create_request": {
+                "summary": "Create - Grid prequalification for service providing group",
+                "description": "Request schema for create operations - Grid prequalification for service providing group",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_create_data"
                     },
                     {
                         "required": [
@@ -909,12 +1088,12 @@
                 ],
                 "type": "object"
             },
-            "service_providing_group_grid_prequalification_response": {
-                "summary": "Response - Grid prequalification for service providing group",
-                "description": "Response schema for operations with return values - Grid prequalification for service providing group",
+            "service_providing_group_grid_prequalification": {
+                "summary": "Data - Grid prequalification for service providing group",
+                "description": "Data schema - Grid prequalification for service providing group",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_create_data"
                     },
                     {
                         "properties": {
@@ -924,22 +1103,31 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 27
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_grid_prequalification_response": {
+                "summary": "Response - Grid prequalification for service providing group",
+                "description": "Response schema for operations with return values - Grid prequalification for service providing group",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "service_providing_group_id",
+                            "impacted_system_operator_id",
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -949,12 +1137,22 @@
                 "description": "Request schema for update operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
                 "type": "object"
             },
-            "entity_response": {
-                "summary": "Response - Entity",
-                "description": "Response schema for operations with return values - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
+            "entity_create_data": {
+                "summary": "Create data - Entity",
+                "description": "Data of the request schema for create operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/entity_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "entity": {
+                "summary": "Data - Entity",
+                "description": "Data schema - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/entity_create_data"
                     },
                     {
                         "properties": {
@@ -998,6 +1196,25 @@
                 ],
                 "type": "object"
             },
+            "entity_response": {
+                "summary": "Response - Entity",
+                "description": "Response schema for operations with return values - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/entity"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "business_id",
+                            "business_id_type",
+                            "name",
+                            "type"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
             "entity_client_update_request": {
                 "summary": "Update - Entity client",
                 "description": "Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
@@ -1035,9 +1252,9 @@
                     }
                 }
             },
-            "entity_client_create_request": {
-                "summary": "Create - Entity client",
-                "description": "Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
+            "entity_client_create_data": {
+                "summary": "Create data - Entity client",
+                "description": "Data of the request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/entity_client_update_request"
@@ -1051,6 +1268,16 @@
                                 "example": 30
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "entity_client_create_request": {
+                "summary": "Create - Entity client",
+                "description": "Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/entity_client_create_data"
                     },
                     {
                         "required": [
@@ -1061,12 +1288,12 @@
                 ],
                 "type": "object"
             },
-            "entity_client_response": {
-                "summary": "Response - Entity client",
-                "description": "Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.",
+            "entity_client": {
+                "summary": "Data - Entity client",
+                "description": "Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/entity_client_create_request"
+                        "$ref": "#/components/schemas/entity_client_create_data"
                     },
                     {
                         "properties": {
@@ -1076,22 +1303,30 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 14
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "entity_client_response": {
+                "summary": "Response - Entity client",
+                "description": "Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/entity_client"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "entity_id",
+                            "client_id",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1115,9 +1350,9 @@
                     }
                 }
             },
-            "party_create_request": {
-                "summary": "Create - Party",
-                "description": "Request schema for create operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
+            "party_create_data": {
+                "summary": "Create data - Party",
+                "description": "Data of the request schema for create operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/party_update_request"
@@ -1149,6 +1384,16 @@
                                 "example": "energy_supplier"
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "party_create_request": {
+                "summary": "Create - Party",
+                "description": "Request schema for create operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/party_create_data"
                     },
                     {
                         "required": [
@@ -1163,12 +1408,12 @@
                 ],
                 "type": "object"
             },
-            "party_response": {
-                "summary": "Response - Party",
-                "description": "Response schema for operations with return values - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
+            "party": {
+                "summary": "Data - Party",
+                "description": "Data schema - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/party_create_request"
+                        "$ref": "#/components/schemas/party_create_data"
                     },
                     {
                         "properties": {
@@ -1178,22 +1423,35 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 11
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "party_response": {
+                "summary": "Response - Party",
+                "description": "Response schema for operations with return values - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/party"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "business_id",
+                            "business_id_type",
+                            "entity_id",
+                            "name",
+                            "role",
+                            "type",
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1203,9 +1461,9 @@
                 "description": "Request schema for update operations - The relation between a party and entity.",
                 "type": "object"
             },
-            "party_membership_create_request": {
-                "summary": "Create - Party Membership",
-                "description": "Request schema for create operations - The relation between a party and entity.",
+            "party_membership_create_data": {
+                "summary": "Create data - Party Membership",
+                "description": "Data of the request schema for create operations - The relation between a party and entity.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/party_membership_update_request"
@@ -1225,6 +1483,16 @@
                                 "example": 30
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "party_membership_create_request": {
+                "summary": "Create - Party Membership",
+                "description": "Request schema for create operations - The relation between a party and entity.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/party_membership_create_data"
                     },
                     {
                         "required": [
@@ -1235,12 +1503,12 @@
                 ],
                 "type": "object"
             },
-            "party_membership_response": {
-                "summary": "Response - Party Membership",
-                "description": "Response schema for operations with return values - The relation between a party and entity.",
+            "party_membership": {
+                "summary": "Data - Party Membership",
+                "description": "Data schema - The relation between a party and entity.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/party_membership_create_request"
+                        "$ref": "#/components/schemas/party_membership_create_data"
                     },
                     {
                         "properties": {
@@ -1250,22 +1518,30 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 44
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "party_membership_response": {
+                "summary": "Response - Party Membership",
+                "description": "Response schema for operations with return values - The relation between a party and entity.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/party_membership"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "party_id",
+                            "entity_id",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1275,12 +1551,22 @@
                 "description": "Request schema for update operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
                 "type": "object"
             },
-            "identity_response": {
-                "summary": "Response - Identity",
-                "description": "Response schema for operations with return values - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
+            "identity_create_data": {
+                "summary": "Create data - Identity",
+                "description": "Data of the request schema for create operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/identity_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "identity": {
+                "summary": "Data - Identity",
+                "description": "Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/identity_create_data"
                     },
                     {
                         "properties": {
@@ -1326,6 +1612,23 @@
                 ],
                 "type": "object"
             },
+            "identity_response": {
+                "summary": "Response - Identity",
+                "description": "Response schema for operations with return values - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/identity"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "entity_id",
+                            "entity_name"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
             "technical_resource_update_request": {
                 "summary": "Update - Technical Resource",
                 "description": "Request schema for update operations - Technical unit being part of a controllable unit.",
@@ -1347,9 +1650,9 @@
                     }
                 }
             },
-            "technical_resource_create_request": {
-                "summary": "Create - Technical Resource",
-                "description": "Request schema for create operations - Technical unit being part of a controllable unit.",
+            "technical_resource_create_data": {
+                "summary": "Create data - Technical Resource",
+                "description": "Data of the request schema for create operations - Technical unit being part of a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/technical_resource_update_request"
@@ -1363,6 +1666,16 @@
                                 "example": 37
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "technical_resource_create_request": {
+                "summary": "Create - Technical Resource",
+                "description": "Request schema for create operations - Technical unit being part of a controllable unit.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/technical_resource_create_data"
                     },
                     {
                         "required": [
@@ -1373,12 +1686,12 @@
                 ],
                 "type": "object"
             },
-            "technical_resource_response": {
-                "summary": "Response - Technical Resource",
-                "description": "Response schema for operations with return values - Technical unit being part of a controllable unit.",
+            "technical_resource": {
+                "summary": "Data - Technical Resource",
+                "description": "Data schema - Technical unit being part of a controllable unit.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/technical_resource_create_request"
+                        "$ref": "#/components/schemas/technical_resource_create_data"
                     },
                     {
                         "properties": {
@@ -1388,22 +1701,30 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "technical_resource_response": {
+                "summary": "Response - Technical Resource",
+                "description": "Response schema for operations with return values - Technical unit being part of a controllable unit.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/technical_resource"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "name",
+                            "controllable_unit_id",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1413,12 +1734,22 @@
                 "description": "Request schema for update operations - Event happening in the system.",
                 "type": "object"
             },
-            "event_response": {
-                "summary": "Response - Event",
-                "description": "Response schema for operations with return values - Event happening in the system.",
+            "event_create_data": {
+                "summary": "Create data - Event",
+                "description": "Data of the request schema for create operations - Event happening in the system.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/event_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "event": {
+                "summary": "Data - Event",
+                "description": "Data schema - Event happening in the system.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/event_create_data"
                     },
                     {
                         "properties": {
@@ -1472,6 +1803,25 @@
                 ],
                 "type": "object"
             },
+            "event_response": {
+                "summary": "Response - Event",
+                "description": "Response schema for operations with return values - Event happening in the system.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/event"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "specversion",
+                            "time",
+                            "type",
+                            "source"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
             "notification_update_request": {
                 "summary": "Update - Notification",
                 "description": "Request schema for update operations - Notification about an event happening in the system.",
@@ -1485,9 +1835,9 @@
                     }
                 }
             },
-            "notification_response": {
-                "summary": "Response - Notification",
-                "description": "Response schema for operations with return values - Notification about an event happening in the system.",
+            "notification_create_data": {
+                "summary": "Create data - Notification",
+                "description": "Data of the request schema for create operations - Notification about an event happening in the system.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/notification_update_request"
@@ -1505,29 +1855,52 @@
                                 "format": "bigint",
                                 "type": "integer",
                                 "example": 37
-                            },
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "notification": {
+                "summary": "Data - Notification",
+                "description": "Data schema - Notification about an event happening in the system.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/notification_create_data"
+                    },
+                    {
+                        "properties": {
                             "id": {
                                 "description": "Unique surrogate identifier.",
                                 "format": "bigint",
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "notification_response": {
+                "summary": "Response - Notification",
+                "description": "Response schema for operations with return values - Notification about an event happening in the system.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/notification"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "acknowledged",
+                            "event_id",
+                            "party_id",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1537,12 +1910,22 @@
                 "description": "Request schema for update operations - Accounting point for a controllable unit.",
                 "type": "object"
             },
-            "accounting_point_response": {
-                "summary": "Response - Accounting Point",
-                "description": "Response schema for operations with return values - Accounting point for a controllable unit.",
+            "accounting_point_create_data": {
+                "summary": "Create data - Accounting Point",
+                "description": "Data of the request schema for create operations - Accounting point for a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/accounting_point_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point": {
+                "summary": "Data - Accounting Point",
+                "description": "Data schema - Accounting point for a controllable unit.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_create_data"
                     },
                     {
                         "properties": {
@@ -1566,22 +1949,30 @@
                                 "format": "bigint",
                                 "type": "integer",
                                 "readOnly": true
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_response": {
+                "summary": "Response - Accounting Point",
+                "description": "Response schema for operations with return values - Accounting point for a controllable unit.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "business_id",
+                            "system_operator_id",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1596,12 +1987,22 @@
                     }
                 }
             },
-            "accounting_point_balance_responsible_party_response": {
-                "summary": "Response - Accounting Point Balance Responsible Party",
-                "description": "Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.",
+            "accounting_point_balance_responsible_party_create_data": {
+                "summary": "Create data - Accounting Point Balance Responsible Party",
+                "description": "Data of the request schema for create operations - Relation linking a balance responsible party to an accounting point.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/accounting_point_balance_responsible_party_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_balance_responsible_party": {
+                "summary": "Data - Accounting Point Balance Responsible Party",
+                "description": "Data schema - Relation linking a balance responsible party to an accounting point.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_create_data"
                     },
                     {
                         "properties": {
@@ -1639,17 +2040,45 @@
                 ],
                 "type": "object"
             },
+            "accounting_point_balance_responsible_party_response": {
+                "summary": "Response - Accounting Point Balance Responsible Party",
+                "description": "Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party"
+                    },
+                    {
+                        "required": [
+                            "accounting_point_id",
+                            "balance_responsible_party_id",
+                            "energy_direction",
+                            "valid_from"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
             "accounting_point_energy_supplier_update_request": {
                 "summary": "Update - Accounting Point Energy Supplier",
                 "description": "Request schema for update operations - Relation linking an energy supplier to an accounting point.",
                 "type": "object"
             },
-            "accounting_point_energy_supplier_response": {
-                "summary": "Response - Accounting Point Energy Supplier",
-                "description": "Response schema for operations with return values - Relation linking an energy supplier to an accounting point.",
+            "accounting_point_energy_supplier_create_data": {
+                "summary": "Create data - Accounting Point Energy Supplier",
+                "description": "Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/accounting_point_energy_supplier_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_energy_supplier": {
+                "summary": "Data - Accounting Point Energy Supplier",
+                "description": "Data schema - Relation linking an energy supplier to an accounting point.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_energy_supplier_create_data"
                     },
                     {
                         "properties": {
@@ -1687,17 +2116,44 @@
                 ],
                 "type": "object"
             },
+            "accounting_point_energy_supplier_response": {
+                "summary": "Response - Accounting Point Energy Supplier",
+                "description": "Response schema for operations with return values - Relation linking an energy supplier to an accounting point.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_energy_supplier"
+                    },
+                    {
+                        "required": [
+                            "accounting_point_id",
+                            "energy_supplier_id",
+                            "valid_from"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
             "product_type_update_request": {
                 "summary": "Update - Product Type",
                 "description": "Request schema for update operations - Product type.",
                 "type": "object"
             },
-            "product_type_response": {
-                "summary": "Response - Product Type",
-                "description": "Response schema for operations with return values - Product type.",
+            "product_type_create_data": {
+                "summary": "Create data - Product Type",
+                "description": "Data of the request schema for create operations - Product type.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/product_type_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "product_type": {
+                "summary": "Data - Product Type",
+                "description": "Data schema - Product type.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/product_type_create_data"
                     },
                     {
                         "properties": {
@@ -1742,6 +2198,25 @@
                 ],
                 "type": "object"
             },
+            "product_type_response": {
+                "summary": "Response - Product Type",
+                "description": "Response schema for operations with return values - Product type.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/product_type"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "business_id",
+                            "name",
+                            "service",
+                            "products"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
             "system_operator_product_type_update_request": {
                 "summary": "Update - System Operator Product Type",
                 "description": "Request schema for update operations - Relation between a system operator and a product type they want to buy.",
@@ -1752,9 +2227,9 @@
                     }
                 }
             },
-            "system_operator_product_type_create_request": {
-                "summary": "Create - System Operator Product Type",
-                "description": "Request schema for create operations - Relation between a system operator and a product type they want to buy.",
+            "system_operator_product_type_create_data": {
+                "summary": "Create data - System Operator Product Type",
+                "description": "Data of the request schema for create operations - Relation between a system operator and a product type they want to buy.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/system_operator_product_type_update_request"
@@ -1774,6 +2249,16 @@
                                 "example": 8
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "system_operator_product_type_create_request": {
+                "summary": "Create - System Operator Product Type",
+                "description": "Request schema for create operations - Relation between a system operator and a product type they want to buy.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/system_operator_product_type_create_data"
                     },
                     {
                         "required": [
@@ -1785,12 +2270,12 @@
                 ],
                 "type": "object"
             },
-            "system_operator_product_type_response": {
-                "summary": "Response - System Operator Product Type",
-                "description": "Response schema for operations with return values - Relation between a system operator and a product type they want to buy.",
+            "system_operator_product_type": {
+                "summary": "Data - System Operator Product Type",
+                "description": "Data schema - Relation between a system operator and a product type they want to buy.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/system_operator_product_type_create_request"
+                        "$ref": "#/components/schemas/system_operator_product_type_create_data"
                     },
                     {
                         "properties": {
@@ -1800,22 +2285,31 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "system_operator_product_type_response": {
+                "summary": "Response - System Operator Product Type",
+                "description": "Response schema for operations with return values - Relation between a system operator and a product type they want to buy.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/system_operator_product_type"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "system_operator_id",
+                            "product_type_id",
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1858,9 +2352,9 @@
                     }
                 }
             },
-            "service_provider_product_application_create_request": {
-                "summary": "Create - Service Provider Product Application",
-                "description": "Request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
+            "service_provider_product_application_create_data": {
+                "summary": "Create data - Service Provider Product Application",
+                "description": "Data of the request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_application_update_request"
@@ -1880,6 +2374,16 @@
                                 "example": 39
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "service_provider_product_application_create_request": {
+                "summary": "Create - Service Provider Product Application",
+                "description": "Request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_provider_product_application_create_data"
                     },
                     {
                         "required": [
@@ -1892,12 +2396,12 @@
                 ],
                 "type": "object"
             },
-            "service_provider_product_application_response": {
-                "summary": "Response - Service Provider Product Application",
-                "description": "Response schema for operations with return values - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
+            "service_provider_product_application": {
+                "summary": "Data - Service Provider Product Application",
+                "description": "Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_provider_product_application_create_request"
+                        "$ref": "#/components/schemas/service_provider_product_application_create_data"
                     },
                     {
                         "properties": {
@@ -1907,22 +2411,32 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "service_provider_product_application_response": {
+                "summary": "Response - Service Provider Product Application",
+                "description": "Response schema for operations with return values - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_provider_product_application"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "service_provider_id",
+                            "system_operator_id",
+                            "product_type_ids",
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -1944,9 +2458,9 @@
                     }
                 }
             },
-            "service_provider_product_application_comment_create_request": {
-                "summary": "Create - Service Provider Product Application Comment",
-                "description": "Request schema for create operations - Comment made by a party involved in a service provider product application.",
+            "service_provider_product_application_comment_create_data": {
+                "summary": "Create data - Service Provider Product Application Comment",
+                "description": "Data of the request schema for create operations - Comment made by a party involved in a service provider product application.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_application_comment_update_request"
@@ -1960,6 +2474,16 @@
                                 "example": 7
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "service_provider_product_application_comment_create_request": {
+                "summary": "Create - Service Provider Product Application Comment",
+                "description": "Request schema for create operations - Comment made by a party involved in a service provider product application.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_provider_product_application_comment_create_data"
                     },
                     {
                         "required": [
@@ -1971,12 +2495,12 @@
                 ],
                 "type": "object"
             },
-            "service_provider_product_application_comment_response": {
-                "summary": "Response - Service Provider Product Application Comment",
-                "description": "Response schema for operations with return values - Comment made by a party involved in a service provider product application.",
+            "service_provider_product_application_comment": {
+                "summary": "Data - Service Provider Product Application Comment",
+                "description": "Data schema - Comment made by a party involved in a service provider product application.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_provider_product_application_comment_create_request"
+                        "$ref": "#/components/schemas/service_provider_product_application_comment_create_data"
                     },
                     {
                         "properties": {
@@ -2000,22 +2524,33 @@
                                 "type": "string",
                                 "readOnly": true,
                                 "example": "2022-08-08 12:00:00 CET"
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "service_provider_product_application_comment_response": {
+                "summary": "Response - Service Provider Product Application Comment",
+                "description": "Response schema for operations with return values - Comment made by a party involved in a service provider product application.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_provider_product_application_comment"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "service_provider_product_application_id",
+                            "created_by",
+                            "created_at",
+                            "visibility",
+                            "content",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -2052,9 +2587,9 @@
                     }
                 }
             },
-            "service_providing_group_product_application_create_request": {
-                "summary": "Create - Service Providing Group Product Application",
-                "description": "Request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
+            "service_providing_group_product_application_create_data": {
+                "summary": "Create data - Service Providing Group Product Application",
+                "description": "Data of the request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_product_application_update_request"
@@ -2080,6 +2615,16 @@
                                 "example": 2
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_product_application_create_request": {
+                "summary": "Create - Service Providing Group Product Application",
+                "description": "Request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_create_data"
                     },
                     {
                         "required": [
@@ -2092,12 +2637,12 @@
                 ],
                 "type": "object"
             },
-            "service_providing_group_product_application_response": {
-                "summary": "Response - Service Providing Group Product Application",
-                "description": "Response schema for operations with return values - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
+            "service_providing_group_product_application": {
+                "summary": "Data - Service Providing Group Product Application",
+                "description": "Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/service_providing_group_product_application_create_request"
+                        "$ref": "#/components/schemas/service_providing_group_product_application_create_data"
                     },
                     {
                         "properties": {
@@ -2107,22 +2652,32 @@
                                 "type": "integer",
                                 "readOnly": true,
                                 "example": 89
-                            },
-                            "recorded_at": {
-                                "description": "When the resource was recorded (created or updated) in the system.",
-                                "format": "timestamp with time zone",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "2023-12-31 23:59:00 CET"
-                            },
-                            "recorded_by": {
-                                "description": "The identity that recorded the resource.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "readOnly": true,
-                                "example": 145
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_product_application_response": {
+                "summary": "Response - Service Providing Group Product Application",
+                "description": "Response schema for operations with return values - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_product_application"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "service_providing_group_id",
+                            "procuring_system_operator_id",
+                            "product_type_id",
+                            "status",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -2132,12 +2687,22 @@
                 "description": "Request schema for update operations - Notice to users about various issues or actions expected from them.",
                 "type": "object"
             },
-            "notice_response": {
-                "summary": "Response - Notice",
-                "description": "Response schema for operations with return values - Notice to users about various issues or actions expected from them.",
+            "notice_create_data": {
+                "summary": "Create data - Notice",
+                "description": "Data of the request schema for create operations - Notice to users about various issues or actions expected from them.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/notice_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "notice": {
+                "summary": "Data - Notice",
+                "description": "Data schema - Notice to users about various issues or actions expected from them.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/notice_create_data"
                     },
                     {
                         "properties": {
@@ -2166,13 +2731,30 @@
                             },
                             "data": {
                                 "description": "The data of the notice.",
-                                "format": "text",
-                                "type": "string",
+                                "type": "object",
+                                "$ref": "#/components/schemas/notice_data",
                                 "readOnly": true,
                                 "nullable": true,
                                 "example": null
                             }
                         }
+                    }
+                ],
+                "type": "object"
+            },
+            "notice_response": {
+                "summary": "Response - Notice",
+                "description": "Response schema for operations with return values - Notice to users about various issues or actions expected from them.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/notice"
+                    },
+                    {
+                        "required": [
+                            "party_id",
+                            "type",
+                            "source"
+                        ]
                     }
                 ],
                 "type": "object"
@@ -2206,7 +2788,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "controllable_unit_id"
+                        ]
                     }
                 ]
             },
@@ -2239,7 +2824,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "controllable_unit_service_provider_id"
+                        ]
                     }
                 ]
             },
@@ -2272,7 +2860,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "service_providing_group_id"
+                        ]
                     }
                 ]
             },
@@ -2305,7 +2896,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "service_providing_group_membership_id"
+                        ]
                     }
                 ]
             },
@@ -2338,7 +2932,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "service_providing_group_grid_prequalification_id"
+                        ]
                     }
                 ]
             },
@@ -2371,7 +2968,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "party_id"
+                        ]
                     }
                 ]
             },
@@ -2404,7 +3004,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "party_membership_id"
+                        ]
                     }
                 ]
             },
@@ -2437,7 +3040,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "technical_resource_id"
+                        ]
                     }
                 ]
             },
@@ -2470,7 +3076,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "system_operator_product_type_id"
+                        ]
                     }
                 ]
             },
@@ -2503,7 +3112,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "service_provider_product_application_id"
+                        ]
                     }
                 ]
             },
@@ -2536,7 +3148,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "service_provider_product_application_comment_id"
+                        ]
                     }
                 ]
             },
@@ -2569,7 +3184,10 @@
                                 "nullable": true,
                                 "example": "2024-07-07 10:00:00 CET"
                             }
-                        }
+                        },
+                        "required": [
+                            "service_providing_group_product_application_id"
+                        ]
                     }
                 ]
             }

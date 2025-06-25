@@ -154,7 +154,7 @@ type Notice struct {
 	PartyID int
 	Type    string
 	Source  string
-	Data    *string
+	Data    []byte
 }
 
 type Notification struct {

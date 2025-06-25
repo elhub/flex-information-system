@@ -175,6 +175,10 @@
         "hint": "A hint to help resolve the error.",
         "message": "The error message."
     },
+    "audit_fields": {
+        "recorded_at": "When the resource was recorded (created or updated) in the system.",
+        "recorded_by": "The identity that recorded the resource."
+    },
     "controllable_unit_lookup_request": {
         "end_user": "Birth number or organisation number of the end user.",
         "controllable_unit": "The business ID of the controllable unit to lookup.",
@@ -187,5 +191,18 @@
         "accounting_point_id": "The accounting point behind which the controllable unit is located.",
         "end_user_id": "Technical ID of the end user on the accounting point where the controllable unit is located.",
         "technical_resources": "The technical resources belonging to the controllable unit."
-    }
+    },
+    "timeline_multi_range": null,
+    "notice_data_valid_time_outside_contract": {
+        "invalid_timeline": "Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point."
+    },
+    "notice_data_party_missing": {
+        "entity": "Details about the entity owning the missing party.",
+        "party": "Details about the missing party."
+    },
+    "notice_data_party_outdated": {
+        "entity": "Details about the possibly new entity owning the party.",
+        "party": "Updated fields of the party."
+    },
+    "notice_data": null
 }

@@ -1,7 +1,9 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyMembershipCreateRequest")
 
@@ -11,12 +13,12 @@ class PartyMembershipCreateRequest:
     """Request schema for create operations - The relation between a party and entity.
 
     Attributes:
-        party_id (int): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (int): Reference to the entity that the party represents. Example: 30.
+        party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
+        entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
     """
 
-    party_id: int
-    entity_id: int
+    party_id: Union[Unset, int] = UNSET
+    entity_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -26,21 +28,20 @@ class PartyMembershipCreateRequest:
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "party_id": party_id,
-                "entity_id": entity_id,
-            }
-        )
+        field_dict.update({})
+        if party_id is not UNSET:
+            field_dict["party_id"] = party_id
+        if entity_id is not UNSET:
+            field_dict["entity_id"] = entity_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        party_id = d.pop("party_id")
+        party_id = d.pop("party_id", UNSET)
 
-        entity_id = d.pop("entity_id")
+        entity_id = d.pop("entity_id", UNSET)
 
         party_membership_create_request = cls(
             party_id=party_id,
