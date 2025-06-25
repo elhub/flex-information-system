@@ -195,7 +195,11 @@ const NoticePartyOutdatedShow = () => {
                 source="name"
                 field={TextField}
                 cellSx={(r) =>
-                  nameChanged ? { color: r.isNewRecord ? "green" : "red" } : {}
+                  nameChanged
+                    ? r.isNewRecord
+                      ? { color: "green" }
+                      : { color: "red", textDecoration: "line-through" }
+                    : {}
                 }
               />
               <DataTable.Col source="type" field={TextField} />
