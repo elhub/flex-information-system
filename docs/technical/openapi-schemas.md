@@ -1,25 +1,26 @@
 # Structure of JSON schemas in the OpenAPI documentation
 
 The JSON schemas describing the resources in the OpenAPI documentation are
-generated mainly from the `resources.yml` file, by running the
-`template_to_openapi.py` script.
+generated mainly from a custom YAML file describing the resources, with the help
+of a script, so that we first maintain files expressed at a higher level than
+the OpenAPI specification format.
 
 We try as much as possible not to repeat ourselves in this document.
 In particular, fields of a given resource should be defined only once, and if
 fields are in common between several API endpoints, this should be reflected in
 the use of _inclusion_ between the underlying JSON schemas.
+
 This documentation helps the developer understand how the JSON schemas are
-structured, and also allows them to walk through and maintain the script
-generating them more easily.
+structured in the generated OpenAPI specification.
 
 ## Primer
 
-In the resource YAML file, fields can be marked namely in the following manners:
+In our resource YAML file, fields can be marked namely in the following manners:
 
 | Marker        | Description                                                                                                                                                                                                |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `x-no-update` | _Non-updatable_ field. Used for stuff that can/must be given on create, but that cannot be changed after. `x-` marker because this is non-standard OpenAPI and is just used during the generation process. |
-| `readOnly`    | _Read-only_ field. Used for non-updatable fields that cannot be created by the API clients.                                                                                                                |
+| `readOnly`    | _Read-only_ field. Used for non-updatable fields that cannot be created by the API clients (_e.g._, automatically generated surrogate keys / UUIDs).                                                       |
 | `nullable`    | _Nullable_ field.                                                                                                                                                                                          |
 | `default`     | Field with a _default value_.                                                                                                                                                                              |
 
@@ -30,8 +31,9 @@ In addition, we define _required_ fields as the following:
 > AND NO default value
 > AND NOT explicitely marked `required: false`
 
-This allows not having to define `required` everywhere and rather infer it from
-more meaningful information that we make explicit in the resource YAML file.
+This allows not having to manually specify a `required` attribute everywhere,
+and rather infer it from more meaningful information that we make explicit in
+our resource YAML file.
 
 ## JSON schema structure
 
