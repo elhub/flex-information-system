@@ -5,12 +5,14 @@ import {
   RecordContextProvider,
   TextField,
   ResourceContextProvider,
+  DataTable,
 } from "react-admin";
 import { Alert, AlertTitle, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import { FieldStack } from "../auth";
+import { DateField } from "../components/datetime";
 
 // button to jump to the party input page in update mode with autofilled form
 const PartyUpdateButton = (props: any) => {
@@ -171,7 +173,32 @@ const NoticePartyOutdatedShow = () => {
 // component to show details of a notice of type
 // no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
 const NoticeCUSPValidTimeOutsideContractShow = () => {
-  return "todo";
+  const record = useRecordContext()!;
+
+  return (
+    <SimpleShowLayout>
+      <Stack direction="column" spacing={2}>
+        <Typography variant="h6">
+          Inconsistency: Controllable unit service provider / Accounting point
+          end user.
+        </Typography>
+        <Typography>
+          The following time intervals are the valid time sections of the
+          Controllable Unit Service Provider relation where the end user given
+          in the contract is not the one behind the accounting point:
+        </Typography>
+        <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
+          <DataTable
+            bulkActionButtons={false}
+            data={record.data.invalid_timeline}
+          >
+            <DataTable.Col source="valid_from" field={DateField} />
+            <DataTable.Col source="valid_to" field={DateField} />
+          </DataTable>
+        </FieldStack>
+      </Stack>
+    </SimpleShowLayout>
+  );
 };
 
 export const NoticeShow = () => {
