@@ -6,6 +6,7 @@ import {
   TextField,
   ResourceContextProvider,
   DataTable,
+  useGetOne,
 } from "react-admin";
 import { Alert, AlertTitle, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -107,9 +108,18 @@ const NoticePartyOutdatedShow = () => {
   const record = useRecordContext()!;
 
   const entityChanged = record.data.entity?.business_id != undefined;
+  const nameChanged = record.data.party?.name != undefined;
   const entityExists = record.data.party?.entity_id != undefined;
 
-  return (
+  const partyID = record.source.split("/")[2];
+
+  const {
+    data: outdatedParty,
+    isPending,
+    error,
+  } = useGetOne("party", { id: partyID });
+
+  return isPending || error ? null : (
     <SimpleShowLayout>
       <Stack direction="column" spacing={2}>
         <Typography variant="h6" gutterBottom>
@@ -150,21 +160,50 @@ const NoticePartyOutdatedShow = () => {
           </FieldStack>
         )}
         <Typography gutterBottom>Updated party information</Typography>
-        <ResourceContextProvider value="party">
-          <RecordContextProvider value={record.data.party}>
-            <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
-              <TextField source="business_id" label="Business ID" />
-              <TextField source="business_id_type" label="Business ID Type" />
-              <TextField source="entity_id" label="Entity ID" />
-              <TextField source="name" />
-              <TextField source="type" />
-              <PartyUpdateButton
-                party_id={record.source.split("/")[2]}
-                disabled={entityChanged && !entityExists}
+        <RecordContextProvider value={record.data.party}>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
+            <DataTable
+              bulkActionButtons={false}
+              data={[
+                { ...outdatedParty, isNewRecord: false },
+                { ...record.data.party, isNewRecord: true },
+              ]}
+            >
+              <DataTable.Col
+                source="business_id"
+                label="Business ID"
+                field={TextField}
               />
-            </FieldStack>
-          </RecordContextProvider>
-        </ResourceContextProvider>
+              <DataTable.Col
+                source="business_id_type"
+                label="Business ID type"
+                field={TextField}
+              />
+              <DataTable.Col
+                source="entity_id"
+                label="Entity ID"
+                field={TextField}
+                cellSx={(r) =>
+                  entityChanged
+                    ? { color: r.isNewRecord ? "green" : "red" }
+                    : {}
+                }
+              />
+              <DataTable.Col
+                source="name"
+                field={TextField}
+                cellSx={(r) =>
+                  nameChanged ? { color: r.isNewRecord ? "green" : "red" } : {}
+                }
+              />
+              <DataTable.Col source="type" field={TextField} />
+            </DataTable>
+            <PartyUpdateButton
+              party_id={partyID}
+              disabled={entityChanged && !entityExists}
+            />
+          </FieldStack>
+        </RecordContextProvider>
       </Stack>
     </SimpleShowLayout>
   );
