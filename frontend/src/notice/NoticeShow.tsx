@@ -185,7 +185,9 @@ const NoticePartyOutdatedShow = () => {
                 field={TextField}
                 cellSx={(r) =>
                   entityChanged
-                    ? { color: r.isNewRecord ? "green" : "red" }
+                    ? r.isNewRecord
+                      ? { color: "green" }
+                      : { color: "red", textDecoration: "line-through" }
                     : {}
                 }
               />
