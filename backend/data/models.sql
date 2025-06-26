@@ -1,11 +1,9 @@
--- name: ControllableUnitLookup :many
+-- name: ControllableUnitLookup :one
 SELECT
-    id::bigint,
-    business_id::text,
-    name::text,
     accounting_point_id::bigint,
+    accounting_point_business_id::text,
     end_user_id::bigint,
-    technical_resources::jsonb
+    controllable_units::jsonb[]
 FROM controllable_unit_lookup(
   @end_user_business_id,
   -- empty strings considered as missing values

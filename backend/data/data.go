@@ -250,16 +250,14 @@ func (data *api) controllableUnitLookupHandler(
 	endUserBusinessID := ""
 	if cuLookupRequestBody.EndUserBusinessID != nil {
 		endUserBusinessID = *cuLookupRequestBody.EndUserBusinessID
-	}
 
-	controllableUnitBusinessID := ""
-	if cuLookupRequestBody.ControllableUnitBusinessID != nil {
-		controllableUnitBusinessID = *cuLookupRequestBody.ControllableUnitBusinessID
-	}
-
-	accountingPointID := ""
-	if cuLookupRequestBody.AccountingPointID != nil {
-		accountingPointID = *cuLookupRequestBody.AccountingPointID
+		regexEndUserBusinessID := regexp.MustCompile("^[1-9]([0-9]{8}|[0-9]{10})$")
+		if !regexEndUserBusinessID.MatchString(endUserBusinessID) {
+			writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+				Message: "ill formed end user business ID",
+			})
+			return
+		}
 	}
 
 	if endUserBusinessID == "" {
@@ -269,9 +267,42 @@ func (data *api) controllableUnitLookupHandler(
 		return
 	}
 
+	controllableUnitBusinessID := ""
+	if cuLookupRequestBody.ControllableUnitBusinessID != nil {
+		controllableUnitBusinessID = *cuLookupRequestBody.ControllableUnitBusinessID
+
+		regexControllableUnitBusinessID := regexp.MustCompile("^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+		if !regexControllableUnitBusinessID.MatchString(controllableUnitBusinessID) {
+			writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+				Message: "ill formed controllable unit business ID",
+			})
+			return
+		}
+	}
+
+	accountingPointID := ""
+	if cuLookupRequestBody.AccountingPointID != nil {
+		accountingPointID = *cuLookupRequestBody.AccountingPointID
+
+		regexAccountingPointID := regexp.MustCompile("^[1-9][0-9]{17}$")
+		if !regexAccountingPointID.MatchString(accountingPointID) {
+			writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+				Message: "ill formed accounting point ID",
+			})
+			return
+		}
+	}
+
 	if accountingPointID == "" && controllableUnitBusinessID == "" {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
-			Message: "missing accounting point ID or business ID",
+			Message: "missing accounting point ID or controllable unit business ID",
+		})
+		return
+	}
+
+	if accountingPointID != "" && controllableUnitBusinessID != "" {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "request contains both accounting point ID and controllable unit business ID",
 		})
 		return
 	}
@@ -302,10 +333,8 @@ func (data *api) controllableUnitLookupHandler(
 	)
 	if err != nil {
 		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
-	}
-	if err != nil || len(cuLookup) == 0 {
-		writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
-			Message: "controllable unit not found",
+		writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
+			Message: "AP and EU do not match",
 		})
 		return
 	}
