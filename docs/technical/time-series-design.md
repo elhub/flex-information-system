@@ -1,31 +1,31 @@
-# Time Series Design
+# Time Series Service Design
 
-This document outlines an initial design for our time series service.
+This document outlines details about the time series functionality in the
+flexibility register.
 
-## Status
-
-Current status: **DRAFT**
+> [!NOTE]
+>
+> This functionality is not yet implemented. It is a design that we will use in
+> further development of use-cases related to time series data.
 
 ## Introduction
 
 Given our [investigations into time series data](../concepts/time-series.md), we
-know that a flexibility information system needs to store and distribute time
-series data. The first use cases we want to support are:
+believe that a flexibility information system needs to store and distribute time
+series data. The first use cases that we are thinking of looking at are:
 
 1. calculate and report imbalance settlement adjustments to eSett
 2. enable end users to securely access their data in compliance with GDPR
 
-It is not *given* that FIS will become a data administrator for timeseries other
-than accounting meter data. We do not know exactly what data will flow through
-FIS. This design is therefore a light-weight, general purpose starting point and
-conceptual design for a time series service using our existing stack.
+> [!NOTE]
+>
+> It is not *given* that FIS will become a data administrator for timeseries
+> other than accounting meter data. We do not know exactly what data will flow
+> through FIS. This design is therefore a light-weight, general purpose starting
+> point and conceptual design for a time series service using our existing
+> stack.
 
-## Audience
-
-This document is intended for developers and architects, but also functional
-experts in the metering value and/or time series domain.
-
-## Objectives
+## Design goals
 
 * a general purpose time series design
 * efficient storage of time series data in PostgreSQL
@@ -59,7 +59,8 @@ experts in the metering value and/or time series domain.
 * The OCI PostgreSQL service does not support
   [extensions](https://docs.oracle.com/en-us/iaas/Content/postgresql/extensions.htm)
   that allow for efficient column-major storage, such as Citus and TimescaleDB.
-  We are therefore forced to use the row-major storage.
+  We are therefore forced to use the row-major storage if we want to use this
+  service.
 
 ### Non-Requirements
 
@@ -74,16 +75,23 @@ experts in the metering value and/or time series domain.
 
 ## Inspiration
 
-* Elhub - MeteringPoint, MeasurementDefinition, IntervalVolume
-* CIM - MeterReading, ReadingType, IntervalReading, MeasurementValue, Schedule
-* NODES - TODO
+The following list contains some names and concepts from some reference systems
+we have looked at when thinking about time series data.
+
+* Elhub
+    * MeasurementDefinition and IntervalVolume on MeteringPoint
+* CIM
+    * IntervalReading/MeterReading of ReadingType on Channel of Register of Meter
+    * MeasurementValue on Measurement on PowerSystemResource and Terminal
+* NODES MeteringHub
+    * MeterReadings on Asset, Accounting Point, Portfolio
 * [Shyft](https://shyft.readthedocs.io/en/latest/content/time_series/concepts/time_series.html)
-  -"*A time series in Shyft is considered to be a function of time, f(t) ->
-  float.*"
+    * "*A time series in Shyft is considered to be a function of time, f(t) ->
+      float.*"
 
-## Solution description
+## Design
 
-We will leverage the existing stack and way of doing things
+We leverage the existing stack and way of doing things
 
 * PostgreSQL for storage
 * PostgREST to expose our restful API, but on a new path/api
@@ -97,10 +105,7 @@ We model the timeseries as three resources.
 * `timeseries_type` - a finite set of types of time series data. To avoid
   duplication information in the `timeseries` table. The fields are the
   "attributes" of the time series, *not* their "usage". Meaningthat we will e.g.
-  record the unit, but not wether it is a schedule or metered value. Something like
-    * `point.Watt`
-    * `interval.PT15M.Euro.Cent`
-    * etc
+  record the unit, but not wether it is a schedule or metered value.
 * `timeseries_value` - the values of the time series
 
 ### API
@@ -123,8 +128,6 @@ The relevant API actions will be
 
 We can use our existing event system, but need to figure out a way to add a
 reasonable amount of events. Cannot do event-per-value.
-
-TODO
 
 ### History for bi-temporal storage
 
@@ -194,9 +197,9 @@ PRIMARY KEY USING INDEX timeseries_value_pkey;
 
 Why?
 
-* Going to the heap takes time/io - including value is low overhead, but
+1. Going to the heap takes time/io - including value is low overhead, but
   potentially saves a lot of time.
-* Indexes take up space and time to maintain. Using one index for both
+2. Indexes take up space and time to maintain. Using one index for both
   the primary key and the covering index saves space and time.
 
 #### Numeric vs integer
@@ -216,47 +219,28 @@ PostgreSQL docs on
 
 #### Partitioning
 
-TODO. Maybe weekly.
-
-## Implementation plan
-
-We will start with implementing the timeseries service to provide a starting
-point for adding the time series relations in the FIS module.
-
-Examples of resources that *might* exist at some point and *might* have
-references to `timeseries` are. This is just to show how we can use the
-timeseries in our other resources.
-
-* `baseline`
-    * `timeseries_id` - the time series for the baseline
-    * `for_timeseries_id` - the time series the baseline is for
-* `channel` - of a `meter`
-    * `timeseries_id` - the time series for the channel
-* `price` - e.g spot price
-    * `timeseries_id` - the time series for the price
+Possibly weekly. Will be decided at a later time, when we have a better
+understanding of the volumes and access patterns.
 
 ## Integration
 
 The integration with the rest of the system will happen as shown below. This is
 a conceptual drawing of the integration. The main point is that the time series
 service will not reference the main FIS module, only the other way around. This
-is to ensure that the time series service can be decoupled and used
-independently of the main FIS module.
+is to decouple and make it independent of the FIS application.
 
-This will also allow us to change the implementation of the time series service
-when we learn some more.
+When we create our data model in FIS, we will reference the time series by id.
+When seen from the time series service, it will not have any knowledge of what
+the time series are used for, just what they look like and their values.
+
+The time series have very different technical requirements than the flexibility
+information system, such as volume and access patterns. It is also likely that
+it demands a different pattern for integration and technical foundation than the
+rest of the FIS.
 
 ![Time series integration with other modules](../diagrams/time_series_integration.drawio.png)
 
-Future external interfaces might include
+Future external interfaces might also include
 
 * bulk endpoints for large datasets - with asynchronous processing
 * mqtt or simliar interfaces for real-time updates
-
-## Alternatives
-
-TODO
-
-## Estimates
-
-TODO
