@@ -1,0 +1,94 @@
+@startuml controllable_unit_update
+!theme plain
+
+title Controllable Unit (CU) Update
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service Provider (SP)" as SP
+participant "Flexibility Information System (FIS)" as FIS
+actor "System Operator (SO)" as SO
+
+
+== Update CU information ==
+
+SP -> FIS: Update CU data
+activate SP
+note left
+    SP must ensure that the CU
+    data is up to date:
+    - name
+    - regulation direction
+    - durations
+    - etc.
+end note
+activate FIS
+FIS --> SP: OK
+
+deactivate FIS
+
+== Technical Resource (TR) registration ==
+
+loop For each relevant TR of the CU
+
+loop Relevant technical resources
+    |||
+    SP -> FIS: Add or update Technical Resource
+    note left
+        Data:
+        - name
+        - technical information
+    end note
+    activate FIS
+    FIS --> SP: OK
+    deactivate SP
+    |||
+end
+
+== Controllable Unit Grid Validation ==
+
+loop All Impacted System Operators
+    |||
+    FIS --> SO: Notify update to ISO
+    note left
+        ISOs are notified, but does <b>not</b>
+        take part in grid validations.
+    end note
+    |||
+end
+FIS --> SO: Notify update to CSO
+deactivate FIS
+activate SO 
+                
+note over SO
+    If needed, CSO initiates grid validation
+    without undue delay.
+end note
+
+loop When status changes
+    SO -> FIS: Update FIS with status
+    deactivate SO
+    note left
+        Relevant statuses:
+
+        - pending
+        - in progress
+        - incomplete_information
+        - validated
+        - validation_failed
+
+        The CSO should add notes and update
+        last validated time when relevant.
+    end note
+    activate FIS
+    FIS --> SO: OK
+    FIS --> SP: Notify SP grid validation status updated
+    deactivate FIS
+    |||
+end
+
+
+@enduml
