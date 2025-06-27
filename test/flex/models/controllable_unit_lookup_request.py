@@ -13,8 +13,7 @@ class ControllableUnitLookupRequest:
     """Request schema for controllable unit lookup operations
 
     Attributes:
-        end_user (str): Birth number or organisation number of the end user. Example:
-            8d4bde5a-decc-4e92-9a04-a64f258921f0.
+        end_user (str): Birth number or organisation number of the end user. Example: 133700008.
         controllable_unit (Union[Unset, str]): The business ID of the controllable unit to lookup. Example:
             53919b79-876f-4dad-8bde-b29368367604.
         accounting_point (Union[Unset, str]): The accounting point ID of the controllable unit(s) to lookup. `GSRN`

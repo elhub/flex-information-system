@@ -4,9 +4,13 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
-    from ..models.controllable_unit_lookup_response_technical_resources_item import (
-        ControllableUnitLookupResponseTechnicalResourcesItem,
+    from ..models.controllable_unit_lookup_response_accounting_point import (
+        ControllableUnitLookupResponseAccountingPoint,
     )
+    from ..models.controllable_unit_lookup_response_controllable_units_item import (
+        ControllableUnitLookupResponseControllableUnitsItem,
+    )
+    from ..models.controllable_unit_lookup_response_end_user import ControllableUnitLookupResponseEndUser
 
 
 T = TypeVar("T", bound="ControllableUnitLookupResponse")
@@ -17,50 +21,36 @@ class ControllableUnitLookupResponse:
     """Response schema for controllable unit lookup operations
 
     Attributes:
-        id (int): The surrogate key of the controllable unit. Example: 11.
-        business_id (str): The business ID of the controllable unit. Example: 53919b79-876f-4dad-8bde-b29368367604.
-        name (str): The name of the controllable unit. Example: Car Charger #54.
-        accounting_point_id (int): The accounting point behind which the controllable unit is located. Example: 100351.
-        end_user_id (int): Technical ID of the end user on the accounting point where the controllable unit is located.
-            Example: 11.
-        technical_resources (List['ControllableUnitLookupResponseTechnicalResourcesItem']): The technical resources
-            belonging to the controllable unit.
+        accounting_point (ControllableUnitLookupResponseAccountingPoint): The accounting point behind which the
+            controllable units are located.
+        end_user (ControllableUnitLookupResponseEndUser): The end user on the accounting point where the controllable
+            units are located.
+        controllable_units (List['ControllableUnitLookupResponseControllableUnitsItem']): The controllable units that
+            were found for the given end user or accounting point.
     """
 
-    id: int
-    business_id: str
-    name: str
-    accounting_point_id: int
-    end_user_id: int
-    technical_resources: List["ControllableUnitLookupResponseTechnicalResourcesItem"]
+    accounting_point: "ControllableUnitLookupResponseAccountingPoint"
+    end_user: "ControllableUnitLookupResponseEndUser"
+    controllable_units: List["ControllableUnitLookupResponseControllableUnitsItem"]
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        id = self.id
+        accounting_point = self.accounting_point.to_dict()
 
-        business_id = self.business_id
+        end_user = self.end_user.to_dict()
 
-        name = self.name
-
-        accounting_point_id = self.accounting_point_id
-
-        end_user_id = self.end_user_id
-
-        technical_resources = []
-        for technical_resources_item_data in self.technical_resources:
-            technical_resources_item = technical_resources_item_data.to_dict()
-            technical_resources.append(technical_resources_item)
+        controllable_units = []
+        for controllable_units_item_data in self.controllable_units:
+            controllable_units_item = controllable_units_item_data.to_dict()
+            controllable_units.append(controllable_units_item)
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
-                "id": id,
-                "business_id": business_id,
-                "name": name,
-                "accounting_point_id": accounting_point_id,
-                "end_user_id": end_user_id,
-                "technical_resources": technical_resources,
+                "accounting_point": accounting_point,
+                "end_user": end_user,
+                "controllable_units": controllable_units,
             }
         )
 
@@ -68,37 +58,32 @@ class ControllableUnitLookupResponse:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.controllable_unit_lookup_response_technical_resources_item import (
-            ControllableUnitLookupResponseTechnicalResourcesItem,
+        from ..models.controllable_unit_lookup_response_accounting_point import (
+            ControllableUnitLookupResponseAccountingPoint,
         )
+        from ..models.controllable_unit_lookup_response_controllable_units_item import (
+            ControllableUnitLookupResponseControllableUnitsItem,
+        )
+        from ..models.controllable_unit_lookup_response_end_user import ControllableUnitLookupResponseEndUser
 
         d = src_dict.copy()
-        id = d.pop("id")
+        accounting_point = ControllableUnitLookupResponseAccountingPoint.from_dict(d.pop("accounting_point"))
 
-        business_id = d.pop("business_id")
+        end_user = ControllableUnitLookupResponseEndUser.from_dict(d.pop("end_user"))
 
-        name = d.pop("name")
-
-        accounting_point_id = d.pop("accounting_point_id")
-
-        end_user_id = d.pop("end_user_id")
-
-        technical_resources = []
-        _technical_resources = d.pop("technical_resources")
-        for technical_resources_item_data in _technical_resources:
-            technical_resources_item = ControllableUnitLookupResponseTechnicalResourcesItem.from_dict(
-                technical_resources_item_data
+        controllable_units = []
+        _controllable_units = d.pop("controllable_units")
+        for controllable_units_item_data in _controllable_units:
+            controllable_units_item = ControllableUnitLookupResponseControllableUnitsItem.from_dict(
+                controllable_units_item_data
             )
 
-            technical_resources.append(technical_resources_item)
+            controllable_units.append(controllable_units_item)
 
         controllable_unit_lookup_response = cls(
-            id=id,
-            business_id=business_id,
-            name=name,
-            accounting_point_id=accounting_point_id,
-            end_user_id=end_user_id,
-            technical_resources=technical_resources,
+            accounting_point=accounting_point,
+            end_user=end_user,
+            controllable_units=controllable_units,
         )
 
         controllable_unit_lookup_response.additional_properties = d

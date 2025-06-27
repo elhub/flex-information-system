@@ -10,7 +10,7 @@ import (
 type controllableUnitLookupRequest struct {
 	EndUserBusinessID          *string `json:"end_user,omitempty"`
 	ControllableUnitBusinessID *string `json:"controllable_unit,omitempty"`
-	AccountingPointID          *string `json:"accounting_point,omitempty"`
+	AccountingPointBusinessID  *string `json:"accounting_point,omitempty"`
 }
 
 // technicalResource represents technical resource information as part of the
@@ -21,50 +21,65 @@ type technicalResource struct {
 	Details *string `json:"details,omitempty"`
 }
 
-// ControllableUnitLookup is the format of a valid response in the controllable
-// unit lookup operation.
-type ControllableUnitLookup struct {
+// accountingPoint represents accounting point information as part of the
+// data returned in the controllable unit lookup operation.
+type accountingPoint struct {
+	ID         int    `json:"id"`
+	BusinessID string `json:"business_id"`
+}
+
+// endUser represents end user information as part of the data returned in the
+// controllable unit lookup operation.
+type endUser struct {
+	ID int `json:"id"`
+}
+
+// controllableUnit represents controllable unit information as part of the
+// data returned in the controllable unit lookup operation.
+type controllableUnit struct {
 	ID                 int                 `json:"id"`
 	BusinessID         string              `json:"business_id"`
 	Name               string              `json:"name"`
-	AccountingPointID  int                 `json:"accounting_point_id"`
-	EndUserID          int                 `json:"end_user_id"`
 	TechnicalResources []technicalResource `json:"technical_resources"`
+}
+
+// ControllableUnitLookup is the format of a valid response in the controllable
+// unit lookup operation.
+type ControllableUnitLookup struct {
+	AccountingPoint   accountingPoint    `json:"accounting_point"`
+	EndUser           endUser            `json:"end_user"`
+	ControllableUnits []controllableUnit `json:"controllable_units"`
 }
 
 // ReformatControllableUnitLookupResult turns the raw result of the
 // controllable unit lookup operation into the response format expected in the
 // API specification.
 func ReformatControllableUnitLookupResult(
-	cuLookup []models.ControllableUnitLookupRow,
-) ([]ControllableUnitLookup, error) {
-	reformattedCULookupResult := []ControllableUnitLookup{}
+	cuLookup models.ControllableUnitLookupRow,
+) (*ControllableUnitLookup, error) {
+	var controllableUnits []controllableUnit
 
-	for _, cuLookupRow := range cuLookup {
-		var technicalResources []technicalResource
-		if len(cuLookupRow.TechnicalResources) == 0 { // no TR for this CU
-			technicalResources = []technicalResource{}
-		} else {
-			err := json.Unmarshal(
-				cuLookupRow.TechnicalResources, &technicalResources,
-			)
-			if err != nil {
-				return nil, err //nolint:wrapcheck
-			}
-		}
-
-		reformattedCULookupResult = append(
-			reformattedCULookupResult,
-			ControllableUnitLookup{
-				ID:                 cuLookupRow.ID,
-				BusinessID:         cuLookupRow.BusinessID,
-				Name:               cuLookupRow.Name,
-				AccountingPointID:  cuLookupRow.AccountingPointID,
-				EndUserID:          cuLookupRow.EndUserID,
-				TechnicalResources: technicalResources,
-			},
-		)
+	err := json.Unmarshal(cuLookup.ControllableUnits, &controllableUnits)
+	if err != nil {
+		return nil, err //nolint:wrapcheck
 	}
 
-	return reformattedCULookupResult, nil
+	// for _, cu := range cuLookup.ControllableUnits {
+	// 	var controllableUnit
+	// 	if err := json.Unmarshal(cu, &controllableUnit); err != nil {
+	// 		return nil, err //nolint:wrapcheck
+	// 	}
+	// 	controllableUnits = append(controllableUnits, controllableUnit)
+	// }
+
+	return &ControllableUnitLookup{
+		AccountingPoint: accountingPoint{
+			ID:         cuLookup.AccountingPointID,
+			BusinessID: cuLookup.AccountingPointBusinessID,
+		},
+		EndUser: endUser{
+			ID: cuLookup.EndUserID,
+		},
+		ControllableUnits: controllableUnits,
+	}, nil
 }
