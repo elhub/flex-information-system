@@ -15,8 +15,12 @@ actor "System Operator (SO)" as SO
 
 == Update CU information ==
 
-SP -> FIS: Update CU data
-activate SP
+|||
+
+alt "Update CU information"
+    |||
+    SP -> FIS: Update CU data
+    activate SP
 note left
     SP must ensure that the CU
     data is up to date:
@@ -27,14 +31,8 @@ note left
 end note
 activate FIS
 FIS --> SP: OK
-
-deactivate FIS
-
-== Technical Resource (TR) registration ==
-
-loop For each relevant TR of the CU
-
-loop Relevant technical resources
+    |||
+else "Add or update Technical Resource"
     |||
     SP -> FIS: Add or update Technical Resource
     note left
@@ -42,13 +40,11 @@ loop Relevant technical resources
         - name
         - technical information
     end note
-    activate FIS
     FIS --> SP: OK
     deactivate SP
     |||
 end
-
-== Controllable Unit Grid Validation ==
+    |||
 
 loop All Impacted System Operators
     |||
@@ -61,8 +57,23 @@ loop All Impacted System Operators
 end
 FIS --> SO: Notify update to CSO
 deactivate FIS
+
+== Controllable Unit Grid Validation ==
+
 activate SO 
-                
+    |||
+note right
+    CSO reviews the change and 
+    update last validated time.
+end note
+
+SO -> FIS: Update last validated time
+activate FIS
+FIS --> SO: OK
+FIS --> SP: Notify last validated time updated
+deactivate FIS
+|||
+
 note over SO
     If needed, CSO initiates grid validation
     without undue delay.
