@@ -43,7 +43,7 @@ following fields.
 
 | Field              | Abbr | Description                                                                            |
 |--------------------|------|----------------------------------------------------------------------------------------|
-| end_user           | EU   | Information about the end user, including its technical identifier.                    |
+| end_user           | EU   | Technical identifier for the end user.                                                 |
 | accounting_point   | AP   | Information about the accounting point, including its identifier.                      |
 | controllable_units | CU   | A list of controllable units, if found. Each containing a list of technical resources. |
 
