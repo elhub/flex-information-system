@@ -1,6 +1,74 @@
 --liquibase formatted sql
 -- Manually managed file
 
+-- changeset flex:api-controllable-unit-lookup-check-controllable-unit-exists endDelimiter:-- runAlways:true
+CREATE OR REPLACE FUNCTION
+api.controllable_unit_lookup_check_controllable_unit_exists(
+    l_controllable_unit_business_id text
+)
+RETURNS boolean
+SECURITY DEFINER -- SP has the CU's business ID but cannot necessarily read it
+LANGUAGE sql
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit AS cu
+        WHERE cu.business_id = l_controllable_unit_business_id::uuid
+    );
+$$;
+
+-- changeset flex:api-controllable-unit-lookup-check-end-user-matches-controllable-unit endDelimiter:-- runAlways:true
+CREATE OR REPLACE FUNCTION
+api.controllable_unit_lookup_check_end_user_matches_controllable_unit(
+    l_end_user_business_id text,
+    l_controllable_unit_business_id text
+)
+RETURNS boolean
+SECURITY DEFINER -- AP-EU is internal
+LANGUAGE sql
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit AS cu
+            INNER JOIN flex.accounting_point AS ap
+                ON cu.accounting_point_id = ap.id
+            INNER JOIN flex.accounting_point_end_user AS apeu
+                ON ap.id = apeu.accounting_point_id
+            INNER JOIN flex.party AS p
+                ON apeu.end_user_id = p.id
+            INNER JOIN flex.entity AS e
+                ON p.entity_id = e.id
+        WHERE cu.business_id = l_controllable_unit_business_id::uuid
+          AND e.business_id = l_end_user_business_id
+          AND apeu.valid_time_range @> current_timestamp
+    );
+$$;
+
+-- changeset flex:api-controllable-unit-lookup-check-end-user-matches-accounting-point endDelimiter:-- runAlways:true
+CREATE OR REPLACE FUNCTION
+api.controllable_unit_lookup_check_end_user_matches_accounting_point(
+    l_end_user_business_id text,
+    l_accounting_point_business_id text
+)
+RETURNS boolean
+SECURITY DEFINER -- AP-EU is internal
+LANGUAGE sql
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM flex.accounting_point AS ap
+            INNER JOIN flex.accounting_point_end_user AS apeu
+                ON ap.id = apeu.accounting_point_id
+            INNER JOIN flex.party AS p
+                ON apeu.end_user_id = p.id
+            INNER JOIN flex.entity AS e
+                ON p.entity_id = e.id
+        WHERE ap.business_id = l_accounting_point_business_id
+          AND e.business_id = l_end_user_business_id
+          AND apeu.valid_time_range @> current_timestamp
+    );
+$$;
+
 -- changeset flex:api-controllable-unit-lookup endDelimiter:-- runAlways:true
 CREATE OR REPLACE FUNCTION api.controllable_unit_lookup(
     l_end_user_business_id text,
@@ -11,7 +79,7 @@ RETURNS TABLE (
     accounting_point_id bigint,
     accounting_point_business_id text,
     end_user_id bigint,
-    controllable_units jsonb []
+    controllable_units jsonb
 )
 SECURITY DEFINER
 LANGUAGE plpgsql
@@ -21,14 +89,14 @@ DECLARE
     l_ap_id bigint;
     l_ap_business_id text;
     l_eu_id bigint;
-    l_cus jsonb [];
+    l_cus jsonb;
 BEGIN
     -- get end user information
     SELECT p.id INTO l_eu_id
-    FROM flex.party AS p
-    WHERE p.business_id = l_end_user_business_id;
-
-    RAISE NOTICE 'end user id: %', l_eu_id;
+    FROM flex.entity AS e
+        INNER JOIN flex.party AS p
+            ON e.id = p.entity_id
+    WHERE e.business_id = l_end_user_business_id;
 
     -- get accounting point information
     IF l_controllable_unit_business_id IS NOT NULL THEN
@@ -45,31 +113,14 @@ BEGIN
         WHERE ap.business_id = l_accounting_point_business_id;
     END IF;
 
-    RAISE NOTICE 'accounting point id: %, business id: %', l_ap_id, l_ap_business_id;
-
-    -- check that AP and EU match
-    IF NOT EXISTS (
-        SELECT 1
-        FROM flex.accounting_point_end_user AS apeu
-        WHERE apeu.accounting_point_id = l_ap_id
-            AND apeu.end_user_id = l_eu_id
-            AND apeu.valid_time_range @> current_timestamp
-    ) THEN
-        RAISE NOTICE 'accounting point and end user do not match';
-        RETURN QUERY SELECT null::bigint, null::text, null::bigint, null::jsonb[];
-        RETURN;
-    END IF;
-
-    RAISE NOTICE 'accounting point and end user match';
-
-    SELECT jsonb_agg(row_to_json(cu)) INTO l_cus
+    SELECT coalesce(jsonb_agg(row_to_json(cu)), '[]'::jsonb) INTO l_cus
     FROM (
         SELECT
             cu.id,
             cu.business_id::text,
             cu.name,
             (
-                SELECT jsonb_agg(row_to_json(tr))
+                SELECT coalesce(jsonb_agg(row_to_json(tr)), '[]'::jsonb)
                 FROM (
                     SELECT tr.id, tr.name, tr.details
                     FROM flex.technical_resource AS tr
@@ -87,8 +138,6 @@ BEGIN
                 true
             )
     ) AS cu;
-
-    RAISE NOTICE 'controllable units: %', l_cus;
 
     SELECT jsonb_build_object('requesting_party_name', p.name)
     INTO l_event_data

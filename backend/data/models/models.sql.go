@@ -14,7 +14,7 @@ SELECT
     accounting_point_id::bigint,
     accounting_point_business_id::text,
     end_user_id::bigint,
-    controllable_units::jsonb[]
+    controllable_units::jsonb
 FROM controllable_unit_lookup(
   $1,
   -- empty strings considered as missing values
@@ -27,7 +27,7 @@ type ControllableUnitLookupRow struct {
 	AccountingPointID         int
 	AccountingPointBusinessID string
 	EndUserID                 int
-	ControllableUnits         [][]byte
+	ControllableUnits         []byte
 }
 
 func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserBusinessID string, controllableUnitBusinessID string, accountingPointID string) (ControllableUnitLookupRow, error) {
@@ -40,4 +40,61 @@ func (q *Queries) ControllableUnitLookup(ctx context.Context, endUserBusinessID 
 		&i.ControllableUnits,
 	)
 	return i, err
+}
+
+const controllableUnitLookupCheckAccountingPointExists = `-- name: ControllableUnitLookupCheckAccountingPointExists :one
+SELECT EXISTS (
+    SELECT 1
+    FROM accounting_point AS ap
+    WHERE ap.business_id = $1
+)
+`
+
+// no function as AP is public information
+func (q *Queries) ControllableUnitLookupCheckAccountingPointExists(ctx context.Context, accountingPointBusinessID string) (bool, error) {
+	row := q.db.QueryRow(ctx, controllableUnitLookupCheckAccountingPointExists, accountingPointBusinessID)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
+const controllableUnitLookupCheckControllableUnitExists = `-- name: ControllableUnitLookupCheckControllableUnitExists :one
+SELECT controllable_unit_lookup_check_controllable_unit_exists(
+    $1::text
+)::boolean
+`
+
+func (q *Queries) ControllableUnitLookupCheckControllableUnitExists(ctx context.Context, controllableUnitBusinessID string) (bool, error) {
+	row := q.db.QueryRow(ctx, controllableUnitLookupCheckControllableUnitExists, controllableUnitBusinessID)
+	var column_1 bool
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
+const controllableUnitLookupCheckEndUserMatchesAccountingPoint = `-- name: ControllableUnitLookupCheckEndUserMatchesAccountingPoint :one
+SELECT controllable_unit_lookup_check_end_user_matches_accounting_point(
+    $1::text,
+    $2::text
+)::boolean
+`
+
+func (q *Queries) ControllableUnitLookupCheckEndUserMatchesAccountingPoint(ctx context.Context, endUserBusinessID string, accountingPointBusinessID string) (bool, error) {
+	row := q.db.QueryRow(ctx, controllableUnitLookupCheckEndUserMatchesAccountingPoint, endUserBusinessID, accountingPointBusinessID)
+	var column_1 bool
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
+const controllableUnitLookupCheckEndUserMatchesControllableUnit = `-- name: ControllableUnitLookupCheckEndUserMatchesControllableUnit :one
+SELECT controllable_unit_lookup_check_end_user_matches_controllable_unit(
+    $1::text,
+    $2::text
+)::boolean
+`
+
+func (q *Queries) ControllableUnitLookupCheckEndUserMatchesControllableUnit(ctx context.Context, endUserBusinessID string, controllableUnitBusinessID string) (bool, error) {
+	row := q.db.QueryRow(ctx, controllableUnitLookupCheckEndUserMatchesControllableUnit, endUserBusinessID, controllableUnitBusinessID)
+	var column_1 bool
+	err := row.Scan(&column_1)
+	return column_1, err
 }

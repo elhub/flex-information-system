@@ -10,7 +10,7 @@ import (
 type controllableUnitLookupRequest struct {
 	EndUserBusinessID          *string `json:"end_user,omitempty"`
 	ControllableUnitBusinessID *string `json:"controllable_unit,omitempty"`
-	AccountingPointID          *string `json:"accounting_point,omitempty"`
+	AccountingPointBusinessID  *string `json:"accounting_point,omitempty"`
 }
 
 // technicalResource represents technical resource information as part of the
@@ -57,15 +57,20 @@ type ControllableUnitLookup struct {
 func ReformatControllableUnitLookupResult(
 	cuLookup models.ControllableUnitLookupRow,
 ) (*ControllableUnitLookup, error) {
-	controllableUnits := []controllableUnit{}
+	var controllableUnits []controllableUnit
 
-	for _, cu := range cuLookup.ControllableUnits {
-		var controllableUnit controllableUnit
-		if err := json.Unmarshal(cu, &controllableUnit); err != nil {
-			return nil, err //nolint:wrapcheck
-		}
-		controllableUnits = append(controllableUnits, controllableUnit)
+	err := json.Unmarshal(cuLookup.ControllableUnits, &controllableUnits)
+	if err != nil {
+		return nil, err //nolint:wrapcheck
 	}
+
+	// for _, cu := range cuLookup.ControllableUnits {
+	// 	var controllableUnit
+	// 	if err := json.Unmarshal(cu, &controllableUnit); err != nil {
+	// 		return nil, err //nolint:wrapcheck
+	// 	}
+	// 	controllableUnits = append(controllableUnits, controllableUnit)
+	// }
 
 	return &ControllableUnitLookup{
 		AccountingPoint: accountingPoint{
