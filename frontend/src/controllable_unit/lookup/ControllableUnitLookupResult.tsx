@@ -139,14 +139,20 @@ export const ControllableUnitLookupResult = () => {
             </Box>
           </Card>
         </Stack>
-        <Typography variant="h6">Controllable units found</Typography>
-        <Stack spacing={2}>
-          {result.controllable_units.map((record: any) => (
-            <RecordContextProvider key={record.id} value={record}>
-              <ControllableUnitLookupResultItem />
-            </RecordContextProvider>
-          ))}
-        </Stack>
+        {result.controllable_units.length == 0 ? (
+          <Typography variant="h6">No controllable units found</Typography>
+        ) : (
+          <>
+            <Typography variant="h6">Controllable units found</Typography>
+            <Stack spacing={2}>
+              {result.controllable_units.map((record: any) => (
+                <RecordContextProvider key={record.id} value={record}>
+                  <ControllableUnitLookupResultItem />
+                </RecordContextProvider>
+              ))}
+            </Stack>
+          </>
+        )}
       </Stack>
     </RecordContextProvider>
   );
