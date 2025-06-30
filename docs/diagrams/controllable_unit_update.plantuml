@@ -55,6 +55,7 @@ loop All Impacted System Operators
     end note
     |||
 end
+FIS --> SO: Notify update to PSO
 FIS --> SO: Notify update to CSO
 deactivate FIS
 
@@ -64,7 +65,13 @@ activate SO
     |||
 note right
     CSO reviews the change and 
-    update last validated time.
+    evaluates if the update triggers 
+    the need for new grid validation.
+end note
+
+note over SO
+    If not needed, CSO initiates 
+    updates last validated time.
 end note
 
 SO -> FIS: Update last validated time
