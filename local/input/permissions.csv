@@ -1,9 +1,9 @@
 RESOURCE;FIELD;ANON;BRP;ES;EU;FISO;MO;SO;SP;TP;ENT;IEN
 entity;id;;R;R;R;R;R;R;R;R;R;
-entity;name;;R;R;R;R;R;R;R;R;R;
-entity;type;;R;R;R;R;R;R;R;R;R;
-entity;business_id;;R;R;R;R;R;R;R;R;R;
-entity;business_id_type;;R;R;R;R;R;R;R;R;R;
+entity;name;;R;R;R;RC;R;R;R;R;R;
+entity;type;;R;R;R;RC;R;R;R;R;R;
+entity;business_id;;R;R;R;RC;R;R;R;R;R;
+entity;business_id_type;;R;R;R;RC;R;R;R;R;R;
 entity_client;;;;;;;;;;;D;
 entity_client;id;;R;R;R;R;R;R;R;R;R;
 entity_client;entity_id;;R;R;R;R;R;R;R;R;RC;

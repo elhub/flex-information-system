@@ -32,6 +32,15 @@ GRANT SELECT (
 ) ON TABLE api.entity
 TO flex_end_user;
 
+-- changeset flex:api-grant-entity-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    name,
+    type,
+    business_id,
+    business_id_type
+) ON TABLE api.entity
+TO flex_flexibility_information_system_operator;
+
 -- changeset flex:api-grant-entity-fiso-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,

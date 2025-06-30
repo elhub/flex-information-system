@@ -9,13 +9,13 @@ A legal (organisation) or natural person. Used in authentication.
 
 ## Fields
 
-| Name                                                                                 | Description                                                                  | Format               | Reference |
-|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------|-----------|
-| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.<br/><br/>Note:<br/>This is a Primary Key.       | bigint<br/>Read only |           |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the entity. Format depends on `business_id_type`. | text<br/>Read only   |           |
-| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                         | text<br/>Read only   |           |
-| <a name="field-name" href="#field-name">name</a>                                     | Name of the entity. Maximum 128 characters.                                  | text<br/>Read only   |           |
-| <a name="field-type" href="#field-type">type</a>                                     | The type of the entity, e.g Person, Organisation                             | text<br/>Read only   |           |
+| Name                                                                                 | Description                                                                  | Format                              | Reference |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|-------------------------------------|-----------|
+| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.<br/><br/>Note:<br/>This is a Primary Key.       | bigint<br/>Read only                |           |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the entity. Format depends on `business_id_type`. | text<br/>Required<br/>Non-updatable |           |
+| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                         | text<br/>Required<br/>Non-updatable |           |
+| <a name="field-name" href="#field-name">name</a>                                     | Name of the entity. Maximum 128 characters.                                  | text<br/>Required<br/>Non-updatable |           |
+| <a name="field-type" href="#field-type">type</a>                                     | The type of the entity, e.g Person, Organisation                             | text<br/>Required<br/>Non-updatable |           |
 
 ## Validation Rules
 
@@ -66,9 +66,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key  | Policy       | Status |
-|-------------|--------------|--------|
-| ENT-FISO001 | Read all ENT | DONE   |
+| Policy key  | Policy                        | Status |
+|-------------|-------------------------------|--------|
+| ENT-FISO001 | Read and create all entities. | DONE   |
 
 #### Market Operator
 
@@ -93,7 +93,7 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
 |------------------|------|-----|----|----|------|----|----|----|----|
 | id               |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| name             |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| type             |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| business_id      |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| business_id_type |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| name             |      | R   | R  | R  | RC   | R  | R  | R  | R  |
+| type             |      | R   | R  | R  | RC   | R  | R  | R  | R  |
+| business_id      |      | R   | R  | R  | RC   | R  | R  | R  | R  |
+| business_id_type |      | R   | R  | R  | RC   | R  | R  | R  | R  |

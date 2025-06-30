@@ -5,12 +5,12 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="Entity")
+T = TypeVar("T", bound="EntityCreateData")
 
 
 @_attrs_define
-class Entity:
-    """Data schema - Entity - Natural or legal person
+class EntityCreateData:
+    """Data of the request schema for create operations - Entity - Natural or legal person
 
     An entity is a natural or legal person that can be a party in the Flexibility Information System.
 
@@ -25,17 +25,12 @@ class Entity:
             business_id_type (Union[Unset, str]): The type of the business identifier. Example: pid.
             name (Union[Unset, str]): Name of the entity. Maximum 128 characters. Example: John Smith.
             type (Union[Unset, str]): The type of the entity, e.g Person, Organisation Example: person.
-            id (Union[Unset, int]): Unique surrogate identifier.
-
-                Note:
-                This is a Primary Key. Example: 14.
     """
 
     business_id: Union[Unset, str] = UNSET
     business_id_type: Union[Unset, str] = UNSET
     name: Union[Unset, str] = UNSET
     type: Union[Unset, str] = UNSET
-    id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -46,8 +41,6 @@ class Entity:
         name = self.name
 
         type = self.type
-
-        id = self.id
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -60,8 +53,6 @@ class Entity:
             field_dict["name"] = name
         if type is not UNSET:
             field_dict["type"] = type
-        if id is not UNSET:
-            field_dict["id"] = id
 
         return field_dict
 
@@ -76,18 +67,15 @@ class Entity:
 
         type = d.pop("type", UNSET)
 
-        id = d.pop("id", UNSET)
-
-        entity = cls(
+        entity_create_data = cls(
             business_id=business_id,
             business_id_type=business_id_type,
             name=name,
             type=type,
-            id=id,
         )
 
-        entity.additional_properties = d
-        return entity
+        entity_create_data.additional_properties = d
+        return entity_create_data
 
     @property
     def additional_keys(self) -> List[str]:

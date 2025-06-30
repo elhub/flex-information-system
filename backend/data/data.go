@@ -97,6 +97,7 @@ func NewAPIHandler(
 	mux.HandleFunc("GET /controllable_unit_service_provider_history/{id}", data.postgRESTHandler)
 
 	mux.Handle("GET /entity", listPostgRESTHandler)
+	mux.HandleFunc("POST /entity", data.postgRESTHandler)
 	mux.HandleFunc("GET /entity/{id}", data.postgRESTHandler)
 
 	mux.Handle("GET /entity_client", listPostgRESTHandler)

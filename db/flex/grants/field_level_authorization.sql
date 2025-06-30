@@ -14,6 +14,10 @@ TO flex_energy_supplier;
 GRANT SELECT ON TABLE flex.entity
 TO flex_end_user;
 
+-- changeset flex:flex-grant-entity-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE flex.entity
+TO flex_flexibility_information_system_operator;
+
 -- changeset flex:flex-grant-entity-fiso-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.entity
 TO flex_flexibility_information_system_operator;

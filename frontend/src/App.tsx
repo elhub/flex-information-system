@@ -130,6 +130,7 @@ import { ControllableUnitLookupResult } from "./controllable_unit/lookup/Control
 import { EntityClientInput } from "./entity/client/EntityClientInput";
 import { EntityClientShow } from "./entity/client/EntityClientShow";
 import { displayProductType } from "./product_type/components";
+import { EntityInput } from "./entity/EntityInput";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -445,6 +446,15 @@ export const App = () => (
             name="entity"
             list={EntityList}
             show={EntityShow}
+            create={
+              permissions.includes("entity.create") ? (
+                <Create redirect="list">
+                  <EntityInput />
+                </Create>
+              ) : (
+                (null as any)
+              )
+            }
             recordRepresentation="name"
           >
             {/* client subresource */}

@@ -20,27 +20,25 @@ class EntityResponse:
     * Organisation
 
         Attributes:
-            id (Union[Unset, int]): Unique surrogate identifier.
-
-                Note:
-                This is a Primary Key. Example: 14.
             business_id (Union[Unset, str]): The business identifier of the entity. Format depends on `business_id_type`.
                 Example: 13370000000.
             business_id_type (Union[Unset, str]): The type of the business identifier. Example: pid.
             name (Union[Unset, str]): Name of the entity. Maximum 128 characters. Example: John Smith.
             type (Union[Unset, str]): The type of the entity, e.g Person, Organisation Example: person.
+            id (Union[Unset, int]): Unique surrogate identifier.
+
+                Note:
+                This is a Primary Key. Example: 14.
     """
 
-    id: Union[Unset, int] = UNSET
     business_id: Union[Unset, str] = UNSET
     business_id_type: Union[Unset, str] = UNSET
     name: Union[Unset, str] = UNSET
     type: Union[Unset, str] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        id = self.id
-
         business_id = self.business_id
 
         business_id_type = self.business_id_type
@@ -49,11 +47,11 @@ class EntityResponse:
 
         type = self.type
 
+        id = self.id
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if id is not UNSET:
-            field_dict["id"] = id
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
         if business_id_type is not UNSET:
@@ -62,14 +60,14 @@ class EntityResponse:
             field_dict["name"] = name
         if type is not UNSET:
             field_dict["type"] = type
+        if id is not UNSET:
+            field_dict["id"] = id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        id = d.pop("id", UNSET)
-
         business_id = d.pop("business_id", UNSET)
 
         business_id_type = d.pop("business_id_type", UNSET)
@@ -78,12 +76,14 @@ class EntityResponse:
 
         type = d.pop("type", UNSET)
 
+        id = d.pop("id", UNSET)
+
         entity_response = cls(
-            id=id,
             business_id=business_id,
             business_id_type=business_id_type,
             name=name,
             type=type,
+            id=id,
         )
 
         entity_response.additional_properties = d
