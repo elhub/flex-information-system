@@ -176,7 +176,8 @@
             "description": "Birth number or organisation number of the end user.",
             "format": "text",
             "type": "string",
-            "example": "8d4bde5a-decc-4e92-9a04-a64f258921f0"
+            "pattern": "^[1-9]([0-9]{8}|[0-9]{10})$",
+            "example": "133700008"
           },
           "controllable_unit": {
             "description": "The business ID of the controllable unit to lookup.",
@@ -202,75 +203,113 @@
         "description": "Response schema for controllable unit lookup operations",
         "type": "object",
         "properties": {
-          "id": {
-            "description": "The surrogate key of the controllable unit.",
-            "format": "bigint",
-            "type": "integer",
-            "example": 11
+          "accounting_point": {
+            "description": "The accounting point behind which the controllable units are located.",
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "The surrogate key of the accounting point.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 100351
+              },
+              "business_id": {
+                "description": "The GSRN metering point ID of the accounting point.",
+                "format": "text",
+                "type": "string",
+                "pattern": "^[1-9][0-9]{17}$",
+                "example": "709000000000000057"
+              }
+            },
+            "required": [
+              "id",
+              "business_id"
+            ]
           },
-          "business_id": {
-            "description": "The business ID of the controllable unit.",
-            "format": "text",
-            "type": "string",
-            "example": "53919b79-876f-4dad-8bde-b29368367604"
+          "end_user": {
+            "description": "The end user on the accounting point where the controllable units are located.",
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "The surrogate key of the end user.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 11
+              }
+            },
+            "required": [
+              "id"
+            ]
           },
-          "name": {
-            "description": "The name of the controllable unit.",
-            "format": "text",
-            "type": "string",
-            "example": "Car Charger #54"
-          },
-          "accounting_point_id": {
-            "description": "The accounting point behind which the controllable unit is located.",
-            "format": "bigint",
-            "type": "integer",
-            "example": 100351
-          },
-          "end_user_id": {
-            "description": "Technical ID of the end user on the accounting point where the controllable unit is located.",
-            "format": "bigint",
-            "type": "integer",
-            "example": 11
-          },
-          "technical_resources": {
-            "description": "The technical resources belonging to the controllable unit.",
+          "controllable_units": {
+            "description": "The controllable units that were found for the given end user or accounting point.",
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
-                  "description": "The surrogate key of the technical resource.",
+                  "description": "The surrogate key of the controllable unit.",
                   "format": "bigint",
                   "type": "integer",
-                  "example": 17
+                  "example": 11
+                },
+                "business_id": {
+                  "description": "The business ID of the controllable unit.",
+                  "format": "text",
+                  "type": "string",
+                  "example": "53919b79-876f-4dad-8bde-b29368367604"
                 },
                 "name": {
-                  "description": "The name of the technical resource.",
+                  "description": "The name of the controllable unit.",
                   "format": "text",
                   "type": "string",
-                  "example": "Battery Unit A"
+                  "example": "Car Charger #54"
                 },
-                "details": {
-                  "description": "Additional details about the technical resource.",
-                  "format": "text",
-                  "type": "string",
-                  "example": "16A"
+                "technical_resources": {
+                  "description": "The technical resources belonging to the controllable unit.",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The surrogate key of the technical resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 17
+                      },
+                      "name": {
+                        "description": "The name of the technical resource.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "Battery Unit A"
+                      },
+                      "details": {
+                        "description": "Additional details about the technical resource.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "16A"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name"
+                    ]
+                  }
                 }
               },
               "required": [
                 "id",
-                "name"
+                "business_id",
+                "name",
+                "technical_resources"
               ]
             }
           }
         },
         "required": [
-          "id",
-          "business_id",
-          "name",
-          "accounting_point_id",
-          "end_user_id",
-          "technical_resources"
+          "accounting_point",
+          "end_user",
+          "controllable_units"
         ]
       },
       "timeline_multi_range": {
@@ -1145,7 +1184,15 @@
       "entity_update_request": {
         "summary": "Update - Entity",
         "description": "Request schema for update operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of the entity. Maximum 128 characters.",
+            "format": "text",
+            "type": "string",
+            "example": "John Smith"
+          }
+        }
       },
       "entity_create_data": {
         "summary": "Create data - Entity",
@@ -1153,6 +1200,46 @@
         "allOf": [
           {
             "$ref": "#/components/schemas/entity_update_request"
+          },
+          {
+            "properties": {
+              "business_id": {
+                "description": "The business identifier of the entity. Format depends on `business_id_type`.",
+                "format": "text",
+                "type": "string",
+                "example": "13370000000"
+              },
+              "business_id_type": {
+                "description": "The type of the business identifier.",
+                "format": "text",
+                "type": "string",
+                "example": "pid"
+              },
+              "type": {
+                "description": "The type of the entity, e.g Person, Organisation",
+                "format": "text",
+                "type": "string",
+                "example": "person"
+              }
+            }
+          }
+        ],
+        "type": "object"
+      },
+      "entity_create_request": {
+        "summary": "Create - Entity",
+        "description": "Request schema for create operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/entity_create_data"
+          },
+          {
+            "required": [
+              "business_id",
+              "business_id_type",
+              "name",
+              "type"
+            ]
           }
         ],
         "type": "object"
@@ -1172,36 +1259,11 @@
                 "type": "integer",
                 "readOnly": true,
                 "example": 14
-              },
-              "business_id": {
-                "description": "The business identifier of the entity. Format depends on `business_id_type`.",
-                "format": "text",
-                "type": "string",
-                "readOnly": true,
-                "example": "13370000000"
-              },
-              "business_id_type": {
-                "description": "The type of the business identifier.",
-                "format": "text",
-                "type": "string",
-                "readOnly": true,
-                "example": "pid"
-              },
-              "name": {
-                "description": "Name of the entity. Maximum 128 characters.",
-                "format": "text",
-                "type": "string",
-                "readOnly": true,
-                "example": "John Smith"
-              },
-              "type": {
-                "description": "The type of the entity, e.g Person, Organisation",
-                "format": "text",
-                "type": "string",
-                "readOnly": true,
-                "example": "person"
               }
             }
+          },
+          {
+            "$ref": "#/components/schemas/audit_fields"
           }
         ],
         "type": "object"
@@ -1219,7 +1281,9 @@
               "business_id",
               "business_id_type",
               "name",
-              "type"
+              "type",
+              "recorded_at",
+              "recorded_by"
             ]
           }
         ],
@@ -3259,10 +3323,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/controllable_unit_lookup_response"
-                  }
+                  "$ref": "#/components/schemas/controllable_unit_lookup_response"
                 }
               }
             },
@@ -3287,6 +3348,16 @@
               }
             },
             "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
           },
           "404": {
             "content": {
@@ -7919,6 +7990,114 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "post": {
+        "operationId": "create_entity",
+        "summary": "Create Entity",
+        "description": "",
+        "tags": [
+          "entity"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/entity_create_request"
+              }
+            }
+          },
+          "description": "entity",
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/entity_response"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/entity/{id}": {
@@ -8020,6 +8199,98 @@
               }
             },
             "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "update_entity",
+        "summary": "Update Entity",
+        "description": "",
+        "tags": [
+          "entity"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/entity_update_request"
+              }
+            }
+          },
+          "description": "entity",
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "content": {},
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
           }
         }
       }
