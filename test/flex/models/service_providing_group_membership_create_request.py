@@ -13,27 +13,23 @@ class ServiceProvidingGroupMembershipCreateRequest:
     """Request schema for create operations - Membership relation of controllable unit in service providing group
 
     Attributes:
-        controllable_unit_id (int): Reference to the controllable unit this relation links to a service providing group.
-            Example: 6.
-        service_providing_group_id (int): Reference to the service providing group this relation links to a controllable
-            unit. Example: 55.
         valid_from (Union[Unset, str]): The date from which the relation between the controllable unit and the service
             providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
             service providing group is valid. Midnight aligned on Norwegian timezone.
+        controllable_unit_id (Union[Unset, int]): Reference to the controllable unit this relation links to a service
+            providing group. Example: 6.
+        service_providing_group_id (Union[Unset, int]): Reference to the service providing group this relation links to
+            a controllable unit. Example: 55.
     """
 
-    controllable_unit_id: int
-    service_providing_group_id: int
     valid_from: Union[Unset, str] = UNSET
     valid_to: Union[None, Unset, str] = UNSET
+    controllable_unit_id: Union[Unset, int] = UNSET
+    service_providing_group_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        controllable_unit_id = self.controllable_unit_id
-
-        service_providing_group_id = self.service_providing_group_id
-
         valid_from = self.valid_from
 
         valid_to: Union[None, Unset, str]
@@ -42,28 +38,27 @@ class ServiceProvidingGroupMembershipCreateRequest:
         else:
             valid_to = self.valid_to
 
+        controllable_unit_id = self.controllable_unit_id
+
+        service_providing_group_id = self.service_providing_group_id
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "controllable_unit_id": controllable_unit_id,
-                "service_providing_group_id": service_providing_group_id,
-            }
-        )
+        field_dict.update({})
         if valid_from is not UNSET:
             field_dict["valid_from"] = valid_from
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
+        if controllable_unit_id is not UNSET:
+            field_dict["controllable_unit_id"] = controllable_unit_id
+        if service_providing_group_id is not UNSET:
+            field_dict["service_providing_group_id"] = service_providing_group_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        controllable_unit_id = d.pop("controllable_unit_id")
-
-        service_providing_group_id = d.pop("service_providing_group_id")
-
         valid_from = d.pop("valid_from", UNSET)
 
         def _parse_valid_to(data: object) -> Union[None, Unset, str]:
@@ -75,11 +70,15 @@ class ServiceProvidingGroupMembershipCreateRequest:
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 
+        controllable_unit_id = d.pop("controllable_unit_id", UNSET)
+
+        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
+
         service_providing_group_membership_create_request = cls(
-            controllable_unit_id=controllable_unit_id,
-            service_providing_group_id=service_providing_group_id,
             valid_from=valid_from,
             valid_to=valid_to,
+            controllable_unit_id=controllable_unit_id,
+            service_providing_group_id=service_providing_group_id,
         )
 
         service_providing_group_membership_create_request.additional_properties = d

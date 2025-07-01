@@ -14,7 +14,6 @@ class EntityClientCreateRequest:
     authentication methods.
 
         Attributes:
-            entity_id (int): Reference to the entity that this client is attached to. Example: 30.
             name (Union[None, Unset, str]): Name of the client. Example: Laptop.
             client_id (Union[Unset, str]): The identifier of the entity. For use with client credentials authentication
                 method. Example: addr@flex.test.
@@ -27,18 +26,17 @@ class EntityClientCreateRequest:
                 kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
                 0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
                 -----END PUBLIC KEY-----.
+            entity_id (Union[Unset, int]): Reference to the entity that this client is attached to. Example: 30.
     """
 
-    entity_id: int
     name: Union[None, Unset, str] = UNSET
     client_id: Union[Unset, str] = UNSET
     client_secret: Union[None, Unset, str] = UNSET
     public_key: Union[None, Unset, str] = UNSET
+    entity_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        entity_id = self.entity_id
-
         name: Union[None, Unset, str]
         if isinstance(self.name, Unset):
             name = UNSET
@@ -59,13 +57,11 @@ class EntityClientCreateRequest:
         else:
             public_key = self.public_key
 
+        entity_id = self.entity_id
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "entity_id": entity_id,
-            }
-        )
+        field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
         if client_id is not UNSET:
@@ -74,13 +70,14 @@ class EntityClientCreateRequest:
             field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
             field_dict["public_key"] = public_key
+        if entity_id is not UNSET:
+            field_dict["entity_id"] = entity_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        entity_id = d.pop("entity_id")
 
         def _parse_name(data: object) -> Union[None, Unset, str]:
             if data is None:
@@ -111,12 +108,14 @@ class EntityClientCreateRequest:
 
         public_key = _parse_public_key(d.pop("public_key", UNSET))
 
+        entity_id = d.pop("entity_id", UNSET)
+
         entity_client_create_request = cls(
-            entity_id=entity_id,
             name=name,
             client_id=client_id,
             client_secret=client_secret,
             public_key=public_key,
+            entity_id=entity_id,
         )
 
         entity_client_create_request.additional_properties = d

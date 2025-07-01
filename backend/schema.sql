@@ -361,5 +361,5 @@ CREATE TABLE notice (
     party_id bigint NOT NULL,
     type text NOT NULL,
     source text NOT NULL,
-    data text NULL
+    data jsonb NULL
 );

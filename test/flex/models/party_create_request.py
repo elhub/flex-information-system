@@ -23,33 +23,27 @@ class PartyCreateRequest:
     * End User
 
         Attributes:
-            entity_id (int): Reference to the entity that is the parent of the party. Example: 30.
-            role (str): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
-                Example: flex_energy_supplier.
-            type (str): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
             business_id_type (Union[Unset, PartyBusinessIdType]): The type of the business identifier. Example: gln.
             name (Union[Unset, str]): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
             status (Union[Unset, PartyStatus]): The status of the party. Example: active.
             business_id (Union[Unset, str]): The business identifier of the party. Format depends on `business_id_type`.
                 Example: 1337099000000.
+            entity_id (Union[Unset, int]): Reference to the entity that is the parent of the party. Example: 30.
+            role (Union[Unset, str]): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
+                service_provider. Example: flex_energy_supplier.
+            type (Union[Unset, str]): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
     """
 
-    entity_id: int
-    role: str
-    type: str
     business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
     name: Union[Unset, str] = UNSET
     status: Union[Unset, PartyStatus] = UNSET
     business_id: Union[Unset, str] = UNSET
+    entity_id: Union[Unset, int] = UNSET
+    role: Union[Unset, str] = UNSET
+    type: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        entity_id = self.entity_id
-
-        role = self.role
-
-        type = self.type
-
         business_id_type: Union[Unset, str] = UNSET
         if not isinstance(self.business_id_type, Unset):
             business_id_type = self.business_id_type.value
@@ -62,15 +56,15 @@ class PartyCreateRequest:
 
         business_id = self.business_id
 
+        entity_id = self.entity_id
+
+        role = self.role
+
+        type = self.type
+
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "entity_id": entity_id,
-                "role": role,
-                "type": type,
-            }
-        )
+        field_dict.update({})
         if business_id_type is not UNSET:
             field_dict["business_id_type"] = business_id_type
         if name is not UNSET:
@@ -79,18 +73,18 @@ class PartyCreateRequest:
             field_dict["status"] = status
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
+        if entity_id is not UNSET:
+            field_dict["entity_id"] = entity_id
+        if role is not UNSET:
+            field_dict["role"] = role
+        if type is not UNSET:
+            field_dict["type"] = type
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        entity_id = d.pop("entity_id")
-
-        role = d.pop("role")
-
-        type = d.pop("type")
-
         _business_id_type = d.pop("business_id_type", UNSET)
         business_id_type: Union[Unset, PartyBusinessIdType]
         if isinstance(_business_id_type, Unset):
@@ -109,14 +103,20 @@ class PartyCreateRequest:
 
         business_id = d.pop("business_id", UNSET)
 
+        entity_id = d.pop("entity_id", UNSET)
+
+        role = d.pop("role", UNSET)
+
+        type = d.pop("type", UNSET)
+
         party_create_request = cls(
-            entity_id=entity_id,
-            role=role,
-            type=type,
             business_id_type=business_id_type,
             name=name,
             status=status,
             business_id=business_id,
+            entity_id=entity_id,
+            role=role,
+            type=type,
         )
 
         party_create_request.additional_properties = d

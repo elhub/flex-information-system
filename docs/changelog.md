@@ -1,6 +1,14 @@
 # Changelog
 
+This changelog tracks all changes that are visible in our API.
+
 <!-- markdownlint-disable MD013 -->
+
+## 26.06.2025
+
+* **Specified the `data` field in the _Notice_ resource.**  
+  The field turns into an `object`, whose content depends on the `type` of the
+  notice.
 
 ## 03.06.2025
 

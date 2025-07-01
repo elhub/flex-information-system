@@ -2,13 +2,15 @@
 -- Manually managed file
 
 -- changeset flex:notice runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW notice AS (
+-- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
+DROP VIEW IF EXISTS notice CASCADE;
+CREATE VIEW notice AS (
     -- CU grid node ID missing
     SELECT
         ap_so.system_operator_id AS party_id,
         'no.elhub.flex.controllable_unit.grid_node_id.missing' AS type, -- noqa
         '/controllable_unit/' || cu.id AS source,
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM controllable_unit AS cu
         INNER JOIN accounting_point_system_operator AS ap_so
             ON cu.accounting_point_id = ap_so.accounting_point_id
@@ -21,7 +23,7 @@ CREATE OR REPLACE VIEW notice AS (
         ap_so.system_operator_id AS party_id,
         'no.elhub.flex.controllable_unit.grid_validation_status.pending' AS type, -- noqa
         '/controllable_unit/' || cu.id AS source,
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM controllable_unit AS cu
         INNER JOIN accounting_point_system_operator AS ap_so
             ON cu.accounting_point_id = ap_so.accounting_point_id
@@ -34,7 +36,7 @@ CREATE OR REPLACE VIEW notice AS (
         cusp.service_provider_id AS party_id,
         'no.elhub.flex.controllable_unit.grid_validation_status.incomplete_information' AS type, -- noqa
         '/controllable_unit/' || cu.id AS source,
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM controllable_unit AS cu
         INNER JOIN controllable_unit_service_provider AS cusp
             ON cu.id = cusp.controllable_unit_id
@@ -47,7 +49,7 @@ CREATE OR REPLACE VIEW notice AS (
         sppa.system_operator_id AS party_id,
         'no.elhub.flex.service_provider_product_application.status.requested' AS type, -- noqa
         '/service_provider_product_application/' || sppa.id AS source,
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM service_provider_product_application AS sppa
     WHERE sppa.status = 'requested'
 
@@ -57,7 +59,7 @@ CREATE OR REPLACE VIEW notice AS (
         spg.service_provider_id AS party_id,
         'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract' AS type, -- noqa
         '/service_providing_group_membership/' || spgm.id AS source,
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM flex.service_providing_group_membership AS spgm -- noqa
         INNER JOIN flex.service_providing_group AS spg
             ON spg.id = spgm.service_providing_group_id
@@ -82,7 +84,7 @@ CREATE OR REPLACE VIEW notice AS (
         spgpa.procuring_system_operator_id AS party_id,
         'no.elhub.flex.service_providing_group_product_application.status.requested' AS type, -- noqa
         '/service_providing_group_product_application/' || spgpa.id AS source, -- noqa
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM service_providing_group_product_application AS spgpa
     WHERE spgpa.status = 'requested'
 
@@ -92,7 +94,7 @@ CREATE OR REPLACE VIEW notice AS (
         spggp.impacted_system_operator_id AS party_id,
         'no.elhub.flex.service_providing_group_grid_prequalification.status.requested' AS type, -- noqa
         '/service_providing_group_grid_prequalification/' || spggp.id AS source, -- noqa
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM service_providing_group_grid_prequalification AS spggp
     WHERE spggp.status = 'requested'
 
@@ -104,7 +106,7 @@ CREATE OR REPLACE VIEW notice AS (
         sp_id AS party_id,
         'no.elhub.flex.service_providing_group.balance_responsible_party.multiple' AS type, -- noqa
         '/service_providing_group/' || spg_id AS source,
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM (
         SELECT
             spg.id AS spg_id,
@@ -132,8 +134,23 @@ CREATE OR REPLACE VIEW notice AS (
         '/controllable_unit_service_provider/' || id AS source,
         jsonb_build_object(
             'invalid_timeline',
-            valid_time_range - end_user_timeline
-        )::text AS data -- noqa
+            (
+                SELECT
+                    array_to_json(
+                        array_agg(
+                            jsonb_build_object(
+                                'valid_from', lower(timeline_section),
+                                'valid_to', upper(timeline_section)
+                            )
+                        )
+                    )
+                FROM (
+                    SELECT
+                        unnest(valid_time_range - end_user_timeline)
+                        AS timeline_section
+                ) AS invalid_timeline_sections
+            )
+        ) AS data -- noqa
     FROM (
         SELECT
             cusp.id,
@@ -160,12 +177,24 @@ CREATE OR REPLACE VIEW notice AS (
         'no.elhub.flex.party.missing' AS type, -- noqa
         null AS source, -- no source because the party does not exist yet
         jsonb_build_object(
-            'business_id', p_stg.gln,
-            'business_id_type', 'gln',
-            'entity_id', e_stg.id,
-            'name', p_stg.name,
-            'type', p_stg.type
-        )::text AS data -- noqa
+            'entity', jsonb_strip_nulls(
+                jsonb_build_object(
+                    'business_id', p_stg.org,
+                    'business_id_type', e_stg.business_id_type,
+                    'name', e_stg.name,
+                    'type', e_stg.type
+                )
+            ),
+            'party', jsonb_strip_nulls(
+                jsonb_build_object(
+                    'business_id', p_stg.gln,
+                    'business_id_type', 'gln',
+                    'entity_id', e_stg.id,
+                    'name', p_stg.name,
+                    'type', p_stg.type
+                )
+            )
+        ) AS data -- noqa
     FROM flex.party_staging AS p_stg -- noqa
         LEFT JOIN flex.entity AS e_stg
             ON e_stg.business_id = p_stg.org
@@ -183,17 +212,27 @@ CREATE OR REPLACE VIEW notice AS (
         p_fiso.id AS party_id,
         'no.elhub.flex.party.outdated' AS type, -- noqa
         '/party/' || p.id AS source,
-        ((
-            CASE WHEN p_stg.name != p.name
-                    THEN jsonb_build_object('name', p_stg.name)
-                ELSE '{}'::jsonb
-            END
-        ) || (
-            CASE WHEN p_stg.org != e.business_id
-                    THEN jsonb_build_object('entity_id', e_stg.id)
-                ELSE '{}'::jsonb
-            END
-        ))::text AS data -- noqa
+        jsonb_strip_nulls(
+            jsonb_build_object(
+                'entity',
+                (CASE WHEN p_stg.org != e.business_id
+                        THEN jsonb_build_object(
+                                'business_id', p_stg.org,
+                                'business_id_type', e_stg.business_id_type,
+                                'name', e_stg.name,
+                                'type', e_stg.type
+                            )
+                END),
+                'party', jsonb_build_object(
+                    'name', (
+                        CASE WHEN p_stg.name != p.name THEN p_stg.name END
+                    ),
+                    'entity_id', (
+                        CASE WHEN p_stg.org != e.business_id THEN e_stg.id END
+                    )
+                )
+            )
+        ) AS data -- noqa
     FROM flex.party AS p -- noqa
         INNER JOIN flex.entity AS e
             ON p.entity_id = e.id
@@ -201,8 +240,8 @@ CREATE OR REPLACE VIEW notice AS (
             ON p_stg.gln = p.business_id
                 -- party has changed name or owning entity
                 AND (p_stg.name != p.name OR p_stg.org != e.business_id)
-        INNER JOIN flex.entity AS e_stg
-            ON p_stg.org = e_stg.business_id
+        LEFT JOIN flex.entity AS e_stg
+            ON e_stg.business_id = p_stg.org
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'
@@ -213,7 +252,7 @@ CREATE OR REPLACE VIEW notice AS (
         p_fiso.id AS party_id,
         'no.elhub.flex.party.residual' AS type, -- noqa
         '/party/' || p.id AS source,
-        null AS data -- noqa
+        null::jsonb AS data -- noqa
     FROM flex.party AS p -- noqa
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
