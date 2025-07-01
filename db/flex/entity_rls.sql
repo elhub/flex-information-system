@@ -34,7 +34,8 @@ USING (EXISTS (
 ));
 
 -- RLS: ENT-FISO001
+GRANT SELECT, INSERT ON entity TO flex_flexibility_information_system_operator;
 CREATE POLICY "ENT_FISO001" ON entity
-FOR SELECT
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);

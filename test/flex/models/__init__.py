@@ -47,6 +47,8 @@ from .entity_client_create_data import EntityClientCreateData
 from .entity_client_create_request import EntityClientCreateRequest
 from .entity_client_response import EntityClientResponse
 from .entity_client_update_request import EntityClientUpdateRequest
+from .entity_create_data import EntityCreateData
+from .entity_create_request import EntityCreateRequest
 from .entity_response import EntityResponse
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
@@ -243,6 +245,8 @@ __all__ = (
     "EntityClientCreateRequest",
     "EntityClientResponse",
     "EntityClientUpdateRequest",
+    "EntityCreateData",
+    "EntityCreateRequest",
     "EntityResponse",
     "EntityUpdateRequest",
     "ErrorMessage",

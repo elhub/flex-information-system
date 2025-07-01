@@ -9,6 +9,8 @@ WITH (security_invoker = true) AS (
         business_id,
         business_id_type,
         name,
-        type
+        type,
+        recorded_by,
+        lower(record_time_range) AS recorded_at
     FROM flex.entity
 );

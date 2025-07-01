@@ -464,6 +464,9 @@ resources:
     operations:
       - list
       - read
+      - create
+      - update
+    audit: true
     generate_views: true
     properties:
       id:
@@ -482,26 +485,25 @@ resources:
           `business_id_type`.
         format: text
         type: string
-        readOnly: true
+        x-no-update: true
         example: '13370000000'
       business_id_type:
         description: >-
           The type of the business identifier.
         format: text
         type: string
-        readOnly: true
+        x-no-update: true
         example: pid
       name:
         description: Name of the entity. Maximum 128 characters.
         format: text
         type: string
-        readOnly: true
         example: John Smith
       type:
         description: The type of the entity, e.g Person, Organisation
         format: text
         type: string
-        readOnly: true
+        x-no-update: true
         example: person
 
   - id: entity_client

@@ -8,7 +8,9 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_balance_responsible_party;
 
@@ -18,7 +20,9 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_energy_supplier;
 
@@ -28,9 +32,20 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_end_user;
+
+-- changeset flex:api-grant-entity-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    name,
+    type,
+    business_id,
+    business_id_type
+) ON TABLE api.entity
+TO flex_flexibility_information_system_operator;
 
 -- changeset flex:api-grant-entity-fiso-select endDelimiter:-- runAlways:true
 GRANT SELECT (
@@ -38,7 +53,15 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
+) ON TABLE api.entity
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-entity-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    name
 ) ON TABLE api.entity
 TO flex_flexibility_information_system_operator;
 
@@ -48,7 +71,9 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_market_operator;
 
@@ -58,7 +83,9 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_system_operator;
 
@@ -68,7 +95,9 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_service_provider;
 
@@ -78,7 +107,9 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_third_party;
 
@@ -88,7 +119,9 @@ GRANT SELECT (
     name,
     type,
     business_id,
-    business_id_type
+    business_id_type,
+    recorded_at,
+    recorded_by
 ) ON TABLE api.entity
 TO flex_entity;
 
