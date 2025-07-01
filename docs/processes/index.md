@@ -135,7 +135,7 @@ Register of a CU and data from a service provider and/or system user. Includes
 steps for connecting system operators to validate the information provided -
 Controllable Unit Grid Validation.
 
-#### [Controllable unit update](controllabl-unit-update.md)
+#### [Controllable unit update](controllable-unit-update.md)
 
 Update of controllable unit information from service provider and/or system
 user. Includes steps for connecting system operators to validate the information

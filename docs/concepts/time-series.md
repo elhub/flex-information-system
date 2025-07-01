@@ -325,7 +325,7 @@ Quantification is done to support three types of settlement:
 - **Quantification for imbalance adjustment and financial transfer** - must be
   done at the level of accounting point (AP) or lower (CU/TR). NOTE - See the
   section
-  [Non- or over-consumed energy due to activation of flexibility](#non--or-over-consumed-energy-due-to-activation-of-flexibility)
+  [Non- or over-consumed energy due to activation of flexibility](#non-or-over-consumed-energy-due-to-activation-of-flexibility)
   for more details about imbalance settlement.
 - **Quantification for end user compensation** - must be done at the level of
   the accounting point (AP) or lower (CU/TR), since that is where the end user
