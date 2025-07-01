@@ -212,7 +212,7 @@ func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
 }
 
-//nolint:funlen
+//nolint:funlen,cyclop
 func (data *api) controllableUnitLookupHandler(
 	w http.ResponseWriter, req *http.Request,
 ) {
@@ -221,9 +221,7 @@ func (data *api) controllableUnitLookupHandler(
 	rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
 	if err != nil {
 		slog.ErrorContext(ctx, "no request details in context", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "request is not authenticated",
-		})
+		writeInternalServerError(w)
 		return
 	}
 
@@ -268,9 +266,7 @@ func (data *api) controllableUnitLookupHandler(
 	tx, err := data.db.Begin(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "could not start transaction", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "could not start transaction",
-		})
+		writeInternalServerError(w)
 		return
 	}
 	defer tx.Rollback(ctx)
@@ -280,7 +276,11 @@ func (data *api) controllableUnitLookupHandler(
 		ctx, queries, endUserBusinessID, controllableUnitBusinessID, accountingPointBusinessID,
 	)
 	if errorCode != nil {
-		writeErrorToResponseWriter(w, *errorCode, *errorMsg)
+		if *errorCode == http.StatusInternalServerError {
+			writeInternalServerError(w)
+		} else {
+			writeErrorToResponseWriter(w, *errorCode, *errorMsg)
+		}
 		return
 	}
 
@@ -292,16 +292,12 @@ func (data *api) controllableUnitLookupHandler(
 	)
 	if err != nil {
 		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "could not perform controllable unit lookup",
-		})
+		writeInternalServerError(w)
 		return
 	}
 	if err = tx.Commit(ctx); err != nil {
 		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "could not notify end user",
-		})
+		writeInternalServerError(w)
 		return
 	}
 
@@ -310,9 +306,7 @@ func (data *api) controllableUnitLookupHandler(
 		slog.ErrorContext(
 			ctx, "could not reformat controllable unit lookup result", "error", err,
 		)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "ill formed controllable unit lookup result",
-		})
+		writeInternalServerError(w)
 		return
 	}
 
@@ -404,9 +398,7 @@ func controllableUnitLookupCheckArgumentsMatch( //nolint:funlen
 				ctx, "controllable unit existence check failed", "error", err,
 			)
 			errorCode = http.StatusInternalServerError
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "could not check controllable unit existence",
-			}
+			return &errorCode, nil
 		}
 
 		if !exists {
@@ -429,9 +421,7 @@ func controllableUnitLookupCheckArgumentsMatch( //nolint:funlen
 				"error", err,
 			)
 			errorCode = http.StatusInternalServerError
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "could not check that end user and controllable unit match",
-			}
+			return &errorCode, nil
 		}
 
 		if !matches {
@@ -454,9 +444,7 @@ func controllableUnitLookupCheckArgumentsMatch( //nolint:funlen
 				ctx, "accounting point existence check failed", "error", err,
 			)
 			errorCode = http.StatusInternalServerError
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "could not check accounting point existence",
-			}
+			return &errorCode, nil
 		}
 
 		if !exists {
@@ -479,9 +467,7 @@ func controllableUnitLookupCheckArgumentsMatch( //nolint:funlen
 				"error", err,
 			)
 			errorCode = http.StatusInternalServerError
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "could not check that end user and accounting point match",
-			}
+			return &errorCode, nil
 		}
 
 		if !matches {
@@ -644,5 +630,12 @@ func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
 	writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 		Message: "Not Found " + req.URL.Path,
+	})
+}
+
+// writeInternalServerError writes a generic HTTP 500 response.
+func writeInternalServerError(w http.ResponseWriter) {
+	writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+		Message: "try again later",
 	})
 }
