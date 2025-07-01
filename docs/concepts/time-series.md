@@ -305,9 +305,10 @@ and can sometime be one and the same - but does have different purposes.
 
 ### Quantification
 
-Quantification is the continious activity of calculating the activated volume after
-*each and every* activation. The purpose of quantification is to be able to do
-settlement of the activated volume.
+Quantification is the continious activity of calculating the activated volume
+after *each and every* activation. The purpose of quantification is to be able
+to do settlement. Quantification is about figuring out the quantity of energy
+that was delivered.
 
 There are three main methods for quantifying the activated volume:
 
@@ -364,18 +365,40 @@ Allocation can be done with:
 
 ### Verification
 
-Verification is the process where the system operator verifies the
-quantified volume and that the service was delivered in compliance with the
-product requirements of the specific products.
+Verification is an activity done by the system operator to check that a service
+was actually delivered. The system operator might want to assess both that the
+agreed volume was delivered and that the service was delivered with the right
+quality and in compliance with the product requirements of the specific
+products.
 
-This verification can be done for every trade or activation, but it is also
-appropriate to do this once at application time and then ad-hoc or at certain
-intervals during the lifetime of the service providing group.
+Verification is targeted on the SPG level, where service is delivered.
+
+It might be callenging to properly verify that a service was delivered. Some
+challenges are
+
+- access to data of high enough quality and granularity
+- a trusted source of data
+- noise in data - for instance if the flexible asset represents only part of the
+  energy consumption on an accounting point
+- finding and applying the correct method to verify the service delivery
+
+Verification can be done for every trade or activation, but given the challenges
+it might be that it is feasible to only do it every now and then. This could for
+instance be once at application time and then ad-hoc or at certain intervals
+during the lifetime of the service providing group.
+
+If, however, verification of volume is done for every trade, then we can also
+consider it as quantification and the result should be used for settlement. It
+is however expected that we will see that quantification is done with a
+simplified method or with a higher degree of trust than what verification
+implies. Current TSO and DSO markets both currently quantify with simplified
+methods.
 
 The verification might include
 
 - comparing the quantified volume to what is observed in the accounting point
-- getting additional data from the service provider - e.g. high granularity data
+- getting additional data from the service provider or others - e.g. high
+  granularity data - and doing analysis on that
 
 It is at the system operator's discretion to decide how and when to verify the
 service delivery, as long as it does not put an additional/undue burden on the
