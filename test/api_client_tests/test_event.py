@@ -10,6 +10,7 @@ from flex.models import (
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
     ControllableUnitLookupRequest,
+    ControllableUnitLookupResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
     SystemOperatorProductTypeCreateRequest,
@@ -252,7 +253,7 @@ def test_event_sp(sts):
             accounting_point="133700000000010014",  # test AP 1002
         ),
     )
-    assert isinstance(lookup, list)
+    assert isinstance(lookup, ControllableUnitLookupResponse)
 
     sopt = create_system_operator_product_type.sync(
         client=client_fiso,

@@ -74,13 +74,17 @@ const Toolbar = () => {
 };
 
 // page to enter data required for controllable unit lookup
-export const ControllableUnitLookupInput = () => (
-  <SimpleForm maxWidth={1280} toolbar={<Toolbar />}>
-    <Stack direction="column" spacing={1}>
-      <Typography variant="h6" gutterBottom>
-        Lookup a controllable unit
-      </Typography>
-      <p>Mandatory : end user and at least one of the other fields</p>
+export const ControllableUnitLookupInput = () => {
+  const ControllableUnitLookupForm = () => {
+    const { getValues } = useFormContext();
+
+    const values = getValues();
+    const accountingPointDefined =
+      values.accounting_point && values.accounting_point.length > 0;
+    const controllableUnitDefined =
+      values.controllable_unit && values.controllable_unit.length > 0;
+
+    return (
       <InputStack
         direction="row"
         flexWrap="wrap"
@@ -88,9 +92,27 @@ export const ControllableUnitLookupInput = () => (
         resource="controllable_unit_lookup_request"
       >
         <TextInput source="end_user" validate={required()} />
-        <TextInput source="accounting_point" />
-        <TextInput source="controllable_unit" />
+        <TextInput
+          source="accounting_point"
+          disabled={controllableUnitDefined}
+        />
+        <TextInput
+          source="controllable_unit"
+          disabled={accountingPointDefined}
+        />
       </InputStack>
-    </Stack>
-  </SimpleForm>
-);
+    );
+  };
+
+  return (
+    <SimpleForm maxWidth={1280} toolbar={<Toolbar />}>
+      <Stack direction="column" spacing={1}>
+        <Typography variant="h6" gutterBottom>
+          Lookup a controllable unit
+        </Typography>
+        <p>Mandatory : end user and exactly one of the other fields</p>
+        <ControllableUnitLookupForm />
+      </Stack>
+    </SimpleForm>
+  );
+};

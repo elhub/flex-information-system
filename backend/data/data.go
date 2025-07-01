@@ -222,9 +222,7 @@ func (data *api) controllableUnitLookupHandler(
 	rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
 	if err != nil {
 		slog.ErrorContext(ctx, "no request details in context", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "request is not authenticated",
-		})
+		writeInternalServerError(w)
 		return
 	}
 
@@ -249,90 +247,169 @@ func (data *api) controllableUnitLookupHandler(
 		return
 	}
 
-	endUserBusinessID := ""
-	if cuLookupRequestBody.EndUserBusinessID != nil {
-		endUserBusinessID = *cuLookupRequestBody.EndUserBusinessID
-	}
-
-	controllableUnitBusinessID := ""
-	if cuLookupRequestBody.ControllableUnitBusinessID != nil {
-		controllableUnitBusinessID = *cuLookupRequestBody.ControllableUnitBusinessID
-	}
-
-	accountingPointID := ""
-	if cuLookupRequestBody.AccountingPointID != nil {
-		accountingPointID = *cuLookupRequestBody.AccountingPointID
-	}
-
-	if endUserBusinessID == "" {
-		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
-			Message: "missing end user business ID",
-		})
+	errorMsg := controllableUnitLookupValidateInput(&cuLookupRequestBody)
+	if errorMsg != nil {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, *errorMsg)
 		return
 	}
 
-	if accountingPointID == "" && controllableUnitBusinessID == "" {
-		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
-			Message: "missing accounting point ID or business ID",
-		})
-		return
-	}
-
-	slog.InfoContext(
-		ctx, "will lookup controllable unit",
-		"end_user_business_id", endUserBusinessID,
-		"accounting_point_id", accountingPointID,
-		"controllable_unit_business_id", controllableUnitBusinessID,
-	)
+	endUserBusinessID := *cuLookupRequestBody.EndUserBusinessID
+	controllableUnitBusinessID := *cuLookupRequestBody.ControllableUnitBusinessID
+	accountingPointBusinessID := *cuLookupRequestBody.AccountingPointBusinessID
 
 	tx, err := data.db.Begin(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "could not start transaction", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "could not start transaction",
-		})
+		writeInternalServerError(w)
 		return
 	}
 	defer tx.Rollback(ctx)
 	queries := models.New(tx)
 
-	cuLookup, err := queries.ControllableUnitLookup(
-		ctx,
-		endUserBusinessID,
-		controllableUnitBusinessID,
-		accountingPointID,
+	// get accounting point data
+
+	var accountingPointID int
+	if controllableUnitBusinessID != "" {
+		currentAP, err := queries.GetCurrentControllableUnitAccountingPoint(
+			ctx, controllableUnitBusinessID,
+		)
+		if err != nil {
+			slog.InfoContext(
+				ctx, "controllable unit does not exist",
+				"business_id", controllableUnitBusinessID,
+			)
+			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+				Message: "controllable unit does not exist",
+			})
+			return
+		}
+
+		accountingPointID = currentAP.AccountingPointID
+		accountingPointBusinessID = currentAP.AccountingPointBusinessID
+	} else {
+		accountingPointID, err = queries.GetAccountingPointIDFromBusinessID(
+			ctx, accountingPointBusinessID,
+		)
+		if err != nil {
+			slog.InfoContext(
+				ctx, "accounting point does not exist",
+				"business_id", accountingPointBusinessID,
+			)
+			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+				Message: "accounting point does not exist",
+			})
+			return
+		}
+	}
+
+	// check end user matches and get their ID
+
+	endUserID, err := queries.ControllableUnitLookupCheckEndUserMatchesAccountingPoint(
+		ctx, endUserBusinessID, accountingPointBusinessID,
 	)
 	if err != nil {
-		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
-	}
-	if err != nil || len(cuLookup) == 0 {
-		writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
-			Message: "controllable unit not found",
-		})
-		return
-	}
-	if err = tx.Commit(ctx); err != nil {
-		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "could not notify end user",
+		writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
+			Message: "end user does not match accounting point / controllable unit",
 		})
 		return
 	}
 
-	reformattedCULookup, err := ReformatControllableUnitLookupResult(cuLookup)
+	// get controllable unit(s)
+
+	controllableUnits, err := queries.ControllableUnitLookup(
+		ctx,
+		controllableUnitBusinessID,
+		accountingPointBusinessID,
+	)
+	if err != nil {
+		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
+		writeInternalServerError(w)
+		return
+	}
+	if err = tx.Commit(ctx); err != nil {
+		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
+		writeInternalServerError(w)
+		return
+	}
+
+	// build response from all the data
+
+	reformattedCULookup, err := ReformatControllableUnitLookupResult(
+		accountingPointID, accountingPointBusinessID, endUserID, controllableUnits,
+	)
 	if err != nil {
 		slog.ErrorContext(
 			ctx, "could not reformat controllable unit lookup result", "error", err,
 		)
-		writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-			Message: "ill formed controllable unit lookup result",
-		})
+		writeInternalServerError(w)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	body, _ := json.Marshal(reformattedCULookup)
 	w.Write(body)
+}
+
+// controllableUnitLookupValidateInput checks that the given fields in the CU
+// lookup request body respect the OpenAPI specification of fields. At this
+// point, we just check the general format for HTTP 400 errors, regardless of
+// whether the values have meaning in the database.
+func controllableUnitLookupValidateInput( //nolint:cyclop
+	cuLookupRequestBody *controllableUnitLookupRequest,
+) *errorMessage {
+	endUserBusinessID := ""
+	if cuLookupRequestBody.EndUserBusinessID != nil {
+		endUserBusinessID = *cuLookupRequestBody.EndUserBusinessID
+	}
+
+	if endUserBusinessID == "" {
+		return &errorMessage{Message: "missing end user business ID"} //nolint:exhaustruct
+	}
+
+	regexEndUserBusinessID := regexp.MustCompile("^[1-9]([0-9]{8}|[0-9]{10})$")
+	if !regexEndUserBusinessID.MatchString(endUserBusinessID) {
+		return &errorMessage{Message: "ill formed end user business ID"} //nolint:exhaustruct
+	}
+
+	controllableUnitBusinessID := ""
+	if cuLookupRequestBody.ControllableUnitBusinessID != nil {
+		controllableUnitBusinessID = *cuLookupRequestBody.ControllableUnitBusinessID
+
+		regexControllableUnitBusinessID := regexp.MustCompile("^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+		if !regexControllableUnitBusinessID.MatchString(controllableUnitBusinessID) {
+			return &errorMessage{Message: "ill formed controllable unit business ID"} //nolint:exhaustruct
+		}
+	}
+
+	accountingPointBusinessID := ""
+	if cuLookupRequestBody.AccountingPointBusinessID != nil {
+		accountingPointBusinessID = *cuLookupRequestBody.AccountingPointBusinessID
+
+		regexAccountingPointBusinessID := regexp.MustCompile("^[1-9][0-9]{17}$")
+		if !regexAccountingPointBusinessID.MatchString(accountingPointBusinessID) {
+			return &errorMessage{Message: "ill formed accounting point business ID"} //nolint:exhaustruct
+		}
+	}
+
+	if accountingPointBusinessID == "" && controllableUnitBusinessID == "" {
+		return &errorMessage{ //nolint:exhaustruct
+			Message: "missing business ID for accounting point or controllable unit",
+		}
+	}
+
+	if accountingPointBusinessID != "" && controllableUnitBusinessID != "" {
+		return &errorMessage{ //nolint:exhaustruct
+			Message: "request contains business IDs for both accounting point and controllable unit",
+		}
+	}
+
+	// no nil pointers so we can trust the (now validated) input for the rest of
+	// the CU lookup process
+	cuLookupRequestBody.EndUserBusinessID = &endUserBusinessID
+	cuLookupRequestBody.ControllableUnitBusinessID = &controllableUnitBusinessID
+	cuLookupRequestBody.AccountingPointBusinessID = &accountingPointBusinessID
+
+	return nil
 }
 
 // writeErrorToResponseWriter writes an error message as JSON in the response
@@ -479,5 +556,12 @@ func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
 	writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 		Message: "Not Found " + req.URL.Path,
+	})
+}
+
+// writeInternalServerError writes a generic HTTP 500 response.
+func writeInternalServerError(w http.ResponseWriter) {
+	writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
+		Message: "Try again later",
 	})
 }

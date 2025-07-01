@@ -5,11 +5,11 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ControllableUnitLookupResponseTechnicalResourcesItem")
+T = TypeVar("T", bound="ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem")
 
 
 @_attrs_define
-class ControllableUnitLookupResponseTechnicalResourcesItem:
+class ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem:
     """
     Attributes:
         id (int): The surrogate key of the technical resource. Example: 17.
@@ -51,14 +51,14 @@ class ControllableUnitLookupResponseTechnicalResourcesItem:
 
         details = d.pop("details", UNSET)
 
-        controllable_unit_lookup_response_technical_resources_item = cls(
+        controllable_unit_lookup_response_controllable_units_item_technical_resources_item = cls(
             id=id,
             name=name,
             details=details,
         )
 
-        controllable_unit_lookup_response_technical_resources_item.additional_properties = d
-        return controllable_unit_lookup_response_technical_resources_item
+        controllable_unit_lookup_response_controllable_units_item_technical_resources_item.additional_properties = d
+        return controllable_unit_lookup_response_controllable_units_item_technical_resources_item
 
     @property
     def additional_keys(self) -> List[str]:

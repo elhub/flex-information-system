@@ -1,6 +1,22 @@
 # Changelog
 
+This changelog tracks all changes that are visible in our API.
+
 <!-- markdownlint-disable MD013 -->
+
+## 01.07.2025
+
+* **Changed the body format of the response for the _Controllable Unit Lookup_ operation.**  
+  The operation now returns technical information about the accounting point and
+  the end user in addition to controllable units and technical resources.
+  The operation can also return HTTP 403 when the given arguments do not match
+  each other.
+
+## 26.06.2025
+
+* **Specified the `data` field in the _Notice_ resource.**  
+  The field turns into an `object`, whose content depends on the `type` of the
+  notice.
 
 ## 03.06.2025
 

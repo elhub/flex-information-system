@@ -5,7 +5,6 @@ import {
   RecordContextProvider,
   Button,
   useRecordContext,
-  ReferenceField,
 } from "react-admin";
 import { Link, useLocation } from "react-router-dom";
 import { Typography, Stack, Card, Box } from "@mui/material";
@@ -72,25 +71,13 @@ const ControllableUnitLookupResultItem = () => {
           direction="row"
           flexWrap="wrap"
           allowAll
-          resource="controllable_unit_lookup_response"
+          hideTooltips
         >
           <TextField source="id" label="ID" />
           <TextField source="business_id" label="Business ID" />
-          <TextField source="accounting_point_id" label="Accounting point ID" />
-          <ReferenceField
-            source="accounting_point_id"
-            reference="accounting_point"
-          >
-            <TextField source="business_id" />
-          </ReferenceField>
-          <TextField source="end_user_id" />
           <TextField source="name" />
         </FieldStack>
-        <FieldStack
-          spacing={2}
-          allowAll
-          resource="controllable_unit_lookup_response"
-        >
+        <FieldStack spacing={2} allowAll hideTooltips>
           <TechnicalResourceList
             source="technical_resources"
             data={record.technical_resources}
@@ -109,18 +96,64 @@ export const ControllableUnitLookupResult = () => {
   } = useLocation();
 
   return (
-    <>
-      <Title title="Controllable Unit Lookup Result" />
-      <Box m={1} />
-      <Typography variant="h6">Controllable units found</Typography>
-      <Box m={1} />
+    <RecordContextProvider value={result}>
       <Stack spacing={2}>
-        {result.map((record: any) => (
-          <RecordContextProvider key={record.id} value={record}>
-            <ControllableUnitLookupResultItem />
-          </RecordContextProvider>
-        ))}
+        <Box m={1} />
+        <Title title="Controllable Unit Lookup Result" />
+        <Typography variant="h6">Technical information</Typography>
+        <Stack direction="row" spacing={2}>
+          <Card>
+            <Box m={2}>
+              <Stack spacing={2}>
+                <Typography variant="h6">Accounting point</Typography>
+                <FieldStack
+                  spacing={2}
+                  direction="row"
+                  flexWrap="wrap"
+                  allowAll
+                  hideTooltips
+                >
+                  <TextField source="accounting_point.id" label="ID" />
+                  <TextField
+                    source="accounting_point.business_id"
+                    label="Business ID"
+                  />
+                </FieldStack>
+              </Stack>
+            </Box>
+          </Card>
+          <Card>
+            <Box m={2}>
+              <Stack spacing={2}>
+                <Typography variant="h6">End user</Typography>
+                <FieldStack
+                  spacing={2}
+                  direction="row"
+                  flexWrap="wrap"
+                  allowAll
+                  hideTooltips
+                >
+                  <TextField source="end_user.id" label="ID" />
+                </FieldStack>
+              </Stack>
+            </Box>
+          </Card>
+        </Stack>
+        {result.controllable_units.length == 0 ? (
+          <Typography variant="h6">No controllable units found</Typography>
+        ) : (
+          <>
+            <Typography variant="h6">Controllable units found</Typography>
+            <Stack spacing={2}>
+              {result.controllable_units.map((record: any) => (
+                <RecordContextProvider key={record.id} value={record}>
+                  <ControllableUnitLookupResultItem />
+                </RecordContextProvider>
+              ))}
+            </Stack>
+          </>
+        )}
       </Stack>
-    </>
+    </RecordContextProvider>
   );
 };
