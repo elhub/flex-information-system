@@ -6,6 +6,9 @@ This changelog tracks all changes that are visible in our API.
 
 ## 01.07.2025
 
+* **Added audit fields and history on the _Entity_ resource.**  
+  The resource can now be created and updated by users with the FISO role.
+
 * **Changed the body format of the response for the _Controllable Unit Lookup_ operation.**  
   The operation now returns technical information about the accounting point and
   the end user in addition to controllable units and technical resources.
