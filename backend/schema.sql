@@ -138,7 +138,9 @@ CREATE TABLE entity (
     business_id text NOT NULL,
     business_id_type text NOT NULL,
     name text NOT NULL,
-    type text NOT NULL
+    type text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
 );
 CREATE TABLE entity_client (
     id bigint NOT NULL,

@@ -1135,7 +1135,15 @@
             "entity_update_request": {
                 "summary": "Update - Entity",
                 "description": "Request schema for update operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
-                "type": "object"
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Name of the entity. Maximum 128 characters.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "John Smith"
+                    }
+                }
             },
             "entity_create_data": {
                 "summary": "Create data - Entity",
@@ -1157,12 +1165,6 @@
                                 "format": "text",
                                 "type": "string",
                                 "example": "pid"
-                            },
-                            "name": {
-                                "description": "Name of the entity. Maximum 128 characters.",
-                                "format": "text",
-                                "type": "string",
-                                "example": "John Smith"
                             },
                             "type": {
                                 "description": "The type of the entity, e.g Person, Organisation",
@@ -1210,6 +1212,9 @@
                                 "example": 14
                             }
                         }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
                     }
                 ],
                 "type": "object"
@@ -1227,7 +1232,9 @@
                             "business_id",
                             "business_id_type",
                             "name",
-                            "type"
+                            "type",
+                            "recorded_at",
+                            "recorded_by"
                         ]
                     }
                 ],
@@ -8125,6 +8132,98 @@
                             }
                         },
                         "description": "Internal Server Error"
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "update_entity",
+                "summary": "Update Entity",
+                "description": "",
+                "tags": [
+                    "entity"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/entity_update_request"
+                            }
+                        }
+                    },
+                    "description": "entity",
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "content": {},
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
                     }
                 }
             }

@@ -465,6 +465,8 @@ resources:
       - list
       - read
       - create
+      - update
+    audit: true
     generate_views: true
     properties:
       id:
@@ -496,7 +498,6 @@ resources:
         description: Name of the entity. Maximum 128 characters.
         format: text
         type: string
-        x-no-update: true
         example: John Smith
       type:
         description: The type of the entity, e.g Person, Organisation

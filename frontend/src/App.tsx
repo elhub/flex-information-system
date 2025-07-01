@@ -455,6 +455,15 @@ export const App = () => (
                 (null as any)
               )
             }
+            edit={
+              permissions.includes("entity.update") ? (
+                <Edit mutationMode="pessimistic">
+                  <EntityInput />
+                </Edit>
+              ) : (
+                (null as any)
+              )
+            }
             recordRepresentation="name"
           >
             {/* client subresource */}

@@ -111,6 +111,8 @@ type Entity struct {
 	BusinessIDType string
 	Name           string
 	Type           string
+	RecordedBy     int
+	RecordedAt     pgtype.Timestamptz
 }
 
 type EntityClient struct {

@@ -20,37 +20,37 @@ class EntityCreateRequest:
     * Organisation
 
         Attributes:
+            name (Union[Unset, str]): Name of the entity. Maximum 128 characters. Example: John Smith.
             business_id (Union[Unset, str]): The business identifier of the entity. Format depends on `business_id_type`.
                 Example: 13370000000.
             business_id_type (Union[Unset, str]): The type of the business identifier. Example: pid.
-            name (Union[Unset, str]): Name of the entity. Maximum 128 characters. Example: John Smith.
             type (Union[Unset, str]): The type of the entity, e.g Person, Organisation Example: person.
     """
 
+    name: Union[Unset, str] = UNSET
     business_id: Union[Unset, str] = UNSET
     business_id_type: Union[Unset, str] = UNSET
-    name: Union[Unset, str] = UNSET
     type: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        name = self.name
+
         business_id = self.business_id
 
         business_id_type = self.business_id_type
-
-        name = self.name
 
         type = self.type
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if name is not UNSET:
+            field_dict["name"] = name
         if business_id is not UNSET:
             field_dict["business_id"] = business_id
         if business_id_type is not UNSET:
             field_dict["business_id_type"] = business_id_type
-        if name is not UNSET:
-            field_dict["name"] = name
         if type is not UNSET:
             field_dict["type"] = type
 
@@ -59,18 +59,18 @@ class EntityCreateRequest:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        name = d.pop("name", UNSET)
+
         business_id = d.pop("business_id", UNSET)
 
         business_id_type = d.pop("business_id_type", UNSET)
 
-        name = d.pop("name", UNSET)
-
         type = d.pop("type", UNSET)
 
         entity_create_request = cls(
+            name=name,
             business_id=business_id,
             business_id_type=business_id_type,
-            name=name,
             type=type,
         )
 

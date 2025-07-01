@@ -3,6 +3,8 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
+    EntityCreateRequest,
+    EntityUpdateRequest,
     EntityResponse,
     ErrorMessage,
     PartyMembershipCreateRequest,
@@ -12,6 +14,8 @@ from flex.models import (
 from flex.api.entity import (
     read_entity,
     list_entity,
+    create_entity,
+    update_entity,
 )
 from flex.api.party_membership import (
     create_party_membership,
@@ -19,6 +23,8 @@ from flex.api.party_membership import (
 )
 import pytest
 from typing import cast
+import random
+import string
 
 
 @pytest.fixture
@@ -44,6 +50,173 @@ def test_entity_fiso(sts):
     assert isinstance(e2, list)
     assert len(e2) == 1
     assert e2[0] == e
+
+    # cannot create entities with whatever business ID type
+
+    def random_email():
+        return (
+            "".join([random.choice(string.ascii_lowercase) for _ in range(10)])
+            + "@example.com"
+        )
+
+    def random_number(length):
+        return "".join([random.choice(string.digits) for _ in range(length)])
+
+    def random_gsrn():
+        return "9" + random_number(17)
+
+    def random_org():
+        return "8" + random_number(8)
+
+    def random_pid():
+        return "4" + random_number(10)
+
+    # organisation -> only org
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_pid(),
+            business_id_type="pid",
+            type="organisation",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_gsrn(),
+            business_id_type="gsrn",
+            type="organisation",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_pid(),
+            business_id_type="org",
+            type="organisation",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_org(),
+            business_id_type="pid",
+            type="organisation",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity VALID ORG",
+            business_id=random_org(),
+            business_id_type="org",
+            type="organisation",
+        ),
+    )
+    assert isinstance(e, EntityResponse)
+
+    # person -> email or pid
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_gsrn(),
+            business_id_type="gsrn",
+            type="person",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_org(),
+            business_id_type="org",
+            type="person",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_org(),
+            business_id_type="pid",
+            type="person",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_email(),
+            business_id_type="pid",
+            type="person",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity",
+            business_id=random_pid(),
+            business_id_type="email",
+            type="person",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity VALID EMAIL",
+            business_id=random_email(),
+            business_id_type="email",
+            type="person",
+        ),
+    )
+    assert isinstance(e, EntityResponse)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity VALID PID",
+            business_id=random_pid(),
+            business_id_type="pid",
+            type="person",
+        ),
+    )
+    assert isinstance(e, EntityResponse)
+
+    # update OK
+
+    u = update_entity.sync(
+        client=client_fiso,
+        id=cast(int, e.id),
+        body=EntityUpdateRequest(
+            name="Test Entity Updated",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
 
 def test_entity_com(sts):

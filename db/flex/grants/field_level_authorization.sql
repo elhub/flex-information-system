@@ -22,6 +22,10 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT ON TABLE flex.entity
 TO flex_flexibility_information_system_operator;
 
+-- changeset flex:flex-grant-entity-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE flex.entity
+TO flex_flexibility_information_system_operator;
+
 -- changeset flex:flex-grant-entity-mo-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.entity
 TO flex_market_operator;
