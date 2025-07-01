@@ -2,7 +2,6 @@ package data
 
 import (
 	"bytes"
-	"context"
 	_ "embed"
 	"encoding/json"
 	"flex/auth"
@@ -272,21 +271,64 @@ func (data *api) controllableUnitLookupHandler(
 	defer tx.Rollback(ctx)
 	queries := models.New(tx)
 
-	errorCode, errorMsg := controllableUnitLookupCheckArgumentsMatch(
-		ctx, queries, endUserBusinessID, controllableUnitBusinessID, accountingPointBusinessID,
-	)
-	if errorCode != nil {
-		if *errorCode == http.StatusInternalServerError {
-			writeInternalServerError(w)
-		} else {
-			writeErrorToResponseWriter(w, *errorCode, *errorMsg)
+	// get accounting point data
+
+	var accountingPointID int
+	if controllableUnitBusinessID != "" {
+		currentAP, err := queries.GetCurrentControllableUnitAccountingPoint(
+			ctx, controllableUnitBusinessID,
+		)
+		if err != nil {
+			slog.InfoContext(
+				ctx, "controllable unit does not exist",
+				"business_id", controllableUnitBusinessID,
+			)
+			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+				Message: "controllable unit does not exist",
+			})
+			return
 		}
+
+		accountingPointID = currentAP.AccountingPointID
+		accountingPointBusinessID = currentAP.AccountingPointBusinessID
+	} else {
+		accountingPointID, err = queries.GetAccountingPointIDFromBusinessID(
+			ctx, accountingPointBusinessID,
+		)
+		if err != nil {
+			slog.InfoContext(
+				ctx, "accounting point does not exist",
+				"business_id", accountingPointBusinessID,
+			)
+			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+				Message: "accounting point does not exist",
+			})
+			return
+		}
+	}
+
+	// check end user matches and get their ID
+
+	endUserID, err := queries.ControllableUnitLookupCheckEndUserMatchesAccountingPoint(
+		ctx, endUserBusinessID, accountingPointBusinessID,
+	)
+	if err != nil {
+		slog.InfoContext(
+			ctx, "end user does not match accounting point",
+			"end_user_business_id", endUserBusinessID,
+			"controllable_unit_business_id", controllableUnitBusinessID,
+			"accounting_point_business_id", accountingPointBusinessID,
+		)
+		writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
+			Message: "end user does not match accounting point / controllable unit",
+		})
 		return
 	}
 
-	cuLookup, err := queries.ControllableUnitLookup(
+	// get controllable unit(s)
+
+	controllableUnits, err := queries.ControllableUnitLookup(
 		ctx,
-		endUserBusinessID,
 		controllableUnitBusinessID,
 		accountingPointBusinessID,
 	)
@@ -301,7 +343,11 @@ func (data *api) controllableUnitLookupHandler(
 		return
 	}
 
-	reformattedCULookup, err := ReformatControllableUnitLookupResult(cuLookup)
+	// build response from all the data
+
+	reformattedCULookup, err := ReformatControllableUnitLookupResult(
+		accountingPointID, accountingPointBusinessID, endUserID, controllableUnits,
+	)
 	if err != nil {
 		slog.ErrorContext(
 			ctx, "could not reformat controllable unit lookup result", "error", err,
@@ -375,115 +421,6 @@ func controllableUnitLookupValidateInput( //nolint:cyclop
 	cuLookupRequestBody.AccountingPointBusinessID = &accountingPointBusinessID
 
 	return nil
-}
-
-// controllableUnitLookupCheckArgumentsMatch checks that the arguments in the
-// controllable unit lookup request body match actual resources in the system
-// and make sense as arguments of a lookup together.
-func controllableUnitLookupCheckArgumentsMatch( //nolint:funlen
-	ctx context.Context,
-	queries *models.Queries,
-	endUserBusinessID string,
-	controllableUnitBusinessID string,
-	accountingPointBusinessID string,
-) (*int, *errorMessage) {
-	var errorCode int
-
-	if controllableUnitBusinessID != "" { //nolint:nestif
-		exists, err := queries.ControllableUnitLookupCheckControllableUnitExists(
-			ctx, controllableUnitBusinessID,
-		)
-		if err != nil {
-			slog.ErrorContext(
-				ctx, "controllable unit existence check failed", "error", err,
-			)
-			errorCode = http.StatusInternalServerError
-			return &errorCode, nil
-		}
-
-		if !exists {
-			slog.InfoContext(
-				ctx, "controllable unit does not exist",
-				"business_id", controllableUnitBusinessID,
-			)
-			errorCode = http.StatusNotFound
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "controllable unit does not exist",
-			}
-		}
-
-		matches, err := queries.ControllableUnitLookupCheckEndUserMatchesControllableUnit(
-			ctx, endUserBusinessID, controllableUnitBusinessID,
-		)
-		if err != nil {
-			slog.ErrorContext(
-				ctx, "failed check of matching between end user and controllable unit",
-				"error", err,
-			)
-			errorCode = http.StatusInternalServerError
-			return &errorCode, nil
-		}
-
-		if !matches {
-			slog.InfoContext(
-				ctx, "end user does not match controllable unit",
-				"end_user_business_id", endUserBusinessID,
-				"controllable_unit_business_id", controllableUnitBusinessID,
-			)
-			errorCode = http.StatusForbidden
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "end user does not match controllable unit",
-			}
-		}
-	} else {
-		exists, err := queries.ControllableUnitLookupCheckAccountingPointExists(
-			ctx, accountingPointBusinessID,
-		)
-		if err != nil {
-			slog.ErrorContext(
-				ctx, "accounting point existence check failed", "error", err,
-			)
-			errorCode = http.StatusInternalServerError
-			return &errorCode, nil
-		}
-
-		if !exists {
-			slog.InfoContext(
-				ctx, "accounting point does not exist",
-				"business_id", accountingPointBusinessID,
-			)
-			errorCode = http.StatusNotFound
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "accounting point does not exist",
-			}
-		}
-
-		matches, err := queries.ControllableUnitLookupCheckEndUserMatchesAccountingPoint(
-			ctx, endUserBusinessID, accountingPointBusinessID,
-		)
-		if err != nil {
-			slog.ErrorContext(
-				ctx, "failed check of matching between end user and accounting point",
-				"error", err,
-			)
-			errorCode = http.StatusInternalServerError
-			return &errorCode, nil
-		}
-
-		if !matches {
-			slog.InfoContext(
-				ctx, "end user does not match accounting point",
-				"end_user_business_id", endUserBusinessID,
-				"accounting_point_business_id", accountingPointBusinessID,
-			)
-			errorCode = http.StatusForbidden
-			return &errorCode, &errorMessage{ //nolint:exhaustruct
-				Message: "end user does not match accounting point",
-			}
-		}
-	}
-
-	return nil, nil
 }
 
 // writeErrorToResponseWriter writes an error message as JSON in the response

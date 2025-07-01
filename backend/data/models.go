@@ -2,7 +2,6 @@ package data
 
 import (
 	"encoding/json"
-	"flex/data/models"
 )
 
 // controllableUnitLookupRequest is the expected format for the body of the
@@ -43,9 +42,9 @@ type controllableUnit struct {
 	TechnicalResources []technicalResource `json:"technical_resources"`
 }
 
-// ControllableUnitLookup is the format of a valid response in the controllable
-// unit lookup operation.
-type ControllableUnitLookup struct {
+// ControllableUnitLookupResponse is the format of a valid response in the
+// controllable unit lookup operation.
+type ControllableUnitLookupResponse struct {
 	AccountingPoint   accountingPoint    `json:"accounting_point"`
 	EndUser           endUser            `json:"end_user"`
 	ControllableUnits []controllableUnit `json:"controllable_units"`
@@ -55,30 +54,25 @@ type ControllableUnitLookup struct {
 // controllable unit lookup operation into the response format expected in the
 // API specification.
 func ReformatControllableUnitLookupResult(
-	cuLookup models.ControllableUnitLookupRow,
-) (*ControllableUnitLookup, error) {
+	accountingPointID int,
+	accountingPointBusinessID string,
+	endUserID int,
+	controllableUnitsJSON []byte,
+) (*ControllableUnitLookupResponse, error) {
 	var controllableUnits []controllableUnit
 
-	err := json.Unmarshal(cuLookup.ControllableUnits, &controllableUnits)
+	err := json.Unmarshal(controllableUnitsJSON, &controllableUnits)
 	if err != nil {
 		return nil, err //nolint:wrapcheck
 	}
 
-	// for _, cu := range cuLookup.ControllableUnits {
-	// 	var controllableUnit
-	// 	if err := json.Unmarshal(cu, &controllableUnit); err != nil {
-	// 		return nil, err //nolint:wrapcheck
-	// 	}
-	// 	controllableUnits = append(controllableUnits, controllableUnit)
-	// }
-
-	return &ControllableUnitLookup{
+	return &ControllableUnitLookupResponse{
 		AccountingPoint: accountingPoint{
-			ID:         cuLookup.AccountingPointID,
-			BusinessID: cuLookup.AccountingPointBusinessID,
+			ID:         accountingPointID,
+			BusinessID: accountingPointBusinessID,
 		},
 		EndUser: endUser{
-			ID: cuLookup.EndUserID,
+			ID: endUserID,
 		},
 		ControllableUnits: controllableUnits,
 	}, nil
