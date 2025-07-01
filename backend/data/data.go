@@ -560,6 +560,6 @@ func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
 // writeInternalServerError writes a generic HTTP 500 response.
 func writeInternalServerError(w http.ResponseWriter) {
 	writeErrorToResponseWriter(w, http.StatusInternalServerError, errorMessage{ //nolint:exhaustruct
-		Message: "try again later",
+		Message: "Try again later",
 	})
 }
