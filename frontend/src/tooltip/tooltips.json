@@ -185,12 +185,9 @@
         "accounting_point": "The accounting point ID of the controllable unit(s) to lookup. `GSRN` metering point id."
     },
     "controllable_unit_lookup_response": {
-        "id": "The surrogate key of the controllable unit.",
-        "business_id": "The business ID of the controllable unit.",
-        "name": "The name of the controllable unit.",
-        "accounting_point_id": "The accounting point behind which the controllable unit is located.",
-        "end_user_id": "Technical ID of the end user on the accounting point where the controllable unit is located.",
-        "technical_resources": "The technical resources belonging to the controllable unit."
+        "accounting_point": "The accounting point behind which the controllable units are located.",
+        "end_user": "The end user on the accounting point where the controllable units are located.",
+        "controllable_units": "The controllable units that were found for the given end user or accounting point."
     },
     "timeline_multi_range": null,
     "notice_data_valid_time_outside_contract": {

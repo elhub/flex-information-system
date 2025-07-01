@@ -7,10 +7,16 @@ import { FieldTooltip } from "../tooltip/FieldTooltip";
 // fields based on permissions
 export const FieldStack = (props: any) => {
   const resourceFromContext = useResourceContext();
-  const { children, ...rest } = props;
+  const {
+    children,
+    allowAll: allowAllProp,
+    hideTooltips: hideTooltipsProp,
+    ...rest
+  } = props;
   const { permissions } = usePermissions();
 
-  const allowAll = props.allowAll ?? false;
+  const allowAll = allowAllProp ?? false;
+  const hideTooltips = hideTooltipsProp ?? false;
   const resource = props.resource ?? resourceFromContext;
 
   const addPermissionToField = (field: any) =>
@@ -18,7 +24,9 @@ export const FieldStack = (props: any) => {
       permissions.includes(`${resource}.${field.props.source}.read`)) && (
       <>
         <Labeled>{field}</Labeled>
-        <FieldTooltip resource={resource} field={field.props.source} />
+        {!hideTooltips && (
+          <FieldTooltip resource={resource} field={field.props.source} />
+        )}
       </>
     );
 

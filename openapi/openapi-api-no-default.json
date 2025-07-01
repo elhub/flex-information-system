@@ -176,7 +176,8 @@
                         "description": "Birth number or organisation number of the end user.",
                         "format": "text",
                         "type": "string",
-                        "example": "8d4bde5a-decc-4e92-9a04-a64f258921f0"
+                        "pattern": "^[1-9]([0-9]{8}|[0-9]{10})$",
+                        "example": "133700008"
                     },
                     "controllable_unit": {
                         "description": "The business ID of the controllable unit to lookup.",
@@ -202,75 +203,113 @@
                 "description": "Response schema for controllable unit lookup operations",
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "description": "The surrogate key of the controllable unit.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 11
+                    "accounting_point": {
+                        "description": "The accounting point behind which the controllable units are located.",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "description": "The surrogate key of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 100351
+                            },
+                            "business_id": {
+                                "description": "The GSRN metering point ID of the accounting point.",
+                                "format": "text",
+                                "type": "string",
+                                "pattern": "^[1-9][0-9]{17}$",
+                                "example": "709000000000000057"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "business_id"
+                        ]
                     },
-                    "business_id": {
-                        "description": "The business ID of the controllable unit.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "53919b79-876f-4dad-8bde-b29368367604"
+                    "end_user": {
+                        "description": "The end user on the accounting point where the controllable units are located.",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "description": "The surrogate key of the end user.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 11
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
                     },
-                    "name": {
-                        "description": "The name of the controllable unit.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "Car Charger #54"
-                    },
-                    "accounting_point_id": {
-                        "description": "The accounting point behind which the controllable unit is located.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 100351
-                    },
-                    "end_user_id": {
-                        "description": "Technical ID of the end user on the accounting point where the controllable unit is located.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 11
-                    },
-                    "technical_resources": {
-                        "description": "The technical resources belonging to the controllable unit.",
+                    "controllable_units": {
+                        "description": "The controllable units that were found for the given end user or accounting point.",
                         "type": "array",
                         "items": {
                             "type": "object",
                             "properties": {
                                 "id": {
-                                    "description": "The surrogate key of the technical resource.",
+                                    "description": "The surrogate key of the controllable unit.",
                                     "format": "bigint",
                                     "type": "integer",
-                                    "example": 17
+                                    "example": 11
+                                },
+                                "business_id": {
+                                    "description": "The business ID of the controllable unit.",
+                                    "format": "text",
+                                    "type": "string",
+                                    "example": "53919b79-876f-4dad-8bde-b29368367604"
                                 },
                                 "name": {
-                                    "description": "The name of the technical resource.",
+                                    "description": "The name of the controllable unit.",
                                     "format": "text",
                                     "type": "string",
-                                    "example": "Battery Unit A"
+                                    "example": "Car Charger #54"
                                 },
-                                "details": {
-                                    "description": "Additional details about the technical resource.",
-                                    "format": "text",
-                                    "type": "string",
-                                    "example": "16A"
+                                "technical_resources": {
+                                    "description": "The technical resources belonging to the controllable unit.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "description": "The surrogate key of the technical resource.",
+                                                "format": "bigint",
+                                                "type": "integer",
+                                                "example": 17
+                                            },
+                                            "name": {
+                                                "description": "The name of the technical resource.",
+                                                "format": "text",
+                                                "type": "string",
+                                                "example": "Battery Unit A"
+                                            },
+                                            "details": {
+                                                "description": "Additional details about the technical resource.",
+                                                "format": "text",
+                                                "type": "string",
+                                                "example": "16A"
+                                            }
+                                        },
+                                        "required": [
+                                            "id",
+                                            "name"
+                                        ]
+                                    }
                                 }
                             },
                             "required": [
                                 "id",
-                                "name"
+                                "business_id",
+                                "name",
+                                "technical_resources"
                             ]
                         }
                     }
                 },
                 "required": [
-                    "id",
-                    "business_id",
-                    "name",
-                    "accounting_point_id",
-                    "end_user_id",
-                    "technical_resources"
+                    "accounting_point",
+                    "end_user",
+                    "controllable_units"
                 ]
             },
             "timeline_multi_range": {
@@ -3249,10 +3288,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/controllable_unit_lookup_response"
-                                    }
+                                    "$ref": "#/components/schemas/controllable_unit_lookup_response"
                                 }
                             }
                         },
@@ -3277,6 +3313,16 @@
                             }
                         },
                         "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
                     },
                     "404": {
                         "content": {
