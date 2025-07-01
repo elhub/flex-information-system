@@ -46,67 +46,65 @@ else "Add or update Technical Resource"
 end
     |||
 
-loop All Impacted System Operators
+loop All Impacted and Procuring System Operators
     |||
-    FIS --> SO: Notify update to ISO
+    FIS --> SO: Notify update to ISO and PSO
     note left
-        ISOs are notified, but does <b>not</b>
-        take part in grid validations.
+        ISOs and PSOs are notified, but does
+        <b>not</b> take part in grid validation.
     end note
     |||
 end
-FIS --> SO: Notify update to PSO
 FIS --> SO: Notify update to CSO
 deactivate FIS
 
 == Controllable Unit Grid Validation ==
 
-activate SO 
+activate SO
     |||
-note right
-    CSO reviews the change and 
-    evaluates if the update triggers 
+note over SO
+    CSO reviews the change and
+    evaluates if the update triggers
     the need for new grid validation.
 end note
 
-note over SO
-    If not needed, CSO initiates 
-    updates last validated time.
-end note
-
-SO -> FIS: Update last validated time
-activate FIS
-FIS --> SO: OK
-FIS --> SP: Notify last validated time updated
-deactivate FIS
-|||
-
-note over SO
-    If needed, CSO initiates grid validation
-    without undue delay.
-end note
-
-loop When status changes
-    SO -> FIS: Update FIS with status
-    deactivate SO
+alt "No grid validation needed"
+    |||
+    SO -> FIS: Update last validated time
     note left
-        Relevant statuses:
-
-        - pending
-        - in progress
-        - incomplete_information
-        - validated
-        - validation_failed
-
-        The CSO should add notes and update
-        last validated time when relevant.
+        Updating last validated time allows
+        the FIS and SP to know that the
+        CSO has reviewed the update.
     end note
     activate FIS
     FIS --> SO: OK
-    FIS --> SP: Notify SP grid validation status updated
+    FIS --> SP: Notify last validated time updated
     deactivate FIS
     |||
-end
+else "Grid validation needed"
+    |||
+    loop When status changes
+        SO -> FIS: Update FIS with status
+        deactivate SO
+        note left
+            Relevant statuses:
 
+            - pending
+            - in progress
+            - incomplete_information
+            - validated
+            - validation_failed
+
+            The CSO should add notes and update
+            last validated time when relevant.
+        end note
+        activate FIS
+        FIS --> SO: OK
+        FIS --> SP: Notify SP grid validation status updated
+        deactivate FIS
+        |||
+    end
+    |||
+end
 
 @enduml
