@@ -255,13 +255,6 @@ func (data *api) controllableUnitLookupHandler(
 	controllableUnitBusinessID := *cuLookupRequestBody.ControllableUnitBusinessID
 	accountingPointBusinessID := *cuLookupRequestBody.AccountingPointBusinessID
 
-	slog.InfoContext(
-		ctx, "will lookup controllable unit",
-		"end_user_business_id", endUserBusinessID,
-		"accounting_point_business_id", accountingPointBusinessID,
-		"controllable_unit_business_id", controllableUnitBusinessID,
-	)
-
 	tx, err := data.db.Begin(ctx)
 	if err != nil {
 		slog.ErrorContext(ctx, "could not start transaction", "error", err)
@@ -313,12 +306,6 @@ func (data *api) controllableUnitLookupHandler(
 		ctx, endUserBusinessID, accountingPointBusinessID,
 	)
 	if err != nil {
-		slog.InfoContext(
-			ctx, "end user does not match accounting point",
-			"end_user_business_id", endUserBusinessID,
-			"controllable_unit_business_id", controllableUnitBusinessID,
-			"accounting_point_business_id", accountingPointBusinessID,
-		)
 		writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
 			Message: "end user does not match accounting point / controllable unit",
 		})
