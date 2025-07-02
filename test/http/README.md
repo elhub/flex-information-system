@@ -35,8 +35,6 @@ You now have your API key.
 2. Add/modify the `rest-client.environmentVariables` as shown below.
 3. Select Environment (bottom right corner of VS Code) and select
    `flex-test.elhub.no`.
-4. Run the request by clicking on the `Send Request` link above the request
-   in the `.http` file.
 
 ```json
 "rest-client.environmentVariables": {
@@ -46,3 +44,10 @@ You now have your API key.
         }
     }
 ```
+
+### Running requests
+
+Run the request by clicking on the `Send Request` link above the request in the
+`.http` file.
+
+There are also keyboard shortcuts etc. See HTTP Client documentation for details.
