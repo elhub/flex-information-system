@@ -1,0 +1,7 @@
+POST https://{{host}}/api/v0/controllable_unit/lookup
+Authorization: Bearer {{jwt}}
+
+{
+    "accounting_point": "123456789012345678",
+    "end_user" : "123456789"
+}
