@@ -23,27 +23,30 @@ API key from the browsers cookie storage. Explained below:
 2. Log in with your user.
 3. Select the party you want to be.
 4. Open the developer tools in your browser (usually F12).
-5. Go the `Storage` tab and find the `_Host-flex_session` cookie.
-6. Copy the value of the cookie.
+5. Click on `application`
+6. Go the `Storage` tab, open `Cookies` and find the `_Host-flex_session` cookie.
+7. Copy the value of the cookie.
 
 You now have your API key.
 
 ### Add the API key in setting
 
 1. Open the settings in VS Code in JSON format. Use Ctrl + Shift + P and search
-   for "Preferences: Open Settings (JSON)".
-2. Add/modify the `rest-client.environmentVariables` as shown below.
-3. Select Environment (bottom right corner of VS Code) and select
-   `flex-test.elhub.no`.
+   for "Preferences: Open User Settings (JSON)".
+2. Add `rest-client.environmentVariables` as shown below:
 
-```json
-"rest-client.environmentVariables": {
+    ```json
+    "rest-client.environmentVariables": {
         "flex-test.elhub.no": {
             "host": "flex-test.elhub.no",
             "jwt": "<the token you copied from the cookie>",
         }
     }
-```
+    ```
+
+3. Go to `test`, open `http` and click on the test you want to run (example: `controllable_unit_lookup.http`)
+4. Select Environment (bottom right corner of VS Code) and select
+   `flex-test.elhub.no`.
 
 ### Running requests
 
