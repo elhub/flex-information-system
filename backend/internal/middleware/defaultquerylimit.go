@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-const defaultLimit = 50
+const defaultLimit = 200
 
 // DefaultQueryLimit adds a default limit query parameter to the request if not
 // provided by the client, so that we never query a whole resource at once.
