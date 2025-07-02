@@ -506,20 +506,55 @@ Policies can be in `TODO` or `PARTIAL` state either if we have not gotten to it
 yet or the current platform does not support it (e.g. we are missing a
 relation/entity).
 
-#### Time-dependent RLA
+## Time-dependent access control
 
 Some combinations of party type and resource have time-dependent access
-policies. A typical example is the service provider (SP) on a controllable unit
-(CU). The SPs contract on the CU is time-dependent, with a valid from an to
+policies.
+In such cases, instead of controlling access in a binary way (the user can or
+cannot see the resource based on some condition), access is _partially_ given,
+on the part of the timeline where the user has the required contract.
+This means that we need to make sure that _no stateful operations_ happening
+outside of the allowed partial timeline are visible to the user.
+This includes, for instance:
+
+* _former versions_ of records erased before the start of the allowed timeline;
+* _newer versions_ of records introduced after the end of the allowed timeline;
+* records _deleted_ before the start of the allowed timeline;
+* _new_ records created after the end of the allowed timeline.
+
+A typical example is the service provider (SP) on a controllable unit
+(CU). The SPs contract on the CU is time-dependent, with a valid from and to
 date. This in turn means that the SP should only have update privileges to the
 CU during the contract period, but should see the CU even after the contract has
 ended. However, an old SP should not be able to see updates to the CU fields
 done by a new SP, after their contract has ended.
 
+Several strategies are in use to implement such constraints, simplifications
+being possible in some cases depending on which operations are available on the
+resource.
+
+### Method 1: Latest visible record
+
 When fields on the resource are _not_ time-dependent, we must use audit history
 to provide access when doing _read_ operations on the main collection/resource.
 This means that we authorize data stored with record time based on the valid
-time. Lets look at an example.
+time.
+Access policies are implemented on both the main resource and its history table.
+The history view exposed in the API makes a union of both, so we can see all
+present and past records, all filtered by the policies we want on the resource.
+
+Then, we can pick from this collection based on _time_.
+For instance, we can see which records were active at a given time in the past
+by filtering the _record time_ on each line.
+
+The simplest filtering rule we can use is to just pick the
+_latest visible record_.
+This ensures that a user who can read the current records will see them instead
+of historic values, and that conversely, if they cannot see the new ones, they
+will see historic values presented as current records.
+
+Let us take the example of the controllable unit resource where access for
+service providers is based on CUSP contracts.
 
 ![Time-dependent RLA](../diagrams/time_dependent_authorization.png)
 
@@ -533,3 +568,67 @@ will see different records.
 
 * `A` will see record `2`.
 * `B` will see record `3`.
+
+!!! note "Delete operation"
+
+    A drawback of this method is that it does not handle *deleted* records well.
+    Indeed, on resources with history enabled, when records are deleted, they
+    are removed from the main table but kept in the history table.
+
+    This means that the *latest visible version* filtering method takes the
+    version of the record right before deletion and shows it in the main
+    resource, instead of not showing it at all.
+
+    Therefore, the current method cannot be used for resources supporting a
+    delete operation.
+
+### Method 2: _As-of_ query
+
+For resources that can be deleted, we introduce a more advanced mechanism.
+Instead of taking the latest visible version of each record, we take all visible
+records and only keep those that were _active at a certain date_, this date
+being the latest point in the past where the user had a contract authorising
+read access on the resource.
+We call it the _as-of timestamp_, because conceptually this turns queries to
+the resource into queries _as of_ this specific timestamp.
+
+Let us take the example of a resource managed in turn by 4 users: D, A, B, C,
+and then D again.
+
+![asof_example](../diagrams/asof_example.png)
+
+The resource has 3 records.
+The first one is updated (marked by a colour change), then deleted while B
+manages the resource; the second one is updated by A; the last one is created by
+B and never updated.
+
+We suppose the current date is 2020-07-09, midnight (marked with a change of
+background color).
+
+We need a definition for the as-of timestamp.
+Let us take the timeline with all contracts for a given user.
+Then we can define the as-of timestamp as the latest past point of this
+timeline, _i.e._:
+
+```text
+min(max(contract_timeline), now)
+```
+
+This means that this date is the end of A's contract for A, and this timestamp
+is just _now_ for all others (C and D having contracts in the future).
+Both timestamps are marked with a dotted line.
+
+This means that a query from A will give only 2 records, as R3 was not created
+when A stopped being in charge.
+Moreover, it will give R1 in its former state, because the update also happened
+after their contract came to an end.
+
+However, a query from one of the other users will give the latest state, _i.e._,
+only R2 and R3, with R2 in its latest version.
+
+It is possible to change or refine the definition of the as-of timestamp as
+needed.
+For instance, if future contracts (like the ones of C and D) are too far in the
+future, it may be judged unfair to show the current data of the resource.
+The current example is simplified by taking contracts that are very close to
+each other in time.
