@@ -1,0 +1,51 @@
+@startgantt asof_example
+scale 500 width
+Project starts 2020-06-28
+2020-06-28 to 2020-07-08 are colored in Beige
+
+-- Contracts driving authorisation for the resource --
+
+[A] starts 2020-07-01
+[A] ends 2020-07-03
+Separator just at [A]'s end
+
+[B] starts 2020-07-04
+[B] ends 2020-07-10
+
+[C] starts 2020-07-11
+[C] ends 2020-07-13
+
+[D] as [D1] starts 2020-06-28
+[D1] ends 2020-06-30
+
+[D'] as [D2] starts 2020-07-14
+[D2] ends 2020-07-17
+
+Separator just 2 days before [B]'s end
+
+-- Resource records --
+
+<style>
+ganttDiagram {
+  task {
+    BackgroundColor LightBlue
+  }
+  undone {
+    BackgroundColor YellowGreen
+  }
+}
+</style>
+
+[R1] as [R1] starts 2020-06-28
+[R1] ends 2020-07-07
+[R1] is 70% complete
+
+[R2] as [R2] starts 2020-06-28
+[R2] ends 2020-07-17
+[R2] is 20% complete
+
+[R3] as [R3] starts 2020-07-06
+[R3] ends 2020-07-17
+[R3] is 100% complete
+
+@endgantt
