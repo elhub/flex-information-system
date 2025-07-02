@@ -305,10 +305,11 @@ and can sometime be one and the same - but does have different purposes.
 
 ### Quantification
 
-Quantification is the continious activity of calculating the activated volume
+Quantification is the continious activity of calculating the delivered volume
 after *each and every* activation. The purpose of quantification is to be able
-to do settlement. Quantification is about figuring out the quantity of energy
-that was delivered.
+to do settlement. Quantification is about establishing the quantity of energy
+that was delivered, using a method that gives "good" and "fair" enough result
+for us to agree to using it.
 
 There are three main methods for quantifying the activated volume:
 
@@ -391,8 +392,7 @@ If, however, verification of volume is done for every trade, then we can also
 consider it as quantification and the result should be used for settlement. It
 is however expected that we will see that quantification is done with a
 simplified method or with a higher degree of trust than what verification
-implies. Current TSO and DSO markets both currently quantify with simplified
-methods.
+implies. Current TSO and DSO markets both quantify with simplified methods.
 
 The verification might include
 
