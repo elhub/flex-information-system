@@ -15,13 +15,17 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
+import { useState } from "react";
 
 export const ControllableUnitServiceProviderList = () => {
   // id of the controllable unit whose relations we want to get
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
-  const sort: SortPayload = { field: "valid_from", order: "DESC" };
+  const [sort, setSort] = useState<SortPayload>({
+    field: "valid_from",
+    order: "DESC",
+  });
   const { data, isLoading } = useGetList("controllable_unit_service_provider", {
     filter: { controllable_unit_id: id, "valid_from@not.is": null },
     sort,
@@ -59,12 +63,14 @@ export const ControllableUnitServiceProviderList = () => {
           actions={<ListActions />}
           exporter={false}
           empty={false}
+          sort={sort}
         >
           <Datagrid
             bulkActionButtons={false}
             data={data}
             isLoading={isLoading}
             sort={sort}
+            setSort={setSort}
             rowClick={(_id, _res, record) =>
               `/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}/show`
             }

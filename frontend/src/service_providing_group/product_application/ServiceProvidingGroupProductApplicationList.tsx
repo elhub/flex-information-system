@@ -9,10 +9,12 @@ import {
   useGetList,
   usePermissions,
   useRecordContext,
+  SortPayload,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export const ServiceProvidingGroupProductApplicationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
@@ -20,9 +22,13 @@ export const ServiceProvidingGroupProductApplicationList = () => {
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  const [sort, setSort] = useState<SortPayload>({ field: "id", order: "DESC" });
   const { data, isLoading } = useGetList(
     "service_providing_group_product_application",
-    { filter: id ? { service_providing_group_id: id } : undefined },
+    {
+      filter: id ? { service_providing_group_id: id } : undefined,
+      sort,
+    },
   );
 
   const CreateButton = () => (
@@ -58,6 +64,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
           actions={<ListActions />}
           exporter={false}
           empty={false}
+          sort={sort}
         >
           <Datagrid
             bulkActionButtons={false}
@@ -66,6 +73,8 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             rowClick={(_id, _res, record) =>
               `/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}/show`
             }
+            sort={sort}
+            setSort={setSort}
           >
             <TextField source="id" label="ID" />
             {!record?.id && (

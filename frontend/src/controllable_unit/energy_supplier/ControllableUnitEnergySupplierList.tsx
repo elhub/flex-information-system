@@ -9,13 +9,17 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { DateField } from "../../components/datetime";
+import { useState } from "react";
 
 export const ControllableUnitEnergySupplierList = () => {
   // accounting point id of the controllable unit whose ESs we want to get
   const { accounting_point_id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
-  const sort: SortPayload = { field: "valid_from", order: "ASC" };
+  const [sort, setSort] = useState<SortPayload>({
+    field: "valid_from",
+    order: "ASC",
+  });
   const filter = { accounting_point_id: accounting_point_id };
 
   return (
@@ -29,7 +33,7 @@ export const ControllableUnitEnergySupplierList = () => {
           filter={filter}
           sort={sort}
         >
-          <Datagrid bulkActionButtons={false}>
+          <Datagrid bulkActionButtons={false} sort={sort} setSort={setSort}>
             <ReferenceField source="energy_supplier_id" reference="party">
               <TextField source="name" />
             </ReferenceField>
