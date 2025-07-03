@@ -1,6 +1,7 @@
 import { fetchUtils } from "react-admin";
 
-export const serverURL = import.meta.env.VITE_FLEX_URL;
+export const serverURL =
+  window.env.VITE_FLEX_URL ?? import.meta.env.VITE_FLEX_URL;
 export const apiURL = serverURL + "/api/v0";
 export const authURL = serverURL + "/auth/v0";
 export const docsURL = "https://elhub.github.io/flex-information-system";

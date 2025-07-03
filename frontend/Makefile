@@ -7,4 +7,4 @@ dockerbuild:
 
 dockerrun:
 	@echo "visit http://localhost:8080"
-	docker run -p 8080:8080 flex-information-system-frontend
+	docker run -p 8080:8080 --rm -e 'VITE_FLEX_URL=https://test.flex.internal:6443' flex-information-system-frontend
