@@ -8,18 +8,22 @@ import {
   useGetList,
   usePermissions,
   useRecordContext,
+  SortPayload,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export const TechnicalResourceList = () => {
   // id of the controllable unit whose technical resources we want to get
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
+  const [sort, setSort] = useState<SortPayload>({ field: "id", order: "DESC" });
   const { data, isLoading } = useGetList("technical_resource", {
     filter: { controllable_unit_id: id },
+    sort,
   });
 
   // automatically fill the controllable_unit_id field with the ID of the
@@ -49,10 +53,13 @@ export const TechnicalResourceList = () => {
           actions={<ListActions />}
           exporter={false}
           empty={false}
+          sort={sort}
         >
           <Datagrid
             bulkActionButtons={false}
             data={data}
+            sort={sort}
+            setSort={setSort}
             isLoading={isLoading}
             rowClick={(_id, _res, record) =>
               `/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.id}/show`

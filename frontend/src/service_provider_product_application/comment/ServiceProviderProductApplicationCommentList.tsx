@@ -8,6 +8,7 @@ import {
   useRecordContext,
   RichTextField,
   useGetList,
+  SortPayload,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
@@ -15,6 +16,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { CircularProgress } from "@mui/material";
+import { useState } from "react";
 
 export const ServiceProviderProductApplicationCommentList = () => {
   // id of the SPPA
@@ -22,9 +24,13 @@ export const ServiceProviderProductApplicationCommentList = () => {
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  const [sort, setSort] = useState<SortPayload>({
+    field: "created_at",
+    order: "ASC",
+  });
   const { data, isLoading } = useGetList(
     "service_provider_product_application_comment",
-    { filter: { service_provider_product_application_id: id } },
+    { filter: { service_provider_product_application_id: id }, sort },
   );
 
   if (isLoading) return <CircularProgress size={25} thickness={2} />;
@@ -62,7 +68,8 @@ export const ServiceProviderProductApplicationCommentList = () => {
           <Datagrid
             bulkActionButtons={false}
             data={data}
-            sort={{ field: "created_at", order: "ASC" }}
+            sort={sort}
+            setSort={setSort}
             rowClick={(_id, _res, record) =>
               `/service_provider_product_application/${record.service_provider_product_application_id}/comment/${record.id}/show`
             }
