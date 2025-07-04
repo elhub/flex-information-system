@@ -20,10 +20,18 @@ export const ServiceProviderProductApplicationHistoryList = () => {
       <Datagrid rowClick={historyRowClick}>
         <TextField source="id" label="ID" />
         <TextField source="service_provider_product_application_id" />
-        <ReferenceField source="service_provider_id" reference="party">
+        <ReferenceField
+          source="service_provider_id"
+          reference="party"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="system_operator_id" reference="party">
+        <ReferenceField
+          source="system_operator_id"
+          reference="party"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
         <TextField source="status" />

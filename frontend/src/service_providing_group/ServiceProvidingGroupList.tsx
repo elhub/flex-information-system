@@ -12,7 +12,11 @@ export const ServiceProvidingGroupList = () => (
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
-      <ReferenceField source="service_provider_id" reference="party">
+      <ReferenceField
+        source="service_provider_id"
+        reference="party"
+        sortable={false}
+      >
         <TextField source="name" />
       </ReferenceField>
       <TextField source="status" />
@@ -20,11 +24,13 @@ export const ServiceProvidingGroupList = () => (
         reference="service_providing_group_grid_prequalification"
         target="service_providing_group_id"
         label="Grid prequalification"
+        sortable={false}
       >
         <Datagrid empty={<span>No grid prequalification</span>}>
           <ReferenceField
             source="impacted_system_operator_id"
             reference="party"
+            sortable={false}
           >
             <TextField source="name" />
           </ReferenceField>
@@ -35,9 +41,14 @@ export const ServiceProvidingGroupList = () => (
         reference="service_providing_group_product_application"
         target="service_providing_group_id"
         label="Product application"
+        sortable={false}
       >
         <Datagrid empty={<span>No product application</span>}>
-          <ReferenceField source="system_operator_id" reference="party">
+          <ReferenceField
+            source="procuring_system_operator_id"
+            reference="party"
+            sortable={false}
+          >
             <TextField source="name" />
           </ReferenceField>
           <TextField source="status" />

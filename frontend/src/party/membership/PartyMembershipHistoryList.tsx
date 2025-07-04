@@ -35,10 +35,20 @@ export const PartyMembershipHistoryList = () => {
       >
         <TextField source="id" label="ID" />
         <TextField source="party_membership_id" />
-        <ReferenceField source="entity_id" reference="entity" link="show">
+        <ReferenceField
+          source="entity_id"
+          reference="entity"
+          link="show"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="party_id" reference="party" link="show">
+        <ReferenceField
+          source="party_id"
+          reference="party"
+          link="show"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
         <DateField source="recorded_at" showTime />

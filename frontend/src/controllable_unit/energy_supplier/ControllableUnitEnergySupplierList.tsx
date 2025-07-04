@@ -27,7 +27,11 @@ export const ControllableUnitEnergySupplierList = () => {
           disableSyncWithLocation
         >
           <Datagrid bulkActionButtons={false}>
-            <ReferenceField source="energy_supplier_id" reference="party">
+            <ReferenceField
+              source="energy_supplier_id"
+              reference="party"
+              sortable={false}
+            >
               <TextField source="name" />
             </ReferenceField>
             <DateField source="valid_from" showTime />
