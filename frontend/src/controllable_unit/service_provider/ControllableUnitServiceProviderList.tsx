@@ -4,10 +4,8 @@ import {
   DeleteButton,
   ReferenceField,
   ResourceContextProvider,
-  SortPayload,
   TextField,
   TopToolbar,
-  useGetList,
   usePermissions,
   useRecordContext,
 } from "react-admin";
@@ -15,21 +13,11 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
-import { useState } from "react";
 
 export const ControllableUnitServiceProviderList = () => {
   // id of the controllable unit whose relations we want to get
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
-
-  const [sort, setSort] = useState<SortPayload>({
-    field: "valid_from",
-    order: "DESC",
-  });
-  const { data, isLoading } = useGetList("controllable_unit_service_provider", {
-    filter: { controllable_unit_id: id, "valid_from@not.is": null },
-    sort,
-  });
 
   // automatically fill the controllable_unit_id field with the ID of the
   // show page the create button is displayed on
@@ -63,14 +51,12 @@ export const ControllableUnitServiceProviderList = () => {
           actions={<ListActions />}
           exporter={false}
           empty={false}
-          sort={sort}
+          filter={{ controllable_unit_id: id, "valid_from@not.is": null }}
+          sort={{ field: "valid_from", order: "DESC" }}
+          disableSyncWithLocation
         >
           <Datagrid
             bulkActionButtons={false}
-            data={data}
-            isLoading={isLoading}
-            sort={sort}
-            setSort={setSort}
             rowClick={(_id, _res, record) =>
               `/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}/show`
             }

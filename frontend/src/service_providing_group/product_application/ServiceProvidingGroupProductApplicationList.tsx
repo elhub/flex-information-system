@@ -6,30 +6,18 @@ import {
   ResourceContextProvider,
   TextField,
   TopToolbar,
-  useGetList,
   usePermissions,
   useRecordContext,
-  SortPayload,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 export const ServiceProvidingGroupProductApplicationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
-
-  const [sort, setSort] = useState<SortPayload>({ field: "id", order: "DESC" });
-  const { data, isLoading } = useGetList(
-    "service_providing_group_product_application",
-    {
-      filter: id ? { service_providing_group_id: id } : undefined,
-      sort,
-    },
-  );
 
   const CreateButton = () => (
     <Button
@@ -64,17 +52,19 @@ export const ServiceProvidingGroupProductApplicationList = () => {
           actions={<ListActions />}
           exporter={false}
           empty={false}
-          sort={sort}
+          filter={id ? { service_providing_group_id: id } : undefined}
+          sort={{ field: "id", order: "DESC" }}
+          // disable read/writes to/from the URL by this component
+          // (necessary on pages with several List components,
+          // i.e., in our case, subresources)
+          // see https://github.com/marmelab/react-admin/pull/5741
+          disableSyncWithLocation
         >
           <Datagrid
             bulkActionButtons={false}
-            data={data}
-            isLoading={isLoading}
             rowClick={(_id, _res, record) =>
               `/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}/show`
             }
-            sort={sort}
-            setSort={setSort}
           >
             <TextField source="id" label="ID" />
             {!record?.id && (

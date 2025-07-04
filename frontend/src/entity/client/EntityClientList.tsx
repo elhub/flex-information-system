@@ -5,28 +5,19 @@ import {
   ResourceContextProvider,
   TextField,
   TopToolbar,
-  useGetList,
   usePermissions,
   useRecordContext,
-  SortPayload,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
-import { useState } from "react";
 
 export const EntityClientList = () => {
   // id of the entity
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
-
-  const [sort, setSort] = useState<SortPayload>({ field: "id", order: "DESC" });
-  const { data, isLoading } = useGetList("entity_client", {
-    filter: { entity_id: id },
-    sort,
-  });
 
   const CreateButton = () => (
     <Button
@@ -53,13 +44,11 @@ export const EntityClientList = () => {
           exporter={false}
           empty={false}
           title={false}
+          filter={{ entity_id: id }}
+          sort={{ field: "id", order: "DESC" }}
         >
           <Datagrid
             bulkActionButtons={false}
-            data={data}
-            sort={sort}
-            setSort={setSort}
-            isLoading={isLoading}
             rowClick={(_id, _res, record) =>
               `/entity/${record.entity_id}/client/${record.id}/show`
             }

@@ -2,25 +2,17 @@ import {
   List,
   ReferenceField,
   ResourceContextProvider,
-  SortPayload,
   TextField,
   usePermissions,
   useRecordContext,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { DateField } from "../../components/datetime";
-import { useState } from "react";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
   // accounting point id of the controllable unit whose BRPs we want to get
   const { accounting_point_id } = useRecordContext()!;
   const { permissions } = usePermissions();
-
-  const [sort, setSort] = useState<SortPayload>({
-    field: "valid_from",
-    order: "ASC",
-  });
-  const filter = { accounting_point_id: accounting_point_id };
 
   return (
     permissions.includes("accounting_point_balance_responsible_party.read") && (
@@ -30,10 +22,11 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
           perPage={10}
           exporter={false}
           empty={false}
-          filter={filter}
-          sort={sort}
+          filter={{ accounting_point_id: accounting_point_id }}
+          sort={{ field: "valid_from", order: "ASC" }}
+          disableSyncWithLocation
         >
-          <Datagrid bulkActionButtons={false} sort={sort} setSort={setSort}>
+          <Datagrid bulkActionButtons={false}>
             <ReferenceField
               source="balance_responsible_party_id"
               reference="party"
