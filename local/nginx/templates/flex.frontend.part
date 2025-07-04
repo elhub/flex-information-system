@@ -1,0 +1,4 @@
+# This files just used on local to use frontend-in-container
+location / {
+    proxy_pass ${NGINX_UPSTREAM_FRONTEND};
+}
