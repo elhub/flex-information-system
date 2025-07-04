@@ -1,6 +1,7 @@
 import { List, ReferenceField, SelectArrayInput, TextField } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
+import { ProductTypeArrayField } from "../product_type/components";
 
 export const ServiceProviderProductApplicationList = () => {
   const ServiceProviderProductApplicationListFilters = [
@@ -44,9 +45,12 @@ export const ServiceProviderProductApplicationList = () => {
         <ReferenceField source="system_operator_id" reference="party">
           <TextField source="name" />
         </ReferenceField>
+        <ProductTypeArrayField
+          label="Product types"
+          source="product_type_ids"
+        />
         <TextField source="status" />
         <DateField source="last_qualified" showTime />
-        <DateField source="recorded_at" showTime />
       </Datagrid>
     </List>
   );
