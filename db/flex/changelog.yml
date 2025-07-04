@@ -108,6 +108,9 @@ databaseChangeLog:
       file: ./controllable_unit_service_provider.sql
       relativeToChangelogFile: true
   - include:
+      file: ./controllable_unit_as_of.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./notification.sql
       relativeToChangelogFile: true
   - include:
