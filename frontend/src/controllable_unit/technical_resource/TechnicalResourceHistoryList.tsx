@@ -53,6 +53,7 @@ export const TechnicalResourceHistoryList = () => {
         <ReferenceField
           source="controllable_unit_id"
           reference="controllable_unit"
+          sortable={false}
         >
           <TextField source="name" />
         </ReferenceField>

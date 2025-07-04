@@ -54,7 +54,11 @@ export const PartyMembershipList = () => {
             }
           >
             <TextField source="id" label="ID" />
-            <ReferenceField source="entity_id" reference="entity">
+            <ReferenceField
+              source="entity_id"
+              reference="entity"
+              sortable={false}
+            >
               <TextField source="name" />
             </ReferenceField>
             <DateField source="recorded_at" showTime />

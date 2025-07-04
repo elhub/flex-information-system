@@ -46,7 +46,11 @@ export const ControllableUnitServiceProviderHistoryList = () => {
       >
         <TextField source="id" label="ID" />
         <TextField source="controllable_unit_service_provider_id" />
-        <ReferenceField source="service_provider_id" reference="party">
+        <ReferenceField
+          source="service_provider_id"
+          reference="party"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
         <TextField source="contract_reference" />

@@ -17,12 +17,20 @@ export const SystemOperatorProductTypeHistoryList = () => {
       empty={false}
     >
       <Datagrid rowClick={historyRowClick}>
-        <TextField source="id" />
+        <TextField source="id" label="ID" />
         <TextField source="system_operator_product_type_id" />
-        <ReferenceField source="system_operator_id" reference="party">
+        <ReferenceField
+          source="system_operator_id"
+          reference="party"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField reference="product_type" source="product_type_id" />
+        <ReferenceField
+          reference="product_type"
+          source="product_type_id"
+          sortable={false}
+        />
         <TextField source="status" />
         <DateField source="recorded_at" showTime />
         <DateField source="replaced_at" showTime />

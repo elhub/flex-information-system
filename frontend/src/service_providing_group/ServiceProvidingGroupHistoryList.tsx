@@ -19,7 +19,11 @@ export const ServiceProvidingGroupHistoryList = () => {
         <TextField source="id" />
         <TextField source="service_providing_group_id" />
         <TextField source="name" />
-        <ReferenceField source="service_provider_id" reference="party">
+        <ReferenceField
+          source="service_provider_id"
+          reference="party"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
         <TextField source="status" />

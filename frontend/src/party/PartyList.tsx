@@ -60,7 +60,7 @@ export const PartyList = () => {
       <Datagrid>
         <TextField source="id" label="ID" />
         <TextField source="business_id" label="Business ID" />
-        <ReferenceField source="entity_id" reference="entity">
+        <ReferenceField source="entity_id" reference="entity" sortable={false}>
           <TextField source="name" />
         </ReferenceField>
         <TextField source="name" />

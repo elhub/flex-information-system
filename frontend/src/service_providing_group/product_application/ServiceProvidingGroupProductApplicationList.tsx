@@ -71,6 +71,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
+                sortable={false}
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -78,10 +79,15 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             <ReferenceField
               source="procuring_system_operator_id"
               reference="party"
+              sortable={false}
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField reference="product_type" source="product_type_id" />
+            <ReferenceField
+              reference="product_type"
+              source="product_type_id"
+              sortable={false}
+            />
             <TextField source="status" />
             {permissions.includes(
               "service_providing_group_product_application.delete",

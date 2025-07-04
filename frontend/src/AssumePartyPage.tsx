@@ -133,10 +133,20 @@ export const AssumePartyPage = () => {
           <Datagrid bulkActionButtons={false}>
             <TextField label="ID" source="party_id" />
             <AssumePartyButton field="party_id" />
-            <ReferenceField label="Name" source="party_id" reference="party">
+            <ReferenceField
+              label="Name"
+              source="party_id"
+              reference="party"
+              sortable={false}
+            >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField label="Type" source="party_id" reference="party">
+            <ReferenceField
+              label="Type"
+              source="party_id"
+              reference="party"
+              sortable={false}
+            >
               <TextField source="type" />
             </ReferenceField>
           </Datagrid>

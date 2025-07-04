@@ -30,6 +30,7 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
             <ReferenceField
               source="balance_responsible_party_id"
               reference="party"
+              sortable={false}
             >
               <TextField source="name" />
             </ReferenceField>

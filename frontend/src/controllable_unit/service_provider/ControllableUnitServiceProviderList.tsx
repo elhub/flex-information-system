@@ -62,7 +62,11 @@ export const ControllableUnitServiceProviderList = () => {
             }
           >
             <TextField source="id" label="ID" />
-            <ReferenceField source="service_provider_id" reference="party">
+            <ReferenceField
+              source="service_provider_id"
+              reference="party"
+              sortable={false}
+            >
               <TextField source="name" />
             </ReferenceField>
             <TextField source="contract_reference" />
