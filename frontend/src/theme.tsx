@@ -5,6 +5,11 @@ const lightGreen = "#d6e4d5";
 const grey = "#f6f6f6";
 const orange = "#d58000";
 
+const darkColor =
+  window.env.VITE_FLEX_COLOR_DARK ??
+  import.meta.env.VITE_FLEX_COLOR_DARK ??
+  darkGreen;
+
 export const elhubTheme = {
   ...defaultLightTheme,
   sidebar: {
@@ -17,11 +22,11 @@ export const elhubTheme = {
       default: grey,
     },
     primary: {
-      main: darkGreen,
+      main: darkColor,
       contrastText: lightGreen,
     },
     secondary: {
-      main: darkGreen,
+      main: darkColor,
       contrastText: lightGreen,
     },
     error: {
