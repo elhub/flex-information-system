@@ -37,7 +37,10 @@ To do a complete upgrade of all packages we can use
 [npm-check-updates](https://www.npmjs.com/package/npm-check-updates).
 
 ```bash
+# for all dependencies
 npx npm-check-updates --upgrade
+# for devDependencies only
+npx npm-check-updates --upgrade --dep dev
 npm install
 ```
 
