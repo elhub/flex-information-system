@@ -8,6 +8,7 @@ pre-commit:
 tbls-lint:
     tbls lint
 
+# start the docker environment
 start:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -26,6 +27,13 @@ unload:
     export PGHOST=localhost
     ./db/unload.sh
 
+# docker compose pull
+pull:
+    docker compose pull
+
+# docker compose build
+build:
+    docker compose build --pull
 
 # load the database
 load: liquibase
@@ -63,17 +71,15 @@ load: liquibase
 # reload the database
 reload: unload load
 
+# docker compose stop
 stop:
     docker compose stop || true
-    docker compose rm -f
 
-pull:
-    docker compose pull
-
+# docker compose down
 down:
     docker compose down || true
 
-# stop (remove) and start the local database
+# down pull build start load
 reset: down pull build start load
 
 # start backend in dev mode
@@ -194,17 +200,6 @@ megalinter:
 
 coverage:
     .venv/bin/python test/check_coverage.py
-
-# build frontend for local
-build:
-    #!/usr/bin/env bash
-    set -euxo pipefail
-
-    ./local/scripts/build-static.sh local
-
-    rm -rf local/nginx/.html/*
-    mkdir -p local/nginx/.html
-    tar -xzf ./dist/dist.tar.gz -C ./local/nginx/.html/
 
 liquibase pghost='localhost' password='flex_password' action='update' changelog='db/changelog.yml':
     #!/usr/bin/env bash

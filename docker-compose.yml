@@ -46,26 +46,32 @@ services:
     depends_on:
       - db
   backend:
-    image: golang:1.24.3-bullseye
-    expose:
-      - "7001"
+    build: ./backend
     ports:
       - "7001:7001"
     env_file: "./local/backend/test.env"
     volumes:
       - type: bind
-        source: ${PWD}/backend
-        target: /src
-      - type: bind
         source: ${HOME}/.ca/root/ca.cert.pem
         target: /etc/ssl/certs/local-root.pem
-    command: bash -c 'go mod download && go run main.go'
-    working_dir: /src/cmd/flex/
     depends_on:
-      - db
-      - postgrest
+      db:
+        condition: service_started
+      postgrest:
+        condition: service_started
+      authelia:
+        condition: service_healthy
     extra_hosts:
       - "idp.flex.internal:host-gateway"
+  frontend:
+    build: ./frontend
+    environment:
+      VITE_FLEX_URL: https://test.flex.internal:6443
+      VITE_FLEX_COLOR_DARK: '#36454F'
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
   nginx:
     image: nginx:stable
     ports:
@@ -73,14 +79,14 @@ services:
       - "6443:6443"
     volumes:
       - type: bind
-        source: ${PWD}/local/nginx/.html
-        target: /usr/share/nginx/html/flex
-      - type: bind
         source: ${PWD}/local/nginx/nginx.conf
         target: /etc/nginx/nginx.conf
       - type: bind
         source: ${PWD}/local/nginx/templates/flex.conf
         target: /etc/nginx/templates/flex.conf.template
+      - type: bind
+        source: ${PWD}/local/nginx/templates/flex.frontend.part
+        target: /etc/nginx/templates/flex.frontend.part.template
       - type: bind
         source: ${PWD}/local/nginx/templates/default.conf
         target: /etc/nginx/templates/default.conf.template
@@ -98,6 +104,7 @@ services:
       NGINX_PORT_TLS: 6443
       NGINX_SERVER_NAME: test.flex.internal
       NGINX_UPSTREAM_POSTGREST: http://postgrest:3000
+      NGINX_UPSTREAM_FRONTEND: http://frontend:8080
       NGINX_UPSTREAM_BACKEND: http://backend:7001
       NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
       NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
@@ -107,10 +114,9 @@ services:
       - "idp.flex.internal:host-gateway"
     depends_on:
       - backend
-      - swagger
+      - frontend
   authelia:
     image: 'docker.io/authelia/authelia:latest'
-    restart: 'unless-stopped'
     ports:
       - "9091:9091"
     environment:
@@ -135,14 +141,3 @@ services:
       - type: bind
         source: ${HOME}/.ca/certificates/idp.flex.internal.key.pem
         target: /key.pem
-  swagger:
-    image: swaggerapi/swagger-ui
-    expose:
-      - "3001"
-    ports:
-      - "3001:3001"
-    environment:
-      API_URL: http://localhost:3000/
-      PORT: 3001
-    depends_on:
-      - postgrest
