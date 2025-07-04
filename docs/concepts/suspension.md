@@ -41,14 +41,16 @@ In total, our definition of suspension is:
 Suspension can happen on all levels. It can be on both regular resources and the
 one that represent relationships (like product applications).
 
-| Level                   | Aka              | Who      | Comment                           |
-|-------------------------|------------------|----------|-----------------------------------|
-| CU                      |                  | SP? CSO? | Implies unavailability??          |
-| CU membership (in SPG)  |                  | SP?      | CU can not contribute to this SPG |
-| SPG                     |                  | SP?      | SPG is unavailable for use        |
-| SPG Product Application | Prequalification | SO       |                                   |
-| SP Product Application  | Qualification    | SO       |                                   |
-| SP                      | Approval         | RME      | Must techincally be done by FISO  |
+| Level                     | Aka              | Who | Comment                           |
+|---------------------------|------------------|-----|-----------------------------------|
+| CU                        |                  | SP? | Implies unavailability??          |
+| CU Grid Validation        | CSO?             | SO  |                                   |
+| CU membership (in SPG)    |                  | SP? | CU can not contribute to this SPG |
+| SPG                       |                  | SP? | SPG is unavailable for use        |
+| SPG Grid Prequalification |                  | SO  |                                   |
+| SPG Product Application   | Prequalification | SO  |                                   |
+| SP Product Application    | Qualification    | SO  |                                   |
+| SP                        | Approval         | RME | Must techincally be done by FISO  |
 
 Service providers can also suspend their activities by simply not participating
 in the markets, but signalling suspension via FIS allows SOs to have a better
