@@ -6,28 +6,19 @@ import {
   ResourceContextProvider,
   TextField,
   TopToolbar,
-  useGetList,
   usePermissions,
   useRecordContext,
-  SortPayload,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
-import { useState } from "react";
 
 export const ServiceProvidingGroupGridPrequalificationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext()!;
   const id = record?.id;
   const { permissions } = usePermissions();
-
-  const [sort, setSort] = useState<SortPayload>({ field: "id", order: "DESC" });
-  const { data, isLoading } = useGetList(
-    "service_providing_group_grid_prequalification",
-    { filter: id ? { service_providing_group_id: id } : undefined, sort },
-  );
 
   const CreateButton = () => (
     <Button
@@ -62,14 +53,12 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
           actions={<ListActions />}
           exporter={false}
           empty={false}
-          sort={sort}
+          filter={id ? { service_providing_group_id: id } : undefined}
+          sort={{ field: "id", order: "DESC" }}
+          disableSyncWithLocation
         >
           <Datagrid
             bulkActionButtons={false}
-            data={data}
-            sort={sort}
-            setSort={setSort}
-            isLoading={isLoading}
             rowClick={(_id, _res, record) =>
               `/service_providing_group/${record.service_providing_group_id}/grid_prequalification/${record.id}/show`
             }

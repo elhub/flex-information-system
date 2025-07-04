@@ -4,10 +4,8 @@ import {
   DeleteButton,
   ReferenceField,
   ResourceContextProvider,
-  SortPayload,
   TextField,
   TopToolbar,
-  useGetList,
   usePermissions,
   useRecordContext,
 } from "react-admin";
@@ -15,24 +13,12 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
-import { useState } from "react";
 
 export const ServiceProvidingGroupMembershipList = () => {
   // id of the SPG
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
-
-  const [sort, setSort] = useState<SortPayload>({
-    field: "valid_from",
-    order: "DESC",
-  });
-  const { data, isLoading } = useGetList("service_providing_group_membership", {
-    filter: id
-      ? { service_providing_group_id: id, "valid_from@not.is": null }
-      : { "valid_from@not.is": null },
-    sort,
-  });
 
   const CreateButton = () => {
     let createUrl = "/service_providing_group_membership/create";
@@ -66,14 +52,16 @@ export const ServiceProvidingGroupMembershipList = () => {
           actions={<ListActions />}
           exporter={false}
           empty={false}
-          sort={sort}
+          filter={
+            id
+              ? { service_providing_group_id: id, "valid_from@not.is": null }
+              : { "valid_from@not.is": null }
+          }
+          sort={{ field: "valid_from", order: "DESC" }}
+          disableSyncWithLocation
         >
           <Datagrid
             bulkActionButtons={false}
-            data={data}
-            isLoading={isLoading}
-            sort={sort}
-            setSort={setSort}
             rowClick={(_id, _res, record) =>
               `/service_providing_group/${record.service_providing_group_id}/membership/${record.id}/show`
             }
