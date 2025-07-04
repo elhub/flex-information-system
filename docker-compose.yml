@@ -55,9 +55,12 @@ services:
         source: ${HOME}/.ca/root/ca.cert.pem
         target: /etc/ssl/certs/local-root.pem
     depends_on:
-      - db
-      - postgrest
-      - authelia
+      db:
+        condition: service_started
+      postgrest:
+        condition: service_started
+      authelia:
+        condition: service_healthy
     extra_hosts:
       - "idp.flex.internal:host-gateway"
   frontend:
