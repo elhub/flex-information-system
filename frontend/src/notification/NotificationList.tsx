@@ -43,20 +43,31 @@ export const NotificationList = () => {
         <TextField source="id" label="ID" />
         <BooleanField source="acknowledged" />
         <TextField source="event_id" label="Event ID" />
-        <ReferenceField source="event_id" reference="event" label="Event type">
+        <ReferenceField
+          source="event_id"
+          reference="event"
+          label="Event type"
+          sortable={false}
+        >
           <TextField source="type" />
         </ReferenceField>
         <ReferenceField
           source="event_id"
           reference="event"
           label="Event source"
+          sortable={false}
         >
           <TextField source="source" />
         </ReferenceField>
-        <ReferenceField source="event_id" reference="event" label="Event time">
+        <ReferenceField
+          source="event_id"
+          reference="event"
+          label="Event time"
+          sortable={false}
+        >
           <DateField source="time" showTime />
         </ReferenceField>
-        <ReferenceField source="party_id" reference="party">
+        <ReferenceField source="party_id" reference="party" sortable={false}>
           <TextField source="name" />
         </ReferenceField>
         <DateField source="recorded_at" showTime />

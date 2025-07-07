@@ -71,6 +71,7 @@ export const ServiceProvidingGroupMembershipList = () => {
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
+                sortable={false}
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -78,6 +79,7 @@ export const ServiceProvidingGroupMembershipList = () => {
             <ReferenceField
               source="controllable_unit_id"
               reference="controllable_unit"
+              sortable={false}
             >
               <TextField source="name" />
             </ReferenceField>

@@ -46,10 +46,18 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
       >
         <TextField source="id" label="ID" />
         <TextField source="service_provider_product_application_id" />
-        <ReferenceField source="procuring_system_operator_id" reference="party">
+        <ReferenceField
+          source="procuring_system_operator_id"
+          reference="party"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField reference="product_type" source="product_type_id" />
+        <ReferenceField
+          reference="product_type"
+          source="product_type_id"
+          sortable={false}
+        />
         <TextField source="status" />
         <DateField source="last_prequalified" showTime />
         <DateField source="last_verified" showTime />

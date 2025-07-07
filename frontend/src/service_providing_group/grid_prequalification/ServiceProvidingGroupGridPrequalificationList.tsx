@@ -68,6 +68,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
+                sortable={false}
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -75,6 +76,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             <ReferenceField
               source="impacted_system_operator_id"
               reference="party"
+              sortable={false}
             >
               <TextField source="name" />
             </ReferenceField>

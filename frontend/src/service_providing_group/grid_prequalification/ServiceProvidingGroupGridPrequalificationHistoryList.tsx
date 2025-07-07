@@ -49,10 +49,15 @@ export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
         <ReferenceField
           source="service_providing_group_id"
           reference="service_providing_group"
+          sortable={false}
         >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="impacted_system_operator_id" reference="party">
+        <ReferenceField
+          source="impacted_system_operator_id"
+          reference="party"
+          sortable={false}
+        >
           <TextField source="name" />
         </ReferenceField>
         <TextField source="status" />
