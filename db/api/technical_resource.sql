@@ -35,24 +35,36 @@ WITH (
 CREATE OR REPLACE VIEW api.technical_resource
 WITH (security_invoker = true) AS (
     SELECT
-        tr.technical_resource_id AS id,
-        tr.controllable_unit_id,
-        tr.details,
-        tr.name,
-        tr.recorded_by,
-        tr.recorded_at
+        trh.id,
+        trh.controllable_unit_id,
+        trh.details,
+        trh.name,
+        trh.recorded_by,
+        lower(trh.record_time_range) AS recorded_at
     FROM (
         SELECT
-            trh.*,
-            row_number()
-                OVER (
-                    PARTITION BY trh.technical_resource_id
-                    ORDER BY trh.recorded_at DESC
-                )
-            AS rn
-        FROM api.technical_resource_history AS trh
-    ) AS tr
-    WHERE tr.rn = 1
+            id,
+            controllable_unit_id,
+            details,
+            name,
+            recorded_by,
+            record_time_range
+        FROM flex.technical_resource
+        UNION ALL
+        SELECT
+            id,
+            controllable_unit_id,
+            details,
+            name,
+            recorded_by,
+            record_time_range
+        FROM flex.technical_resource_history
+    ) AS trh
+        LEFT JOIN flex.controllable_unit_as_of AS cu_asof
+            ON trh.controllable_unit_id = cu_asof.controllable_unit_id
+                AND cu_asof.party_role = current_role
+                AND cu_asof.party_id = flex.current_party()
+    WHERE trh.record_time_range @> coalesce(cu_asof.as_of, current_timestamp)
 );
 
 -- changeset flex:api-technical-resource-modify-function endDelimiter:-- runAlways:true
