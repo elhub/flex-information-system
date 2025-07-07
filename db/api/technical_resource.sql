@@ -60,10 +60,11 @@ WITH (security_invoker = true) AS (
             record_time_range
         FROM flex.technical_resource_history
     ) AS trh
-        INNER JOIN flex.controllable_unit_as_of AS cu_asof
+        LEFT JOIN flex.controllable_unit_as_of AS cu_asof
             ON trh.controllable_unit_id = cu_asof.controllable_unit_id
+                AND cu_asof.party_role = current_role
                 AND cu_asof.party_id = flex.current_party()
-                AND trh.record_time_range @> cu_asof.as_of
+    WHERE trh.record_time_range @> coalesce(cu_asof.as_of, current_timestamp)
 );
 
 -- changeset flex:api-technical-resource-modify-function endDelimiter:-- runAlways:true

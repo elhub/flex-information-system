@@ -101,7 +101,7 @@ def test_tr_eu(sts):
 
     old_trhs = list(
         filter(
-            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            lambda trh: "COMMON-EU-ES-2023" in cast(str, trh.name),
             trhs_former_eu,
         )
     )
@@ -112,7 +112,7 @@ def test_tr_eu(sts):
         id=cast(int, old_trhs[0].technical_resource_id),
     )
     assert isinstance(tr, TechnicalResourceResponse)
-    assert "FORMER NAME" in cast(str, tr.name)
+    assert "TEST-SP-2024-07" in cast(str, tr.name)
 
     # current AP EU can see the current version of the TR,
     # but not the old records
@@ -130,7 +130,7 @@ def test_tr_eu(sts):
 
     old_trhs = list(
         filter(
-            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            lambda trh: "COMMON-EU-ES-2023" in cast(str, trh.name),
             trhs_eu,
         )
     )
@@ -152,7 +152,7 @@ def test_tr_es(sts):
 
     old_trhs = list(
         filter(
-            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            lambda trh: "COMMON-EU-ES-2023" in cast(str, trh.name),
             trhs_former_es,
         )
     )
@@ -163,7 +163,7 @@ def test_tr_es(sts):
         id=cast(int, old_trhs[0].technical_resource_id),
     )
     assert isinstance(tr, TechnicalResourceResponse)
-    assert "FORMER NAME" in cast(str, tr.name)
+    assert "TEST-SP-2024-07" in cast(str, tr.name)
 
     # current AP ES can see the current version of the TR,
     # but not the old records
@@ -181,7 +181,7 @@ def test_tr_es(sts):
 
     old_trhs = list(
         filter(
-            lambda trh: "FORMER NAME" in cast(str, trh.name),
+            lambda trh: "COMMON-EU-ES-2023" in cast(str, trh.name),
             trhs_es,
         )
     )
@@ -304,8 +304,8 @@ def test_tr_sp(sts):
     trhs_common_sp = list_technical_resource_history.sync(client=client_common_sp)
     assert isinstance(trhs_common_sp, list)
 
-    assert any("TEST-APBRP" in cast(str, tr.name) for tr in trs_common_sp)
-    assert not any("TEST-APBRP" in cast(str, tr.name) for tr in trs_sp)
+    assert any("TEST-FILLER-02" in cast(str, tr.name) for tr in trs_common_sp)
+    assert not any("TEST-FILLER-02" in cast(str, tr.name) for tr in trs_sp)
 
     assert any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_common_sp)
     assert not any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_sp)
