@@ -51,28 +51,6 @@ We are using prerequisites as a wide term to include all assumption,
 preconditions, dependencies, constraints and other conditions that must be met
 before a process can be done as documented.
 
-### Status and transitions
-
-We are using directed graph diagrams to show statuses and their transitions.
-
-* `point` - the starting point
-* `rectangles` - statuses
-* `oval` - "End state". Only FIS operator can move out of this state.
-* The following colors indicate the driving/responsible market party for a transition
-    * `green` - system operator
-    * `blue` - service provider
-    * `pink` - flexibility information system operator
-    * `black` - is used when multiple market parties can/are updating the status
-
-We are generally just showing some example transitions that we think are
-relevant. The system will not restrict the transitions to these, unless there
-are very specific reasons. This means that, in general, that the procedures and
-processes will dictate transitions, but it will *not* be enforced by the system.
-
-Example (from controllable unit):
-
-![Controllable Unit Registration Status](../diagrams/controllable_unit_status.png)
-
 ### Sequence
 
 We are using
