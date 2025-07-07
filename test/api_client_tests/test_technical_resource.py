@@ -55,20 +55,21 @@ def test_tr_brp(sts):
     # endpoint: GET /technical_resource
     trs_former_brp = list_technical_resource.sync(client=client_former_brp)
     assert isinstance(trs_former_brp, list)
-    assert len(trs_former_brp) == 9  # the tagged TEST-APBRP technical resources
+    # Common BRP sees the technical resources in their state at the end of their
+    # period as BRP on the AP, i.e., 2024-09-10
+    assert len(trs_former_brp) == 9
+    assert all("COMMON-SP-AS-OF-2024" in cast(str, tr.name) for tr in trs_former_brp)
 
     # endpoint: GET /technical_resource_history
     trhs_former_brp = list_technical_resource_history.sync(
         client=client_former_brp,
     )
     assert isinstance(trhs_former_brp, list)
-    assert len(trhs_former_brp) == 9
+    # in the history, they see the same records, but also the 2 before for each
+    # TR (in total 3x9)
+    assert len(trhs_former_brp) == 27
 
-    assert all("TEST-APBRP" in cast(str, tr.name) for tr in trs_former_brp)
-    assert any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_former_brp)
-
-    # current AP BRP can see the current version of the TR,
-    # but not the old records
+    # current AP BRP can see the current version of the TR
 
     client_brp = sts.get_client(TestEntity.TEST, "BRP")
 
@@ -78,12 +79,14 @@ def test_tr_brp(sts):
         id=cast(int, trs_former_brp[0].id),
     )
     assert isinstance(tr, TechnicalResourceResponse)
-    assert "TEST-APBRP" not in cast(str, tr.name)
+    assert "COMMON-SP-AS-OF-2024" not in cast(str, tr.name)
 
     trhs = list_technical_resource_history.sync(client=client_brp)
     assert isinstance(trhs, list)
 
-    assert all("TEST-APBRP" not in cast(str, trh.name) for trh in trhs)
+    # they cannot see the history records that are entirely contained in the
+    # period Common BRP was BRP on the AP
+    assert all("COMMON-BRP-CUSP-2024" not in cast(str, trh.name) for trh in trhs)
 
 
 # RLS: TR-EU001
@@ -291,9 +294,6 @@ def test_tr_sp(sts):
     client_sp = sts.get_client(TestEntity.TEST, "SP")
     client_common_sp = sts.get_client(TestEntity.COMMON, "SP")
 
-    # Test SP cannot see tagged records, but Common SP can because the update
-    # happened during their contract
-
     trs_sp = list_technical_resource.sync(client=client_sp)
     assert isinstance(trs_sp, list)
     trhs_sp = list_technical_resource_history.sync(client=client_sp)
@@ -304,11 +304,18 @@ def test_tr_sp(sts):
     trhs_common_sp = list_technical_resource_history.sync(client=client_common_sp)
     assert isinstance(trhs_common_sp, list)
 
-    assert any("TEST-FILLER-02" in cast(str, tr.name) for tr in trs_common_sp)
-    assert not any("TEST-FILLER-02" in cast(str, tr.name) for tr in trs_sp)
+    # Common SP sees the latest history version visible from their CUSP timeline
+    # as current TRs (as-of = 2024-09-01)
+    assert any("COMMON-SP-AS-OF-2024" in cast(str, tr.name) for tr in trs_common_sp)
 
-    assert any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_common_sp)
-    assert not any("TEST-APBRP" in cast(str, trh.name) for trh in trhs_sp)
+    # Test SP sees the current version
+    assert not any("COMMON-SP-AS-OF-2024" in cast(str, tr.name) for tr in trs_sp)
+
+    # Common SP cannot see history in 2025 then
+    assert not any("TEST-SP-2025" in cast(str, trh.name) for trh in trhs_common_sp)
+
+    # but Test SP can
+    assert any("TEST-SP-2025" in cast(str, trh.name) for trh in trhs_sp)
 
     # create new TR on new CU as FISO
 
