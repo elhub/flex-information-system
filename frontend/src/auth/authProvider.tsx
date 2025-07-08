@@ -75,18 +75,12 @@ export function authProvider(): AuthProvider {
       if (!sessionInfoString) return Promise.reject();
       const sessionInfo = JSON.parse(sessionInfoString);
 
-      if (
-        party_id !== null &&
-        (sessionInfo["role"] || "flex_entity") != "flex_entity"
-      ) {
+      if (party_id !== null && sessionInfo["party_id"] !== undefined) {
         // we are assuming a party, so we have to be entity
         return Promise.reject("must be entity when assuming party");
       }
 
-      if (
-        party_id === null &&
-        (sessionInfo["role"] || "flex_entity") == "flex_entity"
-      ) {
+      if (party_id === null && sessionInfo["party_id"] === undefined) {
         // we are entity, so nothing to unassume
         return Promise.resolve({ redirectTo: false });
       }

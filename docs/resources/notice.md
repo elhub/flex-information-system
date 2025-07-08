@@ -103,9 +103,9 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD    | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|----------|------|-----|----|----|------|----|----|----|----|
-| party_id |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| type     |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| source   |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| data     |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD    | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ENT |
+|----------|------|-----|----|----|------|----|----|----|----|-----|
+| party_id |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| type     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| source   |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| data     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |

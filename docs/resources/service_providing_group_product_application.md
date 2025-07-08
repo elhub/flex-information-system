@@ -116,15 +116,15 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD                        | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|------------------------------|------|-----|----|----|------|----|----|----|----|
-| id                           |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| service_providing_group_id   |      | R   | R  | R  | R    | R  | R  | RC | R  |
-| procuring_system_operator_id |      | R   | R  | R  | R    | R  | R  | RC | R  |
-| product_type_id              |      | R   | R  | R  | R    | R  | R  | RC | R  |
-| status                       |      | R   | R  | R  | RU   | R  | RU | RU | R  |
-| notes                        |      | R   | R  | R  | RU   | R  | RU | R  | R  |
-| last_prequalified            |      | R   | R  | R  | RU   | R  | RU | R  | R  |
-| last_verified                |      | R   | R  | R  | RU   | R  | RU | R  | R  |
-| recorded_at                  |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| recorded_by                  |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD                        | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ENT |
+|------------------------------|------|-----|----|----|------|----|----|----|----|-----|
+| id                           |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| service_providing_group_id   |      | R   | R  | R  | R    | R  | R  | RC | R  |     |
+| procuring_system_operator_id |      | R   | R  | R  | R    | R  | R  | RC | R  |     |
+| product_type_id              |      | R   | R  | R  | R    | R  | R  | RC | R  |     |
+| status                       |      | R   | R  | R  | RU   | R  | RU | RU | R  |     |
+| notes                        |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
+| last_prequalified            |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
+| last_verified                |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
+| recorded_at                  |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| recorded_by                  |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
