@@ -129,6 +129,7 @@ export const AssumePartyPage = () => {
               </Typography>
             </Box>
           }
+          disableSyncWithLocation
         >
           <Datagrid bulkActionButtons={false}>
             <TextField label="ID" source="party_id" />
@@ -170,6 +171,7 @@ export const AssumePartyPage = () => {
                 <Typography variant="h5">You do not own any party.</Typography>
               </Box>
             }
+            disableSyncWithLocation
           >
             <Datagrid bulkActionButtons={false}>
               <TextField label="ID" source="id" />
