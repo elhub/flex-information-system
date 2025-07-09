@@ -209,7 +209,7 @@ const AppBar = () => {
   // distinguish entity parties from bare entities
   // (both have the flex_entity role)
   const roleName =
-    (data!.partyID == undefined ? "Bare " : "") + roleNames[data!.role];
+    (data?.partyID == undefined ? "Bare " : "") + roleNames[data?.role];
 
   return (
     <RaAppBar
