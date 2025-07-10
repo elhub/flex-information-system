@@ -35,6 +35,7 @@ party_membership;;;;;;D;;;;;;
 party_membership;id;;R;R;R;R;R;R;R;R;R;
 party_membership;entity_id;;R;R;R;RC;R;R;R;R;R;
 party_membership;party_id;;R;R;R;RC;R;R;R;R;R;
+party_membership;scopes;;R;R;R;RCU;R;R;R;R;R;
 party_membership;recorded_at;;R;R;R;R;R;R;R;R;R;
 party_membership;recorded_by;;R;R;R;R;R;R;R;R;R;
 controllable_unit;;;;;;L;;;L;;;R

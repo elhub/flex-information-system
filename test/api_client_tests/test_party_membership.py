@@ -5,6 +5,7 @@ from security_token_service import (
 from flex.models import (
     PartyMembershipResponse,
     PartyMembershipCreateRequest,
+    PartyMembershipUpdateRequest,
     PartyMembershipHistoryResponse,
     ErrorMessage,
     EmptyObject,
@@ -17,6 +18,7 @@ from flex.api.party_membership import (
     list_party_membership,
     read_party_membership,
     delete_party_membership,
+    update_party_membership,
     list_party_membership_history,
     read_party_membership_history,
 )
@@ -78,6 +80,15 @@ def test_ptym_fiso(sts):
     assert isinstance(p2, list)
     assert len(p2) == 1
     assert p2[0] == p
+
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, p.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=["admin"],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
 
     d = delete_party_membership.sync(
         client=client_fiso, id=cast(int, pm.id), body=EmptyObject()

@@ -192,6 +192,7 @@ type PartyMembership struct {
 	ID         int
 	PartyID    int
 	EntityID   int
+	Scopes     []string
 	RecordedBy int
 	RecordedAt pgtype.Timestamptz
 }
@@ -201,6 +202,7 @@ type PartyMembershipHistory struct {
 	ID                int
 	PartyID           int
 	EntityID          int
+	Scopes            []string
 	RecordedBy        int
 	RecordedAt        pgtype.Timestamptz
 	ReplacedBy        *int

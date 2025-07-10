@@ -14,6 +14,8 @@ class PartyMembershipHistoryResponse:
 
     Attributes:
         party_membership_id (int): Reference to the resource that was updated. Example: 48.
+        scopes (Union[Unset, List[str]]): List of modifiers to refine the access to the party's capabilities in the
+            system given to the entity by the current resource.
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
         entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
@@ -26,6 +28,7 @@ class PartyMembershipHistoryResponse:
     """
 
     party_membership_id: int
+    scopes: Union[Unset, List[str]] = UNSET
     party_id: Union[Unset, int] = UNSET
     entity_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
@@ -37,6 +40,10 @@ class PartyMembershipHistoryResponse:
 
     def to_dict(self) -> Dict[str, Any]:
         party_membership_id = self.party_membership_id
+
+        scopes: Union[Unset, List[str]] = UNSET
+        if not isinstance(self.scopes, Unset):
+            scopes = self.scopes
 
         party_id = self.party_id
 
@@ -67,6 +74,8 @@ class PartyMembershipHistoryResponse:
                 "party_membership_id": party_membership_id,
             }
         )
+        if scopes is not UNSET:
+            field_dict["scopes"] = scopes
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
         if entity_id is not UNSET:
@@ -88,6 +97,8 @@ class PartyMembershipHistoryResponse:
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
         party_membership_id = d.pop("party_membership_id")
+
+        scopes = cast(List[str], d.pop("scopes", UNSET))
 
         party_id = d.pop("party_id", UNSET)
 
@@ -119,6 +130,7 @@ class PartyMembershipHistoryResponse:
 
         party_membership_history_response = cls(
             party_membership_id=party_membership_id,
+            scopes=scopes,
             party_id=party_id,
             entity_id=entity_id,
             recorded_at=recorded_at,

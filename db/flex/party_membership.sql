@@ -2,10 +2,12 @@
 -- Manually managed file
 
 -- changeset flex:party-membership-create runOnChange:false endDelimiter:--
+-- validCheckSum: 9:759e63e7f77b260a1137208ea9d7162e
 CREATE TABLE IF NOT EXISTS party_membership (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     party_id bigint NOT NULL,
     entity_id bigint NOT NULL,
+    scopes text [] NOT NULL DEFAULT '{}',
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),

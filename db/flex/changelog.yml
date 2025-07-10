@@ -180,6 +180,9 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_service_provider_migrations.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./party_membership_migrations.sql
+      relativeToChangelogFile: true
 
   # Reference Data
   - changeSet:

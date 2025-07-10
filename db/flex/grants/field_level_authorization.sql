@@ -238,6 +238,10 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT ON TABLE flex.party_membership
 TO flex_flexibility_information_system_operator;
 
+-- changeset flex:flex-grant-party-membership-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE flex.party_membership
+TO flex_flexibility_information_system_operator;
+
 -- changeset flex:flex-grant-party-membership-fiso-delete endDelimiter:-- runAlways:true
 GRANT DELETE ON TABLE flex.party_membership
 TO flex_flexibility_information_system_operator;
