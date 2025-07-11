@@ -130,6 +130,7 @@ func NewAPIHandler(
 	mux.Handle("GET /party_membership", listPostgRESTHandler)
 	mux.HandleFunc("POST /party_membership", data.postgRESTHandler)
 	mux.HandleFunc("GET /party_membership/{id}", data.postgRESTHandler)
+	mux.HandleFunc("PATCH /party_membership/{id}", data.postgRESTHandler)
 	mux.HandleFunc("DELETE /party_membership/{id}", data.postgRESTHandler)
 
 	mux.Handle("GET /party_membership_history", listPostgRESTHandler)
@@ -555,7 +556,7 @@ func writeErrorToResponse(rsp *http.Response, msg errorMessage) {
 // notFoundHandler writes a 404 Not Found response in PostgREST format.
 func (data *api) notFoundHandler(w http.ResponseWriter, req *http.Request) {
 	writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
-		Message: "Not Found " + req.URL.Path,
+		Message: "Not Found: " + req.Method + " " + req.URL.Path,
 	})
 }
 

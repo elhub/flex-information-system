@@ -682,6 +682,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -692,6 +693,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -702,6 +704,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -710,7 +713,8 @@ TO flex_end_user;
 -- changeset flex:api-grant-party-membership-fiso-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     entity_id,
-    party_id
+    party_id,
+    scopes
 ) ON TABLE api.party_membership
 TO flex_flexibility_information_system_operator;
 
@@ -719,8 +723,15 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
+) ON TABLE api.party_membership
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-party-membership-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    scopes
 ) ON TABLE api.party_membership
 TO flex_flexibility_information_system_operator;
 
@@ -733,6 +744,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -743,6 +755,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -753,6 +766,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -763,6 +777,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -773,6 +788,7 @@ GRANT SELECT (
     id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
@@ -784,6 +800,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -797,6 +814,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -810,6 +828,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -823,6 +842,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -836,6 +856,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -849,6 +870,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -862,6 +884,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -875,6 +898,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -888,6 +912,7 @@ GRANT SELECT (
     party_membership_id,
     entity_id,
     party_id,
+    scopes,
     recorded_at,
     replaced_at,
     recorded_by,

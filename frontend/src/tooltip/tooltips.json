@@ -76,7 +76,8 @@
     "party_membership": {
         "id": "Unique surrogate identifier.",
         "party_id": "Reference to the party that the membership links to an entity.",
-        "entity_id": "Reference to the entity that the party represents."
+        "entity_id": "Reference to the entity that the party represents.",
+        "scopes": "List of modifiers to refine the access to the party's capabilities in the system given to the entity by the current resource."
     },
     "identity": {
         "id": "Unique surrogate identifier.",

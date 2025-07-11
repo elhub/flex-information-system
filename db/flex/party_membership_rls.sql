@@ -7,6 +7,7 @@ ALTER TABLE IF EXISTS party_membership ENABLE ROW LEVEL SECURITY;
 -- RLS: PTYM-FISO001
 GRANT INSERT,
 SELECT,
+UPDATE,
 DELETE ON party_membership TO flex_flexibility_information_system_operator;
 CREATE POLICY "PTYM_FISO001" ON party_membership
 FOR ALL

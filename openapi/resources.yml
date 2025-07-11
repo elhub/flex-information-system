@@ -681,6 +681,7 @@ resources:
       - list
       - read
       - create
+      - update
       - delete
     audit: true
     generate_views: true
@@ -715,6 +716,17 @@ resources:
           resource: entity
           field: id
         example: 30
+      scopes:
+        description: >-
+          List of modifiers to refine the access to the party's capabilities in
+          the system given to the entity by the current resource.
+        type: array
+        items:
+          format: text
+          type: string
+        nullable: false
+        default: []
+        example: []
 
   - id: identity
     acronym: ID
