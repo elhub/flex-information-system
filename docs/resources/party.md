@@ -31,7 +31,7 @@ generate a UUID as the business identifier.
 |--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|---------------------------------|
 | <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.                                                                    | bigint<br/>Read only                                                                       |                                 |
 | <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the party. Format depends on `business_id_type`.                     | text<br/>Non-updatable                                                                     |                                 |
-| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                                            | text<br/>One of: `gln`, `uuid`, `eic_x`<br/>Default: `uuid`<br/>Non-updatable              |                                 |
+| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                                            | text<br/>One of: `gln`, `uuid`, `eic_x`, `org`<br/>Default: `uuid`<br/>Non-updatable       |                                 |
 | <a name="field-entity_id" href="#field-entity_id">entity_id</a>                      | Reference to the entity that is the parent of the party.                                        | bigint<br/>Required<br/>Non-updatable                                                      | [entity.id](entity.md#field-id) |
 | <a name="field-name" href="#field-name">name</a>                                     | Name of the party. Maximum 128 characters.                                                      | text<br/>Required                                                                          |                                 |
 | <a name="field-role" href="#field-role">role</a>                                     | The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider. | text<br/>Required<br/>Non-updatable                                                        |                                 |
@@ -115,15 +115,15 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|------------------|------|-----|----|----|------|----|----|----|----|
-| id               |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| name             |      | R   | R  | R  | RCU  | R  | R  | R  | R  |
-| business_id      |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| business_id_type |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| entity_id        |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| type             |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| role             |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| status           |      | R   | R  | R  | RU   | R  | R  | R  | R  |
-| recorded_at      |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| recorded_by      |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ENT |
+|------------------|------|-----|----|----|------|----|----|----|----|-----|
+| id               |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| name             |      | R   | R  | R  | RCU  | R  | R  | R  | R  | R   |
+| business_id      |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| business_id_type |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| entity_id        |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| type             |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| role             |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| status           |      | R   | R  | R  | RU   | R  | R  | R  | R  | R   |
+| recorded_at      |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| recorded_by      |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |

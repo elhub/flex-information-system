@@ -113,10 +113,10 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|-------------|------|-----|----|----|------|----|----|----|----|
-| id          |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| business_id |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| name        |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| service     |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| products    |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ENT |
+|-------------|------|-----|----|----|------|----|----|----|----|-----|
+| id          |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| business_id |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| name        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| service     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| products    |      | R   | R  | R  | R    | R  | R  | R  | R  |     |

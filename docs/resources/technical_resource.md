@@ -110,11 +110,11 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD                | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
-|----------------------|------|-----|----|----|------|----|----|-----|----|
-| id                   |      | R   | R  | R  | R    | R  | R  | R   | R  |
-| name                 |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |
-| controllable_unit_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |
-| details              |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |
-| recorded_at          |      | R   | R  | R  | R    | R  | R  | R   | R  |
-| recorded_by          |      | R   | R  | R  | R    | R  | R  | R   | R  |
+| FIELD                | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ENT |
+|----------------------|------|-----|----|----|------|----|----|-----|----|-----|
+| id                   |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| name                 |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
+| controllable_unit_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
+| details              |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
+| recorded_at          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| recorded_by          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |

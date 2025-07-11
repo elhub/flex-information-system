@@ -113,14 +113,14 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD               | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
-|---------------------|------|-----|----|----|------|----|----|-----|----|
-| id                  |      | R   | R  | R  | R    | R  | R  | R   | R  |
-| service_provider_id |      | R   | R  | R  | R    | R  | R  | RC  | R  |
-| system_operator_id  |      | R   | R  | R  | R    | R  | R  | RC  | R  |
-| product_type_ids    |      | R   | R  | R  | RU   | R  | R  | RCU | R  |
-| status              |      | R   | R  | R  | RU   | R  | RU | R   | R  |
-| notes               |      | R   | R  | R  | RU   | R  | RU | R   | R  |
-| last_qualified      |      | R   | R  | R  | RU   | R  | RU | R   | R  |
-| recorded_at         |      | R   | R  | R  | R    | R  | R  | R   | R  |
-| recorded_by         |      | R   | R  | R  | R    | R  | R  | R   | R  |
+| FIELD               | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ENT |
+|---------------------|------|-----|----|----|------|----|----|-----|----|-----|
+| id                  |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| service_provider_id |      | R   | R  | R  | R    | R  | R  | RC  | R  |     |
+| system_operator_id  |      | R   | R  | R  | R    | R  | R  | RC  | R  |     |
+| product_type_ids    |      | R   | R  | R  | RU   | R  | R  | RCU | R  |     |
+| status              |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
+| notes               |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
+| last_qualified      |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
+| recorded_at         |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| recorded_by         |      | R   | R  | R  | R    | R  | R  | R   | R  |     |

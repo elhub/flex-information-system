@@ -489,7 +489,7 @@ permissions-to-md:
         echo "" >> docs/resources/${resource}.md
 
         grep -E "^((${resource})|(RESOURCE))\;" local/input/permissions.csv \
-            | cut -d ';' -f 2-11 \
+            | cut -d ';' -f 2-12 \
             | .venv/bin/python3 ./local/scripts/csv_to_md.py >> docs/resources/${resource}.md
 
     done

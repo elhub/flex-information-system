@@ -36,11 +36,16 @@ the European energy sector are typically identified by a GLN or `EIC-X`. After
 being authenticated as an entity, the user can assume a party to
 interact with the system.
 
-We also model end users as parties. An end user is either
+For the sake of standardisation and simplification, all operations on the system
+shall be performed as a party.
+This means that we have two extra party types in addition to the other market
+actors: end users and the entity itself.
+An end user is either
 [a person or an organisation](https://www.nve.no/reguleringsmyndigheten/regulering/kraftmarkedet/sluttbrukermarkedet/).
-This means that when logging in as an entity, a user will have to choose to act
-as themselves as an end user party. This is a way to standardize (and thus
-simplify) the authorization framework and make authentication/delegation explicit.
+The entity party is a way for the user to have access to a special role to
+perform modifications on their own entity.
+They can for instance give total or partial (via delegation mechanisms) access
+to what the entity owns and manages, to people from the same company.
 
 We have the following party types in the Flexibility Information System:
 
@@ -49,6 +54,7 @@ We have the following party types in the Flexibility Information System:
 | BRP          | balance_responsible_party               | Balance Responsible Party               | _Balanseansvarlig_                          |
 | EU           | end_user                                | End User                                | _Sluttbruker_                               |
 | ES           | energy_supplier                         | Energy Supplier                         | _Kraftleverandør_                           |
+| ENT          | entity                                  | Entity                                  |                                             |
 | FISO         | flexibility_information_system_operator | Flexibility Information System Operator | _Fleksibilitetsinformasjonssystem Operatør_ |
 | MO           | market_operator                         | Market Operator                         | _Markedoperatør_                            |
 | SO           | system_operator                         | System Operator                         | _Systemoperatør_                            |
@@ -59,7 +65,8 @@ We have the following party types in the Flexibility Information System:
 
     In addition to these we also write policies and grant access that are common
     for all authenticated party types. This is referred to as `Common`,
-    abbreviated as `COM`. All party types inherit the policies from `Common`.
+    abbreviated as `COM`. All party types inherit the policies from `Common`,
+    except the entity party.
 
 The following sub-sections provides a brief description of each party type.
 
@@ -290,14 +297,14 @@ grant_type: urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=<authorization
 
 The magic is in the assertion JWT. Use the following payload.
 
-| Claim | Name            | Description                                                                                                                                       | Example                                               |
-|-------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| `aud` | Audience        | The URL of the token endpoint.                                                                                                                    | `https://flex-test.elhub.no/auth/v0/`                 |
-| `exp` | Expiration Time | The expiration time of the JWT. Maximum 120 seconds after `iat`.                                                                                  |                                                       |
-| `iat` | Issued At       | The time the JWT was issued. Only tokens with `iat` within 10 seconds of server time will be accepted.                                            |                                                       |
-| `iss` | Issuer          | The issuer of the token on the format. `no:entity:uuid:<client_id>`. `client_id` is the UUID of the client whose key is used to sign the token.   | `no:entity:uuid:2fc014f2-e9b4-41d4-ad6b-c360b8ee6229` |
-| `jti` | JWT             | A unique identifier for the JWT. For (future) protection against replay attacks.                                                                  |                                                       |
-| `sub` | Subject         | Optional. Use if the client wants to assume party as part of the request. Format `no:entity:<id_type>:<id>`. `id_type` is either `uuid` or `gln`. | `no:party:gln:1234567890123`                          |
+| Claim | Name            | Description                                                                                                                                               | Example                                               |
+|-------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| `aud` | Audience        | The URL of the token endpoint.                                                                                                                            | `https://flex-test.elhub.no/auth/v0/`                 |
+| `exp` | Expiration Time | The expiration time of the JWT. Maximum 120 seconds after `iat`.                                                                                          |                                                       |
+| `iat` | Issued At       | The time the JWT was issued. Only tokens with `iat` within 10 seconds of server time will be accepted.                                                    |                                                       |
+| `iss` | Issuer          | The issuer of the token on the format. `no:entity:uuid:<client_id>`. `client_id` is the UUID of the client whose key is used to sign the token.           | `no:entity:uuid:2fc014f2-e9b4-41d4-ad6b-c360b8ee6229` |
+| `jti` | JWT             | A unique identifier for the JWT. For (future) protection against replay attacks.                                                                          |                                                       |
+| `sub` | Subject         | Optional. Use if the client wants to assume party as part of the request. Format `no:entity:<id_type>:<id>`. `id_type` is the party's `business_id_type`. | `no:party:gln:1234567890123`                          |
 
 The JWT must be signed by the entity client's RSA private key. The public key
 must be uploaded to the client in the portal prior to making the request. An
