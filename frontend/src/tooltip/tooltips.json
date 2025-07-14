@@ -77,7 +77,7 @@
         "id": "Unique surrogate identifier.",
         "party_id": "Reference to the party that the membership links to an entity.",
         "entity_id": "Reference to the entity that the party represents.",
-        "scopes": "List of modifiers to refine the access to the party's capabilities in the system given to the entity by the current resource."
+        "scopes": "List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms."
     },
     "identity": {
         "id": "Unique surrogate identifier.",

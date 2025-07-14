@@ -7,19 +7,28 @@
 ALTER TABLE flex.party_membership
 DISABLE TRIGGER USER;
 ALTER TABLE flex.party_membership
-ADD COLUMN scopes text [] DEFAULT '{}';
+ADD COLUMN scopes text [];
 
 UPDATE flex.party_membership
-SET scopes = '{}';
+SET scopes = '{resources}';
 
 ALTER TABLE flex.party_membership
 ALTER COLUMN scopes SET NOT NULL;
+
+-- noqa: disable=all
+ALTER TABLE flex.party_membership
+ADD CONSTRAINT check_party_membership_scopes CHECK (
+    -- operator defined in utils/operators
+    array_length(scopes, 1) > 0
+    AND '^([a-z][a-z_]*)(:[a-z][a-z_]*)*$' #~ all(scopes)
+);
+-- noqa: enable=all
 
 ALTER TABLE flex.party_membership_history
 ADD COLUMN scopes text [];
 
 UPDATE flex.party_membership_history
-SET scopes = '{}';
+SET scopes = '{resources}';
 
 ALTER TABLE flex.party_membership
 ENABLE TRIGGER USER;

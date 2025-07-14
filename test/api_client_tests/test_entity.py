@@ -250,8 +250,7 @@ def test_entity_com(sts):
     pm = create_party_membership.sync(
         client=client_fiso,
         body=PartyMembershipCreateRequest(
-            entity_id=common_ent_id,
-            party_id=so_id,
+            entity_id=common_ent_id, party_id=so_id, scopes=["resources"]
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)

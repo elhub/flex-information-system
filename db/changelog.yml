@@ -18,6 +18,9 @@ databaseChangeLog:
   - include:
       file: ./utils/triggers.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./utils/operators.sql
+      relativeToChangelogFile: true
   - changeSet:
       id: grant-usage
       author: flex

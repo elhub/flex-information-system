@@ -243,8 +243,7 @@ class SecurityTokenService:
         pm = create_party_membership.sync(
             client=client_fiso,
             body=PartyMembershipCreateRequest(
-                party_id=cast(int, party.id),
-                entity_id=ent_id,
+                party_id=cast(int, party.id), entity_id=ent_id, scopes=["resources"]
             ),
         )
         assert isinstance(pm, PartyMembershipResponse)

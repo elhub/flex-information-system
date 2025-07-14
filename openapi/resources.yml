@@ -718,15 +718,16 @@ resources:
         example: 30
       scopes:
         description: >-
-          List of modifiers to refine the access to the party's capabilities in
-          the system given to the entity by the current resource.
+          List of scopes granted to the entity when it acts as the party.
+          Scopes are inspired from OAuth 2.0 and allow refinement of access
+          control and privilege delegation mechanisms.
         type: array
         items:
           format: text
           type: string
+          pattern: '^([a-z][a-z_]*)(:[a-z][a-z_]*)*$'
         nullable: false
-        default: []
-        example: []
+        example: [resources]
 
   - id: identity
     acronym: ID

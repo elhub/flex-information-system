@@ -46,7 +46,15 @@ BEGIN
       RETURNING id INTO party_id;
   END IF;
 
-  INSERT INTO flex.party_membership (entity_id, party_id) VALUES (member_entity_id, party_id);
+  INSERT INTO flex.party_membership (
+    entity_id,
+    party_id,
+    scopes
+  ) VALUES (
+    member_entity_id,
+    party_id,
+    '{resources}'
+  );
 
   RETURN party_id;
 END;
@@ -63,7 +71,15 @@ DECLARE
   party_id bigint;
 BEGIN
   SELECT id INTO party_id FROM flex.party WHERE name = party_name;
-  INSERT INTO flex.party_membership (entity_id, party_id) VALUES (entity_id, party_id);
+  INSERT INTO flex.party_membership (
+    entity_id,
+    party_id,
+    scopes
+  ) VALUES (
+    entity_id,
+    party_id,
+    '{resources}'
+  );
   RETURN party_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;

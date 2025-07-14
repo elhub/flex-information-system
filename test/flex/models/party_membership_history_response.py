@@ -14,8 +14,9 @@ class PartyMembershipHistoryResponse:
 
     Attributes:
         party_membership_id (int): Reference to the resource that was updated. Example: 48.
-        scopes (Union[Unset, List[str]]): List of modifiers to refine the access to the party's capabilities in the
-            system given to the entity by the current resource.
+        scopes (Union[Unset, List[str]]): List of scopes granted to the entity when it acts as the party. Scopes are
+            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+            ['resources'].
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
         entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:

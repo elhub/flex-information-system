@@ -56,8 +56,7 @@ def test_ptym_fiso(sts):
     pm = create_party_membership.sync(
         client=client_fiso,
         body=PartyMembershipCreateRequest(
-            entity_id=ent_id,
-            party_id=pty_id,
+            entity_id=ent_id, party_id=pty_id, scopes=["resources"]
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
