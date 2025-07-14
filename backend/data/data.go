@@ -8,6 +8,7 @@ import (
 	"flex/data/models"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
+	"flex/internal/validate"
 	"flex/pgpool"
 	"fmt"
 	"io"
@@ -68,6 +69,9 @@ func NewAPIHandler(
 
 	// controllable unit lookup
 	mux.HandleFunc("POST /controllable_unit/lookup", data.controllableUnitLookupHandler)
+
+	// entity lookup
+	mux.HandleFunc("POST /entity/lookup", data.entityLookupHandler)
 
 	listPostgRESTHandler := middleware.DefaultQueryLimit(http.HandlerFunc(data.postgRESTHandler))
 
@@ -423,6 +427,117 @@ func writeErrorToResponseWriter(
 		msg.Code = fmt.Sprintf("HTTP%d", statusCode)
 	}
 	body, _ := json.Marshal(msg)
+	w.Write(body)
+}
+
+//nolint:funlen,cyclop
+func (data *api) entityLookupHandler(
+	w http.ResponseWriter, req *http.Request,
+) {
+	ctx := req.Context()
+
+	rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
+	if err != nil {
+		slog.ErrorContext(ctx, "no request details in context", "error", err)
+		writeInternalServerError(w)
+		return
+	}
+
+	if rd.Role() != "flex_flexibility_information_system_operator" {
+		writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
+			Message: "user cannot perform this operation",
+		})
+		return
+	}
+
+	var entityLookupRequestBody entityLookupRequest
+	err = json.NewDecoder(req.Body).Decode(&entityLookupRequestBody)
+	if err != nil {
+		slog.ErrorContext(ctx, "could not read request body", "error", err)
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "ill formed request body",
+		})
+		return
+	}
+
+	entityLookupValidator := validate.New()
+
+	entityLookupValidator.Check(
+		entityLookupRequestBody.Type == "person" ||
+			entityLookupRequestBody.Type == "organisation",
+		"entity type must be either 'person' or 'organisation'",
+	)
+
+	regexPersonBusinessID := regexp.MustCompile("^[1-9][0-9]{10}$")
+	if entityLookupRequestBody.Type == "person" {
+		entityLookupValidator.Check(
+			regexPersonBusinessID.MatchString(entityLookupRequestBody.BusinessID),
+			"person number must be 11 digit long",
+		)
+	}
+
+	regexOrganisationBusinessID := regexp.MustCompile("^[1-9][0-9]{8}$")
+	if entityLookupRequestBody.Type == "organisation" {
+		entityLookupValidator.Check(
+			regexOrganisationBusinessID.MatchString(entityLookupRequestBody.BusinessID),
+			"organisation number must be 9 digit long",
+		)
+	}
+
+	entityLookupValidator.Check(
+		entityLookupRequestBody.Name != "",
+		"missing entity name",
+	)
+
+	if err = entityLookupValidator.Error(); err != nil {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: err.Error(),
+		})
+		return
+	}
+
+	tx, err := data.db.Begin(ctx)
+	if err != nil {
+		slog.ErrorContext(ctx, "could not start transaction", "error", err)
+		writeInternalServerError(w)
+		return
+	}
+	defer tx.Rollback(ctx)
+	queries := models.New(tx)
+
+	entityLookupRow, err := queries.EntityLookup(
+		ctx,
+		entityLookupRequestBody.BusinessID,
+		entityLookupRequestBody.Name,
+		entityLookupRequestBody.Type,
+	)
+	if err != nil {
+		slog.ErrorContext(ctx, "entity lookup query failed", "error", err)
+		writeInternalServerError(w)
+		return
+	}
+	if err = tx.Commit(ctx); err != nil {
+		slog.ErrorContext(
+			ctx, "could not commit entity lookup transaction", "error", err,
+		)
+		writeInternalServerError(w)
+		return
+	}
+
+	entityLookup := EntityLookupResponse{
+		EntityID: entityLookupRow.EntityID,
+	}
+
+	var httpStatusCode int
+	if entityLookupRow.EntityFound {
+		httpStatusCode = http.StatusOK
+	} else {
+		httpStatusCode = http.StatusCreated
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(httpStatusCode)
+	body, _ := json.Marshal(entityLookup)
 	w.Write(body)
 }
 
