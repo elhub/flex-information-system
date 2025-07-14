@@ -4,6 +4,10 @@ This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
 
+## 14.07.2025
+
+* **Added `scopes` field to the _Party Membership_ resource.**
+
 ## 01.07.2025
 
 * **Added audit fields and history on the _Entity_ resource.**  
