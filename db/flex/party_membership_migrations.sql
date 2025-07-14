@@ -18,8 +18,8 @@ ALTER COLUMN scopes SET NOT NULL;
 -- noqa: disable=all
 ALTER TABLE flex.party_membership
 ADD CONSTRAINT check_party_membership_scopes CHECK (
+    scopes != '{}'
     -- operator defined in utils/operators
-    array_length(scopes, 1) > 0
     AND '^([a-z][a-z_]*)(:[a-z][a-z_]*)*$' #~ all(scopes)
 );
 -- noqa: enable=all
