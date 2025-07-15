@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Type, TypeVar, Union, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.party_membership_update_request_scopes_item import PartyMembershipUpdateRequestScopesItem
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyMembershipHistoryResponse")
@@ -14,9 +15,9 @@ class PartyMembershipHistoryResponse:
 
     Attributes:
         party_membership_id (int): Reference to the resource that was updated. Example: 48.
-        scopes (Union[Unset, List[str]]): List of scopes granted to the entity when it acts as the party. Scopes are
-            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
-            ['resources'].
+        scopes (Union[Unset, List[PartyMembershipUpdateRequestScopesItem]]): List of scopes granted to the entity when
+            it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege
+            delegation mechanisms. Example: ['readonly'].
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
         entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
@@ -29,7 +30,7 @@ class PartyMembershipHistoryResponse:
     """
 
     party_membership_id: int
-    scopes: Union[Unset, List[str]] = UNSET
+    scopes: Union[Unset, List[PartyMembershipUpdateRequestScopesItem]] = UNSET
     party_id: Union[Unset, int] = UNSET
     entity_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
@@ -44,7 +45,10 @@ class PartyMembershipHistoryResponse:
 
         scopes: Union[Unset, List[str]] = UNSET
         if not isinstance(self.scopes, Unset):
-            scopes = self.scopes
+            scopes = []
+            for scopes_item_data in self.scopes:
+                scopes_item = scopes_item_data.value
+                scopes.append(scopes_item)
 
         party_id = self.party_id
 
@@ -99,7 +103,12 @@ class PartyMembershipHistoryResponse:
         d = src_dict.copy()
         party_membership_id = d.pop("party_membership_id")
 
-        scopes = cast(List[str], d.pop("scopes", UNSET))
+        scopes = []
+        _scopes = d.pop("scopes", UNSET)
+        for scopes_item_data in _scopes or []:
+            scopes_item = PartyMembershipUpdateRequestScopesItem(scopes_item_data)
+
+            scopes.append(scopes_item)
 
         party_id = d.pop("party_id", UNSET)
 

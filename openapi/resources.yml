@@ -725,9 +725,12 @@ resources:
         items:
           format: text
           type: string
-          pattern: '^([a-z][a-z_]*)(:[a-z][a-z_]*)*$'
+          enum:
+            - simple
+            - admin
+            - readonly
         nullable: false
-        example: [resources]
+        example: [readonly]
 
   - id: identity
     acronym: ID

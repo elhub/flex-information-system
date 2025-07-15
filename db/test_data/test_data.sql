@@ -53,7 +53,7 @@ BEGIN
   ) VALUES (
     member_entity_id,
     party_id,
-    '{resources}'
+    '{simple}'
   );
 
   RETURN party_id;
@@ -78,7 +78,7 @@ BEGIN
   ) VALUES (
     entity_id,
     party_id,
-    '{resources}'
+    '{simple}'
   );
   RETURN party_id;
 END;
