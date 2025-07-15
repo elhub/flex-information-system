@@ -1,29 +1,7 @@
-import {
-  Button,
-  CreateButton,
-  ExportButton,
-  List,
-  SelectArrayInput,
-  TextField,
-  TopToolbar,
-  usePermissions,
-} from "react-admin";
+import { List, SelectArrayInput, TextField } from "react-admin";
 import { AutocompleteReferenceInput, Datagrid } from "../auth";
-import { Link } from "react-router-dom";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
-
-const EntityLookupButton = () => (
-  <Button
-    component={Link}
-    to="/entity/lookup"
-    startIcon={<TravelExploreIcon />}
-    label="Lookup an entity"
-  />
-);
 
 export const EntityList = () => {
-  const { permissions } = usePermissions();
-
   const entityFilters = [
     <SelectArrayInput
       key="type"
@@ -41,21 +19,12 @@ export const EntityList = () => {
     />,
   ];
 
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes("entity.lookup") && <EntityLookupButton />}
-      {permissions.includes("entity.create") && <CreateButton />}
-      <ExportButton />
-    </TopToolbar>
-  );
-
   return (
     <List
       perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={entityFilters}
-      actions={<ListActions />}
     >
       <Datagrid>
         <TextField source="id" />

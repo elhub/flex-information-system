@@ -131,8 +131,6 @@ import { EntityClientInput } from "./entity/client/EntityClientInput";
 import { EntityClientShow } from "./entity/client/EntityClientShow";
 import { displayProductType } from "./product_type/components";
 import { EntityInput } from "./entity/EntityInput";
-import { EntityLookupInput } from "./entity/lookup/EntityLookupInput";
-import { EntityLookupResult } from "./entity/lookup/EntityLookupResult";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -468,9 +466,6 @@ export const App = () => (
             }
             recordRepresentation="name"
           >
-            {/* lookup */}
-            <Route path="lookup" element={<EntityLookupInput />} />
-            <Route path="lookup/result" element={<EntityLookupResult />} />
             {/* client subresource */}
             {/* list is part of ENT show page */}
             <Route
