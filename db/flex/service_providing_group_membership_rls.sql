@@ -47,7 +47,7 @@ USING (EXISTS (
     WHERE service_providing_group_membership.service_providing_group_id = service_providing_group.id -- noqa
         AND service_providing_group.service_provider_id
         = (SELECT current_party())
-))
+) AND (SELECT flex.current_user_has_scope('simple')))
 WITH CHECK (
     EXISTS (
         SELECT
@@ -61,6 +61,7 @@ WITH CHECK (
             AND spg.id = service_providing_group_membership.service_providing_group_id -- noqa
             AND cusp.valid_time_range && service_providing_group_membership.valid_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPGM-SO001
@@ -76,4 +77,5 @@ USING (
         FROM service_providing_group
         WHERE service_providing_group_membership.service_providing_group_id = service_providing_group.id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );

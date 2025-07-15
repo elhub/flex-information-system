@@ -20,4 +20,4 @@ CREATE POLICY "APES_INTERNAL_COMMON"
 ON accounting_point_energy_supplier
 FOR SELECT
 TO flex_common
-USING (true);
+USING ((SELECT flex.current_user_has_scope('simple')));

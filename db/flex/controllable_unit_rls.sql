@@ -38,6 +38,7 @@ USING (
             AND ap_so.system_operator_id = (SELECT current_party())
             AND ap_so.valid_time_range @> current_timestamp
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-SO002
@@ -49,6 +50,7 @@ USING (
         SELECT 1 FROM service_providing_group_membership
         WHERE service_providing_group_membership.controllable_unit_id = controllable_unit.id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 GRANT SELECT, INSERT, UPDATE ON controllable_unit TO flex_service_provider;
@@ -60,7 +62,7 @@ TO flex_service_provider
 USING (
     -- SP should see that current data only if their
     -- contract overlaps with the record time
-    EXISTS (
+    (EXISTS (
         SELECT 1
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit.id -- noqa
@@ -71,14 +73,15 @@ USING (
     ) OR (
         -- the SP created the CU
         created_by_party_id = (SELECT current_party())
-    )
+    ))
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-SP002
 CREATE POLICY "CU_SP002" ON controllable_unit
 FOR INSERT
 TO flex_service_provider
-WITH CHECK (true);
+WITH CHECK ((SELECT flex.current_user_has_scope('simple')));
 
 -- RLS: CU-SP003
 CREATE POLICY "CU_SP003" ON controllable_unit
@@ -94,6 +97,7 @@ USING (
             AND controllable_unit_service_provider.valid_time_range
             @> current_timestamp
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-EU001
@@ -109,6 +113,7 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit.record_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-ES001
@@ -124,6 +129,7 @@ USING (
             AND cues.energy_supplier_id = (SELECT current_party())
             AND cues.valid_time_range && controllable_unit.record_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-BRP001
@@ -139,6 +145,7 @@ USING (
             AND cubrp.balance_responsible_party_id = (SELECT current_party())
             AND cubrp.valid_time_range && controllable_unit.record_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 ALTER TABLE IF EXISTS controllable_unit_history
@@ -160,6 +167,7 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-ES002
@@ -178,6 +186,7 @@ USING (
             AND cues.energy_supplier_id = (SELECT current_party())
             AND cues.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-BRP002
@@ -196,6 +205,7 @@ USING (
             AND cubrp.balance_responsible_party_id = (SELECT current_party())
             AND cubrp.valid_time_range && controllable_unit_history.record_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-FISO002
@@ -220,6 +230,7 @@ USING (
         FROM controllable_unit
         WHERE controllable_unit_history.id = controllable_unit.id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CU-SP004
@@ -239,4 +250,5 @@ USING (
             AND controllable_unit_service_provider.valid_time_range
             && controllable_unit_history.record_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );

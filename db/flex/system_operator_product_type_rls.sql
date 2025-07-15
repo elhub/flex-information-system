@@ -38,7 +38,7 @@ CREATE POLICY "SOPT_COM002"
 ON system_operator_product_type
 FOR SELECT
 TO flex_common
-USING (true);
+USING ((SELECT flex.current_user_has_scope('simple')));
 
 -- RLS: SOPT-SO001
 GRANT SELECT, INSERT, UPDATE ON system_operator_product_type
@@ -49,4 +49,5 @@ FOR ALL
 TO flex_system_operator
 USING (
     system_operator_id = (SELECT flex.current_party())
+    AND (SELECT flex.current_user_has_scope('simple'))
 );

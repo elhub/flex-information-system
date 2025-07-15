@@ -38,9 +38,12 @@ GRANT SELECT ON party TO flex_common;
 CREATE POLICY "PTY_COM002" ON party
 FOR SELECT
 TO flex_common
-USING (type != 'end_user' OR EXISTS (
-    SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id -- noqa
-));
+USING (
+    (type != 'end_user' OR EXISTS (
+        SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id -- noqa
+    ))
+    AND (SELECT flex.current_user_has_scope('simple'))
+);
 
 -- RLS: PTY-FISO001
 GRANT INSERT, SELECT, UPDATE ON party

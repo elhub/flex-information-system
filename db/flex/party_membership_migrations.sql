@@ -30,3 +30,20 @@ SET scopes = '{simple}';
 
 ALTER TABLE flex.party_membership
 ENABLE TRIGGER USER;
+
+-- changeset flex:current-user-has-scope-create runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION
+flex.current_user_has_scope(in_scope text)
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM flex.party_membership AS pm
+        WHERE pm.party_id = (SELECT flex.current_party())
+          AND pm.entity_id = (SELECT flex.current_entity())
+          AND in_scope = ANY(pm.scopes)
+    );
+$$;

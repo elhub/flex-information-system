@@ -5,6 +5,7 @@ from flex.models import (
     PartyBusinessIdType,
     PartyMembershipResponse,
     PartyMembershipCreateRequest,
+    PartyMembershipUpdateRequestScopesItem,
 )
 from flex.api.party import (
     list_party,
@@ -243,7 +244,9 @@ class SecurityTokenService:
         pm = create_party_membership.sync(
             client=client_fiso,
             body=PartyMembershipCreateRequest(
-                party_id=cast(int, party.id), entity_id=ent_id, scopes=["resources"]
+                party_id=cast(int, party.id),
+                entity_id=ent_id,
+                scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
             ),
         )
         assert isinstance(pm, PartyMembershipResponse)

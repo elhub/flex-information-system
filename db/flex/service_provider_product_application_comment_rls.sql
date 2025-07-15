@@ -34,7 +34,10 @@ CREATE POLICY "SPPAC_COM002"
 ON service_provider_product_application_comment
 FOR UPDATE
 TO flex_common
-USING (created_by = (SELECT flex.current_identity()));
+USING (
+    created_by = (SELECT flex.current_identity())
+    AND (SELECT flex.current_user_has_scope('simple'))
+);
 
 -- RLS: SPPAC-COM003
 CREATE POLICY "SPPAC_COM003"
@@ -47,6 +50,7 @@ WITH CHECK (
         FROM service_provider_product_application AS sppa
         WHERE sppa.id = service_provider_product_application_comment.service_provider_product_application_id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPPAC-SO001
@@ -56,7 +60,7 @@ ON service_provider_product_application_comment
 FOR SELECT
 TO flex_common
 USING (
-    visibility = 'same_party' AND (
+    (visibility = 'same_party' AND (
         party_of_identity(
             service_provider_product_application_comment.created_by
         ) = (SELECT flex.current_party())
@@ -72,7 +76,8 @@ USING (
                 )
             )
     )
-    OR visibility = 'any_party' -- no check there
+    OR visibility = 'any_party') -- no check there
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPPAC-FISO001

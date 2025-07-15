@@ -40,6 +40,7 @@ FOR ALL
 TO flex_service_provider
 USING (
     service_provider_id = (SELECT flex.current_party())
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPPA-SO001
@@ -49,7 +50,7 @@ CREATE POLICY "SPPA_SO001"
 ON service_provider_product_application
 FOR SELECT
 TO flex_system_operator
-USING (true);
+USING ((SELECT flex.current_user_has_scope('simple')));
 
 -- RLS: SPPA-SO002
 CREATE POLICY "SPPA_SO002"
@@ -58,4 +59,5 @@ FOR UPDATE
 TO flex_system_operator
 USING (
     system_operator_id = (SELECT flex.current_party())
+    AND (SELECT flex.current_user_has_scope('simple'))
 );

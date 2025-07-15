@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:party-membership-create runOnChange:false endDelimiter:--
--- validCheckSum: 9:759e63e7f77b260a1137208ea9d7162e
+-- validCheckSum: 9:b0a5b8d8bff283ee96396ff636da616f
 -- noqa: disable=all
 CREATE TABLE IF NOT EXISTS party_membership (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
