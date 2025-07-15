@@ -1,4 +1,5 @@
 RESOURCE;FIELD;ANON;BRP;ES;EU;FISO;MO;SO;SP;TP;ENT;IEN
+entity;;;;;;L;;;;;;
 entity;id;;R;R;R;R;R;R;R;R;R;
 entity;name;;R;R;R;RCU;R;R;R;R;R;
 entity;type;;R;R;R;RC;R;R;R;R;R;

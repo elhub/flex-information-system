@@ -157,6 +157,9 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_energy_supplier.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_as_of.sql
+      relativeToChangelogFile: true
 
   # RLS, grants and history
   - includeAll:

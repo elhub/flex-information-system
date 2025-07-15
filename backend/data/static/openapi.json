@@ -25,6 +25,10 @@
             "description": "Controllable unit"
         },
         {
+            "name": "entity",
+            "description": "Entity"
+        },
+        {
             "name": "controllable_unit_service_provider",
             "description": "Relation between controllable unit and service provider"
         },
@@ -39,10 +43,6 @@
         {
             "name": "service_providing_group_grid_prequalification",
             "description": "Grid prequalification for service providing group"
-        },
-        {
-            "name": "entity",
-            "description": "Entity"
         },
         {
             "name": "entity_client",
@@ -310,6 +310,56 @@
                     "accounting_point",
                     "end_user",
                     "controllable_units"
+                ]
+            },
+            "entity_lookup_request": {
+                "summary": "Entity lookup",
+                "description": "Request schema for entity lookup operations",
+                "type": "object",
+                "properties": {
+                    "business_id": {
+                        "description": "The business identifier of the entity. Person number or organisation number, according to `type`.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "13370000000"
+                    },
+                    "name": {
+                        "description": "Name of the entity.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "John Smith"
+                    },
+                    "type": {
+                        "description": "The type of the entity.",
+                        "format": "text",
+                        "type": "string",
+                        "enum": [
+                            "person",
+                            "organisation"
+                        ],
+                        "example": "person"
+                    }
+                },
+                "required": [
+                    "business_id",
+                    "name",
+                    "type"
+                ]
+            },
+            "entity_lookup_response": {
+                "summary": "Entity lookup",
+                "description": "Response schema for entity lookup operations",
+                "type": "object",
+                "properties": {
+                    "entity_id": {
+                        "description": "The surrogate key of the entity.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 11
+                    }
+                },
+                "required": [
+                    "id"
                 ]
             },
             "timeline_multi_range": {
@@ -3385,6 +3435,78 @@
                             }
                         },
                         "description": "Not Found"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/entity/lookup": {
+            "post": {
+                "operationId": "call_entity_lookup",
+                "summary": "Call - Entity lookup",
+                "description": "Lookup an entity from its business ID. Creates the entity if missing.",
+                "tags": [
+                    "entity"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/entity_lookup_request"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/entity_lookup_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/entity_lookup_response"
+                                }
+                            }
+                        },
+                        "description": "Created"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
                     },
                     "500": {
                         "content": {

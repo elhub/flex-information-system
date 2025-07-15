@@ -1220,6 +1220,7 @@
         "entity.business_id_type.read",
         "entity.create",
         "entity.id.read",
+        "entity.lookup",
         "entity.name.create",
         "entity.name.read",
         "entity.name.update",

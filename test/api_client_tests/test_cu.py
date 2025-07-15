@@ -286,7 +286,7 @@ def test_controllable_unit_eu(sts):
 
     old_cuhs = list(
         filter(
-            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            lambda cuh: "COMMON-EU-ES-2023" in cast(str, cuh.name),
             cuhs_former_eu,
         )
     )
@@ -297,7 +297,8 @@ def test_controllable_unit_eu(sts):
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
     assert isinstance(cu, ControllableUnitResponse)
-    assert "FORMER NAME" in cast(str, cu.name)
+    # the latest they can see is the one last introduced before the EU changed
+    assert "TEST-SP-2024-07" in cast(str, cu.name)
 
     # current AP end user can see the current version of the CU,
     # but not the old records
@@ -318,7 +319,7 @@ def test_controllable_unit_eu(sts):
 
     old_cuhs = list(
         filter(
-            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            lambda cuh: "COMMON-EU-ES-2023" in cast(str, cuh.name),
             cuhs_eu,
         )
     )
@@ -343,7 +344,7 @@ def test_controllable_unit_es(sts):
 
     old_cuhs = list(
         filter(
-            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            lambda cuh: "COMMON-EU-ES-2023" in cast(str, cuh.name),
             cuhs_former_es,
         )
     )
@@ -354,7 +355,7 @@ def test_controllable_unit_es(sts):
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
     assert isinstance(cu, ControllableUnitResponse)
-    assert "FORMER NAME" in cast(str, cu.name)
+    assert "TEST-SP-2024-07" in cast(str, cu.name)
 
     # current AP energy supplier can see the current version of the CU,
     # but not the old records
@@ -375,7 +376,7 @@ def test_controllable_unit_es(sts):
 
     old_cuhs = list(
         filter(
-            lambda cuh: "FORMER NAME" in cast(str, cuh.name),
+            lambda cuh: "COMMON-EU-ES-2023" in cast(str, cuh.name),
             cuhs_es,
         )
     )
@@ -398,10 +399,14 @@ def test_controllable_unit_brp(sts):
         client=client_former_brp,
     )
     assert isinstance(cuhs_former_brp, list)
-    assert len(cuhs_former_brp) == 3
+    # they see the record designed for this test (COMMON-BRP-CUSP-2024) but as
+    # they are BRP a bit longer before and after this test record, they can also
+    # see the one before and the one after
+    assert len(cuhs_former_brp) == 9
+    assert any("COMMON-BRP-CUSP-2024" in cast(str, cuh.name) for cuh in cuhs_former_brp)
 
-    assert all("TEST-APBRP" in cast(str, cu.name) for cu in cus_former_brp)
-    assert all("TEST-APBRP" in cast(str, cuh.name) for cuh in cuhs_former_brp)
+    # CU names are the ones of the last record they can see
+    assert all("COMMON-SP-AS-OF-2024" in cast(str, cu.name) for cu in cus_former_brp)
 
     # current AP BRP can see the current version of the CU,
     # but not the old records
@@ -413,7 +418,7 @@ def test_controllable_unit_brp(sts):
         id=cast(int, cus_former_brp[0].id),
     )
     assert isinstance(cu, ControllableUnitResponse)
-    assert "TEST-APBRP" not in cast(str, cu.name)
+    assert "2024" not in cast(str, cu.name)
 
     cuhs = list_controllable_unit_history.sync(
         client=client_brp,
@@ -421,7 +426,7 @@ def test_controllable_unit_brp(sts):
     )
     assert isinstance(cuhs, list)
 
-    assert all("TEST-APBRP" not in cast(str, cuh.name) for cuh in cuhs)
+    assert all("COMMON-BRP-CUSP-2024" not in cast(str, cuh.name) for cuh in cuhs)
 
 
 def test_controllable_unit_sp(sts):
