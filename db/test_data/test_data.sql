@@ -154,7 +154,7 @@ BEGIN
   ) VALUES (
     cu.id,
     cu.business_id,
-    cu.name || ' FORMER NAME', -- this string will be searched in tests
+    cu.name || ' COMMON-EU-ES-2023', -- this string will be searched in tests
     cu.start_date,
     cu.regulation_direction,
     cu.maximum_available_capacity,
@@ -176,12 +176,40 @@ BEGIN
     tstzrange(
       '2023-10-01 00:00:00 Europe/Oslo',
       '2023-11-01 00:00:00 Europe/Oslo',
-      '[)'),
+      '[)'
+    ),
     0
   ), (
     cu.id,
     cu.business_id,
-    cu.name || ' TEST-APBRP',
+    cu.name || ' TEST-SP-2024-07',
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.is_small,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record must have overlap with the first CUSP of Test SP
+    tstzrange(
+      '2023-11-01 00:00:00 Europe/Oslo',
+      '2024-08-10 00:00:00 Europe/Oslo',
+      '[)'
+    ),
+    0
+  ), (
+    cu.id,
+    cu.business_id,
+    cu.name || ' COMMON-BRP-CUSP-2024',
     cu.start_date,
     cu.regulation_direction,
     cu.maximum_available_capacity,
@@ -202,7 +230,62 @@ BEGIN
     tstzrange(
       '2024-08-10 00:00:00 Europe/Oslo',
       '2024-08-11 00:00:00 Europe/Oslo',
-      '[)'),
+      '[)'
+    ),
+    0
+  ), (
+    cu.id,
+    cu.business_id,
+    cu.name || ' COMMON-SP-AS-OF-2024',
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.is_small,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record must contain the as-of timestamp of Common SP
+    tstzrange(
+      '2024-08-11 00:00:00 Europe/Oslo',
+      '2025-01-01 00:00:00 Europe/Oslo',
+      '[)'
+    ),
+    0
+  ), (
+    cu.id,
+    cu.business_id,
+    cu.name || ' TEST-SP-2025',
+    cu.start_date,
+    cu.regulation_direction,
+    cu.maximum_available_capacity,
+    cu.minimum_duration,
+    cu.maximum_duration,
+    cu.recovery_duration,
+    cu.ramp_rate,
+    cu.status,
+    cu.is_small,
+    cu.accounting_point_id,
+    cu.grid_node_id,
+    cu.grid_validation_status,
+    cu.grid_validation_notes,
+    cu.last_validated,
+    cu.created_by_party_id,
+    cu.recorded_by,
+    -- the record acts as a newer version that Common SP cannot see
+    tstzrange(
+      '2025-01-01 00:00:00 Europe/Oslo',
+      current_timestamp,
+      '[)'
+    ),
     0
   );
 
@@ -282,7 +365,7 @@ BEGIN
       replaced_by
     ) VALUES (
       l_tr.id,
-      l_tr.name || ' FORMER NAME', -- this string will be searched in tests
+      l_tr.name || ' COMMON-EU-ES-2023', -- this string will be searched in tests
       l_tr.controllable_unit_id,
       l_tr.details,
     -- the record must exist fully during the contract of the former end user
@@ -294,19 +377,22 @@ BEGIN
       ),
       l_tr.recorded_by,
       0
-    );
-
-    INSERT INTO flex.technical_resource_history (
-      id,
-      name,
-      controllable_unit_id,
-      details,
-      record_time_range,
-      recorded_by,
-      replaced_by
-    ) VALUES (
+    ), (
       l_tr.id,
-      l_tr.name || ' TEST-APBRP',
+      l_tr.name || ' TEST-SP-2024-07',
+      l_tr.controllable_unit_id,
+      l_tr.details,
+      -- the record must have overlap with the first CUSP of Test SP
+      tstzrange(
+        '2023-11-01 00:00:00 Europe/Oslo',
+        '2024-08-10 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      l_tr.recorded_by,
+      0
+    ), (
+      l_tr.id,
+      l_tr.name || ' COMMON-BRP-CUSP-2024',
       l_tr.controllable_unit_id,
       l_tr.details,
       -- the record must exist while Common BRP is BRP on the AP
@@ -314,6 +400,32 @@ BEGIN
       tstzrange(
         '2024-08-10 00:00:00 Europe/Oslo',
         '2024-08-11 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      l_tr.recorded_by,
+      0
+    ), (
+      l_tr.id,
+      l_tr.name || ' COMMON-SP-AS-OF-2024',
+      l_tr.controllable_unit_id,
+      l_tr.details,
+      -- the record must contain the as-of timestamp of Common SP
+      tstzrange(
+        '2024-08-11 00:00:00 Europe/Oslo',
+        '2025-01-01 00:00:00 Europe/Oslo',
+        '[)'
+      ),
+      l_tr.recorded_by,
+      0
+    ), (
+      l_tr.id,
+      l_tr.name || ' TEST-SP-2025',
+      l_tr.controllable_unit_id,
+      l_tr.details,
+      -- the record acts as a newer version that Common SP cannot see
+      tstzrange(
+        '2025-01-01 00:00:00 Europe/Oslo',
+        current_timestamp,
         '[)'
       ),
       l_tr.recorded_by,
