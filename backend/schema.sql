@@ -183,6 +183,7 @@ CREATE TABLE party_membership (
     id bigint NOT NULL,
     party_id bigint NOT NULL,
     entity_id bigint NOT NULL,
+    scopes text [] NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -191,6 +192,7 @@ CREATE TABLE party_membership_history (
     id bigint NOT NULL,
     party_id bigint NOT NULL,
     entity_id bigint NOT NULL,
+    scopes text [] NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

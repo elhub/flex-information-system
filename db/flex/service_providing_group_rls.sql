@@ -35,7 +35,10 @@ TO flex_service_provider;
 CREATE POLICY "SPG_SP001" ON service_providing_group
 FOR ALL
 TO flex_service_provider
-USING (service_provider_id = (SELECT current_party()));
+USING (
+    service_provider_id = (SELECT current_party())
+    AND (SELECT flex.current_user_has_scope('simple'))
+);
 
 -- RLS: SPG-SO001
 GRANT SELECT ON service_providing_group
@@ -48,6 +51,7 @@ USING (
         SELECT 1 FROM service_providing_group_grid_prequalification
         WHERE service_providing_group_grid_prequalification.service_providing_group_id = service_providing_group.id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPG-SO002
@@ -60,4 +64,5 @@ USING (
         WHERE spgpa.service_providing_group_id = service_providing_group.id -- noqa
         AND spgpa.procuring_system_operator_id = (SELECT current_party()) -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
