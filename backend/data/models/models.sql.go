@@ -41,6 +41,29 @@ func (q *Queries) ControllableUnitLookupCheckEndUserMatchesAccountingPoint(ctx c
 	return end_user_id, err
 }
 
+const entityLookup = `-- name: EntityLookup :one
+SELECT
+    entity_id::bigint,
+    entity_found::boolean
+FROM entity_lookup(
+  $1::text,
+  $2::text,
+  $3::text
+)
+`
+
+type EntityLookupRow struct {
+	EntityID    int
+	EntityFound bool
+}
+
+func (q *Queries) EntityLookup(ctx context.Context, entityBusinessID string, entityName string, entityType string) (EntityLookupRow, error) {
+	row := q.db.QueryRow(ctx, entityLookup, entityBusinessID, entityName, entityType)
+	var i EntityLookupRow
+	err := row.Scan(&i.EntityID, &i.EntityFound)
+	return i, err
+}
+
 const getAccountingPointIDFromBusinessID = `-- name: GetAccountingPointIDFromBusinessID :one
 SELECT ap.id
 FROM accounting_point AS ap

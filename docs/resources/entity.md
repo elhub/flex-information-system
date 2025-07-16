@@ -12,6 +12,15 @@ Here are the acceptable values for entities:
 | Organisation   | `org` (_organisasjonsnummer_)    |
 | Person         | `pid` (_fødselsnummer_), `email` |
 
+## Lookup
+
+A lookup operation can be performed to check whether a business ID is already
+linked to an existing entity in the system, and create the entity if it does not
+already exist. This allows users to manage more easily party memberships related
+to their organisation, and possibly create entities for their colleagues.
+
+* [API Documentation for Lookup](../api/v0/index.html#/operations/call_entity_lookup)
+
 ## Relevant links
 
 * [API Documentation](../api/v0/index.html#/operations/list_entity)

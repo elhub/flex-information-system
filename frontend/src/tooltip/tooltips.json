@@ -189,6 +189,14 @@
         "end_user": "The end user on the accounting point where the controllable units are located.",
         "controllable_units": "The controllable units that were found for the given end user or accounting point."
     },
+    "entity_lookup_request": {
+        "business_id": "The business identifier of the entity. Person number or organisation number, according to `type`.",
+        "name": "Name of the entity.",
+        "type": "The type of the entity."
+    },
+    "entity_lookup_response": {
+        "entity_id": "The surrogate key of the entity."
+    },
     "timeline_multi_range": null,
     "notice_data_valid_time_outside_contract": {
         "invalid_timeline": "Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point."
