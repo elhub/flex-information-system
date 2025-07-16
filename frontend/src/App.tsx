@@ -206,11 +206,6 @@ const AppBar = () => {
   const { isLoading, data, error } = useGetIdentity();
   if (error) redirect("/login");
 
-  // distinguish entity parties from bare entities
-  // (both have the flex_entity role)
-  const roleName =
-    (data?.partyID == undefined ? "Bare " : "") + roleNames[data?.role];
-
   return (
     <RaAppBar
       userMenu={
@@ -240,7 +235,7 @@ const AppBar = () => {
       <TitlePortal />
       {isLoading && <CircularProgress size={25} thickness={2} />}
       <Chip
-        label={isLoading ? "..." : roleName}
+        label={isLoading ? "..." : roleNames[data!.role]}
         variant="outlined"
         style={{ color: elhubTheme.palette.primary.contrastText }}
       />

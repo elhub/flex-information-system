@@ -36,14 +36,12 @@ the European energy sector are typically identified by a GLN or `EIC-X`. After
 being authenticated as an entity, the user can assume a party to
 interact with the system.
 
-For the sake of standardisation and simplification, all operations on the system
-shall be performed as a party.
-This means that we have two extra party types in addition to the other market
-actors: end users and the entity itself.
+We have two extra party types in addition to the other market actors: end users
+and organisations.
 An end user is either
 [a person or an organisation](https://www.nve.no/reguleringsmyndigheten/regulering/kraftmarkedet/sluttbrukermarkedet/).
-The entity party is a way for the user to have access to a special role to
-perform modifications on their own entity.
+The organisation party is a way for the user to have access to a special role to
+perform modifications on their own organisation entity.
 They can for instance give total or partial (via delegation mechanisms) access
 to what the entity owns and manages, to people from the same company.
 
@@ -54,9 +52,9 @@ We have the following party types in the Flexibility Information System:
 | BRP          | balance_responsible_party               | Balance Responsible Party               | _Balanseansvarlig_                          |
 | EU           | end_user                                | End User                                | _Sluttbruker_                               |
 | ES           | energy_supplier                         | Energy Supplier                         | _Kraftleverandør_                           |
-| ENT          | entity                                  | Entity                                  |                                             |
 | FISO         | flexibility_information_system_operator | Flexibility Information System Operator | _Fleksibilitetsinformasjonssystem Operatør_ |
 | MO           | market_operator                         | Market Operator                         | _Markedoperatør_                            |
+| ORG          | organisation                            | Organisation                            | _Organisasjon_                              |
 | SO           | system_operator                         | System Operator                         | _Systemoperatør_                            |
 | SP           | service_provider                        | Service Provider                        | _Tjenesteleverandør_                        |
 | TP           | third_party                             | Third Party                             | _Tredjepart_                                |
@@ -65,8 +63,7 @@ We have the following party types in the Flexibility Information System:
 
     In addition to these we also write policies and grant access that are common
     for all authenticated party types. This is referred to as `Common`,
-    abbreviated as `COM`. All party types inherit the policies from `Common`,
-    except the entity party.
+    abbreviated as `COM`. All party types inherit the policies from `Common`.
 
 The following sub-sections provides a brief description of each party type.
 

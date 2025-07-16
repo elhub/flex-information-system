@@ -46,6 +46,7 @@ generate a UUID as the business identifier.
 |------------|-------------------------------------------------------------------------------------|--------|
 | PTY-VAL001 | `business_id_type` is UUID if and only if the party is an `end_user`.               | DONE   |
 | PTY-VAL002 | `business_id` is not required if `business_id_type` is UUID (it will be generated). | DONE   |
+| PTY-VAL003 | `business_id_type` is ORG if and only if the party is an `organisation`.            | DONE   |
 
 ## Notifications
 
@@ -99,6 +100,10 @@ No policies.
 
 No policies.
 
+#### Organisation
+
+No policies.
+
 #### System Operator
 
 No policies.
@@ -115,7 +120,7 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ENT |
+| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
 |------------------|------|-----|----|----|------|----|----|----|----|-----|
 | id               |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | name             |      | R   | R  | R  | RCU  | R  | R  | R  | R  | R   |

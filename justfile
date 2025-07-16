@@ -505,7 +505,7 @@ avatar:
     #!/usr/bin/env bash
     set -euo pipefail
     mkdir -p frontend/src/auth/avatars
-    for code in ANO BRP ES EU ENT FISO MO SP SO TP;
+    for code in ANO BRP ES EU ENT FISO MO ORG SP SO TP;
     do
         echo Getting avatar for $code
         curl "https://ui-avatars.com/api/?background=D6E4D5&color=0B3C28&rounded=true&bold=true&length=4&size=128&font-size=0.4&name=$code" \

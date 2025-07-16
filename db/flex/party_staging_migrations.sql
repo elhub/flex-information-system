@@ -10,9 +10,9 @@ ADD CONSTRAINT party_staging_type_check CHECK (
         'balance_responsible_party',
         'end_user',
         'energy_supplier',
-        'entity',
         'flexibility_information_system_operator',
         'market_operator',
+        'organisation',
         'service_provider',
         'system_operator',
         'third_party'

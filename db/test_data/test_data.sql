@@ -737,8 +737,8 @@ BEGIN
   PERFORM test_data.add_party_for_entity(
     entity_id_org,
     entity_id_person,
-    entity_first_name || '(entity)',
-   'entity',
+    entity_first_name || ' ORG',
+   'organisation',
     entity_org_business_id,
    'org'
   );

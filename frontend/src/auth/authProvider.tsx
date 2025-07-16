@@ -9,6 +9,7 @@ import energy_supplier_avatar from "./avatars/ES.png";
 import entity_avatar from "./avatars/ENT.png";
 import flexibility_information_system_operator_avatar from "./avatars/FISO.png";
 import market_operator_avatar from "./avatars/MO.png";
+import organisation_avatar from "./avatars/ORG.png";
 import service_provider_avatar from "./avatars/SP.png";
 import system_operator_avatar from "./avatars/SO.png";
 import third_party_avatar from "./avatars/TP.png";
@@ -35,6 +36,7 @@ const roleAvatars: any = {
   flex_flexibility_information_system_operator:
     flexibility_information_system_operator_avatar,
   flex_market_operator: market_operator_avatar,
+  flex_organisation: organisation_avatar,
   flex_service_provider: service_provider_avatar,
   flex_system_operator: system_operator_avatar,
   flex_third_party: third_party_avatar,

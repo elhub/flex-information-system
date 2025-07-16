@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:party-create runOnChange:false endDelimiter:--
---validCheckSum: 9:e38b336fbb81dc7bf185201efe3a2f6f
+--validCheckSum: 9:65fc6f6a36ea85af1b3dcb1e11a78ec2
 CREATE TABLE IF NOT EXISTS party (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- PTY-VAL002
@@ -49,14 +49,20 @@ CREATE TABLE IF NOT EXISTS party (
         OR
         (type != 'end_user' AND business_id_type != 'uuid')
     ),
+    -- PTY-VAL003
+    CONSTRAINT check_organisation_iff_org CHECK (
+        (type = 'organisation' AND business_id_type = 'org')
+        OR
+        (type != 'organisation' AND business_id_type != 'org')
+    ),
     CONSTRAINT check_party_type CHECK (
         type IN (
             'balance_responsible_party',
             'end_user',
             'energy_supplier',
-            'entity',
             'flexibility_information_system_operator',
             'market_operator',
+            'organisation',
             'service_provider',
             'system_operator',
             'third_party'
