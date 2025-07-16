@@ -9,6 +9,7 @@ import energy_supplier_avatar from "./avatars/ES.png";
 import entity_avatar from "./avatars/ENT.png";
 import flexibility_information_system_operator_avatar from "./avatars/FISO.png";
 import market_operator_avatar from "./avatars/MO.png";
+import organisation_avatar from "./avatars/ORG.png";
 import service_provider_avatar from "./avatars/SP.png";
 import system_operator_avatar from "./avatars/SO.png";
 import third_party_avatar from "./avatars/TP.png";
@@ -35,6 +36,7 @@ const roleAvatars: any = {
   flex_flexibility_information_system_operator:
     flexibility_information_system_operator_avatar,
   flex_market_operator: market_operator_avatar,
+  flex_organisation: organisation_avatar,
   flex_service_provider: service_provider_avatar,
   flex_system_operator: system_operator_avatar,
   flex_third_party: third_party_avatar,
@@ -75,18 +77,12 @@ export function authProvider(): AuthProvider {
       if (!sessionInfoString) return Promise.reject();
       const sessionInfo = JSON.parse(sessionInfoString);
 
-      if (
-        party_id !== null &&
-        (sessionInfo["role"] || "flex_entity") != "flex_entity"
-      ) {
+      if (party_id !== null && sessionInfo["party_id"] !== undefined) {
         // we are assuming a party, so we have to be entity
         return Promise.reject("must be entity when assuming party");
       }
 
-      if (
-        party_id === null &&
-        (sessionInfo["role"] || "flex_entity") == "flex_entity"
-      ) {
+      if (party_id === null && sessionInfo["party_id"] === undefined) {
         // we are entity, so nothing to unassume
         return Promise.resolve({ redirectTo: false });
       }

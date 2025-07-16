@@ -75,6 +75,10 @@ No policies.
 
 No policies.
 
+#### Organisation
+
+No policies.
+
 #### System Operator
 
 No policies.
@@ -91,10 +95,10 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|-------------|------|-----|----|----|------|----|----|----|----|
-| id          |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| party_id    |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| recorded_at |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| recorded_by |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
+|-------------|------|-----|----|----|------|----|----|----|----|-----|
+| id          |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| party_id    |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| recorded_at |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| recorded_by |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
