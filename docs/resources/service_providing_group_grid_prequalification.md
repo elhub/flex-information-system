@@ -80,6 +80,10 @@ No policies.
 
 No policies.
 
+#### Organisation
+
+No policies.
+
 #### System Operator
 
 | Policy key  | Policy                                                                  | Status |
@@ -101,13 +105,13 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD                       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|-----------------------------|------|-----|----|----|------|----|----|----|----|
-| id                          |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| service_providing_group_id  |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| impacted_system_operator_id |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| status                      |      | R   | R  | R  | RU   | R  | RU | R  | R  |
-| notes                       |      | R   | R  | R  | R    | R  | RU | R  | R  |
-| last_prequalified           |      | R   | R  | R  | RU   | R  | RU | R  | R  |
-| recorded_at                 |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| recorded_by                 |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD                       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
+|-----------------------------|------|-----|----|----|------|----|----|----|----|-----|
+| id                          |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| service_providing_group_id  |      | R   | R  | R  | RC   | R  | R  | R  | R  |     |
+| impacted_system_operator_id |      | R   | R  | R  | RC   | R  | R  | R  | R  |     |
+| status                      |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
+| notes                       |      | R   | R  | R  | R    | R  | RU | R  | R  |     |
+| last_prequalified           |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
+| recorded_at                 |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| recorded_by                 |      | R   | R  | R  | R    | R  | R  | R  | R  |     |

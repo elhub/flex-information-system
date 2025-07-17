@@ -8,6 +8,7 @@ WITH (security_invoker = true) AS (
         id,
         entity_id,
         party_id,
+        scopes,
         recorded_by,
         lower(record_time_range) AS recorded_at
     FROM flex.party_membership
@@ -22,6 +23,7 @@ WITH (
         id AS party_membership_id,
         entity_id,
         party_id,
+        scopes,
         recorded_by,
         lower(record_time_range) AS recorded_at,
         null AS replaced_by,
@@ -33,6 +35,7 @@ WITH (
         id AS party_membership_id,
         entity_id,
         party_id,
+        scopes,
         recorded_by,
         lower(record_time_range) AS recorded_at,
         replaced_by,

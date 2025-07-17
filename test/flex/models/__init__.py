@@ -125,6 +125,7 @@ from .party_membership_create_request import PartyMembershipCreateRequest
 from .party_membership_history_response import PartyMembershipHistoryResponse
 from .party_membership_response import PartyMembershipResponse
 from .party_membership_update_request import PartyMembershipUpdateRequest
+from .party_membership_update_request_scopes_item import PartyMembershipUpdateRequestScopesItem
 from .party_response import PartyResponse
 from .party_status import PartyStatus
 from .party_update_request import PartyUpdateRequest
@@ -318,6 +319,7 @@ __all__ = (
     "PartyMembershipHistoryResponse",
     "PartyMembershipResponse",
     "PartyMembershipUpdateRequest",
+    "PartyMembershipUpdateRequestScopesItem",
     "PartyResponse",
     "PartyStatus",
     "PartyUpdateRequest",

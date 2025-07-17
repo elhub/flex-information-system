@@ -5,6 +5,7 @@ from flex.models import (
     PartyBusinessIdType,
     PartyMembershipResponse,
     PartyMembershipCreateRequest,
+    PartyMembershipUpdateRequestScopesItem,
 )
 from flex.api.party import (
     list_party,
@@ -190,6 +191,7 @@ class SecurityTokenService:
         "ENT": "entity",
         "FISO": "flexibility_information_system_operator",
         "MO": "market_operator",
+        "ORG": "organisation",
         "SO": "system_operator",
         "SP": "service_provider",
         "TP": "third_party",
@@ -245,6 +247,7 @@ class SecurityTokenService:
             body=PartyMembershipCreateRequest(
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
+                scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
             ),
         )
         assert isinstance(pm, PartyMembershipResponse)

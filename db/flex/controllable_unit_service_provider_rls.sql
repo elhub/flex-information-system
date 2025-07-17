@@ -45,6 +45,7 @@ USING (
         FROM controllable_unit
         WHERE controllable_unit.id = controllable_unit_service_provider.controllable_unit_id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CUSP-SP001
@@ -54,7 +55,10 @@ CREATE POLICY controllable_unit_service_provider_sp
 ON controllable_unit_service_provider
 FOR ALL
 TO flex_service_provider
-USING (service_provider_id = (SELECT current_party()));
+USING (
+    service_provider_id = (SELECT current_party())
+    AND (SELECT flex.current_user_has_scope('simple'))
+);
 
 -- RLS: CUSP-EU001
 GRANT SELECT ON controllable_unit_service_provider TO flex_end_user;
@@ -70,6 +74,7 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_service_provider.valid_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 ALTER TABLE IF EXISTS controllable_unit_service_provider_history
@@ -92,6 +97,7 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_service_provider_history.valid_time_range -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CUSP-FISO002
@@ -122,6 +128,7 @@ USING (
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider_history.id = controllable_unit_service_provider.id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: CUSP-SP002
@@ -137,4 +144,5 @@ USING (
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider_history.id = controllable_unit_service_provider.id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );

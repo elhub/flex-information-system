@@ -25,6 +25,7 @@ import {
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
+import { ScopesField } from "./party/membership/components";
 
 export const AssumePartyPage = () => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ export const AssumePartyPage = () => {
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (identity.isPending) return;
-    if (!unAssumed && identity.data!.role !== "flex_entity") {
+    if (!unAssumed && identity.data!.partyID != undefined) {
       login({ party_id: null })
         .then(() => {
           setUnAssumed(true);
@@ -150,6 +151,7 @@ export const AssumePartyPage = () => {
             >
               <TextField source="type" />
             </ReferenceField>
+            <ScopesField source="scopes" />
           </Datagrid>
         </List>
       )}

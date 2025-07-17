@@ -47,6 +47,7 @@ USING (
             AND service_providing_group.service_provider_id
             = (SELECT current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPGGP-SO001
@@ -59,6 +60,7 @@ FOR ALL
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPGGP-SO002
@@ -86,4 +88,7 @@ CREATE POLICY "SPGGP_SO002"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator
-USING (current_party_impacted_in_spg(service_providing_group_id));
+USING (
+    current_party_impacted_in_spg(service_providing_group_id)
+    AND (SELECT flex.current_user_has_scope('simple'))
+);
