@@ -45,6 +45,7 @@ USING (
         WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
             AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPGPA-SO001
@@ -54,7 +55,7 @@ CREATE POLICY "SPGPA_SO001"
 ON service_providing_group_product_application
 FOR SELECT
 TO flex_system_operator
-USING (true);
+USING ((SELECT flex.current_user_has_scope('simple')));
 
 -- RLS: SPGPA-SO002
 CREATE POLICY "SPGPA_SO002"
@@ -63,4 +64,5 @@ FOR UPDATE
 TO flex_system_operator
 USING (
     procuring_system_operator_id = (SELECT flex.current_party())
+    AND (SELECT flex.current_user_has_scope('simple'))
 );

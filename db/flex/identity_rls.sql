@@ -16,4 +16,4 @@ GRANT SELECT ON identity TO flex_common;
 CREATE POLICY "ID_COM001" ON identity
 FOR SELECT
 TO flex_common
-USING (true);
+USING ((SELECT flex.current_user_has_scope('simple')));

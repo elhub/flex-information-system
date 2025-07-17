@@ -19,4 +19,4 @@ CREATE POLICY "AP_COM001"
 ON accounting_point
 FOR SELECT
 TO flex_common
-USING (true);
+USING ((SELECT flex.current_user_has_scope('simple')));

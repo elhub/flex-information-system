@@ -54,7 +54,13 @@ databaseChangeLog:
       file: ./party.sql
       relativeToChangelogFile: true
   - include:
+      file: ./party_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./party_staging.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./party_staging_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./identity.sql
@@ -161,13 +167,18 @@ databaseChangeLog:
       file: ./controllable_unit_as_of.sql
       relativeToChangelogFile: true
 
-  # RLS, grants and history
+  # history
   - includeAll:
       path: ./
       relativeToChangelogFile: true
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
+  - include:
+      file: ./party_membership_migrations.sql
+      relativeToChangelogFile: true
+
+  # RLS, grants
   - includeAll:
       path: ./
       relativeToChangelogFile: true

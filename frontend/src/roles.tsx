@@ -7,6 +7,7 @@ export const roleNames: any = {
   flex_flexibility_information_system_operator:
     "Flexibility Information System Operator",
   flex_market_operator: "Market Operator",
+  flex_organisation: "Organisation",
   flex_service_provider: "Service Provider",
   flex_system_operator: "System Operator",
   flex_third_party: "Third Party",

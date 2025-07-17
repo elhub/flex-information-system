@@ -46,7 +46,15 @@ BEGIN
       RETURNING id INTO party_id;
   END IF;
 
-  INSERT INTO flex.party_membership (entity_id, party_id) VALUES (member_entity_id, party_id);
+  INSERT INTO flex.party_membership (
+    entity_id,
+    party_id,
+    scopes
+  ) VALUES (
+    member_entity_id,
+    party_id,
+    '{simple}'
+  );
 
   RETURN party_id;
 END;
@@ -63,7 +71,15 @@ DECLARE
   party_id bigint;
 BEGIN
   SELECT id INTO party_id FROM flex.party WHERE name = party_name;
-  INSERT INTO flex.party_membership (entity_id, party_id) VALUES (entity_id, party_id);
+  INSERT INTO flex.party_membership (
+    entity_id,
+    party_id,
+    scopes
+  ) VALUES (
+    entity_id,
+    party_id,
+    '{simple}'
+  );
   RETURN party_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
@@ -733,6 +749,15 @@ BEGIN
       'gln'
     );
   end if;
+
+  PERFORM test_data.add_party_for_entity(
+    entity_id_org,
+    entity_id_person,
+    entity_first_name || ' ORG',
+   'organisation',
+    entity_org_business_id,
+   'org'
+  );
 
   SELECT id INTO pt_id
   FROM flex.product_type AS pt

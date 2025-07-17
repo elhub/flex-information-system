@@ -25,6 +25,7 @@ USING (
             AND cueu.end_user_id = (SELECT flex.current_party())
             AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-EU002
@@ -41,6 +42,7 @@ USING (
                     AND cueu.end_user_id = (SELECT flex.current_party())
         WHERE cusp.id = event.source_id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-EU003
@@ -57,6 +59,7 @@ USING (
                     AND cueu.end_user_id = (SELECT flex.current_party())
         WHERE tr.id = event.source_id -- noqa
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-FISO001
@@ -84,6 +87,7 @@ USING (
         'service_providing_group_grid_prequalification',
         'service_providing_group_product_application'
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 GRANT SELECT ON event TO flex_service_provider;
@@ -102,6 +106,7 @@ USING (
             AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
             AND cusp.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP002
@@ -115,6 +120,7 @@ USING (
         WHERE cusp.id = event.source_id -- noqa
             AND cusp.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP003
@@ -134,6 +140,7 @@ USING (
         WHERE tr.id = event.source_id -- noqa
             AND cusp.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP004
@@ -147,6 +154,7 @@ USING (
         WHERE sppa.id = event.source_id -- noqa
             AND sppa.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP005
@@ -163,6 +171,7 @@ USING (
         WHERE sppac.id = event.source_id -- noqa
             AND sppa.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP006
@@ -176,6 +185,7 @@ USING (
         WHERE spg.id = event.source_id -- noqa
             AND spg.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP007
@@ -191,6 +201,7 @@ USING (
         WHERE spgm.id = event.source_id -- noqa
             AND spg.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP008
@@ -207,6 +218,7 @@ USING (
         WHERE spggp.id = event.source_id -- noqa
             AND spg.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: EVENT-SP009
@@ -222,4 +234,5 @@ USING (
         WHERE spgpa.id = event.source_id -- noqa
             AND spg.service_provider_id = (SELECT flex.current_party())
     )
+    AND (SELECT flex.current_user_has_scope('simple'))
 );
