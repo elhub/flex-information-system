@@ -851,6 +851,14 @@ GRANT SELECT (
 ) ON TABLE api.party_membership
 TO flex_third_party;
 
+-- changeset flex:api-grant-party-membership-org-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    entity_id,
+    party_id,
+    scopes
+) ON TABLE api.party_membership
+TO flex_organisation;
+
 -- changeset flex:api-grant-party-membership-org-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
@@ -860,6 +868,16 @@ GRANT SELECT (
     recorded_at,
     recorded_by
 ) ON TABLE api.party_membership
+TO flex_organisation;
+
+-- changeset flex:api-grant-party-membership-org-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    scopes
+) ON TABLE api.party_membership
+TO flex_organisation;
+
+-- changeset flex:api-grant-party-membership-org-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE api.party_membership
 TO flex_organisation;
 
 -- changeset flex:api-grant-party-membership-ent-select endDelimiter:-- runAlways:true

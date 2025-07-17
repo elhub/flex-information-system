@@ -68,3 +68,13 @@ USING (
     party_id = (SELECT current_party())
     AND (SELECT flex.current_user_has_scope('simple'))
 );
+
+-- RLS: PTYM-ORG001
+GRANT SELECT, INSERT, UPDATE, DELETE ON party_membership TO flex_organisation;
+CREATE POLICY "PTYM_ORG001" ON party_membership
+FOR ALL
+TO flex_organisation
+USING (
+    (SELECT flex.current_user_has_scope('admin'))
+    AND entity_owns_party((SELECT flex.current_party_owner()), party_id)
+);
