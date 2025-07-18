@@ -223,7 +223,7 @@ def test_cusp_sp(data):
 
     # but not if there is already a CU-SP relation
 
-    cusp = create_controllable_unit_service_provider.sync(
+    e = create_controllable_unit_service_provider.sync(
         client=sp1_client,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
@@ -233,11 +233,11 @@ def test_cusp_sp(data):
             valid_from=midnight_n_days_diff(1),
         ),
     )
-    assert isinstance(cusp, ErrorMessage)
+    assert isinstance(e, ErrorMessage)
 
     # another SP cannot add a CU-SP relation
 
-    cusp = create_controllable_unit_service_provider.sync(
+    e = create_controllable_unit_service_provider.sync(
         client=sp2_client,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
@@ -247,9 +247,34 @@ def test_cusp_sp(data):
             valid_from=midnight_n_days_diff(0),
         ),
     )
-    assert isinstance(cusp, ErrorMessage)
+    assert isinstance(e, ErrorMessage)
 
-    # but they can insert in a 2-4 weeks window ahead of time
+    # they cannot create a duplicate contract (same SP, same EU, following)
+
+    e = create_controllable_unit_service_provider.sync(
+        client=sp1_client,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=sp1_id,
+            end_user_id=11,
+            contract_reference="TEST-CONTRACT-2",
+            valid_from=midnight_n_days_diff(16),
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # they can update (limit the first one)
+
+    u = update_controllable_unit_service_provider.sync(
+        client=sp1_client,
+        id=cast(int, cusp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_to=midnight_n_days_diff(2),
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    # they can insert in a 2-4 weeks window ahead of time
 
     cusp = create_controllable_unit_service_provider.sync(
         client=sp1_client,
@@ -263,7 +288,7 @@ def test_cusp_sp(data):
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
-    # they can update in a 2-week window
+    # they can update in the past
 
     u = update_controllable_unit_service_provider.sync(
         client=sp1_client,
@@ -275,7 +300,7 @@ def test_cusp_sp(data):
     )
     assert not (isinstance(u, ErrorMessage))
 
-    # but not too far in the past
+    # updates in the past limited to a 2-week window
 
     u = update_controllable_unit_service_provider.sync(
         client=sp1_client,
@@ -326,7 +351,7 @@ def test_cusp_so(data):
         )
         assert isinstance(cu, ControllableUnitResponse)
 
-        if cu.accounting_point_id > 1000:
+        if cast(int, cu.accounting_point_id) > 1000:
             cusp = read_controllable_unit_service_provider.sync(
                 client=client_so, id=cast(int, cusp.id)
             )
