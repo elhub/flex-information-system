@@ -6,12 +6,13 @@ import {
   useNotify,
 } from "react-admin";
 import { Typography, Stack, Button, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import UndoIcon from "@mui/icons-material/Undo";
 import { apiURL } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
+import { useEffect } from "react";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -75,8 +76,18 @@ const Toolbar = () => {
 
 // page to enter data required for controllable unit lookup
 export const ControllableUnitLookupInput = () => {
+  const {
+    state: { controllable_unit },
+  } = useLocation();
+
   const ControllableUnitLookupForm = () => {
-    const { getValues } = useFormContext();
+    const { getValues, setValue } = useFormContext();
+
+    useEffect(() => {
+      if (controllable_unit) {
+        setValue("controllable_unit", controllable_unit);
+      }
+    });
 
     const values = getValues();
     const accountingPointDefined =
