@@ -51,10 +51,10 @@ No policies.
 
 #### Common
 
-| Policy key  | Policy                                   | Status |
-|-------------|------------------------------------------|--------|
-| SOPT-COM001 | Read history on SOPT that they can read. | DONE   |
-| SOPT-COM002 | Read all SOPT.                           | DONE   |
+| Policy key  | Scope       | Policy                                   | Status |
+|-------------|-------------|------------------------------------------|--------|
+| SOPT-COM001 | `data:read` | Read history on SOPT that they can read. | DONE   |
+| SOPT-COM002 | `data:read` | Read all SOPT.                           | DONE   |
 
 #### Balance Responsible Party
 
@@ -70,9 +70,10 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key   | Policy                            | Status |
-|--------------|-----------------------------------|--------|
-| SOPT-FISO001 | Read, create and update all SOPT. | DONE   |
+| Policy key   | Scope         | Policy                      | Status |
+|--------------|---------------|-----------------------------|--------|
+| SOPT-FISO001 | `data:read`   | Read all SOPT.              | DONE   |
+| SOPT-FISO002 | `data:manage` | Create and update all SOPT. | DONE   |
 
 #### Market Operator
 
@@ -84,9 +85,10 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                              | Status |
-|------------|-----------------------------------------------------|--------|
-| SOPT-SO001 | Read, create and update SOPT concerning themselves. | DONE   |
+| Policy key | Scope         | Policy                                        | Status |
+|------------|---------------|-----------------------------------------------|--------|
+| SOPT-SO001 | `data:read`   | Read SOPT concerning themselves.              | DONE   |
+| SOPT-SO002 | `data:manage` | Create and update SOPT concerning themselves. | DONE   |
 
 #### Service Provider
 

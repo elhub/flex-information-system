@@ -60,9 +60,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key     | Policy          | Status |
-|----------------|-----------------|--------|
-| APBRP-FISO001  | Read all APBRP. | DONE   |
+| Policy key     | Scope       | Policy          | Status |
+|----------------|-------------|-----------------|--------|
+| APBRP-FISO001  | `data:read` | Read all APBRP. | DONE   |
 
 #### Market Operator
 
@@ -74,15 +74,15 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                              | Status |
-|-------------|-----------------------------------------------------|--------|
-| APBRP-SO001 | Read APBRP when they are system operator on the AP. | DONE   |
+| Policy key  | Scope       | Policy                                              | Status |
+|-------------|-------------|-----------------------------------------------------|--------|
+| APBRP-SO001 | `data:read` | Read APBRP when they are system operator on the AP. | DONE   |
 
 #### Service Provider
 
-| Policy key  | Policy                                                          | Status |
-|-------------|-----------------------------------------------------------------|--------|
-| APBRP-SP001 | Read APBRP on periods where they are related to a CU on the AP. | DONE   |
+| Policy key  | Scope       | Policy                                                          | Status |
+|-------------|-------------|-----------------------------------------------------------------|--------|
+| APBRP-SP001 | `data:read` | Read APBRP on periods where they are related to a CU on the AP. | DONE   |
 
 #### Third Party
 

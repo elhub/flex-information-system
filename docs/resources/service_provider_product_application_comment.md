@@ -44,11 +44,11 @@ No policies.
 
 #### Common
 
-| Policy key   | Policy                                        | Status |
-|--------------|-----------------------------------------------|--------|
-| SPPAC-COM001 | Read history on SPPAC that they can read.     | DONE   |
-| SPPAC-COM002 | Update SPPAC that they created.               | DONE   |
-| SPPAC-COM003 | Create SPPAC on SPPA that they are linked to. | DONE   |
+| Policy key   | Scope         | Policy                                        | Status |
+|--------------|---------------|-----------------------------------------------|--------|
+| SPPAC-COM001 | `data:read`   | Read history on SPPAC that they can read.     | DONE   |
+| SPPAC-COM002 | `data:manage` | Update SPPAC that they created.               | DONE   |
+| SPPAC-COM003 | `data:manage` | Create SPPAC on SPPA that they are linked to. | DONE   |
 
 #### Balance Responsible Party
 
@@ -64,9 +64,10 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key    | Policy                             | Status |
-|---------------|------------------------------------|--------|
-| SPPAC-FISO001 | Read, create and update all SPPAC. | DONE   |
+| Policy key    | Scope         | Policy                       | Status |
+|---------------|---------------|------------------------------|--------|
+| SPPAC-FISO001 | `data:read`   | Read all SPPAC.              | DONE   |
+| SPPAC-FISO002 | `data:manage` | Create and update all SPPAC. | DONE   |
 
 #### Market Operator
 
@@ -78,15 +79,15 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                            | Status |
-|-------------|---------------------------------------------------|--------|
-| SPPAC-SO001 | Read SPPAC that the visibility allows.            | DONE   |
+| Policy key  | Scope       | Policy                                            | Status |
+|-------------|-------------|---------------------------------------------------|--------|
+| SPPAC-SO001 | `data:read` | Read SPPAC that the visibility allows.            | DONE   |
 
 #### Service Provider
 
-| Policy key  | Policy                                            | Status |
-|-------------|---------------------------------------------------|--------|
-| SPPAC-SP001 | Read SPPAC that the visibility allows.            | DONE   |
+| Policy key  | Scope       | Policy                                            | Status |
+|-------------|-------------|---------------------------------------------------|--------|
+| SPPAC-SP001 | `data:read` | Read SPPAC that the visibility allows.            | DONE   |
 
 #### Third Party
 

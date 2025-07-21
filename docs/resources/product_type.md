@@ -73,9 +73,9 @@ No policies.
 
 #### Common
 
-| Policy key | Policy                  | Status |
-|------------|-------------------------|--------|
-| PT-COM001  | Read all product types. | DONE   |
+| Policy key | Scope       | Policy                  | Status |
+|------------|-------------|-------------------------|--------|
+| PT-COM001  | `data:read` | Read all product types. | DONE   |
 
 #### Balance Responsible Party
 

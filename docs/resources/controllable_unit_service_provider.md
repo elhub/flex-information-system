@@ -60,10 +60,10 @@ No policies.
 
 #### End User
 
-| Policy key | Policy                                                                          | Status |
-|------------|---------------------------------------------------------------------------------|--------|
-| CUSP-EU001 | Read CUSP that overlap with the period where they own the AP.                   | DONE   |
-| CUSP-EU002 | Read CUSP history records that overlap with the period where they owned the AP. | DONE   |
+| Policy key | Scope       | Policy                                                                          | Status |
+|------------|-------------|---------------------------------------------------------------------------------|--------|
+| CUSP-EU001 | `data:read` | Read CUSP that overlap with the period where they own the AP.                   | DONE   |
+| CUSP-EU002 | `data:read` | Read CUSP history records that overlap with the period where they owned the AP. | DONE   |
 
 #### Energy Supplier
 
@@ -71,10 +71,11 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key   | Policy                                    | Status |
-|--------------|-------------------------------------------|--------|
-| CUSP-FISO001 | Read, create, update and delete all CUSP. | DONE   |
-| CUSP-FISO002 | Read history on CUSP that they can read.  | DONE   |
+| Policy key   | Scope         | Policy                                   | Status |
+|--------------|---------------|------------------------------------------|--------|
+| CUSP-FISO001 | `data:read`   | Read all CUSP.                           | DONE   |
+| CUSP-FISO002 | `data:manage` | Create, update and delete all CUSP.      | DONE   |
+| CUSP-FISO003 | `data:read`   | Read history on CUSP that they can read. | DONE   |
 
 #### Market Operator
 
@@ -86,17 +87,18 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                   | Status |
-|------------|------------------------------------------|--------|
-| CUSP-SO001 | Read CUSP on CU they can read.           | DONE   |
-| CUSP-SO002 | Read history on CUSP that they can read. | DONE   |
+| Policy key | Scope       | Policy                                   | Status |
+|------------|-------------|------------------------------------------|--------|
+| CUSP-SO001 | `data:read` | Read CUSP on CU they can read.           | DONE   |
+| CUSP-SO002 | `data:read` | Read history on CUSP that they can read. | DONE   |
 
 #### Service Provider
 
-| Policy key | Policy                                                  | Status |
-|------------|---------------------------------------------------------|--------|
-| CUSP-SP001 | Create, read, update and delete CUSP where they are SP. | DONE   |
-| CUSP-SP002 | Read history on CUSP that they can read.                | DONE   |
+| Policy key | Scope         | Policy                                            | Status |
+|------------|---------------|---------------------------------------------------|--------|
+| CUSP-SP001 | `data:read`   | Read CUSP where they are SP.                      | DONE   |
+| CUSP-SP002 | `data:manage` | Create, update and delete CUSP where they are SP. | DONE   |
+| CUSP-SP003 | `data:read`   | Read history on CUSP that they can read.          | DONE   |
 
 #### Third Party
 

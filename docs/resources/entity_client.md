@@ -42,9 +42,10 @@ No policies.
 
 #### Entity
 
-| Policy key | Policy                                             | Status |
-|------------|----------------------------------------------------|--------|
-| ECL-ENT001 | Read, create, update and delete their own clients. | DONE   |
+| Policy key | Scope         | Policy                                       | Status |
+|------------|---------------|----------------------------------------------|--------|
+| ECL-ENT001 | `auth:read`   | Read their own clients.                      | DONE   |
+| ECL-ENT002 | `auth:manage` | Create, update and delete their own clients. | DONE   |
 
 #### Common
 
@@ -64,9 +65,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key  | Policy            | Status |
-|-------------|-------------------|--------|
-| ECL-FISO001 | Read all clients. | DONE   |
+| Policy key  | Scope       | Policy            | Status |
+|-------------|-------------|-------------------|--------|
+| ECL-FISO001 | `auth:read` | Read all clients. | DONE   |
 
 #### Market Operator
 

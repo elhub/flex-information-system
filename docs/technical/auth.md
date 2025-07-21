@@ -382,7 +382,7 @@ grant_type=urn:ietf:params:oauth:grant-type:token-exchange
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
 
-### Party membership & scopes
+### Party membership scopes
 
 In our system, entities are made _members_ of parties to allow them to assume
 the parties and act on behalf of them.
@@ -390,8 +390,15 @@ The membership relation comes with a list of _scopes_ (inspired by OAuth 2.0)
 that allow fine-tuning the access control when the entity assumes the party.
 Scopes drive what kind of resources the user is allowed to see or operations
 they can apply.
-For instance, the `readonly` scope gives access to resources the party is
-supposed to see, but disables all stateful operations (create/update/delete).
+
+Here is the various scopes we have in our system for party memberships:
+
+| Scope         | Description                                                                |
+|---------------|----------------------------------------------------------------------------|
+| `data:read`   | Read-only access to business resources (CU, SPG, ...)                      |
+| `data:manage` | Write access to business resources                                         |
+| `auth:read`   | Read-only access to authentication resources (entity, party, clients, ...) |
+| `auth:manage` | Write access to authentication resources                                   |
 
 ## Example - client credentials and token exchange
 

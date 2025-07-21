@@ -54,38 +54,39 @@ No policies.
 
 #### Balance Responsible Party
 
-| Policy key | Policy                                                                     | Status |
-|------------|----------------------------------------------------------------------------|--------|
-| TR-BRP001  | Read TR data when they are BRP on the AP. Only for the contract period.    | DONE   |
-| TR-BRP002  | Read TR history when they are BRP on the AP. Only for the contract period. | DONE   |
+| Policy key | Scope       | Policy                                                                     | Status |
+|------------|-------------|----------------------------------------------------------------------------|--------|
+| TR-BRP001  | `data:read` | Read TR data when they are BRP on the AP. Only for the contract period.    | DONE   |
+| TR-BRP002  | `data:read` | Read TR history when they are BRP on the AP. Only for the contract period. | DONE   |
 
 #### End User
 
-| Policy key | Policy                                                                           | Status |
-|------------|----------------------------------------------------------------------------------|--------|
-| TR-EU001   | Read TR data when they are EU on the AP. Only for when they are EU on the AP.    | DONE   |
-| TR-EU002   | Read TR history when they are EU on the AP. Only for when they are EU on the AP. | DONE   |
+| Policy key | Scope       | Policy                                                                           | Status |
+|------------|-------------|----------------------------------------------------------------------------------|--------|
+| TR-EU001   | `data:read` | Read TR data when they are EU on the AP. Only for when they are EU on the AP.    | DONE   |
+| TR-EU002   | `data:read` | Read TR history when they are EU on the AP. Only for when they are EU on the AP. | DONE   |
 
 #### Energy Supplier
 
-| Policy key | Policy                                                                    | Status |
-|------------|---------------------------------------------------------------------------|--------|
-| TR-ES001   | Read TR data when they are ES on the AP. Only for the contract period.    | DONE   |
-| TR-ES002   | Read TR history when they are ES on the AP. Only for the contract period. | DONE   |
+| Policy key | Scope       | Policy                                                                    | Status |
+|------------|-------------|---------------------------------------------------------------------------|--------|
+| TR-ES001   | `data:read` | Read TR data when they are ES on the AP. Only for the contract period.    | DONE   |
+| TR-ES002   | `data:read` | Read TR history when they are ES on the AP. Only for the contract period. | DONE   |
 
 #### Flexibility Information System Operator
 
-| Policy key | Policy                                  | Status |
-|------------|-----------------------------------------|--------|
-| TR-FISO001 | Read, create, update and delete all TR. | DONE   |
-| TR-FISO002 | Read all TR history.                    | DONE   |
+| Policy key | Scope         | Policy                            | Status |
+|------------|---------------|-----------------------------------|--------|
+| TR-FISO001 | `data:read`   | Read all TR.                      | DONE   |
+| TR-FISO002 | `data:manage` | Create, update and delete all TR. | DONE   |
+| TR-FISO003 | `data:read`   | Read all TR history.              | DONE   |
 
 #### Market Operator
 
-| Policy key | Policy                                                                                                               | Status |
-|------------|----------------------------------------------------------------------------------------------------------------------|--------|
-| TR-MO001   | Read TR data on CU that are connected to their market. Only for the period CU is active in the market.               | TODO   |
-| TR-MO002   | Read TR history on CU that are connected to their market. Only history on the period the CU is active in the market. | TODO   |
+| Policy key | Scope       | Policy                                                                                                               | Status |
+|------------|-------------|----------------------------------------------------------------------------------------------------------------------|--------|
+| TR-MO001   | `data:read` | Read TR data on CU that are connected to their market. Only for the period CU is active in the market.               | TODO   |
+| TR-MO002   | `data:read` | Read TR history on CU that are connected to their market. Only history on the period the CU is active in the market. | TODO   |
 
 #### Organisation
 
@@ -93,18 +94,18 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                       | Status |
-|------------|----------------------------------------------|--------|
-| TR-SO001   | Read TR belonging to CU that the SO can see. | DONE   |
-| TR-SO002   | Read history on TR that they can read.       | DONE   |
+| Policy key | Scope       | Policy                                       | Status |
+|------------|-------------|----------------------------------------------|--------|
+| TR-SO001   | `data:read` | Read TR belonging to CU that the SO can see. | DONE   |
+| TR-SO002   | `data:read` | Read history on TR that they can read.       | DONE   |
 
 #### Service Provider
 
-| Policy key | Policy                                                        | Status |
-|------------|---------------------------------------------------------------|--------|
-| TR-SP001   | Create, update and delete TR on CU where they are current SP. | DONE   |
-| TR-SP002   | Read TR data for the period they are SP on the CU.            | DONE   |
-| TR-SP003   | Read TR history for the period they are SP on the CU.         | DONE   |
+| Policy key | Scope       | Policy                                                        | Status |
+|------------|-------------|---------------------------------------------------------------|--------|
+| TR-SP001   | `data:read` | Create, update and delete TR on CU where they are current SP. | DONE   |
+| TR-SP002   | `data:read` | Read TR data for the period they are SP on the CU.            | DONE   |
+| TR-SP003   | `data:read` | Read TR history for the period they are SP on the CU.         | DONE   |
 
 #### Third Party
 
