@@ -76,16 +76,14 @@ const Toolbar = () => {
 
 // page to enter data required for controllable unit lookup
 export const ControllableUnitLookupInput = () => {
-  const {
-    state: { controllable_unit },
-  } = useLocation();
+  const { state } = useLocation();
 
   const ControllableUnitLookupForm = () => {
     const { getValues, setValue } = useFormContext();
 
     useEffect(() => {
-      if (controllable_unit) {
-        setValue("controllable_unit", controllable_unit);
+      if (state?.controllable_unit) {
+        setValue("controllable_unit", state?.controllable_unit);
       }
     });
 
@@ -121,7 +119,17 @@ export const ControllableUnitLookupInput = () => {
         <Typography variant="h6" gutterBottom>
           Lookup a controllable unit
         </Typography>
-        <p>Mandatory : end user and exactly one of the other fields</p>
+        <p>
+          This operation allows you to get information about one or several
+          controllable units registered in the Flexibility Information System,
+          in order to, for instance, create controllable unit service provider
+          resources. Information includes the controllable unit's technical ID.
+        </p>
+        <p>
+          Input the business ID of the end user behind the controllable unit,
+          and either the GSRN of the accounting point or the business ID of the
+          controllable unit.
+        </p>
         <ControllableUnitLookupForm />
       </Stack>
     </SimpleForm>
