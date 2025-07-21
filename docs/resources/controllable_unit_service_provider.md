@@ -25,10 +25,11 @@ of one service provider per activation period.
 
 ## Validation Rules
 
-| Validation rule key | Validation rule                                                                                                 | Status |
-|---------------------|-----------------------------------------------------------------------------------------------------------------|--------|
-| CUSP-VAL001         | Valid time is frozen after 2 weeks for SP.                                                                      | DONE   |
-| CUSP-VAL002         | New contracts added by SP must be created 2-4 weeks ahead of their start unless the CU has no current contract. | DONE   |
+| Validation rule key | Validation rule                                                                                                                               | Status |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| CUSP-VAL001         | Valid time is frozen after 2 weeks for SP.                                                                                                    | DONE   |
+| CUSP-VAL002         | New contracts added by SP must be created 2-4 weeks ahead of their start unless the CU has no current contract.                               | DONE   |
+| CUSP-VAL003         | For the sake of data quality, new contracts added by SP and directly taking place after another contract cannot have the same end user.       | DONE   |
 
 ## Notifications
 
@@ -79,6 +80,10 @@ No policies.
 
 No policies.
 
+#### Organisation
+
+No policies.
+
 #### System Operator
 
 | Policy key | Policy                                   | Status |
@@ -101,14 +106,14 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD                | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP |
-|----------------------|------|-----|----|----|------|----|----|-----|----|
-| id                   |      | R   | R  | R  | R    | R  | R  | R   | R  |
-| controllable_unit_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |
-| service_provider_id  |      | R   | R  | R  | RC   | R  | R  | RC  | R  |
-| end_user_id          |      | R   | R  | R  | RC   | R  | R  | RC  | R  |
-| contract_reference   |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |
-| valid_from           |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |
-| valid_to             |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |
-| recorded_at          |      | R   | R  | R  | R    | R  | R  | R   | R  |
-| recorded_by          |      | R   | R  | R  | R    | R  | R  | R   | R  |
+| FIELD                | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ORG |
+|----------------------|------|-----|----|----|------|----|----|-----|----|-----|
+| id                   |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| controllable_unit_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
+| service_provider_id  |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
+| end_user_id          |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
+| contract_reference   |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
+| valid_from           |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
+| valid_to             |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
+| recorded_at          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| recorded_by          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |

@@ -28,6 +28,7 @@ CREATE ROLE flex_energy_supplier WITH NOLOGIN;
 CREATE ROLE flex_entity WITH NOLOGIN;
 CREATE ROLE flex_flexibility_information_system_operator WITH NOLOGIN;
 CREATE ROLE flex_market_operator WITH NOLOGIN;
+CREATE ROLE flex_organisation WITH NOLOGIN;
 CREATE ROLE flex_service_provider WITH NOLOGIN;
 CREATE ROLE flex_system_operator WITH NOLOGIN;
 CREATE ROLE flex_third_party WITH NOLOGIN;
@@ -62,6 +63,7 @@ GRANT flex_energy_supplier TO flex_authenticator;
 GRANT flex_entity TO flex_authenticator;
 GRANT flex_flexibility_information_system_operator TO flex_authenticator;
 GRANT flex_market_operator TO flex_authenticator;
+GRANT flex_organisation TO flex_authenticator;
 GRANT flex_system_operator TO flex_authenticator;
 GRANT flex_service_provider TO flex_authenticator;
 GRANT flex_third_party TO flex_authenticator;
@@ -77,6 +79,7 @@ flex_energy_supplier,
 flex_entity,
 flex_flexibility_information_system_operator,
 flex_market_operator,
+flex_organisation,
 flex_system_operator,
 flex_service_provider,
 flex_third_party;
@@ -87,6 +90,7 @@ flex_end_user,
 flex_energy_supplier,
 flex_flexibility_information_system_operator,
 flex_market_operator,
+flex_organisation,
 flex_system_operator,
 flex_service_provider,
 flex_third_party;

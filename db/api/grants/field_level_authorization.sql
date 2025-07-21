@@ -113,6 +113,18 @@ GRANT SELECT (
 ) ON TABLE api.entity
 TO flex_third_party;
 
+-- changeset flex:api-grant-entity-org-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    name,
+    type,
+    business_id,
+    business_id_type,
+    recorded_at,
+    recorded_by
+) ON TABLE api.entity
+TO flex_organisation;
+
 -- changeset flex:api-grant-entity-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
@@ -228,6 +240,19 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE api.entity_client
 TO flex_third_party;
+
+-- changeset flex:api-grant-entity-client-org-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    entity_id,
+    name,
+    client_id,
+    client_secret,
+    public_key,
+    recorded_at,
+    recorded_by
+) ON TABLE api.entity_client
+TO flex_organisation;
 
 -- changeset flex:api-grant-entity-client-ent-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
@@ -402,6 +427,21 @@ GRANT SELECT (
 ) ON TABLE api.party
 TO flex_third_party;
 
+-- changeset flex:api-grant-party-org-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    name,
+    business_id,
+    business_id_type,
+    entity_id,
+    type,
+    role,
+    status,
+    recorded_at,
+    recorded_by
+) ON TABLE api.party
+TO flex_organisation;
+
 -- changeset flex:api-grant-party-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
@@ -565,6 +605,24 @@ GRANT SELECT (
 ) ON TABLE api.party_history
 TO flex_third_party;
 
+-- changeset flex:api-grant-party-history-org-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    party_id,
+    name,
+    business_id,
+    business_id_type,
+    entity_id,
+    type,
+    role,
+    status,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.party_history
+TO flex_organisation;
+
 -- changeset flex:api-grant-party-history-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
@@ -666,6 +724,16 @@ GRANT SELECT (
     party_name
 ) ON TABLE api.identity
 TO flex_third_party;
+
+-- changeset flex:api-grant-identity-org-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    entity_id,
+    entity_name,
+    party_id,
+    party_name
+) ON TABLE api.identity
+TO flex_organisation;
 
 -- changeset flex:api-grant-identity-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT (
@@ -782,6 +850,17 @@ GRANT SELECT (
     recorded_by
 ) ON TABLE api.party_membership
 TO flex_third_party;
+
+-- changeset flex:api-grant-party-membership-org-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    entity_id,
+    party_id,
+    scopes,
+    recorded_at,
+    recorded_by
+) ON TABLE api.party_membership
+TO flex_organisation;
 
 -- changeset flex:api-grant-party-membership-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT (
@@ -905,6 +984,20 @@ GRANT SELECT (
     replaced_by
 ) ON TABLE api.party_membership_history
 TO flex_third_party;
+
+-- changeset flex:api-grant-party-membership-history-org-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    party_membership_id,
+    entity_id,
+    party_id,
+    scopes,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.party_membership_history
+TO flex_organisation;
 
 -- changeset flex:api-grant-party-membership-history-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT (

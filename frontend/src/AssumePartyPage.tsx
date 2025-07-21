@@ -43,7 +43,7 @@ export const AssumePartyPage = () => {
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (identity.isPending) return;
-    if (!unAssumed && identity.data!.role !== "flex_entity") {
+    if (!unAssumed && identity.data!.partyID != undefined) {
       login({ party_id: null })
         .then(() => {
           setUnAssumed(true);
