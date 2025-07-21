@@ -121,7 +121,7 @@ BEGIN
           AND valid_time_range && NEW.valid_time_range
           AND end_user_id = NEW.end_user_id
     ) THEN
-        RAISE EXCEPTION 'duplicate: service provider already manages this controllable unit for the given end user'; -- noqa
+        RAISE EXCEPTION 'Please update the existing contract with the same SP and end user instead of creating a new one.' -- noqa
     END IF;
 
     RETURN NEW;
