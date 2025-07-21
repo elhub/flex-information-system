@@ -42,6 +42,10 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.entity
 TO flex_third_party;
 
+-- changeset flex:flex-grant-entity-org-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.entity
+TO flex_organisation;
+
 -- changeset flex:flex-grant-entity-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.entity
 TO flex_entity;
@@ -77,6 +81,10 @@ TO flex_service_provider;
 -- changeset flex:flex-grant-entity-client-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.entity_client
 TO flex_third_party;
+
+-- changeset flex:flex-grant-entity-client-org-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.entity_client
+TO flex_organisation;
 
 -- changeset flex:flex-grant-entity-client-ent-insert endDelimiter:-- runAlways:true
 GRANT INSERT ON TABLE flex.entity_client
@@ -134,6 +142,10 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.party
 TO flex_third_party;
 
+-- changeset flex:flex-grant-party-org-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.party
+TO flex_organisation;
+
 -- changeset flex:flex-grant-party-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.party
 TO flex_entity;
@@ -174,6 +186,10 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.party_history
 TO flex_third_party;
 
+-- changeset flex:flex-grant-party-history-org-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.party_history
+TO flex_organisation;
+
 -- changeset flex:flex-grant-party-history-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.party_history
 TO flex_entity;
@@ -213,6 +229,10 @@ TO flex_service_provider;
 -- changeset flex:flex-grant-identity-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.identity
 TO flex_third_party;
+
+-- changeset flex:flex-grant-identity-org-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.identity
+TO flex_organisation;
 
 -- changeset flex:flex-grant-identity-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.identity
@@ -258,6 +278,10 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.party_membership
 TO flex_third_party;
 
+-- changeset flex:flex-grant-party-membership-org-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.party_membership
+TO flex_organisation;
+
 -- changeset flex:flex-grant-party-membership-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.party_membership
 TO flex_entity;
@@ -293,6 +317,10 @@ TO flex_service_provider;
 -- changeset flex:flex-grant-party-membership-history-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.party_membership_history
 TO flex_third_party;
+
+-- changeset flex:flex-grant-party-membership-history-org-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.party_membership_history
+TO flex_organisation;
 
 -- changeset flex:flex-grant-party-membership-history-ent-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.party_membership_history

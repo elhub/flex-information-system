@@ -509,7 +509,8 @@
                 "enum": [
                     "gln",
                     "uuid",
-                    "eic_x"
+                    "eic_x",
+                    "org"
                 ],
                 "example": "gln"
             },

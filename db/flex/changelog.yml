@@ -54,7 +54,13 @@ databaseChangeLog:
       file: ./party.sql
       relativeToChangelogFile: true
   - include:
+      file: ./party_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./party_staging.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./party_staging_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./identity.sql

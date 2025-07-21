@@ -727,8 +727,8 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	recievedToken := new(accessToken)
-	err = verifyTokenString(accessTokenCookie.Value, recievedToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
+	receivedToken := new(accessToken)
+	err = verifyTokenString(accessTokenCookie.Value, receivedToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -739,11 +739,11 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if recievedToken.Role == "flex_entity" {
+	if receivedToken.PartyID == 0 {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
-			ErrorDescription: "invalid role in session cookie",
+			ErrorDescription: "session cookie is already a bare entity",
 		})
 		w.Write(body)
 		return
@@ -761,7 +761,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Commit(r.Context())
 
-	externalID, err := models.GetExternalIDByEntityID(r.Context(), tx, recievedToken.EntityID)
+	externalID, err := models.GetExternalIDByEntityID(r.Context(), tx, receivedToken.EntityID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(oauthErrorMessage{
@@ -784,10 +784,10 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	entityToken := accessToken{
-		ExpirationTime: recievedToken.ExpirationTime,
+		ExpirationTime: receivedToken.ExpirationTime,
 		Role:           "flex_entity",
 		PartyID:        0,
-		EntityID:       recievedToken.EntityID,
+		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
 	}
 
@@ -813,7 +813,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	})
 	w.WriteHeader(http.StatusOK)
 	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
-		EntityID:       recievedToken.EntityID,
+		EntityID:       receivedToken.EntityID,
 		EntityName:     ui.EntityName,
 		ExpirationTime: entityToken.ExpirationTime,
 		Role:           "flex_entity",
@@ -1277,7 +1277,8 @@ func (auth *API) jwtBearerHandler(
 		return
 	}
 
-	var partyID int
+	var token accessToken
+
 	if grant.Subject != nil {
 		// entity wants to assume a party
 		// we must first "log in" the entity to give it privileges in the database
@@ -1295,7 +1296,9 @@ func (auth *API) jwtBearerHandler(
 		}
 		defer tx.Commit(ctx)
 
-		partyID, externalID, err = models.GetPartyMembership(ctx, tx, entityID, grant.Subject.Identifier)
+		partyID, err := models.GetPartyMembership(
+			ctx, tx, entityID, grant.Subject.Identifier,
+		)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidClient,
@@ -1303,22 +1306,44 @@ func (auth *API) jwtBearerHandler(
 			})
 			return
 		}
+
+		eid, role, entityID, err := models.AssumeParty(ctx, tx, partyID)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+				Error:            oauthErrorInvalidTarget,
+				ErrorDescription: "entity cannot assume requested party",
+			})
+			return
+		}
+
+		token = accessToken{
+			EntityID:       entityID,
+			ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
+			ExternalID:     eid,
+			PartyID:        partyID,
+			Role:           role,
+		}
+
+		slog.InfoContext(
+			ctx, "successful JWT bearer login",
+			"entity", entityID, "party", partyID, "eid", externalID,
+		)
+	} else {
+		token = accessToken{
+			EntityID:       entityID,
+			ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
+			ExternalID:     externalID,
+			PartyID:        0,
+			Role:           "flex_entity",
+		}
+
+		slog.InfoContext(
+			ctx, "successful JWT bearer login",
+			"entity", entityID, "party", "null", "eid", externalID,
+		)
 	}
 
-	accessToken := accessToken{
-		EntityID:       entityID,
-		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
-		ExternalID:     externalID,
-		PartyID:        partyID,
-		Role:           "flex_entity",
-	}
-
-	slog.InfoContext(
-		ctx, "successful JWT bearer login",
-		"entity", entityID, "party", partyID, "eid", externalID,
-	)
-
-	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
+	signedAccessToken, err := token.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
 			http.StatusInternalServerError,
@@ -1332,6 +1357,6 @@ func (auth *API) jwtBearerHandler(
 		AccessToken:     string(signedAccessToken),
 		IssuedTokenType: tokenTypeAccess,
 		TokenType:       accessTokenTypeBearer,
-		ExpiresIn:       accessToken.ExpiresIn(),
+		ExpiresIn:       token.ExpiresIn(),
 	})
 }

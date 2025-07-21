@@ -628,6 +628,7 @@ resources:
           - gln
           - uuid
           - eic_x
+          - org
         example: gln
       entity_id:
         description: >-
