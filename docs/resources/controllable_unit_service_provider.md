@@ -25,10 +25,11 @@ of one service provider per activation period.
 
 ## Validation Rules
 
-| Validation rule key | Validation rule                                                                                                 | Status |
-|---------------------|-----------------------------------------------------------------------------------------------------------------|--------|
-| CUSP-VAL001         | Valid time is frozen after 2 weeks for SP.                                                                      | DONE   |
-| CUSP-VAL002         | New contracts added by SP must be created 2-4 weeks ahead of their start unless the CU has no current contract. | DONE   |
+| Validation rule key | Validation rule                                                                                                                               | Status |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| CUSP-VAL001         | Valid time is frozen after 2 weeks for SP.                                                                                                    | DONE   |
+| CUSP-VAL002         | New contracts added by SP must be created 2-4 weeks ahead of their start unless the CU has no current contract.                               | DONE   |
+| CUSP-VAL003         | For the sake of data quality, new contracts added by SP and directly taking place after another contract cannot have the same end user.       | DONE   |
 
 ## Notifications
 
