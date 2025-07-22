@@ -11,18 +11,26 @@ FOR ALL
 TO flex_internal_event_notification
 USING (true);
 
--- RLS: NOT-COM001
 GRANT SELECT, UPDATE ON notification TO flex_common;
+-- RLS: NOT-COM001
 CREATE POLICY "NOT_COM001" ON notification
-FOR ALL
+FOR SELECT
 TO flex_common
 USING (
     party_id = (SELECT flex.current_party())
-    AND (SELECT flex.current_user_has_scope('simple'))
+    AND 'data:read' IN (SELECT flex.current_scopes())
+);
+-- RLS: NOT-COM002
+CREATE POLICY "NOT_COM002" ON notification
+FOR UPDATE
+TO flex_common
+USING (
+    party_id = (SELECT flex.current_party())
+    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: NOT-FISO001
 CREATE POLICY "NOT_FISO001" ON notification
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING (true);
+USING ('data:read' IN (SELECT flex.current_scopes()));

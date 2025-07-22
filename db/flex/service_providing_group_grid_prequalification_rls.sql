@@ -22,15 +22,27 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
--- RLS: SPGGP-FISO001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group_grid_prequalification
 TO flex_flexibility_information_system_operator;
 
+-- RLS: SPGGP-FISO001
 CREATE POLICY "SPGGP_FISO001"
 ON service_providing_group_grid_prequalification
-FOR ALL
+FOR SELECT
 TO flex_flexibility_information_system_operator
-USING (true);
+USING ('data:read' IN (SELECT flex.current_scopes()));
+
+-- RLS: SPGGP-FISO002
+CREATE POLICY "SPGGP_FISO002_INSERT"
+ON service_providing_group_grid_prequalification
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "SPGGP_FISO002_UPDATE"
+ON service_providing_group_grid_prequalification
+FOR UPDATE
+TO flex_flexibility_information_system_operator
+USING ('data:manage' IN (SELECT flex.current_scopes()));
 
 -- RLS: SPGGP-SP001
 GRANT SELECT ON service_providing_group_grid_prequalification
@@ -47,24 +59,33 @@ USING (
             AND service_providing_group.service_provider_id
             = (SELECT current_party())
     )
-    AND (SELECT flex.current_user_has_scope('simple'))
+    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
--- RLS: SPGGP-SO001
 GRANT SELECT, UPDATE ON service_providing_group_grid_prequalification
 TO flex_system_operator;
 
+-- RLS: SPGGP-SO001
 CREATE POLICY "SPGGP_SO001"
 ON service_providing_group_grid_prequalification
-FOR ALL
+FOR SELECT
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
-    AND (SELECT flex.current_user_has_scope('simple'))
+    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPGGP-SO002
+CREATE POLICY "SPGGP_SO002"
+ON service_providing_group_grid_prequalification
+FOR UPDATE
+TO flex_system_operator
+USING (
+    impacted_system_operator_id = (SELECT current_party())
+    AND 'data:manage' IN (SELECT flex.current_scopes())
+);
 
+-- RLS: SPGGP-SO003
 -- cannot use a simple select on SPG because then policies would be recursive
 -- (SPG uses SPGGP in its policies)
 -- => hence the function
@@ -84,11 +105,11 @@ SELECT EXISTS (
 )
 $$;
 
-CREATE POLICY "SPGGP_SO002"
+CREATE POLICY "SPGGP_SO003"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator
 USING (
     current_party_impacted_in_spg(service_providing_group_id)
-    AND (SELECT flex.current_user_has_scope('simple'))
+    AND 'data:read' IN (SELECT flex.current_scopes())
 );

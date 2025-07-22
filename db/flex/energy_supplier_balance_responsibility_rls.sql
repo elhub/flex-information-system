@@ -11,4 +11,4 @@ CREATE POLICY "ESBR_INTERNAL_COMMON"
 ON energy_supplier_balance_responsibility
 FOR SELECT
 TO flex_common
-USING ((SELECT flex.current_user_has_scope('simple')));
+USING ('data:read' IN (SELECT flex.current_scopes()));

@@ -13,7 +13,8 @@ WITH (security_invoker = true) AS (
     -- no RLS policies for views, so we need to have them built-in
     WHERE
         -- RLS: NOTICE-FISO001
-        current_role = 'flex_flexibility_information_system_operator'
+        (current_role = 'flex_flexibility_information_system_operator'
         -- RLS: NOTICE-COM001
-        OR party_id = (SELECT flex.current_party())
+        OR party_id = (SELECT flex.current_party()))
+        AND 'data:read' IN (SELECT flex.current_scopes())
 );

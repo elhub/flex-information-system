@@ -95,7 +95,7 @@ EXECUTE FUNCTION
 service_provider_product_application_product_type_ids_insert();
 
 -- changeset flex:service-provider-product-type-ids-update-function runOnChange:true endDelimiter:--
--- RLS: SPPA-SP002
+-- RLS: SPPA-SP003
 -- reject updates by SP if the status is not `requested`
 CREATE OR REPLACE FUNCTION
 service_provider_product_application_product_type_ids_update()

@@ -101,11 +101,11 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Scope       | Policy                                                        | Status |
-|------------|-------------|---------------------------------------------------------------|--------|
-| TR-SP001   | `data:read` | Create, update and delete TR on CU where they are current SP. | DONE   |
-| TR-SP002   | `data:read` | Read TR data for the period they are SP on the CU.            | DONE   |
-| TR-SP003   | `data:read` | Read TR history for the period they are SP on the CU.         | DONE   |
+| Policy key | Scope         | Policy                                                        | Status |
+|------------|---------------|---------------------------------------------------------------|--------|
+| TR-SP001   | `data:manage` | Create, update and delete TR on CU where they are current SP. | DONE   |
+| TR-SP002   | `data:read`   | Read TR data for the period they are SP on the CU.            | DONE   |
+| TR-SP003   | `data:read`   | Read TR history for the period they are SP on the CU.         | DONE   |
 
 #### Third Party
 

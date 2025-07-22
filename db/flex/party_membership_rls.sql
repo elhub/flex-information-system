@@ -4,30 +4,46 @@
 -- changeset flex:party-membership-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS party_membership ENABLE ROW LEVEL SECURITY;
 
--- RLS: PTYM-FISO001
 GRANT INSERT,
 SELECT,
 UPDATE,
 DELETE ON party_membership TO flex_flexibility_information_system_operator;
+-- RLS: PTYM-FISO001
 CREATE POLICY "PTYM_FISO001" ON party_membership
-FOR ALL
+FOR SELECT
 TO flex_flexibility_information_system_operator
-USING (true);
-
+USING ('auth:read' IN (SELECT flex.current_scopes()));
 -- RLS: PTYM-FISO002
-GRANT SELECT ON party_membership
+CREATE POLICY "PTYM_FISO002_INSERT" ON party_membership
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK ('auth:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "PTYM_FISO002_UPDATE" ON party_membership
+FOR UPDATE
+TO flex_flexibility_information_system_operator
+USING ('auth:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "PTYM_FISO002_DELETE" ON party_membership
+FOR DELETE
+TO flex_flexibility_information_system_operator
+USING ('auth:manage' IN (SELECT flex.current_scopes()));
+
+-- RLS: PTYM-FISO003
+GRANT SELECT ON party_membership_history
 TO flex_flexibility_information_system_operator;
 CREATE POLICY "PTYM_FISO002" ON party_membership_history
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING (true);
+USING ('auth:read' IN (SELECT flex.current_scopes()));
 
 -- RLS: PTYM-ENT001
 GRANT SELECT ON party_membership TO flex_entity;
 CREATE POLICY "PTYM_ENT001" ON party_membership
 FOR SELECT
 TO flex_entity
-USING (entity_id = (SELECT current_entity()));
+USING (
+    entity_id = (SELECT current_entity())
+    AND 'auth:read' IN (SELECT flex.current_scopes())
+);
 
 -- security definer function to avoid round trips in RLS policies
 CREATE OR REPLACE FUNCTION entity_owns_party(
@@ -48,7 +64,10 @@ $$;
 CREATE POLICY "PTYM_ENT002" ON party_membership
 FOR SELECT
 TO flex_entity
-USING (entity_owns_party((SELECT current_entity()), party_id));
+USING (
+    entity_owns_party((SELECT current_entity()), party_id)
+    AND 'auth:read' IN (SELECT flex.current_scopes())
+);
 
 -- RLS: PTYM-COM002
 GRANT SELECT ON party_membership TO flex_common;
@@ -57,7 +76,7 @@ FOR SELECT
 TO flex_common
 USING (
     party_id = (SELECT current_party())
-    AND (SELECT flex.current_user_has_scope('simple'))
+    AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTYM-COM003
@@ -66,5 +85,5 @@ FOR SELECT
 TO flex_common
 USING (
     party_id = (SELECT current_party())
-    AND (SELECT flex.current_user_has_scope('simple'))
+    AND 'auth:read' IN (SELECT flex.current_scopes())
 );

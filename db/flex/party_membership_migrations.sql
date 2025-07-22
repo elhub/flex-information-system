@@ -10,7 +10,7 @@ ALTER TABLE flex.party_membership
 ADD COLUMN scopes text [];
 
 UPDATE flex.party_membership
-SET scopes = '{simple}';
+SET scopes = '{data:read, data:manage, auth:read, auth:manage}';
 
 ALTER TABLE flex.party_membership
 ALTER COLUMN scopes SET NOT NULL;
@@ -18,7 +18,13 @@ ALTER COLUMN scopes SET NOT NULL;
 -- noqa: disable=all
 ALTER TABLE flex.party_membership
 ADD CONSTRAINT check_party_membership_scopes CHECK (
-    scopes != '{}' AND array['simple', 'admin', 'readonly'] @> scopes
+    scopes != '{}'
+    AND array[
+        'data:read',
+        'data:manage',
+        'auth:read',
+        'auth:manage'
+    ] @> scopes
 );
 -- noqa: enable=all
 
@@ -26,24 +32,22 @@ ALTER TABLE flex.party_membership_history
 ADD COLUMN scopes text [];
 
 UPDATE flex.party_membership_history
-SET scopes = '{simple}';
+SET scopes = '{data:read, data:manage, auth:read, auth:manage}';
 
 ALTER TABLE flex.party_membership
 ENABLE TRIGGER USER;
 
 -- changeset flex:current-user-has-scope-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION
-flex.current_user_has_scope(in_scope text)
-RETURNS boolean
+CREATE OR REPLACE FUNCTION flex.current_scopes()
+RETURNS TABLE (
+    scope text
+)
 LANGUAGE sql
 SECURITY DEFINER
 STABLE
 AS $$
-    SELECT EXISTS (
-        SELECT 1
-        FROM flex.party_membership AS pm
-        WHERE pm.party_id = (SELECT flex.current_party())
-          AND pm.entity_id = (SELECT flex.current_entity())
-          AND in_scope = ANY(pm.scopes)
-    );
+    SELECT unnest(pm.scopes)
+    FROM flex.party_membership AS pm
+    WHERE pm.party_id = (SELECT flex.current_party())
+        AND pm.entity_id = (SELECT flex.current_entity())
 $$;

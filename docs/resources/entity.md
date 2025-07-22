@@ -87,10 +87,10 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key  | Scope       | Policy                          | Status |
-|-------------|-------------|---------------------------------|--------|
-| ENT-FISO001 | `auth:read` | Read all entities.              | DONE   |
-| ENT-FISO002 | `auth:read` | Create and update all entities. | DONE   |
+| Policy key  | Scope         | Policy                          | Status |
+|-------------|---------------|---------------------------------|--------|
+| ENT-FISO001 | `auth:read`   | Read all entities.              | DONE   |
+| ENT-FISO002 | `auth:manage` | Create and update all entities. | DONE   |
 
 #### Market Operator
 

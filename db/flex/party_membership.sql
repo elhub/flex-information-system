@@ -19,7 +19,13 @@ CREATE TABLE IF NOT EXISTS party_membership (
     REFERENCES entity (id),
     CONSTRAINT uk_party_membership_entity_party_id UNIQUE (party_id, entity_id),
     CONSTRAINT check_party_membership_scopes CHECK (
-        scopes != '{}' AND array['simple', 'admin', 'readonly'] @> scopes
+        scopes != '{}'
+        AND array[
+            'data:read',
+            'data:manage',
+            'auth:read',
+            'auth:manage'
+        ] @> scopes
     )
 );
 -- noqa: enable=all
