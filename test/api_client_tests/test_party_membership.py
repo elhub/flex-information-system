@@ -59,7 +59,10 @@ def test_ptym_fiso(sts):
         body=PartyMembershipCreateRequest(
             entity_id=ent_id,
             party_id=pty_id,
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+            ],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
@@ -87,7 +90,10 @@ def test_ptym_fiso(sts):
         client=client_fiso,
         id=cast(int, p.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.ADMIN],
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+            ],
         ),
     )
     assert not (isinstance(u, ErrorMessage))

@@ -27,7 +27,7 @@ TO flex_flexibility_information_system_operator;
 -- RLS: SOPT-FISO001
 CREATE POLICY "SOPT_FISO001"
 ON system_operator_product_type
-FOR ALL
+FOR SELECT
 TO flex_flexibility_information_system_operator
 USING ('data:read' IN (SELECT flex.current_scopes()));
 -- RLS: SOPT-FISO002
@@ -56,7 +56,7 @@ TO flex_system_operator;
 -- RLS: SOPT-SO001
 CREATE POLICY "SOPT_SO001"
 ON system_operator_product_type
-FOR ALL
+FOR SELECT
 TO flex_system_operator
 USING (
     system_operator_id = (SELECT flex.current_party())

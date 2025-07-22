@@ -123,20 +123,33 @@ USING (
     AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
--- RLS: TR-FISO001
 GRANT INSERT,
 SELECT,
 UPDATE,
 DELETE ON technical_resource TO flex_flexibility_information_system_operator;
+-- RLS: TR-FISO001
 CREATE POLICY "TR_FISO001" ON technical_resource
-FOR ALL
+FOR SELECT
 TO flex_flexibility_information_system_operator
 USING ('data:read' IN (SELECT flex.current_scopes()));
-
 -- RLS: TR-FISO002
+CREATE POLICY "TR_FISO002_INSERT" ON technical_resource
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "TR_FISO002_UPDATE" ON technical_resource
+FOR UPDATE
+TO flex_flexibility_information_system_operator
+USING ('data:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "TR_FISO002_DELETE" ON technical_resource
+FOR DELETE
+TO flex_flexibility_information_system_operator
+USING ('data:manage' IN (SELECT flex.current_scopes()));
+
+-- RLS: TR-FISO003
 GRANT SELECT ON technical_resource_history
 TO flex_flexibility_information_system_operator;
-CREATE POLICY "TR_FISO002" ON technical_resource_history
+CREATE POLICY "TR_FISO003" ON technical_resource_history
 FOR SELECT
 TO flex_flexibility_information_system_operator
 USING ('data:read' IN (SELECT flex.current_scopes()));

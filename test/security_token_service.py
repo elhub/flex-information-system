@@ -247,7 +247,12 @@ class SecurityTokenService:
             body=PartyMembershipCreateRequest(
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
-                scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+                scopes=[
+                    PartyMembershipUpdateRequestScopesItem.DATAREAD,
+                    PartyMembershipUpdateRequestScopesItem.DATAMANAGE,
+                    PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                    PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+                ],
             ),
         )
         assert isinstance(pm, PartyMembershipResponse)

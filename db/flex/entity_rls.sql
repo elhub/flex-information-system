@@ -49,7 +49,11 @@ FOR SELECT
 TO flex_flexibility_information_system_operator
 USING ('auth:read' IN (SELECT flex.current_scopes()));
 -- RLS: ENT-FISO002
-CREATE POLICY "ENT_FISO002" ON entity
+CREATE POLICY "ENT_FISO002_INSERT" ON entity
 FOR INSERT
 TO flex_flexibility_information_system_operator
 WITH CHECK ('auth:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "ENT_FISO002_UPDATE" ON entity
+FOR UPDATE
+TO flex_flexibility_information_system_operator
+USING ('auth:manage' IN (SELECT flex.current_scopes()));

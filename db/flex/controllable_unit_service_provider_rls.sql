@@ -27,9 +27,25 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_service_provider
 TO flex_flexibility_information_system_operator;
 CREATE POLICY "CUSP_FISO001"
 ON controllable_unit_service_provider
-FOR ALL
+FOR SELECT
 TO flex_flexibility_information_system_operator
 USING ('data:read' IN (SELECT flex.current_scopes()));
+-- RLS: CUSP-FISO002
+CREATE POLICY "CUSP_FISO002_INSERT"
+ON controllable_unit_service_provider
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "CUSP_FISO002_UPDATE"
+ON controllable_unit_service_provider
+FOR UPDATE
+TO flex_flexibility_information_system_operator
+USING ('data:manage' IN (SELECT flex.current_scopes()));
+CREATE POLICY "CUSP_FISO002_DELETE"
+ON controllable_unit_service_provider
+FOR DELETE
+TO flex_flexibility_information_system_operator
+USING ('data:manage' IN (SELECT flex.current_scopes()));
 
 -- RLS: CUSP-SO001
 GRANT SELECT ON controllable_unit_service_provider

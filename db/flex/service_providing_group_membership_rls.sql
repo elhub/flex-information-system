@@ -28,7 +28,7 @@ TO flex_flexibility_information_system_operator;
 -- RLS: SPGM-FISO001
 CREATE POLICY "SPGM_FISO001"
 ON service_providing_group_membership
-FOR ALL
+FOR SELECT
 TO flex_flexibility_information_system_operator
 USING ('data:read' IN (SELECT flex.current_scopes()));
 

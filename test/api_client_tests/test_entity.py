@@ -253,7 +253,10 @@ def test_entity_com(sts):
         body=PartyMembershipCreateRequest(
             entity_id=common_ent_id,
             party_id=so_id,
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.DATAREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+            ],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)

@@ -50,7 +50,7 @@ TO flex_service_provider;
 
 CREATE POLICY "SPGGP_SP001"
 ON service_providing_group_grid_prequalification
-FOR ALL
+FOR SELECT
 TO flex_service_provider
 USING (
     EXISTS (
