@@ -2,9 +2,10 @@ from enum import Enum
 
 
 class PartyMembershipUpdateRequestScopesItem(str, Enum):
-    ADMIN = "admin"
-    READONLY = "readonly"
-    SIMPLE = "simple"
+    AUTHMANAGE = "auth:manage"
+    AUTHREAD = "auth:read"
+    DATAMANAGE = "data:manage"
+    DATAREAD = "data:read"
 
     def __str__(self) -> str:
         return str(self.value)

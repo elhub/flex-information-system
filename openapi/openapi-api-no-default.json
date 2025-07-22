@@ -1583,14 +1583,15 @@
                             "format": "text",
                             "type": "string",
                             "enum": [
-                                "simple",
-                                "admin",
-                                "readonly"
+                                "data:read",
+                                "data:manage",
+                                "auth:read",
+                                "auth:manage"
                             ]
                         },
                         "nullable": false,
                         "example": [
-                            "readonly"
+                            "data:read"
                         ]
                     }
                 }
