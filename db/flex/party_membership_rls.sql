@@ -42,7 +42,7 @@ FOR SELECT
 TO flex_entity
 USING (
     entity_id = (SELECT current_entity())
-    AND 'auth:read' IN (SELECT flex.current_scopes())
+    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- security definer function to avoid round trips in RLS policies
@@ -66,7 +66,7 @@ FOR SELECT
 TO flex_entity
 USING (
     entity_owns_party((SELECT current_entity()), party_id)
-    AND 'auth:read' IN (SELECT flex.current_scopes())
+    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTYM-COM002

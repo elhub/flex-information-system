@@ -12,7 +12,7 @@ FOR SELECT
 TO flex_common
 USING (
     (type = 'organisation' OR id = (SELECT flex.current_entity()))
-    AND 'auth:read' IN (SELECT flex.current_scopes())
+    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT SELECT ON entity TO flex_entity;
@@ -21,7 +21,7 @@ FOR SELECT
 TO flex_entity
 USING (
     id = (SELECT flex.current_entity())
-    AND 'auth:read' IN (SELECT flex.current_scopes())
+    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: ENT-COM002

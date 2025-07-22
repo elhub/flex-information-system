@@ -24,7 +24,7 @@ FOR SELECT
 TO flex_entity
 USING (
     EXISTS (SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id) -- noqa
-    AND 'auth:read' IN (SELECT flex.current_scopes())
+    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTY-ENT002
@@ -33,7 +33,7 @@ FOR SELECT
 TO flex_entity
 USING (
     entity_id = (SELECT current_entity())
-    AND 'auth:read' IN (SELECT flex.current_scopes())
+    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTY-COM002
