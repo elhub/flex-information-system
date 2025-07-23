@@ -16,6 +16,7 @@ var _ pgpool.UserDetails = &RequestDetails{} //nolint:exhaustruct
 type RequestDetails struct {
 	role       string
 	externalID string
+	scopes     []string
 }
 
 // ExternalID returns the external ID of the request.
@@ -26,6 +27,11 @@ func (r *RequestDetails) ExternalID() string {
 // Role returns the role of the request.
 func (r *RequestDetails) Role() string {
 	return r.role
+}
+
+// Scopes returns the scopes of the request.
+func (r *RequestDetails) Scopes() []string {
+	return r.scopes
 }
 
 // RequestDetailsFromContext returns the RequestDetails value stored in ctx.

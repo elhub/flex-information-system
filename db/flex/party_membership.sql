@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:party-membership-create runOnChange:false endDelimiter:--
--- validCheckSum: 9:b0a5b8d8bff283ee96396ff636da616f
+-- validCheckSum: 9:f93bff03eb3684b1b7a5dea61169b137
 -- noqa: disable=all
 CREATE TABLE IF NOT EXISTS party_membership (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -19,7 +19,15 @@ CREATE TABLE IF NOT EXISTS party_membership (
     REFERENCES entity (id),
     CONSTRAINT uk_party_membership_entity_party_id UNIQUE (party_id, entity_id),
     CONSTRAINT check_party_membership_scopes CHECK (
-        scopes != '{}' AND array['simple', 'admin', 'readonly'] @> scopes
+        scopes != '{}'
+        AND array[
+            'data:read',
+            'data:use',
+            'data:manage',
+            'auth:read',
+            'auth:use',
+            'auth:manage'
+        ] @> scopes
     )
 );
 -- noqa: enable=all

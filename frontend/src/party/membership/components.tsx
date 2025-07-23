@@ -22,5 +22,15 @@ export const ScopesField = (props: any) => (
 );
 
 export const ScopesInput = (props: any) => (
-  <SelectArrayInput choices={["simple", "admin", "readonly"]} {...props} />
+  <SelectArrayInput
+    choices={[
+      "data:read",
+      "data:use",
+      "data:manage",
+      "auth:read",
+      "auth:use",
+      "auth:manage",
+    ]}
+    {...props}
+  />
 );

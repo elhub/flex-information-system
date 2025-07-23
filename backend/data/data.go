@@ -68,146 +68,166 @@ func NewAPIHandler(
 	))
 
 	// controllable unit lookup
-	mux.HandleFunc("POST /controllable_unit/lookup", data.controllableUnitLookupHandler)
+	mux.Handle(
+		"POST /controllable_unit/lookup",
+		data.scopeMiddleware(
+			"data", http.HandlerFunc(data.controllableUnitLookupHandler),
+		),
+	)
 
 	// entity lookup
-	mux.HandleFunc("POST /entity/lookup", data.entityLookupHandler)
+	mux.Handle(
+		"POST /entity/lookup",
+		data.scopeMiddleware("auth", http.HandlerFunc(data.entityLookupHandler)),
+	)
 
-	listPostgRESTHandler := middleware.DefaultQueryLimit(http.HandlerFunc(data.postgRESTHandler))
+	dataListPostgRESTHandler := middleware.DefaultQueryLimit(
+		data.scopeMiddleware("data", http.HandlerFunc(data.postgRESTHandler)),
+	)
+	dataPostgRESTHandler := data.scopeMiddleware(
+		"data", http.HandlerFunc(data.postgRESTHandler),
+	)
+
+	authListPostgRESTHandler := middleware.DefaultQueryLimit(
+		data.scopeMiddleware("auth", http.HandlerFunc(data.postgRESTHandler)),
+	)
+	authPostgRESTHandler := data.scopeMiddleware(
+		"auth", http.HandlerFunc(data.postgRESTHandler),
+	)
 
 	// all other requests are forwarded to PostgREST
-	mux.Handle("GET /accounting_point", listPostgRESTHandler)
-	mux.HandleFunc("GET /accounting_point/{id}", data.postgRESTHandler)
+	mux.Handle("GET /accounting_point", dataListPostgRESTHandler)
+	mux.Handle("GET /accounting_point/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /accounting_point_balance_responsible_party", listPostgRESTHandler)
+	mux.Handle("GET /accounting_point_balance_responsible_party", dataListPostgRESTHandler)
 
-	mux.Handle("GET /accounting_point_energy_supplier", listPostgRESTHandler)
+	mux.Handle("GET /accounting_point_energy_supplier", dataListPostgRESTHandler)
 
-	mux.Handle("GET /controllable_unit", listPostgRESTHandler)
-	mux.HandleFunc("POST /controllable_unit", data.postgRESTHandler)
-	mux.HandleFunc("GET /controllable_unit/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /controllable_unit/{id}", data.postgRESTHandler)
+	mux.Handle("GET /controllable_unit", dataListPostgRESTHandler)
+	mux.Handle("POST /controllable_unit", dataPostgRESTHandler)
+	mux.Handle("GET /controllable_unit/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /controllable_unit/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /controllable_unit_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /controllable_unit_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /controllable_unit_history", dataListPostgRESTHandler)
+	mux.Handle("GET /controllable_unit_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /controllable_unit_service_provider", listPostgRESTHandler)
-	mux.HandleFunc("POST /controllable_unit_service_provider", data.postgRESTHandler)
-	mux.HandleFunc("GET /controllable_unit_service_provider/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /controllable_unit_service_provider/{id}", data.postgRESTHandler)
-	mux.HandleFunc("DELETE /controllable_unit_service_provider/{id}", data.postgRESTHandler)
+	mux.Handle("GET /controllable_unit_service_provider", dataListPostgRESTHandler)
+	mux.Handle("POST /controllable_unit_service_provider", dataPostgRESTHandler)
+	mux.Handle("GET /controllable_unit_service_provider/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /controllable_unit_service_provider/{id}", dataPostgRESTHandler)
+	mux.Handle("DELETE /controllable_unit_service_provider/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /controllable_unit_service_provider_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /controllable_unit_service_provider_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /controllable_unit_service_provider_history", dataListPostgRESTHandler)
+	mux.Handle("GET /controllable_unit_service_provider_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /entity", listPostgRESTHandler)
-	mux.HandleFunc("POST /entity", data.postgRESTHandler)
-	mux.HandleFunc("GET /entity/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /entity/{id}", data.postgRESTHandler)
+	mux.Handle("GET /entity", authListPostgRESTHandler)
+	mux.Handle("POST /entity", authPostgRESTHandler)
+	mux.Handle("GET /entity/{id}", authPostgRESTHandler)
+	mux.Handle("PATCH /entity/{id}", authPostgRESTHandler)
 
-	mux.Handle("GET /entity_client", listPostgRESTHandler)
-	mux.HandleFunc("POST /entity_client", data.postgRESTHandler)
-	mux.HandleFunc("GET /entity_client/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /entity_client/{id}", data.postgRESTHandler)
-	mux.HandleFunc("DELETE /entity_client/{id}", data.postgRESTHandler)
+	mux.Handle("GET /entity_client", authListPostgRESTHandler)
+	mux.Handle("POST /entity_client", authPostgRESTHandler)
+	mux.Handle("GET /entity_client/{id}", authPostgRESTHandler)
+	mux.Handle("PATCH /entity_client/{id}", authPostgRESTHandler)
+	mux.Handle("DELETE /entity_client/{id}", authPostgRESTHandler)
 
-	mux.Handle("GET /event", listPostgRESTHandler)
-	mux.HandleFunc("GET /event/{id}", data.postgRESTHandler)
+	mux.Handle("GET /event", dataListPostgRESTHandler)
+	mux.Handle("GET /event/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /identity", listPostgRESTHandler)
-	mux.HandleFunc("GET /identity/{id}", data.postgRESTHandler)
+	mux.Handle("GET /identity", authListPostgRESTHandler)
+	mux.Handle("GET /identity/{id}", authPostgRESTHandler)
 
-	mux.Handle("GET /notice", listPostgRESTHandler)
+	mux.Handle("GET /notice", dataListPostgRESTHandler)
 
-	mux.Handle("GET /notification", listPostgRESTHandler)
-	mux.HandleFunc("GET /notification/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /notification/{id}", data.postgRESTHandler)
+	mux.Handle("GET /notification", dataListPostgRESTHandler)
+	mux.Handle("GET /notification/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /notification/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /party", listPostgRESTHandler)
-	mux.HandleFunc("POST /party", data.postgRESTHandler)
-	mux.HandleFunc("GET /party/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /party/{id}", data.postgRESTHandler)
+	mux.Handle("GET /party", authListPostgRESTHandler)
+	mux.Handle("POST /party", authPostgRESTHandler)
+	mux.Handle("GET /party/{id}", authPostgRESTHandler)
+	mux.Handle("PATCH /party/{id}", authPostgRESTHandler)
 
-	mux.Handle("GET /party_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /party_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /party_history", authListPostgRESTHandler)
+	mux.Handle("GET /party_history/{id}", authPostgRESTHandler)
 
-	mux.Handle("GET /party_membership", listPostgRESTHandler)
-	mux.HandleFunc("POST /party_membership", data.postgRESTHandler)
-	mux.HandleFunc("GET /party_membership/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /party_membership/{id}", data.postgRESTHandler)
-	mux.HandleFunc("DELETE /party_membership/{id}", data.postgRESTHandler)
+	mux.Handle("GET /party_membership", authListPostgRESTHandler)
+	mux.Handle("POST /party_membership", authPostgRESTHandler)
+	mux.Handle("GET /party_membership/{id}", authPostgRESTHandler)
+	mux.Handle("PATCH /party_membership/{id}", authPostgRESTHandler)
+	mux.Handle("DELETE /party_membership/{id}", authPostgRESTHandler)
 
-	mux.Handle("GET /party_membership_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /party_membership_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /party_membership_history", authListPostgRESTHandler)
+	mux.Handle("GET /party_membership_history/{id}", authPostgRESTHandler)
 
-	mux.Handle("GET /product_type", listPostgRESTHandler)
-	mux.HandleFunc("GET /product_type/{id}", data.postgRESTHandler)
+	mux.Handle("GET /product_type", dataListPostgRESTHandler)
+	mux.Handle("GET /product_type/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_provider_product_application", listPostgRESTHandler)
-	mux.HandleFunc("POST /service_provider_product_application", data.postgRESTHandler)
-	mux.HandleFunc("GET /service_provider_product_application/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /service_provider_product_application/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_provider_product_application", dataListPostgRESTHandler)
+	mux.Handle("POST /service_provider_product_application", dataPostgRESTHandler)
+	mux.Handle("GET /service_provider_product_application/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_provider_product_application/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_provider_product_application_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /service_provider_product_application_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_provider_product_application_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_provider_product_application_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_provider_product_application_comment", listPostgRESTHandler)
-	mux.HandleFunc("POST /service_provider_product_application_comment", data.postgRESTHandler)
-	mux.HandleFunc("GET /service_provider_product_application_comment/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /service_provider_product_application_comment/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_provider_product_application_comment", dataListPostgRESTHandler)
+	mux.Handle("POST /service_provider_product_application_comment", dataPostgRESTHandler)
+	mux.Handle("GET /service_provider_product_application_comment/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_provider_product_application_comment/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_provider_product_application_comment_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /service_provider_product_application_comment_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_provider_product_application_comment_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_provider_product_application_comment_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group", listPostgRESTHandler)
-	mux.HandleFunc("POST /service_providing_group", data.postgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /service_providing_group/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group", dataListPostgRESTHandler)
+	mux.Handle("POST /service_providing_group", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_grid_prequalification", listPostgRESTHandler)
-	mux.HandleFunc("POST /service_providing_group_grid_prequalification", data.postgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group_grid_prequalification/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /service_providing_group_grid_prequalification/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_prequalification", dataListPostgRESTHandler)
+	mux.Handle("POST /service_providing_group_grid_prequalification", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_prequalification/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group_grid_prequalification/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_grid_prequalification_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group_grid_prequalification_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_prequalification_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_prequalification_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_membership", listPostgRESTHandler)
-	mux.HandleFunc("POST /service_providing_group_membership", data.postgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group_membership/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /service_providing_group_membership/{id}", data.postgRESTHandler)
-	mux.HandleFunc("DELETE /service_providing_group_membership/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group_membership", dataListPostgRESTHandler)
+	mux.Handle("POST /service_providing_group_membership", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_membership/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group_membership/{id}", dataPostgRESTHandler)
+	mux.Handle("DELETE /service_providing_group_membership/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_membership_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group_membership_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group_membership_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_membership_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_product_application", listPostgRESTHandler)
-	mux.HandleFunc("POST /service_providing_group_product_application", data.postgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group_product_application/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /service_providing_group_product_application/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group_product_application", dataListPostgRESTHandler)
+	mux.Handle("POST /service_providing_group_product_application", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_product_application/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group_product_application/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /service_providing_group_product_application_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /service_providing_group_product_application_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /service_providing_group_product_application_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_product_application_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /system_operator_product_type", listPostgRESTHandler)
-	mux.HandleFunc("POST /system_operator_product_type", data.postgRESTHandler)
-	mux.HandleFunc("GET /system_operator_product_type/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /system_operator_product_type/{id}", data.postgRESTHandler)
+	mux.Handle("GET /system_operator_product_type", dataListPostgRESTHandler)
+	mux.Handle("POST /system_operator_product_type", dataPostgRESTHandler)
+	mux.Handle("GET /system_operator_product_type/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /system_operator_product_type/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /system_operator_product_type_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /system_operator_product_type_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /system_operator_product_type_history", dataListPostgRESTHandler)
+	mux.Handle("GET /system_operator_product_type_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /technical_resource", listPostgRESTHandler)
-	mux.HandleFunc("POST /technical_resource", data.postgRESTHandler)
-	mux.HandleFunc("GET /technical_resource/{id}", data.postgRESTHandler)
-	mux.HandleFunc("PATCH /technical_resource/{id}", data.postgRESTHandler)
-	mux.HandleFunc("DELETE /technical_resource/{id}", data.postgRESTHandler)
+	mux.Handle("GET /technical_resource", dataListPostgRESTHandler)
+	mux.Handle("POST /technical_resource", dataPostgRESTHandler)
+	mux.Handle("GET /technical_resource/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /technical_resource/{id}", dataPostgRESTHandler)
+	mux.Handle("DELETE /technical_resource/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /technical_resource_history", listPostgRESTHandler)
-	mux.HandleFunc("GET /technical_resource_history/{id}", data.postgRESTHandler)
+	mux.Handle("GET /technical_resource_history", dataListPostgRESTHandler)
+	mux.Handle("GET /technical_resource_history/{id}", dataPostgRESTHandler)
 
 	mux.HandleFunc("/", data.notFoundHandler)
 
@@ -216,6 +236,65 @@ func NewAPIHandler(
 
 func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
+}
+
+// scopeMiddleware is a middleware that checks that the user has the required
+// scope to access the endpoint. scopePrefix is used to distinguish between
+// different categories of resources the scopes are defined on.
+//
+//nolint:cyclop
+func (data *api) scopeMiddleware(
+	scopePrefix string, next http.Handler,
+) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		ctx := req.Context()
+
+		rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
+		if err != nil {
+			slog.ErrorContext(ctx, "no request details in context", "error", err)
+			writeInternalServerError(w)
+			return
+		}
+		scopes := rd.Scopes()
+
+		readScope := scopePrefix + ":read"
+		useScope := scopePrefix + ":use"
+		manageScope := scopePrefix + ":manage"
+
+		ok := true
+		switch req.Method {
+		case http.MethodPost:
+			if strings.HasSuffix(req.URL.Path, "/lookup") {
+				if !slices.Contains(scopes, useScope) &&
+					!slices.Contains(scopes, manageScope) {
+					ok = false
+				}
+			} else {
+				if !slices.Contains(scopes, manageScope) {
+					ok = false
+				}
+			}
+		case http.MethodPatch, http.MethodDelete:
+			if !slices.Contains(scopes, manageScope) {
+				ok = false
+			}
+		case http.MethodGet:
+			if !slices.Contains(scopes, readScope) &&
+				!slices.Contains(scopes, useScope) &&
+				!slices.Contains(scopes, manageScope) {
+				ok = false
+			}
+		}
+
+		if !ok {
+			writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
+				Message: "user is missing the required scope to perform this operation",
+			})
+			return
+		}
+
+		next.ServeHTTP(w, req)
+	})
 }
 
 //nolint:funlen,cyclop

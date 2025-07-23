@@ -41,6 +41,7 @@ def sts():
 
 
 # RLS: PTYM-FISO001
+# RLS: PTYM-FISO002
 def test_ptym_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -67,12 +68,15 @@ def test_ptym_fiso(sts):
         body=PartyMembershipCreateRequest(
             entity_id=ent_id,
             party_id=pty_id,
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+            ],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
 
-    # RLS: PTYM-FISO002
+    # RLS: PTYM-FISO003
     # endpoint: GET /party_membership_history/{id}
     pmh = read_party_membership_history.sync(
         client=client_fiso,
@@ -91,11 +95,15 @@ def test_ptym_fiso(sts):
     assert len(p2) == 1
     assert p2[0] == p
 
+    # endpoint: PATCH /party_membership/{id}
     u = update_party_membership.sync(
         client=client_fiso,
         id=cast(int, p.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.ADMIN],
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+            ],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -142,6 +150,7 @@ def test_ptym_ent(sts):
 
 
 # RLS: PTYM-ORG001
+# RLS: PTYM-ORG002
 def test_ptym_org(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_org = sts.get_client(TestEntity.TEST, "ORG")
@@ -178,7 +187,7 @@ def test_ptym_org(sts):
         body=PartyMembershipCreateRequest(
             entity_id=other_ent_id,
             party_id=cast(int, p.id),
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHREAD],
         ),
     )
     assert not isinstance(pm, ErrorMessage)
@@ -198,10 +207,11 @@ def test_ptym_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.ADMIN],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHMANAGE],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
+    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
 
     # now the org party can read and change party memberships on the new party
 
@@ -213,7 +223,7 @@ def test_ptym_org(sts):
         client=client_org,
         id=cast(int, pms[0].id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.READONLY],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHREAD],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -230,7 +240,7 @@ def test_ptym_org(sts):
         body=PartyMembershipCreateRequest(
             entity_id=other_ent_id,
             party_id=cast(int, p.id),
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHREAD],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
@@ -241,22 +251,19 @@ def test_ptym_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHREAD],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
+    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
 
     # they can no longer do the operations
-
-    pms = list_party_membership.sync(client=client_org, party_id=f"eq.{p.id}")
-    assert isinstance(pms, list)
-    assert len(pms) == 0
 
     e = update_party_membership.sync(
         client=client_org,
         id=cast(int, pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHREAD],
         ),
     )
     assert isinstance(e, ErrorMessage)

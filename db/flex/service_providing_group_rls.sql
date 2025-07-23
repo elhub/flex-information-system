@@ -21,23 +21,44 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
--- RLS: SPG-FISO001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group
 TO flex_flexibility_information_system_operator;
+-- RLS: SPG-FISO001
 CREATE POLICY "SPG_FISO001" ON service_providing_group
-FOR ALL
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
+-- RLS: SPG-FISO002
+CREATE POLICY "SPG_FISO002_INSERT" ON service_providing_group
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK (true);
+CREATE POLICY "SPG_FISO002_UPDATE" ON service_providing_group
+FOR UPDATE
 TO flex_flexibility_information_system_operator
 USING (true);
 
--- RLS: SPG-SP001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group
 TO flex_service_provider;
+-- RLS: SPG-SP001
 CREATE POLICY "SPG_SP001" ON service_providing_group
-FOR ALL
+FOR SELECT
 TO flex_service_provider
 USING (
     service_provider_id = (SELECT current_party())
-    AND (SELECT flex.current_user_has_scope('simple'))
+);
+-- RLS: SPG-SP002
+CREATE POLICY "SPG_SP002_INSERT" ON service_providing_group
+FOR INSERT
+TO flex_service_provider
+WITH CHECK (
+    service_provider_id = (SELECT current_party())
+);
+CREATE POLICY "SPG_SP002_UPDATE" ON service_providing_group
+FOR UPDATE
+TO flex_service_provider
+USING (
+    service_provider_id = (SELECT current_party())
 );
 
 -- RLS: SPG-SO001
@@ -51,7 +72,6 @@ USING (
         SELECT 1 FROM service_providing_group_grid_prequalification
         WHERE service_providing_group_grid_prequalification.service_providing_group_id = service_providing_group.id -- noqa
     )
-    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPG-SO002
@@ -64,5 +84,4 @@ USING (
         WHERE spgpa.service_providing_group_id = service_providing_group.id -- noqa
         AND spgpa.procuring_system_operator_id = (SELECT current_party()) -- noqa
     )
-    AND (SELECT flex.current_user_has_scope('simple'))
 );

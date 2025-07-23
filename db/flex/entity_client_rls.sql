@@ -4,10 +4,29 @@
 -- changeset flex:entity-client-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS entity_client ENABLE ROW LEVEL SECURITY;
 
--- RLS: ECL-ENT001
 GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_entity;
+-- RLS: ECL-ENT001
 CREATE POLICY "ECL_ENT001" ON entity_client
-FOR ALL
+FOR SELECT
+TO flex_entity
+USING (
+    entity_id = (SELECT flex.current_entity())
+);
+-- RLS: ECL-ENT002
+CREATE POLICY "ECL_ENT002_INSERT" ON entity_client
+FOR INSERT
+TO flex_entity
+WITH CHECK (
+    entity_id = (SELECT flex.current_entity())
+);
+CREATE POLICY "ECL_ENT002_UPDATE" ON entity_client
+FOR UPDATE
+TO flex_entity
+USING (
+    entity_id = (SELECT flex.current_entity())
+);
+CREATE POLICY "ECL_ENT002_DELETE" ON entity_client
+FOR DELETE
 TO flex_entity
 USING (
     entity_id = (SELECT flex.current_entity())
@@ -18,3 +37,23 @@ CREATE POLICY "ECL_FISO001" ON entity_client
 FOR SELECT
 TO flex_flexibility_information_system_operator
 USING (true);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_organisation;
+-- RLS: ECL-ORG001
+CREATE POLICY "ECL_ORG001" ON entity_client
+FOR SELECT
+TO flex_organisation
+USING (entity_id = (SELECT flex.current_party_owner()));
+-- RLS: ECL-ORG002
+CREATE POLICY "ECL_ORG002_INSERT" ON entity_client
+FOR INSERT
+TO flex_organisation
+WITH CHECK (entity_id = (SELECT flex.current_party_owner()));
+CREATE POLICY "ECL_ORG002_UPDATE" ON entity_client
+FOR UPDATE
+TO flex_organisation
+USING (entity_id = (SELECT flex.current_party_owner()));
+CREATE POLICY "ECL_ORG002_DELETE" ON entity_client
+FOR DELETE
+TO flex_organisation
+USING (entity_id = (SELECT flex.current_party_owner()));

@@ -13,10 +13,11 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 
 export const ControllableUnitServiceProviderList = () => {
   // id of the controllable unit whose relations we want to get
-  const { id } = useRecordContext()!;
+  const { id, business_id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
   // automatically fill the controllable_unit_id field with the ID of the
@@ -31,8 +32,19 @@ export const ControllableUnitServiceProviderList = () => {
     />
   );
 
+  const CULookupButton = () => (
+    <Button
+      component={Link}
+      to="/controllable_unit/lookup"
+      startIcon={<TravelExploreIcon />}
+      state={{ controllable_unit: business_id }}
+      label="Lookup this controllable unit"
+    />
+  );
+
   const ListActions = () => (
     <TopToolbar>
+      {permissions.includes("controllable_unit.lookup") && <CULookupButton />}
       {permissions.includes("controllable_unit_service_provider.create") && (
         <CreateButton />
       )}

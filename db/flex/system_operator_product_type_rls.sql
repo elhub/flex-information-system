@@ -22,12 +22,23 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
--- RLS: SOPT-FISO001
 GRANT SELECT, INSERT, UPDATE ON system_operator_product_type
 TO flex_flexibility_information_system_operator;
+-- RLS: SOPT-FISO001
 CREATE POLICY "SOPT_FISO001"
 ON system_operator_product_type
-FOR ALL
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
+-- RLS: SOPT-FISO002
+CREATE POLICY "SOPT_FISO002_INSERT"
+ON system_operator_product_type
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK (true);
+CREATE POLICY "SOPT_FISO002_UPDATE"
+ON system_operator_product_type
+FOR UPDATE
 TO flex_flexibility_information_system_operator
 USING (true);
 
@@ -38,16 +49,31 @@ CREATE POLICY "SOPT_COM002"
 ON system_operator_product_type
 FOR SELECT
 TO flex_common
-USING ((SELECT flex.current_user_has_scope('simple')));
+USING (true);
 
--- RLS: SOPT-SO001
 GRANT SELECT, INSERT, UPDATE ON system_operator_product_type
 TO flex_system_operator;
+-- RLS: SOPT-SO001
 CREATE POLICY "SOPT_SO001"
 ON system_operator_product_type
-FOR ALL
+FOR SELECT
 TO flex_system_operator
 USING (
     system_operator_id = (SELECT flex.current_party())
-    AND (SELECT flex.current_user_has_scope('simple'))
+);
+
+-- RLS: SOPT-SO002
+CREATE POLICY "SOPT_SO002_INSERT"
+ON system_operator_product_type
+FOR INSERT
+TO flex_system_operator
+WITH CHECK (
+    system_operator_id = (SELECT flex.current_party())
+);
+CREATE POLICY "SOPT_SO002_UPDATE"
+ON system_operator_product_type
+FOR UPDATE
+TO flex_system_operator
+USING (
+    system_operator_id = (SELECT flex.current_party())
 );

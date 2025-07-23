@@ -102,6 +102,7 @@ def sts():
 
 
 # RLS: PTY-FISO001
+# RLS: PTY-FISO002
 def test_party_fiso(sts):
     client_entity = sts.get_client(TestEntity.TEST)
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")

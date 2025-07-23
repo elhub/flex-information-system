@@ -34,10 +34,7 @@ CREATE POLICY "SPPAC_COM002"
 ON service_provider_product_application_comment
 FOR UPDATE
 TO flex_common
-USING (
-    created_by = (SELECT flex.current_identity())
-    AND (SELECT flex.current_user_has_scope('simple'))
-);
+USING (created_by = (SELECT flex.current_identity()));
 
 -- RLS: SPPAC-COM003
 CREATE POLICY "SPPAC_COM003"
@@ -50,7 +47,6 @@ WITH CHECK (
         FROM service_provider_product_application AS sppa
         WHERE sppa.id = service_provider_product_application_comment.service_provider_product_application_id -- noqa
     )
-    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
 -- RLS: SPPAC-SO001
@@ -60,7 +56,7 @@ ON service_provider_product_application_comment
 FOR SELECT
 TO flex_common
 USING (
-    (visibility = 'same_party' AND (
+    visibility = 'same_party' AND (
         party_of_identity(
             service_provider_product_application_comment.created_by
         ) = (SELECT flex.current_party())
@@ -76,13 +72,27 @@ USING (
                 )
             )
     )
-    OR visibility = 'any_party') -- no check there
-    AND (SELECT flex.current_user_has_scope('simple'))
+    OR visibility = 'any_party' -- no check there
 );
+
+GRANT SELECT, INSERT, UPDATE
+ON service_provider_product_application_comment
+TO flex_flexibility_information_system_operator;
 
 -- RLS: SPPAC-FISO001
 CREATE POLICY "SPPAC_FISO001"
 ON service_provider_product_application_comment
-FOR ALL
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
+-- RLS: SPPAC-FISO002
+CREATE POLICY "SPPAC_FISO002_INSERT"
+ON service_provider_product_application_comment
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK (true);
+CREATE POLICY "SPPAC_FISO002_UPDATE"
+ON service_provider_product_application_comment
+FOR UPDATE
 TO flex_flexibility_information_system_operator
 USING (true);
