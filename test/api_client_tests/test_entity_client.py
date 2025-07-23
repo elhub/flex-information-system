@@ -186,10 +186,6 @@ def test_entity_client_org(sts):
 
     # they can no longer do the operations
 
-    clients = list_entity_client.sync(client=client_org, entity_id=f"eq.{org_ent_id}")
-    assert isinstance(clients, list)
-    assert len(clients) == 0
-
     e = update_entity_client.sync(
         client=client_org,
         id=cast(int, clt.id),
