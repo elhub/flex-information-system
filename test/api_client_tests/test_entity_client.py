@@ -141,7 +141,7 @@ def test_entity_client_org(sts):
     # RLS: ECL-ORG001
     # RLS: ECL-ORG002
 
-    # set admin scope
+    # set admin scope and re-log-in
 
     u = update_party_membership.sync(
         client=client_fiso,
@@ -151,6 +151,8 @@ def test_entity_client_org(sts):
         ),
     )
     assert not (isinstance(u, ErrorMessage))
+
+    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
 
     # now the org party can read its clients
 
@@ -184,6 +186,8 @@ def test_entity_client_org(sts):
     )
     assert not (isinstance(u, ErrorMessage))
 
+    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
+
     # they can no longer do the operations
 
     e = update_entity_client.sync(
@@ -210,6 +214,8 @@ def test_entity_client_org(sts):
         ),
     )
     assert not (isinstance(u, ErrorMessage))
+
+    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
 
     d = delete_entity_client.sync(
         client=client_org,
