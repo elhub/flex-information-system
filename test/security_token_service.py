@@ -248,9 +248,7 @@ class SecurityTokenService:
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
                 scopes=[
-                    PartyMembershipUpdateRequestScopesItem.DATAREAD,
                     PartyMembershipUpdateRequestScopesItem.DATAMANAGE,
-                    PartyMembershipUpdateRequestScopesItem.AUTHREAD,
                     PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
                 ],
             ),

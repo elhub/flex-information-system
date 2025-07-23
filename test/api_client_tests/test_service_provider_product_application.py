@@ -39,6 +39,7 @@ def sts():
 
 
 # RLS: SPPA-FISO001
+# RLS: SPPA-FISO002
 # FISO can read and update
 def test_sppa_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -99,6 +100,7 @@ def test_sppa_fiso(sts):
 
 
 # RLS: SPPA-SP001
+# RLS: SPPA-SP002
 # SP can read, create and update SPPA concerning themselves
 def test_sppa_sp(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -134,7 +136,7 @@ def test_sppa_sp(sts):
     )
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
-    # RLS: SPPA-SP002
+    # RLS: SPPA-SP003
     # still requested, update OK
     u = update_service_provider_product_application.sync(
         client=client_sp,
