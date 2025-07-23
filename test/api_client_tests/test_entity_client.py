@@ -6,6 +6,9 @@ from flex.models import (
     EntityClientCreateRequest,
     EntityClientResponse,
     EntityClientUpdateRequest,
+    PartyMembershipUpdateRequestScopesItem,
+    PartyMembershipUpdateRequest,
+    PartyResponse,
     ErrorMessage,
     EmptyObject,
 )
@@ -16,6 +19,13 @@ from flex.api.entity_client import (
     create_entity_client,
     delete_entity_client,
 )
+from flex.api.party import (
+    read_party,
+)
+from flex.api.party_membership import (
+    list_party_membership,
+    update_party_membership,
+)
 import pytest
 from typing import cast
 
@@ -25,7 +35,7 @@ def sts():
     yield SecurityTokenService()
 
 
-def test_entity_client(sts):
+def test_entity_client_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
     client_ent = sts.get_client(TestEntity.TEST)
@@ -101,6 +111,108 @@ def test_entity_client(sts):
     # endpoint: DELETE /entity_client/{id}
     d = delete_entity_client.sync(
         client=client_ent,
+        id=cast(int, clt.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+
+def test_entity_client_org(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    client_org = sts.get_client(TestEntity.TEST, "ORG")
+    org_info = sts.get_userinfo(client_org)
+    ent_id = org_info["entity_id"]
+    org_pty_id = org_info["party_id"]
+
+    pms = list_party_membership.sync(
+        client=client_fiso,
+        entity_id=f"eq.{ent_id}",
+        party_id=f"eq.{org_pty_id}",
+    )
+    assert isinstance(pms, list)
+    assert len(pms) == 1
+    org_pm = pms[0]
+
+    p = read_party.sync(client=client_fiso, id=cast(int, org_pty_id))
+    assert isinstance(p, PartyResponse)
+    org_ent_id = p.entity_id
+
+    # RLS: ECL-ORG001
+    # RLS: ECL-ORG002
+
+    # set admin scope
+
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, org_pm.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHMANAGE],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    # now the org party can read its clients
+
+    clients = list_entity_client.sync(client=client_org, entity_id=f"eq.{org_ent_id}")
+    assert isinstance(clients, list)
+    assert len(clients) >= 1
+
+    # they can also do everything
+
+    clt = create_entity_client.sync(
+        client=client_org,
+        body=EntityClientCreateRequest(entity_id=org_ent_id, name="test client name"),
+    )
+    assert isinstance(clt, EntityClientResponse)
+
+    u = update_entity_client.sync(
+        client=client_org,
+        id=cast(int, clt.id),
+        body=EntityClientUpdateRequest(client_secret="123456789012345"),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # remove admin scope
+
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, org_pm.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHREAD],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    # they can no longer do the operations
+
+    e = update_entity_client.sync(
+        client=client_org,
+        id=cast(int, clt.id),
+        body=EntityClientUpdateRequest(client_secret="123456789012345"),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = delete_entity_client.sync(
+        client=client_org,
+        id=cast(int, clt.id),
+        body=EmptyObject(),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # cleanup
+
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, org_pm.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHMANAGE],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    d = delete_entity_client.sync(
+        client=client_org,
         id=cast(int, clt.id),
         body=EmptyObject(),
     )
