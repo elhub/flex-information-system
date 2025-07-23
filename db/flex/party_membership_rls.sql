@@ -75,3 +75,24 @@ CREATE POLICY "PTYM_COM003" ON party_membership_history
 FOR SELECT
 TO flex_common
 USING (party_id = (SELECT current_party()));
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON party_membership TO flex_organisation;
+-- RLS: PTYM-ORG001
+CREATE POLICY "PTYM_ORG001" ON party_membership
+FOR SELECT
+TO flex_organisation
+USING (entity_owns_party((SELECT flex.current_party_owner()), party_id));
+
+-- RLS: PTYM-ORG002
+CREATE POLICY "PTYM_ORG002_INSERT" ON party_membership
+FOR INSERT
+TO flex_organisation
+WITH CHECK (entity_owns_party((SELECT flex.current_party_owner()), party_id));
+CREATE POLICY "PTYM_ORG002_UPDATE" ON party_membership
+FOR UPDATE
+TO flex_organisation
+USING (entity_owns_party((SELECT flex.current_party_owner()), party_id));
+CREATE POLICY "PTYM_ORG002_DELETE" ON party_membership
+FOR DELETE
+TO flex_organisation
+USING (entity_owns_party((SELECT flex.current_party_owner()), party_id));

@@ -79,7 +79,10 @@ No policies.
 
 #### Organisation
 
-No policies.
+| Policy key  | Scope         | Policy                                                                                           | Status |
+|-------------|---------------|--------------------------------------------------------------------------------------------------|--------|
+| PTYM-ORG001 | `auth:read`   | Read PTYM on all parties owned by the entity owning the organisation party.                      | DONE   |
+| PTYM-ORG002 | `auth:manage` | Create, update and delete PTYM on all parties owned by the entity owning the organisation party. | DONE   |
 
 #### System Operator
 
@@ -100,8 +103,8 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
 |-------------|------|-----|----|----|------|----|----|----|----|-----|
 | id          |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
-| party_id    |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
-| scopes      |      | R   | R  | R  | RCU  | R  | R  | R  | R  | R   |
+| entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | R  | RC  |
+| party_id    |      | R   | R  | R  | RC   | R  | R  | R  | R  | RC  |
+| scopes      |      | R   | R  | R  | RCU  | R  | R  | R  | R  | RCU |
 | recorded_at |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | recorded_by |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
