@@ -16,16 +16,12 @@ GRANT SELECT, UPDATE ON notification TO flex_common;
 CREATE POLICY "NOT_COM001" ON notification
 FOR SELECT
 TO flex_common
-USING (
-    party_id = (SELECT flex.current_party())
-);
+USING (party_id = (SELECT flex.current_party()));
 -- RLS: NOT-COM002
 CREATE POLICY "NOT_COM002" ON notification
 FOR UPDATE
 TO flex_common
-USING (
-    party_id = (SELECT flex.current_party())
-);
+USING (party_id = (SELECT flex.current_party()));
 
 -- RLS: NOT-FISO001
 CREATE POLICY "NOT_FISO001" ON notification

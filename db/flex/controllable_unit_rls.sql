@@ -82,7 +82,7 @@ TO flex_service_provider
 USING (
     -- SP should see that current data only if their
     -- contract overlaps with the record time
-    (EXISTS (
+    EXISTS (
         SELECT 1
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit.id -- noqa
@@ -93,7 +93,7 @@ USING (
     ) OR (
         -- the SP created the CU
         created_by_party_id = (SELECT current_party())
-    ))
+    )
 );
 
 -- RLS: CU-SP002

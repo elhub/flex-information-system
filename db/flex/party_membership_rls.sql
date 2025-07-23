@@ -40,9 +40,7 @@ GRANT SELECT ON party_membership TO flex_entity;
 CREATE POLICY "PTYM_ENT001" ON party_membership
 FOR SELECT
 TO flex_entity
-USING (
-    entity_id = (SELECT current_entity())
-);
+USING (entity_id = (SELECT current_entity()));
 
 -- security definer function to avoid round trips in RLS policies
 CREATE OR REPLACE FUNCTION entity_owns_party(
@@ -63,23 +61,17 @@ $$;
 CREATE POLICY "PTYM_ENT002" ON party_membership
 FOR SELECT
 TO flex_entity
-USING (
-    entity_owns_party((SELECT current_entity()), party_id)
-);
+USING (entity_owns_party((SELECT current_entity()), party_id));
 
 -- RLS: PTYM-COM002
 GRANT SELECT ON party_membership TO flex_common;
 CREATE POLICY "PTYM_COM002" ON party_membership
 FOR SELECT
 TO flex_common
-USING (
-    party_id = (SELECT current_party())
-);
+USING (party_id = (SELECT current_party()));
 
 -- RLS: PTYM-COM003
 CREATE POLICY "PTYM_COM003" ON party_membership_history
 FOR SELECT
 TO flex_common
-USING (
-    party_id = (SELECT current_party())
-);
+USING (party_id = (SELECT current_party()));

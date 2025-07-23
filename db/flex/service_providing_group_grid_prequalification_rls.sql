@@ -106,6 +106,4 @@ CREATE POLICY "SPGGP_SO003"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator
-USING (
-    current_party_impacted_in_spg(service_providing_group_id)
-);
+USING (current_party_impacted_in_spg(service_providing_group_id));

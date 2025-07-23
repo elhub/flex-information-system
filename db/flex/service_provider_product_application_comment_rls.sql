@@ -34,9 +34,7 @@ CREATE POLICY "SPPAC_COM002"
 ON service_provider_product_application_comment
 FOR UPDATE
 TO flex_common
-USING (
-    created_by = (SELECT flex.current_identity())
-);
+USING (created_by = (SELECT flex.current_identity()));
 
 -- RLS: SPPAC-COM003
 CREATE POLICY "SPPAC_COM003"
@@ -58,7 +56,7 @@ ON service_provider_product_application_comment
 FOR SELECT
 TO flex_common
 USING (
-    (visibility = 'same_party' AND (
+    visibility = 'same_party' AND (
         party_of_identity(
             service_provider_product_application_comment.created_by
         ) = (SELECT flex.current_party())
@@ -74,7 +72,7 @@ USING (
                 )
             )
     )
-    OR visibility = 'any_party') -- no check there
+    OR visibility = 'any_party' -- no check there
 );
 
 GRANT SELECT, INSERT, UPDATE
