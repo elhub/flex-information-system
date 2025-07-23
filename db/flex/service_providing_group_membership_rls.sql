@@ -30,24 +30,24 @@ CREATE POLICY "SPGM_FISO001"
 ON service_providing_group_membership
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: SPGM-FISO002
 CREATE POLICY "SPGM_FISO002_INSERT"
 ON service_providing_group_membership
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "SPGM_FISO002_UPDATE"
 ON service_providing_group_membership
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 CREATE POLICY "SPGM_FISO002_DELETE"
 ON service_providing_group_membership
 FOR DELETE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- SPGM-SP
 GRANT SELECT, INSERT, UPDATE, DELETE ON service_providing_group_membership
@@ -71,7 +71,6 @@ WITH CHECK (
             AND spg.id = service_providing_group_membership.service_providing_group_id -- noqa
             AND cusp.valid_time_range && service_providing_group_membership.valid_time_range -- noqa
     )
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 CREATE POLICY "SPGM_SP001_UPDATE"
 ON service_providing_group_membership
@@ -90,7 +89,6 @@ USING (
             AND spg.id = service_providing_group_membership.service_providing_group_id -- noqa
             AND cusp.valid_time_range && service_providing_group_membership.valid_time_range -- noqa
     )
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPGM-SP002
@@ -106,7 +104,6 @@ USING (
             AND service_providing_group.service_provider_id
             = (SELECT current_party())
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPGM-SP003
@@ -122,7 +119,6 @@ USING (
             AND service_providing_group.service_provider_id
             = (SELECT current_party())
     )
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPGM-SO001
@@ -138,5 +134,4 @@ USING (
         FROM service_providing_group
         WHERE service_providing_group_membership.service_providing_group_id = service_providing_group.id -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );

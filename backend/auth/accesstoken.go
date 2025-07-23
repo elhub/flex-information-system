@@ -16,6 +16,7 @@ type accessToken struct {
 	ExternalID     string   `json:"eid"`
 	PartyID        int      `json:"party_id,omitempty"`
 	Role           string   `json:"role"`
+	Scopes         []string `json:"scopes"`
 }
 
 // Validate checks that the access token has all the required fields set in the correct ways.
@@ -26,6 +27,7 @@ func (a accessToken) Validate() error {
 	val.Check(a.Role == "flex_entity" || a.PartyID > 0, "party_id is not set")
 	val.Check(!a.IsExpired(), "token has expired")
 	val.Check(a.ExternalID != "", "external_id is empty")
+	val.Check(a.Scopes != nil, "scopes are not set")
 	return val.Error()
 }
 

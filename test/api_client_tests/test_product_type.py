@@ -32,17 +32,15 @@ def test_product_type_common(sts):
         assert isinstance(pt, ProductTypeResponse)
 
 
-def test_event_anon(sts):
+def test_product_type_anon(sts):
     client = sts.get_client()
 
     pts = list_product_type.sync(client=client)
     assert isinstance(pts, ErrorMessage)
-    assert pts.message.startswith("permission denied")
 
 
-def test_event_ent(sts):
+def test_product_type_ent(sts):
     client_ent = sts.get_client(TestEntity.TEST)
 
     pts = list_product_type.sync(client=client_ent)
     assert isinstance(pts, ErrorMessage)
-    assert pts.message.startswith("permission denied")

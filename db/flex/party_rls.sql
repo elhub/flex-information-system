@@ -24,7 +24,6 @@ FOR SELECT
 TO flex_entity
 USING (
     EXISTS (SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id) -- noqa
-    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTY-ENT002
@@ -33,7 +32,6 @@ FOR SELECT
 TO flex_entity
 USING (
     entity_id = (SELECT current_entity())
-    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTY-COM002
@@ -46,7 +44,6 @@ USING (
     (type != 'end_user' OR EXISTS (
         SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id -- noqa
     ))
-    AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT INSERT, SELECT, UPDATE ON party
@@ -55,13 +52,13 @@ TO flex_flexibility_information_system_operator;
 CREATE POLICY "PTY_FISO001" ON party
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('auth:read' IN (SELECT flex.current_scopes()));
+USING (true);
 -- RLS: PTY-FISO002
 CREATE POLICY "PTY_FISO002_INSERT" ON party
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('auth:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "PTY_FISO002_UPDATE" ON party
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('auth:manage' IN (SELECT flex.current_scopes()));
+USING (true);

@@ -396,9 +396,11 @@ Here is the various scopes we have in our system for party memberships:
 | Scope         | Description                                                                |
 |---------------|----------------------------------------------------------------------------|
 | `data:read`   | Read-only access to business resources (CU, SPG, ...)                      |
-| `data:manage` | Write access to business resources                                         |
+| `data:use`    | Same as `data:read`, with access to lookup operations in addition          |
+| `data:manage` | Same as `data:use`, with _write_ access to business resources              |
 | `auth:read`   | Read-only access to authentication resources (entity, party, clients, ...) |
-| `auth:manage` | Write access to authentication resources                                   |
+| `auth:use`    | Same as `auth:read`, with access to lookup operations in addition          |
+| `auth:manage` | Same as `auth:use`, with _write_ access to authentication resources        |
 
 ## Example - client credentials and token exchange
 

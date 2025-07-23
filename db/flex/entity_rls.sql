@@ -12,7 +12,6 @@ FOR SELECT
 TO flex_common
 USING (
     (type = 'organisation' OR id = (SELECT flex.current_entity()))
-    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT SELECT ON entity TO flex_entity;
@@ -21,7 +20,6 @@ FOR SELECT
 TO flex_entity
 USING (
     id = (SELECT flex.current_entity())
-    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: ENT-COM002
@@ -39,7 +37,6 @@ USING (
         FROM party AS p
         WHERE p.id = (SELECT flex.current_party()) AND p.entity_id = entity.id -- noqa
     )
-    AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT SELECT, INSERT ON entity TO flex_flexibility_information_system_operator;
@@ -47,13 +44,13 @@ GRANT SELECT, INSERT ON entity TO flex_flexibility_information_system_operator;
 CREATE POLICY "ENT_FISO001" ON entity
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('auth:read' IN (SELECT flex.current_scopes()));
+USING (true);
 -- RLS: ENT-FISO002
 CREATE POLICY "ENT_FISO002_INSERT" ON entity
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('auth:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "ENT_FISO002_UPDATE" ON entity
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('auth:manage' IN (SELECT flex.current_scopes()));
+USING (true);

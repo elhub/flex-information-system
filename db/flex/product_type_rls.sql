@@ -9,4 +9,4 @@ GRANT SELECT ON product_type TO flex_common;
 CREATE POLICY "PT_COM001" ON product_type
 FOR SELECT
 TO flex_common
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);

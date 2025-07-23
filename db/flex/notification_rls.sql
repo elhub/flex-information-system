@@ -18,7 +18,6 @@ FOR SELECT
 TO flex_common
 USING (
     party_id = (SELECT flex.current_party())
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 -- RLS: NOT-COM002
 CREATE POLICY "NOT_COM002" ON notification
@@ -26,11 +25,10 @@ FOR UPDATE
 TO flex_common
 USING (
     party_id = (SELECT flex.current_party())
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: NOT-FISO001
 CREATE POLICY "NOT_FISO001" ON notification
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);

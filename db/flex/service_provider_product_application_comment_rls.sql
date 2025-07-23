@@ -36,7 +36,6 @@ FOR UPDATE
 TO flex_common
 USING (
     created_by = (SELECT flex.current_identity())
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPPAC-COM003
@@ -50,7 +49,6 @@ WITH CHECK (
         FROM service_provider_product_application AS sppa
         WHERE sppa.id = service_provider_product_application_comment.service_provider_product_application_id -- noqa
     )
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPPAC-SO001
@@ -77,7 +75,6 @@ USING (
             )
     )
     OR visibility = 'any_party') -- no check there
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT SELECT, INSERT, UPDATE
@@ -89,15 +86,15 @@ CREATE POLICY "SPPAC_FISO001"
 ON service_provider_product_application_comment
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 -- RLS: SPPAC-FISO002
 CREATE POLICY "SPPAC_FISO002_INSERT"
 ON service_provider_product_application_comment
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "SPPAC_FISO002_UPDATE"
 ON service_provider_product_application_comment
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);

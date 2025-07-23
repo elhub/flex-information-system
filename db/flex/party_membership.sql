@@ -22,8 +22,10 @@ CREATE TABLE IF NOT EXISTS party_membership (
         scopes != '{}'
         AND array[
             'data:read',
+            'data:use',
             'data:manage',
             'auth:read',
+            'auth:use',
             'auth:manage'
         ] @> scopes
     )

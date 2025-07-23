@@ -507,7 +507,6 @@ def test_event_anon(sts):
 
     events = list_event.sync(client=client)
     assert isinstance(events, ErrorMessage)
-    assert events.message.startswith("permission denied")
 
 
 def test_event_ent(sts):
@@ -515,4 +514,3 @@ def test_event_ent(sts):
 
     events = list_event.sync(client=client_ent)
     assert isinstance(events, ErrorMessage)
-    assert events.message.startswith("permission denied")

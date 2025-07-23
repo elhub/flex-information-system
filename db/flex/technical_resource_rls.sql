@@ -31,7 +31,6 @@ USING (
             AND cubrp.balance_responsible_party_id = (SELECT current_party())
             AND cubrp.valid_time_range && technical_resource.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-BRP002
@@ -50,7 +49,6 @@ USING (
             AND cubrp.balance_responsible_party_id = (SELECT current_party())
             AND cubrp.valid_time_range && technical_resource_history.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-EU001
@@ -66,7 +64,6 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && technical_resource.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-EU002
@@ -85,7 +82,6 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && technical_resource_history.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-ES001
@@ -101,7 +97,6 @@ USING (
             AND cues.energy_supplier_id = (SELECT current_party())
             AND cues.valid_time_range && technical_resource.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-ES002
@@ -120,7 +115,6 @@ USING (
             AND cues.energy_supplier_id = (SELECT current_party())
             AND cues.valid_time_range && technical_resource_history.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT INSERT,
@@ -131,20 +125,20 @@ DELETE ON technical_resource TO flex_flexibility_information_system_operator;
 CREATE POLICY "TR_FISO001" ON technical_resource
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 -- RLS: TR-FISO002
 CREATE POLICY "TR_FISO002_INSERT" ON technical_resource
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "TR_FISO002_UPDATE" ON technical_resource
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 CREATE POLICY "TR_FISO002_DELETE" ON technical_resource
 FOR DELETE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: TR-FISO003
 GRANT SELECT ON technical_resource_history
@@ -152,7 +146,7 @@ TO flex_flexibility_information_system_operator;
 CREATE POLICY "TR_FISO003" ON technical_resource_history
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: TR-SO001
 GRANT SELECT ON technical_resource TO flex_system_operator;
@@ -165,7 +159,6 @@ USING (
         FROM controllable_unit
         WHERE controllable_unit.id = technical_resource.controllable_unit_id -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-SO002
@@ -181,7 +174,6 @@ USING (
         FROM controllable_unit
         WHERE controllable_unit.id = technical_resource_history.controllable_unit_id -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-SP001
@@ -197,7 +189,6 @@ WITH CHECK (
             AND cusp.service_provider_id = (SELECT current_party())
             AND cusp.valid_time_range @> current_timestamp
     )
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 CREATE POLICY "TR_SP001_UPDATE" ON technical_resource
 FOR UPDATE
@@ -210,7 +201,6 @@ USING (
             AND cusp.service_provider_id = (SELECT current_party())
             AND cusp.valid_time_range @> current_timestamp
     )
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 CREATE POLICY "TR_SP001_DELETE" ON technical_resource
 FOR DELETE
@@ -223,7 +213,6 @@ USING (
             AND cusp.service_provider_id = (SELECT current_party())
             AND cusp.valid_time_range @> current_timestamp
     )
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-SP002
@@ -241,7 +230,6 @@ USING (
             AND controllable_unit_service_provider.valid_time_range
             && technical_resource.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: TR-SP003
@@ -261,5 +249,4 @@ USING (
             AND controllable_unit_service_provider.valid_time_range
             && technical_resource_history.record_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );

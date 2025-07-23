@@ -16,5 +16,4 @@ WITH (security_invoker = true) AS (
         (current_role = 'flex_flexibility_information_system_operator'
         -- RLS: NOTICE-COM001
         OR party_id = (SELECT flex.current_party()))
-        AND 'data:read' IN (SELECT flex.current_scopes())
 );

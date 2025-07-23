@@ -16,7 +16,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
         upper(valid_time_range) AS valid_to
     FROM flex.accounting_point_balance_responsible_party
     WHERE current_role = 'flex_flexibility_information_system_operator'
-        AND 'data:read' IN (SELECT flex.current_scopes())
     -- RLS: APBRP-SO001
     UNION ALL
     SELECT
@@ -40,7 +39,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
                 ON ap_so.accounting_point_id = ap_brp.accounting_point_id
                     AND ap_so.valid_time_range && ap_brp.valid_time_range
         WHERE current_role = 'flex_system_operator'
-            AND 'data:read' IN (SELECT flex.current_scopes())
             AND ap_so.system_operator_id = (SELECT flex.current_party())
         GROUP BY
             ap_brp.accounting_point_id,
@@ -75,7 +73,6 @@ WITH (security_invoker = false, security_barrier = true) AS (
                 ON ap_sp.accounting_point_id = ap_brp.accounting_point_id
                     AND ap_sp.valid_time_range && ap_brp.valid_time_range
         WHERE current_role = 'flex_service_provider'
-            AND 'data:read' IN (SELECT flex.current_scopes())
             AND ap_sp.service_provider_id = (SELECT flex.current_party())
         GROUP BY
             ap_brp.accounting_point_id,

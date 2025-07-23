@@ -11,4 +11,4 @@ CREATE POLICY "APMGA_INTERNAL_COMMON"
 ON accounting_point_metering_grid_area
 FOR SELECT
 TO flex_common
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);

@@ -1584,8 +1584,10 @@
                             "type": "string",
                             "enum": [
                                 "data:read",
+                                "data:use",
                                 "data:manage",
                                 "auth:read",
+                                "auth:use",
                                 "auth:manage"
                             ]
                         },

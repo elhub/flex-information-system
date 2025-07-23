@@ -12,20 +12,20 @@ DELETE ON party_membership TO flex_flexibility_information_system_operator;
 CREATE POLICY "PTYM_FISO001" ON party_membership
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('auth:read' IN (SELECT flex.current_scopes()));
+USING (true);
 -- RLS: PTYM-FISO002
 CREATE POLICY "PTYM_FISO002_INSERT" ON party_membership
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('auth:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "PTYM_FISO002_UPDATE" ON party_membership
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('auth:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 CREATE POLICY "PTYM_FISO002_DELETE" ON party_membership
 FOR DELETE
 TO flex_flexibility_information_system_operator
-USING ('auth:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: PTYM-FISO003
 GRANT SELECT ON party_membership_history
@@ -33,7 +33,7 @@ TO flex_flexibility_information_system_operator;
 CREATE POLICY "PTYM_FISO002" ON party_membership_history
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('auth:read' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: PTYM-ENT001
 GRANT SELECT ON party_membership TO flex_entity;
@@ -42,7 +42,6 @@ FOR SELECT
 TO flex_entity
 USING (
     entity_id = (SELECT current_entity())
-    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- security definer function to avoid round trips in RLS policies
@@ -66,7 +65,6 @@ FOR SELECT
 TO flex_entity
 USING (
     entity_owns_party((SELECT current_entity()), party_id)
-    -- AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTYM-COM002
@@ -76,7 +74,6 @@ FOR SELECT
 TO flex_common
 USING (
     party_id = (SELECT current_party())
-    AND 'auth:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: PTYM-COM003
@@ -85,5 +82,4 @@ FOR SELECT
 TO flex_common
 USING (
     party_id = (SELECT current_party())
-    AND 'auth:read' IN (SELECT flex.current_scopes())
 );

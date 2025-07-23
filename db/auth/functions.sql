@@ -67,7 +67,8 @@ CREATE OR REPLACE FUNCTION auth.assume_party(_party_id bigint)
 RETURNS TABLE (
     entity_id bigint,
     eid uuid,
-    role text
+    role text,
+    scopes text []
 )
 SECURITY DEFINER VOLATILE
 LANGUAGE plpgsql
@@ -76,6 +77,7 @@ declare
   _entity_id bigint;
   eid uuid;
   role text;
+  l_scopes text[];
 begin
   select flex.current_entity() into _entity_id;
 
@@ -93,11 +95,15 @@ begin
 
   if eid is not null then
     select p.role into role from flex.party p where p.id = _party_id;
+    select pm.scopes into l_scopes
+    from flex.party_membership pm
+    where pm.entity_id = _entity_id and pm.party_id = _party_id;
   else
     select null into role;
+    select '{}'::text[] into l_scopes;
   end if;
 
-  return query select _entity_id as entity_id, eid, role;
+  return query select _entity_id as entity_id, eid, role, l_scopes as scopes;
 end;
 $$;
 

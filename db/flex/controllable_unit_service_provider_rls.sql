@@ -29,23 +29,23 @@ CREATE POLICY "CUSP_FISO001"
 ON controllable_unit_service_provider
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 -- RLS: CUSP-FISO002
 CREATE POLICY "CUSP_FISO002_INSERT"
 ON controllable_unit_service_provider
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "CUSP_FISO002_UPDATE"
 ON controllable_unit_service_provider
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 CREATE POLICY "CUSP_FISO002_DELETE"
 ON controllable_unit_service_provider
 FOR DELETE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: CUSP-SO001
 GRANT SELECT ON controllable_unit_service_provider
@@ -61,7 +61,6 @@ USING (
         FROM controllable_unit
         WHERE controllable_unit.id = controllable_unit_service_provider.controllable_unit_id -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_service_provider
@@ -73,7 +72,6 @@ FOR SELECT
 TO flex_service_provider
 USING (
     service_provider_id = (SELECT current_party())
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 -- RLS: CUSP-SP002
 CREATE POLICY "CUSP_SP002_INSERT"
@@ -82,7 +80,6 @@ FOR INSERT
 TO flex_service_provider
 WITH CHECK (
     service_provider_id = (SELECT current_party())
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 CREATE POLICY "CUSP_SP002_UPDATE"
 ON controllable_unit_service_provider
@@ -90,7 +87,6 @@ FOR UPDATE
 TO flex_service_provider
 USING (
     service_provider_id = (SELECT current_party())
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 CREATE POLICY "CUSP_SP002_DELETE"
 ON controllable_unit_service_provider
@@ -98,7 +94,6 @@ FOR DELETE
 TO flex_service_provider
 USING (
     service_provider_id = (SELECT current_party())
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: CUSP-EU001
@@ -115,7 +110,6 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_service_provider.valid_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 ALTER TABLE IF EXISTS controllable_unit_service_provider_history
@@ -138,7 +132,6 @@ USING (
             AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_service_provider_history.valid_time_range -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: CUSP-FISO003
@@ -154,7 +147,6 @@ USING (
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider_history.id = controllable_unit_service_provider.id -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: CUSP-SO002
@@ -170,7 +162,6 @@ USING (
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider_history.id = controllable_unit_service_provider.id -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: CUSP-SP003
@@ -186,5 +177,4 @@ USING (
         FROM controllable_unit_service_provider
         WHERE controllable_unit_service_provider_history.id = controllable_unit_service_provider.id -- noqa
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );

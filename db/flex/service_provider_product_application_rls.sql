@@ -29,13 +29,13 @@ CREATE POLICY "SPPA_FISO001"
 ON service_provider_product_application
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 -- RLS: SPPA-FISO002
 CREATE POLICY "SPPA_FISO002"
 ON service_provider_product_application
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 
 GRANT SELECT, INSERT, UPDATE ON service_provider_product_application
 TO flex_service_provider;
@@ -46,7 +46,6 @@ FOR SELECT
 TO flex_service_provider
 USING (
     service_provider_id = (SELECT flex.current_party())
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 -- RLS: SPPA-SP002
 CREATE POLICY "SPPA_SP002"
@@ -55,7 +54,6 @@ FOR INSERT
 TO flex_service_provider
 WITH CHECK (
     service_provider_id = (SELECT flex.current_party())
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 -- RLS: SPPA-SP003
 -- NB: status check implemented as a trigger to customise the error message
@@ -63,7 +61,7 @@ CREATE POLICY "SPPA_SP003"
 ON service_provider_product_application
 FOR UPDATE
 TO flex_service_provider
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: SPPA-SO001
 GRANT SELECT, UPDATE ON service_provider_product_application
@@ -72,7 +70,7 @@ CREATE POLICY "SPPA_SO001"
 ON service_provider_product_application
 FOR SELECT
 TO flex_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: SPPA-SO002
 CREATE POLICY "SPPA_SO002"
@@ -81,5 +79,4 @@ FOR UPDATE
 TO flex_system_operator
 USING (
     system_operator_id = (SELECT flex.current_party())
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );

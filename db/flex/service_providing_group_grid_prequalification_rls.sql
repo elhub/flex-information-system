@@ -30,19 +30,19 @@ CREATE POLICY "SPGGP_FISO001"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_flexibility_information_system_operator
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: SPGGP-FISO002
 CREATE POLICY "SPGGP_FISO002_INSERT"
 ON service_providing_group_grid_prequalification
 FOR INSERT
 TO flex_flexibility_information_system_operator
-WITH CHECK ('data:manage' IN (SELECT flex.current_scopes()));
+WITH CHECK (true);
 CREATE POLICY "SPGGP_FISO002_UPDATE"
 ON service_providing_group_grid_prequalification
 FOR UPDATE
 TO flex_flexibility_information_system_operator
-USING ('data:manage' IN (SELECT flex.current_scopes()));
+USING (true);
 
 -- RLS: SPGGP-SP001
 GRANT SELECT ON service_providing_group_grid_prequalification
@@ -59,7 +59,6 @@ USING (
             AND service_providing_group.service_provider_id
             = (SELECT current_party())
     )
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 GRANT SELECT, UPDATE ON service_providing_group_grid_prequalification
@@ -72,7 +71,6 @@ FOR SELECT
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPGGP-SO002
@@ -82,7 +80,6 @@ FOR UPDATE
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
-    AND 'data:manage' IN (SELECT flex.current_scopes())
 );
 
 -- RLS: SPGGP-SO003
@@ -111,5 +108,4 @@ FOR SELECT
 TO flex_system_operator
 USING (
     current_party_impacted_in_spg(service_providing_group_id)
-    AND 'data:read' IN (SELECT flex.current_scopes())
 );

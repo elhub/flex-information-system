@@ -19,4 +19,4 @@ CREATE POLICY "AP_COM001"
 ON accounting_point
 FOR SELECT
 TO flex_common
-USING ('data:read' IN (SELECT flex.current_scopes()));
+USING (true);
