@@ -195,6 +195,7 @@ def test_spggp_fiso(data):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
     # RLS: SPGGP-FISO001
+    # RLS: SPGGP-FISO002
 
     # endpoint: GET /service_providing_group_grid_prequalification
     spggps_spg = list_service_providing_group_grid_prequalification.sync(
@@ -321,7 +322,7 @@ def test_spggp_so(data):
 
     # but also
 
-    # RLS: SPGGP-SO002
+    # RLS: SPGGP-SO003
     # SO can see the SPGGP of other impacted SOs
 
     spggps_so2 = list_service_providing_group_grid_prequalification.sync(
@@ -351,7 +352,7 @@ def test_spggp_so(data):
     )
     assert isinstance(spggp2, ServiceProvidingGroupGridPrequalificationResponse)
 
-    # RLS: SPGGP-SO001
+    # RLS: SPGGP-SO002
     # SO can update SPGGP where they are impacted
 
     u = update_service_providing_group_grid_prequalification.sync(

@@ -33,6 +33,7 @@ def sts():
 
 
 # RLS: PTYM-FISO001
+# RLS: PTYM-FISO002
 def test_ptym_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -59,12 +60,15 @@ def test_ptym_fiso(sts):
         body=PartyMembershipCreateRequest(
             entity_id=ent_id,
             party_id=pty_id,
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+            ],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
 
-    # RLS: PTYM-FISO002
+    # RLS: PTYM-FISO003
     # endpoint: GET /party_membership_history/{id}
     pmh = read_party_membership_history.sync(
         client=client_fiso,
@@ -83,11 +87,15 @@ def test_ptym_fiso(sts):
     assert len(p2) == 1
     assert p2[0] == p
 
+    # endpoint: PATCH /party_membership/{id}
     u = update_party_membership.sync(
         client=client_fiso,
         id=cast(int, p.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.ADMIN],
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+            ],
         ),
     )
     assert not (isinstance(u, ErrorMessage))

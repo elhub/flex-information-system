@@ -64,9 +64,9 @@ No policies.
 
 #### Common
 
-| Policy key | Policy                                  | Status |
-|------------|-----------------------------------------|--------|
-| SPG-COM001 | Read history on SPG that they can read. | DONE   |
+| Policy key | Scope       | Policy                                  | Status |
+|------------|-------------|-----------------------------------------|--------|
+| SPG-COM001 | `data:read` | Read history on SPG that they can read. | DONE   |
 
 #### Balance Responsible Party
 
@@ -82,9 +82,10 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key  | Policy                           | Status |
-|-------------|----------------------------------|--------|
-| SPG-FISO001 | Read, create and update all SPG. | DONE   |
+| Policy key  | Scope         | Policy                     | Status |
+|-------------|---------------|----------------------------|--------|
+| SPG-FISO001 | `data:read`   | Read all SPG.              | DONE   |
+| SPG-FISO002 | `data:manage` | Create and update all SPG. | DONE   |
 
 #### Market Operator
 
@@ -96,16 +97,17 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                                             | Status |
-|------------|--------------------------------------------------------------------|--------|
-| SPG-SO001  | Read SPG containing grid prequalification resources they can read. | DONE   |
-| SPG-SO002  | Read SPG containing product applications targeted at them.         | DONE   |
+| Policy key | Scope       | Policy                                                             | Status |
+|------------|-------------|--------------------------------------------------------------------|--------|
+| SPG-SO001  | `data:read` | Read SPG containing grid prequalification resources they can read. | DONE   |
+| SPG-SO002  | `data:read` | Read SPG containing product applications targeted at them.         | DONE   |
 
 #### Service Provider
 
-| Policy key | Policy                                            | Status |
-|------------|---------------------------------------------------|--------|
-| SPG-SP001  | Read, create and update SPG that belongs to them. | DONE   |
+| Policy key | Scope         | Policy                                      | Status |
+|------------|---------------|---------------------------------------------|--------|
+| SPG-SP001  | `data:read`   | Read SPG that belongs to them.              | DONE   |
+| SPG-SP002  | `data:manage` | Create and update SPG that belongs to them. | DONE   |
 
 #### Third Party
 

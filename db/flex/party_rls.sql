@@ -42,13 +42,21 @@ USING (
     (type != 'end_user' OR EXISTS (
         SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id -- noqa
     ))
-    AND (SELECT flex.current_user_has_scope('simple'))
 );
 
--- RLS: PTY-FISO001
 GRANT INSERT, SELECT, UPDATE ON party
 TO flex_flexibility_information_system_operator;
+-- RLS: PTY-FISO001
 CREATE POLICY "PTY_FISO001" ON party
-FOR ALL
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
+-- RLS: PTY-FISO002
+CREATE POLICY "PTY_FISO002_INSERT" ON party
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK (true);
+CREATE POLICY "PTY_FISO002_UPDATE" ON party
+FOR UPDATE
 TO flex_flexibility_information_system_operator
 USING (true);

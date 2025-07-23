@@ -44,6 +44,7 @@ def test_entity_client_fiso(sts):
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
     # RLS: ECL-ENT001
+    # RLS: ECL-ENT002
     # entity can do everything on their own clients
 
     # endpoint: GET /entity_client
@@ -138,6 +139,7 @@ def test_entity_client_org(sts):
     org_ent_id = p.entity_id
 
     # RLS: ECL-ORG001
+    # RLS: ECL-ORG002
 
     # set admin scope
 
@@ -145,7 +147,7 @@ def test_entity_client_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.ADMIN],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHMANAGE],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -177,7 +179,7 @@ def test_entity_client_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.SIMPLE],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHREAD],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -208,7 +210,7 @@ def test_entity_client_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[PartyMembershipUpdateRequestScopesItem.ADMIN],
+            scopes=[PartyMembershipUpdateRequestScopesItem.AUTHMANAGE],
         ),
     )
     assert not (isinstance(u, ErrorMessage))

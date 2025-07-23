@@ -194,7 +194,7 @@ def test_tr_es(sts):
 def test_tr_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    # RLS: TR-FISO002
+    # RLS: TR-FISO003
     # FISO can read all TR history
 
     trs = list_technical_resource_history.sync(client=client_fiso)
@@ -202,6 +202,7 @@ def test_tr_fiso(sts):
     assert len(trs) >= 27
 
     # RLS: TR-FISO001
+    # RLS: TR-FISO002
     # FISO can do everything
 
     trs = list_technical_resource.sync(client=client_fiso)

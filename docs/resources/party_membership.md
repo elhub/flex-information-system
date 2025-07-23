@@ -36,10 +36,10 @@ resource. The default policy is **deny**.
 
 #### Entity
 
-| Policy key  | Policy                                          | Status |
-|-------------|-------------------------------------------------|--------|
-| PTYM-ENT001 | Read all the PTYM concerning the current entity | DONE   |
-| PTYM-ENT002 | Read all the PTYM in parties that they own      | DONE   |
+| Policy key  | Scope       | Policy                                          | Status |
+|-------------|-------------|-------------------------------------------------|--------|
+| PTYM-ENT001 | `auth:read` | Read all the PTYM concerning the current entity | DONE   |
+| PTYM-ENT002 | `auth:read` | Read all the PTYM in parties that they own      | DONE   |
 
 #### Anonymous
 
@@ -47,11 +47,11 @@ No policies.
 
 #### Common
 
-| Policy key  | Policy                                                    | Status |
-|-------------|-----------------------------------------------------------|--------|
-| PTYM-COM001 | Read history on all PTYM that they can read               | DONE   |
-| PTYM-COM002 | Read all the PTYM concerning the current party            | DONE   |
-| PTYM-COM003 | Read all the history of PTYM concerning the current party | DONE   |
+| Policy key  | Scope       | Policy                                                    | Status |
+|-------------|-------------|-----------------------------------------------------------|--------|
+| PTYM-COM001 | `auth:read` | Read history on all PTYM that they can read               | DONE   |
+| PTYM-COM002 | `auth:read` | Read all the PTYM concerning the current party            | DONE   |
+| PTYM-COM003 | `auth:read` | Read all the history of PTYM concerning the current party | DONE   |
 
 #### Balance Responsible Party
 
@@ -67,10 +67,11 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key   | Policy                                    | Status |
-|--------------|-------------------------------------------|--------|
-| PTYM-FISO001 | Create, read, update, and delete all PTYM | DONE   |
-| PTYM-FISO002 | Read all PTYM history                     | DONE   |
+| Policy key   | Scope         | Policy                              | Status |
+|--------------|---------------|-------------------------------------|--------|
+| PTYM-FISO001 | `auth:read`   | Read all PTYM                       | DONE   |
+| PTYM-FISO002 | `auth:manage` | Create, update, and delete all PTYM | DONE   |
+| PTYM-FISO003 | `auth:read`   | Read all PTYM history               | DONE   |
 
 #### Market Operator
 

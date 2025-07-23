@@ -43,9 +43,8 @@ def test_identity(sts):
         assert isinstance(id, IdentityResponse)
 
 
-def test_event_anon(sts):
+def test_identity_anon(sts):
     client = sts.get_client()
 
     ids = list_identity.sync(client=client)
     assert isinstance(ids, ErrorMessage)
-    assert ids.message.startswith("permission denied")

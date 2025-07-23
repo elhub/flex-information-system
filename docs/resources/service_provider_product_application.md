@@ -65,9 +65,9 @@ No policies.
 
 #### Common
 
-| Policy key  | Policy                                   | Status |
-|-------------|------------------------------------------|--------|
-| SPPA-COM001 | Read history on SPPA that they can read. | DONE   |
+| Policy key  | Scope       | Policy                                   | Status |
+|-------------|-------------|------------------------------------------|--------|
+| SPPA-COM001 | `data:read` | Read history on SPPA that they can read. | DONE   |
 
 #### Balance Responsible Party
 
@@ -83,9 +83,10 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key   | Policy                    | Status |
-|--------------|---------------------------|--------|
-| SPPA-FISO001 | Read and update all SPPA. | DONE   |
+| Policy key   | Scope         | Policy           | Status |
+|--------------|---------------|------------------|--------|
+| SPPA-FISO001 | `data:read`   | Read all SPPA.   | DONE   |
+| SPPA-FISO002 | `data:manage` | Update all SPPA. | DONE   |
 
 #### Market Operator
 
@@ -97,17 +98,18 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                      | Status |
-|------------|-----------------------------|--------|
-| SPPA-SO001 | Read all SPPA.              | DONE   |
-| SPPA-SO002 | Update SPPA targeting them. | DONE   |
+| Policy key | Scope         | Policy                      | Status |
+|------------|---------------|-----------------------------|--------|
+| SPPA-SO001 | `data:read`   | Read all SPPA.              | DONE   |
+| SPPA-SO002 | `data:manage` | Update SPPA targeting them. | DONE   |
 
 #### Service Provider
 
-| Policy key | Policy                                        | Status |
-|------------|-----------------------------------------------|--------|
-| SPPA-SP001 | Read and create SPPA concerning themselves.   | DONE   |
-| SPPA-SP002 | Update their SPPA when status is `requested`. | DONE   |
+| Policy key | Scope         | Policy                                        | Status |
+|------------|---------------|-----------------------------------------------|--------|
+| SPPA-SP001 | `data:read`   | Read SPPA concerning themselves.              | DONE   |
+| SPPA-SP002 | `data:manage` | Create SPPA concerning themselves.            | DONE   |
+| SPPA-SP003 | `data:manage` | Update their SPPA when status is `requested`. | DONE   |
 
 #### Third Party
 
