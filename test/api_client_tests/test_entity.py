@@ -8,14 +8,19 @@ from flex.models import (
     EntityResponse,
     ErrorMessage,
     PartyMembershipCreateRequest,
+    PartyMembershipUpdateRequestScopesItem,
     PartyMembershipResponse,
     EmptyObject,
+    PartyResponse,
 )
 from flex.api.entity import (
     read_entity,
     list_entity,
     create_entity,
     update_entity,
+)
+from flex.api.party import (
+    read_party,
 )
 from flex.api.party_membership import (
     create_party_membership,
@@ -33,6 +38,7 @@ def sts():
 
 
 # RLS: ENT-FISO001
+# RLS: ENT-FISO002
 def test_entity_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -73,6 +79,7 @@ def test_entity_fiso(sts):
 
     # organisation -> only org
 
+    # endpoint: POST /entity
     e = create_entity.sync(
         client=client_fiso,
         body=EntityCreateRequest(
@@ -209,6 +216,7 @@ def test_entity_fiso(sts):
 
     # update OK
 
+    # endpoint: PATCH /entity/{id}
     u = update_entity.sync(
         client=client_fiso,
         id=cast(int, e.id),
@@ -252,6 +260,10 @@ def test_entity_com(sts):
         body=PartyMembershipCreateRequest(
             entity_id=common_ent_id,
             party_id=so_id,
+            scopes=[
+                PartyMembershipUpdateRequestScopesItem.DATAREAD,
+                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+            ],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
@@ -266,6 +278,20 @@ def test_entity_com(sts):
         client=client_fiso, id=cast(int, pm.id), body=EmptyObject()
     )
     assert not isinstance(d, ErrorMessage)
+
+    # RLS: ENT-COM003
+    # SO can read parent entity
+    p = read_party.sync(
+        client=client_fiso,
+        id=so_id,
+    )
+    assert isinstance(p, PartyResponse)
+
+    e = read_entity.sync(
+        client=client_so,
+        id=cast(int, p.entity_id),
+    )
+    assert isinstance(e, EntityResponse)
 
 
 # RLS: ENT-ENT001

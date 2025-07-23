@@ -120,7 +120,11 @@ func (auth *API) TokenDecodingMiddleware(
 
 		if authHeader == "" && err != nil {
 			// Empty auth header and missing cookie means anonymous user.
-			rd := &RequestDetails{role: "flex_anonymous", externalID: ""}
+			rd := &RequestDetails{
+				role:       "flex_anonymous",
+				externalID: "",
+				scopes:     []string{},
+			}
 			authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 			slog.InfoContext(ctx, "no auth header/cookie: user will be anonymous")
 			next.ServeHTTP(w, req.WithContext(authenticatedCtx))
@@ -177,12 +181,14 @@ func (auth *API) TokenDecodingMiddleware(
 		rd := &RequestDetails{
 			role:       token.Role,
 			externalID: token.ExternalID,
+			scopes:     token.Scopes,
 		}
 		authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 		slog.InfoContext(
 			ctx, "token-validated user",
 			"role", token.Role,
 			"externalID", token.ExternalID,
+			"scopes", token.Scopes,
 		)
 		next.ServeHTTP(w, req.WithContext(authenticatedCtx))
 	})
@@ -519,6 +525,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
+		Scopes:         []string{"auth:manage"},
 	}
 
 	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -603,7 +610,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	eid, role, entityID, err := models.AssumeParty(ctx, tx, partyID)
+	eid, role, scopes, entityID, err := models.AssumeParty(ctx, tx, partyID)
 	tx.Commit(ctx)
 
 	if err != nil {
@@ -645,6 +652,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        partyID,
 		EntityID:       entityID,
 		ExternalID:     eid,
+		Scopes:         scopes,
 	}
 
 	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -659,7 +667,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// assuming party is done, so we can "log in"
-	rd := &RequestDetails{role: role, externalID: eid}
+	rd := &RequestDetails{role: role, externalID: eid, scopes: scopes}
 	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 
 	tx, err = auth.db.Begin(ctx)
@@ -789,6 +797,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
+		Scopes:         []string{"auth:manage"},
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -982,6 +991,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
+		Scopes:         []string{"auth:manage"},
 	}
 
 	slog.InfoContext(
@@ -1102,7 +1112,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
-	eid, role, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
+	eid, role, scopes, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidTarget,
@@ -1117,6 +1127,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 		PartyID:        assumePartyID,
 		EntityID:       entityID,
 		ExternalID:     eid,
+		Scopes:         scopes,
 	}
 
 	slog.InfoContext(
@@ -1282,7 +1293,11 @@ func (auth *API) jwtBearerHandler(
 	if grant.Subject != nil {
 		// entity wants to assume a party
 		// we must first "log in" the entity to give it privileges in the database
-		rd := &RequestDetails{role: "flex_entity", externalID: externalID}
+		rd := &RequestDetails{
+			role:       "flex_entity",
+			externalID: externalID,
+			scopes:     []string{"auth:read"},
+		}
 		ctx.Set(auth.ctxKey, rd)
 
 		tx, err := auth.db.Begin(ctx)
@@ -1307,7 +1322,7 @@ func (auth *API) jwtBearerHandler(
 			return
 		}
 
-		eid, role, entityID, err := models.AssumeParty(ctx, tx, partyID)
+		eid, role, scopes, entityID, err := models.AssumeParty(ctx, tx, partyID)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidTarget,
@@ -1322,6 +1337,7 @@ func (auth *API) jwtBearerHandler(
 			ExternalID:     eid,
 			PartyID:        partyID,
 			Role:           role,
+			Scopes:         scopes,
 		}
 
 		slog.InfoContext(
@@ -1335,6 +1351,7 @@ func (auth *API) jwtBearerHandler(
 			ExternalID:     externalID,
 			PartyID:        0,
 			Role:           "flex_entity",
+			Scopes:         []string{"auth:manage"},
 		}
 
 		slog.InfoContext(

@@ -33,9 +33,18 @@ USING (EXISTS (
     WHERE p.id = (SELECT flex.current_party()) AND p.entity_id = entity.id -- noqa
 ));
 
--- RLS: ENT-FISO001
 GRANT SELECT, INSERT ON entity TO flex_flexibility_information_system_operator;
+-- RLS: ENT-FISO001
 CREATE POLICY "ENT_FISO001" ON entity
-FOR ALL
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
+-- RLS: ENT-FISO002
+CREATE POLICY "ENT_FISO002_INSERT" ON entity
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK (true);
+CREATE POLICY "ENT_FISO002_UPDATE" ON entity
+FOR UPDATE
 TO flex_flexibility_information_system_operator
 USING (true);

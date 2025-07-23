@@ -10,13 +10,14 @@ persons or organisations to parties.
 
 ## Fields
 
-| Name                                                                  | Description                                                        | Format                                 | Reference                       |
-|-----------------------------------------------------------------------|--------------------------------------------------------------------|----------------------------------------|---------------------------------|
-| <a name="field-id" href="#field-id">id</a>                            | Unique surrogate identifier.                                       | bigint<br/>Read only                   |                                 |
-| <a name="field-party_id" href="#field-party_id">party_id</a>          | Reference to the party that the membership links to an entity.     | bigint<br/>Required<br/>Non-updatable  | [party.id](party.md#field-id)   |
-| <a name="field-entity_id" href="#field-entity_id">entity_id</a>       | Reference to the entity that the party represents.                 | bigint<br/>Required<br/>Non-updatable  | [entity.id](entity.md#field-id) |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a> | When the resource was recorded (created or updated) in the system. | timestamp with time zone<br/>Read only |                                 |
-| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a> | The identity that recorded the resource.                           | bigint<br/>Read only                   |                                 |
+| Name                                                                  | Description                                                                                                                                                                    | Format                                 | Reference                       |
+|-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|---------------------------------|
+| <a name="field-id" href="#field-id">id</a>                            | Unique surrogate identifier.                                                                                                                                                   | bigint<br/>Read only                   |                                 |
+| <a name="field-party_id" href="#field-party_id">party_id</a>          | Reference to the party that the membership links to an entity.                                                                                                                 | bigint<br/>Required<br/>Non-updatable  | [party.id](party.md#field-id)   |
+| <a name="field-entity_id" href="#field-entity_id">entity_id</a>       | Reference to the entity that the party represents.                                                                                                                             | bigint<br/>Required<br/>Non-updatable  | [entity.id](entity.md#field-id) |
+| <a name="field-scopes" href="#field-scopes">scopes</a>                | List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. | <br/>Required<br/>Array                |                                 |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a> | When the resource was recorded (created or updated) in the system.                                                                                                             | timestamp with time zone<br/>Read only |                                 |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a> | The identity that recorded the resource.                                                                                                                                       | bigint<br/>Read only                   |                                 |
 
 ## Validation Rules
 
@@ -35,10 +36,10 @@ resource. The default policy is **deny**.
 
 #### Entity
 
-| Policy key  | Policy                                          | Status |
-|-------------|-------------------------------------------------|--------|
-| PTYM-ENT001 | Read all the PTYM concerning the current entity | DONE   |
-| PTYM-ENT002 | Read all the PTYM in parties that they own      | DONE   |
+| Policy key  | Scope       | Policy                                          | Status |
+|-------------|-------------|-------------------------------------------------|--------|
+| PTYM-ENT001 | `auth:read` | Read all the PTYM concerning the current entity | DONE   |
+| PTYM-ENT002 | `auth:read` | Read all the PTYM in parties that they own      | DONE   |
 
 #### Anonymous
 
@@ -46,11 +47,11 @@ No policies.
 
 #### Common
 
-| Policy key  | Policy                                                    | Status |
-|-------------|-----------------------------------------------------------|--------|
-| PTYM-COM001 | Read history on all PTYM that they can read               | DONE   |
-| PTYM-COM002 | Read all the PTYM concerning the current party            | DONE   |
-| PTYM-COM003 | Read all the history of PTYM concerning the current party | DONE   |
+| Policy key  | Scope       | Policy                                                    | Status |
+|-------------|-------------|-----------------------------------------------------------|--------|
+| PTYM-COM001 | `auth:read` | Read history on all PTYM that they can read               | DONE   |
+| PTYM-COM002 | `auth:read` | Read all the PTYM concerning the current party            | DONE   |
+| PTYM-COM003 | `auth:read` | Read all the history of PTYM concerning the current party | DONE   |
 
 #### Balance Responsible Party
 
@@ -66,10 +67,11 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key   | Policy                            | Status |
-|--------------|-----------------------------------|--------|
-| PTYM-FISO001 | Create, read, and delete all PTYM | DONE   |
-| PTYM-FISO002 | Read all PTYM history             | DONE   |
+| Policy key   | Scope         | Policy                              | Status |
+|--------------|---------------|-------------------------------------|--------|
+| PTYM-FISO001 | `auth:read`   | Read all PTYM                       | DONE   |
+| PTYM-FISO002 | `auth:manage` | Create, update, and delete all PTYM | DONE   |
+| PTYM-FISO003 | `auth:read`   | Read all PTYM history               | DONE   |
 
 #### Market Operator
 
@@ -100,5 +102,6 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | id          |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
 | party_id    |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| scopes      |      | R   | R  | R  | RCU  | R  | R  | R  | R  | R   |
 | recorded_at |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | recorded_by |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |

@@ -104,21 +104,22 @@ func AssumeParty(
 	ctx context.Context,
 	tx pgx.Tx,
 	partyID int,
-) (string, string, int, error) {
+) (string, string, []string, int, error) {
 	var eid string
 	var role string
+	var scopes []string
 	var entityID int
 
 	err := tx.QueryRow(
 		ctx,
-		`select eid, role, entity_id from auth.assume_party($1)`,
+		`select eid, role, scopes, entity_id from auth.assume_party($1)`,
 		partyID,
-	).Scan(&eid, &role, &entityID)
+	).Scan(&eid, &role, &scopes, &entityID)
 	if err != nil {
-		return "", "", 0, fmt.Errorf("failed to assume party %d for entity %d: %w", partyID, entityID, err)
+		return "", "", nil, 0, fmt.Errorf("failed to assume party %d for entity %d: %w", partyID, entityID, err)
 	}
 
-	return eid, role, entityID, nil
+	return eid, role, scopes, entityID, nil
 }
 
 // UserInfo is a struct that holds the current user info.

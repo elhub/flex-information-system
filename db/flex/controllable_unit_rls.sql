@@ -17,18 +17,40 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
--- RLS: CU-FISO001
 GRANT SELECT, INSERT, UPDATE ON controllable_unit
 TO flex_flexibility_information_system_operator;
+-- RLS: CU-FISO001
 CREATE POLICY "CU_FISO001" ON controllable_unit
-FOR ALL
+FOR SELECT
+TO flex_flexibility_information_system_operator
+USING (true);
+-- RLS: CU-FISO002
+CREATE POLICY "CU_FISO002_INSERT" ON controllable_unit
+FOR INSERT
+TO flex_flexibility_information_system_operator
+WITH CHECK (true);
+CREATE POLICY "CU_FISO002_UPDATE" ON controllable_unit
+FOR UPDATE
 TO flex_flexibility_information_system_operator
 USING (true);
 
--- RLS: CU-SO001
 GRANT SELECT, UPDATE ON controllable_unit TO flex_system_operator;
+-- RLS: CU-SO001
 CREATE POLICY "CU_SO001" ON controllable_unit
-FOR ALL
+FOR SELECT
+TO flex_system_operator
+USING (
+    EXISTS (
+        SELECT 1
+        FROM accounting_point_system_operator AS ap_so
+        WHERE ap_so.accounting_point_id = controllable_unit.accounting_point_id -- noqa
+            AND ap_so.system_operator_id = (SELECT current_party())
+            AND ap_so.valid_time_range @> current_timestamp
+    )
+);
+-- RLS: CU-SO002
+CREATE POLICY "CU_SO002" ON controllable_unit
+FOR UPDATE
 TO flex_system_operator
 USING (
     EXISTS (
@@ -40,8 +62,8 @@ USING (
     )
 );
 
--- RLS: CU-SO002
-CREATE POLICY "CU_SO002" ON controllable_unit
+-- RLS: CU-SO003
+CREATE POLICY "CU_SO003" ON controllable_unit
 FOR SELECT
 TO flex_system_operator
 USING (
@@ -198,19 +220,19 @@ USING (
     )
 );
 
--- RLS: CU-FISO002
+-- RLS: CU-FISO003
 GRANT SELECT ON controllable_unit_history
 TO flex_flexibility_information_system_operator;
-CREATE POLICY "CU_FISO002"
+CREATE POLICY "CU_FISO003"
 ON controllable_unit_history
 FOR SELECT
 TO flex_flexibility_information_system_operator
 USING (true);
 
--- RLS: CU-SO003
+-- RLS: CU-SO004
 GRANT SELECT ON controllable_unit_history
 TO flex_system_operator;
-CREATE POLICY "CU_SO003"
+CREATE POLICY "CU_SO004"
 ON controllable_unit_history
 FOR SELECT
 TO flex_system_operator
