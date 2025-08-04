@@ -123,7 +123,7 @@ export const ControllableUnitLookupInput = () => {
           This operation allows you to get information about one or several
           controllable units registered in the Flexibility Information System,
           in order to, for instance, create controllable unit service provider
-          resources. Information includes the controllable unit's technical ID.
+          resources.
         </p>
         <p>
           Input the business ID of the end user behind the controllable unit,
