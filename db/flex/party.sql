@@ -92,3 +92,16 @@ CREATE OR REPLACE TRIGGER party_event
 AFTER INSERT OR UPDATE ON party
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('party');
+
+-- changeset flex:current-party-owner-create runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION
+flex.current_party_owner()
+RETURNS bigint
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+AS $$
+    SELECT p.entity_id
+    FROM flex.party AS p
+    WHERE p.id = (SELECT flex.current_party())
+$$;
