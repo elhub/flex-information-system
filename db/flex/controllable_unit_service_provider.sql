@@ -121,13 +121,14 @@ BEGIN
           AND valid_time_range && NEW.valid_time_range
           AND end_user_id = NEW.end_user_id
     ) THEN
-        RAISE EXCEPTION 'Please update the existing contract with the same SP and end user instead of creating a new one.'; -- noqa
+        RAISE EXCEPTION 'Please update the existing contract instead of creating a new one.';
     END IF;
 
     RETURN NEW;
 END
 $$;
 
+-- changeset flex:controllable-unit-service-provider-no-duplicate-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 -- alphabetic mark _a_ so it runs before make_room
 controllable_unit_service_provider_a_no_duplicates
