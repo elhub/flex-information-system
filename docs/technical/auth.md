@@ -529,12 +529,14 @@ A scope shows what the user can do to a specific resource. It is a
 colon-separated string on the following format:
 
 ```html
-<verb>:<module>[:<resource>[:<id>]]
+<verb>:<module>[:<resource>]
 ```
 
-Verb and module are defined below. Resource and id are future optional
-expansions to make fine-grained access possible, e.g. for specific entity
-clients.
+Verb, module and resource are defined below, but the scope can be read as
+
+> The user can `<verb>` `<resource>` in `<module>`.
+
+Resource is optional and if omitted then it means "all resources".
 
 #### Verb
 
@@ -566,7 +568,18 @@ The currently defined modules are.
   in the data API is covered by this module: `entity`, `party`,
   `party_membership` and `entity_client`
 
+#### Resource
+
+The resource part of the scope is used to make sub-scopes within a module. It is
+optional and not yet implemented for clients. When omitted, the scope includes
+everything in a the module.
+
+Each path on our API has a required scope, and every request is checked to see
+that the client has a matching scope.
+
 #### Scope examples
+
+The following are a few example scopes.
 
 * `GET /api/v0/controllable_unit/` requires `read:data:controllable_unit`. It is
   also covered by e.g. `read:data` and `use:data` but not
@@ -577,7 +590,9 @@ The currently defined modules are.
 
 ### Party type check
 
-FIXME
+The party type check is what is says the tin. It checks that the party type
+doing the request is allowed to do the action on the resource. This is an
+additional check added on just a few routes.
 
 ### Field Level Authorization (FLA)
 
