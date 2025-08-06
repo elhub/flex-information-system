@@ -79,7 +79,6 @@ def data():
 
 
 # RLS: SPPAC-FISO001
-# RLS: SPPAC-FISO002
 def test_sppac_fiso(data):
     (sts, client_so, _, sppa_id) = data
 

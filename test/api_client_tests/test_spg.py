@@ -51,9 +51,7 @@ def test_spg_fiso_sp(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
     # RLS: SPG-FISO001
-    # RLS: SPG-FISO002
     # RLS: SPG-SP001
-    # RLS: SPG-SP002
 
     # endpoint: GET /service_providing_group
     spgs = list_service_providing_group.sync(client=client_fiso)

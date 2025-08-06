@@ -27,23 +27,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_service_provider
 TO flex_flexibility_information_system_operator;
 CREATE POLICY "CUSP_FISO001"
 ON controllable_unit_service_provider
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
--- RLS: CUSP-FISO002
-CREATE POLICY "CUSP_FISO002_INSERT"
-ON controllable_unit_service_provider
-FOR INSERT
-TO flex_flexibility_information_system_operator
-WITH CHECK (true);
-CREATE POLICY "CUSP_FISO002_UPDATE"
-ON controllable_unit_service_provider
-FOR UPDATE
-TO flex_flexibility_information_system_operator
-USING (true);
-CREATE POLICY "CUSP_FISO002_DELETE"
-ON controllable_unit_service_provider
-FOR DELETE
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
@@ -51,9 +35,9 @@ USING (true);
 GRANT SELECT ON controllable_unit_service_provider
 TO flex_system_operator;
 
-CREATE POLICY "CUSP_SO001"
+CREATE POLICY controllable_unit_service_provider_so
 ON controllable_unit_service_provider
-FOR SELECT
+FOR ALL
 TO flex_system_operator
 USING (
     EXISTS (
@@ -63,38 +47,14 @@ USING (
     )
 );
 
+-- RLS: CUSP-SP001
 GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_service_provider
 TO flex_service_provider;
--- RLS: CUSP-SP001
-CREATE POLICY "CUSP_SP001"
+CREATE POLICY controllable_unit_service_provider_sp
 ON controllable_unit_service_provider
-FOR SELECT
+FOR ALL
 TO flex_service_provider
-USING (
-    service_provider_id = (SELECT current_party())
-);
--- RLS: CUSP-SP002
-CREATE POLICY "CUSP_SP002_INSERT"
-ON controllable_unit_service_provider
-FOR INSERT
-TO flex_service_provider
-WITH CHECK (
-    service_provider_id = (SELECT current_party())
-);
-CREATE POLICY "CUSP_SP002_UPDATE"
-ON controllable_unit_service_provider
-FOR UPDATE
-TO flex_service_provider
-USING (
-    service_provider_id = (SELECT current_party())
-);
-CREATE POLICY "CUSP_SP002_DELETE"
-ON controllable_unit_service_provider
-FOR DELETE
-TO flex_service_provider
-USING (
-    service_provider_id = (SELECT current_party())
-);
+USING (service_provider_id = (SELECT current_party()));
 
 -- RLS: CUSP-EU001
 GRANT SELECT ON controllable_unit_service_provider TO flex_end_user;
@@ -134,10 +94,10 @@ USING (
     )
 );
 
--- RLS: CUSP-FISO003
+-- RLS: CUSP-FISO002
 GRANT SELECT ON controllable_unit_service_provider_history
 TO flex_flexibility_information_system_operator;
-CREATE POLICY "CUSP_FISO003"
+CREATE POLICY "CUSP_FISO001"
 ON controllable_unit_service_provider_history
 FOR SELECT
 TO flex_flexibility_information_system_operator
@@ -164,10 +124,10 @@ USING (
     )
 );
 
--- RLS: CUSP-SP003
+-- RLS: CUSP-SP002
 GRANT SELECT ON controllable_unit_service_provider_history
 TO flex_service_provider;
-CREATE POLICY "CUSP_SP003"
+CREATE POLICY "CUSP_SP002"
 ON controllable_unit_service_provider_history
 FOR SELECT
 TO flex_service_provider

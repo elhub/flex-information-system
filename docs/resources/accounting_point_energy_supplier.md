@@ -59,9 +59,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key    | Scope       | Policy         | Status |
-|---------------|-------------|----------------|--------|
-| APES-FISO001  | `data:read` | Read all APES. | DONE   |
+| Policy key    | Policy         | Status |
+|---------------|----------------|--------|
+| APES-FISO001  | Read all APES. | DONE   |
 
 #### Market Operator
 
@@ -73,9 +73,9 @@ No policies.
 
 #### System Operator
 
-| Policy key | Scope       | Policy                                             | Status |
-|------------|-------------|----------------------------------------------------|--------|
-| APES-SO001 | `data:read` | Read APES when they are system operator on the AP. | DONE   |
+| Policy key | Policy                                             | Status |
+|------------|----------------------------------------------------|--------|
+| APES-SO001 | Read APES when they are system operator on the AP. | DONE   |
 
 #### Service Provider
 

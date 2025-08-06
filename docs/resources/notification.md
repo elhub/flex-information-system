@@ -39,10 +39,9 @@ No policies.
 
 #### Common
 
-| Policy key  | Scope         | Policy                                             | Status |
-|-------------|---------------|----------------------------------------------------|--------|
-| NOT-COM001  | `data:read`   | Read and acknowledge notifications targeting them. | DONE   |
-| NOT-COM002  | `data:manage` | Read and acknowledge notifications targeting them. | DONE   |
+| Policy key  | Policy                                             | Status |
+|-------------|----------------------------------------------------|--------|
+| NOT-COM001  | Read and acknowledge notifications targeting them. | DONE   |
 
 #### Balance Responsible Party
 
@@ -58,9 +57,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key   | Scope       | Policy                  | Status |
-|--------------|-------------|-------------------------|--------|
-| NOT-FISO001  | `data:read` | Read all notifications. | DONE   |
+| Policy key   | Policy                  | Status |
+|--------------|-------------------------|--------|
+| NOT-FISO001  | Read all notifications. | DONE   |
 
 #### Market Operator
 

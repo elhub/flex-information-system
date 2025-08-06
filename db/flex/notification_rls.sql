@@ -11,15 +11,10 @@ FOR ALL
 TO flex_internal_event_notification
 USING (true);
 
-GRANT SELECT, UPDATE ON notification TO flex_common;
 -- RLS: NOT-COM001
+GRANT SELECT, UPDATE ON notification TO flex_common;
 CREATE POLICY "NOT_COM001" ON notification
-FOR SELECT
-TO flex_common
-USING (party_id = (SELECT flex.current_party()));
--- RLS: NOT-COM002
-CREATE POLICY "NOT_COM002" ON notification
-FOR UPDATE
+FOR ALL
 TO flex_common
 USING (party_id = (SELECT flex.current_party()));
 

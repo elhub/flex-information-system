@@ -233,7 +233,6 @@ def test_spgm(data):
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     # RLS: SPGM-FISO001
-    # RLS: SPGM-FISO002
     # RLS: SPGM-SP001
 
     # endpoint: GET /service_providing_group_membership
@@ -306,7 +305,6 @@ def test_spgm(data):
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
-    # RLS: SPGM-SP003
     d = delete_service_providing_group_membership.sync(
         client=client_sp,
         id=cast(int, spgm.id),

@@ -21,45 +21,21 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
+-- RLS: SPG-FISO001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group
 TO flex_flexibility_information_system_operator;
--- RLS: SPG-FISO001
 CREATE POLICY "SPG_FISO001" ON service_providing_group
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
--- RLS: SPG-FISO002
-CREATE POLICY "SPG_FISO002_INSERT" ON service_providing_group
-FOR INSERT
-TO flex_flexibility_information_system_operator
-WITH CHECK (true);
-CREATE POLICY "SPG_FISO002_UPDATE" ON service_providing_group
-FOR UPDATE
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
+-- RLS: SPG-SP001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group
 TO flex_service_provider;
--- RLS: SPG-SP001
 CREATE POLICY "SPG_SP001" ON service_providing_group
-FOR SELECT
+FOR ALL
 TO flex_service_provider
-USING (
-    service_provider_id = (SELECT current_party())
-);
--- RLS: SPG-SP002
-CREATE POLICY "SPG_SP002_INSERT" ON service_providing_group
-FOR INSERT
-TO flex_service_provider
-WITH CHECK (
-    service_provider_id = (SELECT current_party())
-);
-CREATE POLICY "SPG_SP002_UPDATE" ON service_providing_group
-FOR UPDATE
-TO flex_service_provider
-USING (
-    service_provider_id = (SELECT current_party())
-);
+USING (service_provider_id = (SELECT current_party()));
 
 -- RLS: SPG-SO001
 GRANT SELECT ON service_providing_group

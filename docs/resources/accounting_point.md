@@ -51,9 +51,9 @@ No policies.
 
 #### Common
 
-| Policy key | Scope       | Policy                      | Status |
-|------------|-------------|-----------------------------|--------|
-| AP-COM001  | `data:read` | Read all accounting points. | DONE   |
+| Policy key | Policy                      | Status |
+|------------|-----------------------------|--------|
+| AP-COM001  | Read all accounting points. | DONE   |
 
 #### Balance Responsible Party
 

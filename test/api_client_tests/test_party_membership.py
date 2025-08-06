@@ -33,7 +33,6 @@ def sts():
 
 
 # RLS: PTYM-FISO001
-# RLS: PTYM-FISO002
 def test_ptym_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -68,7 +67,7 @@ def test_ptym_fiso(sts):
     )
     assert isinstance(pm, PartyMembershipResponse)
 
-    # RLS: PTYM-FISO003
+    # RLS: PTYM-FISO002
     # endpoint: GET /party_membership_history/{id}
     pmh = read_party_membership_history.sync(
         client=client_fiso,

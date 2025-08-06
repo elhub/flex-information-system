@@ -61,17 +61,17 @@ No policies.
 #### Entity
 <!-- markdownlint-enable MD024 -->
 
-| Policy key | Scope       | Policy             | Status |
-|------------|-------------|--------------------| -------|
-| ENT-ENT001 | `auth:read` | Read their own ENT | DONE   |
+| Policy key | Policy             | Status |
+|------------|--------------------|--------|
+| ENT-ENT001 | Read their own ENT | DONE   |
 
 #### Common
 
-| Policy key | Scope       | Policy                                                   | Status |
-|------------|-------------|----------------------------------------------------------|--------|
-| ENT-COM001 | `auth:read` | Read all organisation ENT                                | DONE   |
-| ENT-COM002 | `auth:read` | Read all entities that are members of the current party. | DONE   |
-| ENT-COM003 | `auth:read` | Read parent entity of current party.                     | DONE   |
+| Policy key | Policy                                                   | Status |
+|------------|----------------------------------------------------------|--------|
+| ENT-COM001 | Read all organisation ENT                                | DONE   |
+| ENT-COM002 | Read all entities that are members of the current party. | DONE   |
+| ENT-COM003 | Read parent entity of current party.                     | DONE   |
 
 #### Balance Responsible Party
 
@@ -87,10 +87,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key  | Scope         | Policy                          | Status |
-|-------------|---------------|---------------------------------|--------|
-| ENT-FISO001 | `auth:read`   | Read all entities.              | DONE   |
-| ENT-FISO002 | `auth:manage` | Create and update all entities. | DONE   |
+| Policy key  | Policy                                | Status |
+|-------------|---------------------------------------|--------|
+| ENT-FISO001 | Read, create and update all entities. | DONE   |
 
 #### Market Operator
 

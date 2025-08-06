@@ -22,25 +22,13 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
+-- RLS: SPGGP-FISO001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group_grid_prequalification
 TO flex_flexibility_information_system_operator;
 
--- RLS: SPGGP-FISO001
 CREATE POLICY "SPGGP_FISO001"
 ON service_providing_group_grid_prequalification
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
-
--- RLS: SPGGP-FISO002
-CREATE POLICY "SPGGP_FISO002_INSERT"
-ON service_providing_group_grid_prequalification
-FOR INSERT
-TO flex_flexibility_information_system_operator
-WITH CHECK (true);
-CREATE POLICY "SPGGP_FISO002_UPDATE"
-ON service_providing_group_grid_prequalification
-FOR UPDATE
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
@@ -50,7 +38,7 @@ TO flex_service_provider;
 
 CREATE POLICY "SPGGP_SP001"
 ON service_providing_group_grid_prequalification
-FOR SELECT
+FOR ALL
 TO flex_service_provider
 USING (
     EXISTS (
@@ -61,28 +49,20 @@ USING (
     )
 );
 
+-- RLS: SPGGP-SO001
 GRANT SELECT, UPDATE ON service_providing_group_grid_prequalification
 TO flex_system_operator;
 
--- RLS: SPGGP-SO001
 CREATE POLICY "SPGGP_SO001"
 ON service_providing_group_grid_prequalification
-FOR SELECT
+FOR ALL
 TO flex_system_operator
 USING (
     impacted_system_operator_id = (SELECT current_party())
 );
 
 -- RLS: SPGGP-SO002
-CREATE POLICY "SPGGP_SO002"
-ON service_providing_group_grid_prequalification
-FOR UPDATE
-TO flex_system_operator
-USING (
-    impacted_system_operator_id = (SELECT current_party())
-);
 
--- RLS: SPGGP-SO003
 -- cannot use a simple select on SPG because then policies would be recursive
 -- (SPG uses SPGGP in its policies)
 -- => hence the function
@@ -102,7 +82,7 @@ SELECT EXISTS (
 )
 $$;
 
-CREATE POLICY "SPGGP_SO003"
+CREATE POLICY "SPGGP_SO002"
 ON service_providing_group_grid_prequalification
 FOR SELECT
 TO flex_system_operator

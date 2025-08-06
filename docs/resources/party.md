@@ -61,10 +61,10 @@ resource. The default policy is **deny**.
 
 #### Entity
 
-| Policy key | Scope       | Policy                                       | Status |
-|------------|-------------|----------------------------------------------|--------|
-| PTY-ENT001 | `auth:read` | Read all PTY whose memberships they can read | DONE   |
-| PTY-ENT002 | `auth:read` | Read all PTY that they own                   | DONE   |
+| Policy key | Policy                                       | Status |
+|------------|----------------------------------------------|--------|
+| PTY-ENT001 | Read all PTY whose memberships they can read | DONE   |
+| PTY-ENT002 | Read all PTY that they own                   | DONE   |
 
 #### Anonymous
 
@@ -72,11 +72,11 @@ No policies.
 
 #### Common
 
-| Policy key | Scope       | Policy                                       | Status |
-|------------|-------------|----------------------------------------------|--------|
-| PTY-COM001 | `auth:read` | Read history on PTY that they can read.      | DONE   |
-| PTY-COM002 | `auth:read` | Read all PTY that are not `end_user`         | DONE   |
-| PTY-COM003 | `auth:read` | Read all PTY whose memberships they can read | DONE   |
+| Policy key | Policy                                       | Status |
+|------------|----------------------------------------------|--------|
+| PTY-COM001 | Read history on PTY that they can read.      | DONE   |
+| PTY-COM002 | Read all PTY that are not `end_user`         | DONE   |
+| PTY-COM003 | Read all PTY whose memberships they can read | DONE   |
 
 #### Balance Responsible Party
 
@@ -92,10 +92,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key  | Scope         | Policy                    | Status |
-|-------------|---------------|---------------------------|--------|
-| PTY-FISO001 | `auth:read`   | Read all PTY              | DONE   |
-| PTY-FISO002 | `auth:manage` | Create and update all PTY | DONE   |
+| Policy key  | Policy                          | Status |
+|-------------|---------------------------------|--------|
+| PTY-FISO001 | Create, read and update all PTY | DONE   |
 
 #### Market Operator
 

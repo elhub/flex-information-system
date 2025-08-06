@@ -81,7 +81,6 @@ def test_sopt_common(sts):
 
 
 # RLS: SOPT-FISO001
-# RLS: SOPT-FISO002
 # FISO can read, create and update
 def test_sopt_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -124,7 +123,6 @@ def test_sopt_fiso(sts):
 
 
 # RLS: SOPT-SO001
-# RLS: SOPT-SO002
 # SO can create and update when they are SO
 def test_sopt_so(sts):
     client_so = sts.fresh_client(TestEntity.TEST, "SO")

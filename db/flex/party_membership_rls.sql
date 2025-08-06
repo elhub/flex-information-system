@@ -4,31 +4,17 @@
 -- changeset flex:party-membership-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS party_membership ENABLE ROW LEVEL SECURITY;
 
+-- RLS: PTYM-FISO001
 GRANT INSERT,
 SELECT,
-UPDATE,
 DELETE ON party_membership TO flex_flexibility_information_system_operator;
--- RLS: PTYM-FISO001
 CREATE POLICY "PTYM_FISO001" ON party_membership
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
--- RLS: PTYM-FISO002
-CREATE POLICY "PTYM_FISO002_INSERT" ON party_membership
-FOR INSERT
-TO flex_flexibility_information_system_operator
-WITH CHECK (true);
-CREATE POLICY "PTYM_FISO002_UPDATE" ON party_membership
-FOR UPDATE
-TO flex_flexibility_information_system_operator
-USING (true);
-CREATE POLICY "PTYM_FISO002_DELETE" ON party_membership
-FOR DELETE
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
--- RLS: PTYM-FISO003
-GRANT SELECT ON party_membership_history
+-- RLS: PTYM-FISO002
+GRANT SELECT ON party_membership
 TO flex_flexibility_information_system_operator;
 CREATE POLICY "PTYM_FISO002" ON party_membership_history
 FOR SELECT

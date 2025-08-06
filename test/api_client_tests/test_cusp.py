@@ -55,7 +55,6 @@ def data():
 
 
 # RLS: CUSP-FISO001
-# RLS: CUSP-FISO002
 def test_cusp_fiso(data):
     (sts, cu_id) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -180,7 +179,6 @@ def test_cusp_fiso(data):
 
 
 # RLS: CUSP-SP001
-# RLS: CUSP-SP002
 def test_cusp_sp(data):
     (sts, cu_id) = data
 
@@ -360,9 +358,9 @@ def test_cusp_so(data):
             assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
 
-# RLS: CUSP-FISO003
+# RLS: CUSP-FISO002
 # RLS: CUSP-SO002
-# RLS: CUSP-SP003
+# RLS: CUSP-SP002
 def test_cusp_history(data):
     (sts, _) = data
 

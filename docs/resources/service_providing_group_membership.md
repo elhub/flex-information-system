@@ -44,9 +44,9 @@ No policies.
 
 #### Common
 
-| Policy key  | Scope       | Policy                                   | Status |
-|-------------|-------------|------------------------------------------|--------|
-| SPGM-COM001 | `data:read` | Read history on SPGM that they can read. | DONE   |
+| Policy key  | Policy                                   | Status |
+|-------------|------------------------------------------|--------|
+| SPGM-COM001 | Read history on SPGM that they can read. | DONE   |
 
 #### Balance Responsible Party
 
@@ -62,10 +62,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key   | Scope         | Policy                                                  | Status |
-|--------------|---------------|---------------------------------------------------------|--------|
-| SPGM-FISO001 | `data:read`   | Read all SPG membership relations.                      | DONE   |
-| SPGM-FISO002 | `data:manage` | Create, update and delete all SPG membership relations. | DONE   |
+| Policy key   | Policy                                                        | Status |
+|--------------|---------------------------------------------------------------|--------|
+| SPGM-FISO001 | Read, create, update and delete all SPG membership relations. | DONE   |
 
 #### Market Operator
 
@@ -77,17 +76,16 @@ No policies.
 
 #### System Operator
 
-| Policy key | Scope       | Policy                                     | Status |
-|------------|-------------|--------------------------------------------|--------|
-| SPGM-SO001 | `data:read` | Read SPGM belonging to SPGs they can read. | DONE   |
+| Policy key | Policy                                     | Status |
+|------------|--------------------------------------------|--------|
+| SPGM-SO001 | Read SPGM belonging to SPGs they can read. | DONE   |
 
 #### Service Provider
 
-| Policy key | Scope         | Policy                                                                                         | Status |
-|------------|---------------|------------------------------------------------------------------------------------------------|--------|
-| SPGM-SP001 | `data:manage` | Create and update SPGM for SPGS that belongs to them, on periods where they are SP for the CU. | DONE   |
-| SPGM-SP002 | `data:read`   | Read SPGM for SPGS that belongs to them.                                                       | DONE   |
-| SPGM-SP003 | `data:manage` | Delete SPGM for SPGS that belongs to them.                                                     | DONE   |
+| Policy key | Policy                                                                                         | Status |
+|------------|------------------------------------------------------------------------------------------------|--------|
+| SPGM-SP001 | Create and update SPGM for SPGS that belongs to them, on periods where they are SP for the CU. | DONE   |
+| SPGM-SP002 | Read, delete SPGM for SPGS that belongs to them.                                               | DONE   |
 
 #### Third Party
 

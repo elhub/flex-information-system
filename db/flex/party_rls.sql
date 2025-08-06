@@ -38,25 +38,14 @@ GRANT SELECT ON party TO flex_common;
 CREATE POLICY "PTY_COM002" ON party
 FOR SELECT
 TO flex_common
-USING (
-    (type != 'end_user' OR EXISTS (
-        SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id -- noqa
-    ))
-);
+USING (type != 'end_user' OR EXISTS (
+    SELECT 1 FROM party_membership pm WHERE pm.party_id = party.id -- noqa
+));
 
+-- RLS: PTY-FISO001
 GRANT INSERT, SELECT, UPDATE ON party
 TO flex_flexibility_information_system_operator;
--- RLS: PTY-FISO001
 CREATE POLICY "PTY_FISO001" ON party
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
--- RLS: PTY-FISO002
-CREATE POLICY "PTY_FISO002_INSERT" ON party
-FOR INSERT
-TO flex_flexibility_information_system_operator
-WITH CHECK (true);
-CREATE POLICY "PTY_FISO002_UPDATE" ON party
-FOR UPDATE
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);

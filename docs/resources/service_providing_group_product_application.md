@@ -69,9 +69,9 @@ No policies.
 
 #### Common
 
-| Policy key   | Scope       | Policy                                    | Status |
-|--------------|-------------|-------------------------------------------|--------|
-| SPGPA-COM001 | `data:read` | Read history on SPGPA that they can read. | DONE   |
+| Policy key   | Policy                                    | Status |
+|--------------|-------------------------------------------|--------|
+| SPGPA-COM001 | Read history on SPGPA that they can read. | DONE   |
 
 #### Balance Responsible Party
 
@@ -87,10 +87,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key    | Scope         | Policy            | Status |
-|---------------|---------------|-------------------|--------|
-| SPGPA-FISO001 | `data:read`   | Read all SPGPA.   | DONE   |
-| SPGPA-FISO002 | `data:manage` | Update all SPGPA. | DONE   |
+| Policy key    | Policy                     | Status |
+|---------------|----------------------------|--------|
+| SPGPA-FISO001 | Read and update all SPGPA. | DONE   |
 
 #### Market Operator
 
@@ -102,17 +101,16 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Scope         | Policy                       | Status |
-|-------------|---------------|------------------------------|--------|
-| SPGPA-SO001 | `data:read`   | Read all SPGPA.              | DONE   |
-| SPGPA-SO002 | `data:manage` | Update SPGPA targeting them. | DONE   |
+| Policy key  | Policy                       | Status |
+|-------------|------------------------------|--------|
+| SPGPA-SO001 | Read all SPGPA.              | DONE   |
+| SPGPA-SO002 | Update SPGPA targeting them. | DONE   |
 
 #### Service Provider
 
-| Policy key  | Scope         | Policy                                                  | Status |
-|-------------|---------------|---------------------------------------------------------|--------|
-| SPGPA-SP001 | `data:read`   | Read SPGPA for SPG they are in charge for.              | DONE   |
-| SPGPA-SP002 | `data:manage` | Create and update SPGPA for SPG they are in charge for. | DONE   |
+| Policy key  | Policy                                                        | Status |
+|-------------|---------------------------------------------------------------|--------|
+| SPGPA-SP001 | Create, read and update SPGPA for SPG they are in charge for. | DONE   |
 
 #### Third Party
 

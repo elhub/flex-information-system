@@ -203,7 +203,6 @@ def test_spgpa_fiso_sp_so(data):
 
     # SP can create and read a SPGPA
     # RLS: SPGPA-SP001
-    # RLS: SPGPA-SP002
     # endpoint: POST /service_providing_group_product_application
     spgpa = create_service_providing_group_product_application.sync(
         client=client_sp,
@@ -269,7 +268,6 @@ def test_spgpa_fiso_sp_so(data):
 
     # FISO can read and update
     # RLS: SPGPA-FISO001
-    # RLS: SPGPA-FISO002
     # endpoint: GET /service_providing_group_product_application
     spgpas = list_service_providing_group_product_application.sync(
         client=client_fiso,

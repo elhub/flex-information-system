@@ -22,46 +22,25 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
+-- RLS: SPPA-FISO001
 GRANT SELECT, UPDATE ON service_provider_product_application
 TO flex_flexibility_information_system_operator;
--- RLS: SPPA-FISO001
 CREATE POLICY "SPPA_FISO001"
 ON service_provider_product_application
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
--- RLS: SPPA-FISO002
-CREATE POLICY "SPPA_FISO002"
-ON service_provider_product_application
-FOR UPDATE
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
+-- RLS: SPPA-SP001
 GRANT SELECT, INSERT, UPDATE ON service_provider_product_application
 TO flex_service_provider;
--- RLS: SPPA-SP001
 CREATE POLICY "SPPA_SP001"
 ON service_provider_product_application
-FOR SELECT
+FOR ALL
 TO flex_service_provider
 USING (
     service_provider_id = (SELECT flex.current_party())
 );
--- RLS: SPPA-SP002
-CREATE POLICY "SPPA_SP002"
-ON service_provider_product_application
-FOR INSERT
-TO flex_service_provider
-WITH CHECK (
-    service_provider_id = (SELECT flex.current_party())
-);
--- RLS: SPPA-SP003
--- NB: status check implemented as a trigger to customise the error message
-CREATE POLICY "SPPA_SP003"
-ON service_provider_product_application
-FOR UPDATE
-TO flex_service_provider
-USING (true);
 
 -- RLS: SPPA-SO001
 GRANT SELECT, UPDATE ON service_provider_product_application

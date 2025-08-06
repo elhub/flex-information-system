@@ -75,24 +75,9 @@ USING (
     OR visibility = 'any_party' -- no check there
 );
 
-GRANT SELECT, INSERT, UPDATE
-ON service_provider_product_application_comment
-TO flex_flexibility_information_system_operator;
-
 -- RLS: SPPAC-FISO001
 CREATE POLICY "SPPAC_FISO001"
 ON service_provider_product_application_comment
-FOR SELECT
-TO flex_flexibility_information_system_operator
-USING (true);
--- RLS: SPPAC-FISO002
-CREATE POLICY "SPPAC_FISO002_INSERT"
-ON service_provider_product_application_comment
-FOR INSERT
-TO flex_flexibility_information_system_operator
-WITH CHECK (true);
-CREATE POLICY "SPPAC_FISO002_UPDATE"
-ON service_provider_product_application_comment
-FOR UPDATE
+FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);

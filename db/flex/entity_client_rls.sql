@@ -4,29 +4,10 @@
 -- changeset flex:entity-client-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS entity_client ENABLE ROW LEVEL SECURITY;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_entity;
 -- RLS: ECL-ENT001
+GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_entity;
 CREATE POLICY "ECL_ENT001" ON entity_client
-FOR SELECT
-TO flex_entity
-USING (
-    entity_id = (SELECT flex.current_entity())
-);
--- RLS: ECL-ENT002
-CREATE POLICY "ECL_ENT002_INSERT" ON entity_client
-FOR INSERT
-TO flex_entity
-WITH CHECK (
-    entity_id = (SELECT flex.current_entity())
-);
-CREATE POLICY "ECL_ENT002_UPDATE" ON entity_client
-FOR UPDATE
-TO flex_entity
-USING (
-    entity_id = (SELECT flex.current_entity())
-);
-CREATE POLICY "ECL_ENT002_DELETE" ON entity_client
-FOR DELETE
+FOR ALL
 TO flex_entity
 USING (
     entity_id = (SELECT flex.current_entity())

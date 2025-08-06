@@ -51,7 +51,6 @@ def sts():
 
 
 # RLS: CU-FISO001
-# RLS: CU-FISO002
 def test_controllable_unit_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     # create a CU and check the list of visible CUs is one CU longer
@@ -90,7 +89,7 @@ def test_controllable_unit_fiso(sts):
 
     # update the CU and check the history is one record longer
 
-    # RLS: CU-FISO003
+    # RLS: CU-FISO002
     # endpoint: GET /controllable_unit_history
     hist = list_controllable_unit_history.sync(
         client=client_fiso,
@@ -165,7 +164,6 @@ def test_controllable_unit_so(sts):
     # what is in the SPG
     assert len(cus) >= n_cus_so
 
-    # RLS: CU-SO002
     # check SO can update the last validation of a CU
     cu = cus[0]
     u = update_controllable_unit.sync(
@@ -187,7 +185,7 @@ def test_controllable_unit_so(sts):
     )
     assert isinstance(u, ErrorMessage)
 
-    # RLS: CU-SO003
+    # RLS: CU-SO002
 
     # NB: use common SO in this test
     # so that the accounting point RLS does not apply
@@ -259,7 +257,7 @@ def test_controllable_unit_so(sts):
     cu = read_controllable_unit.sync(client=client_iso, id=cast(int, cu.id))
     assert isinstance(cu, ControllableUnitResponse)
 
-    # RLS: CU-SO004
+    # RLS: CU-SO003
     # NB: here checking on a few rows is sufficient
     for cu in cus_iso2[:5]:
         hist_iso = list_controllable_unit_history.sync(
@@ -451,6 +449,7 @@ def test_controllable_unit_sp(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
+    # RLS: CU-SP001
     # check that a fresh CU is invisible for an SP it is not linked to
     r = read_controllable_unit.sync(client=client_sp1, id=cast(int, cu.id))
     assert isinstance(r, ErrorMessage)
@@ -469,7 +468,6 @@ def test_controllable_unit_sp(sts):
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
-    # RLS: CU-SP001
     # now the CU-SP is there, the SP can read the CU
     r = read_controllable_unit.sync(client=client_sp1, id=cast(int, cu.id))
     assert isinstance(r, ControllableUnitResponse)
@@ -496,11 +494,7 @@ def test_controllable_unit_sp(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    # RLS: CU-SP005
-    # read CU they created
-    cu = read_controllable_unit.sync(client=client_sp1, id=cast(int, cu.id))
-    assert isinstance(cu, ControllableUnitResponse)
-
+    # RLS: CU-SP003
     # create CU-SP in the distant future
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -539,7 +533,6 @@ def test_controllable_unit_sp(sts):
     )
     assert isinstance(u, ErrorMessage)
 
-    # RLS: CU-SP003
     # but SP2 should now be able to edit
     u = update_controllable_unit.sync(
         client=client_sp2,

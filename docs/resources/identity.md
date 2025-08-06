@@ -39,15 +39,15 @@ No policies.
 
 #### Entity
 
-| Policy key | Scope       | Policy               | Status |
-|------------|-------------|----------------------|--------|
-| ID-ENT001  | `auth:read` | Read all identities. | DONE   |
+| Policy key | Policy               | Status |
+|------------|----------------------|--------|
+| ID-ENT001  | Read all identities. | DONE   |
 
 #### Common
 
-| Policy key | Scope       | Policy               | Status |
-|------------|-------------|----------------------|--------|
-| ID-COM001  | `auth:read` | Read all identities. | DONE   |
+| Policy key | Policy               | Status |
+|------------|----------------------|--------|
+| ID-COM001  | Read all identities. | DONE   |
 
 #### Balance Responsible Party
 

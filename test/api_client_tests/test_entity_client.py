@@ -34,7 +34,6 @@ def test_entity_client(sts):
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
     # RLS: ECL-ENT001
-    # RLS: ECL-ENT002
     # entity can do everything on their own clients
 
     # endpoint: GET /entity_client

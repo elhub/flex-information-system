@@ -54,9 +54,9 @@ No policies.
 
 #### Common
 
-| Policy key   | Scope       | Policy                                    | Status |
-|--------------|-------------|-------------------------------------------|--------|
-| SPGGP-COM001 | `data:read` | Read history on SPGGP that they can read. | DONE   |
+| Policy key   | Policy                                    | Status |
+|--------------|-------------------------------------------|--------|
+| SPGGP-COM001 | Read history on SPGGP that they can read. | DONE   |
 
 #### Balance Responsible Party
 
@@ -72,10 +72,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key    | Scope         | Policy                       | Status |
-|---------------|---------------|------------------------------| -------|
-| SPGGP-FISO001 | `data:read`   | Read all SPGGP.              | DONE   |
-| SPGGP-FISO002 | `data:manage` | Create and update all SPGGP. | DONE   |
+| Policy key    | Policy                             | Status |
+|---------------|------------------------------------|--------|
+| SPGGP-FISO001 | Read, create and update all SPGGP. | DONE   |
 
 #### Market Operator
 
@@ -87,17 +86,16 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Scope         | Policy                                                         | Status |
-|-------------|---------------|----------------------------------------------------------------|--------|
-| SPGGP-SO001 | `data:read`   | Read SPGGP for which the SO is the impacted system operator.   | DONE   |
-| SPGGP-SO002 | `data:manage` | Update SPGGP for which the SO is the impacted system operator. | DONE   |
-| SPGGP-SO003 | `data:read`   | Read SPGGP related to SPG they can see.                        | DONE   |
+| Policy key  | Policy                                                                  | Status |
+|-------------|-------------------------------------------------------------------------|--------|
+| SPGGP-SO001 | Read and update SPGGP for which the SO is the impacted system operator. | DONE   |
+| SPGGP-SO002 | Read SPGGP related to SPG they can see.                                 | DONE   |
 
 #### Service Provider
 
-| Policy key  | Scope       | Policy                                                     | Status |
-|-------------|-------------|------------------------------------------------------------|--------|
-| SPGGP-SP001 | `data:read` | Read SPGGP attached to a SPG which the SP is in charge of. | DONE   |
+| Policy key  | Policy                                                     | Status |
+|-------------|------------------------------------------------------------|--------|
+| SPGGP-SP001 | Read SPGGP attached to a SPG which the SP is in charge of. | DONE   |
 
 #### Third Party
 
