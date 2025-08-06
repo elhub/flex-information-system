@@ -15,6 +15,7 @@ from .accounting_point_energy_supplier_update_request import AccountingPointEner
 from .accounting_point_response import AccountingPointResponse
 from .accounting_point_update_request import AccountingPointUpdateRequest
 from .audit_fields import AuditFields
+from .auth_scope import AuthScope
 from .controllable_unit import ControllableUnit
 from .controllable_unit_create_data import ControllableUnitCreateData
 from .controllable_unit_create_request import ControllableUnitCreateRequest
@@ -125,7 +126,6 @@ from .party_membership_create_request import PartyMembershipCreateRequest
 from .party_membership_history_response import PartyMembershipHistoryResponse
 from .party_membership_response import PartyMembershipResponse
 from .party_membership_update_request import PartyMembershipUpdateRequest
-from .party_membership_update_request_scopes_item import PartyMembershipUpdateRequestScopesItem
 from .party_response import PartyResponse
 from .party_status import PartyStatus
 from .party_update_request import PartyUpdateRequest
@@ -221,6 +221,7 @@ __all__ = (
     "AccountingPointResponse",
     "AccountingPointUpdateRequest",
     "AuditFields",
+    "AuthScope",
     "ControllableUnit",
     "ControllableUnitCreateData",
     "ControllableUnitCreateRequest",
@@ -319,7 +320,6 @@ __all__ = (
     "PartyMembershipHistoryResponse",
     "PartyMembershipResponse",
     "PartyMembershipUpdateRequest",
-    "PartyMembershipUpdateRequestScopesItem",
     "PartyResponse",
     "PartyStatus",
     "PartyUpdateRequest",

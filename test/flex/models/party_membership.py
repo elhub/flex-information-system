@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Type, TypeVar, Union
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.party_membership_update_request_scopes_item import PartyMembershipUpdateRequestScopesItem
+from ..models.auth_scope import AuthScope
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyMembership")
@@ -14,9 +14,9 @@ class PartyMembership:
     """Data schema - The relation between a party and entity.
 
     Attributes:
-        scopes (Union[Unset, List[PartyMembershipUpdateRequestScopesItem]]): List of scopes granted to the entity when
-            it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege
-            delegation mechanisms. Example: ['data:read'].
+        scopes (Union[Unset, List[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
+            are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+            ['data:read'].
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
         entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
@@ -25,7 +25,7 @@ class PartyMembership:
         id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
     """
 
-    scopes: Union[Unset, List[PartyMembershipUpdateRequestScopesItem]] = UNSET
+    scopes: Union[Unset, List[AuthScope]] = UNSET
     party_id: Union[Unset, int] = UNSET
     entity_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
@@ -75,7 +75,7 @@ class PartyMembership:
         scopes = []
         _scopes = d.pop("scopes", UNSET)
         for scopes_item_data in _scopes or []:
-            scopes_item = PartyMembershipUpdateRequestScopesItem(scopes_item_data)
+            scopes_item = AuthScope(scopes_item_data)
 
             scopes.append(scopes_item)
 

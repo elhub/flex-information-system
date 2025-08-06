@@ -8,7 +8,7 @@ from flex.models import (
     EntityResponse,
     ErrorMessage,
     PartyMembershipCreateRequest,
-    PartyMembershipUpdateRequestScopesItem,
+    AuthScope,
     PartyMembershipResponse,
     EmptyObject,
     PartyResponse,
@@ -261,8 +261,8 @@ def test_entity_com(sts):
             entity_id=common_ent_id,
             party_id=so_id,
             scopes=[
-                PartyMembershipUpdateRequestScopesItem.DATAREAD,
-                PartyMembershipUpdateRequestScopesItem.AUTHREAD,
+                AuthScope.DATAREAD,
+                AuthScope.AUTHREAD,
             ],
         ),
     )

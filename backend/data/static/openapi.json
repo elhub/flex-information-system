@@ -149,6 +149,19 @@
                     "message"
                 ]
             },
+            "auth_scope": {
+                "description": "Authorization scopes.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "data:read",
+                    "data:use",
+                    "data:manage",
+                    "auth:read",
+                    "auth:use",
+                    "auth:manage"
+                ]
+            },
             "audit_fields": {
                 "properties": {
                     "recorded_at": {
@@ -1590,16 +1603,7 @@
                         "description": "List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.",
                         "type": "array",
                         "items": {
-                            "format": "text",
-                            "type": "string",
-                            "enum": [
-                                "data:read",
-                                "data:use",
-                                "data:manage",
-                                "auth:read",
-                                "auth:use",
-                                "auth:manage"
-                            ]
+                            "$ref": "#/components/schemas/auth_scope"
                         },
                         "nullable": false,
                         "example": [

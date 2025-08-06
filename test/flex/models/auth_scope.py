@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class PartyMembershipUpdateRequestScopesItem(str, Enum):
+class AuthScope(str, Enum):
     AUTHMANAGE = "auth:manage"
     AUTHREAD = "auth:read"
     AUTHUSE = "auth:use"

@@ -49,6 +49,18 @@ components:
       required:
         - code
         - message
+    auth_scope:
+      description: >-
+        Authorization scopes.
+      format: text
+      type: string
+      enum:
+        - "data:read"
+        - "data:use"
+        - "data:manage"
+        - "auth:read"
+        - "auth:use"
+        - "auth:manage"
     audit_fields:
       properties:
         recorded_at:

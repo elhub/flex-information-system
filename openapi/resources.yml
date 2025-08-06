@@ -724,15 +724,7 @@ resources:
           control and privilege delegation mechanisms.
         type: array
         items:
-          format: text
-          type: string
-          enum:
-            - "data:read"
-            - "data:use"
-            - "data:manage"
-            - "auth:read"
-            - "auth:use"
-            - "auth:manage"
+          "$ref": "#/components/schemas/auth_scope"
         nullable: false
         example: ["data:read"]
 

@@ -5,7 +5,7 @@ from flex.models import (
     PartyBusinessIdType,
     PartyMembershipResponse,
     PartyMembershipCreateRequest,
-    PartyMembershipUpdateRequestScopesItem,
+    AuthScope,
 )
 from flex.api.party import (
     list_party,
@@ -248,8 +248,8 @@ class SecurityTokenService:
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
                 scopes=[
-                    PartyMembershipUpdateRequestScopesItem.DATAMANAGE,
-                    PartyMembershipUpdateRequestScopesItem.AUTHMANAGE,
+                    AuthScope.DATAMANAGE,
+                    AuthScope.AUTHMANAGE,
                 ],
             ),
         )

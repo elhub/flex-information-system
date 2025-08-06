@@ -176,6 +176,7 @@
         "hint": "A hint to help resolve the error.",
         "message": "The error message."
     },
+    "auth_scope": null,
     "audit_fields": {
         "recorded_at": "When the resource was recorded (created or updated) in the system.",
         "recorded_by": "The identity that recorded the resource."
