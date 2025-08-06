@@ -7,7 +7,7 @@ they need to know that the SPG is ready.
 
 * Is CU part of the SPG validated?
 * Is SPG grid prequalified?
-* Is SP qualified for product?
+* Is SP qualified for product? - not possible to register SPG if not
 * Is SPG prequalified or verified for product?
 * Is the product(s) suspended?
 * Any temporary limits?
@@ -20,7 +20,7 @@ statuses and related timestamp.
 
 | Process                   | Status                                                                                       | Timestamp                        |
 |---------------------------|----------------------------------------------------------------------------------------------|----------------------------------|
-| CU grid validation        | pending, in_progress, incomplete_information, validated, validation_failed                   | Last validated                   |
+| CU grid validation        | pending, in_progress, incomplete_information, validated, validation_failed                   | last validated                   |
 | SPG grid prequalification | in_progress, approved, conditionally_approved, not_approved                                  | last prequalified                |
 | SP product application    | in_progress, communication_test, qualified, not_qualified                                    | last qualified                   |
 | SPG product application   | in_progress, temporary_qualified, prequalification_pending, prequalified, rejected, verified | last prequalified, last verified |
@@ -81,3 +81,7 @@ Examples:
     * Product(s)
 * Temporary limits
 * TPV
+
+#### Ready for market flow (WIP)
+
+![checklist](../diagrams/ready_for_market.drawio.png)
