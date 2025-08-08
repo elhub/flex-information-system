@@ -48,5 +48,6 @@ func (v *Validate) Error() error {
 	if len(v.errormsgs) == 0 {
 		return nil
 	}
+
 	return errors.New(v.String()) //nolint:err113
 }

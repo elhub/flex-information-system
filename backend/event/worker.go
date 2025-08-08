@@ -34,6 +34,7 @@ func NewWorker(
 	if replConn == nil || pool == nil {
 		return nil, errNilArguments
 	}
+
 	return &Worker{replConn, pool, logPrefix, ctxKey}, nil
 }
 
@@ -47,6 +48,7 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 	)
 
 	defer slog.InfoContext(ctx, "end of event worker")
+
 	for {
 		select {
 		case <-ctx.Done(): // if the server closes, the worker should stop too
@@ -60,6 +62,7 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 				slog.ErrorContext(ctx, "could not receive message from replication connection", "error", err)
 				return err //nolint:wrapcheck
 			}
+
 			if err = eventWorker.handleMessage(ctx, msg); err != nil {
 				slog.ErrorContext(ctx, "could not handle message in worker", "error", err)
 				return err
@@ -69,6 +72,7 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 				slog.ErrorContext(ctx,
 					"could not acknowledge message on replication connection", "error", err,
 				)
+
 				return err //nolint:wrapcheck
 			}
 		}
@@ -77,9 +81,11 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 
 // Stop stops the worker after closing underlying connections.
 func (eventWorker *Worker) Stop(ctx context.Context) error {
-	if err := eventWorker.replConn.Close(ctx); err != nil {
+	err := eventWorker.replConn.Close(ctx)
+	if err != nil {
 		return fmt.Errorf("could not close replication connection: %w", err)
 	}
+
 	return nil
 }
 
@@ -87,7 +93,7 @@ func (eventWorker *Worker) Stop(ctx context.Context) error {
 // from a replication connection dedicated to event processing. It has access
 // to a transaction to perform operations on the database.
 //
-//nolint:cyclop
+//nolint:cyclop,funlen
 func (eventWorker *Worker) handleMessage(
 	ctx context.Context,
 	message *pgrepl.Message,
@@ -97,10 +103,12 @@ func (eventWorker *Worker) handleMessage(
 		return systemConnectionError(err)
 	}
 	defer conn.Release()
+
 	tx, err := conn.Begin(ctx)
 	if err != nil {
 		return transactionError(err)
 	}
+
 	queries := models.New(tx)
 
 	for _, change := range message.Change {
@@ -144,9 +152,11 @@ func (eventWorker *Worker) handleMessage(
 				continue
 			}
 
-			if err := queries.Notify(ctx, event.ID, recipient); err != nil {
+			err := queries.Notify(ctx, event.ID, recipient)
+			if err != nil {
 				return fmt.Errorf("could not insert notification: %w", err)
 			}
+
 			slog.InfoContext(ctx, fmt.Sprintf("notified party #%d of event #%d", recipient, event.ID))
 		}
 	}
@@ -154,6 +164,7 @@ func (eventWorker *Worker) handleMessage(
 	if err = tx.Commit(ctx); err != nil {
 		return fmt.Errorf("could not commit transaction: %w", err)
 	}
+
 	return nil
 }
 

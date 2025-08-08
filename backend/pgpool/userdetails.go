@@ -26,9 +26,11 @@ func UserDetailsFromContext(ctx context.Context, key string) (UserDetails, error
 	if value == nil {
 		return nil, fmt.Errorf("%w: context value for %s is empty", errMissingUserDetails, key)
 	}
+
 	userDetails, ok := value.(UserDetails)
 	if !ok {
 		return nil, fmt.Errorf("%w: not of type UserDetails", errMissingUserDetails)
 	}
+
 	return userDetails, nil
 }

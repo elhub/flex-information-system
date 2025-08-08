@@ -29,7 +29,8 @@ import (
 
 var errMissingEnv = errors.New("environment variable not set")
 
-const requestDetailsContextKey = "_flex/auth"
+// TODO refactor code to not pass the context key around ??
+const requestDetailsContextKey = auth.RequestDetailsContextKey
 
 // WrapHandlerFunc is a helper function for wrapping http.HandlerFunc and returns a Gin handler.
 // Is is basically gin.WrapF but explicitly passing the full gin.Context.
@@ -74,7 +75,6 @@ func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
 
 	// We do this by checking if the response has been written, which means either
 	// the middleware errored or the next handler was called.
-
 	return func(ctx *gin.Context) {
 		// If the middleware sets things in the request context, then the request
 		// value changes, which must be reflected in the Gin context.
@@ -103,10 +103,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	tracer := trace.Tracer("flex")
+
 	ctx, span := tracer.Start(ctx, "flex")
 	defer span.End()
 
 	var slogLevel slog.Level
+
 	err := slogLevel.UnmarshalText([]byte(logLevel))
 	if err != nil {
 		return fmt.Errorf("could not parse log level: %w", err)
@@ -147,6 +149,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	port, exists := lookupenv("FLEX_PORT")
 	if !exists {
 		slog.InfoContext(ctx, "FLEX_PORT environment variable is not set, using default port 7001")
+
 		port = "7001"
 	}
 
@@ -164,6 +167,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	if !exists {
 		return fmt.Errorf("%w: FLEX_BASE_URL", errMissingEnv)
 	}
+
 	authAPIBaseURL := baseURL + "auth/v0/"
 	dataAPIBaseURL := baseURL + "api/v0/"
 
@@ -193,9 +197,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	isLoginLimitingDisabled := false
+
 	_, exists = lookupenv("FLEX_DISABLE_LOGIN_LIMITING")
 	if exists {
 		isLoginLimitingDisabled = true
+
 		slog.InfoContext(ctx, "Disabled login limiting")
 	} else {
 		slog.InfoContext(ctx, "Default login limiting")
@@ -214,25 +220,32 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	backoffWithContext := backoff.WithContext(ebo, ctx)
 
 	var dbPool *pgpool.Pool
+
 	err = backoff.Retry(func() error {
 		var err error
+
 		slog.InfoContext(ctx, "Trying to connect...")
+
 		dbPool, err = pgpool.New(ctx, dbURI, requestDetailsContextKey)
 		if err != nil {
 			slog.InfoContext(ctx, "Failed: ", "error", err.Error())
 			return fmt.Errorf("could not connect to the database: %w", err)
 		}
+
 		return nil
 	}, backoffWithContext)
 	if err != nil {
 		return fmt.Errorf("exhausted db connection retries: %w", err)
 	}
+
 	slog.InfoContext(ctx, "Connected!")
+
 	defer dbPool.Close()
 
 	// Using the OIDC issuer as a "feature flag" to enable/disable OIDC stuff
 	// TODO remove once in production
 	oidcProvider := &oidc.Provider{}
+
 	if oidcIssuer != "" {
 		slog.DebugContext(ctx, "Creating OIDC provider for issuer "+oidcIssuer)
 
@@ -243,6 +256,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	slog.DebugContext(ctx, "Creating auth API")
+
 	authAPI := auth.NewAPI(
 		authAPIBaseURL,
 		dbPool,
@@ -253,6 +267,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	)
 
 	slog.DebugContext(ctx, "Creating data API")
+
 	dataAPIHandler, err := data.NewAPIHandler(
 		dataAPIBaseURL, postgRESTUpstream, dbPool, requestDetailsContextKey,
 	)
@@ -271,10 +286,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 			default:
 				slog.InfoContext(ctx, "Launching the event worker...")
 				backoffWithContext = backoff.WithContext(ebo, ctx)
+
 				var replConn *pgrepl.Connection
+
 				err = backoff.Retry(func() error {
 					var err error
+
 					slog.InfoContext(ctx, "Trying to connect to the replication slot...")
+
 					replConn, err = pgrepl.NewConnection(
 						ctx,
 						replURI,
@@ -286,12 +305,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 						slog.InfoContext(ctx, "Failed", "error", err.Error())
 						return fmt.Errorf("failed to create replication listener: %w", err)
 					}
+
 					return nil
 				}, backoffWithContext)
 				if err != nil {
 					slog.InfoContext(ctx, "exhausted db connection retries", "error", err.Error())
 					return
 				}
+
 				slog.InfoContext(ctx, "Connected to the replication slot!")
 				defer replConn.Close(ctx) //nolint:errcheck
 
@@ -321,6 +342,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// finally the web server pointing to the handlers defined in the API service
 
 	slog.InfoContext(ctx, "Launching the web server... ")
+
 	addr := ":" + port
 
 	router, err := graceful.Default(graceful.WithAddr(addr))

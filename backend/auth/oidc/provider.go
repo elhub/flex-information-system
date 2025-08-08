@@ -85,6 +85,7 @@ func NewProvider( //nolint: funlen
 	slog.DebugContext(ctx, "OIDC provider details fetched")
 
 	oc := new(openidConfiguration)
+
 	err = json.NewDecoder(resp.Body).Decode(oc)
 	if err != nil {
 		return nil, fmt.Errorf("could not decode OIDC provider details: %w", err)
@@ -98,8 +99,10 @@ func NewProvider( //nolint: funlen
 	}
 
 	slog.DebugContext(ctx, "Registering URI in JWK cache: "+oc.JWKSURI)
+
 	cacheRegisterCtx, cancel := context.WithTimeout(ctx, 10*time.Second) //nolint:mnd
 	defer cancel()
+
 	err = jwksCache.Register(cacheRegisterCtx, oc.JWKSURI)
 	if err != nil {
 		return nil, fmt.Errorf("could not register JWK URI in cache: %w", err)
@@ -143,6 +146,7 @@ func (p *Provider) AuthURL(ctx context.Context) (string, *AuthorizationDetails, 
 	if err != nil {
 		return "", ad, fmt.Errorf("could not create random string for state: %w", err)
 	}
+
 	ad.StateVerifier = stateVerifier.msgStr()
 	state := stateVerifier.hashStr()
 
@@ -150,6 +154,7 @@ func (p *Provider) AuthURL(ctx context.Context) (string, *AuthorizationDetails, 
 	if err != nil {
 		return "", ad, fmt.Errorf("could not create random string for nonce: %w", err)
 	}
+
 	ad.NonceVerifier = nonceVerifier.msgStr()
 	nonce := nonceVerifier.hashStr()
 
@@ -207,6 +212,7 @@ func (p *Provider) Exchange(ctx context.Context, code string, verifier string) (
 	if err != nil {
 		return nil, fmt.Errorf("could not exchange code for token: %w", err)
 	}
+
 	return token, nil
 }
 
@@ -216,6 +222,7 @@ func (p *Provider) GetKeySet(ctx context.Context) (jwk.Set, error) { //nolint: i
 	if err != nil {
 		return nil, fmt.Errorf("could not lookup JWKS: %w", err)
 	}
+
 	return set, nil
 }
 
@@ -226,6 +233,7 @@ func (p *Provider) Verify(msgStr, hashStr string) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("could not create verifier: %w", err)
 	}
+
 	return v.verifyStr(hashStr), nil
 }
 
@@ -259,6 +267,7 @@ func (p *Provider) parAuthURL(requestURI string) string {
 	}
 
 	buf.WriteString(v.Encode())
+
 	return buf.String()
 }
 

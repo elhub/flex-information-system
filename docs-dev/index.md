@@ -23,7 +23,7 @@ go install golang.org/x/vuln/cmd/govulncheck@latest
 # stringer is used to generate string methods for enums
 go install golang.org/x/tools/cmd/stringer@latest
 # enumer is similar to stringer, but generates string to enum-method as well
-go install github.com/PotatoesFall/enumer@latest
+go install github.com/dmarkham/enumer@latest
 # air is used to hot reload the go backend
 go install github.com/air-verse/air@latest
 ```

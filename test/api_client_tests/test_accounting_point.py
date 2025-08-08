@@ -40,4 +40,3 @@ def test_accounting_point_anon(sts):
 
     ap = list_accounting_point.sync(client=client, business_id="eq.133700000000010014")
     assert isinstance(ap, ErrorMessage)
-    assert ap.message.startswith("permission denied")

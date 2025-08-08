@@ -29,6 +29,7 @@ func (tx *Tx) Commit(ctx context.Context) error {
 		tx.c.Release()
 		tx.c = nil
 	}
+
 	return err //nolint:wrapcheck
 }
 
@@ -46,6 +47,7 @@ func (tx *Tx) Rollback(ctx context.Context) error {
 		tx.c.Release()
 		tx.c = nil
 	}
+
 	return err //nolint:wrapcheck
 }
 

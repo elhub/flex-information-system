@@ -37,6 +37,7 @@ func (c *Conn) Begin(ctx context.Context) (pgx.Tx, error) {
 		BeginQuery:     "",
 		CommitQuery:    "",
 	}
+
 	tx, err := c.pgxc.BeginTx(ctx, txOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to start transaction: %w", err)
@@ -66,6 +67,7 @@ func (c *Conn) Begin(ctx context.Context) (pgx.Tx, error) {
 				eid,
 			)
 		}
+
 		if err != nil {
 			_ = tx.Rollback(ctx)
 			return nil, fmt.Errorf("failed to set transaction scoped settings: %w", err)

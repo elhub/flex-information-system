@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Type, TypeVar, Union, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.auth_scope import AuthScope
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyMembershipHistoryResponse")
@@ -14,6 +15,9 @@ class PartyMembershipHistoryResponse:
 
     Attributes:
         party_membership_id (int): Reference to the resource that was updated. Example: 48.
+        scopes (Union[Unset, List[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
+            are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+            ['read:data'].
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
         entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
         recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
@@ -26,6 +30,7 @@ class PartyMembershipHistoryResponse:
     """
 
     party_membership_id: int
+    scopes: Union[Unset, List[AuthScope]] = UNSET
     party_id: Union[Unset, int] = UNSET
     entity_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
@@ -37,6 +42,13 @@ class PartyMembershipHistoryResponse:
 
     def to_dict(self) -> Dict[str, Any]:
         party_membership_id = self.party_membership_id
+
+        scopes: Union[Unset, List[str]] = UNSET
+        if not isinstance(self.scopes, Unset):
+            scopes = []
+            for scopes_item_data in self.scopes:
+                scopes_item = scopes_item_data.value
+                scopes.append(scopes_item)
 
         party_id = self.party_id
 
@@ -67,6 +79,8 @@ class PartyMembershipHistoryResponse:
                 "party_membership_id": party_membership_id,
             }
         )
+        if scopes is not UNSET:
+            field_dict["scopes"] = scopes
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
         if entity_id is not UNSET:
@@ -88,6 +102,13 @@ class PartyMembershipHistoryResponse:
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
         party_membership_id = d.pop("party_membership_id")
+
+        scopes = []
+        _scopes = d.pop("scopes", UNSET)
+        for scopes_item_data in _scopes or []:
+            scopes_item = AuthScope(scopes_item_data)
+
+            scopes.append(scopes_item)
 
         party_id = d.pop("party_id", UNSET)
 
@@ -119,6 +140,7 @@ class PartyMembershipHistoryResponse:
 
         party_membership_history_response = cls(
             party_membership_id=party_membership_id,
+            scopes=scopes,
             party_id=party_id,
             entity_id=entity_id,
             recorded_at=recorded_at,

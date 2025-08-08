@@ -175,8 +175,8 @@ test-local *args: (_venv)
 test-dev *args:
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://test.flex.internal:6443"
-    export FLEX_AUTH_BASE="http://test.flex.internal:7001"
+    export FLEX_URL_BASE="https://dev.flex.internal:5443"
+    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
     .venv/bin/python test/test.py {{args}}
 
 test *args:

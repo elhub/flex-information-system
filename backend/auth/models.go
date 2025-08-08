@@ -30,6 +30,7 @@ func newErrorMessage(httpStatusCode int, detail string, err error) errorMessage 
 	if err != nil {
 		hint = err.Error()
 	}
+
 	return errorMessage{
 		Code:    "HTTP" + strconv.Itoa(httpStatusCode),
 		Message: http.StatusText(httpStatusCode),
@@ -144,6 +145,7 @@ func (w wwwAuthenticate) String() string {
 	if w.Error == "" {
 		return "Bearer"
 	}
+
 	return fmt.Sprintf(`Bearer error="%s", error_description="%s"`, w.Error, w.ErrorDescription)
 }
 
@@ -160,11 +162,13 @@ func (ut unixTime) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (ut *unixTime) UnmarshalJSON(data []byte) error {
 	var utInt int64
+
 	err := json.Unmarshal(data, &utInt)
 	if err != nil {
 		return fmt.Errorf("could not unmarshal unix time: %w", err)
 	}
 
 	ut.Time = time.Unix(utInt, 0)
+
 	return nil
 }

@@ -10,6 +10,8 @@ This changelog tracks all changes that are visible in our API.
   To be used while administrating memberships for parties related to an
   organisation with entities that may not exist or be readable yet.
 
+* **Added `scopes` field to the _Party Membership_ resource.**
+
 ## 01.07.2025
 
 * **Added audit fields and history on the _Entity_ resource.**  

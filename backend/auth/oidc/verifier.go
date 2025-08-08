@@ -20,6 +20,7 @@ type verifier struct {
 // newVerifier creates a new verifier.
 func newVerifier(key, msg []byte) (*verifier, error) {
 	mac := hmac.New(sha256.New, key)
+
 	_, err := mac.Write(msg)
 	if err != nil {
 		return nil, fmt.Errorf("could not hash input: %w", err)
@@ -31,6 +32,7 @@ func newVerifier(key, msg []byte) (*verifier, error) {
 // newRandomVerifier creates a new verifier.
 func newRandomVerifier(key []byte) (*verifier, error) {
 	entropy := 8
+
 	msg := make([]byte, entropy)
 	if _, err := io.ReadFull(rand.Reader, msg); err != nil {
 		return nil, fmt.Errorf("could not read random data: %w", err)
@@ -45,6 +47,7 @@ func newStrVerifier(key []byte, msgStr string) (*verifier, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not decode message: %w", err)
 	}
+
 	return newVerifier(key, msg)
 }
 
@@ -64,5 +67,6 @@ func (v *verifier) verifyStr(hashStr string) bool {
 	if err != nil {
 		return false
 	}
+
 	return hmac.Equal(v.hash, hash)
 }

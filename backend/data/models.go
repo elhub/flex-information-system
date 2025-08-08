@@ -63,7 +63,7 @@ func ReformatControllableUnitLookupResult(
 
 	err := json.Unmarshal(controllableUnitsJSON, &controllableUnits)
 	if err != nil {
-		return nil, err //nolint:wrapcheck
+		return nil, err
 	}
 
 	return &ControllableUnitLookupResponse{

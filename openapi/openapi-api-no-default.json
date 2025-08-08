@@ -149,6 +149,19 @@
                     "message"
                 ]
             },
+            "auth_scope": {
+                "description": "Authorization scopes.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "read:data",
+                    "use:data",
+                    "manage:data",
+                    "read:auth",
+                    "use:auth",
+                    "manage:auth"
+                ]
+            },
             "audit_fields": {
                 "properties": {
                     "recorded_at": {
@@ -1574,7 +1587,20 @@
             "party_membership_update_request": {
                 "summary": "Update - Party Membership",
                 "description": "Request schema for update operations - The relation between a party and entity.",
-                "type": "object"
+                "type": "object",
+                "properties": {
+                    "scopes": {
+                        "description": "List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/auth_scope"
+                        },
+                        "nullable": false,
+                        "example": [
+                            "read:data"
+                        ]
+                    }
+                }
             },
             "party_membership_create_data": {
                 "summary": "Create data - Party Membership",
@@ -1612,7 +1638,8 @@
                     {
                         "required": [
                             "party_id",
-                            "entity_id"
+                            "entity_id",
+                            "scopes"
                         ]
                     }
                 ],
@@ -1654,6 +1681,7 @@
                             "id",
                             "party_id",
                             "entity_id",
+                            "scopes",
                             "recorded_at",
                             "recorded_by"
                         ]
@@ -10261,6 +10289,98 @@
                             }
                         },
                         "description": "Internal Server Error"
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "update_party_membership",
+                "summary": "Update Party Membership",
+                "description": "",
+                "tags": [
+                    "party_membership"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/party_membership_update_request"
+                            }
+                        }
+                    },
+                    "description": "party_membership",
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "content": {},
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
                     }
                 }
             },
