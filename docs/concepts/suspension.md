@@ -26,16 +26,13 @@ punishment because someone has done something wrong. We do *not* interpret
 suspension to signal or exclusively be about sanctioning, but rather just a way
 to enforce or convey temporary deactivation.
 
-<!-- The definition of suspension also implies that it can be done both by the party
-that is doing the activity (I am suspending my activity), but also by someone
-else (You must suspend your activity). Our definition of suspension also follows
-this logic. -->
-
-Although NC DR has defined two procedures for suspension, we consider suspension
-in this context to only apply to situations where one party suspends an activity
-on behalf of another. In cases where a service provider needs to
-temporarily pause its activities at the CU or SPG level, we see this as a
-temporary deactivation and will follow a separate deactivation processes.
+A broad definition of suspension also implies that it can be done both by the
+party that is doing the activity (I am suspending my activity), but also by
+someone else (You must suspend your activity). We consider suspension in this
+context to only apply to situations where one party suspends an activity on of
+another. In cases where a service provider needs to temporarily pause its
+activities at the CU or SPG level, we see this as a temporary deactivation and
+will follow a separate deactivation processes.
 
 In total, our definition of suspension is:
 
@@ -47,14 +44,10 @@ In total, our definition of suspension is:
 Suspension can happen on all levels. It can be on both regular resources and the
 one that represent relationships (like product applications).
 
-| Level                     | Aka              | Who | Comment                           |
-|---------------------------|------------------|-----|-----------------------------------|
-| CU Grid Validation        | CSO             | SO  |                                   |
-| SPG Grid Prequalification |                  | SO  |                                   |
-| SPG Product Application   | Prequalification | SO  |                                   |
-| SP Product Application    | Qualification    | SO  |                                   |
-| SP                        | Approval         | RME | Must techincally be done by FISO  |
-
-<!-- Service providers can also suspend their activities by simply not participating
-in the markets, but signalling suspension via FIS allows SOs to have a better
-overview of the state of the flexible assets. -->
+| Level                     | AKA              | Who | Comment                          |
+|---------------------------|------------------|-----|----------------------------------|
+| CU Grid Validation        |                  | CSO |                                  |
+| SPG Grid Prequalification |                  | ISO |                                  |
+| SPG Product Application   | Prequalification | PSO |                                  |
+| SP Product Application    | Qualification    | PSO |                                  |
+| SP                        | Approval         | RME | Must techincally be done by FISO |
