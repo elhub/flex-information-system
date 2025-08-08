@@ -81,16 +81,16 @@ func NewAPIHandler(
 	)
 
 	dataListPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeMethod("data", http.HandlerFunc(data.postgRESTHandler)),
+		auth.CheckScopeForRequest("data", http.HandlerFunc(data.postgRESTHandler)),
 	)
-	dataPostgRESTHandler := auth.CheckScopeMethod(
+	dataPostgRESTHandler := auth.CheckScopeForRequest(
 		"data", http.HandlerFunc(data.postgRESTHandler),
 	)
 
 	authListPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeMethod("auth", http.HandlerFunc(data.postgRESTHandler)),
+		auth.CheckScopeForRequest("auth", http.HandlerFunc(data.postgRESTHandler)),
 	)
-	authPostgRESTHandler := auth.CheckScopeMethod(
+	authPostgRESTHandler := auth.CheckScopeForRequest(
 		"auth", http.HandlerFunc(data.postgRESTHandler),
 	)
 
