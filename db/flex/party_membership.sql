@@ -21,12 +21,12 @@ CREATE TABLE IF NOT EXISTS party_membership (
     CONSTRAINT check_party_membership_scopes CHECK (
         scopes != '{}'
         AND array[
-            'data:read',
-            'data:use',
-            'data:manage',
-            'auth:read',
-            'auth:use',
-            'auth:manage'
+            'read:data',
+            'use:data',
+            'manage:data',
+            'read:auth',
+            'use:auth',
+            'manage:auth'
         ] @> scopes
     )
 );

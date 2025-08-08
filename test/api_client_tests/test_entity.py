@@ -261,8 +261,8 @@ def test_entity_com(sts):
             entity_id=common_ent_id,
             party_id=so_id,
             scopes=[
-                AuthScope.DATAREAD,
-                AuthScope.AUTHREAD,
+                AuthScope.READDATA,
+                AuthScope.READAUTH,
             ],
         ),
     )

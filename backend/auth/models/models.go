@@ -17,8 +17,10 @@ func GetEntityOfCredentials(
 	clientID string,
 	clientSecret string,
 ) (int, string, error) {
-	var entityID int
-	var eid string
+	var (
+		entityID int
+		eid      string
+	)
 
 	err := tx.QueryRow(
 		ctx,
@@ -60,8 +62,10 @@ func GetEntityOfBusinessID(
 	businessID string,
 	businessIDType string,
 ) (int, string, error) {
-	var entityID int
-	var eid string
+	var (
+		entityID int
+		eid      string
+	)
 
 	err := tx.QueryRow(
 		ctx,
@@ -83,8 +87,10 @@ func GetEntityClientByUUID(
 	tx pgx.Tx,
 	clientID string,
 ) (int, string, string, error) {
-	var entityID int
-	var eid, pubKeyPEM string
+	var (
+		entityID       int
+		eid, pubKeyPEM string
+	)
 
 	err := tx.QueryRow(
 		ctx,
@@ -105,10 +111,12 @@ func AssumeParty(
 	tx pgx.Tx,
 	partyID int,
 ) (string, string, []string, int, error) {
-	var eid string
-	var role string
-	var scopes []string
-	var entityID int
+	var (
+		eid      string
+		role     string
+		scopes   []string
+		entityID int
+	)
 
 	err := tx.QueryRow(
 		ctx,

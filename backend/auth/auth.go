@@ -10,6 +10,7 @@ import (
 	"errors"
 	"flex/auth/models"
 	"flex/auth/oidc"
+	"flex/auth/scope"
 	"flex/internal/validate"
 	"flex/pgpool"
 	"fmt"
@@ -123,18 +124,25 @@ func (auth *API) TokenDecodingMiddleware(
 			rd := &RequestDetails{
 				role:       "flex_anonymous",
 				externalID: "",
-				scopes:     []string{},
+				scope: scope.List{
+					// TODO limit the scope a bit?
+					scope.Scope{Verb: scope.Use, Asset: "auth"},  // to be able to log in
+					scope.Scope{Verb: scope.Read, Asset: "data"}, // to be able to access open data (if any)
+				},
 			}
 			authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 			slog.InfoContext(ctx, "no auth header/cookie: user will be anonymous")
 			next.ServeHTTP(w, req.WithContext(authenticatedCtx))
+
 			return
 		}
 
 		// the authorization header takes precedence over the cookie
 		var tokenStr string
+
 		if authHeader != "" {
 			var found bool
+
 			tokenStr, found = strings.CutPrefix(authHeader, "Bearer ")
 			if !found {
 				w.Header().Set(
@@ -148,11 +156,14 @@ func (auth *API) TokenDecodingMiddleware(
 					Error:            oauthErrorInvalidRequest,
 					ErrorDescription: "missing Bearer in Authorization header",
 				})
+
 				return
 			}
+
 			slog.DebugContext(ctx, "found token in auth header")
 		} else { // no authorization header means we must use the cookie
 			tokenStr = sessionCookie.Value
+
 			slog.DebugContext(ctx, "found token in cookie")
 
 			// we set the header for cases where the request is proxied or forwarded
@@ -175,20 +186,21 @@ func (auth *API) TokenDecodingMiddleware(
 				ErrorDescription: "unable to verify and validate token",
 			})
 			slog.InfoContext(ctx, "invalid token")
+
 			return
 		}
 
 		rd := &RequestDetails{
 			role:       token.Role,
 			externalID: token.ExternalID,
-			scopes:     token.Scopes,
+			scope:      token.Scope,
 		}
 		authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 		slog.InfoContext(
 			ctx, "token-validated user",
 			"role", token.Role,
 			"externalID", token.ExternalID,
-			"scopes", token.Scopes,
+			"scope", token.Scope,
 		)
 		next.ServeHTTP(w, req.WithContext(authenticatedCtx))
 	})
@@ -197,7 +209,9 @@ func (auth *API) TokenDecodingMiddleware(
 // writeJSON writes a JSON response with the given object as body.
 func writeJSON(w http.ResponseWriter, statusCode int, obj any) {
 	w.Header().Set("Content-Type", "application/json")
+
 	body, _ := json.Marshal(obj) //nolint:errchkjson
+
 	w.WriteHeader(statusCode)
 	w.Write(body)
 }
@@ -218,18 +232,21 @@ type tokenResponse struct {
 // PostTokenHandler handles the token exchange and client credentials calls.
 func (auth *API) PostTokenHandler(ctx *gin.Context) {
 	var tokenPayload tokenPayload
+
 	err := ctx.ShouldBindWith(&tokenPayload, binding.FormPost)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "no grant_type in request",
 		})
+
 		return
 	}
 
 	switch tokenPayload.GrantType {
 	case grantTypeClientCredentials:
 		var ccPayload clientCredentialsPayload
+
 		err := ctx.ShouldBindWith(&ccPayload, binding.FormPost)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -241,6 +258,7 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 		}
 	case grantTypeTokenExchange:
 		var tePayload tokenExchangePayload
+
 		err := ctx.ShouldBindWith(&tePayload, binding.FormPost)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -252,6 +270,7 @@ func (auth *API) PostTokenHandler(ctx *gin.Context) {
 		}
 	case grantTypeJWTBearer:
 		var jwtPayload jwtBearerPayload
+
 		err := ctx.ShouldBindWith(&jwtPayload, binding.FormPost)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
@@ -285,6 +304,7 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 			body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "unknown error when getting cookie", err))
 			w.Write(body)
 		}
+
 		return
 	}
 
@@ -309,6 +329,7 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(newErrorMessage(http.StatusBadRequest, "invalid session cookie", err))
 		w.Write(body)
+
 		return
 	}
 
@@ -319,6 +340,7 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not begin tx", err))
 		w.Write(body)
+
 		return
 	}
 	defer tx.Commit(ctx)
@@ -329,6 +351,7 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not get current user info", err))
 		w.Write(body)
+
 		return
 	}
 
@@ -338,6 +361,7 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+
 	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson
 		EntityID:       accessToken.EntityID,
 		EntityName:     ui.EntityName,
@@ -350,8 +374,9 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type loginCookie struct {
-	ReturnURL string `json:"return_url"`
 	*oidc.AuthorizationDetails
+
+	ReturnURL string `json:"return_url"`
 }
 
 // GetLoginHandler starts the authorization code flow with the external identity provider.
@@ -367,14 +392,15 @@ func (auth *API) GetLoginHandler(ctx *gin.Context) {
 	if returnURL == "" {
 		returnURL = "/#/login/assumeParty"
 	}
+
 	if !strings.HasPrefix(returnURL, "/#/") {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "return_url must be a relative path in the frontend", nil))
 		return
 	}
 
 	loginCookie := loginCookie{
-		returnURL,
 		authDetails,
+		returnURL,
 	}
 
 	loginCookiePayload, _ := json.Marshal(loginCookie)
@@ -388,6 +414,7 @@ func (auth *API) GetLoginHandler(ctx *gin.Context) {
 
 	// We need to set lax mode to allow the cookie to be sent when a user is navigating to the origin site from an external site
 	ctx.SetSameSite(http.SameSiteLaxMode)
+
 	maxAge := 120
 	ctx.SetCookie("flex_login", string(signedLoginCookie), maxAge, callbackPath, "", true, true)
 
@@ -433,6 +460,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 
 	var loginCookie loginCookie
+
 	err = json.Unmarshal(loginCookiePayload, &loginCookie)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "malformed cookie", err))
@@ -444,6 +472,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "malformed state in callback", err))
 		return
 	}
+
 	if !ok {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "invalid state in callback", err))
 		return
@@ -468,6 +497,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 
 	token := openid.New()
+
 	_, err = jwt.ParseString(
 		idToken,
 		jwt.WithToken(token),
@@ -481,6 +511,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 
 	var returnedNonce string
+
 	err = token.Get("nonce", &returnedNonce)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "no nonce in id_token", err))
@@ -516,6 +547,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "invalid person identifier",
 		})
+
 		return
 	}
 
@@ -525,7 +557,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
-		Scopes:         []string{"auth:manage"},
+		Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
 	}
 
 	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -545,6 +577,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 func (auth *API) GetLogoutHandler(ctx *gin.Context) {
 	ctx.SetSameSite(http.SameSiteStrictMode)
 	ctx.SetCookie(sessionCookieKey, "not.a.session", -1, "/", "", true, true)
+
 	endSessionURL := auth.oidcProvider.EndSessionURL()
 	ctx.Redirect(http.StatusFound, endSessionURL)
 }
@@ -567,34 +600,41 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Header.Get("Content-Type") != "application/x-www-form-urlencoded" {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "invalid content type",
 		})
 		w.Write(body)
+
 		return
 	}
+
 	ctx := r.Context()
 
 	partyIDstr := r.FormValue("party_id")
 	if partyIDstr == "" {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "party_id is required",
 		})
 		w.Write(body)
+
 		return
 	}
 
 	partyID, err := strconv.Atoi(partyIDstr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "party_id must be an integer",
 		})
 		w.Write(body)
+
 		return
 	}
 
@@ -602,47 +642,66 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		slog.WarnContext(ctx, "error in begin tx in assume role handler", "error", err)
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not begin tx",
 		})
 		w.Write(body)
+
 		return
 	}
 
-	eid, role, scopes, entityID, err := models.AssumeParty(ctx, tx, partyID)
+	eid, role, scopeStrings, entityID, err := models.AssumeParty(ctx, tx, partyID)
 	tx.Commit(ctx)
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidTarget,
 			ErrorDescription: "cannot assume requested party",
 		})
 		w.Write(body)
+
+		return
+	}
+
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		slog.ErrorContext(ctx, "error in scope parsing in assume role handler", "error", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not parse scopes from database", err))
+		w.Write(body)
+
 		return
 	}
 
 	accessTokenCookie, err := r.Cookie(sessionCookieKey)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "missing session cookie",
 		})
 		w.Write(body)
+
 		return
 	}
 
 	entityToken := new(accessToken)
+
 	err = verifyTokenString(accessTokenCookie.Value, entityToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "invalid session cookie",
 		})
 		w.Write(body)
+
 		return
 	}
 
@@ -652,32 +711,36 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        partyID,
 		EntityID:       entityID,
 		ExternalID:     eid,
-		Scopes:         scopes,
+		Scope:          scopes,
 	}
 
 	signedPartyToken, err := partyToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not sign party token",
 		})
 		w.Write(body)
+
 		return
 	}
 
 	// assuming party is done, so we can "log in"
-	rd := &RequestDetails{role: role, externalID: eid, scopes: scopes}
+	rd := &RequestDetails{role: role, externalID: eid, scope: scopes}
 	ctx = context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 
 	tx, err = auth.db.Begin(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not begin tx",
 		})
 		w.Write(body)
+
 		return
 	}
 	defer tx.Commit(ctx)
@@ -685,11 +748,13 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	ui, err := models.GetCurrentUserInfo(ctx, tx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not get current user info",
 		})
 		w.Write(body)
+
 		return
 	}
 
@@ -708,6 +773,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteStrictMode,
 	})
 	w.WriteHeader(http.StatusOK)
+
 	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson
 		EntityID:       entityID,
 		EntityName:     ui.EntityName,
@@ -724,47 +790,57 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 //nolint:funlen
 func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+
 	accessTokenCookie, err := r.Cookie(sessionCookieKey)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "missing session cookie",
 		})
 		w.Write(body)
+
 		return
 	}
 
 	receivedToken := new(accessToken)
+
 	err = verifyTokenString(accessTokenCookie.Value, receivedToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "invalid session cookie",
 		})
 		w.Write(body)
+
 		return
 	}
 
 	if receivedToken.PartyID == 0 {
 		w.WriteHeader(http.StatusBadRequest)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "session cookie is already a bare entity",
 		})
 		w.Write(body)
+
 		return
 	}
 
 	tx, err := auth.db.Begin(r.Context())
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not begin tx",
 		})
 		w.Write(body)
+
 		return
 	}
 	defer tx.Commit(r.Context())
@@ -772,22 +848,26 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	externalID, err := models.GetExternalIDByEntityID(r.Context(), tx, receivedToken.EntityID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not get external ID",
 		})
 		w.Write(body)
+
 		return
 	}
 
 	ui, err := models.GetCurrentUserInfo(r.Context(), tx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not get current user info",
 		})
 		w.Write(body)
+
 		return
 	}
 
@@ -797,17 +877,19 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
-		Scopes:         []string{"auth:manage"},
+		Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
 			ErrorDescription: "could not sign party token",
 		})
 		w.Write(body)
+
 		return
 	}
 
@@ -821,6 +903,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteStrictMode,
 	})
 	w.WriteHeader(http.StatusOK)
+
 	body, _ := json.Marshal(sessionInfo{ //nolint:errchkjson,exhaustruct
 		EntityID:       receivedToken.EntityID,
 		EntityName:     ui.EntityName,
@@ -842,7 +925,7 @@ type userInfoResponse struct {
 
 // GetUserInfoHandler returns the identity information of the current user.
 func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
-	rd, _ := RequestDetailsFromContext(ctx, auth.ctxKey)
+	rd, _ := RequestDetailsFromContextKey(ctx, auth.ctxKey)
 	role := rd.Role()
 
 	if role == "flex_anonymous" {
@@ -858,6 +941,7 @@ func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
 				nil,
 			),
 		)
+
 		return
 	}
 
@@ -869,6 +953,7 @@ func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
 			"could not begin tx in userinfo handler",
 			err),
 		)
+
 		return
 	}
 	defer tx.Rollback(ctx)
@@ -881,6 +966,7 @@ func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
 			"could not get current user info",
 			err),
 		)
+
 		return
 	}
 
@@ -898,6 +984,7 @@ func (auth *API) GetUserInfoHandler(ctx *gin.Context) {
 // Returns an error if the token was not verified or validated.
 func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 	token := new(accessToken)
+
 	err := verifyTokenString(tokenStr, token, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		return nil, fmt.Errorf("error in verifying access token: %w", err)
@@ -940,6 +1027,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: err.Error(),
 		})
+
 		return
 	}
 
@@ -950,6 +1038,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 			"could not begin tx in client credentials handler",
 			err),
 		)
+
 		return
 	}
 	defer tx.Commit(ctx)
@@ -965,6 +1054,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 			Error:            oauthErrorAccessDenied,
 			ErrorDescription: "too many login attempts, try again later",
 		})
+
 		return
 	}
 
@@ -979,6 +1069,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "Invalid client_id or client_secret",
 		})
+
 		return
 	}
 
@@ -991,7 +1082,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
-		Scopes:         []string{"auth:manage"},
+		Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
 	}
 
 	slog.InfoContext(
@@ -1006,6 +1097,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 			"could not sign access token",
 			err),
 		)
+
 		return
 	}
 
@@ -1062,6 +1154,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: err.Error(),
 		})
+
 		return
 	}
 
@@ -1071,16 +1164,19 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "actor token must match header token",
 		})
+
 		return
 	}
 
 	entityToken := new(accessToken)
+
 	err = verifyTokenString(payload.ActorToken, entityToken, jws.WithKey(jwa.HS256(), auth.jwtSecret))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "Invalid actor token",
 		})
+
 		return
 	}
 
@@ -1089,6 +1185,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "Invalid actor token",
 		})
+
 		return
 	}
 
@@ -1098,6 +1195,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 			Error:            oauthErrorInvalidScope,
 			ErrorDescription: "invalid scope format",
 		})
+
 		return
 	}
 
@@ -1108,16 +1206,29 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 			"could not begin tx in token exchange handler",
 			err,
 		))
+
 		return
 	}
 	defer tx.Commit(ctx)
 
-	eid, role, scopes, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
+	eid, role, scopeStrings, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidTarget,
 			ErrorDescription: "entity cannot assume requested party",
 		})
+
+		return
+	}
+
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"invalid scope format from database",
+			err,
+		))
+
 		return
 	}
 
@@ -1127,7 +1238,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 		PartyID:        assumePartyID,
 		EntityID:       entityID,
 		ExternalID:     eid,
-		Scopes:         scopes,
+		Scope:          scopes,
 	}
 
 	slog.InfoContext(
@@ -1142,6 +1253,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 			"could not sign party token",
 			err,
 		))
+
 		return
 	}
 
@@ -1170,17 +1282,18 @@ func (j jwtBearerPayload) Validate() error {
 
 // jwtBearerHandler handles the jwt-bearer grant type.
 //
-//nolint:funlen,cyclop
+//nolint:funlen,cyclop,maintidx
 func (auth *API) jwtBearerHandler(
 	ctx *gin.Context,
 	payload jwtBearerPayload,
 ) {
-	rd, _ := RequestDetailsFromContext(ctx, auth.ctxKey)
+	rd, _ := RequestDetailsFromContextKey(ctx, auth.ctxKey)
 	if rd.Role() != "flex_anonymous" {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "client is not anonymous",
 		})
+
 		return
 	}
 
@@ -1190,6 +1303,7 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: err.Error(),
 		})
+
 		return
 	}
 
@@ -1203,6 +1317,7 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "assertion is not signed jwt in compact form",
 		})
+
 		return
 	}
 
@@ -1212,16 +1327,19 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "invalid base64 encoding in assertion payload",
 		})
+
 		return
 	}
 
 	var grant authorizationGrant
+
 	err = json.Unmarshal(jwtPayload, &grant)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "invalid assertion payload format: " + err.Error(),
 		})
+
 		return
 	}
 
@@ -1230,6 +1348,7 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "invalid assertion payload: " + err.Error(),
 		})
+
 		return
 	}
 
@@ -1238,6 +1357,7 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "assertion audience is not " + auth.self,
 		})
+
 		return
 	}
 
@@ -1249,6 +1369,7 @@ func (auth *API) jwtBearerHandler(
 			"could not begin tx in client credentials handler",
 			err),
 		)
+
 		return
 	}
 	defer tx.Commit(ctx)
@@ -1263,12 +1384,15 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "invalid or unknown client",
 		})
+
 		return
 	}
+
 	_ = tx.Commit(ctx)
 
 	block, _ := pem.Decode([]byte(pubKeyPEM))
 	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
+
 	pubKey, ok := pubInterface.(*rsa.PublicKey)
 	if err != nil || !ok {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
@@ -1276,6 +1400,7 @@ func (auth *API) jwtBearerHandler(
 			"invalid public key stored for client",
 			err),
 		)
+
 		return
 	}
 
@@ -1285,18 +1410,20 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidRequest,
 			ErrorDescription: "could not verify assertion: key or payload is invalid: " + err.Error(),
 		})
+
 		return
 	}
 
 	var token accessToken
 
+	//nolint:nestif
 	if grant.Subject != nil {
 		// entity wants to assume a party
 		// we must first "log in" the entity to give it privileges in the database
 		rd := &RequestDetails{
 			role:       "flex_entity",
 			externalID: externalID,
-			scopes:     []string{"auth:read"},
+			scope:      scope.List{{Verb: scope.Read, Asset: "auth"}},
 		}
 		ctx.Set(auth.ctxKey, rd)
 
@@ -1307,6 +1434,7 @@ func (auth *API) jwtBearerHandler(
 				"could not begin tx in jwt bearer assumerole",
 				err),
 			)
+
 			return
 		}
 		defer tx.Commit(ctx)
@@ -1319,15 +1447,29 @@ func (auth *API) jwtBearerHandler(
 				Error:            oauthErrorInvalidClient,
 				ErrorDescription: "could not assume the requested party in sub",
 			})
+
 			return
 		}
 
-		eid, role, scopes, entityID, err := models.AssumeParty(ctx, tx, partyID)
+		eid, role, scopeStrings, entityID, err := models.AssumeParty(ctx, tx, partyID)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidTarget,
 				ErrorDescription: "entity cannot assume requested party",
 			})
+
+			return
+		}
+
+		scopes, err := scope.ListFromStrings(scopeStrings)
+		if err != nil {
+			slog.ErrorContext(ctx, "invalid scope format from database", "error", err)
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+				http.StatusInternalServerError,
+				"invalid scope format from database",
+				err,
+			))
+
 			return
 		}
 
@@ -1337,7 +1479,7 @@ func (auth *API) jwtBearerHandler(
 			ExternalID:     eid,
 			PartyID:        partyID,
 			Role:           role,
-			Scopes:         scopes,
+			Scope:          scopes,
 		}
 
 		slog.InfoContext(
@@ -1351,7 +1493,7 @@ func (auth *API) jwtBearerHandler(
 			ExternalID:     externalID,
 			PartyID:        0,
 			Role:           "flex_entity",
-			Scopes:         []string{"auth:manage"},
+			Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
 		}
 
 		slog.InfoContext(
@@ -1367,6 +1509,7 @@ func (auth *API) jwtBearerHandler(
 			"could not sign access token",
 			err),
 		)
+
 		return
 	}
 

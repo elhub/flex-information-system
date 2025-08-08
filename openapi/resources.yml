@@ -726,7 +726,7 @@ resources:
         items:
           "$ref": "#/components/schemas/auth_scope"
         nullable: false
-        example: ["data:read"]
+        example: ["read:data"]
 
   - id: identity
     acronym: ID

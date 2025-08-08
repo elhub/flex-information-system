@@ -16,7 +16,7 @@ class PartyMembershipUpdateRequest:
     Attributes:
         scopes (Union[Unset, List[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
             are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
-            ['data:read'].
+            ['read:data'].
     """
 
     scopes: Union[Unset, List[AuthScope]] = UNSET

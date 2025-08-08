@@ -55,12 +55,12 @@ components:
       format: text
       type: string
       enum:
-        - "data:read"
-        - "data:use"
-        - "data:manage"
-        - "auth:read"
-        - "auth:use"
-        - "auth:manage"
+        - "read:data"
+        - "use:data"
+        - "manage:data"
+        - "read:auth"
+        - "use:auth"
+        - "manage:auth"
     audit_fields:
       properties:
         recorded_at:

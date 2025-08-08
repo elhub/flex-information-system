@@ -248,8 +248,8 @@ class SecurityTokenService:
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
                 scopes=[
-                    AuthScope.DATAMANAGE,
-                    AuthScope.AUTHMANAGE,
+                    AuthScope.MANAGEDATA,
+                    AuthScope.MANAGEAUTH,
                 ],
             ),
         )

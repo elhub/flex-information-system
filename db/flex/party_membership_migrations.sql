@@ -10,7 +10,7 @@ ALTER TABLE flex.party_membership
 ADD COLUMN scopes text [];
 
 UPDATE flex.party_membership
-SET scopes = '{data:manage, auth:manage}';
+SET scopes = '{manage:data, manage:auth}';
 
 ALTER TABLE flex.party_membership
 ALTER COLUMN scopes SET NOT NULL;
@@ -20,12 +20,12 @@ ALTER TABLE flex.party_membership
 ADD CONSTRAINT check_party_membership_scopes CHECK (
     scopes != '{}'
     AND array[
-        'data:read',
-        'data:use',
-        'data:manage',
-        'auth:read',
-        'auth:use',
-        'auth:manage'
+        'read:data',
+        'use:data',
+        'manage:data',
+        'read:auth',
+        'use:auth',
+        'manage:auth'
     ] @> scopes
 );
 -- noqa: enable=all
@@ -34,7 +34,7 @@ ALTER TABLE flex.party_membership_history
 ADD COLUMN scopes text [];
 
 UPDATE flex.party_membership_history
-SET scopes = '{data:manage, auth:manage}';
+SET scopes = '{manage:data, manage:auth}';
 
 ALTER TABLE flex.party_membership
 ENABLE TRIGGER USER;

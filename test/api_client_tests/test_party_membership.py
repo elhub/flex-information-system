@@ -60,8 +60,8 @@ def test_ptym_fiso(sts):
             entity_id=ent_id,
             party_id=pty_id,
             scopes=[
-                AuthScope.AUTHREAD,
-                AuthScope.AUTHMANAGE,
+                AuthScope.READAUTH,
+                AuthScope.MANAGEAUTH,
             ],
         ),
     )
@@ -92,8 +92,8 @@ def test_ptym_fiso(sts):
         id=cast(int, p.id),
         body=PartyMembershipUpdateRequest(
             scopes=[
-                AuthScope.AUTHREAD,
-                AuthScope.AUTHMANAGE,
+                AuthScope.READAUTH,
+                AuthScope.MANAGEAUTH,
             ],
         ),
     )

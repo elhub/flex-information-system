@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"flex/auth"
+	"flex/auth/scope"
 	"flex/data/models"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
@@ -70,28 +71,26 @@ func NewAPIHandler(
 	// controllable unit lookup
 	mux.Handle(
 		"POST /controllable_unit/lookup",
-		data.scopeMiddleware(
-			"data", http.HandlerFunc(data.controllableUnitLookupHandler),
-		),
+		auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "data:controllable_unit:lookup"}, http.HandlerFunc(data.controllableUnitLookupHandler)),
 	)
 
 	// entity lookup
 	mux.Handle(
 		"POST /entity/lookup",
-		data.scopeMiddleware("auth", http.HandlerFunc(data.entityLookupHandler)),
+		auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "data:entity:lookup"}, http.HandlerFunc(data.entityLookupHandler)),
 	)
 
 	dataListPostgRESTHandler := middleware.DefaultQueryLimit(
-		data.scopeMiddleware("data", http.HandlerFunc(data.postgRESTHandler)),
+		auth.CheckScopeMethod("data", http.HandlerFunc(data.postgRESTHandler)),
 	)
-	dataPostgRESTHandler := data.scopeMiddleware(
+	dataPostgRESTHandler := auth.CheckScopeMethod(
 		"data", http.HandlerFunc(data.postgRESTHandler),
 	)
 
 	authListPostgRESTHandler := middleware.DefaultQueryLimit(
-		data.scopeMiddleware("auth", http.HandlerFunc(data.postgRESTHandler)),
+		auth.CheckScopeMethod("auth", http.HandlerFunc(data.postgRESTHandler)),
 	)
-	authPostgRESTHandler := data.scopeMiddleware(
+	authPostgRESTHandler := auth.CheckScopeMethod(
 		"auth", http.HandlerFunc(data.postgRESTHandler),
 	)
 
@@ -238,75 +237,17 @@ func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
 }
 
-// scopeMiddleware is a middleware that checks that the user has the required
-// scope to access the endpoint. scopePrefix is used to distinguish between
-// different categories of resources the scopes are defined on.
-//
-//nolint:cyclop
-func (data *api) scopeMiddleware(
-	scopePrefix string, next http.Handler,
-) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		ctx := req.Context()
-
-		rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
-		if err != nil {
-			slog.ErrorContext(ctx, "no request details in context", "error", err)
-			writeInternalServerError(w)
-			return
-		}
-		scopes := rd.Scopes()
-
-		readScope := scopePrefix + ":read"
-		useScope := scopePrefix + ":use"
-		manageScope := scopePrefix + ":manage"
-
-		ok := true
-		switch req.Method {
-		case http.MethodPost:
-			if strings.HasSuffix(req.URL.Path, "/lookup") {
-				if !slices.Contains(scopes, useScope) &&
-					!slices.Contains(scopes, manageScope) {
-					ok = false
-				}
-			} else {
-				if !slices.Contains(scopes, manageScope) {
-					ok = false
-				}
-			}
-		case http.MethodPatch, http.MethodDelete:
-			if !slices.Contains(scopes, manageScope) {
-				ok = false
-			}
-		case http.MethodGet:
-			if !slices.Contains(scopes, readScope) &&
-				!slices.Contains(scopes, useScope) &&
-				!slices.Contains(scopes, manageScope) {
-				ok = false
-			}
-		}
-
-		if !ok {
-			writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
-				Message: "user is missing the required scope to perform this operation",
-			})
-			return
-		}
-
-		next.ServeHTTP(w, req)
-	})
-}
-
 //nolint:funlen,cyclop
 func (data *api) controllableUnitLookupHandler(
 	w http.ResponseWriter, req *http.Request,
 ) {
 	ctx := req.Context()
 
-	rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
+	rd, err := auth.RequestDetailsFromContextKey(ctx, data.ctxKey)
 	if err != nil {
 		slog.ErrorContext(ctx, "no request details in context", "error", err)
 		writeInternalServerError(w)
+
 		return
 	}
 
@@ -319,6 +260,7 @@ func (data *api) controllableUnitLookupHandler(
 		writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
 			Message: "user cannot perform this operation",
 		})
+
 		return
 	}
 
@@ -328,6 +270,7 @@ func (data *api) controllableUnitLookupHandler(
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "ill formed request body",
 		})
+
 		return
 	}
 
@@ -345,14 +288,17 @@ func (data *api) controllableUnitLookupHandler(
 	if err != nil {
 		slog.ErrorContext(ctx, "could not start transaction", "error", err)
 		writeInternalServerError(w)
+
 		return
 	}
 	defer tx.Rollback(ctx)
+
 	queries := models.New(tx)
 
 	// get accounting point data
 
 	var accountingPointID int
+
 	if controllableUnitBusinessID != "" {
 		currentAP, err := queries.GetCurrentControllableUnitAccountingPoint(
 			ctx, controllableUnitBusinessID,
@@ -365,6 +311,7 @@ func (data *api) controllableUnitLookupHandler(
 			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 				Message: "controllable unit does not exist",
 			})
+
 			return
 		}
 
@@ -382,6 +329,7 @@ func (data *api) controllableUnitLookupHandler(
 			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 				Message: "accounting point does not exist",
 			})
+
 			return
 		}
 	}
@@ -395,6 +343,7 @@ func (data *api) controllableUnitLookupHandler(
 		writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
 			Message: "end user does not match accounting point / controllable unit",
 		})
+
 		return
 	}
 
@@ -408,11 +357,14 @@ func (data *api) controllableUnitLookupHandler(
 	if err != nil {
 		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
 		writeInternalServerError(w)
+
 		return
 	}
+
 	if err = tx.Commit(ctx); err != nil {
 		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
 		writeInternalServerError(w)
+
 		return
 	}
 
@@ -426,10 +378,12 @@ func (data *api) controllableUnitLookupHandler(
 			ctx, "could not reformat controllable unit lookup result", "error", err,
 		)
 		writeInternalServerError(w)
+
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+
 	body, _ := json.Marshal(reformattedCULookup)
 	w.Write(body)
 }
@@ -503,9 +457,11 @@ func writeErrorToResponseWriter(
 ) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
+
 	if msg.Code == "" {
 		msg.Code = fmt.Sprintf("HTTP%d", statusCode)
 	}
+
 	body, _ := json.Marshal(msg)
 	w.Write(body)
 }
@@ -516,10 +472,11 @@ func (data *api) entityLookupHandler(
 ) {
 	ctx := req.Context()
 
-	rd, err := auth.RequestDetailsFromContext(ctx, data.ctxKey)
+	rd, err := auth.RequestDetailsFromContextKey(ctx, data.ctxKey)
 	if err != nil {
 		slog.ErrorContext(ctx, "no request details in context", "error", err)
 		writeInternalServerError(w)
+
 		return
 	}
 
@@ -527,16 +484,19 @@ func (data *api) entityLookupHandler(
 		writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
 			Message: "user cannot perform this operation",
 		})
+
 		return
 	}
 
 	var entityLookupRequestBody entityLookupRequest
+
 	err = json.NewDecoder(req.Body).Decode(&entityLookupRequestBody)
 	if err != nil {
 		slog.ErrorContext(ctx, "could not read request body", "error", err)
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "ill formed request body",
 		})
+
 		return
 	}
 
@@ -573,6 +533,7 @@ func (data *api) entityLookupHandler(
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: err.Error(),
 		})
+
 		return
 	}
 
@@ -580,9 +541,11 @@ func (data *api) entityLookupHandler(
 	if err != nil {
 		slog.ErrorContext(ctx, "could not start transaction", "error", err)
 		writeInternalServerError(w)
+
 		return
 	}
 	defer tx.Rollback(ctx)
+
 	queries := models.New(tx)
 
 	entityLookupRow, err := queries.EntityLookup(
@@ -594,13 +557,16 @@ func (data *api) entityLookupHandler(
 	if err != nil {
 		slog.ErrorContext(ctx, "entity lookup query failed", "error", err)
 		writeInternalServerError(w)
+
 		return
 	}
+
 	if err = tx.Commit(ctx); err != nil {
 		slog.ErrorContext(
 			ctx, "could not commit entity lookup transaction", "error", err,
 		)
 		writeInternalServerError(w)
+
 		return
 	}
 
@@ -617,6 +583,7 @@ func (data *api) entityLookupHandler(
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(httpStatusCode)
+
 	body, _ := json.Marshal(entityLookup)
 	w.Write(body)
 }
@@ -695,6 +662,7 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 			Code:    fmt.Sprintf("HTTP%d", http.StatusInternalServerError),
 			Message: "could not read PostgREST response body",
 		})
+
 		return nil
 	}
 	defer rsp.Body.Close()
@@ -736,6 +704,7 @@ func fixPostgRESTResponse(rsp *http.Response) error {
 		"detail", errorBody.Detail,
 		"hint", errorBody.Hint,
 	)
+
 	return nil
 }
 

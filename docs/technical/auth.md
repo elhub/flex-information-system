@@ -295,8 +295,8 @@ un-authenticated users. We refer to these as `Anonymous`, abbreviated as `ANON`.
 
 An anonymous user has the following default scopes:
 
-* `data:read` - to be able to access open data (if any)
-* `auth:use` - to be able to log in etc
+* `read:data` - to be able to access open data (if any)
+* `use:auth` - to be able to log in etc
 
 !!! info "Policy inheritance"
 
@@ -529,14 +529,16 @@ A scope shows what the user can do to a specific resource. It is a
 colon-separated string on the following format:
 
 ```html
-<verb>:<module>[:<resource>]
+<verb>:<module>[:<resource>]...
 ```
 
-Verb, module and resource are defined below, but the scope can be read as
+..and can be read read as
 
 > The user can `<verb>` `<resource>` in `<module>`.
 
-Resource is optional and if omitted then it means "all resources".
+Verb is the privilege or access level. Module and resource typically describe
+the _asset_ or _path_ that is being protected are defined below. Resource is
+optional and if omitted then it means "all resources".
 
 #### Verb
 
@@ -574,6 +576,9 @@ The resource part of the scope is used to make sub-scopes within a module. It is
 optional and not yet implemented for clients. When omitted, the scope includes
 everything in a the module.
 
+The three dots `...` in the format above means that resources can be nested, to
+create sub-scopes.
+
 Each path on our API has a required scope, and every request is checked to see
 that the client has a matching scope.
 
@@ -585,8 +590,8 @@ The following are a few example scopes.
   also covered by e.g. `read:data` and `use:data` but not
   `manage:data:technical_resource`.
 
-* `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit_lookup`.
-  It is also covered by e.g. `manage:data` and `use:data`.
+* `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
+  It is also covered by e.g. `manage:data` and `use:data:contro`.
 
 ### Party type check
 

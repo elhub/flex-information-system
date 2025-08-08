@@ -53,7 +53,7 @@ BEGIN
   ) VALUES (
     member_entity_id,
     party_id,
-    '{data:manage, auth:manage}'
+    '{manage:data, manage:auth}'
   );
 
   RETURN party_id;
@@ -78,7 +78,7 @@ BEGIN
   ) VALUES (
     entity_id,
     party_id,
-    '{data:manage, auth:manage}'
+    '{manage:data, manage:auth}'
   );
   RETURN party_id;
 END;
