@@ -709,7 +709,7 @@
                 }
               }
             },
-            "description": "Unauthorized\n\nReturned when the client credentials are invalid."
+            "description": "Unauthorized\n\nReturned when the client credentials are invalid or the party asked\nin the JWT bearer authorisation grant does not match the entity\nclient used."
           },
           "429": {
             "content": {
