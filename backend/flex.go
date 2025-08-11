@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flex/auth"
 	"flex/auth/oidc"
+	"flex/auth/scope"
 	"flex/data"
 	"flex/event"
 	"flex/internal/middleware"
@@ -90,6 +91,26 @@ func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
 		}
 	}
 }
+
+// WrapMiddlewareHandler allows us to use a http.Handler middleware with Gin.
+// It is somewhere between WrapHandler and WrapMiddleware.
+//
+// Use NoOpHandler as a placeholder for the "next" handler since GIN does not work that way.
+func WrapMiddlewareHandler(mid http.Handler) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		mid.ServeHTTP(ctx.Writer, ctx.Request.WithContext(ctx))
+		if ctx.Writer.Written() {
+			ctx.Abort()
+		}
+	}
+}
+
+// NoOpHander is a http.Handler that does nothing.
+// Useful for using stdlib middleware in gin routers.
+// Stdlib middleware requires a "next".
+//
+//nolint:gochecknoglobals
+var NoOpHander http.Handler = http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {})
 
 // Run is the main entry point for the application.
 func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx,gocyclo
@@ -386,23 +407,43 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
-	authRouter.GET("/", WrapHandlerFunc(openapi.ElementsHandlerFunc("Auth API")))                              //nolint:contextcheck
-	authRouter.GET("/openapi.json", WrapHandlerFunc(auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))) //nolint:contextcheck
-	authRouter.POST("/token", authAPI.PostTokenHandler)
-	authRouter.GET("/userinfo", authAPI.GetUserInfoHandler)
-	authRouter.GET("/session", WrapHandlerFunc(authAPI.GetSessionHandler))     //nolint:contextcheck
-	authRouter.POST("/assume", WrapHandlerFunc(authAPI.PostAssumeHandler))     //nolint:contextcheck
-	authRouter.DELETE("/assume", WrapHandlerFunc(authAPI.DeleteAssumeHandler)) //nolint:contextcheck
-	authRouter.GET("/login", authAPI.GetLoginHandler)
-	authRouter.GET("/callback", authAPI.GetCallbackHandler)
-	authRouter.GET("/logout", authAPI.GetLogoutHandler)
 
-	// data API endpoint
-	router.Match(
-		[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		"/api/v0/*url",
-		WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
-	)
+	// Endpoints
+	//nolint:contextcheck
+	{
+		authRouter.GET("/",
+			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:docs"}, openapi.ElementsHandlerFunc("Auth API"))))
+		authRouter.GET("/openapi.json",
+			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))))
+		authRouter.POST("/token",
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "auth:token"}, NoOpHander)),
+			authAPI.PostTokenHandler)
+		authRouter.GET("/userinfo",
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:userinfo"}, NoOpHander)),
+			authAPI.GetUserInfoHandler)
+		authRouter.GET("/session", WrapHandler(
+			auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:session"}, http.HandlerFunc(authAPI.GetSessionHandler))))
+		authRouter.POST("/assume", WrapHandler(
+			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.PostAssumeHandler))))
+		authRouter.DELETE("/assume", WrapHandler(
+			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.DeleteAssumeHandler))))
+		authRouter.GET("/login",
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:login"}, NoOpHander)),
+			authAPI.GetLoginHandler)
+		authRouter.GET("/callback",
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:callback"}, NoOpHander)),
+			authAPI.GetCallbackHandler)
+		authRouter.GET("/logout",
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:logout"}, NoOpHander)),
+			authAPI.GetLogoutHandler)
+
+		// data API endpoint
+		router.Match(
+			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+			"/api/v0/*url",
+			WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
+		)
+	} //end:nolint:contextcheck
 
 	// health check endpoints
 	router.Match([]string{"GET", "HEAD"}, "/readyz", func(ctx *gin.Context) {
