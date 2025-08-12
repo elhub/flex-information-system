@@ -98,7 +98,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyMembershipUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Party Membership
@@ -131,7 +131,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyMembershipUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Party Membership
@@ -159,7 +159,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyMembershipUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Party Membership
@@ -190,7 +190,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyMembershipUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Party Membership

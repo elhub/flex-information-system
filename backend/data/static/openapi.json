@@ -110,6 +110,14 @@
         }
     ],
     "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "description": "Bearer token using a JWT",
+                "type": "http",
+                "scheme": "Bearer",
+                "bearerFormat": "JWT"
+            }
+        },
         "parameters": {},
         "schemas": {
             "error_message": {
@@ -3352,6 +3360,14 @@
                 "operationId": "read_openapi_json",
                 "summary": "Read OpenAPI JSON Document",
                 "description": "Introspection for the Flexibility Information System main API. The document is following the OpenAPI 3.1 spec.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:openapi"
+                        ]
+                    },
+                    {}
+                ],
                 "tags": [
                     "introspection"
                 ],
@@ -3384,6 +3400,13 @@
                 "operationId": "call_controllable_unit_lookup",
                 "summary": "Call - Controllable unit lookup",
                 "description": "Lookup a controllable unit from end user ID and business and/or accounting point ID.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "use:data:controllable_unit_lookup"
+                        ]
+                    }
+                ],
                 "tags": [
                     "controllable_unit"
                 ],
@@ -3466,6 +3489,13 @@
                 "operationId": "call_entity_lookup",
                 "summary": "Call - Entity lookup",
                 "description": "Lookup an entity from its business ID. Creates the entity if missing.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "use:data:entity_lookup"
+                        ]
+                    }
+                ],
                 "tags": [
                     "entity"
                 ],
@@ -3738,7 +3768,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_controllable_unit",
@@ -3846,7 +3884,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:controllable_unit"
+                        ]
+                    }
+                ]
             }
         },
         "/controllable_unit/{id}": {
@@ -3958,7 +4003,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_controllable_unit",
@@ -4050,7 +4103,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:controllable_unit"
+                        ]
+                    }
+                ]
             }
         },
         "/controllable_unit_history": {
@@ -4280,7 +4340,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/controllable_unit_history/{id}": {
@@ -4384,7 +4452,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/controllable_unit_service_provider": {
@@ -4594,7 +4670,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_service_provider"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_controllable_unit_service_provider",
@@ -4702,7 +4786,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:controllable_unit_service_provider"
+                        ]
+                    }
+                ]
             }
         },
         "/controllable_unit_service_provider/{id}": {
@@ -4828,7 +4919,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_service_provider"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_controllable_unit_service_provider",
@@ -4920,7 +5019,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:controllable_unit_service_provider"
+                        ]
+                    }
+                ]
             },
             "delete": {
                 "operationId": "delete_controllable_unit_service_provider",
@@ -5000,7 +5106,14 @@
                         },
                         "description": "Not Acceptable"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:controllable_unit_service_provider"
+                        ]
+                    }
+                ]
             }
         },
         "/controllable_unit_service_provider_history": {
@@ -5232,7 +5345,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_service_provider_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/controllable_unit_service_provider_history/{id}": {
@@ -5336,7 +5457,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_service_provider_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group": {
@@ -5535,7 +5664,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_service_providing_group",
@@ -5643,7 +5780,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group/{id}": {
@@ -5755,7 +5899,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_service_providing_group",
@@ -5847,7 +5999,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group_history": {
@@ -6068,7 +6227,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group_history/{id}": {
@@ -6172,7 +6339,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group_membership": {
@@ -6372,7 +6547,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_membership"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_service_providing_group_membership",
@@ -6480,7 +6663,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_membership"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group_membership/{id}": {
@@ -6599,7 +6789,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_membership"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_service_providing_group_membership",
@@ -6691,7 +6889,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_membership"
+                        ]
+                    }
+                ]
             },
             "delete": {
                 "operationId": "delete_service_providing_group_membership",
@@ -6771,7 +6976,14 @@
                         },
                         "description": "Not Acceptable"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_membership"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group_membership_history": {
@@ -6993,7 +7205,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_membership_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group_membership_history/{id}": {
@@ -7097,7 +7317,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_membership_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group_grid_prequalification": {
@@ -7297,7 +7525,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_prequalification"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_service_providing_group_grid_prequalification",
@@ -7405,7 +7641,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_grid_prequalification"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group_grid_prequalification/{id}": {
@@ -7524,7 +7767,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_prequalification"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_service_providing_group_grid_prequalification",
@@ -7616,7 +7867,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_grid_prequalification"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group_grid_prequalification_history": {
@@ -7838,7 +8096,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_prequalification_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group_grid_prequalification_history/{id}": {
@@ -7942,7 +8208,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_prequalification_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/entity": {
@@ -8140,7 +8414,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:entity"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_entity",
@@ -8248,7 +8530,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:entity"
+                        ]
+                    }
+                ]
             }
         },
         "/entity/{id}": {
@@ -8351,7 +8640,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:entity"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_entity",
@@ -8443,7 +8740,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:entity"
+                        ]
+                    }
+                ]
             }
         },
         "/entity_client": {
@@ -8642,7 +8946,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:entity_client"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_entity_client",
@@ -8750,7 +9062,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:entity_client"
+                        ]
+                    }
+                ]
             }
         },
         "/entity_client/{id}": {
@@ -8862,7 +9181,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:entity_client"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_entity_client",
@@ -8954,7 +9281,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:entity_client"
+                        ]
+                    }
+                ]
             },
             "delete": {
                 "operationId": "delete_entity_client",
@@ -9034,7 +9368,14 @@
                         },
                         "description": "Not Acceptable"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:entity_client"
+                        ]
+                    }
+                ]
             }
         },
         "/party": {
@@ -9242,7 +9583,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_party",
@@ -9350,7 +9699,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:party"
+                        ]
+                    }
+                ]
             }
         },
         "/party/{id}": {
@@ -9462,7 +9818,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_party",
@@ -9554,7 +9918,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:party"
+                        ]
+                    }
+                ]
             }
         },
         "/party_history": {
@@ -9784,7 +10155,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/party_history/{id}": {
@@ -9888,7 +10267,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/party_membership": {
@@ -10088,7 +10475,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party_membership"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_party_membership",
@@ -10196,7 +10591,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:party_membership"
+                        ]
+                    }
+                ]
             }
         },
         "/party_membership/{id}": {
@@ -10315,7 +10717,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party_membership"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_party_membership",
@@ -10407,7 +10817,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:party_membership"
+                        ]
+                    }
+                ]
             },
             "delete": {
                 "operationId": "delete_party_membership",
@@ -10487,7 +10904,14 @@
                         },
                         "description": "Not Acceptable"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:party_membership"
+                        ]
+                    }
+                ]
             }
         },
         "/party_membership_history": {
@@ -10709,7 +11133,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party_membership_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/party_membership_history/{id}": {
@@ -10813,7 +11245,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:party_membership_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/identity": {
@@ -11033,7 +11473,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:identity"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/identity/{id}": {
@@ -11166,7 +11614,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:identity"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/technical_resource": {
@@ -11365,7 +11821,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:technical_resource"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_technical_resource",
@@ -11473,7 +11937,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:technical_resource"
+                        ]
+                    }
+                ]
             }
         },
         "/technical_resource/{id}": {
@@ -11585,7 +12056,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:technical_resource"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_technical_resource",
@@ -11677,7 +12156,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:technical_resource"
+                        ]
+                    }
+                ]
             },
             "delete": {
                 "operationId": "delete_technical_resource",
@@ -11757,7 +12243,14 @@
                         },
                         "description": "Not Acceptable"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:technical_resource"
+                        ]
+                    }
+                ]
             }
         },
         "/technical_resource_history": {
@@ -11978,7 +12471,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:technical_resource_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/technical_resource_history/{id}": {
@@ -12082,7 +12583,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:technical_resource_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/event": {
@@ -12262,7 +12771,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:event"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/event/{id}": {
@@ -12365,7 +12882,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:event"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/notification": {
@@ -12565,7 +13090,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:notification"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/notification/{id}": {
@@ -12684,7 +13217,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:notification"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_notification",
@@ -12776,7 +13317,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:notification"
+                        ]
+                    }
+                ]
             }
         },
         "/accounting_point": {
@@ -12975,7 +13523,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/accounting_point/{id}": {
@@ -13087,7 +13643,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/accounting_point_balance_responsible_party": {
@@ -13277,7 +13841,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_balance_responsible_party"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/accounting_point_energy_supplier": {
@@ -13467,7 +14039,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_energy_supplier"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/product_type": {
@@ -13665,7 +14245,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:product_type"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/product_type/{id}": {
@@ -13768,7 +14356,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:product_type"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/system_operator_product_type": {
@@ -13968,7 +14564,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:system_operator_product_type"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_system_operator_product_type",
@@ -14076,7 +14680,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:system_operator_product_type"
+                        ]
+                    }
+                ]
             }
         },
         "/system_operator_product_type/{id}": {
@@ -14195,7 +14806,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:system_operator_product_type"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_system_operator_product_type",
@@ -14287,7 +14906,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:system_operator_product_type"
+                        ]
+                    }
+                ]
             }
         },
         "/system_operator_product_type_history": {
@@ -14509,7 +15135,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:system_operator_product_type_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/system_operator_product_type_history/{id}": {
@@ -14613,7 +15247,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:system_operator_product_type_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_provider_product_application": {
@@ -14823,7 +15465,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_service_provider_product_application",
@@ -14931,7 +15581,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_provider_product_application"
+                        ]
+                    }
+                ]
             }
         },
         "/service_provider_product_application/{id}": {
@@ -15057,7 +15714,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_service_provider_product_application",
@@ -15149,7 +15814,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_provider_product_application"
+                        ]
+                    }
+                ]
             }
         },
         "/service_provider_product_application_history": {
@@ -15381,7 +16053,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_provider_product_application_history/{id}": {
@@ -15485,7 +16165,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_provider_product_application_comment": {
@@ -15675,7 +16363,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application_comment"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_service_provider_product_application_comment",
@@ -15783,7 +16479,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_provider_product_application_comment"
+                        ]
+                    }
+                ]
             }
         },
         "/service_provider_product_application_comment/{id}": {
@@ -15895,7 +16598,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application_comment"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_service_provider_product_application_comment",
@@ -15987,7 +16698,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_provider_product_application_comment"
+                        ]
+                    }
+                ]
             }
         },
         "/service_provider_product_application_comment_history": {
@@ -16199,7 +16917,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application_comment_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_provider_product_application_comment_history/{id}": {
@@ -16303,7 +17029,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_provider_product_application_comment_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group_product_application": {
@@ -16513,7 +17247,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_product_application"
+                        ]
+                    },
+                    {}
+                ]
             },
             "post": {
                 "operationId": "create_service_providing_group_product_application",
@@ -16621,7 +17363,14 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_product_application"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group_product_application/{id}": {
@@ -16747,7 +17496,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_product_application"
+                        ]
+                    },
+                    {}
+                ]
             },
             "patch": {
                 "operationId": "update_service_providing_group_product_application",
@@ -16839,7 +17596,14 @@
                         },
                         "description": "Conflict"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_product_application"
+                        ]
+                    }
+                ]
             }
         },
         "/service_providing_group_product_application_history": {
@@ -17071,7 +17835,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_product_application_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/service_providing_group_product_application_history/{id}": {
@@ -17175,7 +17947,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_product_application_history"
+                        ]
+                    },
+                    {}
+                ]
             }
         },
         "/notice": {
@@ -17355,7 +18135,15 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:notice"
+                        ]
+                    },
+                    {}
+                ]
             }
         }
     },

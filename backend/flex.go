@@ -412,7 +412,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	//nolint:contextcheck
 	{
 		authRouter.GET("/",
-			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:docs"}, openapi.ElementsHandlerFunc("Auth API"))))
+			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, openapi.ElementsHandlerFunc("Auth API"))))
 		authRouter.GET("/openapi.json",
 			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))))
 		authRouter.POST("/token",
