@@ -7,14 +7,14 @@ they need to know that the SPG is ready.
 
 * Is CU part of the SPG validated?
 * Is SPG grid prequalified?
-* Is SP qualified for product? - not possible to register SPG if not
+* Is SP qualified for product?
 * Is SPG prequalified or verified for product?
-* Is the product(s) suspended?
+* Is there any suspended relations?
 * Any temporary limits?
 * Any other limitations (ex. TPV)?
 
 To answer several of these questions, the SP need to understand how to read
-statuses and related timestamp.
+statuses and related timestamps.
 
 ### Overview of statuses
 
@@ -42,30 +42,22 @@ When SPG product application is initiated for the first time, SO will update
 status to in_progress. As the SPG has not previously been prequalified or
 verified, the timestamp field remains empty.
 
-| Status      | Last prequalified / verified | Approved |
-|-------------|------------------------------|----------|
-| in_progress |                              | No       |
+| Status      | Last prequalified / verified | Ready for market? |
+|-------------|------------------------------|-------------------|
+| in_progress |                              | No                |
 
 If there are changes to an SPG which requires a new approval process, status
 will be updated to in_progress.
 
-| Status      | Last prequalified / verified | Approved |
-|-------------|------------------------------|----------|
-| in_progress | 01.01.2025 10:00             | Yes      |
+| Status      | Last prequalified / verified | Ready for market? |
+|-------------|------------------------------|-------------------|
+| in_progress | 01.01.2025 10:00             | Yes               |
 
 If approval is withdrawn, SO updates status and remove the timestsamp.
 
-| Status   | Last prequalified / verified | Approved |
-|----------|------------------------------|----------|
-| rejected |                              | No       |
-
-#### Issues to be disucssed
-
-* If the status is set to "validated", "approved", "qualified", or
-  "prequalified", but the timestamp is missing — what should be the expected
-  behavior?
-* Should the timestamp be mandatory in these cases, or should the presence of
-  one of these statuses alone be enough to consider the CU/SPG approved?
+| Status   | Last prequalified / verified | Ready for market? |
+|----------|------------------------------|-------------------|
+| rejected |                              | No                |
 
 ### Other needs
 
@@ -82,6 +74,26 @@ Examples:
 * Temporary limits
 * TPV
 
-#### Ready for market flow (WIP)
+#### Ready for market checklist
 
-![checklist](../diagrams/ready_for_market.drawio.png)
+If a step in the checklist result in `not ready for market`, the SPG is
+considered not ready, and there is no need to continue the checklist. If a step
+passes, then proceed to the next step. If all steps are passed, the SPG is ready
+for market.
+
+| #  | Process / check                            | Description                                            | Result                                                                             |
+|----|--------------------------------------------|--------------------------------------------------------|------------------------------------------------------------------------------------|
+| 1  | CU status                                  | Check CU status.                                       | If one or more CU(s) deactivated, then not ready for market?                       |
+| 2  | SPG status                                 | Check SPG status.                                      | If SPG is deactivated, then not ready for market.                                  |
+| 3  | CU grid validation status                  | Check CU grid validation status.                       | If CU grid validation status is `validation_failed`, then not ready for market.    |
+| 4  | CU grid validation status timestamp        | Check if validated timestamp present.                  | If timestamp is missing, then not ready for market.                                |
+| 5  | CU grid validation suspension              | Check if CU grid validation is suspended.              | If suspended, then not ready for market.                                           |
+| 6  | SPG grid prequalification status           | Check SPG grid prequalification status.                | If SPG grid prequalification status is  `not_approved`, then not ready for market. |
+| 7  | SPG grid prequalification status timestamp | Check if grid prequalification timestamp is present.   | If timestamp is missing, then not ready for market.                                |
+| 8  | SPG grid prequalification suspension       | Check if SPG grid prequalification is suspended        | If suspended, then not ready for market.                                           |
+| 9  | SP product application status              | Check SP product application status.                   | If status is `not_qualified`, then not ready for market.                           |
+| 10 | SP product application status timestamp    | Check if SP product application timestamp is present.  | If timestamp is missing, then not ready for market.                                |
+| 11 | SP product application suspension          | Check if SP product application is suspended           | If suspended, then not ready for market.                                           |
+| 12 | SPG product application status             | Check SPG product application status                   | If SPG product application status is `rejected`, then not ready for market.        |
+| 13 | SPG product application status timestamp   | Check if SPG product application timestamp is present. | If timestamp is missing, then not ready for market.                                |
+| 14 | SPG product application status supension   | Check if SPG product application is suspended.         | If suspended, then not ready for market.                                           |
