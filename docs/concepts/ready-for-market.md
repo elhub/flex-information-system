@@ -18,12 +18,12 @@ statuses and related timestamps.
 
 ### Overview of statuses
 
-| Process                   | Status                                                                                       | Timestamp                        |
-|---------------------------|----------------------------------------------------------------------------------------------|----------------------------------|
-| CU grid validation        | pending, in_progress, incomplete_information, validated, validation_failed                   | last validated                   |
-| SPG grid prequalification | in_progress, approved, conditionally_approved, not_approved                                  | last prequalified                |
-| SP product application    | in_progress, communication_test, qualified, not_qualified                                    | last qualified                   |
-| SPG product application   | in_progress, temporary_qualified, prequalification_pending, prequalified, rejected, verified | last prequalified, last verified |
+| Process                   | Status                                                                                       | Timestamp              |
+|---------------------------|----------------------------------------------------------------------------------------------|------------------------|
+| CU grid validation        | pending, in_progress, incomplete_information, validated, validation_failed                   | validated              |
+| SPG grid prequalification | in_progress, approved, conditionally_approved, not_approved                                  | prequalified           |
+| SP product application    | in_progress, communication_test, qualified, not_qualified                                    | qualified              |
+| SPG product application   | in_progress, temporary_qualified, prequalification_pending, prequalified, rejected, verified | prequalified, verified |
 
 <br>
 
@@ -42,22 +42,22 @@ When SPG product application is initiated for the first time, SO will update
 status to in_progress. As the SPG has not previously been prequalified or
 verified, the timestamp field remains empty.
 
-| Status      | Last prequalified / verified | Ready for market? |
-|-------------|------------------------------|-------------------|
-| in_progress |                              | No                |
+| Status      | Prequalified / verified timestamp | Ready for market? |
+|-------------|-----------------------------------|-------------------|
+| in_progress |                                   | No                |
 
 If there are changes to an SPG which requires a new approval process, status
 will be updated to in_progress.
 
-| Status      | Last prequalified / verified | Ready for market? |
-|-------------|------------------------------|-------------------|
-| in_progress | 01.01.2025 10:00             | Yes               |
+| Status      | Prequalified / verified timestamp | Ready for market? |
+|-------------|-----------------------------------|-------------------|
+| in_progress | 01.01.2025 10:00                  | Yes               |
 
 If approval is withdrawn, SO updates status and remove the timestsamp.
 
-| Status   | Last prequalified / verified | Ready for market? |
-|----------|------------------------------|-------------------|
-| rejected |                              | No                |
+| Status   | Prequalified / verified timestamp | Ready for market? |
+|----------|-----------------------------------|-------------------|
+| rejected |                                   | No                |
 
 ### Other needs
 
