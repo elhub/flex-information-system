@@ -10,7 +10,8 @@ import (
 func main() {
 	ctx := context.Background()
 
-	if err := flex.Run(ctx, os.LookupEnv); err != nil {
+	err := flex.Run(ctx, os.LookupEnv)
+	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
 	}

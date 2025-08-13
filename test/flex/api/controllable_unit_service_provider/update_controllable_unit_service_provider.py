@@ -98,7 +98,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Relation between controllable unit and service provider
@@ -131,7 +131,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Relation between controllable unit and service provider
@@ -159,7 +159,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Relation between controllable unit and service provider
@@ -190,7 +190,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Relation between controllable unit and service provider

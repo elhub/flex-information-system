@@ -125,7 +125,7 @@ BEGIN
     END IF;
 
     RETURN NEW;
-END;
+END
 $$;
 
 -- changeset flex:controllable-unit-service-provider-no-duplicate-trigger runOnChange:true endDelimiter:--

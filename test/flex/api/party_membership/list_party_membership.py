@@ -141,7 +141,7 @@ def _build_response(
 
 def sync_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
@@ -197,7 +197,7 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
@@ -248,7 +248,7 @@ def sync(
 
 async def asyncio_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
@@ -302,7 +302,7 @@ async def asyncio_detailed(
 
 async def asyncio(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     party_id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,

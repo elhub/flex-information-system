@@ -566,6 +566,21 @@ export const App = () => (
                 </ResourceContextProvider>
               }
             />
+            <Route
+              path=":party_id/membership/:id"
+              element={
+                <ResourceContextProvider value="party_membership">
+                  <Edit
+                    mutationMode="pessimistic"
+                    redirect={(_: any, _id: any, record: any) =>
+                      `party/${record.party_id}/show`
+                    }
+                  >
+                    <PartyMembershipInput />
+                  </Edit>
+                </ResourceContextProvider>
+              }
+            />
             {/* party membership relation history */}
             <Route
               path=":party_id/membership_history"

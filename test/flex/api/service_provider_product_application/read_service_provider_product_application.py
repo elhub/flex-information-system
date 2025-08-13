@@ -89,7 +89,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[Union[ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Service Provider Product Application
 
@@ -118,7 +118,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Optional[Union[ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Service Provider Product Application
 
@@ -142,7 +142,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[Union[ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Service Provider Product Application
 
@@ -169,7 +169,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Optional[Union[ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Service Provider Product Application
 

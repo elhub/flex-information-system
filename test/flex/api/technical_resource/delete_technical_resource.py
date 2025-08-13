@@ -93,7 +93,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EmptyObject,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Delete Technical Resource
@@ -125,7 +125,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EmptyObject,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Delete Technical Resource
@@ -152,7 +152,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EmptyObject,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Delete Technical Resource
@@ -182,7 +182,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EmptyObject,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Delete Technical Resource

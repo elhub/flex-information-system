@@ -20,6 +20,7 @@ func replaceServers(jsonData []byte, server openAPIserver) []byte {
 	data["servers"] = []openAPIserver{server}
 
 	updatedJSON, _ := json.Marshal(data) //nolint:errchkjson
+
 	return updatedJSON
 }
 

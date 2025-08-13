@@ -100,7 +100,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Service Providing Group Product Application
@@ -134,7 +134,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Service Providing Group Product Application
@@ -163,7 +163,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
 ) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Service Providing Group Product Application
@@ -195,7 +195,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
 ) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Update Service Providing Group Product Application

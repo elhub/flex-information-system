@@ -76,7 +76,8 @@
     "party_membership": {
         "id": "Unique surrogate identifier.",
         "party_id": "Reference to the party that the membership links to an entity.",
-        "entity_id": "Reference to the entity that the party represents."
+        "entity_id": "Reference to the entity that the party represents.",
+        "scopes": "List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms."
     },
     "identity": {
         "id": "Unique surrogate identifier.",
@@ -175,6 +176,7 @@
         "hint": "A hint to help resolve the error.",
         "message": "The error message."
     },
+    "auth_scope": null,
     "audit_fields": {
         "recorded_at": "When the resource was recorded (created or updated) in the system.",
         "recorded_by": "The identity that recorded the resource."

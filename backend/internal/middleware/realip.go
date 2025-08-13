@@ -9,6 +9,7 @@ func RealIP(next http.Handler) http.Handler {
 		if realIP := req.Header.Get("X-Real-IP"); realIP != "" {
 			req.RemoteAddr = realIP
 		}
+
 		next.ServeHTTP(w, req)
 	})
 }

@@ -309,6 +309,12 @@ list_parameters_template = [
 ]
 
 
+def scope_verb(operation):
+    if operation in ["create", "update", "delete"]:
+        return "manage"
+    return "read"
+
+
 def link_template(target_resource, field):
     return {
         "operationId": f"read_{target_resource}",
@@ -681,6 +687,14 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 links,
             )
 
+            endpoint_template["security"] = [
+                {"bearerAuth": [scope_verb(operation) + ":data:" + resource["id"]]}
+            ]
+            # Anon users are getting "read:data" scope, so
+            # we need to add an empty security scheme defintion to signal "unauthenticated"
+            if scope_verb(operation) == "read":
+                endpoint_template["security"].append({})
+
             if is_under_id_endpoint[operation]:
                 resource_id_endpoints[methods[operation]] = endpoint_template
                 at_least_one_resource_id_endpoint = True
@@ -711,6 +725,18 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 operation,
                 foreign_key_fields,
             )
+
+            endpoint_template["security"] = [
+                {
+                    "bearerAuth": [
+                        scope_verb(operation) + ":data:" + resource["id"] + "_history"
+                    ],
+                }
+            ]
+            # Anon users are getting "read:data" scope, so
+            # we need to add an empty security scheme defintion to signal "unauthenticated"
+            if scope_verb(operation) == "read":
+                endpoint_template["security"].append({})
 
             if is_under_id_endpoint[operation]:
                 resource_history_id_endpoints[methods[operation]] = endpoint_template

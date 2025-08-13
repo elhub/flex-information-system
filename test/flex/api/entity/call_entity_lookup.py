@@ -73,7 +73,7 @@ def _build_response(
 
 def sync_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EntityLookupRequest,
 ) -> Response[Union[EntityLookupResponse, ErrorMessage]]:
     """Call - Entity lookup
@@ -104,7 +104,7 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EntityLookupRequest,
 ) -> Optional[Union[EntityLookupResponse, ErrorMessage]]:
     """Call - Entity lookup
@@ -130,7 +130,7 @@ def sync(
 
 async def asyncio_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EntityLookupRequest,
 ) -> Response[Union[EntityLookupResponse, ErrorMessage]]:
     """Call - Entity lookup
@@ -159,7 +159,7 @@ async def asyncio_detailed(
 
 async def asyncio(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: EntityLookupRequest,
 ) -> Optional[Union[EntityLookupResponse, ErrorMessage]]:
     """Call - Entity lookup

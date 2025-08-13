@@ -17,6 +17,7 @@ type event struct {
 
 func fromChange(change *pgrepl.Change) (event, error) {
 	event := event{} //nolint:exhaustruct
+
 	var err error
 
 	event.ID, err = change.GetIntColumnValue("id")
@@ -38,6 +39,7 @@ func fromChange(change *pgrepl.Change) (event, error) {
 	if err != nil {
 		return event, fmt.Errorf("could not get event time: %w", err)
 	}
+
 	event.RecordedAt = *recordedAt
 
 	event.RecordedBy, err = change.GetIntColumnValue("recorded_by")

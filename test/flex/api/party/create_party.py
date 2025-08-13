@@ -102,7 +102,7 @@ def _build_response(
 
 def sync_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyCreateRequest,
 ) -> Response[Union[ErrorMessage, PartyResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Party
@@ -141,7 +141,7 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyCreateRequest,
 ) -> Optional[Union[ErrorMessage, PartyResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Party
@@ -175,7 +175,7 @@ def sync(
 
 async def asyncio_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyCreateRequest,
 ) -> Response[Union[ErrorMessage, PartyResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Party
@@ -212,7 +212,7 @@ async def asyncio_detailed(
 
 async def asyncio(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: PartyCreateRequest,
 ) -> Optional[Union[ErrorMessage, PartyResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Party

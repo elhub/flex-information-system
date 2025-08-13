@@ -77,7 +77,7 @@ def _build_response(
 
 def sync_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitLookupRequest,
 ) -> Response[Union[ControllableUnitLookupResponse, ErrorMessage]]:
     """Call - Controllable unit lookup
@@ -109,7 +109,7 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitLookupRequest,
 ) -> Optional[Union[ControllableUnitLookupResponse, ErrorMessage]]:
     """Call - Controllable unit lookup
@@ -136,7 +136,7 @@ def sync(
 
 async def asyncio_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitLookupRequest,
 ) -> Response[Union[ControllableUnitLookupResponse, ErrorMessage]]:
     """Call - Controllable unit lookup
@@ -166,7 +166,7 @@ async def asyncio_detailed(
 
 async def asyncio(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ControllableUnitLookupRequest,
 ) -> Optional[Union[ControllableUnitLookupResponse, ErrorMessage]]:
     """Call - Controllable unit lookup
