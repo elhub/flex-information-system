@@ -270,6 +270,13 @@ the SP to use the best available data and methods, e.g. machine learning.
 However, it is also the most opaque and ensuring trust in this baseline can only
 be done by validating it over time.
 
+#### Plan
+
+This method uses a consumption or production plan as the baseline. Similar to
+the black box method, the plan can be validated over time to ensure trust in its
+accuracy. This method is only applicable to assets that are actively managed and
+have a clear operational profile, like industrial processes.
+
 #### Meter before
 
 The "Meter before" method uses the metered values before the activation as the
@@ -327,7 +334,7 @@ Quantification is done to support three types of settlement:
 - **Quantification for imbalance adjustment and financial transfer** - must be
   done at the level of accounting point (AP) or lower (CU/TR). NOTE - See the
   section
-  [Non- or over-consumed energy due to activation of flexibility](#non-or-over-consumed-energy-due-to-activation-of-flexibility)
+  [Non- or over-consumed energy due to activation of flexibility](#non--or-over-consumed-energy-due-to-activation-of-flexibility)
   for more details about imbalance settlement.
 - **Quantification for end user compensation** - must be done at the level of
   the accounting point (AP) or lower (CU/TR), since that is where the end user
