@@ -1,0 +1,16 @@
+@startuml service_provider_product_suspension
+
+!theme plain
+
+title Service Provider Product Suspension
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator" as SO
+
+@enduml
