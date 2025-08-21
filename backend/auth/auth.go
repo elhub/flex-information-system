@@ -557,7 +557,10 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
-		Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
+		Scope: scope.List{
+			scope.Scope{Verb: scope.Manage, Asset: "auth"},
+			scope.Scope{Verb: scope.Manage, Asset: "data"},
+		},
 	}
 
 	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -877,7 +880,10 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
-		Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
+		Scope: scope.List{
+			scope.Scope{Verb: scope.Manage, Asset: "auth"},
+			scope.Scope{Verb: scope.Manage, Asset: "data"},
+		},
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -1082,7 +1088,10 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
-		Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
+		Scope: scope.List{
+			scope.Scope{Verb: scope.Manage, Asset: "auth"},
+			scope.Scope{Verb: scope.Manage, Asset: "data"},
+		},
 	}
 
 	slog.InfoContext(
@@ -1423,7 +1432,7 @@ func (auth *API) jwtBearerHandler(
 		rd := &RequestDetails{
 			role:       "flex_entity",
 			externalID: externalID,
-			scope:      scope.List{{Verb: scope.Read, Asset: "auth"}},
+			scope:      scope.List{},
 		}
 		ctx.Set(auth.ctxKey, rd)
 
@@ -1493,7 +1502,10 @@ func (auth *API) jwtBearerHandler(
 			ExternalID:     externalID,
 			PartyID:        0,
 			Role:           "flex_entity",
-			Scope:          scope.List{{Verb: scope.Manage, Asset: "auth"}},
+			Scope: scope.List{
+				scope.Scope{Verb: scope.Manage, Asset: "auth"},
+				scope.Scope{Verb: scope.Manage, Asset: "data"},
+			},
 		}
 
 		slog.InfoContext(

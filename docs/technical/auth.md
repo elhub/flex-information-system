@@ -532,7 +532,7 @@ colon-separated string on the following format:
 <verb>:<module>[:<resource>]...
 ```
 
-..and can be read read as
+..and can be read as
 
 > The user can `<verb>` `<resource>` in `<module>`.
 
@@ -549,7 +549,7 @@ allow on the resource.
 |----------|----------------------------------------|------------------------------------|
 | `read`   | Read-only access                       | Read                               |
 | `use`    | `read` plus calling RPCs (e.g. lookuo) | Read, Call                         |
-| `manage` | Fall access. `use` plus changing data  | Create, Read, Update, Delete, Call |
+| `manage` | Full access. `use` plus changing data  | Create, Read, Update, Delete, Call |
 
 Since the access increases with `read` > `use` > `manage`, there is also
 implicit inheritance. This e.g. means that a user with the `use` verb implicitly
@@ -557,18 +557,11 @@ has the `read` privilege.
 
 #### Module
 
-A module is a logical grouping of resources. Ideally, this should be a API/path,
-but we are not 100% aligned between scopes and APIs (yet). This is something we
-might consider doing before going into `v1` with our services/API.
-
-The currently defined modules are.
+A module is a logical grouping of resources. The currently defined modules are.
 
 * `data` - This is the data API at `/api/`, for resources such as controllable
-  units, service providing groups, etc. Except for resources specifically
-  mentioned in `auth`.
-* `auth` - This is the module for auth at `/auth/`. Some resources
-  in the data API is covered by this module: `entity`, `party`,
-  `party_membership` and `entity_client`
+  units, service providing groups, etc.
+* `auth` - This is the module for auth at `/auth/`.
 
 #### Resource
 
@@ -591,7 +584,7 @@ The following are a few example scopes.
   `manage:data:technical_resource`.
 
 * `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
-  It is also covered by e.g. `manage:data` and `use:data:contro`.
+  It is also covered by e.g. `manage:data` and `use:data:controllable_unit`.
 
 ### Party type check
 

@@ -1,9 +1,8 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.auth_scope import AuthScope
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyMembershipCreateRequest")
@@ -14,14 +13,14 @@ class PartyMembershipCreateRequest:
     """Request schema for create operations - The relation between a party and entity.
 
     Attributes:
-        scopes (Union[Unset, List[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
-            are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+        scopes (Union[Unset, List[str]]): List of scopes granted to the entity when it acts as the party. Scopes are
+            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
         entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
     """
 
-    scopes: Union[Unset, List[AuthScope]] = UNSET
+    scopes: Union[Unset, List[str]] = UNSET
     party_id: Union[Unset, int] = UNSET
     entity_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -29,10 +28,7 @@ class PartyMembershipCreateRequest:
     def to_dict(self) -> Dict[str, Any]:
         scopes: Union[Unset, List[str]] = UNSET
         if not isinstance(self.scopes, Unset):
-            scopes = []
-            for scopes_item_data in self.scopes:
-                scopes_item = scopes_item_data.value
-                scopes.append(scopes_item)
+            scopes = self.scopes
 
         party_id = self.party_id
 
@@ -53,12 +49,7 @@ class PartyMembershipCreateRequest:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        scopes = []
-        _scopes = d.pop("scopes", UNSET)
-        for scopes_item_data in _scopes or []:
-            scopes_item = AuthScope(scopes_item_data)
-
-            scopes.append(scopes_item)
+        scopes = cast(List[str], d.pop("scopes", UNSET))
 
         party_id = d.pop("party_id", UNSET)
 

@@ -13,9 +13,6 @@ linters:
     # nlreturn and wsl add lots of whitespace rules that are annoying
     - nlreturn
     - wsl
-    - wsl_v5
-    # we allow inline error checking
-    - noinlineerr
   settings:
     errcheck:
       exclude-functions:

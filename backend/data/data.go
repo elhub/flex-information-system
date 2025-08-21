@@ -87,13 +87,6 @@ func NewAPIHandler(
 		"data", http.HandlerFunc(data.postgRESTHandler),
 	)
 
-	authListPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeForRequest("auth", http.HandlerFunc(data.postgRESTHandler)),
-	)
-	authPostgRESTHandler := auth.CheckScopeForRequest(
-		"auth", http.HandlerFunc(data.postgRESTHandler),
-	)
-
 	// all other requests are forwarded to PostgREST
 	mux.Handle("GET /accounting_point", dataListPostgRESTHandler)
 	mux.Handle("GET /accounting_point/{id}", dataPostgRESTHandler)
@@ -119,22 +112,22 @@ func NewAPIHandler(
 	mux.Handle("GET /controllable_unit_service_provider_history", dataListPostgRESTHandler)
 	mux.Handle("GET /controllable_unit_service_provider_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /entity", authListPostgRESTHandler)
-	mux.Handle("POST /entity", authPostgRESTHandler)
-	mux.Handle("GET /entity/{id}", authPostgRESTHandler)
-	mux.Handle("PATCH /entity/{id}", authPostgRESTHandler)
+	mux.Handle("GET /entity", dataListPostgRESTHandler)
+	mux.Handle("POST /entity", dataPostgRESTHandler)
+	mux.Handle("GET /entity/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /entity/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /entity_client", authListPostgRESTHandler)
-	mux.Handle("POST /entity_client", authPostgRESTHandler)
-	mux.Handle("GET /entity_client/{id}", authPostgRESTHandler)
-	mux.Handle("PATCH /entity_client/{id}", authPostgRESTHandler)
-	mux.Handle("DELETE /entity_client/{id}", authPostgRESTHandler)
+	mux.Handle("GET /entity_client", dataListPostgRESTHandler)
+	mux.Handle("POST /entity_client", dataPostgRESTHandler)
+	mux.Handle("GET /entity_client/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /entity_client/{id}", dataPostgRESTHandler)
+	mux.Handle("DELETE /entity_client/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /event", dataListPostgRESTHandler)
 	mux.Handle("GET /event/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /identity", authListPostgRESTHandler)
-	mux.Handle("GET /identity/{id}", authPostgRESTHandler)
+	mux.Handle("GET /identity", dataListPostgRESTHandler)
+	mux.Handle("GET /identity/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /notice", dataListPostgRESTHandler)
 
@@ -142,22 +135,22 @@ func NewAPIHandler(
 	mux.Handle("GET /notification/{id}", dataPostgRESTHandler)
 	mux.Handle("PATCH /notification/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /party", authListPostgRESTHandler)
-	mux.Handle("POST /party", authPostgRESTHandler)
-	mux.Handle("GET /party/{id}", authPostgRESTHandler)
-	mux.Handle("PATCH /party/{id}", authPostgRESTHandler)
+	mux.Handle("GET /party", dataListPostgRESTHandler)
+	mux.Handle("POST /party", dataPostgRESTHandler)
+	mux.Handle("GET /party/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /party/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /party_history", authListPostgRESTHandler)
-	mux.Handle("GET /party_history/{id}", authPostgRESTHandler)
+	mux.Handle("GET /party_history", dataListPostgRESTHandler)
+	mux.Handle("GET /party_history/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /party_membership", authListPostgRESTHandler)
-	mux.Handle("POST /party_membership", authPostgRESTHandler)
-	mux.Handle("GET /party_membership/{id}", authPostgRESTHandler)
-	mux.Handle("PATCH /party_membership/{id}", authPostgRESTHandler)
-	mux.Handle("DELETE /party_membership/{id}", authPostgRESTHandler)
+	mux.Handle("GET /party_membership", dataListPostgRESTHandler)
+	mux.Handle("POST /party_membership", dataPostgRESTHandler)
+	mux.Handle("GET /party_membership/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /party_membership/{id}", dataPostgRESTHandler)
+	mux.Handle("DELETE /party_membership/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /party_membership_history", authListPostgRESTHandler)
-	mux.Handle("GET /party_membership_history/{id}", authPostgRESTHandler)
+	mux.Handle("GET /party_membership_history", dataListPostgRESTHandler)
+	mux.Handle("GET /party_membership_history/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /product_type", dataListPostgRESTHandler)
 	mux.Handle("GET /product_type/{id}", dataPostgRESTHandler)

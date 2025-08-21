@@ -34,9 +34,12 @@ databaseChangeLog:
       file: ./current_user_setting.sql
       relativeToChangelogFile: true
 
-  # Enums
+  # Enums & custom types
   - include:
       file: ./business_id_type.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./scopes.sql
       relativeToChangelogFile: true
 
   # Tables & views - order is important!

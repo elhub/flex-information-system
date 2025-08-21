@@ -8,7 +8,6 @@ from flex.models import (
     EntityResponse,
     ErrorMessage,
     PartyMembershipCreateRequest,
-    AuthScope,
     PartyMembershipResponse,
     EmptyObject,
     PartyResponse,
@@ -260,10 +259,7 @@ def test_entity_com(sts):
         body=PartyMembershipCreateRequest(
             entity_id=common_ent_id,
             party_id=so_id,
-            scopes=[
-                AuthScope.READDATA,
-                AuthScope.READAUTH,
-            ],
+            scopes=["read:data", "read:auth"],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)

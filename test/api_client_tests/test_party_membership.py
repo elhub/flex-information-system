@@ -5,7 +5,6 @@ from security_token_service import (
 from flex.models import (
     PartyMembershipResponse,
     PartyMembershipCreateRequest,
-    AuthScope,
     PartyMembershipUpdateRequest,
     PartyMembershipHistoryResponse,
     ErrorMessage,
@@ -59,10 +58,7 @@ def test_ptym_fiso(sts):
         body=PartyMembershipCreateRequest(
             entity_id=ent_id,
             party_id=pty_id,
-            scopes=[
-                AuthScope.READAUTH,
-                AuthScope.MANAGEAUTH,
-            ],
+            scopes=["manage:auth"],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
@@ -91,10 +87,7 @@ def test_ptym_fiso(sts):
         client=client_fiso,
         id=cast(int, p.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[
-                AuthScope.READAUTH,
-                AuthScope.MANAGEAUTH,
-            ],
+            scopes=["manage:auth"],
         ),
     )
     assert not (isinstance(u, ErrorMessage))

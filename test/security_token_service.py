@@ -5,7 +5,6 @@ from flex.models import (
     PartyBusinessIdType,
     PartyMembershipResponse,
     PartyMembershipCreateRequest,
-    AuthScope,
 )
 from flex.api.party import (
     list_party,
@@ -198,7 +197,9 @@ class SecurityTokenService:
     }
 
     def fresh_client(self, entity, party_name):
-        client_fiso = self.get_client(TestEntity.TEST, "FISO")
+        client_fiso = cast(
+            AuthenticatedClient, self.get_client(TestEntity.TEST, "FISO")
+        )
 
         party_type = self._party_types[party_name]
 
@@ -247,10 +248,7 @@ class SecurityTokenService:
             body=PartyMembershipCreateRequest(
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
-                scopes=[
-                    AuthScope.MANAGEDATA,
-                    AuthScope.MANAGEAUTH,
-                ],
+                scopes=["manage:data", "manage:auth"],
             ),
         )
         assert isinstance(pm, PartyMembershipResponse)

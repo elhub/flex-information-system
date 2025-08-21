@@ -105,12 +105,12 @@ func WrapMiddlewareHandler(mid http.Handler) gin.HandlerFunc {
 	}
 }
 
-// NoOpHander is a http.Handler that does nothing.
+// NoOpHandler is a http.Handler that does nothing.
 // Useful for using stdlib middleware in gin routers.
 // Stdlib middleware requires a "next".
 //
 //nolint:gochecknoglobals
-var NoOpHander http.Handler = http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {})
+var NoOpHandler http.Handler = http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {})
 
 // Run is the main entry point for the application.
 func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //nolint:funlen,cyclop,gocognit,maintidx,gocyclo
@@ -416,10 +416,10 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		authRouter.GET("/openapi.json",
 			WrapHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:openapi"}, auth.OpenAPIHandlerFunc(authAPIBaseURL, "Flex Auth API"))))
 		authRouter.POST("/token",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "auth:token"}, NoOpHander)),
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "auth:token"}, NoOpHandler)),
 			authAPI.PostTokenHandler)
 		authRouter.GET("/userinfo",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:userinfo"}, NoOpHander)),
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:userinfo"}, NoOpHandler)),
 			authAPI.GetUserInfoHandler)
 		authRouter.GET("/session", WrapHandler(
 			auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:session"}, http.HandlerFunc(authAPI.GetSessionHandler))))
@@ -428,13 +428,13 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		authRouter.DELETE("/assume", WrapHandler(
 			auth.CheckScope(scope.Scope{Verb: scope.Manage, Asset: "auth:assume"}, http.HandlerFunc(authAPI.DeleteAssumeHandler))))
 		authRouter.GET("/login",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:login"}, NoOpHander)),
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:login"}, NoOpHandler)),
 			authAPI.GetLoginHandler)
 		authRouter.GET("/callback",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:callback"}, NoOpHander)),
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:callback"}, NoOpHandler)),
 			authAPI.GetCallbackHandler)
 		authRouter.GET("/logout",
-			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:logout"}, NoOpHander)),
+			WrapMiddlewareHandler(auth.CheckScope(scope.Scope{Verb: scope.Read, Asset: "auth:logout"}, NoOpHandler)),
 			authAPI.GetLogoutHandler)
 
 		// data API endpoint

@@ -60,13 +60,7 @@ components:
         Authorization scopes.
       format: text
       type: string
-      enum:
-        - "read:data"
-        - "use:data"
-        - "manage:data"
-        - "read:auth"
-        - "use:auth"
-        - "manage:auth"
+      pattern: '^((read)|(use)|(manage)):((auth)|(data))(:[a-z_]+(:[a-z_]+)?)?$'
     audit_fields:
       properties:
         recorded_at:
