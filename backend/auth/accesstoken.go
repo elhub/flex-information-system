@@ -28,7 +28,7 @@ func (a accessToken) Validate() error {
 	val.Check(a.Role == "flex_entity" || a.PartyID > 0, "party_id is not set")
 	val.Check(!a.IsExpired(), "token has expired")
 	val.Check(a.ExternalID != "", "external_id is empty")
-	val.Check(a.Scope != nil, "scopes are not set")
+	val.Check(a.Scope != nil, "scope is not set")
 
 	return val.Error()
 }

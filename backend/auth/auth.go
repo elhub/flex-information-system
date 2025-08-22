@@ -55,6 +55,7 @@ type API struct {
 	ctxKey                   string
 	failedLoginResponseDelay time.Duration // delay inside the handler on failed login
 	loginDelayer             *IPLoginDelayer
+	defaultAnonymousScopes   scope.List // default scopes for an anonymous user
 	defaultEntityScopes      scope.List // default scopes for an entity user
 }
 
@@ -105,9 +106,14 @@ func NewAPI(
 		ctxKey:                   ctxKey,
 		failedLoginResponseDelay: failedLoginResponseDelay,
 		loginDelayer:             loginDelayer,
+		defaultAnonymousScopes: scope.List{
+			// TODO limit the scope a bit?
+			scope.Scope{Verb: scope.Use, Asset: "auth"},  // to be able to log in
+			scope.Scope{Verb: scope.Read, Asset: "data"}, // to be able to access open data (if any)
+		},
 		defaultEntityScopes: scope.List{
-			scope.Scope{Verb: scope.Manage, Asset: "auth"},
-			scope.Scope{Verb: scope.Manage, Asset: "data"},
+			scope.Scope{Verb: scope.Manage, Asset: "auth"}, // to be able to assume party
+			scope.Scope{Verb: scope.Manage, Asset: "data"}, // to be able to access their data
 		},
 	}
 }
@@ -129,11 +135,7 @@ func (auth *API) TokenDecodingMiddleware(
 			rd := &RequestDetails{
 				role:       "flex_anonymous",
 				externalID: "",
-				scope: scope.List{
-					// TODO limit the scope a bit?
-					scope.Scope{Verb: scope.Use, Asset: "auth"},  // to be able to log in
-					scope.Scope{Verb: scope.Read, Asset: "data"}, // to be able to access open data (if any)
-				},
+				scope:      auth.defaultAnonymousScopes,
 			}
 			authenticatedCtx := context.WithValue(ctx, auth.ctxKey, rd) //nolint:revive,staticcheck
 			slog.InfoContext(ctx, "no auth header/cookie: user will be anonymous")
@@ -1425,10 +1427,11 @@ func (auth *API) jwtBearerHandler(
 	if grant.Subject != nil {
 		// entity wants to assume a party
 		// we must first "log in" the entity to give it privileges in the database
+		// so we can properly run the queries below
 		rd := &RequestDetails{
 			role:       "flex_entity",
 			externalID: externalID,
-			scope:      scope.List{},
+			scope:      auth.defaultEntityScopes,
 		}
 		ctx.Set(auth.ctxKey, rd)
 
