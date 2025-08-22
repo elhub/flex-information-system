@@ -8,11 +8,16 @@ from flex.models import (
     PartyMembershipCreateRequest,
     PartyMembershipUpdateRequest,
     PartyMembershipHistoryResponse,
+    PartyCreateRequest,
+    PartyBusinessIdType,
+    PartyResponse,
     ErrorMessage,
     EmptyObject,
 )
 from flex.api.party import (
     list_party,
+    create_party,
+    read_party,
 )
 from flex.api.party_membership import (
     create_party_membership,
@@ -25,6 +30,9 @@ from flex.api.party_membership import (
 )
 from typing import cast
 import pytest
+from test_party import (
+    unique_gln,
+)
 
 
 @pytest.fixture
@@ -132,6 +140,132 @@ def test_ptym_ent(sts):
         if pm.party_id in parties_owned_by_ent:
             pm = read_party_membership.sync(client=client_ent, id=cast(int, pm.id))
             assert isinstance(pm, PartyMembershipResponse)
+
+
+# RLS: PTYM-ORG001
+def test_ptym_org(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_org = sts.get_client(TestEntity.TEST, "ORG")
+    org_info = sts.get_userinfo(client_org)
+    ent_id = org_info["entity_id"]
+    org_pty_id = org_info["party_id"]
+
+    p = read_party.sync(client=client_fiso, id=cast(int, org_pty_id))
+    assert isinstance(p, PartyResponse)
+    org_ent_id = p.entity_id
+
+    # create party owned by the org entity
+
+    p = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="Test Org SP",
+            entity_id=org_ent_id,
+            role="flex_service_provider",
+            type="service_provider",
+            business_id_type=PartyBusinessIdType.GLN,
+            business_id=unique_gln(),
+        ),
+    )
+    assert isinstance(p, PartyResponse)
+
+    # add the other entity as a member
+
+    client_other_ent = sts.get_client(TestEntity.COMMON, "ENT")
+    other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
+
+    pm = create_party_membership.sync(
+        client=client_fiso,
+        body=PartyMembershipCreateRequest(
+            entity_id=other_ent_id,
+            party_id=cast(int, p.id),
+            scopes=[AuthScope.READAUTH],
+        ),
+    )
+    assert not isinstance(pm, ErrorMessage)
+
+    # set admin scope on the org party
+
+    pms = list_party_membership.sync(
+        client=client_fiso,
+        entity_id=f"eq.{ent_id}",
+        party_id=f"eq.{org_pty_id}",
+    )
+    assert isinstance(pms, list)
+    assert len(pms) == 1
+    org_pm = pms[0]
+
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, org_pm.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[AuthScope.MANAGEDATAPARTY_MEMBERSHIP],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
+
+    # now the org party can read and change party memberships on the new party
+
+    pms = list_party_membership.sync(client=client_org, party_id=f"eq.{p.id}")
+    assert isinstance(pms, list)
+    assert len(pms) == 1
+
+    u = update_party_membership.sync(
+        client=client_org,
+        id=cast(int, pms[0].id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[AuthScope.READDATA],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
+    d = delete_party_membership.sync(
+        client=client_org,
+        id=cast(int, pms[0].id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    pm = create_party_membership.sync(
+        client=client_org,
+        body=PartyMembershipCreateRequest(
+            entity_id=other_ent_id,
+            party_id=cast(int, p.id),
+            scopes=[AuthScope.READAUTH],
+        ),
+    )
+    assert isinstance(pm, PartyMembershipResponse)
+
+    # remove admin scope
+
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, org_pm.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[AuthScope.READAUTH],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
+
+    # they can no longer do the operations
+
+    e = update_party_membership.sync(
+        client=client_org,
+        id=cast(int, pm.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[AuthScope.READDATA],
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = delete_party_membership.sync(
+        client=client_org,
+        id=cast(int, pm.id),
+        body=EmptyObject(),
+    )
+    assert isinstance(e, ErrorMessage)
 
 
 def test_ptym_common(sts):

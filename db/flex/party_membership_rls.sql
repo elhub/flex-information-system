@@ -7,6 +7,7 @@ ALTER TABLE IF EXISTS party_membership ENABLE ROW LEVEL SECURITY;
 -- RLS: PTYM-FISO001
 GRANT INSERT,
 SELECT,
+UPDATE,
 DELETE ON party_membership TO flex_flexibility_information_system_operator;
 CREATE POLICY "PTYM_FISO001" ON party_membership
 FOR ALL
@@ -61,3 +62,10 @@ CREATE POLICY "PTYM_COM003" ON party_membership_history
 FOR SELECT
 TO flex_common
 USING (party_id = (SELECT current_party()));
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON party_membership TO flex_organisation;
+-- RLS: PTYM-ORG001
+CREATE POLICY "PTYM_ORG001" ON party_membership
+FOR ALL
+TO flex_organisation
+USING (entity_owns_party((SELECT flex.current_party_owner()), party_id));
