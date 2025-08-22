@@ -41,6 +41,7 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
+    # endpoint: POST /entity/lookup
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(

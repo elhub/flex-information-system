@@ -34,9 +34,12 @@ databaseChangeLog:
       file: ./current_user_setting.sql
       relativeToChangelogFile: true
 
-  # Enums
+  # Enums & custom types
   - include:
       file: ./business_id_type.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./scope.sql
       relativeToChangelogFile: true
 
   # Tables & views - order is important!
@@ -169,13 +172,18 @@ databaseChangeLog:
       file: ./controllable_unit_as_of.sql
       relativeToChangelogFile: true
 
-  # RLS, grants and history
+  # history
   - includeAll:
       path: ./
       relativeToChangelogFile: true
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
+  - include:
+      file: ./party_membership_migrations.sql
+      relativeToChangelogFile: true
+
+  # RLS, grants
   - includeAll:
       path: ./
       relativeToChangelogFile: true

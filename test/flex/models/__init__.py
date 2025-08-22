@@ -15,6 +15,7 @@ from .accounting_point_energy_supplier_update_request import AccountingPointEner
 from .accounting_point_response import AccountingPointResponse
 from .accounting_point_update_request import AccountingPointUpdateRequest
 from .audit_fields import AuditFields
+from .auth_scope import AuthScope
 from .controllable_unit import ControllableUnit
 from .controllable_unit_create_data import ControllableUnitCreateData
 from .controllable_unit_create_request import ControllableUnitCreateRequest
@@ -220,6 +221,7 @@ __all__ = (
     "AccountingPointResponse",
     "AccountingPointUpdateRequest",
     "AuditFields",
+    "AuthScope",
     "ControllableUnit",
     "ControllableUnitCreateData",
     "ControllableUnitCreateRequest",

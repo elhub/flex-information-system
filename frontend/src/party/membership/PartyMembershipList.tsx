@@ -14,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { ScopesField } from "./components";
 
 export const PartyMembershipList = () => {
   // id of the SPG
@@ -61,6 +62,7 @@ export const PartyMembershipList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
+            <ScopesField source="scopes" />
             <DateField source="recorded_at" showTime />
             <IdentityField source="recorded_by" />
             {permissions.includes("party_membership.delete") && (

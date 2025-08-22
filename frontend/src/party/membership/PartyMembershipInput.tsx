@@ -7,11 +7,13 @@ import {
 } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
+import { ScopesInput } from "./components";
 
 // keep only the fields that map to the UI
-const filterRecord = ({ party_id, entity_id }: any) => ({
+const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
   party_id,
   entity_id,
+  scopes,
 });
 
 // common layout to create and edit pages
@@ -21,11 +23,7 @@ export const PartyMembershipInput = () => {
   // priority to the restored values if they exist, otherwise normal edit mode
   const record = filterRecord({ ...actualRecord, ...overrideRecord });
   return (
-    <SimpleForm
-      record={record}
-      maxWidth={1280}
-      toolbar={overrideRecord?.id ? <Toolbar saveAlwaysEnabled /> : undefined}
-    >
+    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -34,6 +32,7 @@ export const PartyMembershipInput = () => {
           <PartyReferenceInput source="party_id" noFilter readOnly />
           <AutocompleteReferenceInput source="entity_id" reference="entity" />
         </InputStack>
+        <ScopesInput source="scopes" />
       </Stack>
     </SimpleForm>
   );

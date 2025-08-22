@@ -46,6 +46,7 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 	if len(data) < minLen {
 		return fmt.Errorf("%w: too short", errInvalidSubject)
 	}
+
 	if len(data) > maxLen {
 		return fmt.Errorf("%w: too long", errInvalidSubject)
 	}
@@ -62,6 +63,7 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 	if len(parts) != 2 { //nolint:mnd
 		return fmt.Errorf("%w: incorrect number of parts", errInvalidSubject)
 	}
+
 	identifierType, identifier := parts[0], parts[1]
 
 	if identifierType != "gln" && identifierType != "uuid" {
@@ -69,7 +71,8 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 	}
 
 	if identifierType == "uuid" {
-		if err := uuid.Validate(identifier); err != nil {
+		err := uuid.Validate(identifier)
+		if err != nil {
 			return fmt.Errorf("%w: invalid uuid identifier", errInvalidSubject)
 		}
 	} else { // Not a UUID. GLN is integer-looking.
@@ -84,6 +87,7 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 
 	s.IdentifierType = identifierType
 	s.Identifier = identifier
+
 	return nil
 }
 
@@ -131,5 +135,6 @@ func (a authorizationGrant) Validate() error {
 	val.Check(a.ExpirationTime.Sub(a.IssuedAt.Time).Seconds() <= 120, "maximum lifetime is 120 seconds")            //nolint:mnd
 	val.Check(a.ExpirationTime.After(a.IssuedAt.Time), "iat must be before exp")
 	val.Check(a.JWTID != "", "jti is empty")
+
 	return val.Error()
 }

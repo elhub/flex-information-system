@@ -3,8 +3,10 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
+    AuthScope,
     PartyMembershipResponse,
     PartyMembershipCreateRequest,
+    PartyMembershipUpdateRequest,
     PartyMembershipHistoryResponse,
     ErrorMessage,
     EmptyObject,
@@ -17,6 +19,7 @@ from flex.api.party_membership import (
     list_party_membership,
     read_party_membership,
     delete_party_membership,
+    update_party_membership,
     list_party_membership_history,
     read_party_membership_history,
 )
@@ -56,6 +59,7 @@ def test_ptym_fiso(sts):
         body=PartyMembershipCreateRequest(
             entity_id=ent_id,
             party_id=pty_id,
+            scopes=[AuthScope.MANAGEAUTH],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
@@ -78,6 +82,16 @@ def test_ptym_fiso(sts):
     assert isinstance(p2, list)
     assert len(p2) == 1
     assert p2[0] == p
+
+    # endpoint: PATCH /party_membership/{id}
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, p.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[AuthScope.MANAGEAUTH],
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
 
     d = delete_party_membership.sync(
         client=client_fiso, id=cast(int, pm.id), body=EmptyObject()

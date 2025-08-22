@@ -59,7 +59,9 @@ func New(ctx context.Context, connString string, ctxKey string) (*Pool, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to create db pool: %w", err)
 	}
+
 	pool := Pool{pgxp: pgxp, ctxKey: ctxKey}
+
 	return &pool, nil
 }
 

@@ -4,6 +4,7 @@ from security_token_service import (
 )
 from flex.models import (
     ErrorMessage,
+    EventResponse,
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
@@ -35,6 +36,7 @@ from flex.models import (
 )
 from flex.api.event import (
     list_event,
+    read_event,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
@@ -120,6 +122,7 @@ def test_event_eu(sts):
     assert isinstance(tr, TechnicalResourceResponse)
 
     def check(client):
+        # endpoint: GET /event
         events = list_event.sync(client=client, limit="10000")
         assert isinstance(events, list)
 
@@ -352,6 +355,11 @@ def test_event_sp(sts):
 
     events = list_event.sync(client=client_sp, limit="10000")
     assert isinstance(events, list)
+    assert len(events) > 0
+
+    # endpoint: GET /event/{id}
+    e = read_event.sync(client=client_sp, id=cast(int, events[0].id))
+    assert isinstance(e, EventResponse)
 
     client_other_sp = sts.get_client(TestEntity.COMMON, "SP")
     events_other = list_event.sync(client=client_other_sp, limit="10000")
@@ -507,7 +515,6 @@ def test_event_anon(sts):
 
     events = list_event.sync(client=client)
     assert isinstance(events, ErrorMessage)
-    assert events.message.startswith("permission denied")
 
 
 def test_event_ent(sts):
@@ -515,4 +522,3 @@ def test_event_ent(sts):
 
     events = list_event.sync(client=client_ent)
     assert isinstance(events, ErrorMessage)
-    assert events.message.startswith("permission denied")

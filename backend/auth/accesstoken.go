@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"flex/auth/scope"
 	"flex/internal/validate"
 	"fmt"
 	"time"
@@ -11,11 +12,12 @@ import (
 
 // accessToken is the struct that holds the payload of the access JWT.
 type accessToken struct {
-	EntityID       int      `json:"entity_id"`
-	ExpirationTime unixTime `json:"exp"`
-	ExternalID     string   `json:"eid"`
-	PartyID        int      `json:"party_id,omitempty"`
-	Role           string   `json:"role"`
+	EntityID       int        `json:"entity_id"`
+	ExpirationTime unixTime   `json:"exp"`
+	ExternalID     string     `json:"eid"`
+	PartyID        int        `json:"party_id,omitempty"`
+	Role           string     `json:"role"`
+	Scope          scope.List `json:"scope"`
 }
 
 // Validate checks that the access token has all the required fields set in the correct ways.
@@ -26,6 +28,8 @@ func (a accessToken) Validate() error {
 	val.Check(a.Role == "flex_entity" || a.PartyID > 0, "party_id is not set")
 	val.Check(!a.IsExpired(), "token has expired")
 	val.Check(a.ExternalID != "", "external_id is empty")
+	val.Check(a.Scope != nil, "scope is not set")
+
 	return val.Error()
 }
 
@@ -70,10 +74,12 @@ func (a accessToken) Sign(options ...jws.SignOption) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error in marshalling access token: %w", err)
 	}
+
 	token, err := jws.Sign(b, options...)
 	if err != nil {
 		return nil, fmt.Errorf("error in signing access token: %w", err)
 	}
+
 	return token, nil
 }
 

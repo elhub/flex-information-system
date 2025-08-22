@@ -2,20 +2,27 @@
 -- Manually managed file
 
 -- changeset flex:party-membership-create runOnChange:false endDelimiter:--
+-- validCheckSum: 9:bae8dc2bead50145dd6c00b5da379b10
+-- noqa: disable=all
 CREATE TABLE IF NOT EXISTS party_membership (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     party_id bigint NOT NULL,
     entity_id bigint NOT NULL,
+    scopes flex.scope [] NOT NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
+    CONSTRAINT check_scopes_not_empty CHECK (
+        array_length(scopes, 1) > 0
+    ),
     CONSTRAINT fk_party_membership_party_id FOREIGN KEY (party_id)
     REFERENCES party (id),
     CONSTRAINT fk_party_membership_entity_id FOREIGN KEY (entity_id)
     REFERENCES entity (id),
     CONSTRAINT uk_party_membership_entity_party_id UNIQUE (party_id, entity_id)
 );
+-- noqa: enable=all
 
 -- changeset flex:party-membership-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER party_membership_event

@@ -93,7 +93,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[
     Union[ErrorMessage, ServiceProvidingGroupMembershipHistoryResponse, Union["EmptyObject", "ErrorMessage"]]
 ]:
@@ -124,7 +124,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Optional[
     Union[ErrorMessage, ServiceProvidingGroupMembershipHistoryResponse, Union["EmptyObject", "ErrorMessage"]]
 ]:
@@ -150,7 +150,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[
     Union[ErrorMessage, ServiceProvidingGroupMembershipHistoryResponse, Union["EmptyObject", "ErrorMessage"]]
 ]:
@@ -179,7 +179,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Optional[
     Union[ErrorMessage, ServiceProvidingGroupMembershipHistoryResponse, Union["EmptyObject", "ErrorMessage"]]
 ]:

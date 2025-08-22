@@ -23,6 +23,12 @@ tags:
   - name: entity
     description: Entity
 components:
+  securitySchemes:
+    bearerAuth:
+      description: Bearer token using a JWT
+      type: http
+      scheme: Bearer
+      bearerFormat: JWT
   parameters: {}
   schemas:
     error_message:
@@ -49,6 +55,21 @@ components:
       required:
         - code
         - message
+    auth_scope:
+      description: >-
+        Authorization scopes.
+      format: text
+      type: string
+      enum:
+        - "read:data"
+        - "use:data"
+        - "use:data:entity:lookup"
+        - "manage:data"
+        - "manage:data:party_membership"
+        - "manage:data:entity_client"
+        - "read:auth"
+        - "use:auth"
+        - "manage:auth"
     audit_fields:
       properties:
         recorded_at:
@@ -291,6 +312,9 @@ paths:
       description: >-
         Introspection for the Flexibility Information System main API.
         The document is following the OpenAPI 3.1 spec.
+      security:
+        - bearerAuth: ["read:data:openapi"]
+        - {}
       tags:
         - introspection
       responses:
@@ -313,6 +337,8 @@ paths:
       description: >-
         Lookup a controllable unit from end user ID and business and/or
         accounting point ID.
+      security:
+        - bearerAuth: ["use:data:controllable_unit:lookup"]
       tags:
         - controllable_unit
       requestBody:
@@ -364,6 +390,8 @@ paths:
       summary: Call - Entity lookup
       description: >-
         Lookup an entity from its business ID. Creates the entity if missing.
+      security:
+        - bearerAuth: ["use:data:entity:lookup"]
       tags:
         - entity
       requestBody:

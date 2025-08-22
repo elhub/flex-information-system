@@ -1,7 +1,103 @@
-# Authorisation
+# Auth
 
-This document describes the authentication and authorization model principles we
-are following in the Flexibility Information System.
+This document describes the authentication and authorization model, principles
+and concepts we are following in the Flexibility Information System. It is a
+quite comprehensive document and contains alot of nitty-gritty details - even
+about implementation. We are using it both as a design document and
+documentation. You can use it as a reference and for understanding how we are
+doing things.
+
+The document assumes that you have some basic knowledge around the topic, such
+as the distiction between authentication and authorization, but we will try to
+add external links to relevant resources where appropriate (like we just did 😉).
+
+> [!NOTE]
+>
+> We use _auth_ as a short form for _authentication and authorization_ in this
+> document.
+
+## Overview
+
+We think of auth as a layered system, where each layer has a specific purpose
+and responsibility. The layers are independent of each other and a request is
+required to pass all the layers to be allowed access. The following diagram
+shows the layers we have in our model.
+
+![Auth Layers](../diagrams/auth_layers.drawio.png)
+
+The layers in the auth model are there to protect our resources. These resources
+take the form of data or remote procedure calls (RPCs) in our APIs. You can
+think of a resource as a path in our API, e.g. `/api/v0/controllable_unit/`.
+Authorization protects what actions (create, read, update, delete, call) the
+user can do on the resources.
+
+1. **Session or token validation** - This is how we authenticate the user. Once
+   authentication is done we know the entity, party and scopes of the user. If
+   there is no session or token the user enters the system as an anonymous user
+   with read access.
+2. **Scope check** - Empty scope means no access. The scope check validates actions
+   on resources, e.g. does the user have the scope to do update on this
+   resource.
+3. **Party type check** - Actions on some resources might only be accessible for
+   certain party types, like the `Flexibility Information System Operator` or
+   `System Operator`. For these resources we have an explicit party type check
+   for additional security, e.g. is the party type of the user allowed to do
+   call this resource. We typically use this on RPC resources.
+4. **Field Level Authorization** - FLA controls access for the combination of
+   party type, action and fields, e.g. can this party type update these fields on
+   this resource.
+5. **Resource Level Authorization** - RLA controls access for the specific party
+   and resource, e.g. can this party delete this resource.
+
+Read more details about the layers further down in this document.
+
+## Actions
+
+When we talk about authorization we usually talk about performing "actions" on
+resources or fields. The table below shows the actions and their corresponding
+[HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) and
+[database grants](https://www.postgresql.org/docs/15/sql-grant.html).
+
+| Action     | HTTP verb | Database grant | Usage                        |
+|------------|-----------|----------------|------------------------------|
+| **C**reate | POST      | INSERT         |                              |
+| **R**ead   | GET       | SELECT         |                              |
+| **U**pdate | PATCH     | UPDATE         |                              |
+| **D**elete | DELETE    | DELETE         |                              |
+| **C**all   | POST      | EXECUTE        | Used for RPC type endpoints. |
+
+We do not model `List` as a specific action even tho it is a verb - someting a
+user can do - on the [API](api-design.md). It is covered by `Read`.
+
+## OAuth 2.0 and OpenID Connect standards
+
+We are relying on the patterns and flows established as part of multiple RFCs
+related to OAuth 2.0 as well as
+[OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html).
+Relevant RFCs are listed below, but you can also check the
+[map of OAuth 2.0 specs from Okta](https://www.oauth.com/oauth2-servers/map-oauth-2-0-specs/).
+
+* [RFC6749 - The OAuth 2.0 Authorization Framework](https://www.rfc-editor.org/rfc/rfc6749)
+* [RFC6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://www.rfc-editor.org/rfc/rfc6750)
+* [RFC7636 - Proof Key for Code Exchange by OAuth Public Clients](https://datatracker.ietf.org/doc/html/rfc7636)
+* [RFC7523 - JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants](https://datatracker.ietf.org/doc/html/rfc7523)
+* [RFC8693 - OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/html/rfc8693)
+
+The implementation
+follows only parts of these standards, but we are trying to comply with the
+specification for the parts we actually implement.
+
+We are also relying heavily on the JOSE (Javascript Object Signing and Encryption)
+[suite of specifications](https://datatracker.ietf.org/wg/jose/about/).
+
+!!! note "Distinct API for authentication"
+
+    Note that authentication and the rest of the Flexibility Information System
+    work as two _separate_ services, and as such, are exposed through _distinct_
+    APIs. The endpoints can be reached by using the `/api` or
+    `/auth/` prefixes in the URL used to access the Flexibility Information
+    System APIs. In the rest of this page, we use the terms _main API_ and _auth API_
+    to distinguish these distinct roots of API endpoints.
 
 ## Authentication model
 
@@ -15,7 +111,25 @@ always be authenticated as a legal og natural _entity_, possibly assuming the
 role of a market _party_. The entity and party together make up the _identity_
 of the user.
 
-#### Entity - individuals and organisations
+The entity has very little functionality available in the system, most
+functionality will be available after assuming a _party_. The identity of the
+user is then the combination of the entity and the party they are acting as. As
+a result, in order to interact properly with the Flexibility Information System,
+an entity must assume a party.
+
+Inspiration for this step is taken from [Altinn](https://info.altinn.no/en/),
+where one is presented with a list of parties upon login. The Elhub portal also
+has the same type of logical mechanism.
+
+![Altinn select party](../assets/altinn-choose-party.png).
+
+The concept is also inspired by [AWS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html).
+
+Assuming a party is done using [Token Exchange](#token-exchange) or directly in
+authentication using [JWT Bearer](#jwt-bearer) grant. To assume a party, the
+entity must be a member of the party.
+
+### Entity - individuals and organisations
 
 The _entity_ is the natural or legal person using the system. This is the "raw"
 identity of the user when it enters the system.
@@ -29,7 +143,7 @@ identity of the user when it enters the system.
 In a production setting, the identity of the entity will be established through
 mechanisms such as IDPorten, Maskinporten or enterprise certificates.
 
-#### Party - market actors
+### Party - market actors
 
 This is the market party like a system operator or service provider. Parties in
 the European energy sector are typically identified by a GLN or `EIC-X`. After
@@ -67,13 +181,13 @@ We have the following party types in the Flexibility Information System:
 
 The following sub-sections provides a brief description of each party type.
 
-##### Balance Responsible Party
+#### Balance Responsible Party
 
 A party responsible for its imbalances.
 
 Based on: [Consolidated text: Commission Regulation (EU) 2017/2195 - Art.2 Definitions](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02017R2195-20220619).
 
-##### End User
+#### End User
 
 Synonyms:
 
@@ -84,7 +198,7 @@ Synonyms:
 The entity at the lower end of the chain, willing to make their own technical
 resources available on the flexibility market.
 
-##### Energy Supplier
+#### Energy Supplier
 
 Synonyms:
 
@@ -94,7 +208,7 @@ Synonyms:
 A party delivering to or taking energy from a party connected to the grid at an
 accounting point.
 
-##### Flexibility Information System Operator
+#### Flexibility Information System Operator
 
 Synonyms:
 
@@ -104,7 +218,7 @@ We use this as an administrator role for the Flexibility Information System, as
 a last resort tool to have full authorisation on the system or perform special
 operations.
 
-##### Market Operator
+#### Market Operator
 
 Sub-types:
 
@@ -116,7 +230,12 @@ with bids to buy energy.
 
 Based on: [Consolidated text: Regulation (EU) 2019/943](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019R0943-20220623).
 
-##### System Operator
+#### Organisation
+
+This is not a market party as such but a party that represents the organisation
+entity.
+
+#### System Operator
 
 Synonyms:
 
@@ -139,7 +258,7 @@ energy.
 
 Based on: [Consolidated text: Directive (EU) 2019/944](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019L0944-20220623).
 
-##### Service Provider
+#### Service Provider
 
 Sub-types:
 
@@ -149,7 +268,7 @@ Sub-types:
 A party that offers local or balancing services to other parties in the market,
 after having successfully passed a qualification process.
 
-##### Third Party
+#### Third Party
 
 A party that does not have an actual responsibility in the value chain, but
 _can be_ delegated authority to, _e.g._, perform tasks or access data.
@@ -174,41 +293,16 @@ the authentication or authorization model.
 Some data (like party lists) and actions (such as login) will be available for
 un-authenticated users. We refer to these as `Anonymous`, abbreviated as `ANON`.
 
+An anonymous user has the following default scopes:
+
+* `read:data` - to be able to access open data (if any)
+* `use:auth` - to be able to log in etc
+
 !!! info "Policy inheritance"
 
-    Policies for `Anonymous`/`ANON` are inherited by _all authenticated users_.
+    RLA policies for `Anonymous`/`ANON` are inherited by _all authenticated users_.
 
-## Implementation using OAuth 2.0 and OpenID Connect standards
-
-We are relying on the patterns and flows established as part of multiple RFCs
-related to OAuth 2.0 as well as
-[OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html).
-Relevant RFCs are listed below, but you can also check the
-[map of OAuth 2.0 specs from Okta](https://www.oauth.com/oauth2-servers/map-oauth-2-0-specs/).
-
-* [RFC6749 - The OAuth 2.0 Authorization Framework](https://www.rfc-editor.org/rfc/rfc6749)
-* [RFC6750 - The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://www.rfc-editor.org/rfc/rfc6750)
-* [RFC7636 - Proof Key for Code Exchange by OAuth Public Clients](https://datatracker.ietf.org/doc/html/rfc7636)
-* [RFC7523 - JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants](https://datatracker.ietf.org/doc/html/rfc7523)
-* [RFC8693 - OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/html/rfc8693)
-
-The implementation
-follows only parts of these standards, but we are trying to comply with the
-specification for the parts we actually implement.
-
-We are also relying heavily on the JOSE (Javascript Object Signing and Encryption)
-[suite of specifications](https://datatracker.ietf.org/wg/jose/about/).
-
-!!! note "Distinct API for authentication"
-
-    Note that authentication and the rest of the Flexibility Information System
-    work as two _separate_ services, and as such, are exposed through _distinct_
-    APIs. The endpoints can be reached by using the `/api` or
-    `/auth/` prefixes in the URL used to access the Flexibility Information
-    System APIs. In the rest of this page, we use the terms _main API_ and _auth API_
-    to distinguish these distinct roots of API endpoints.
-
-## Authentication
+## Authentication methods
 
 Authentication is the process of establishing the "raw" identity of the user.
 For us, this means identifying the _entity_, i.e. the individual or organisation
@@ -323,27 +417,10 @@ language/system of choice. Here are a few examples/guides:
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
 
-## Assuming party
-
-The entity has very little functionality available in the system, most
-functionality will be available after assuming a _party_. The identity of the
-user is then the combination of the entity and the party they are acting as. As
-a result, in order to interact properly with the Flexibility Information System,
-an entity must assume a party.
-
-Inspiration for this step is taken from [Altinn](https://info.altinn.no/en/),
-where one is presented with a list of parties upon login. The Elhub portal also
-has the same type of logical mechanism.
-
-![Altinn select party](../assets/altinn-choose-party.png).
-
-The concept is also inspired by [AWS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html).
-
-Assuming a party is done using `Token Exchange`.
-
 ### Token exchange
 
-In API terms, assuming a party is done by doing a
+If the user has logged in via client credentials or OpenID connect, the user can
+assume a party by doing a
 [OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/html/rfc8693) that
 lets an entity "impersonate" a party with the returned token. This is done by
 calling the same `/token` endpoint, this time with the `grant_type`
@@ -382,7 +459,7 @@ grant_type=urn:ietf:params:oauth:grant-type:token-exchange
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
 
-## Example - client credentials and token exchange
+### Example - client credentials and token exchange
 
 Below is an example of realistic login sequence:
 
@@ -395,12 +472,6 @@ Below is an example of realistic login sequence:
 
 ![Login Sequence](../diagrams/login_sequence.png)
 
-## User information
-
-OIDC provides a way to get user information. This is done by calling the
-`/userinfo` endpoint with the access token. The response is a JSON object
-with a set of claims about the user.
-
 ## Authorization
 
 We are providing a [resource-oriented main API](api-design.md). Authorization is
@@ -408,7 +479,8 @@ understood as allowing a user access to do an action on a resource or its field.
 
 Our authorization model is based on a deny-by-default principle. This means that
 authorization is denied unless explicitly allowed. We then allow certain
-_actions_ on _resource_ or _field_ level for a specific _party type_.
+_actions_ on _resource_ or _field_ level for a specific _party type_. The caller
+must also have the required _scope_ to perform the action.
 
 You can think of a resource collection as a table. Each rows is a resource. Each
 column is a field. We then specify Field Level and Resource Level Authorization
@@ -428,27 +500,97 @@ access to resources `3`, `4` and `5`, and update access to only `5`.
 Together, these policies allow the party type to read all fields except `A` of resources
 `3`, `4` and `5`, and update only field `D` of resource `5`.
 
+In addition to this, the user must have the required scope to perform the action.
+
 ![Resource and Field Level Authorization](../diagrams/auth-table.drawio.png)
 
 More information about the policies and their implementation can be found in the
 following sections.
 
-### Actions
+### Scopes
 
-When we talk about authorization we usually talk about performing "actions" on
-resources or fields. The table below shows the actions and their corresponding
-[HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) and
-[database grants](https://www.postgresql.org/docs/15/sql-grant.html).
+Every combination of resource and action has a required scope. When a user makes
+a request, the system will check that the session or token has that
+scope. The requester can have multiple scopes. No scopes means no
+access.
 
-| Action     | HTTP verb | Database grant |
-|------------|-----------|----------------|
-| **C**reate | POST      | INSERT         |
-| **R**ead   | GET       | SELECT         |
-| **U**pdate | PATCH     | UPDATE         |
-| **D**elete | DELETE    | DELETE         |
+In our system, entities are made _members_ of parties to allow them to assume
+the parties and act on behalf of them. The party membership is restricted with a
+list of scopes. This allows fine-tuning the access control when the entity
+assumes the party. When the user authenticates and assumes a party, the
+session/token will have the scopes of the party membership.
 
-We do not model `List` as a specific action even tho it is a verb - someting a
-user can do - on the [API](api-design.md). It is covered by `Read`.
+The purpose of this is e.g. to allow one person to be able to read data in the
+system on behalf of a party, while another person can both read and write data.
+This fits with the least privilege principle, where we try to give the user the
+least amount of access.
+
+A scope shows what the user can do to a specific resource. It is a
+colon-separated string on the following format:
+
+```html
+<verb>:<module>[:<resource>]...
+```
+
+..and can be read as
+
+> The user can `<verb>` `<resource>` in `<module>`.
+
+Verb is the privilege or access level. Module and resource typically describe
+the _asset_ or _path_ that is being protected are defined below. Resource is
+optional and if omitted then it means "all resources".
+
+#### Verb
+
+A verb specifies the type of access. The verbs are defined by the actions they
+allow on the resource.
+
+| Verb     | Description                            | Action(s)                          |
+|----------|----------------------------------------|------------------------------------|
+| `read`   | Read-only access                       | Read                               |
+| `use`    | `read` plus calling RPCs (e.g. lookuo) | Read, Call                         |
+| `manage` | Full access. `use` plus changing data  | Create, Read, Update, Delete, Call |
+
+Since the access increases with `read` > `use` > `manage`, there is also
+implicit inheritance. This e.g. means that a user with the `use` verb implicitly
+has the `read` privilege.
+
+#### Module
+
+A module is a logical grouping of resources. The currently defined modules are.
+
+* `data` - This is the data API at `/api/`, for resources such as controllable
+  units, service providing groups, etc.
+* `auth` - This is the module for auth at `/auth/`.
+
+#### Resource
+
+The resource part of the scope is used to make sub-scopes within a module. It is
+optional and not yet implemented for clients. When omitted, the scope includes
+everything in a the module.
+
+The three dots `...` in the format above means that resources can be nested, to
+create sub-scopes.
+
+Each path on our API has a required scope, and every request is checked to see
+that the client has a matching scope.
+
+#### Scope examples
+
+The following are a few example scopes.
+
+* `GET /api/v0/controllable_unit/` requires `read:data:controllable_unit`. It is
+  also covered by e.g. `read:data` and `use:data` but not
+  `manage:data:technical_resource`.
+
+* `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
+  It is also covered by e.g. `manage:data` and `use:data:controllable_unit`.
+
+### Party type check
+
+The party type check is what is says the tin. It checks that the party type
+doing the request is allowed to do the action on the resource. This is an
+additional check added on just a few routes.
 
 ### Field Level Authorization (FLA)
 
@@ -510,7 +652,7 @@ Policies can be in `TODO` or `PARTIAL` state either if we have not gotten to it
 yet or the current platform does not support it (e.g. we are missing a
 relation/entity).
 
-## Time-dependent access control
+#### Time-dependent RLA
 
 Some combinations of party type and resource have time-dependent access
 policies.
@@ -537,7 +679,7 @@ Several strategies are in use to implement such constraints, simplifications
 being possible in some cases depending on which operations are available on the
 resource.
 
-### Method 1: Latest visible record
+##### Method 1: Latest visible record
 
 When fields on the resource are _not_ time-dependent, we must use audit history
 to provide access when doing _read_ operations on the main collection/resource.
@@ -586,7 +728,7 @@ will see different records.
     Therefore, the current method cannot be used for resources supporting a
     delete operation.
 
-### Method 2: _As-of_ query
+##### Method 2: _As-of_ query
 
 For resources that can be deleted, we introduce a more advanced mechanism.
 Instead of taking the latest visible version of each record, we take all visible
@@ -636,3 +778,9 @@ For instance, if future contracts (like the ones of C and D) are too far in the
 future, it may be judged unfair to show the current data of the resource.
 The current example is simplified by taking contracts that are very close to
 each other in time.
+
+## User information endpoint
+
+OIDC provides a way to get user information. This is done by calling the
+`/userinfo` endpoint with the access token. The response is a JSON object
+with a set of claims about the user.
