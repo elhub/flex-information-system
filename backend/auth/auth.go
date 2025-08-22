@@ -55,6 +55,7 @@ type API struct {
 	ctxKey                   string
 	failedLoginResponseDelay time.Duration // delay inside the handler on failed login
 	loginDelayer             *IPLoginDelayer
+	defaultEntityScopes      scope.List // default scopes for an entity user
 }
 
 // NewAPI creates a new auth.API instance.
@@ -104,6 +105,10 @@ func NewAPI(
 		ctxKey:                   ctxKey,
 		failedLoginResponseDelay: failedLoginResponseDelay,
 		loginDelayer:             loginDelayer,
+		defaultEntityScopes: scope.List{
+			scope.Scope{Verb: scope.Manage, Asset: "auth"},
+			scope.Scope{Verb: scope.Manage, Asset: "data"},
+		},
 	}
 }
 
@@ -557,10 +562,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
-		Scope: scope.List{
-			scope.Scope{Verb: scope.Manage, Asset: "auth"},
-			scope.Scope{Verb: scope.Manage, Asset: "data"},
-		},
+		Scope:          auth.defaultEntityScopes,
 	}
 
 	signedAccessToken, err := accessToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -880,10 +882,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
-		Scope: scope.List{
-			scope.Scope{Verb: scope.Manage, Asset: "auth"},
-			scope.Scope{Verb: scope.Manage, Asset: "data"},
-		},
+		Scope:          auth.defaultEntityScopes,
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -1088,10 +1087,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
-		Scope: scope.List{
-			scope.Scope{Verb: scope.Manage, Asset: "auth"},
-			scope.Scope{Verb: scope.Manage, Asset: "data"},
-		},
+		Scope:          auth.defaultEntityScopes,
 	}
 
 	slog.InfoContext(
@@ -1502,10 +1498,7 @@ func (auth *API) jwtBearerHandler(
 			ExternalID:     externalID,
 			PartyID:        0,
 			Role:           "flex_entity",
-			Scope: scope.List{
-				scope.Scope{Verb: scope.Manage, Asset: "auth"},
-				scope.Scope{Verb: scope.Manage, Asset: "data"},
-			},
+			Scope:          auth.defaultEntityScopes,
 		}
 
 		slog.InfoContext(

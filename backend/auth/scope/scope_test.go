@@ -22,6 +22,7 @@ func TestNewScope(t *testing.T) {
 //nolint:funlen
 func testValidNewScope(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name     string
 		verb     scope.Verb
@@ -123,6 +124,7 @@ func testValidNewScope(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result, err := scope.New(tt.verb, tt.parts...)
 			if err != nil {
 				t.Errorf("NewScope() unexpected error: %v", err)
@@ -143,6 +145,7 @@ func testValidNewScope(t *testing.T) {
 //nolint:funlen
 func testInvalidNewScope(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name  string
 		verb  scope.Verb
@@ -208,6 +211,7 @@ func testInvalidNewScope(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			_, err := scope.New(tt.verb, tt.parts...)
 			if err == nil {
 				t.Errorf("NewScope() expected error but got none")
@@ -218,6 +222,7 @@ func testInvalidNewScope(t *testing.T) {
 
 func TestScopeToString(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name     string
 		scope    scope.Scope
@@ -243,6 +248,7 @@ func TestScopeToString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result := tt.scope.String()
 			if result != tt.expected {
 				t.Errorf("scope.Scope.String() = %v, want %v", result, tt.expected)
@@ -266,6 +272,7 @@ func TestParseScope(t *testing.T) {
 
 func testValidParseScope(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name     string
 		scopeStr string
@@ -292,6 +299,7 @@ func testValidParseScope(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result, err := scope.FromString(tt.scopeStr)
 			if err != nil {
 				t.Errorf("scope.FromString() unexpected error: %v", err)
@@ -311,6 +319,7 @@ func testValidParseScope(t *testing.T) {
 
 func testInvalidParseScope(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name     string
 		scopeStr string
@@ -356,6 +365,7 @@ func testInvalidParseScope(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			_, err := scope.FromString(tt.scopeStr)
 			if err == nil {
 				t.Errorf("scope.ScopeString() expected error but got none")
@@ -367,6 +377,7 @@ func testInvalidParseScope(t *testing.T) {
 //nolint:funlen
 func TestScopeCovers(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name     string
 		scope    scope.Scope
@@ -462,6 +473,7 @@ func TestScopeCovers(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result := tt.scope.Covers(tt.other)
 			if result != tt.expected {
 				t.Errorf("scope.Scope.Covers() = %v, want %v\nScope: %s\nOther: %s",
@@ -473,6 +485,7 @@ func TestScopeCovers(t *testing.T) {
 
 func TestScopeMarshalJSON(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name     string
 		scope    scope.Scope
@@ -493,6 +506,7 @@ func TestScopeMarshalJSON(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result, err := tt.scope.MarshalJSON()
 			if err != nil {
 				t.Errorf("scope.Scope.MarshalJSON() unexpected error: %v", err)
@@ -521,6 +535,7 @@ func TestScopeUnmarshalJSON(t *testing.T) {
 
 func testValidUnmarshalJSON(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name     string
 		jsonData string
@@ -541,6 +556,7 @@ func testValidUnmarshalJSON(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			var scope scope.Scope
 
 			err := scope.UnmarshalJSON([]byte(tt.jsonData))
@@ -562,6 +578,7 @@ func testValidUnmarshalJSON(t *testing.T) {
 
 func testInvalidUnmarshalJSON(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name     string
 		jsonData string
@@ -587,6 +604,7 @@ func testInvalidUnmarshalJSON(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			var scope scope.Scope
 
 			err := scope.UnmarshalJSON([]byte(tt.jsonData))
@@ -599,6 +617,7 @@ func testInvalidUnmarshalJSON(t *testing.T) {
 
 func TestScopeJSONRoundTrip(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name  string
 		scope scope.Scope

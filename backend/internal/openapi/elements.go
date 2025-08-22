@@ -19,6 +19,7 @@ func ElementsHandlerFunc(title string) http.HandlerFunc {
 		}{
 			Title: title,
 		}
+
 		err := indexHTML.Execute(w, data)
 		if err != nil {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)

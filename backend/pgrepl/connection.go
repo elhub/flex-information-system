@@ -167,6 +167,7 @@ func (replConn *Connection) Acknowledge(msg *Message) error {
 // Close closes the replication connection.
 func (replConn *Connection) Close(ctx context.Context) error {
 	slog.InfoContext(ctx, "closing replication connection")
+
 	err := replConn.conn.Close(ctx)
 	if err != nil {
 		return connectionCloseError(err)

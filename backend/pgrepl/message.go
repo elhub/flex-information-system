@@ -88,6 +88,7 @@ func (change Change) GetTstzrangeLowerColumnValue(
 	timestampStr := valueStr[2 : len(valueStr)-3]
 
 	timestamp := new(pgtype.Timestamptz)
+
 	err := timestamp.Scan(timestampStr)
 	if err != nil {
 		return nil, timestampParseError(err)

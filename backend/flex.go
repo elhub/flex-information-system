@@ -99,6 +99,7 @@ func WrapMiddleware(mid func(http.Handler) http.Handler) gin.HandlerFunc {
 func WrapMiddlewareHandler(mid http.Handler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		mid.ServeHTTP(ctx.Writer, ctx.Request.WithContext(ctx))
+
 		if ctx.Writer.Written() {
 			ctx.Abort()
 		}

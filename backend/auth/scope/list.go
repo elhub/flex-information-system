@@ -26,6 +26,7 @@ func (l List) Covers(other Scope) bool {
 	if l == nil {
 		return false
 	}
+
 	for _, s := range l {
 		if s.Covers(other) {
 			return true
@@ -43,6 +44,7 @@ func (l List) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON parses a JSON string into a List of Scope.
 func (l *List) UnmarshalJSON(data []byte) error {
 	var scopeStr string
+
 	err := json.Unmarshal(data, &scopeStr)
 	if err != nil {
 		return err

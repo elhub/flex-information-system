@@ -19,6 +19,7 @@ func checkScopeWithHandler(w http.ResponseWriter, req *http.Request, requiredSco
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "missing data in context", err))
 		w.Write(body)
+
 		return
 	}
 
@@ -29,6 +30,7 @@ func checkScopeWithHandler(w http.ResponseWriter, req *http.Request, requiredSco
 		w.WriteHeader(http.StatusForbidden)
 		body, _ := json.Marshal(newErrorMessage(http.StatusForbidden, "insufficient scope", nil))
 		w.Write(body)
+
 		return
 	}
 

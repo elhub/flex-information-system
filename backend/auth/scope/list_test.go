@@ -8,6 +8,7 @@ import (
 
 func TestListString(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name     string
 		list     scope.List
@@ -47,6 +48,7 @@ func TestListString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result := tt.list.String()
 			if result != tt.expected {
 				t.Errorf("List.String() = %q, want %q", result, tt.expected)
@@ -58,6 +60,7 @@ func TestListString(t *testing.T) {
 //nolint:funlen
 func TestListCovers(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name     string
 		list     scope.List
@@ -169,6 +172,7 @@ func TestListCovers(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result := tt.list.Covers(tt.other)
 			if result != tt.expected {
 				t.Errorf("List.Covers() = %v, want %v\nList: %s\nOther: %s",
@@ -180,6 +184,7 @@ func TestListCovers(t *testing.T) {
 
 func TestListMarshalJSON(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name     string
 		list     scope.List
@@ -219,6 +224,7 @@ func TestListMarshalJSON(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result, err := tt.list.MarshalJSON()
 			if err != nil {
 				t.Errorf("List.MarshalJSON() unexpected error: %v", err)
@@ -248,6 +254,7 @@ func TestListUnmarshalJSON(t *testing.T) {
 //nolint:funlen
 func testValidListUnmarshalJSON(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name     string
 		jsonData string
@@ -289,6 +296,7 @@ func testValidListUnmarshalJSON(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			var list scope.List
 
 			err := list.UnmarshalJSON([]byte(tt.jsonData))
@@ -327,6 +335,7 @@ func testValidListUnmarshalJSON(t *testing.T) {
 
 func testInvalidListUnmarshalJSON(t *testing.T) {
 	t.Helper()
+
 	tests := []struct {
 		name     string
 		jsonData string
@@ -364,6 +373,7 @@ func testInvalidListUnmarshalJSON(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			var list scope.List
 
 			err := list.UnmarshalJSON([]byte(tt.jsonData))
@@ -377,6 +387,7 @@ func testInvalidListUnmarshalJSON(t *testing.T) {
 //nolint:funlen
 func TestListJSONRoundTrip(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name string
 		list scope.List
@@ -447,6 +458,7 @@ func TestListNilOperations(t *testing.T) {
 	t.Parallel()
 	t.Run("Nil list String()", func(t *testing.T) {
 		t.Parallel()
+
 		var list scope.List
 
 		result := list.String()
@@ -457,6 +469,7 @@ func TestListNilOperations(t *testing.T) {
 
 	t.Run("Nil list Covers()", func(t *testing.T) {
 		t.Parallel()
+
 		var list scope.List
 
 		scope := scope.Scope{Verb: scope.Read, Asset: "users"}
@@ -469,6 +482,7 @@ func TestListNilOperations(t *testing.T) {
 
 	t.Run("Nil list MarshalJSON()", func(t *testing.T) {
 		t.Parallel()
+
 		var list scope.List
 
 		result, err := list.MarshalJSON()
@@ -486,6 +500,7 @@ func TestListNilOperations(t *testing.T) {
 //nolint:funlen
 func TestListFromStrings(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name        string
 		scopeStrs   []string
@@ -545,6 +560,7 @@ func TestListFromStrings(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			result, err := scope.ListFromStrings(tt.scopeStrs)
 
 			if tt.expectError {

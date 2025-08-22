@@ -7,6 +7,7 @@ import (
 
 func TestVerbCovers(t *testing.T) {
 	t.Parallel()
+
 	tests := []struct {
 		name string
 		v, p scope.Verb
@@ -24,6 +25,7 @@ func TestVerbCovers(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
 			got := tt.v.Covers(tt.p)
 			if got != tt.want {
 				t.Errorf("Verb %v covers %v returned %v; want %v", tt.v, tt.p, got, tt.want)
