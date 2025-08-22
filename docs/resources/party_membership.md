@@ -101,5 +101,6 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | id          |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
 | party_id    |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| scopes      |      | R   | R  | R  | RCU  | R  | R  | R  | R  | R   |
 | recorded_at |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | recorded_by |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
