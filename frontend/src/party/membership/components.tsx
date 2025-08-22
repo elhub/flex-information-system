@@ -26,7 +26,10 @@ export const ScopesInput = (props: any) => (
     choices={[
       "read:data",
       "use:data",
+      "use:data:entity:lookup",
       "manage:data",
+      "manage:data:party_membership",
+      "manage:data:entity_client",
       "read:auth",
       "use:auth",
       "manage:auth",
