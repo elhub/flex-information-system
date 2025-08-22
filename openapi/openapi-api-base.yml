@@ -338,7 +338,7 @@ paths:
         Lookup a controllable unit from end user ID and business and/or
         accounting point ID.
       security:
-        - bearerAuth: ["use:data:controllable_unit_lookup"]
+        - bearerAuth: ["use:data:controllable_unit:lookup"]
       tags:
         - controllable_unit
       requestBody:
@@ -391,7 +391,7 @@ paths:
       description: >-
         Lookup an entity from its business ID. Creates the entity if missing.
       security:
-        - bearerAuth: ["use:data:entity_lookup"]
+        - bearerAuth: ["use:data:entity:lookup"]
       tags:
         - entity
       requestBody:

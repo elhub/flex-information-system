@@ -3396,7 +3396,7 @@
                 "security": [
                     {
                         "bearerAuth": [
-                            "use:data:controllable_unit_lookup"
+                            "use:data:controllable_unit:lookup"
                         ]
                     }
                 ],
@@ -3485,7 +3485,7 @@
                 "security": [
                     {
                         "bearerAuth": [
-                            "use:data:entity_lookup"
+                            "use:data:entity:lookup"
                         ]
                     }
                 ],
