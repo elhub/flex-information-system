@@ -18,3 +18,10 @@ CREATE POLICY "ECL_FISO001" ON entity_client
 FOR SELECT
 TO flex_flexibility_information_system_operator
 USING (true);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_organisation;
+-- RLS: ECL-ORG001
+CREATE POLICY "ECL_ORG001" ON entity_client
+FOR ALL
+TO flex_organisation
+USING (entity_id = (SELECT flex.current_party_owner()));
