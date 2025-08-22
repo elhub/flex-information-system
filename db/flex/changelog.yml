@@ -39,7 +39,7 @@ databaseChangeLog:
       file: ./business_id_type.sql
       relativeToChangelogFile: true
   - include:
-      file: ./scopes.sql
+      file: ./scope.sql
       relativeToChangelogFile: true
 
   # Tables & views - order is important!
