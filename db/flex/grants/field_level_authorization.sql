@@ -82,20 +82,8 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.entity_client
 TO flex_third_party;
 
--- changeset flex:flex-grant-entity-client-org-insert endDelimiter:-- runAlways:true
-GRANT INSERT ON TABLE flex.entity_client
-TO flex_organisation;
-
 -- changeset flex:flex-grant-entity-client-org-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.entity_client
-TO flex_organisation;
-
--- changeset flex:flex-grant-entity-client-org-update endDelimiter:-- runAlways:true
-GRANT UPDATE ON TABLE flex.entity_client
-TO flex_organisation;
-
--- changeset flex:flex-grant-entity-client-org-delete endDelimiter:-- runAlways:true
-GRANT DELETE ON TABLE flex.entity_client
 TO flex_organisation;
 
 -- changeset flex:flex-grant-entity-client-ent-insert endDelimiter:-- runAlways:true
@@ -294,8 +282,20 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.party_membership
 TO flex_third_party;
 
+-- changeset flex:flex-grant-party-membership-org-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE flex.party_membership
+TO flex_organisation;
+
 -- changeset flex:flex-grant-party-membership-org-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.party_membership
+TO flex_organisation;
+
+-- changeset flex:flex-grant-party-membership-org-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE flex.party_membership
+TO flex_organisation;
+
+-- changeset flex:flex-grant-party-membership-org-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE flex.party_membership
 TO flex_organisation;
 
 -- changeset flex:flex-grant-party-membership-ent-select endDelimiter:-- runAlways:true

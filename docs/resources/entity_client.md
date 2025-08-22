@@ -74,9 +74,7 @@ No policies.
 
 #### Organisation
 
-| Policy key | Policy                                                                               | Status |
-|------------|--------------------------------------------------------------------------------------|--------|
-| ECL-ORG001 | Read, create, update and delete clients on the entity owning the organisation party. | DONE   |
+No policies.
 
 #### System Operator
 
@@ -97,10 +95,10 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | FIELD         | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
 |---------------|------|-----|----|----|------|----|----|----|----|-----|
 | id            |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| entity_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | RC  |
-| name          |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | RU  |
-| client_secret |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| public_key    |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
+| entity_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| name          |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| client_secret |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| public_key    |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | recorded_by   |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
