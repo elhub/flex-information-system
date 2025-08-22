@@ -15,6 +15,11 @@ SET scopes = '{manage:data, manage:auth}';
 ALTER TABLE flex.party_membership
 ALTER COLUMN scopes SET NOT NULL;
 
+ALTER TABLE flex.party_membership
+ADD CONSTRAINT check_scopes_not_empty CHECK (
+    array_length(scopes, 1) > 0
+);
+
 ALTER TABLE flex.party_membership_history
 ADD COLUMN scopes flex.scope [];
 

@@ -13,6 +13,9 @@ CREATE TABLE IF NOT EXISTS party_membership (
         localtimestamp, null, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
+    CONSTRAINT check_scopes_not_empty CHECK (
+        array_length(scopes, 1) > 0
+    ),
     CONSTRAINT fk_party_membership_party_id FOREIGN KEY (party_id)
     REFERENCES party (id),
     CONSTRAINT fk_party_membership_entity_id FOREIGN KEY (entity_id)
