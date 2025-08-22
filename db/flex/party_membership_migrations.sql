@@ -10,7 +10,8 @@ ALTER TABLE flex.party_membership
 ADD COLUMN scopes flex.scope [];
 
 UPDATE flex.party_membership
-SET scopes = '{manage:data, manage:auth}';
+SET scopes = '{manage:data, manage:auth}'
+WHERE scopes IS null OR array_length(scopes, 1) = 0;
 
 ALTER TABLE flex.party_membership
 ALTER COLUMN scopes SET NOT NULL;
