@@ -161,7 +161,17 @@
                 "description": "Authorization scopes.",
                 "format": "text",
                 "type": "string",
-                "pattern": "^((read)|(use)|(manage)):((auth)|(data))(:[a-z_]+(:[a-z_]+)?)?$"
+                "enum": [
+                    "read:data",
+                    "use:data",
+                    "use:data:entity:lookup",
+                    "manage:data",
+                    "manage:data:party_membership",
+                    "manage:data:entity_client",
+                    "read:auth",
+                    "use:auth",
+                    "manage:auth"
+                ]
             },
             "audit_fields": {
                 "properties": {

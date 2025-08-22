@@ -1,5 +1,6 @@
 from flex import AuthenticatedClient, Client
 from flex.models import (
+    AuthScope,
     PartyResponse,
     PartyCreateRequest,
     PartyBusinessIdType,
@@ -248,7 +249,7 @@ class SecurityTokenService:
             body=PartyMembershipCreateRequest(
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
-                scopes=["manage:data", "manage:auth"],
+                scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
             ),
         )
         assert isinstance(pm, PartyMembershipResponse)

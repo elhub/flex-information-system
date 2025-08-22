@@ -3,6 +3,7 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
+    AuthScope,
     EntityCreateRequest,
     EntityUpdateRequest,
     EntityResponse,
@@ -259,7 +260,7 @@ def test_entity_com(sts):
         body=PartyMembershipCreateRequest(
             entity_id=common_ent_id,
             party_id=so_id,
-            scopes=["read:data", "read:auth"],
+            scopes=[AuthScope.READDATA, AuthScope.READAUTH],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
