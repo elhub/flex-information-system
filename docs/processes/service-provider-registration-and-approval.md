@@ -46,3 +46,34 @@ be handled in the product application and qualification process.
 [Full Size](../diagrams/service_provider_registration.png) | [PlantUML description](../diagrams/service_provider_registration.plantuml)
 
 ![Service Provider Registration](../diagrams/service_provider_registration.png)
+
+## Details on user creation
+
+Here is a diagram showing more precisely which resources are created in the FIS
+in the last steps of the registration process, for a new Service Provider called
+*Solkraft AS*:
+
+![Entity and party creations for a new SP](../diagrams/service_provider_registration_details.drawio.png)
+
+Step 12 in the sequence diagram above creates everything that represents the
+organisation that must exist in our system:
+
+* the Service Provider party that the employees of Solkraft will assume to
+  perform operations on the FIS on behalf of the company;
+* the entity representing the organisation, that will own the previous party;
+* the organisation party for Solkraft, that will be used to give administrator
+  privileges to the user the FIS operator is in contact with in the context of
+  the current process (let us call her Kari Nordmann).
+
+In Step 16, the FISO creates a new person entity for Kari and makes it a member
+of the organisation party with administrator scopes, *i.e.*, a set of scopes
+that allows at least to perform entity lookups and edit party memberships.
+
+In Step 19, Kari logs in as her own entity, then assumes the organisation party.
+She can then make the person numbers of her colleagues Ola and Tor members of
+the Service Provider party, so that they can also act on behalf of the company
+later on.
+Kari sets the privileges of her colleagues by adjusting which scopes they get on
+their party memberships.
+The operations include entity lookups to get technical entity IDs in the FIS
+from the person numbers, ensuring there is no double entity creation going on.
