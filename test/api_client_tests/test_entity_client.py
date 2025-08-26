@@ -7,7 +7,9 @@ from flex.models import (
     EntityClientResponse,
     EntityClientUpdateRequest,
     AuthScope,
+    PartyMembershipCreateRequest,
     PartyMembershipUpdateRequest,
+    PartyMembershipResponse,
     PartyResponse,
     ErrorMessage,
     EmptyObject,
@@ -25,6 +27,8 @@ from flex.api.party import (
 from flex.api.party_membership import (
     list_party_membership,
     update_party_membership,
+    create_party_membership,
+    delete_party_membership,
 )
 import pytest
 from typing import cast
@@ -145,7 +149,10 @@ def test_entity_client_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[AuthScope.MANAGEDATAENTITY_CLIENT],
+            scopes=[
+                AuthScope.MANAGEAUTH,  # login + userinfo
+                AuthScope.MANAGEDATAENTITY_CLIENT,
+            ],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -173,13 +180,61 @@ def test_entity_client_org(sts):
     )
     assert not isinstance(u, ErrorMessage)
 
+    # -------- btw, test that org entities get the policy denied
+
+    # TODO: remove this step when scopes are fixed when assuming a party through
+    #       party ownership (currently, if we do this, we get empty scopes)
+    # make ORG entity member of the ORG party, also admin
+
+    client_org_with_org_ent = sts.get_client(TestEntity.TEST_ORG, None)
+    org_ent_id = sts.get_userinfo(client_org_with_org_ent)["entity_id"]
+
+    pm = create_party_membership.sync(
+        client=client_fiso,
+        body=PartyMembershipCreateRequest(
+            party_id=cast(int, org_pty_id),
+            entity_id=org_ent_id,
+            scopes=[AuthScope.MANAGEAUTH, AuthScope.MANAGEDATAENTITY_CLIENT],
+        ),
+    )
+    assert isinstance(pm, PartyMembershipResponse)
+
+    # log in as ORG party through ORG entity and check what we just did above
+    # is impossible in this case
+
+    client_org_with_org_ent = sts.get_client(TestEntity.TEST_ORG, "ORG")
+
+    e = update_entity_client.sync(
+        client=client_org_with_org_ent,
+        id=cast(int, clt.id),
+        body=EntityClientUpdateRequest(client_secret="4321432143214321"),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    e = create_entity_client.sync(
+        client=client_org_with_org_ent,
+        body=EntityClientCreateRequest(entity_id=org_ent_id, name="test client name"),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # cleanup
+
+    d = delete_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, pm.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    # --------- going back to the test we were doing
+
     # remove admin scope
 
     u = update_party_membership.sync(
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[AuthScope.READDATA],
+            scopes=[AuthScope.MANAGEAUTH, AuthScope.READDATA],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -208,7 +263,7 @@ def test_entity_client_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[AuthScope.MANAGEDATAENTITY_CLIENT],
+            scopes=[AuthScope.MANAGEAUTH, AuthScope.MANAGEDATAENTITY_CLIENT],
         ),
     )
     assert not (isinstance(u, ErrorMessage))

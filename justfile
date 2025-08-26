@@ -46,6 +46,7 @@ load: liquibase
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
         -c "ALTER USER flex_replication PASSWORD 'replication_password';"
 
+    # set fixed client IDs so we can use them in the tests
     UUID_TEST='3733e21b-5def-400d-8133-06bcda02465e'
     UUID_COMMON='df8bee5f-6e60-4a21-8927-e5bcdd4ce768'
 
@@ -60,6 +61,14 @@ load: liquibase
             -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', client_secret='87h87hijhulO', recorded_by = 0 WHERE id = (SELECT e.id FROM flex.entity AS e WHERE name ilike '${entity}%' AND NOT name ilike '%AS');" \
             -c "COMMIT"
     done
+
+    # set fixed client ID but no key for the organisation (not needed)
+    UUID_TESTAS='eed86ad4-9d5c-4d83-a93a-e7675e13a977'
+    psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
+        -c "BEGIN" \
+        -c "SELECT set_config('flex.current_identity', '0', true);" \
+        -c "UPDATE flex.entity_client SET client_id = '${UUID_TESTAS}', client_secret='87h87hijhulO', recorded_by = 0 WHERE id = (SELECT e.id FROM flex.entity AS e WHERE name = 'Test Suite AS');" \
+        -c "COMMIT"
 
     docker compose kill -s SIGUSR1 postgrest
     docker compose restart backend
