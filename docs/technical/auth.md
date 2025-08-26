@@ -586,6 +586,87 @@ The following are a few example scopes.
 * `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
   It is also covered by e.g. `manage:data` and `use:data:controllable_unit`.
 
+### User creation and access control management
+
+To illustrate the auth model (_i.e._, how entities, parties, scopes, _etc._,
+interact with each other), we explain in this section how a new organisation
+is introduced into the system, then autonomously managed by its employees.
+
+#### Bootstrap
+
+For a new organisation to function properly in the system, they need at least:
+
+* an organisation entity representing the organisation;
+* an organisation party for administrating the organisation in the system;
+* one or several parties with the right market roles so that the organisation
+  can perform the business operations that they need in the FIS;
+* one person entity, so that at least one of the employees can log in to the FIS
+  and assume the market-related parties from above.
+
+The organisation party will be owned by the organisation entity, and the
+person entity will initially be a member of all parties defined for the
+organisation.
+
+Let us take a new organisation called _Solkraft AS_ that wants to be both an
+_Energy Supplier_ and a _Service Provider_ in the flexibility markets.
+Here is a diagram showing which resources are created in the FIS to represent
+this company:
+
+![Entity and parties for a new organisation](../diagrams/organisation_registration.drawio.png)
+
+One of the employees of _Solkraft AS_ will contact the FIS operator to get a
+person entity created from their person number and added to the parties on the
+diagram above, so that they can log in as their personal entity, then assume one
+of the parties and act on behalf of the organisation in the FIS.
+
+#### Autonomous access control management
+
+Once an organisation has one of its employees registered in the system, it is no
+longer required to always contact the FISO to perform administrative operations.
+Indeed, once an employee is granted administrator privileges on the
+organisation, they can add and manage access control for their colleagues
+without involving the FISO.
+
+What we refer to as _administrator privileges_ here is a certain set of scopes
+on the party membership that makes the employee's person entity a member of the
+organisation party.
+The administrator is in charge for the addition of new users and the edition of
+party memberships and entity clients.
+The "administrator scopes" are therefore the ones sufficient to allow such
+operations, _i.e._, the following ones:
+
+* `use:data:entity:lookup`
+* `manage:data:party_memberships`
+* `manage:data:entity_client`
+
+From the moment an entity is added to the organisation party with administrator
+scopes, the person backing the entity can log in, retrieve entities associated
+to their colleagues based on their person number through entity lookup, and
+add/remove these entities to/from the various parties the organisation has in
+the system, as well as add/remove clients allowing colleagues to act as the
+organisation itself for some machine-automated operations.
+The administrator can also tune the scopes for both party memberships and
+entity clients, to allow for precise access control management.
+For instance, they can allow a data analyst in their company to _read_ all the
+data, but _not edit_ it, because such authorisations are not needed and
+restricting by default reduces the risk of making a mistake.
+
+#### Sequence of actions
+
+Let us show an example of sequence of actions in the system to perform such an
+autonomous access control management.
+Let us assume that an employee of _Solkraft AS_, Kari, contacts the FIS operator
+for the first time asking for an access to the system for her company, then
+adds two of her colleagues, Ola and Tor.
+Ola will perform the operations related to the _Energy Supplier_ role, and
+the _Service Provider_ role.
+She also adds a third colleague, Diana, to all parties with read-only access.
+Here is the associated sequence diagram as well as the illustrated operations:
+
+![Organisation access control management sequence](../diagrams/org_access_control_management.png)
+
+![Organisation access control management illustration](../diagrams/organisation_management.drawio.png)
+
 ### Party type check
 
 The party type check is what is says the tin. It checks that the party type
