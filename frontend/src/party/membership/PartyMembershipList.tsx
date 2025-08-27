@@ -11,6 +11,7 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
@@ -31,9 +32,21 @@ export const PartyMembershipList = () => {
     />
   );
 
+  const CreateViaLookupButton = () => (
+    <Button
+      component={Link}
+      to={`/entity/lookup`}
+      startIcon={<TravelExploreIcon />}
+      state={{ party_id: id }}
+      label="Create via Entity Lookup"
+    />
+  );
+
   const ListActions = () => (
     <TopToolbar>
       {permissions.includes("party_membership.create") && <CreateButton />}
+      {permissions.includes("party_membership.create") &&
+        permissions.includes("entity.lookup") && <CreateViaLookupButton />}
     </TopToolbar>
   );
 
