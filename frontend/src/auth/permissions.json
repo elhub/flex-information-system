@@ -1884,6 +1884,7 @@
         "entity.business_id.read",
         "entity.business_id_type.read",
         "entity.id.read",
+        "entity.lookup",
         "entity.name.read",
         "entity.read",
         "entity.recorded_at.read",
