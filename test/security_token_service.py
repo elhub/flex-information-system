@@ -166,7 +166,7 @@ class SecurityTokenService:
     # memoised method for authentication
     _clients: dict[tuple[TestEntity, str | None], AuthenticatedClient] = {}
 
-    def get_client(self, entity=None, party_name=None):
+    def get_client(self, entity=None, party_name=None, reset=False):
         """
         Get an AuthenticatedClient using client credentials.
 
@@ -174,7 +174,7 @@ class SecurityTokenService:
         If party_name is not None, the returned AuthenticatedClient will be a party.
         """
         if entity is not None:
-            if (entity, party_name) in self._clients:
+            if (entity, party_name) in self._clients and not reset:
                 return self._clients[(entity, party_name)]
             else:
                 client = self._get_client(entity, party_name)
