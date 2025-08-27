@@ -53,6 +53,10 @@ const Toolbar = () => {
         state: {
           party_id: party_id,
           entity_id: lookupResult?.entity_id,
+          // tell the party membership input page not to try to read the name
+          // of the entity: since it is looked up, we have no idea whether
+          // the party doing the lookup has permission to see its details
+          showTechnicalEntityID: true,
         },
       });
     }
