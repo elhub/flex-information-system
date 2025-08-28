@@ -782,43 +782,35 @@ each other in time.
 ## User creation and access control management
 
 To illustrate the auth model (_i.e._, how entities, parties, scopes, _etc._,
-interact with each other), we explain in this section how a new organisation
-is introduced into the system, then autonomously managed by its employees.
+interact with each other), we explain in this section how a organisation is
+modelelled in the system and how access is autonomously managed by its
+employees.
 
-### Bootstrap
+The following diagram shows the end result of how an example organisation and
+its employees are represented in the system.
 
-For a new organisation to function properly in the system, they need at least:
+![Organisation access control management illustration](../diagrams/organisation_management.drawio.png)
 
-* an organisation entity representing the organisation;
-* an organisation party for administrating the organisation in the system;
-* one or several parties with the right market roles so that the organisation
-  can perform the business operations that they need in the FIS;
-* one person entity, so that at least one of the employees can log in to the FIS
-  and assume the market-related parties from above.
+The four black boxes shows how the oranisation itself is modelled in the system.
 
-The organisation party will be owned by the organisation entity, and the
-person entity will initially be a member of all parties defined for the
-organisation.
+* An organisation _entity_ representing the organisation
+* An organisation _party_ for administrating the organisation in the system
+* Two parties with the right market roles so that the organisation can perform
+  the business operations that they need in the FIS
 
-Let us take a new organisation called _Solkraft AS_ that wants to be both an
-_Energy Supplier_ and a _Service Provider_ in the flexibility markets.
-Here is a diagram showing which resources are created in the FIS to represent
-this company:
+All parties are registered as owned by the organization.
 
-![Entity and parties for a new organisation](../diagrams/organisation_registration.drawio.png)
-
-One of the employees of _Solkraft AS_ will contact the FIS operator to get a
-person entity created from their person number and added to the parties on the
-diagram above, so that they can log in as their personal entity, then assume one
-of the parties and act on behalf of the organisation in the FIS.
+The blue and green boxes are persons. Kari is an organisation admin and can
+add/remove users to the parties that the organisation owns. Ola, Diana and Tor
+are regular users with varying access to read and manage data on behalf of the
+two market parties.
 
 ### Autonomous access control management
 
-Once an organisation has one of its employees registered in the system, it is no
-longer required to always contact the FISO to perform administrative operations.
-Indeed, once an employee is granted administrator privileges on the
-organisation, they can add and manage access control for their colleagues
-without involving the FISO.
+One person, in this case Kari, is registered as a admin member of the
+organisation party by the FIS operator. Once Kari is granted
+administrator privileges on the organisation, she can add and manage access
+control for her colleagues without involving the FISO.
 
 What we refer to as _administrator privileges_ here is a certain set of scopes
 on the party membership that makes the employee's person entity a member of the
@@ -838,11 +830,15 @@ operations, _i.e._, the following ones:
   machine access for their colleagues
 
 From the moment an entity is added to the organisation party with administrator
-scopes, the person backing the entity can log in, retrieve entities associated
-to their colleagues based on their person number through entity lookup, and
-add/remove these entities to/from the various parties the organisation has in
-the system, as well as add/remove clients allowing colleagues to act as the
-organisation itself for some machine-automated operations.
+scopes, that person can log in and:
+
+* Retrieve or create entities associated to their colleagues based on their
+  person number through entity lookup.
+* Add/remove these entities to/from the various parties the organisation owns in
+  the system.
+* Add/remove entity clients allowing applications to act as the organisation
+  itself for some machine-automated operations.
+
 The administrator can also tune the scopes for both party memberships and
 entity clients, to allow for precise access control management.
 For instance, they can allow a data analyst in their company to _read_ all the
@@ -852,17 +848,8 @@ restricting by default reduces the risk of making a mistake.
 ### Sequence of actions
 
 Let us show an example of sequence of actions in the system to perform such an
-autonomous access control management.
-Let us assume that an employee of _Solkraft AS_, Kari, contacts the FIS operator
-for the first time asking for an access to the system for her company, then
-adds two of her colleagues, Ola and Tor.
-Ola will perform the operations related to the _Energy Supplier_ role, and Tor
-the _Service Provider_ role.
-She also adds a third colleague, Diana, to all parties with read-only access.
-
-Here are the illustrated operations, as well as the sequence for Ola:
-
-![Organisation access control management illustration](../diagrams/organisation_management.drawio.png)
+autonomous access control management. In this example, FIS operator adds Kari as
+admin and Kari adds Ola as a regular user for the Energy Supplier party.
 
 ![Organisation access control management sequence](../diagrams/org_access_control_management.png)
 
