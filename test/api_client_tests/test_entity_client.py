@@ -152,6 +152,7 @@ def test_entity_client_org(sts):
         body=PartyMembershipUpdateRequest(
             scopes=[
                 AuthScope.MANAGEAUTH,  # login + userinfo
+                AuthScope.READDATA,
                 AuthScope.MANAGEDATAENTITY_CLIENT,
             ],
         ),
@@ -264,7 +265,11 @@ def test_entity_client_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[AuthScope.MANAGEAUTH, AuthScope.MANAGEDATAENTITY_CLIENT],
+            scopes=[
+                AuthScope.MANAGEAUTH,
+                AuthScope.READDATA,
+                AuthScope.MANAGEDATAENTITY_CLIENT,
+            ],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
