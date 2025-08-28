@@ -100,7 +100,7 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | id            |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | entity_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | RC  |
 | name          |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | RU  |
+| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
 | client_secret |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
 | public_key    |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
 | recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
