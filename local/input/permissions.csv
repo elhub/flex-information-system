@@ -7,7 +7,7 @@ entity;business_id;;R;R;R;RC;R;R;R;R;R;R;
 entity;business_id_type;;R;R;R;RC;R;R;R;R;R;R;
 entity;recorded_at;;R;R;R;R;R;R;R;R;R;R;
 entity;recorded_by;;R;R;R;R;R;R;R;R;R;R;
-entity_client;;;;;;;;;;;;D;
+entity_client;;;;;;;;;;;D;D;
 entity_client;id;;R;R;R;R;R;R;R;R;R;R;
 entity_client;entity_id;;R;R;R;R;R;R;R;R;RC;RC;
 entity_client;name;;R;R;R;R;R;R;R;R;RCU;RCU;
