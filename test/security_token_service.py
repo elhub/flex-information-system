@@ -58,6 +58,17 @@ def _find_party_id(entity_client, party_name) -> int:
 class TestEntity(Enum):
     TEST = "Test"
     COMMON = "Common"
+    TEST_ORG = "TestAS"
+
+    # name prefix used to create the parties in the DB
+    def party_name_prefix(self):
+        match self:
+            case TestEntity.TEST:
+                return "Test"
+            case TestEntity.COMMON:
+                return "Common"
+            case TestEntity.TEST_ORG:
+                return "Test"
 
     # make pytest ignore this class
     # https://stackoverflow.com/questions/62460557/cannot-collect-test-class-testmain-because-it-has-a-init-constructor-from
@@ -69,6 +80,8 @@ class TestEntity(Enum):
                 return "3733e21b-5def-400d-8133-06bcda02465e"
             case TestEntity.COMMON:
                 return "df8bee5f-6e60-4a21-8927-e5bcdd4ce768"
+            case TestEntity.TEST_ORG:
+                return "eed86ad4-9d5c-4d83-a93a-e7675e13a977"
 
 
 """
@@ -158,7 +171,7 @@ class SecurityTokenService:
 
         party_id = _find_party_id(
             entity_client,
-            f"{str(entity.value)} {party_name}",
+            f"{str(entity.party_name_prefix())} {party_name}",
         )
         token = self._token_exchange(entity_token, party_id)
         return AuthenticatedClient(base_url=self.api_url, token=token, verify_ssl=False)
@@ -166,7 +179,7 @@ class SecurityTokenService:
     # memoised method for authentication
     _clients: dict[tuple[TestEntity, str | None], AuthenticatedClient] = {}
 
-    def get_client(self, entity=None, party_name=None):
+    def get_client(self, entity=None, party_name=None, reset=False):
         """
         Get an AuthenticatedClient using client credentials.
 
@@ -174,7 +187,7 @@ class SecurityTokenService:
         If party_name is not None, the returned AuthenticatedClient will be a party.
         """
         if entity is not None:
-            if (entity, party_name) in self._clients:
+            if (entity, party_name) in self._clients and not reset:
                 return self._clients[(entity, party_name)]
             else:
                 client = self._get_client(entity, party_name)
