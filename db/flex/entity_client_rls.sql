@@ -41,8 +41,22 @@ USING (
     entity_id = (SELECT flex.current_party_owner())
 );
 -- RLS: ECL-ORG002
-CREATE POLICY "ECL_ORG002" ON entity_client
-FOR ALL
+CREATE POLICY "ECL_ORG002_INSERT" ON entity_client
+FOR INSERT
+TO flex_organisation
+WITH CHECK (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_party_owner())
+);
+CREATE POLICY "ECL_ORG002_UPDATE" ON entity_client
+FOR UPDATE
+TO flex_organisation
+USING (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_party_owner())
+);
+CREATE POLICY "ECL_ORG002_DELETE" ON entity_client
+FOR DELETE
 TO flex_organisation
 USING (
     (SELECT user_is_human())
