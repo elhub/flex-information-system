@@ -82,9 +82,11 @@ begin
   select flex.current_entity() into _entity_id;
 
   if exists (
+    -- entity is member of party
     select 1 from flex.party_membership pm
     where pm.entity_id = _entity_id and pm.party_id = _party_id
   ) or exists (
+    -- entity owns party
     select 1 from flex.party as p
     where p.id = _party_id and p.entity_id = _entity_id
   ) then
@@ -95,9 +97,16 @@ begin
 
   if eid is not null then
     select p.role into role from flex.party p where p.id = _party_id;
+
+    -- get scopes from party membership
     select pm.scopes into l_scopes
     from flex.party_membership pm
     where pm.entity_id = _entity_id and pm.party_id = _party_id;
+
+    -- if not existing, default scopes for party ownership
+    if l_scopes is null or array_length(l_scopes, 1) = 0 then
+      select array['manage:data', 'manage:auth']::text[] into l_scopes;
+    end if;
   else
     select null into role;
     select '{}'::text[] into l_scopes;
