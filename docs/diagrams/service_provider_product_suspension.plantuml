@@ -9,8 +9,55 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
+actor "End User (EU)" as EU
 actor "Service Provider (SP)" as SP
 participant "Flexibility\nInformation System (FIS)" as FIS
 actor "System Operator" as SO
+
+== Suspension of service provider qualification ==
+
+
+SO -> FIS: Request suspension of SP
+activate SO
+deactivate SO 
+
+note left
+    Info: 
+        - id
+        - suspension from-date
+        - reason for suspension
+end note
+
+activate FIS
+FIS -> FIS: Validate request
+FIS -> FIS: Register suspension
+FIS -> FIS: Register suspension on SPG
+
+FIS --> SP: Notify 
+FIS --> EU: Notify
+FIS --> SO: Notify
+deactivate FIS
+
+== Reinstation of service provider qualification ==
+SO -> FIS: Request reinstation of SP
+activate SO
+deactivate SO
+
+activate FIS
+FIS -> FIS: Validate request
+FIS -> FIS: Register reinstation
+FIS -> FIS: Register reinstation on SPG
+
+FIS --> SP: Notify 
+FIS --> EU: Notify
+FIS --> SO: Notify
+deactivate FIS
+
+
+
+
+
+
+
 
 @enduml
