@@ -34,6 +34,7 @@ export const ScopesInput = (props: any) => (
       "use:auth",
       "manage:auth",
     ]}
+    defaultValue={["manage:data", "manage:auth"]}
     {...props}
   />
 );
