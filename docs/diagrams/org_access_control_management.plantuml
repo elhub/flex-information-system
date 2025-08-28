@@ -1,0 +1,85 @@
+@startuml org_access_control_management
+
+!theme plain
+
+title Service Provider (SP) Registration
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Ola" as Ola
+actor "Kari" as Kari
+actor "FIS Operator" as FISO
+participant "Flexibility\nInformation System (FIS)" as FIS
+
+note over FISO
+    The organisation and its parties exist in the system.
+    FISO is ready to give access to the admin user Kari.
+end note
+
+== Organisation admin user ==
+
+Kari -> FISO: Give person number
+activate FISO
+note left of FISO
+040782 54321
+end note
+FISO -> FIS: Entity lookup for Kari's person number
+activate FIS
+return OK
+FISO -> FIS: Add Kari to Solkraft AS (Organisation)
+activate FIS
+note left of FIS
+    Admin scopes:
+    - manage:auth
+    - read:data
+    - use:data:entity:lookup
+    - manage:data:party_membership
+    - manage:data:entity_client
+end note
+return OK
+FISO --> Kari: Notify that access\nhas been given
+deactivate FISO
+activate Kari
+
+== Autonomous access control management ==
+Kari -> Ola: Ask for person number
+activate Ola
+Ola --> Kari: Return person number
+deactivate Ola
+
+note left of Kari
+010170 12345
+end note
+
+Kari -> FIS: Login as Kari then assume Solkraft AS (Organisation)
+activate FIS
+return OK
+Kari -> FIS: Entity lookup for Ola's person number
+activate FIS
+return Entity ID for Ola
+Kari -> FIS: Add Ola to Solkraft AS (Energy Supplier)
+note left of FIS
+    Regular scopes:
+    - manage:auth
+    - manage:data
+end note
+activate FIS
+return OK
+Kari --> Ola: Notify that access\nhas been given
+deactivate Kari
+activate Ola
+
+== Regular user access ==
+
+Ola -> FIS: Login as Ola then assume Solkraft AS (Energy Supplier)
+activate FIS
+return OK
+Ola -> FIS: Perform operations in the system as Solkraft AS (Energy Supplier)
+activate FIS
+return OK
+deactivate Ola
+
+@enduml
