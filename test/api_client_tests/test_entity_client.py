@@ -39,7 +39,7 @@ def sts():
     yield SecurityTokenService()
 
 
-def test_entity_client(sts):
+def test_entity_client_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
     client_ent = sts.get_client(TestEntity.TEST)

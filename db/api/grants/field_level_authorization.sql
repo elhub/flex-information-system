@@ -271,6 +271,10 @@ GRANT UPDATE (
 ) ON TABLE api.entity_client
 TO flex_organisation;
 
+-- changeset flex:api-grant-entity-client-org-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE api.entity_client
+TO flex_organisation;
+
 -- changeset flex:api-grant-entity-client-ent-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     entity_id,

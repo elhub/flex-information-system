@@ -1893,6 +1893,7 @@
         "entity_client.client_secret.read",
         "entity_client.client_secret.update",
         "entity_client.create",
+        "entity_client.delete",
         "entity_client.entity_id.create",
         "entity_client.entity_id.read",
         "entity_client.id.read",
