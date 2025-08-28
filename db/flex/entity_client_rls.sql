@@ -18,3 +18,47 @@ CREATE POLICY "ECL_FISO001" ON entity_client
 FOR SELECT
 TO flex_flexibility_information_system_operator
 USING (true);
+
+-- checks the user is not a machine (entity client login / organisation entity)
+CREATE OR REPLACE FUNCTION user_is_human()
+RETURNS boolean
+SECURITY INVOKER
+LANGUAGE sql
+AS $$
+    -- TODO: also check the user did login without an entity client
+    SELECT EXISTS (
+        SELECT 1 FROM flex.entity AS e
+        WHERE e.id = (SELECT flex.current_entity()) AND e.type = 'person'
+    )
+$$;
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_organisation;
+-- RLS: ECL-ORG001
+CREATE POLICY "ECL_ORG001" ON entity_client
+FOR SELECT
+TO flex_organisation
+USING (
+    entity_id = (SELECT flex.current_party_owner())
+);
+-- RLS: ECL-ORG002
+CREATE POLICY "ECL_ORG002_INSERT" ON entity_client
+FOR INSERT
+TO flex_organisation
+WITH CHECK (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_party_owner())
+);
+CREATE POLICY "ECL_ORG002_UPDATE" ON entity_client
+FOR UPDATE
+TO flex_organisation
+USING (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_party_owner())
+);
+CREATE POLICY "ECL_ORG002_DELETE" ON entity_client
+FOR DELETE
+TO flex_organisation
+USING (
+    (SELECT user_is_human())
+    AND entity_id = (SELECT flex.current_party_owner())
+);

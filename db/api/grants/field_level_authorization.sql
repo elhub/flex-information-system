@@ -241,6 +241,15 @@ GRANT SELECT (
 ) ON TABLE api.entity_client
 TO flex_third_party;
 
+-- changeset flex:api-grant-entity-client-org-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    entity_id,
+    name,
+    client_secret,
+    public_key
+) ON TABLE api.entity_client
+TO flex_organisation;
+
 -- changeset flex:api-grant-entity-client-org-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
@@ -251,6 +260,14 @@ GRANT SELECT (
     public_key,
     recorded_at,
     recorded_by
+) ON TABLE api.entity_client
+TO flex_organisation;
+
+-- changeset flex:api-grant-entity-client-org-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    name,
+    client_secret,
+    public_key
 ) ON TABLE api.entity_client
 TO flex_organisation;
 
@@ -279,7 +296,6 @@ TO flex_entity;
 -- changeset flex:api-grant-entity-client-ent-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
     name,
-    client_id,
     client_secret,
     public_key
 ) ON TABLE api.entity_client

@@ -82,8 +82,16 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE flex.entity_client
 TO flex_third_party;
 
+-- changeset flex:flex-grant-entity-client-org-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE flex.entity_client
+TO flex_organisation;
+
 -- changeset flex:flex-grant-entity-client-org-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.entity_client
+TO flex_organisation;
+
+-- changeset flex:flex-grant-entity-client-org-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE flex.entity_client
 TO flex_organisation;
 
 -- changeset flex:flex-grant-entity-client-ent-insert endDelimiter:-- runAlways:true
