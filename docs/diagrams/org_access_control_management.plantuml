@@ -9,8 +9,6 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-actor "Diana" as Diana
-actor "Tor" as Tor
 actor "Ola" as Ola
 actor "Kari" as Kari
 actor "FIS Operator" as FISO
@@ -18,150 +16,65 @@ participant "Flexibility\nInformation System (FIS)" as FIS
 
 == Bootstrap: Kari & FISO ==
 
-Kari -> FISO: Request access to FIS
-activate FISO
-FISO -> FIS: Ensure entities and parties for Solkraft AS are in the system
-activate FIS
-note left of FIS
+note over FIS
+Entities and parties for Solkraft AS in the system:
 - Entity: Solkraft AS
 - Party: Solkraft AS (Organisation)
 - Party: Solkraft AS (Energy Supplier)
 - Party: Solkraft AS (Service Provider)
 end note
-return OK
-FISO -> FIS: Create person entity for Kari
+Kari -> FISO: Give person number
+note left of FISO
+040782 54321
+end note
+FISO -> FIS: Create entity for Kari
 activate FIS
 return OK
 FISO -> FIS: Add Kari to Solkraft AS (Organisation)
+activate FIS
 note left of FIS
 Admin scopes:
+- manage:auth
+- read:data
 - use:data:entity:lookup
 - manage:data:party_membership
 - manage:data:entity_client
 end note
-activate FIS
 return OK
-return Login information
 
-== Administration: Kari (autonomously) ==
+== Administration: Kari ==
 
-Kari -> FIS: Login as Kari
-activate FIS
-return OK
-note over Kari
-Entity: Kari
-Party: none
+Ola -> Kari: Give person number
+note left of Kari
+010170 12345
 end note
+
+Kari -> FIS: Login as Kari then assume Solkraft AS (Organisation)
+activate FIS
+return OK
 activate Kari
-Kari -> FIS: Assume Solkraft AS (Organisation)
-activate FIS
-return OK
-note over Kari
-Entity: Kari
-Party: Solkraft AS (Organisation)
-end note
-Kari -> FIS: Entity lookup for Ola's person number (010170 12345)
+Kari -> FIS: Entity lookup for Ola's person number
 activate FIS
 return Entity ID for Ola
 Kari -> FIS: Add Ola to Solkraft AS (Energy Supplier)
 note left of FIS
 Regular scopes:
+- manage:auth
 - manage:data
 end note
 activate FIS
 return OK
-Kari -> FIS: Entity lookup for Tor's person number (020272 67890)
-activate FIS
-return Entity ID for Tor
-Kari -> FIS: Add Tor to Solkraft AS (Service Provider)
-note left of FIS
-Regular scopes:
-- manage:data
-end note
-activate FIS
-return OK
-Kari -> FIS: Entity lookup for Diana's person number (030201 112233)
-activate FIS
-return Entity ID for Diana
-Kari -> FIS: Add Diana to Solkraft AS (Service Provider) and Solkraft AS (Energy Supplier)
-note left of FIS
-Read-only scopes:
-- read:data
-end note
-activate FIS
-return OK
-Kari -> FIS: Logout
 deactivate Kari
 
 == Energy Supplier operations: Ola ==
 
-Ola -> FIS: Login as Ola
+Ola -> FIS: Login as Ola then assume Solkraft AS (Energy Supplier)
 activate FIS
 return OK
-note over Ola
-Entity: Ola
-Party: none
-end note
 activate Ola
-Ola -> FIS: Assume Solkraft AS (Energy Supplier)
-activate FIS
-return OK
-note over Ola
-Entity: Ola
-Party: Solkraft AS (Energy Supplier)
-end note
 Ola -> FIS: Perform operations in the system as Solkraft AS (Energy Supplier)
-Ola -> FIS: Logout
+activate FIS
+return OK
 deactivate Ola
-
-== Service Provider operations: Tor ==
-
-Tor -> FIS: Login as Tor
-activate FIS
-return OK
-note over Tor
-Entity: Tor
-Party: none
-end note
-activate Tor
-Tor -> FIS: Assume Solkraft AS (Service Provider)
-activate FIS
-return OK
-note over Tor
-Entity: Tor
-Party: Solkraft AS (Service Provider)
-end note
-Tor -> FIS: Perform operations in the system as Solkraft AS (Service Provider)
-Tor -> FIS: Logout
-deactivate Tor
-
-== Read-only operations: Diana ==
-
-Diana -> FIS: Login as Diana
-activate FIS
-return OK
-note over Diana
-Entity: Diana
-Party: none
-end note
-activate Diana
-Diana -> FIS: Assume Solkraft AS (Energy Supplier)
-activate FIS
-return OK
-note over Diana
-Entity: Diana
-Party: Solkraft AS (Energy Supplier)
-end note
-Diana -> FIS: Perform read-only operations in the system as Solkraft AS (Energy Supplier)
-Diana -> FIS: Assume Solkraft AS (Service Provider)
-activate FIS
-return OK
-note over Diana
-Entity: Diana
-Party: Solkraft AS (Service Provider)
-end note
-Diana -> FIS: Perform read-only operations in the system as Solkraft AS (Service Provider)
-Diana -> FIS: Logout
-deactivate Diana
 
 @enduml
