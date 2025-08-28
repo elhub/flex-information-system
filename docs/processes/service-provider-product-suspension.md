@@ -9,10 +9,10 @@ Reasons for suspension can be:
 
 The system operator will set a suspesion from-date. 
 The service provider will receive information about the suspension with reason for suspension. 
-The impacted sysem operator and final custommer will be informed of the suspension.
+The system operator and final custommer will be notified of the suspension.
 Other communication between service provider and system operator will happen outside of FIS.
 
-As a consequence all SPGs accociated with the suspended SP product will also be suspended. 
+The suspension of the SP qualification will impact ready for market. 
 
 ## Prerequisites
 

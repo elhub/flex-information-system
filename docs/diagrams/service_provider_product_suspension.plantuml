@@ -31,7 +31,6 @@ end note
 activate FIS
 FIS -> FIS: Validate request
 FIS -> FIS: Register suspension
-FIS -> FIS: Register suspension on SPG
 
 FIS --> SP: Notify 
 FIS --> EU: Notify
@@ -46,7 +45,6 @@ deactivate SO
 activate FIS
 FIS -> FIS: Validate request
 FIS -> FIS: Register reinstation
-FIS -> FIS: Register reinstation on SPG
 
 FIS --> SP: Notify 
 FIS --> EU: Notify
