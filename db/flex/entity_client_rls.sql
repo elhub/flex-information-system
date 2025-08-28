@@ -35,6 +35,13 @@ $$;
 GRANT INSERT, SELECT, UPDATE, DELETE ON entity_client TO flex_organisation;
 -- RLS: ECL-ORG001
 CREATE POLICY "ECL_ORG001" ON entity_client
+FOR SELECT
+TO flex_organisation
+USING (
+    entity_id = (SELECT flex.current_party_owner())
+);
+-- RLS: ECL-ORG002
+CREATE POLICY "ECL_ORG002" ON entity_client
 FOR ALL
 TO flex_organisation
 USING (

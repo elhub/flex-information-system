@@ -74,9 +74,10 @@ No policies.
 
 #### Organisation
 
-| Policy key | Policy                                                                                                         | Status |
-|------------|----------------------------------------------------------------------------------------------------------------|--------|
-| ECL-ORG001 | Read, create, update and delete clients on the entity owning the organisation party, when the user is a human. | DONE   |
+| Policy key | Policy                                                                                                   | Status |
+|------------|----------------------------------------------------------------------------------------------------------|--------|
+| ECL-ORG001 | Read clients on the entity owning the organisation party.                                                | DONE   |
+| ECL-ORG002 | Create, update and delete clients on the entity owning the organisation party, when the user is a human. | DONE   |
 
 #### System Operator
 

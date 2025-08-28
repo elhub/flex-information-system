@@ -11,7 +11,7 @@ entity_client;;;;;;;;;;;D;D;
 entity_client;id;;R;R;R;R;R;R;R;R;R;R;
 entity_client;entity_id;;R;R;R;R;R;R;R;R;RC;RC;
 entity_client;name;;R;R;R;R;R;R;R;R;RCU;RCU;
-entity_client;client_id;;R;R;R;R;R;R;R;R;RU;RU;
+entity_client;client_id;;R;R;R;R;R;R;R;R;R;R;
 entity_client;client_secret;;R;R;R;R;R;R;R;R;RCU;RCU;
 entity_client;public_key;;R;R;R;R;R;R;R;R;RCU;RCU;
 entity_client;recorded_at;;R;R;R;R;R;R;R;R;R;R;

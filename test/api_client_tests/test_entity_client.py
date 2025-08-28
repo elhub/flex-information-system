@@ -142,6 +142,7 @@ def test_entity_client_org(sts):
     org_ent_id = p.entity_id
 
     # RLS: ECL-ORG001
+    # RLS: ECL-ORG002
 
     # set admin scope and re-log-in
 
