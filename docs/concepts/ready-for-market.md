@@ -1,10 +1,13 @@
 # Ready for market
 
-Before a service provider can use a service providing group (SPG) in the market, they need to know that the SPG is ready. 
+Before a service provider can use a service providing group (SPG) in the market,
+the SPG must be ready.
 
-This document lists the criterias for when an SPG is ready for market in respect of processes in the Flexibility Information System. The document can be used as a checklist for checking if an SPG is ready for market.  
+This document lists the criterias for when an SPG is considered as ready for
+market. It contains a description of what must be checked and also a detailed
+checklist.
 
-## What does SP need to determine if a service providing group (SPG) is ready for market?
+## What makes a SPG ready for market?
 
 * Is SP qualified for product?
 * Are the CUs in the SPG validated?
@@ -12,9 +15,10 @@ This document lists the criterias for when an SPG is ready for market in respect
 * Is SPG prequalified or verified for product?
 * Are there any suspended relations?
 * Any temporary limits?
-* Any other limitations like connection with condition (like TPV or UKT)? 
+* Any other limitations like connection with condition (like TPV or UKT)?
 
-To answer several of these questions, the SP needs to understand how to read statuses and related timestamps.
+To answer several of these questions, the SP needs to understand how to read
+statuses and related timestamps.
 
 ### Overview of statuses
 
@@ -74,30 +78,42 @@ Examples:
 * Temporary limits
 * Connection with conditions (like TPV, UKT)
 
-#### Ready for market checklist
+### Ready for market checklist
 
 If a step in the checklist result in `not ready for market`, the SPG is
-considered not ready, and there is no need to continue the checklist. If SPG passes a step, then proceed to the next step. If all steps are passed, the SPG is ready
-for market.
+considered not ready, and there is no need to continue the checklist. If SPG
+passes a step, then proceed to the next step. If all steps are passed, the SPG
+is ready for market.
 
-A prerequisite for an SPG to be ready for market is that the controllable units (CU) that are going to be used in the SPG are ready for market. A checklist for CUs is added at the end of the page. 
+There are three "levels" that must be checked when considering if a SPG is ready.
 
+* `Service Provider` - The SP owning the SPG
+* `Service Providing Group` - The group itself and its grid and product (pre)qualifications
+* `Controllable Unit` - The individual units that are part of the SPG
 
+The following sections outline the checklist for each level.
 
-| # | Process/check                    | Description                             | Result                                                                             |
-|---|----------------------------------|-----------------------------------------|------------------------------------------------------------------------------------|
-| 1 | SPG status                       | Check SPG status                        | If SPG is deactivated, then not ready for market.                                  |
-| 2 | SPG grid prequalification status | Check SPG grid prequalification status. | If SPG grid prequalification status is  `not_approved`, then not ready for market. |
-|3|SPG grid prequalification status timestamp | Check if grid prequalification timestamp is present.   | If timestamp is missing, then not ready for market.    
-|4|SPG grid prequalification suspension       | Check if SPG grid prequalification is suspended        | If suspended, then not ready for market.                                           |
-|5|SP product application status              | Check SP product application status.                   | If status is `not_qualified`, then not ready for market.|
-|6| SP product application status timestamp    | Check if SP product application timestamp is present.  | If timestamp is missing, then not ready for market. |
-|7|SP product application suspension          | Check if SP product application is suspended           | If suspended, then not ready for market.                                           |
-|8| SPG product application status             | Check SPG product application status                   | If SPG product application status is `rejected`, then not ready for market.        |
-|9|SPG product application status timestamp   | Check if SPG product application timestamp is present. | If timestamp is missing, then not ready for market. |
-|10|SPG product application status supension   | Check if SPG product application is suspended.         | If suspended, then not ready for market.                                           |
+#### Service provider checklist
 
-##### Checklist for CU to be ready for market
+| # | Process/check                           | Description                                           | Result                                                   |
+|---|-----------------------------------------|-------------------------------------------------------|----------------------------------------------------------|
+| 1 | SP product application status           | Check SP product application status.                  | If status is `not_qualified`, then not ready for market. |
+| 2 | SP product application status timestamp | Check if SP product application timestamp is present. | If timestamp is missing, then not ready for market.      |
+| 3 | SP product application suspension       | Check if SP product application is suspended          | If suspended, then not ready for market.                 |
+
+#### Service providing group checklist
+
+| # | Process/check                              | Description                                            | Result                                                                             |
+|---|--------------------------------------------|--------------------------------------------------------|------------------------------------------------------------------------------------|
+| 1 | SPG status                                 | Check SPG status                                       | If SPG is deactivated, then not ready for market.                                  |
+| 2 | SPG grid prequalification status           | Check SPG grid prequalification status.                | If SPG grid prequalification status is  `not_approved`, then not ready for market. |
+| 3 | SPG grid prequalification status timestamp | Check if grid prequalification timestamp is present.   | If timestamp is missing, then not ready for market.                                |
+| 4 | SPG grid prequalification suspension       | Check if SPG grid prequalification is suspended        | If suspended, then not ready for market.                                           |
+| 5 | SPG product application status             | Check SPG product application status                   | If SPG product application status is `rejected`, then not ready for market.        |
+| 6 | SPG product application status timestamp   | Check if SPG product application timestamp is present. | If timestamp is missing, then not ready for market.                                |
+| 7 | SPG product application status supension   | Check if SPG product application is suspended.         | If suspended, then not ready for market.                                           |
+
+#### Controllable unit checklist
 
 | # | Process/check                       | Description                               | Result                                                                          |
 |---|-------------------------------------|-------------------------------------------|---------------------------------------------------------------------------------|
