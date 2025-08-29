@@ -63,7 +63,7 @@ AS $$
 $$;
 
 -- changeset flex:auth-assume-party runAlways:true endDelimiter:--
-CREATE OR REPLACE FUNCTION auth.assume_party(_party_id bigint)
+CREATE OR REPLACE FUNCTION auth.assume_party(in_party_id bigint)
 RETURNS TABLE (
     entity_id bigint,
     eid uuid,
@@ -74,36 +74,42 @@ SECURITY DEFINER VOLATILE
 LANGUAGE plpgsql
 AS $$
 declare
-  _entity_id bigint;
-  eid uuid;
-  role text;
+  l_party_membership record;
+  l_entity_id bigint;
+  l_eid uuid;
+  l_role text;
   l_scopes text[];
 begin
-  select flex.current_entity() into _entity_id;
+  select flex.current_entity() into l_entity_id;
 
-  if exists (
-    select 1 from flex.party_membership pm
-    where pm.entity_id = _entity_id and pm.party_id = _party_id
-  ) or exists (
+  select * into l_party_membership
+  from flex.party_membership as pm
+  where pm.entity_id = l_entity_id and pm.party_id = in_party_id;
+
+  if l_party_membership is not null then
+    -- entity is member of party
+    select flex.identity_external_id(l_entity_id, in_party_id) into l_eid;
+    select p.role into l_role from flex.party as p where p.id = in_party_id;
+    select l_party_membership.scopes into l_scopes;
+  elsif exists (
     select 1 from flex.party as p
-    where p.id = _party_id and p.entity_id = _entity_id
+    where p.id = in_party_id and p.entity_id = l_entity_id
   ) then
-    select flex.identity_external_id(_entity_id, _party_id) into eid;
+    -- entity owns party
+    select flex.identity_external_id(l_entity_id, in_party_id) into l_eid;
+    select p.role into l_role from flex.party as p where p.id = in_party_id;
+    select array['manage:data', 'manage:auth']::text[] into l_scopes;
   else
-    select null into eid;
-  end if;
-
-  if eid is not null then
-    select p.role into role from flex.party p where p.id = _party_id;
-    select pm.scopes into l_scopes
-    from flex.party_membership pm
-    where pm.entity_id = _entity_id and pm.party_id = _party_id;
-  else
-    select null into role;
+    select null into l_eid;
+    select null into l_role;
     select '{}'::text[] into l_scopes;
   end if;
 
-  return query select _entity_id as entity_id, eid, role, l_scopes as scopes;
+  return query select
+    l_entity_id as entity_id,
+    l_eid as eid,
+    l_role as role,
+    l_scopes as scopes;
 end;
 $$;
 
