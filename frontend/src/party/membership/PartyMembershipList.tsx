@@ -15,7 +15,7 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
-import { ScopesField } from "./components";
+import { ScopesField } from "../../components/scopes";
 
 export const PartyMembershipList = () => {
   // id of the SPG

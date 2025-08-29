@@ -7,12 +7,14 @@ import {
   TopToolbar,
   usePermissions,
   useRecordContext,
+  ReferenceField,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { ScopesField } from "../../components/scopes";
 
 export const EntityClientList = () => {
   // id of the entity
@@ -56,6 +58,14 @@ export const EntityClientList = () => {
             <TextField source="id" label="ID" />
             <TextField source="client_id" label="Client ID" />
             <TextField source="name" />
+            <ReferenceField
+              source="party_id"
+              reference="party"
+              sortable={false}
+            >
+              <TextField source="name" />
+            </ReferenceField>
+            <ScopesField source="scopes" />
             <DateField source="recorded_at" showTime />
             <IdentityField source="recorded_by" />
             {permissions.includes("entity_client.delete") && (

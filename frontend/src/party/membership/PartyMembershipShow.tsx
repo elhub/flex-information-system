@@ -15,7 +15,7 @@ import { DateField } from "../../components/datetime";
 import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
-import { ScopesField } from "./components";
+import { ScopesField } from "../../components/scopes";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 

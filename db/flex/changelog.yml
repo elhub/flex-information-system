@@ -183,6 +183,10 @@ databaseChangeLog:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true
 
+  - include:
+      file: ./entity_client_migrations.sql
+      relativeToChangelogFile: true
+
   # RLS, grants
   - includeAll:
       path: ./
