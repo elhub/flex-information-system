@@ -1,4 +1,4 @@
-import { SimpleForm, useRecordContext } from "react-admin";
+import { NumberInput, SimpleForm, useRecordContext } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import {
   AutocompleteReferenceInput,
@@ -30,7 +30,11 @@ export const PartyMembershipInput = () => {
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
           <PartyReferenceInput source="party_id" noFilter readOnly />
-          <AutocompleteReferenceInput source="entity_id" reference="entity" />
+          {overrideRecord?.showTechnicalEntityID ? (
+            <NumberInput source="entity_id" readOnly />
+          ) : (
+            <AutocompleteReferenceInput source="entity_id" reference="entity" />
+          )}
         </InputStack>
         <ScopesInput source="scopes" />
       </Stack>

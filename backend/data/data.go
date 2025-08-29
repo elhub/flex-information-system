@@ -473,7 +473,12 @@ func (data *api) entityLookupHandler(
 		return
 	}
 
-	if rd.Role() != "flex_flexibility_information_system_operator" {
+	allowedRoles := []string{
+		"flex_flexibility_information_system_operator",
+		"flex_organisation",
+	}
+
+	if !slices.Contains(allowedRoles, rd.Role()) {
 		writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
 			Message: "user cannot perform this operation",
 		})

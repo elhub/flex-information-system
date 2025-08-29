@@ -97,7 +97,9 @@ No policies.
 
 #### Organisation
 
-No policies.
+| Policy key | Policy                                                            | Status |
+|------------|-------------------------------------------------------------------|--------|
+| ENT-ORG001 | Read all entities belonging to parties owned by the organisation. | DONE   |
 
 #### System Operator
 
