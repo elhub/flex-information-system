@@ -34,6 +34,7 @@ export const PartyList = () => {
           id: "flexibility_information_system_operator",
           name: "Flexibility Information System Operator",
         },
+        { id: "organisation", name: "Organisation" },
         { id: "market_operator", name: "Market Operator" },
         { id: "service_provider", name: "Service Provider" },
         { id: "system_operator", name: "System Operator" },
