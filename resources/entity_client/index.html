@@ -1704,7 +1704,7 @@
         
   
   <span class="md-ellipsis">
-    Authorisation
+    Auth
     
   </span>
   
@@ -2181,7 +2181,27 @@ resource. The default policy is <strong>deny</strong>.</p>
 <h4 id="market-operator">Market Operator</h4>
 <p>No policies.</p>
 <h4 id="organisation">Organisation</h4>
-<p>No policies.</p>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ECL-ORG001</td>
+<td>Read clients on the entity owning the organisation party.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>ECL-ORG002</td>
+<td>Create, update and delete clients on the entity owning the organisation party, when the user is a human.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
 <h4 id="system-operator">System Operator</h4>
 <p>No policies.</p>
 <h4 id="service-provider">Service Provider</h4>
@@ -2231,7 +2251,7 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
-<td>R</td>
+<td>RC</td>
 </tr>
 <tr>
 <td>name</td>
@@ -2244,7 +2264,7 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
-<td>R</td>
+<td>RCU</td>
 </tr>
 <tr>
 <td>client_id</td>
@@ -2270,7 +2290,7 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
-<td>R</td>
+<td>RCU</td>
 </tr>
 <tr>
 <td>public_key</td>
@@ -2283,7 +2303,7 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
-<td>R</td>
+<td>RCU</td>
 </tr>
 <tr>
 <td>recorded_at</td>

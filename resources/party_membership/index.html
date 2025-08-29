@@ -1704,7 +1704,7 @@
         
   
   <span class="md-ellipsis">
-    Authorisation
+    Auth
     
   </span>
   
@@ -2095,6 +2095,12 @@ persons or organisations to parties.</p>
 <td><a href="../entity/#field-id">entity.id</a></td>
 </tr>
 <tr>
+<td><a name="field-scopes" href="#field-scopes">scopes</a></td>
+<td>List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.</td>
+<td><br/>Required<br/>Array</td>
+<td></td>
+</tr>
+<tr>
 <td><a name="field-recorded_at" href="#field-recorded_at">recorded_at</a></td>
 <td>When the resource was recorded (created or updated) in the system.</td>
 <td>timestamp with time zone<br/>Read only</td>
@@ -2198,7 +2204,22 @@ resource. The default policy is <strong>deny</strong>.</p>
 <h4 id="market-operator">Market Operator</h4>
 <p>No policies.</p>
 <h4 id="organisation">Organisation</h4>
-<p>No policies.</p>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PTYM-ORG001</td>
+<td>Read, create, update and delete PTYM on all parties owned by the entity owning the organisation party.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
 <h4 id="system-operator">System Operator</h4>
 <p>No policies.</p>
 <h4 id="service-provider">Service Provider</h4>
@@ -2248,7 +2269,7 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
-<td>R</td>
+<td>RC</td>
 </tr>
 <tr>
 <td>party_id</td>
@@ -2261,7 +2282,20 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
+<td>RC</td>
+</tr>
+<tr>
+<td>scopes</td>
+<td></td>
 <td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
 </tr>
 <tr>
 <td>recorded_at</td>
