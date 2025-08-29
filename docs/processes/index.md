@@ -129,7 +129,7 @@ service provider.
 Ending the service provider contract on a controllable unit. Initiated by end
 user, implicit contract termination or service provider.
 
-#### Suspension of controllable unit
+#### Controllable unit suspension
 
 Entitled parties can suspend a controllable unit.
 
@@ -144,6 +144,10 @@ Removing a controllable unit from the system. Must not be part of any SPG.
 Registering a new service provider and approval by the flexibility information
 system operator.
 
+#### Service provider suspension
+
+Entitled parties, such as the regulator, can suspend a service provider.
+
 #### Service provider update
 
 Update of service provider information from service provider.
@@ -156,9 +160,10 @@ wants to offer to that specific system operator. The procuring system operator
 will qualify the service provider for the product(s). Includes communication
 test.
 
-#### Service provider suspension
+#### Service provider product suspension
 
-Suspension of a service provider initiated by system operator.
+Suspension of a service provider product application and qualification initiated
+by system operator.
 
 #### Service provider de-registration
 
@@ -174,6 +179,11 @@ service providing groups.
 
 Registering a new service providing group. Includes grid prequalification.
 
+#### Service providing group suspension
+
+Suspension of a service providing group grid prequalification initiated by
+system operator.
+
 #### Update service providing group
 
 Update of service providing group information from service provider.
@@ -186,11 +196,6 @@ Assigning controllable units to a group from service provider.
 
 Removing controllable units from a group from service provider.
 
-#### Suspension of service providing groups
-
-This process is used to suspend the prequalification of a SPG.
-Initiated by system operator.
-
 #### De-register service providing group
 
 Removing a service providing group from the system.
@@ -201,6 +206,11 @@ Service providers apply for product types with their SPGs. This includes product
 pre-qualification that might end in temporary qualification until the product
 verification is concluded. Includes procuring system operators to confirm the
 SPG characteristics registered by the service provider.
+
+#### Service providing group product suspension
+
+This process is used to suspend the prequalification of a SPG.
+Initiated by system operator.
 
 ### Product
 
