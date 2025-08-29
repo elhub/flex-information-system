@@ -120,6 +120,8 @@ type EntityClient struct {
 	EntityID     int
 	Name         *string
 	ClientID     string
+	PartyID      int
+	Scopes       []string
 	ClientSecret *string
 	PublicKey    *string
 	RecordedBy   int

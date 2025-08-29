@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Type, TypeVar, Union, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.auth_scope import AuthScope
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="EntityClientCreateRequest")
@@ -17,6 +18,13 @@ class EntityClientCreateRequest:
             name (Union[None, Unset, str]): Name of the client. Example: Laptop.
             client_id (Union[Unset, str]): The identifier of the entity. For use with client credentials authentication
                 method. Example: addr@flex.test.
+            party_id (Union[Unset, int]): Reference to the party this client allows to assume. A null value means the client
+                cannot assume any party. Example: 30.
+            scopes (Union[Unset, List[AuthScope]]): List of scopes granted to the user when it logs in as an entity or when
+                it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be
+                kept.
+                Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+                Example: ['read:data'].
             client_secret (Union[None, Unset, str]): The secret of the entity. For use with client credentials
                 authentication method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
             public_key (Union[None, Unset, str]): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with
@@ -31,6 +39,8 @@ class EntityClientCreateRequest:
 
     name: Union[None, Unset, str] = UNSET
     client_id: Union[Unset, str] = UNSET
+    party_id: Union[Unset, int] = UNSET
+    scopes: Union[Unset, List[AuthScope]] = UNSET
     client_secret: Union[None, Unset, str] = UNSET
     public_key: Union[None, Unset, str] = UNSET
     entity_id: Union[Unset, int] = UNSET
@@ -44,6 +54,15 @@ class EntityClientCreateRequest:
             name = self.name
 
         client_id = self.client_id
+
+        party_id = self.party_id
+
+        scopes: Union[Unset, List[str]] = UNSET
+        if not isinstance(self.scopes, Unset):
+            scopes = []
+            for scopes_item_data in self.scopes:
+                scopes_item = scopes_item_data.value
+                scopes.append(scopes_item)
 
         client_secret: Union[None, Unset, str]
         if isinstance(self.client_secret, Unset):
@@ -66,6 +85,10 @@ class EntityClientCreateRequest:
             field_dict["name"] = name
         if client_id is not UNSET:
             field_dict["client_id"] = client_id
+        if party_id is not UNSET:
+            field_dict["party_id"] = party_id
+        if scopes is not UNSET:
+            field_dict["scopes"] = scopes
         if client_secret is not UNSET:
             field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
@@ -90,6 +113,15 @@ class EntityClientCreateRequest:
 
         client_id = d.pop("client_id", UNSET)
 
+        party_id = d.pop("party_id", UNSET)
+
+        scopes = []
+        _scopes = d.pop("scopes", UNSET)
+        for scopes_item_data in _scopes or []:
+            scopes_item = AuthScope(scopes_item_data)
+
+            scopes.append(scopes_item)
+
         def _parse_client_secret(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
@@ -113,6 +145,8 @@ class EntityClientCreateRequest:
         entity_client_create_request = cls(
             name=name,
             client_id=client_id,
+            party_id=party_id,
+            scopes=scopes,
             client_secret=client_secret,
             public_key=public_key,
             entity_id=entity_id,

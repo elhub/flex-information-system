@@ -7,6 +7,7 @@ import {
 import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
+import { ScopesInput } from "../../components/scopes";
 
 // common layout to create and edit pages
 export const EntityClientInput = () => {
@@ -28,6 +29,8 @@ export const EntityClientInput = () => {
         />
         <TextInput source="client_id" label="Client ID" />
         <TextInput source="name" />
+        <AutocompleteReferenceInput source="party_id" reference="party" />
+        <ScopesInput source="scopes" />
         <PasswordInput source="client_secret" />
         <TextInput
           source="public_key"

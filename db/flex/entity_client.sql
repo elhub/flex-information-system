@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS entity_client (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     entity_id bigint NOT NULL REFERENCES entity (id),
     client_id uuid NOT NULL UNIQUE DEFAULT (public.uuid_generate_v4()),
+    party_id bigint,
+    scopes flex.scope [] NOT NULL,
     name text NULL CHECK (char_length(name) <= 256),
     client_secret text NULL,
     public_key text NULL,
@@ -17,6 +19,11 @@ CREATE TABLE IF NOT EXISTS entity_client (
     CONSTRAINT check_public_key CHECK (
         public_key IS null
         OR public_key ~ '^-----BEGIN PUBLIC KEY-----\nMIIB[A-Za-z0-9+=\/\n]*\n-----END PUBLIC KEY-----$' -- noqa
+    ),
+    CONSTRAINT fk_entity_client_party_id FOREIGN KEY (party_id)
+    REFERENCES party (id),
+    CONSTRAINT check_scopes_not_empty CHECK (
+        array_length(scopes, 1) > 0
     )
 );
 

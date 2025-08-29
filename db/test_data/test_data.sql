@@ -658,10 +658,10 @@ BEGIN
 
   -- add clients
 
-  INSERT INTO flex.entity_client (entity_id, name)
+  INSERT INTO flex.entity_client (entity_id, name, scopes)
   VALUES
-  (entity_id_person, 'PC #1'),
-  (entity_id_org, 'Laptop #4');
+  (entity_id_person, 'PC #1', '{manage:auth, manage:data}'::text[]),
+  (entity_id_org, 'Laptop #4', '{manage:auth, manage:data}'::text[]);
 
   -- end user parties
 

@@ -58,7 +58,11 @@ def test_entity_client_fiso(sts):
     # endpoint: POST /entity_client
     clt = create_entity_client.sync(
         client=client_ent,
-        body=EntityClientCreateRequest(entity_id=ent_id, name="test client name"),
+        body=EntityClientCreateRequest(
+            entity_id=ent_id,
+            name="test client name",
+            scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+        ),
     )
     assert isinstance(clt, EntityClientResponse)
 
@@ -92,13 +96,21 @@ def test_entity_client_fiso(sts):
 
     e = create_entity_client.sync(
         client=client_other_ent,
-        body=EntityClientCreateRequest(entity_id=ent_id, name="test client name"),
+        body=EntityClientCreateRequest(
+            entity_id=ent_id,
+            name="test client name",
+            scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+        ),
     )
     assert isinstance(e, ErrorMessage)
 
     e = create_entity_client.sync(
         client=client_fiso,
-        body=EntityClientCreateRequest(entity_id=ent_id, name="test client name"),
+        body=EntityClientCreateRequest(
+            entity_id=ent_id,
+            name="test client name",
+            scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+        ),
     )
     assert isinstance(e, ErrorMessage)
 
@@ -171,7 +183,11 @@ def test_entity_client_org(sts):
 
     clt = create_entity_client.sync(
         client=client_org,
-        body=EntityClientCreateRequest(entity_id=org_ent_id, name="test client name"),
+        body=EntityClientCreateRequest(
+            entity_id=org_ent_id,
+            name="test client name",
+            scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+        ),
     )
     assert isinstance(clt, EntityClientResponse)
 
@@ -215,7 +231,11 @@ def test_entity_client_org(sts):
 
     e = create_entity_client.sync(
         client=client_org_with_org_ent,
-        body=EntityClientCreateRequest(entity_id=org_ent_id, name="test client name"),
+        body=EntityClientCreateRequest(
+            entity_id=org_ent_id,
+            name="test client name",
+            scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+        ),
     )
     assert isinstance(e, ErrorMessage)
 

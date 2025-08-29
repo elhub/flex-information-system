@@ -1373,6 +1373,23 @@
                         "type": "string",
                         "example": "addr@flex.test"
                     },
+                    "party_id": {
+                        "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "scopes": {
+                        "description": "List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.\nScopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/auth_scope"
+                        },
+                        "nullable": false,
+                        "example": [
+                            "read:data"
+                        ]
+                    },
                     "client_secret": {
                         "description": "The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.",
                         "format": "text",
@@ -1421,7 +1438,9 @@
                     {
                         "required": [
                             "entity_id",
-                            "client_id"
+                            "client_id",
+                            "party_id",
+                            "scopes"
                         ]
                     }
                 ],
@@ -1463,6 +1482,8 @@
                             "id",
                             "entity_id",
                             "client_id",
+                            "party_id",
+                            "scopes",
                             "recorded_at",
                             "recorded_by"
                         ]
@@ -8765,6 +8786,16 @@
                     },
                     {
                         "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
+                        "name": "party_id"
+                    },
+                    {
+                        "in": "query",
                         "name": "name",
                         "schema": {
                             "type": "string"
@@ -9092,6 +9123,13 @@
                                     "path.id": "$response.body#/entity_id"
                                 },
                                 "description": "The `entity_id` value returned in the response can be used as the `id` parameter in `GET /entity/{id}`."
+                            },
+                            "party_id": {
+                                "operationId": "read_party",
+                                "parameters": {
+                                    "path.id": "$response.body#/party_id"
+                                },
+                                "description": "The `party_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
                             }
                         }
                     },

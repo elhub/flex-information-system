@@ -25,7 +25,7 @@ import {
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
-import { ScopesField } from "./party/membership/components";
+import { ScopesField } from "./components/scopes";
 
 export const AssumePartyPage = () => {
   const [loading, setLoading] = useState(false);

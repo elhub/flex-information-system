@@ -147,6 +147,8 @@ CREATE TABLE entity_client (
     entity_id bigint NOT NULL,
     name text NULL,
     client_id text NOT NULL,
+    party_id bigint NOT NULL,
+    scopes text [] NOT NULL,
     client_secret text NULL,
     public_key text NULL,
     recorded_by bigint NOT NULL,
