@@ -15,6 +15,7 @@ import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
+import { ScopesField } from "../../components/scopes";
 
 export const EntityClientShow = () => {
   const { permissions } = usePermissions();
@@ -53,6 +54,10 @@ export const EntityClientShow = () => {
             </ReferenceField>
             <TextField source="name" />
             <TextField source="client_id" label="Client ID" />
+            <ReferenceField source="party_id" reference="party" link="show">
+              <TextField source="name" />
+            </ReferenceField>
+            <ScopesField source="scopes" />
             <TextField source="client_secret" />
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>

@@ -16,6 +16,7 @@ def _get_kwargs(
     *,
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -40,6 +41,8 @@ def _get_kwargs(
     params["id"] = id
 
     params["entity_id"] = entity_id
+
+    params["party_id"] = party_id
 
     params["name"] = name
 
@@ -144,6 +147,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -158,6 +162,7 @@ def sync_detailed(
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
         name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -178,6 +183,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         id=id,
         entity_id=entity_id,
+        party_id=party_id,
         name=name,
         select=select,
         order=order,
@@ -200,6 +206,7 @@ def sync(
     client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -214,6 +221,7 @@ def sync(
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
         name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -235,6 +243,7 @@ def sync(
         client=client,
         id=id,
         entity_id=entity_id,
+        party_id=party_id,
         name=name,
         select=select,
         order=order,
@@ -251,6 +260,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -265,6 +275,7 @@ async def asyncio_detailed(
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
         name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -285,6 +296,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         id=id,
         entity_id=entity_id,
+        party_id=party_id,
         name=name,
         select=select,
         order=order,
@@ -305,6 +317,7 @@ async def asyncio(
     client: AuthenticatedClient,
     id: Union[Unset, str] = UNSET,
     entity_id: Union[Unset, str] = UNSET,
+    party_id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
@@ -319,6 +332,7 @@ async def asyncio(
     Args:
         id (Union[Unset, str]):
         entity_id (Union[Unset, str]):
+        party_id (Union[Unset, str]):
         name (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
@@ -341,6 +355,7 @@ async def asyncio(
             client=client,
             id=id,
             entity_id=entity_id,
+            party_id=party_id,
             name=name,
             select=select,
             order=order,

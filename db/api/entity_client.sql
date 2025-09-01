@@ -9,6 +9,8 @@ WITH (security_invoker = true) AS (
         entity_id,
         client_id,
         name,
+        party_id,
+        scopes,
         public_key,
         '***************' AS client_secret,
         recorded_by,
@@ -32,12 +34,16 @@ BEGIN
         INSERT INTO flex.entity_client (
             entity_id,
             name,
+            party_id,
+            scopes,
             public_key,
             client_secret
         )
         VALUES (
             NEW.entity_id,
             NEW.name,
+            NEW.party_id,
+            NEW.scopes,
             NEW.public_key,
             NEW.client_secret
         )
@@ -51,6 +57,8 @@ BEGIN
         UPDATE flex.entity_client SET
             client_id = NEW.client_id,
             name = NEW.name,
+            party_id = NEW.party_id,
+            scopes = NEW.scopes,
             public_key = NEW.public_key,
             client_secret = NEW.client_secret
         WHERE id = NEW.id;

@@ -3,7 +3,7 @@ import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
-import { ScopesField } from "./components";
+import { ScopesField } from "../../components/scopes";
 
 export const PartyMembershipHistoryList = () => {
   const params = useParams();

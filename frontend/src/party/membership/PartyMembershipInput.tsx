@@ -7,7 +7,7 @@ import {
 } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
-import { ScopesInput } from "./components";
+import { ScopesInput } from "../../components/scopes";
 
 // keep only the fields that map to the UI
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({

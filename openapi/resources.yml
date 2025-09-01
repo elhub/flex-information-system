@@ -550,6 +550,29 @@ resources:
         format: text
         type: string
         example: addr@flex.test
+      party_id:
+        description: >-
+          Reference to the party this client allows to assume. A null value
+          means the client cannot assume any party.
+        format: bigint
+        type: integer
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 30
+      scopes:
+        description: >-
+          List of scopes granted to the user when it logs in as an entity or
+          when it acts as the party. When assuming a party through party
+          membership, the least privileged set of scopes will be kept.
+
+          Scopes are inspired from OAuth 2.0 and allow refinement of access
+          control and privilege delegation mechanisms.
+        type: array
+        items:
+          "$ref": "#/components/schemas/auth_scope"
+        nullable: false
+        example: ["read:data"]
       client_secret:
         description: >-
           The secret of the entity. For use with client credentials
