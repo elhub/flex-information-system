@@ -16,23 +16,24 @@ func GetEntityOfCredentials(
 	tx pgx.Tx,
 	clientID string,
 	clientSecret string,
-) (int, string, error) {
+) (int, string, []string, error) {
 	var (
 		entityID int
 		eid      string
+		scopes   []string
 	)
 
 	err := tx.QueryRow(
 		ctx,
-		"select entity_id, external_id from auth.entity_of_credentials($1, $2)",
+		"select entity_id, external_id, scopes from auth.entity_of_credentials($1, $2)",
 		clientID,
 		clientSecret,
-	).Scan(&entityID, &eid)
+	).Scan(&entityID, &eid, &scopes)
 	if err != nil {
-		return -1, "", fmt.Errorf("failed to get identity of credentials: %w", err)
+		return -1, "", nil, fmt.Errorf("failed to get identity of credentials: %w", err)
 	}
 
-	return entityID, eid, nil
+	return entityID, eid, scopes, nil
 }
 
 // GetExternalIDByEntityID gets the external ID of an entity.
@@ -86,23 +87,24 @@ func GetEntityClientByUUID(
 	ctx context.Context,
 	tx pgx.Tx,
 	clientID string,
-) (int, string, string, error) {
+) (int, string, string, []string, error) {
 	var (
 		entityID       int
 		eid, pubKeyPEM string
+		scopes         []string
 	)
 
 	err := tx.QueryRow(
 		ctx,
-		"select entity_id, external_id, client_public_key"+
+		"select entity_id, external_id, client_public_key, scopes"+
 			" from auth.entity_client_by_uuid($1)",
 		clientID,
-	).Scan(&entityID, &eid, &pubKeyPEM)
+	).Scan(&entityID, &eid, &pubKeyPEM, &scopes)
 	if err != nil {
-		return -1, "", "", fmt.Errorf("failed to get entity: %w", err)
+		return -1, "", "", nil, fmt.Errorf("failed to get entity: %w", err)
 	}
 
-	return entityID, eid, pubKeyPEM, nil
+	return entityID, eid, pubKeyPEM, scopes, nil
 }
 
 // AssumeParty checks if a entity is allowed to assume a party and returns details.
