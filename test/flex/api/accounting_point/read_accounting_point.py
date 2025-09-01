@@ -89,7 +89,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[Union[AccountingPointResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Accounting Point
 
@@ -118,7 +118,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Optional[Union[AccountingPointResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Accounting Point
 
@@ -142,7 +142,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[Union[AccountingPointResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Accounting Point
 
@@ -169,7 +169,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Optional[Union[AccountingPointResponse, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
     """Read Accounting Point
 

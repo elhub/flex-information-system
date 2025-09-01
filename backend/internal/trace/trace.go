@@ -18,8 +18,6 @@ func Init() {
 }
 
 // Tracer returns the global otel tracer.
-//
-//nolint:ireturn
 func Tracer(name string) trace.Tracer {
 	return otel.Tracer(name)
 }
@@ -66,6 +64,7 @@ func (h SlogHandler) Handle(ctx context.Context, record slog.Record) error {
 	if spanCtx.HasTraceID() {
 		record.AddAttrs(slog.String("trace_id", spanCtx.TraceID().String()))
 	}
+
 	if spanCtx.HasSpanID() {
 		record.AddAttrs(slog.String("span_id", spanCtx.SpanID().String()))
 	}

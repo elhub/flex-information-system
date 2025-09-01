@@ -15,6 +15,7 @@ from .accounting_point_energy_supplier_update_request import AccountingPointEner
 from .accounting_point_response import AccountingPointResponse
 from .accounting_point_update_request import AccountingPointUpdateRequest
 from .audit_fields import AuditFields
+from .auth_scope import AuthScope
 from .controllable_unit import ControllableUnit
 from .controllable_unit_create_data import ControllableUnitCreateData
 from .controllable_unit_create_request import ControllableUnitCreateRequest
@@ -49,6 +50,9 @@ from .entity_client_response import EntityClientResponse
 from .entity_client_update_request import EntityClientUpdateRequest
 from .entity_create_data import EntityCreateData
 from .entity_create_request import EntityCreateRequest
+from .entity_lookup_request import EntityLookupRequest
+from .entity_lookup_request_type import EntityLookupRequestType
+from .entity_lookup_response import EntityLookupResponse
 from .entity_response import EntityResponse
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
@@ -217,6 +221,7 @@ __all__ = (
     "AccountingPointResponse",
     "AccountingPointUpdateRequest",
     "AuditFields",
+    "AuthScope",
     "ControllableUnit",
     "ControllableUnitCreateData",
     "ControllableUnitCreateRequest",
@@ -247,6 +252,9 @@ __all__ = (
     "EntityClientUpdateRequest",
     "EntityCreateData",
     "EntityCreateRequest",
+    "EntityLookupRequest",
+    "EntityLookupRequestType",
+    "EntityLookupResponse",
     "EntityResponse",
     "EntityUpdateRequest",
     "ErrorMessage",

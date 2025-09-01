@@ -33,6 +33,7 @@ func (change Change) GetColumnValue(columnName string) interface{} {
 			return change.ColumnValues[i]
 		}
 	}
+
 	return nil
 }
 
@@ -42,10 +43,12 @@ func (change Change) GetStringColumnValue(columnName string) (string, error) {
 	if valuei == nil {
 		return "", errJSONFieldMissing
 	}
+
 	value, ok := valuei.(string)
 	if !ok {
 		return "", jsonNumberError(valuei)
 	}
+
 	return value, nil
 }
 
@@ -55,10 +58,12 @@ func (change Change) GetIntColumnValue(columnName string) (int, error) {
 	if valuei == nil {
 		return 0, errJSONFieldMissing
 	}
+
 	valuef, ok := valuei.(float64) // JSON numbers are floats
 	if !ok {
 		return 0, jsonNumberError(valuei)
 	}
+
 	return int(valuef), nil
 }
 
@@ -83,9 +88,12 @@ func (change Change) GetTstzrangeLowerColumnValue(
 	timestampStr := valueStr[2 : len(valueStr)-3]
 
 	timestamp := new(pgtype.Timestamptz)
-	if err := timestamp.Scan(timestampStr); err != nil {
+
+	err := timestamp.Scan(timestampStr)
+	if err != nil {
 		return nil, timestampParseError(err)
 	}
+
 	return timestamp, nil
 }
 

@@ -6,12 +6,13 @@ import {
   useNotify,
 } from "react-admin";
 import { Typography, Stack, Button, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import UndoIcon from "@mui/icons-material/Undo";
 import { apiURL } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
+import { useEffect } from "react";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -75,8 +76,16 @@ const Toolbar = () => {
 
 // page to enter data required for controllable unit lookup
 export const ControllableUnitLookupInput = () => {
+  const { state } = useLocation();
+
   const ControllableUnitLookupForm = () => {
-    const { getValues } = useFormContext();
+    const { getValues, setValue } = useFormContext();
+
+    useEffect(() => {
+      if (state?.controllable_unit) {
+        setValue("controllable_unit", state?.controllable_unit);
+      }
+    });
 
     const values = getValues();
     const accountingPointDefined =
@@ -110,7 +119,17 @@ export const ControllableUnitLookupInput = () => {
         <Typography variant="h6" gutterBottom>
           Lookup a controllable unit
         </Typography>
-        <p>Mandatory : end user and exactly one of the other fields</p>
+        <p>
+          This operation allows you to get information about one or several
+          controllable units registered in the Flexibility Information System,
+          in order to, for instance, create controllable unit service provider
+          resources.
+        </p>
+        <p>
+          Input the business ID of the end user behind the controllable unit,
+          and either the GSRN of the accounting point or the business ID of the
+          controllable unit.
+        </p>
         <ControllableUnitLookupForm />
       </Stack>
     </SimpleForm>

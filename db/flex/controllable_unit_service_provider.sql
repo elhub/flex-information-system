@@ -103,3 +103,36 @@ WHEN (
     and not timeline.is_empty('flex.controllable_unit_service_provider', 'controllable_unit_id', NEW.controllable_unit_id)
 )
 EXECUTE FUNCTION timeline.valid_start_window('2 weeks', '2 weeks');
+
+-- changeset flex:controllable-unit-service-provider-no-duplicate runOnChange:true endDelimiter:--
+-- IFV: CUSP-VAL003
+CREATE OR REPLACE FUNCTION controllable_unit_service_provider_no_duplicates()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit_service_provider
+        WHERE controllable_unit_id = NEW.controllable_unit_id
+          AND service_provider_id = NEW.service_provider_id
+          AND valid_time_range && NEW.valid_time_range
+          AND end_user_id = NEW.end_user_id
+    ) THEN
+        RAISE EXCEPTION 'Please update the existing contract instead of creating a new one.';
+    END IF;
+
+    RETURN NEW;
+END
+$$;
+
+-- changeset flex:controllable-unit-service-provider-no-duplicate-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+-- alphabetic mark _a_ so it runs before make_room
+controllable_unit_service_provider_a_no_duplicates
+BEFORE INSERT ON controllable_unit_service_provider
+FOR EACH ROW
+WHEN (current_role = 'flex_service_provider')
+EXECUTE FUNCTION controllable_unit_service_provider_no_duplicates();

@@ -3,6 +3,7 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
+    AuthScope,
     EntityCreateRequest,
     EntityUpdateRequest,
     EntityResponse,
@@ -10,12 +11,17 @@ from flex.models import (
     PartyMembershipCreateRequest,
     PartyMembershipResponse,
     EmptyObject,
+    PartyResponse,
 )
 from flex.api.entity import (
     read_entity,
     list_entity,
     create_entity,
     update_entity,
+)
+from flex.api.party import (
+    read_party,
+    list_party,
 )
 from flex.api.party_membership import (
     create_party_membership,
@@ -32,7 +38,31 @@ def sts():
     yield SecurityTokenService()
 
 
+def random_email():
+    return (
+        "".join([random.choice(string.ascii_lowercase) for _ in range(10)])
+        + "@example.com"
+    )
+
+
+def random_number(length):
+    return "".join([random.choice(string.digits) for _ in range(length)])
+
+
+def random_gsrn():
+    return "9" + random_number(17)
+
+
+def random_org():
+    return "8" + random_number(8)
+
+
+def random_pid():
+    return "4" + random_number(10)
+
+
 # RLS: ENT-FISO001
+# RLS: ENT-FISO002
 def test_entity_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -51,28 +81,9 @@ def test_entity_fiso(sts):
     assert len(e2) == 1
     assert e2[0] == e
 
-    # cannot create entities with whatever business ID type
-
-    def random_email():
-        return (
-            "".join([random.choice(string.ascii_lowercase) for _ in range(10)])
-            + "@example.com"
-        )
-
-    def random_number(length):
-        return "".join([random.choice(string.digits) for _ in range(length)])
-
-    def random_gsrn():
-        return "9" + random_number(17)
-
-    def random_org():
-        return "8" + random_number(8)
-
-    def random_pid():
-        return "4" + random_number(10)
-
     # organisation -> only org
 
+    # endpoint: POST /entity
     e = create_entity.sync(
         client=client_fiso,
         body=EntityCreateRequest(
@@ -209,6 +220,7 @@ def test_entity_fiso(sts):
 
     # update OK
 
+    # endpoint: PATCH /entity/{id}
     u = update_entity.sync(
         client=client_fiso,
         id=cast(int, e.id),
@@ -217,6 +229,66 @@ def test_entity_fiso(sts):
         ),
     )
     assert not isinstance(u, ErrorMessage)
+
+
+def test_entity_org(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_org = sts.get_client(TestEntity.TEST, "ORG")
+
+    pty_org = read_party.sync(
+        client=client_org,
+        id=sts.get_userinfo(client_org)["party_id"],
+    )
+    assert isinstance(pty_org, PartyResponse)
+
+    # entity ID of the organisation
+    org_ent_id = cast(int, pty_org.entity_id)
+
+    # parties owned by the organisation entity
+    ptys = list_party.sync(client=client_org, entity_id=f"eq.{org_ent_id}")
+    assert isinstance(ptys, list)
+
+    # pick one, for instance the energy supplier
+    pty_es = next((p for p in ptys if p.type == "energy_supplier"))
+
+    # new entity
+    ent = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            name="Test Entity Seen By Org",
+            business_id=random_pid(),
+            business_id_type="pid",
+            type="person",
+        ),
+    )
+    assert isinstance(ent, EntityResponse)
+
+    # RLS: ENT-ORG001
+
+    # by default, no reason for the organisation to see the new entity
+    e = read_entity.sync(client=client_org, id=cast(int, ent.id))
+    assert isinstance(e, ErrorMessage)
+
+    # add it to the party
+    pm = create_party_membership.sync(
+        client=client_fiso,
+        body=PartyMembershipCreateRequest(
+            entity_id=cast(int, ent.id),
+            party_id=cast(int, pty_es.id),
+            scopes=[AuthScope.READDATA, AuthScope.MANAGEAUTH],
+        ),
+    )
+    assert isinstance(pm, PartyMembershipResponse)
+
+    # organisation should see the new entity
+    ent = read_entity.sync(client=client_org, id=cast(int, ent.id))
+    assert isinstance(ent, EntityResponse)
+
+    # teardown
+    d = delete_party_membership.sync(
+        client=client_fiso, id=cast(int, pm.id), body=EmptyObject()
+    )
+    assert not isinstance(d, ErrorMessage)
 
 
 def test_entity_com(sts):
@@ -252,6 +324,7 @@ def test_entity_com(sts):
         body=PartyMembershipCreateRequest(
             entity_id=common_ent_id,
             party_id=so_id,
+            scopes=[AuthScope.READDATA, AuthScope.READAUTH],
         ),
     )
     assert isinstance(pm, PartyMembershipResponse)
@@ -266,6 +339,20 @@ def test_entity_com(sts):
         client=client_fiso, id=cast(int, pm.id), body=EmptyObject()
     )
     assert not isinstance(d, ErrorMessage)
+
+    # RLS: ENT-COM003
+    # SO can read parent entity
+    p = read_party.sync(
+        client=client_fiso,
+        id=so_id,
+    )
+    assert isinstance(p, PartyResponse)
+
+    e = read_entity.sync(
+        client=client_so,
+        id=cast(int, p.entity_id),
+    )
+    assert isinstance(e, EntityResponse)
 
 
 # RLS: ENT-ENT001

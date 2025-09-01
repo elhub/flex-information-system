@@ -39,3 +39,20 @@ CREATE POLICY "ENT_FISO001" ON entity
 FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
+
+GRANT SELECT ON entity TO flex_organisation;
+CREATE POLICY "ENT_ORG001" ON entity
+FOR SELECT
+TO flex_organisation
+USING (
+    EXISTS (
+        SELECT 1
+        FROM party_membership AS pm
+            INNER JOIN party AS p ON pm.party_id = p.id
+        WHERE pm.entity_id = entity.id -- noqa
+            AND p.entity_id = ( -- the organisation, i.e. owner of current party
+                SELECT cp.entity_id FROM party AS cp
+                WHERE cp.id = (SELECT flex.current_party())
+            )
+    )
+);

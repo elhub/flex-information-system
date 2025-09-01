@@ -23,6 +23,9 @@ output_file_backend_schema = "backend/schema.sql"
 
 def sql_type_of_field_attr(attr):
     if attr["type"] == "array":
+        if "$ref" in attr["items"]:
+            # if the item is a reference, we assume it is a text enum
+            return "text []"
         if "format" not in attr["items"]:
             return "jsonb []"
         return attr["items"]["format"] + " []"

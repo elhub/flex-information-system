@@ -5,7 +5,9 @@ databaseChangeLog:
       author: flex
       runAlways: true
       changes:
-        - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous, flex_internal, flex_operation_readonly
+        - sql: GRANT USAGE ON SCHEMA flex TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA flex TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
+
   # Dropping policies to provide a clean slate on every migration
   - changeSet:
       id: drop-policies
@@ -32,9 +34,12 @@ databaseChangeLog:
       file: ./current_user_setting.sql
       relativeToChangelogFile: true
 
-  # Enums
+  # Enums & custom types
   - include:
       file: ./business_id_type.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./scope.sql
       relativeToChangelogFile: true
 
   # Tables & views - order is important!
@@ -54,7 +59,13 @@ databaseChangeLog:
       file: ./party.sql
       relativeToChangelogFile: true
   - include:
+      file: ./party_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./party_staging.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./party_staging_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./identity.sql
@@ -157,14 +168,22 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_energy_supplier.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_as_of.sql
+      relativeToChangelogFile: true
 
-  # RLS, grants and history
+  # history
   - includeAll:
       path: ./
       relativeToChangelogFile: true
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
+  - include:
+      file: ./party_membership_migrations.sql
+      relativeToChangelogFile: true
+
+  # RLS, grants
   - includeAll:
       path: ./
       relativeToChangelogFile: true
@@ -214,8 +233,10 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - changeSet:
-      id: flex-operation-readonly-grant
+      id: flex-operation-roles-grants
       author: flex
       runAlways: true
       changes:
         - sql: GRANT SELECT ON ALL TABLES IN SCHEMA flex TO flex_operation_readonly
+        - sql: GRANT SELECT, UPDATE ON ALL TABLES IN SCHEMA flex TO flex_operation_update
+        - sql: GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA flex TO flex_operation_readwrite

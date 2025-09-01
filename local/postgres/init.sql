@@ -28,6 +28,7 @@ CREATE ROLE flex_energy_supplier WITH NOLOGIN;
 CREATE ROLE flex_entity WITH NOLOGIN;
 CREATE ROLE flex_flexibility_information_system_operator WITH NOLOGIN;
 CREATE ROLE flex_market_operator WITH NOLOGIN;
+CREATE ROLE flex_organisation WITH NOLOGIN;
 CREATE ROLE flex_service_provider WITH NOLOGIN;
 CREATE ROLE flex_system_operator WITH NOLOGIN;
 CREATE ROLE flex_third_party WITH NOLOGIN;
@@ -42,14 +43,20 @@ WITH REPLICATION NOINHERIT LOGIN PASSWORD 'replication_password';
 -- without having to add them all-over-the-place.
 CREATE ROLE flex_internal WITH NOINHERIT NOLOGIN;
 
--- flex_operation_readonly is used for read-only access to the production
--- database, for debug purposes, without risk of interfering with the data.
+-- flex_operation_* roles are used for personal access to live
+-- databases - for debug and error correction purposes.
 CREATE ROLE flex_operation_readonly WITH NOINHERIT NOLOGIN BYPASSRLS;
+CREATE ROLE flex_operation_update WITH NOINHERIT NOLOGIN BYPASSRLS;
+CREATE ROLE flex_operation_readwrite WITH NOINHERIT NOLOGIN BYPASSRLS;
 
--- user to test the role right above
-CREATE ROLE test_flex_operation_readonly WITH LOGIN NOINHERIT PASSWORD '1234';
-GRANT flex_operation_readonly TO test_flex_operation_readonly;
+-- local_operator is the username of the user that
+-- can be used to test operator privs on local
+CREATE ROLE local_operator WITH LOGIN NOINHERIT PASSWORD '1234';
+GRANT flex_operation_readonly TO local_operator;
+GRANT flex_operation_update TO local_operator;
+GRANT flex_operation_readwrite TO local_operator;
 
+-- interal roles
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
 GRANT flex_internal TO flex_internal_event_notification;
 
@@ -62,6 +69,7 @@ GRANT flex_energy_supplier TO flex_authenticator;
 GRANT flex_entity TO flex_authenticator;
 GRANT flex_flexibility_information_system_operator TO flex_authenticator;
 GRANT flex_market_operator TO flex_authenticator;
+GRANT flex_organisation TO flex_authenticator;
 GRANT flex_system_operator TO flex_authenticator;
 GRANT flex_service_provider TO flex_authenticator;
 GRANT flex_third_party TO flex_authenticator;
@@ -77,6 +85,7 @@ flex_energy_supplier,
 flex_entity,
 flex_flexibility_information_system_operator,
 flex_market_operator,
+flex_organisation,
 flex_system_operator,
 flex_service_provider,
 flex_third_party;
@@ -87,6 +96,7 @@ flex_end_user,
 flex_energy_supplier,
 flex_flexibility_information_system_operator,
 flex_market_operator,
+flex_organisation,
 flex_system_operator,
 flex_service_provider,
 flex_third_party;

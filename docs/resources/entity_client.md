@@ -72,6 +72,13 @@ No policies.
 
 No policies.
 
+#### Organisation
+
+| Policy key | Policy                                                                                                   | Status |
+|------------|----------------------------------------------------------------------------------------------------------|--------|
+| ECL-ORG001 | Read clients on the entity owning the organisation party.                                                | DONE   |
+| ECL-ORG002 | Create, update and delete clients on the entity owning the organisation party, when the user is a human. | DONE   |
+
 #### System Operator
 
 No policies.
@@ -88,13 +95,13 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD         | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|---------------|------|-----|----|----|------|----|----|----|----|
-| id            |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| entity_id     |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| name          |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| client_secret |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| public_key    |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| recorded_by   |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD         | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
+|---------------|------|-----|----|----|------|----|----|----|----|-----|
+| id            |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| entity_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | RC  |
+| name          |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
+| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| client_secret |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
+| public_key    |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
+| recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| recorded_by   |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |

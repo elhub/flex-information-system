@@ -17,8 +17,10 @@ func GetEntityOfCredentials(
 	clientID string,
 	clientSecret string,
 ) (int, string, error) {
-	var entityID int
-	var eid string
+	var (
+		entityID int
+		eid      string
+	)
 
 	err := tx.QueryRow(
 		ctx,
@@ -60,8 +62,10 @@ func GetEntityOfBusinessID(
 	businessID string,
 	businessIDType string,
 ) (int, string, error) {
-	var entityID int
-	var eid string
+	var (
+		entityID int
+		eid      string
+	)
 
 	err := tx.QueryRow(
 		ctx,
@@ -83,8 +87,10 @@ func GetEntityClientByUUID(
 	tx pgx.Tx,
 	clientID string,
 ) (int, string, string, error) {
-	var entityID int
-	var eid, pubKeyPEM string
+	var (
+		entityID       int
+		eid, pubKeyPEM string
+	)
 
 	err := tx.QueryRow(
 		ctx,
@@ -104,21 +110,24 @@ func AssumeParty(
 	ctx context.Context,
 	tx pgx.Tx,
 	partyID int,
-) (string, string, int, error) {
-	var eid string
-	var role string
-	var entityID int
+) (string, string, []string, int, error) {
+	var (
+		eid      string
+		role     string
+		scopes   []string
+		entityID int
+	)
 
 	err := tx.QueryRow(
 		ctx,
-		`select eid, role, entity_id from auth.assume_party($1)`,
+		`select eid, role, scopes, entity_id from auth.assume_party($1)`,
 		partyID,
-	).Scan(&eid, &role, &entityID)
+	).Scan(&eid, &role, &scopes, &entityID)
 	if err != nil {
-		return "", "", 0, fmt.Errorf("failed to assume party %d for entity %d: %w", partyID, entityID, err)
+		return "", "", nil, 0, fmt.Errorf("failed to assume party %d for entity %d: %w", partyID, entityID, err)
 	}
 
-	return eid, role, entityID, nil
+	return eid, role, scopes, entityID, nil
 }
 
 // UserInfo is a struct that holds the current user info.
@@ -177,33 +186,32 @@ func PartyOfIdentity(
 
 const getPartyMembership = `select
 	p.id as party_id,
-	e.id as entity_id,
-	flex.identity_external_id(e.id, p.id) as external_id
+	e.id as entity_id
 from flex.entity e
 inner join flex.party_membership pm on pm.entity_id = e.id
 inner join flex.party p on pm.party_id = p.id
 where e.id = $1
 and p.business_id = $2`
 
-// GetPartyMembership returns the party membership of the given entity and party GLN.
+// GetPartyMembership returns the party ID of the given party GLN if the given
+// entity belongs to it.
 func GetPartyMembership(
 	ctx context.Context,
 	tx pgx.Tx,
 	entityID int,
 	partyBusinessID string,
-) (int, string, error) {
+) (int, error) {
 	var partyID int
-	var externalID string
 
 	err := tx.QueryRow(
 		ctx,
 		getPartyMembership,
 		entityID,
 		partyBusinessID,
-	).Scan(&partyID, &entityID, &externalID)
+	).Scan(&partyID, &entityID)
 	if err != nil {
-		return 0, "", fmt.Errorf("failed to get party membership: %w", err)
+		return 0, fmt.Errorf("failed to get party membership: %w", err)
 	}
 
-	return partyID, externalID, nil
+	return partyID, nil
 }

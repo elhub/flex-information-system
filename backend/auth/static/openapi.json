@@ -304,11 +304,11 @@
             }
         },
         "securitySchemes": {
-            "JWT": {
-                "description": "Add the token prepending \"Bearer \" (without quotes) to it",
-                "in": "header",
-                "name": "Authorization",
-                "type": "apiKey"
+            "bearerAuth": {
+                "description": "Bearer token using a JWT",
+                "type": "http",
+                "scheme": "Bearer",
+                "bearerFormat": "JWT"
             }
         }
     },
@@ -350,6 +350,14 @@
                 "operationId": "read_session",
                 "summary": "Read session from cookie",
                 "description": "Extracts the session information from the session cookie, including the access token if the session is valid.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:auth:session"
+                        ]
+                    },
+                    {}
+                ],
                 "tags": [
                     "authentication"
                 ],
@@ -378,6 +386,14 @@
                 "operationId": "call_assume",
                 "summary": "Call assume",
                 "description": "As an entity, assume a party by ID.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:auth:assume"
+                        ]
+                    },
+                    {}
+                ],
                 "tags": [
                     "authentication"
                 ],
@@ -448,6 +464,14 @@
                 "operationId": "delete_assume",
                 "summary": "Delete assume",
                 "description": "Stop assuming a party and return to the entity's own party.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:auth:assume"
+                        ]
+                    },
+                    {}
+                ],
                 "tags": [
                     "authentication"
                 ],
@@ -490,6 +514,14 @@
                 "operationId": "call_login",
                 "summary": "Call login",
                 "description": "Starts the authentication code flow with the external identity provider. Pushes an authorisation request to the external identity provider before redirecting the user to it.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:auth:login"
+                        ]
+                    },
+                    {}
+                ],
                 "tags": [
                     "authentication"
                 ],
@@ -530,6 +562,14 @@
                 "operationId": "call_callback",
                 "summary": "Call callback",
                 "description": "Handles the callback from the external identity provider. Exchanges the authorisation code for an access token and sets the session cookie.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:auth:callback"
+                        ]
+                    },
+                    {}
+                ],
                 "tags": [
                     "authentication"
                 ],
@@ -597,6 +637,14 @@
                 "operationId": "call_logout",
                 "summary": "Call logout",
                 "description": "Unsets the __Host-flex_session cookie.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:auth:logout"
+                        ]
+                    },
+                    {}
+                ],
                 "tags": [
                     "authentication"
                 ],
@@ -612,6 +660,14 @@
                 "operationId": "call_token",
                 "summary": "Call token",
                 "description": "Returns a JWT that can be used in subsequent calls.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "use:auth:token"
+                        ]
+                    },
+                    {}
+                ],
                 "parameters": [
                     {
                         "in": "header",
@@ -739,9 +795,17 @@
         },
         "/userinfo": {
             "get": {
-                "operationId": "call_userinfo",
-                "summary": "Call userinfo",
+                "operationId": "read_userinfo",
+                "summary": "Read userinfo",
                 "description": "Returns client details about the current user.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:auth:userinfo"
+                        ]
+                    },
+                    {}
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

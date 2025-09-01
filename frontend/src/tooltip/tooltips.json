@@ -76,7 +76,8 @@
     "party_membership": {
         "id": "Unique surrogate identifier.",
         "party_id": "Reference to the party that the membership links to an entity.",
-        "entity_id": "Reference to the entity that the party represents."
+        "entity_id": "Reference to the entity that the party represents.",
+        "scopes": "List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms."
     },
     "identity": {
         "id": "Unique surrogate identifier.",
@@ -175,6 +176,7 @@
         "hint": "A hint to help resolve the error.",
         "message": "The error message."
     },
+    "auth_scope": null,
     "audit_fields": {
         "recorded_at": "When the resource was recorded (created or updated) in the system.",
         "recorded_by": "The identity that recorded the resource."
@@ -188,6 +190,14 @@
         "accounting_point": "The accounting point behind which the controllable units are located.",
         "end_user": "The end user on the accounting point where the controllable units are located.",
         "controllable_units": "The controllable units that were found for the given end user or accounting point."
+    },
+    "entity_lookup_request": {
+        "business_id": "The business identifier of the entity. Person number or organisation number, according to `type`.",
+        "name": "Name of the entity.",
+        "type": "The type of the entity."
+    },
+    "entity_lookup_response": {
+        "entity_id": "The surrogate key of the entity."
     },
     "timeline_multi_range": null,
     "notice_data_valid_time_outside_contract": {

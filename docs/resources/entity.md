@@ -12,6 +12,15 @@ Here are the acceptable values for entities:
 | Organisation   | `org` (_organisasjonsnummer_)    |
 | Person         | `pid` (_fødselsnummer_), `email` |
 
+## Lookup
+
+A lookup operation can be performed to check whether a business ID is already
+linked to an existing entity in the system, and create the entity if it does not
+already exist. This allows users to manage more easily party memberships related
+to their organisation, and possibly create entities for their colleagues.
+
+* [API Documentation for Lookup](../api/v0/index.html#/operations/call_entity_lookup)
+
 ## Relevant links
 
 * [API Documentation](../api/v0/index.html#/operations/list_entity)
@@ -86,6 +95,12 @@ No policies.
 
 No policies.
 
+#### Organisation
+
+| Policy key | Policy                                                            | Status |
+|------------|-------------------------------------------------------------------|--------|
+| ENT-ORG001 | Read all entities belonging to parties owned by the organisation. | DONE   |
+
 #### System Operator
 
 No policies.
@@ -102,12 +117,12 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP |
-|------------------|------|-----|----|----|------|----|----|----|----|
-| id               |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| name             |      | R   | R  | R  | RCU  | R  | R  | R  | R  |
-| type             |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| business_id      |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| business_id_type |      | R   | R  | R  | RC   | R  | R  | R  | R  |
-| recorded_at      |      | R   | R  | R  | R    | R  | R  | R  | R  |
-| recorded_by      |      | R   | R  | R  | R    | R  | R  | R  | R  |
+| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
+|------------------|------|-----|----|----|------|----|----|----|----|-----|
+| id               |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| name             |      | R   | R  | R  | RCU  | R  | R  | R  | R  | R   |
+| type             |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| business_id      |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| business_id_type |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
+| recorded_at      |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| recorded_by      |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |

@@ -20,7 +20,15 @@ tags:
     description: Introspection
   - name: controllable_unit
     description: Controllable unit
+  - name: entity
+    description: Entity
 components:
+  securitySchemes:
+    bearerAuth:
+      description: Bearer token using a JWT
+      type: http
+      scheme: Bearer
+      bearerFormat: JWT
   parameters: {}
   schemas:
     error_message:
@@ -47,6 +55,21 @@ components:
       required:
         - code
         - message
+    auth_scope:
+      description: >-
+        Authorization scopes.
+      format: text
+      type: string
+      enum:
+        - "read:data"
+        - "use:data"
+        - "use:data:entity:lookup"
+        - "manage:data"
+        - "manage:data:party_membership"
+        - "manage:data:entity_client"
+        - "read:auth"
+        - "use:auth"
+        - "manage:auth"
     audit_fields:
       properties:
         recorded_at:
@@ -54,13 +77,13 @@ components:
             When the resource was recorded (created or updated) in the system.
           format: timestamp with time zone
           type: string
-          readOnly: True
+          readOnly: true
           example: 2023-12-31 23:59:00 CET
         recorded_by:
           description: The identity that recorded the resource.
           format: bigint
           type: integer
-          readOnly: True
+          readOnly: true
           example: 145
     controllable_unit_lookup_request:
       summary: Controllable unit lookup
@@ -186,6 +209,47 @@ components:
         - accounting_point
         - end_user
         - controllable_units
+    entity_lookup_request:
+      summary: Entity lookup
+      description: Request schema for entity lookup operations
+      type: object
+      properties:
+        business_id:
+          description: >-
+            The business identifier of the entity. Person number or
+            organisation number, according to `type`.
+          format: text
+          type: string
+          example: '13370000000'
+        name:
+          description: Name of the entity.
+          format: text
+          type: string
+          example: John Smith
+        type:
+          description: The type of the entity.
+          format: text
+          type: string
+          enum:
+            - person
+            - organisation
+          example: person
+      required:
+        - business_id
+        - name
+        - type
+    entity_lookup_response:
+      summary: Entity lookup
+      description: Response schema for entity lookup operations
+      type: object
+      properties:
+        entity_id:
+          description: The surrogate key of the entity.
+          format: bigint
+          type: integer
+          example: 11
+      required:
+        - id
     timeline_multi_range:
       description: >-
         Partial timeline data that is relevant to mention, in a notice for
@@ -248,6 +312,9 @@ paths:
       description: >-
         Introspection for the Flexibility Information System main API.
         The document is following the OpenAPI 3.1 spec.
+      security:
+        - bearerAuth: ["read:data:openapi"]
+        - {}
       tags:
         - introspection
       responses:
@@ -270,6 +337,8 @@ paths:
       description: >-
         Lookup a controllable unit from end user ID and business and/or
         accounting point ID.
+      security:
+        - bearerAuth: ["use:data:controllable_unit:lookup"]
       tags:
         - controllable_unit
       requestBody:
@@ -309,6 +378,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/error_message'
           description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+          description: Internal Server Error
+  /entity/lookup:
+    post:
+      operationId: call_entity_lookup
+      summary: Call - Entity lookup
+      description: >-
+        Lookup an entity from its business ID. Creates the entity if missing.
+      security:
+        - bearerAuth: ["use:data:entity:lookup"]
+      tags:
+        - entity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/entity_lookup_request'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/entity_lookup_response'
+          description: OK
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/entity_lookup_response'
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_message'
+          description: Unauthorized
         '500':
           content:
             application/json:

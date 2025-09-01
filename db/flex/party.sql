@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:party-create runOnChange:false endDelimiter:--
+--validCheckSum: 9:65fc6f6a36ea85af1b3dcb1e11a78ec2
 CREATE TABLE IF NOT EXISTS party (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- PTY-VAL002
@@ -38,7 +39,8 @@ CREATE TABLE IF NOT EXISTS party (
         business_id_type IN (
             'gln',
             'uuid',
-            'eic_x'
+            'eic_x',
+            'org'
         )
     ),
     -- PTY-VAL001
@@ -47,6 +49,12 @@ CREATE TABLE IF NOT EXISTS party (
         OR
         (type != 'end_user' AND business_id_type != 'uuid')
     ),
+    -- PTY-VAL003
+    CONSTRAINT check_organisation_iff_org CHECK (
+        (type = 'organisation' AND business_id_type = 'org')
+        OR
+        (type != 'organisation' AND business_id_type != 'org')
+    ),
     CONSTRAINT check_party_type CHECK (
         type IN (
             'balance_responsible_party',
@@ -54,6 +62,7 @@ CREATE TABLE IF NOT EXISTS party (
             'energy_supplier',
             'flexibility_information_system_operator',
             'market_operator',
+            'organisation',
             'service_provider',
             'system_operator',
             'third_party'
@@ -83,3 +92,16 @@ CREATE OR REPLACE TRIGGER party_event
 AFTER INSERT OR UPDATE ON party
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('party');
+
+-- changeset flex:current-party-owner-create runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION
+flex.current_party_owner()
+RETURNS bigint
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+AS $$
+    SELECT p.entity_id
+    FROM flex.party AS p
+    WHERE p.id = (SELECT flex.current_party())
+$$;

@@ -131,6 +131,7 @@ import { EntityClientInput } from "./entity/client/EntityClientInput";
 import { EntityClientShow } from "./entity/client/EntityClientShow";
 import { displayProductType } from "./product_type/components";
 import { EntityInput } from "./entity/EntityInput";
+import { EntityLookupInput } from "./entity/lookup/EntityLookupInput";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -466,6 +467,8 @@ export const App = () => (
             }
             recordRepresentation="name"
           >
+            {/* lookup */}
+            <Route path="lookup" element={<EntityLookupInput />} />
             {/* client subresource */}
             {/* list is part of ENT show page */}
             <Route
@@ -563,6 +566,21 @@ export const App = () => (
                   >
                     <PartyMembershipInput />
                   </Create>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":party_id/membership/:id"
+              element={
+                <ResourceContextProvider value="party_membership">
+                  <Edit
+                    mutationMode="pessimistic"
+                    redirect={(_: any, _id: any, record: any) =>
+                      `party/${record.party_id}/show`
+                    }
+                  >
+                    <PartyMembershipInput />
+                  </Edit>
                 </ResourceContextProvider>
               }
             />

@@ -16,6 +16,7 @@ party_type_abbr = {
     "ENT": "entity",
     "FISO": "flexibility_information_system_operator",
     "MO": "market_operator",
+    "ORG": "organisation",
     "SO": "system_operator",
     "SP": "service_provider",
     "TP": "third_party",

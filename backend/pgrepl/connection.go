@@ -36,10 +36,12 @@ func NewConnection(
 	logPrefix string,
 ) (*Connection, error) {
 	var pgxConn *pgx.Conn
+
 	pgxConn, err := pgx.Connect(ctx, connURI+"?replication=database")
 	if err != nil {
 		return nil, connectError(err)
 	}
+
 	conn := pgxConn.PgConn()
 
 	// We are using the wal2json plugin
@@ -96,10 +98,12 @@ func (replConn *Connection) ReceiveMessage(
 	for {
 		messageCtx, cancel := context.WithTimeout(ctx, messageTimeout)
 		defer cancel()
+
 		msg, err := replConn.conn.ReceiveMessage(messageCtx)
 		if err != nil {
 			return nil, messageReceptionError(err)
 		}
+
 		switch msg := msg.(type) {
 		case *pgproto3.CopyData:
 			// the protocol can send XLogData messages with information that we can
@@ -111,7 +115,9 @@ func (replConn *Connection) ReceiveMessage(
 				if err != nil {
 					return nil, parseXLogDataError(err)
 				}
+
 				var jsonWALMessage Message
+
 				err = json.Unmarshal(xld.WALData, &jsonWALMessage)
 				if err != nil {
 					return nil, unmarshalWALDataError(err)
@@ -122,10 +128,12 @@ func (replConn *Connection) ReceiveMessage(
 				if err != nil {
 					return nil, lsnParseError(err)
 				}
+
 				if replConn.lsn > nextLSN {
 					slog.InfoContext(ctx, "replication skipping outdated message", "lsn", nextLSN)
 					continue
 				}
+
 				return &jsonWALMessage, nil
 			case pglogrepl.PrimaryKeepaliveMessageByteID:
 				err := replConn.handlePrimaryKeepaliveMessage(ctx, msg.Data[1:])
@@ -150,16 +158,21 @@ func (replConn *Connection) Acknowledge(msg *Message) error {
 	if err != nil {
 		return lsnParseError(err)
 	}
+
 	replConn.lsn = nextLSN
+
 	return nil
 }
 
 // Close closes the replication connection.
 func (replConn *Connection) Close(ctx context.Context) error {
 	slog.InfoContext(ctx, "closing replication connection")
-	if err := replConn.conn.Close(ctx); err != nil {
+
+	err := replConn.conn.Close(ctx)
+	if err != nil {
 		return connectionCloseError(err)
 	}
+
 	return nil
 }
 
@@ -175,6 +188,7 @@ func (replConn *Connection) handlePrimaryKeepaliveMessage(
 	if pkm.ReplyRequested {
 		messageCtx, cancel := context.WithTimeout(ctx, messageTimeout)
 		defer cancel()
+
 		err := pglogrepl.SendStandbyStatusUpdate(
 			messageCtx,
 			replConn.conn,
@@ -189,6 +203,7 @@ func (replConn *Connection) handlePrimaryKeepaliveMessage(
 		if err != nil {
 			return sendStandbyStatusUpdateError(err)
 		}
+
 		slog.DebugContext(
 			ctx, "received PrimaryKeepaliveMessage and sent status update",
 			"lsn", replConn.lsn.String(),
@@ -198,6 +213,7 @@ func (replConn *Connection) handlePrimaryKeepaliveMessage(
 			ctx, "received PrimaryKeepaliveMessage, no reply requested",
 		)
 	}
+
 	return nil
 }
 

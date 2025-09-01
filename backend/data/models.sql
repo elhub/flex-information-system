@@ -27,3 +27,13 @@ FROM controllable_unit_lookup(
   nullif(@controllable_unit_business_id::text, ''),
   nullif(@accounting_point_id::text, '')
 );
+
+-- name: EntityLookup :one
+SELECT
+    entity_id::bigint,
+    entity_found::boolean
+FROM entity_lookup(
+  @entity_business_id::text,
+  @entity_name::text,
+  @entity_type::text
+);

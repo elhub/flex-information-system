@@ -4,6 +4,14 @@ This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
 
+## 15.07.2025
+
+* **Introduced the _Entity Lookup_ operation.**  
+  To be used while administrating memberships for parties related to an
+  organisation with entities that may not exist or be readable yet.
+
+* **Added `scopes` field to the _Party Membership_ resource.**
+
 ## 01.07.2025
 
 * **Added audit fields and history on the _Entity_ resource.**  

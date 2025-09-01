@@ -8,6 +8,10 @@ rules:
   # https://docs.stoplight.io/docs/spectral/4dec24461f3af-open-api-rules
   operation-description: false
 
+  # According to https://github.com/MikeRalphson/OpenAPI-Specification/blob/main/examples/v3.1/non-oauth-scopes.yaml
+  # non-oauth scopes are not defined at the securityScheme level
+  oas3-operation-security-defined: false
+
   elhub-paths-snake-case:
     description: Paths must be snake_case.
     message: "Path '{{property}}' must be snake_case"

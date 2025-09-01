@@ -101,6 +101,7 @@ func (delayer *loginDelayer) Allow(ctx context.Context) bool {
 			"until", delayedTime,
 			"waitingTime", time.Until(delayedTime),
 		)
+
 		return false
 	}
 
@@ -121,6 +122,7 @@ func (delayer *loginDelayer) Allow(ctx context.Context) bool {
 			ctx, "IP has reached the maximum number of failed logins",
 			"ipAddress", delayer.ipAddress,
 		)
+
 		return false
 	}
 
@@ -148,6 +150,7 @@ func (delayer *loginDelayer) MinTimeForNextRequest() time.Time {
 	if delayer.currentFailedLogins >= delayer.config.MaxFailedLogins {
 		return resetTime
 	}
+
 	return delayedTime
 }
 

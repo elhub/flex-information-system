@@ -46,6 +46,7 @@ load: liquibase
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
         -c "ALTER USER flex_replication PASSWORD 'replication_password';"
 
+    # set fixed client IDs so we can use them in the tests
     UUID_TEST='3733e21b-5def-400d-8133-06bcda02465e'
     UUID_COMMON='df8bee5f-6e60-4a21-8927-e5bcdd4ce768'
 
@@ -60,6 +61,14 @@ load: liquibase
             -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', client_secret='87h87hijhulO', recorded_by = 0 WHERE id = (SELECT e.id FROM flex.entity AS e WHERE name ilike '${entity}%' AND NOT name ilike '%AS');" \
             -c "COMMIT"
     done
+
+    # set fixed client ID but no key for the organisation (not needed)
+    UUID_TESTAS='eed86ad4-9d5c-4d83-a93a-e7675e13a977'
+    psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
+        -c "BEGIN" \
+        -c "SELECT set_config('flex.current_identity', '0', true);" \
+        -c "UPDATE flex.entity_client SET client_id = '${UUID_TESTAS}', client_secret='87h87hijhulO', recorded_by = 0 WHERE id = (SELECT e.id FROM flex.entity AS e WHERE name = 'Test Suite AS');" \
+        -c "COMMIT"
 
     docker compose kill -s SIGUSR1 postgrest
     docker compose restart backend
@@ -175,8 +184,8 @@ test-local *args: (_venv)
 test-dev *args:
     #!/usr/bin/env bash
     set -euo pipefail
-    export FLEX_URL_BASE="https://test.flex.internal:6443"
-    export FLEX_AUTH_BASE="http://test.flex.internal:7001"
+    export FLEX_URL_BASE="https://dev.flex.internal:5443"
+    export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
     .venv/bin/python test/test.py {{args}}
 
 test *args:
@@ -489,7 +498,7 @@ permissions-to-md:
         echo "" >> docs/resources/${resource}.md
 
         grep -E "^((${resource})|(RESOURCE))\;" local/input/permissions.csv \
-            | cut -d ';' -f 2-11 \
+            | cut -d ';' -f 2-12 \
             | .venv/bin/python3 ./local/scripts/csv_to_md.py >> docs/resources/${resource}.md
 
     done
@@ -505,7 +514,7 @@ avatar:
     #!/usr/bin/env bash
     set -euo pipefail
     mkdir -p frontend/src/auth/avatars
-    for code in ANO BRP ES EU ENT FISO MO SP SO TP;
+    for code in ANO BRP ES EU ENT FISO MO ORG SP SO TP;
     do
         echo Getting avatar for $code
         curl "https://ui-avatars.com/api/?background=D6E4D5&color=0B3C28&rounded=true&bold=true&length=4&size=128&font-size=0.4&name=$code" \

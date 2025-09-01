@@ -52,6 +52,7 @@ def test_cu_lookup_params(sts):
     # ill formed requests
 
     # no AP/CU
+    # endpoint: POST /controllable_unit/lookup
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(

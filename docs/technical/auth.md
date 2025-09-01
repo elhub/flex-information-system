@@ -1,180 +1,75 @@
-# Authorisation
+# Auth
 
-This document describes the authentication and authorization model principles we
-are following in the Flexibility Information System.
+This document describes the authentication and authorization model, principles
+and concepts we are following in the Flexibility Information System. It is a
+quite comprehensive document and contains alot of nitty-gritty details - even
+about implementation. We are using it both as a design document and
+documentation. You can use it as a reference and for understanding how we are
+doing things.
 
-## Authentication model
+The document assumes that you have some basic knowledge around the topic, such
+as the distiction between authentication and authorization, but we will try to
+add external links to relevant resources where appropriate (like we just did 😉).
 
-In this section, we describe the authentication model in the Flexibility
-Information System.
+> [!NOTE]
+>
+> We use _auth_ as a short form for _authentication and authorization_ in this
+> document.
 
-### Identity
+## Overview
 
-Any system or person interacting with the Flexibility Information System will
-always be authenticated as a legal og natural _entity_, possibly assuming the
-role of a market _party_. The entity and party together make up the _identity_
-of the user.
+We think of auth as a layered system, where each layer has a specific purpose
+and responsibility. The layers are independent of each other and a request is
+required to pass all the layers to be allowed access. The following diagram
+shows the layers we have in our model.
 
-#### Entity - individuals and organisations
+![Auth Layers](../diagrams/auth_layers.drawio.png)
 
-The _entity_ is the natural or legal person using the system. This is the "raw"
-identity of the user when it enters the system.
+The layers in the auth model are there to protect our resources. These resources
+take the form of data or remote procedure calls (RPCs) in our APIs. You can
+think of a resource as a path in our API, e.g. `/api/v0/controllable_unit/`.
+Authorization protects what actions (create, read, update, delete, call) the
+user can do on the resources.
 
-* [Natural entities](https://en.wikipedia.org/wiki/Natural_person) are
-  _individuals_ identified by their national identity number (fødselsnummer) or
-  D-number.
-* [Legal entities](https://en.wikipedia.org/wiki/Legal_person) are
-  _organisations_ identified by their organisation number (organisasjonsnummer).
+1. **Session or token validation** - This is how we authenticate the user. Once
+   authentication is done we know the entity, party and scopes of the user. If
+   there is no session or token the user enters the system as an anonymous user
+   with read access.
+2. **Scope check** - Empty scope means no access. The scope check validates actions
+   on resources, e.g. does the user have the scope to do update on this
+   resource.
+3. **Party type check** - Actions on some resources might only be accessible for
+   certain party types, like the `Flexibility Information System Operator` or
+   `System Operator`. For these resources we have an explicit party type check
+   for additional security, e.g. is the party type of the user allowed to do
+   call this resource. We typically use this on RPC resources.
+4. **Field Level Authorization** - FLA controls access for the combination of
+   party type, action and fields, e.g. can this party type update these fields on
+   this resource.
+5. **Resource Level Authorization** - RLA controls access for the specific party
+   and resource, e.g. can this party delete this resource.
 
-In a production setting, the identity of the entity will be established through
-mechanisms such as IDPorten, Maskinporten or enterprise certificates.
+Read more details about the layers further down in this document.
 
-#### Party - market actors
+## Actions
 
-This is the market party like a system operator or service provider. Parties in
-the European energy sector are typically identified by a GLN or `EIC-X`. After
-being authenticated as an entity, the user can assume a party to
-interact with the system.
+When we talk about authorization we usually talk about performing "actions" on
+resources or fields. The table below shows the actions and their corresponding
+[HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) and
+[database grants](https://www.postgresql.org/docs/15/sql-grant.html).
 
-We also model end users as parties. An end user is either
-[a person or an organisation](https://www.nve.no/reguleringsmyndigheten/regulering/kraftmarkedet/sluttbrukermarkedet/).
-This means that when logging in as an entity, a user will have to choose to act
-as themselves as an end user party. This is a way to standardize (and thus
-simplify) the authorization framework and make authentication/delegation explicit.
+| Action     | HTTP verb | Database grant | Usage                        |
+|------------|-----------|----------------|------------------------------|
+| **C**reate | POST      | INSERT         |                              |
+| **R**ead   | GET       | SELECT         |                              |
+| **U**pdate | PATCH     | UPDATE         |                              |
+| **D**elete | DELETE    | DELETE         |                              |
+| **C**all   | POST      | EXECUTE        | Used for RPC type endpoints. |
 
-We have the following party types in the Flexibility Information System:
+We do not model `List` as a specific action even tho it is a verb - someting a
+user can do - on the [API](api-design.md). It is covered by `Read`.
 
-| Abbreviation | Code                                    | Name                                    | Norwegian name                              |
-|--------------|-----------------------------------------|-----------------------------------------|---------------------------------------------|
-| BRP          | balance_responsible_party               | Balance Responsible Party               | _Balanseansvarlig_                          |
-| EU           | end_user                                | End User                                | _Sluttbruker_                               |
-| ES           | energy_supplier                         | Energy Supplier                         | _Kraftleverandør_                           |
-| FISO         | flexibility_information_system_operator | Flexibility Information System Operator | _Fleksibilitetsinformasjonssystem Operatør_ |
-| MO           | market_operator                         | Market Operator                         | _Markedoperatør_                            |
-| SO           | system_operator                         | System Operator                         | _Systemoperatør_                            |
-| SP           | service_provider                        | Service Provider                        | _Tjenesteleverandør_                        |
-| TP           | third_party                             | Third Party                             | _Tredjepart_                                |
-
-!!! note "Common policies"
-
-    In addition to these we also write policies and grant access that are common
-    for all authenticated party types. This is referred to as `Common`,
-    abbreviated as `COM`. All party types inherit the policies from `Common`.
-
-The following sub-sections provides a brief description of each party type.
-
-##### Balance Responsible Party
-
-A party responsible for its imbalances.
-
-Based on: [Consolidated text: Commission Regulation (EU) 2017/2195 - Art.2 Definitions](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02017R2195-20220619).
-
-##### End User
-
-Synonyms:
-
-* _Final Customer_ (_Sluttkunde_)
-* _Flexible Customer_
-* _System User_
-
-The entity at the lower end of the chain, willing to make their own technical
-resources available on the flexibility market.
-
-##### Energy Supplier
-
-Synonyms:
-
-* _Balance Supplier_
-* _Supplier_
-
-A party delivering to or taking energy from a party connected to the grid at an
-accounting point.
-
-##### Flexibility Information System Operator
-
-Synonyms:
-
-* _Flexibility Register Operator_
-
-We use this as an administrator role for the Flexibility Information System, as
-a last resort tool to have full authorisation on the system or perform special
-operations.
-
-##### Market Operator
-
-Sub-types:
-
-* _Local Market Operator_
-* _Balancing Market Operator_
-
-A party that provides a service whereby the offers to sell energy are matched
-with bids to buy energy.
-
-Based on: [Consolidated text: Regulation (EU) 2019/943](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019R0943-20220623).
-
-##### System Operator
-
-Synonyms:
-
-* _Grid Owner_
-
-Sub-types:
-
-* _Distribution System Operator_
-* _Transmission System Operator_
-* _Connecting System Operator_
-* _Requesting System Operator_
-* _Procuring System Operator_
-* _Impacted System Operator_
-
-A party responsible for operating, ensuring the maintenance of and, if
-necessary, developing the system in a given area and, where applicable, its
-interconnections with other systems, and for ensuring the long-term ability of
-the system to meet reasonable demands for the distribution or transmission of
-energy.
-
-Based on: [Consolidated text: Directive (EU) 2019/944](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019L0944-20220623).
-
-##### Service Provider
-
-Sub-types:
-
-* _Balancing Service Provider_
-* _Flexibility Service Provider_
-
-A party that offers local or balancing services to other parties in the market,
-after having successfully passed a qualification process.
-
-##### Third Party
-
-A party that does not have an actual responsibility in the value chain, but
-_can be_ delegated authority to, _e.g._, perform tasks or access data.
-
-### Roles
-
-Parties in the Energy sector act in different "roles". For some examples, see
-the
-[Elhub role model](https://elhub.no/aktorer-og-markedsstruktur/aktorenes-roller/rollemodell/).
-This level is mostly used for delegation. As of now, this level is **NOT** part of
-the authentication or authorization model.
-
-!!! note "The word 'role' can be seen in the system"
-
-    Our database and API service does sometime refer to something called
-    "roles". This is just how we model parties and entities in the system and is
-    not related to the conceptual authentication or authorization model as
-    described here.
-
-### Anonymous users
-
-Some data (like party lists) and actions (such as login) will be available for
-un-authenticated users. We refer to these as `Anonymous`, abbreviated as `ANON`.
-
-!!! info "Policy inheritance"
-
-    Policies for `Anonymous`/`ANON` are inherited by _all authenticated users_.
-
-## Implementation using OAuth 2.0 and OpenID Connect standards
+## OAuth 2.0 and OpenID Connect standards
 
 We are relying on the patterns and flows established as part of multiple RFCs
 related to OAuth 2.0 as well as
@@ -204,7 +99,210 @@ We are also relying heavily on the JOSE (Javascript Object Signing and Encryptio
     System APIs. In the rest of this page, we use the terms _main API_ and _auth API_
     to distinguish these distinct roots of API endpoints.
 
-## Authentication
+## Authentication model
+
+In this section, we describe the authentication model in the Flexibility
+Information System.
+
+### Identity
+
+Any system or person interacting with the Flexibility Information System will
+always be authenticated as a legal og natural _entity_, possibly assuming the
+role of a market _party_. The entity and party together make up the _identity_
+of the user.
+
+The entity has very little functionality available in the system, most
+functionality will be available after assuming a _party_. The identity of the
+user is then the combination of the entity and the party they are acting as. As
+a result, in order to interact properly with the Flexibility Information System,
+an entity must assume a party.
+
+Inspiration for this step is taken from [Altinn](https://info.altinn.no/en/),
+where one is presented with a list of parties upon login. The Elhub portal also
+has the same type of logical mechanism.
+
+![Altinn select party](../assets/altinn-choose-party.png).
+
+The concept is also inspired by [AWS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html).
+
+Assuming a party is done using [Token Exchange](#token-exchange) or directly in
+authentication using [JWT Bearer](#jwt-bearer) grant. To assume a party, the
+entity must be a member of the party.
+
+### Entity - individuals and organisations
+
+The _entity_ is the natural or legal person using the system. This is the "raw"
+identity of the user when it enters the system.
+
+* [Natural entities](https://en.wikipedia.org/wiki/Natural_person) are
+  _individuals_ identified by their national identity number (fødselsnummer) or
+  D-number.
+* [Legal entities](https://en.wikipedia.org/wiki/Legal_person) are
+  _organisations_ identified by their organisation number (organisasjonsnummer).
+
+In a production setting, the identity of the entity will be established through
+mechanisms such as IDPorten, Maskinporten or enterprise certificates.
+
+### Party - market actors
+
+This is the market party like a system operator or service provider. Parties in
+the European energy sector are typically identified by a GLN or `EIC-X`. After
+being authenticated as an entity, the user can assume a party to
+interact with the system.
+
+We have two extra party types in addition to the other market actors: end users
+and organisations.
+An end user is either
+[a person or an organisation](https://www.nve.no/reguleringsmyndigheten/regulering/kraftmarkedet/sluttbrukermarkedet/).
+The organisation party is a way for the user to have access to a special role to
+perform modifications on their own organisation entity.
+They can for instance give total or partial (via delegation mechanisms) access
+to what the entity owns and manages, to people from the same company.
+
+We have the following party types in the Flexibility Information System:
+
+| Abbreviation | Code                                    | Name                                    | Norwegian name                              |
+|--------------|-----------------------------------------|-----------------------------------------|---------------------------------------------|
+| BRP          | balance_responsible_party               | Balance Responsible Party               | _Balanseansvarlig_                          |
+| EU           | end_user                                | End User                                | _Sluttbruker_                               |
+| ES           | energy_supplier                         | Energy Supplier                         | _Kraftleverandør_                           |
+| FISO         | flexibility_information_system_operator | Flexibility Information System Operator | _Fleksibilitetsinformasjonssystem Operatør_ |
+| MO           | market_operator                         | Market Operator                         | _Markedoperatør_                            |
+| ORG          | organisation                            | Organisation                            | _Organisasjon_                              |
+| SO           | system_operator                         | System Operator                         | _Systemoperatør_                            |
+| SP           | service_provider                        | Service Provider                        | _Tjenesteleverandør_                        |
+| TP           | third_party                             | Third Party                             | _Tredjepart_                                |
+
+!!! note "Common policies"
+
+    In addition to these we also write policies and grant access that are common
+    for all authenticated party types. This is referred to as `Common`,
+    abbreviated as `COM`. All party types inherit the policies from `Common`.
+
+The following sub-sections provides a brief description of each party type.
+
+#### Balance Responsible Party
+
+A party responsible for its imbalances.
+
+Based on: [Consolidated text: Commission Regulation (EU) 2017/2195 - Art.2 Definitions](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02017R2195-20220619).
+
+#### End User
+
+Synonyms:
+
+* _Final Customer_ (_Sluttkunde_)
+* _Flexible Customer_
+* _System User_
+
+The entity at the lower end of the chain, willing to make their own technical
+resources available on the flexibility market.
+
+#### Energy Supplier
+
+Synonyms:
+
+* _Balance Supplier_
+* _Supplier_
+
+A party delivering to or taking energy from a party connected to the grid at an
+accounting point.
+
+#### Flexibility Information System Operator
+
+Synonyms:
+
+* _Flexibility Register Operator_
+
+We use this as an administrator role for the Flexibility Information System, as
+a last resort tool to have full authorisation on the system or perform special
+operations.
+
+#### Market Operator
+
+Sub-types:
+
+* _Local Market Operator_
+* _Balancing Market Operator_
+
+A party that provides a service whereby the offers to sell energy are matched
+with bids to buy energy.
+
+Based on: [Consolidated text: Regulation (EU) 2019/943](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019R0943-20220623).
+
+#### Organisation
+
+This is not a market party as such but a party that represents the organisation
+entity.
+
+#### System Operator
+
+Synonyms:
+
+* _Grid Owner_
+
+Sub-types:
+
+* _Distribution System Operator_
+* _Transmission System Operator_
+* _Connecting System Operator_
+* _Requesting System Operator_
+* _Procuring System Operator_
+* _Impacted System Operator_
+
+A party responsible for operating, ensuring the maintenance of and, if
+necessary, developing the system in a given area and, where applicable, its
+interconnections with other systems, and for ensuring the long-term ability of
+the system to meet reasonable demands for the distribution or transmission of
+energy.
+
+Based on: [Consolidated text: Directive (EU) 2019/944](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019L0944-20220623).
+
+#### Service Provider
+
+Sub-types:
+
+* _Balancing Service Provider_
+* _Flexibility Service Provider_
+
+A party that offers local or balancing services to other parties in the market,
+after having successfully passed a qualification process.
+
+#### Third Party
+
+A party that does not have an actual responsibility in the value chain, but
+_can be_ delegated authority to, _e.g._, perform tasks or access data.
+
+### Roles
+
+Parties in the Energy sector act in different "roles". For some examples, see
+the
+[Elhub role model](https://elhub.no/aktorer-og-markedsstruktur/aktorenes-roller/rollemodell/).
+This level is mostly used for delegation. As of now, this level is **NOT** part of
+the authentication or authorization model.
+
+!!! note "The word 'role' can be seen in the system"
+
+    Our database and API service does sometime refer to something called
+    "roles". This is just how we model parties and entities in the system and is
+    not related to the conceptual authentication or authorization model as
+    described here.
+
+### Anonymous users
+
+Some data (like party lists) and actions (such as login) will be available for
+un-authenticated users. We refer to these as `Anonymous`, abbreviated as `ANON`.
+
+An anonymous user has the following default scopes:
+
+* `read:data` - to be able to access open data (if any)
+* `use:auth` - to be able to log in etc
+
+!!! info "Policy inheritance"
+
+    RLA policies for `Anonymous`/`ANON` are inherited by _all authenticated users_.
+
+## Authentication methods
 
 Authentication is the process of establishing the "raw" identity of the user.
 For us, this means identifying the _entity_, i.e. the individual or organisation
@@ -290,14 +388,14 @@ grant_type: urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=<authorization
 
 The magic is in the assertion JWT. Use the following payload.
 
-| Claim | Name            | Description                                                                                                                                       | Example                                               |
-|-------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| `aud` | Audience        | The URL of the token endpoint.                                                                                                                    | `https://flex-test.elhub.no/auth/v0/`                 |
-| `exp` | Expiration Time | The expiration time of the JWT. Maximum 120 seconds after `iat`.                                                                                  |                                                       |
-| `iat` | Issued At       | The time the JWT was issued. Only tokens with `iat` within 10 seconds of server time will be accepted.                                            |                                                       |
-| `iss` | Issuer          | The issuer of the token on the format. `no:entity:uuid:<client_id>`. `client_id` is the UUID of the client whose key is used to sign the token.   | `no:entity:uuid:2fc014f2-e9b4-41d4-ad6b-c360b8ee6229` |
-| `jti` | JWT             | A unique identifier for the JWT. For (future) protection against replay attacks.                                                                  |                                                       |
-| `sub` | Subject         | Optional. Use if the client wants to assume party as part of the request. Format `no:entity:<id_type>:<id>`. `id_type` is either `uuid` or `gln`. | `no:party:gln:1234567890123`                          |
+| Claim | Name            | Description                                                                                                                                               | Example                                               |
+|-------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| `aud` | Audience        | The URL of the token endpoint.                                                                                                                            | `https://flex-test.elhub.no/auth/v0/`                 |
+| `exp` | Expiration Time | The expiration time of the JWT. Maximum 120 seconds after `iat`.                                                                                          |                                                       |
+| `iat` | Issued At       | The time the JWT was issued. Only tokens with `iat` within 10 seconds of server time will be accepted.                                                    |                                                       |
+| `iss` | Issuer          | The issuer of the token on the format. `no:entity:uuid:<client_id>`. `client_id` is the UUID of the client whose key is used to sign the token.           | `no:entity:uuid:2fc014f2-e9b4-41d4-ad6b-c360b8ee6229` |
+| `jti` | JWT             | A unique identifier for the JWT. For (future) protection against replay attacks.                                                                          |                                                       |
+| `sub` | Subject         | Optional. Use if the client wants to assume party as part of the request. Format `no:entity:<id_type>:<id>`. `id_type` is the party's `business_id_type`. | `no:party:gln:1234567890123`                          |
 
 The JWT must be signed by the entity client's RSA private key. The public key
 must be uploaded to the client in the portal prior to making the request. An
@@ -319,27 +417,10 @@ language/system of choice. Here are a few examples/guides:
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
 
-## Assuming party
-
-The entity has very little functionality available in the system, most
-functionality will be available after assuming a _party_. The identity of the
-user is then the combination of the entity and the party they are acting as. As
-a result, in order to interact properly with the Flexibility Information System,
-an entity must assume a party.
-
-Inspiration for this step is taken from [Altinn](https://info.altinn.no/en/),
-where one is presented with a list of parties upon login. The Elhub portal also
-has the same type of logical mechanism.
-
-![Altinn select party](../assets/altinn-choose-party.png).
-
-The concept is also inspired by [AWS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html).
-
-Assuming a party is done using `Token Exchange`.
-
 ### Token exchange
 
-In API terms, assuming a party is done by doing a
+If the user has logged in via client credentials or OpenID connect, the user can
+assume a party by doing a
 [OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/html/rfc8693) that
 lets an entity "impersonate" a party with the returned token. This is done by
 calling the same `/token` endpoint, this time with the `grant_type`
@@ -378,7 +459,7 @@ grant_type=urn:ietf:params:oauth:grant-type:token-exchange
 The response from the endpoint will be a JWT access token that can be used to
 access the API.
 
-## Example - client credentials and token exchange
+### Example - client credentials and token exchange
 
 Below is an example of realistic login sequence:
 
@@ -391,12 +472,6 @@ Below is an example of realistic login sequence:
 
 ![Login Sequence](../diagrams/login_sequence.png)
 
-## User information
-
-OIDC provides a way to get user information. This is done by calling the
-`/userinfo` endpoint with the access token. The response is a JSON object
-with a set of claims about the user.
-
 ## Authorization
 
 We are providing a [resource-oriented main API](api-design.md). Authorization is
@@ -404,7 +479,8 @@ understood as allowing a user access to do an action on a resource or its field.
 
 Our authorization model is based on a deny-by-default principle. This means that
 authorization is denied unless explicitly allowed. We then allow certain
-_actions_ on _resource_ or _field_ level for a specific _party type_.
+_actions_ on _resource_ or _field_ level for a specific _party type_. The caller
+must also have the required _scope_ to perform the action.
 
 You can think of a resource collection as a table. Each rows is a resource. Each
 column is a field. We then specify Field Level and Resource Level Authorization
@@ -424,27 +500,97 @@ access to resources `3`, `4` and `5`, and update access to only `5`.
 Together, these policies allow the party type to read all fields except `A` of resources
 `3`, `4` and `5`, and update only field `D` of resource `5`.
 
+In addition to this, the user must have the required scope to perform the action.
+
 ![Resource and Field Level Authorization](../diagrams/auth-table.drawio.png)
 
 More information about the policies and their implementation can be found in the
 following sections.
 
-### Actions
+### Scopes
 
-When we talk about authorization we usually talk about performing "actions" on
-resources or fields. The table below shows the actions and their corresponding
-[HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) and
-[database grants](https://www.postgresql.org/docs/15/sql-grant.html).
+Every combination of resource and action has a required scope. When a user makes
+a request, the system will check that the session or token has that
+scope. The requester can have multiple scopes. No scopes means no
+access.
 
-| Action     | HTTP verb | Database grant |
-|------------|-----------|----------------|
-| **C**reate | POST      | INSERT         |
-| **R**ead   | GET       | SELECT         |
-| **U**pdate | PATCH     | UPDATE         |
-| **D**elete | DELETE    | DELETE         |
+In our system, entities are made _members_ of parties to allow them to assume
+the parties and act on behalf of them. The party membership is restricted with a
+list of scopes. This allows fine-tuning the access control when the entity
+assumes the party. When the user authenticates and assumes a party, the
+session/token will have the scopes of the party membership.
 
-We do not model `List` as a specific action even tho it is a verb - someting a
-user can do - on the [API](api-design.md). It is covered by `Read`.
+The purpose of this is e.g. to allow one person to be able to read data in the
+system on behalf of a party, while another person can both read and write data.
+This fits with the least privilege principle, where we try to give the user the
+least amount of access.
+
+A scope shows what the user can do to a specific resource. It is a
+colon-separated string on the following format:
+
+```html
+<verb>:<module>[:<resource>]...
+```
+
+..and can be read as
+
+> The user can `<verb>` `<resource>` in `<module>`.
+
+Verb is the privilege or access level. Module and resource typically describe
+the _asset_ or _path_ that is being protected are defined below. Resource is
+optional and if omitted then it means "all resources".
+
+#### Verb
+
+A verb specifies the type of access. The verbs are defined by the actions they
+allow on the resource.
+
+| Verb     | Description                            | Action(s)                          |
+|----------|----------------------------------------|------------------------------------|
+| `read`   | Read-only access                       | Read                               |
+| `use`    | `read` plus calling RPCs (e.g. lookuo) | Read, Call                         |
+| `manage` | Full access. `use` plus changing data  | Create, Read, Update, Delete, Call |
+
+Since the access increases with `read` > `use` > `manage`, there is also
+implicit inheritance. This e.g. means that a user with the `use` verb implicitly
+has the `read` privilege.
+
+#### Module
+
+A module is a logical grouping of resources. The currently defined modules are.
+
+* `data` - This is the data API at `/api/`, for resources such as controllable
+  units, service providing groups, etc.
+* `auth` - This is the module for auth at `/auth/`.
+
+#### Resource
+
+The resource part of the scope is used to make sub-scopes within a module. It is
+optional and not yet implemented for clients. When omitted, the scope includes
+everything in a the module.
+
+The three dots `...` in the format above means that resources can be nested, to
+create sub-scopes.
+
+Each path on our API has a required scope, and every request is checked to see
+that the client has a matching scope.
+
+#### Scope examples
+
+The following are a few example scopes.
+
+* `GET /api/v0/controllable_unit/` requires `read:data:controllable_unit`. It is
+  also covered by e.g. `read:data` and `use:data` but not
+  `manage:data:technical_resource`.
+
+* `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
+  It is also covered by e.g. `manage:data` and `use:data:controllable_unit`.
+
+### Party type check
+
+The party type check is what is says the tin. It checks that the party type
+doing the request is allowed to do the action on the resource. This is an
+additional check added on just a few routes.
 
 ### Field Level Authorization (FLA)
 
@@ -506,7 +652,7 @@ Policies can be in `TODO` or `PARTIAL` state either if we have not gotten to it
 yet or the current platform does not support it (e.g. we are missing a
 relation/entity).
 
-## Time-dependent access control
+#### Time-dependent RLA
 
 Some combinations of party type and resource have time-dependent access
 policies.
@@ -533,7 +679,7 @@ Several strategies are in use to implement such constraints, simplifications
 being possible in some cases depending on which operations are available on the
 resource.
 
-### Method 1: Latest visible record
+##### Method 1: Latest visible record
 
 When fields on the resource are _not_ time-dependent, we must use audit history
 to provide access when doing _read_ operations on the main collection/resource.
@@ -582,7 +728,7 @@ will see different records.
     Therefore, the current method cannot be used for resources supporting a
     delete operation.
 
-### Method 2: _As-of_ query
+##### Method 2: _As-of_ query
 
 For resources that can be deleted, we introduce a more advanced mechanism.
 Instead of taking the latest visible version of each record, we take all visible
@@ -632,3 +778,83 @@ For instance, if future contracts (like the ones of C and D) are too far in the
 future, it may be judged unfair to show the current data of the resource.
 The current example is simplified by taking contracts that are very close to
 each other in time.
+
+## User creation and access control management
+
+To illustrate the auth model (_i.e._, how entities, parties, scopes, _etc._,
+interact with each other), we explain in this section how a organisation is
+modelelled in the system and how access is autonomously managed by its
+employees.
+
+The following diagram shows the end result of how an example organisation and
+its employees are represented in the system.
+
+![Organisation access control management illustration](../diagrams/organisation_management.drawio.png)
+
+The four black boxes shows how the oranisation itself is modelled in the system.
+
+* An organisation _entity_ representing the organisation
+* An organisation _party_ for administrating the organisation in the system
+* Two parties with the right market roles so that the organisation can perform
+  the business operations that they need in the FIS
+
+All parties are registered as owned by the organization.
+
+The blue and green boxes are persons. Kari is an organisation admin and can
+add/remove users to the parties that the organisation owns. Ola, Diana and Tor
+are regular users with varying access to read and manage data on behalf of the
+two market parties.
+
+### Autonomous access control management
+
+One person, in this case Kari, is registered as a admin member of the
+organisation party by the FIS operator. Once Kari is granted
+administrator privileges on the organisation, she can add and manage access
+control for her colleagues without involving the FISO.
+
+What we refer to as _administrator privileges_ here is a certain set of scopes
+on the party membership that makes the employee's person entity a member of the
+organisation party.
+The administrator is in charge for the addition of new users and the edition of
+party memberships and entity clients.
+The "administrator scopes" are therefore the ones sufficient to allow such
+operations, _i.e._, the following ones:
+
+* `manage:auth` - required for assuming/unassuming a party
+* `read:data` - required for instance to access readable parties
+* `use:data:entity:lookup` - to retrieve/create a technical identifier for the
+  colleagues they want to add in the system
+* `manage:data:party_memberships` - to add/remove their colleagues from the
+  organisation's parties
+* `manage:data:entity_client` - to manage clients on the organisation and set up
+  machine access for their colleagues
+
+From the moment an entity is added to the organisation party with administrator
+scopes, that person can log in and:
+
+* Retrieve or create entities associated to their colleagues based on their
+  person number through entity lookup.
+* Add/remove these entities to/from the various parties the organisation owns in
+  the system.
+* Add/remove entity clients allowing applications to act as the organisation
+  itself for some machine-automated operations.
+
+The administrator can also tune the scopes for both party memberships and
+entity clients, to allow for precise access control management.
+For instance, they can allow a data analyst in their company to _read_ all the
+data, but _not edit_ it, because such authorisations are not needed and
+restricting by default reduces the risk of making a mistake.
+
+### Sequence of actions
+
+Let us show an example of sequence of actions in the system to perform such an
+autonomous access control management. In this example, FIS operator adds Kari as
+admin and Kari adds Ola as a regular user for the Energy Supplier party.
+
+![Organisation access control management sequence](../diagrams/org_access_control_management.png)
+
+## User information endpoint
+
+OIDC provides a way to get user information. This is done by calling the
+`/userinfo` endpoint with the access token. The response is a JSON object
+with a set of claims about the user.

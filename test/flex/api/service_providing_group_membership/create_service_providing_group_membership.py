@@ -102,7 +102,7 @@ def _build_response(
 
 def sync_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupMembershipCreateRequest,
 ) -> Response[Union[ErrorMessage, ServiceProvidingGroupMembershipResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Membership relation of controllable unit in service providing group
@@ -132,7 +132,7 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupMembershipCreateRequest,
 ) -> Optional[Union[ErrorMessage, ServiceProvidingGroupMembershipResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Membership relation of controllable unit in service providing group
@@ -157,7 +157,7 @@ def sync(
 
 async def asyncio_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupMembershipCreateRequest,
 ) -> Response[Union[ErrorMessage, ServiceProvidingGroupMembershipResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Membership relation of controllable unit in service providing group
@@ -185,7 +185,7 @@ async def asyncio_detailed(
 
 async def asyncio(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
     body: ServiceProvidingGroupMembershipCreateRequest,
 ) -> Optional[Union[ErrorMessage, ServiceProvidingGroupMembershipResponse, Union["EmptyObject", "ErrorMessage"]]]:
     """Create Membership relation of controllable unit in service providing group
