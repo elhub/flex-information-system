@@ -19,7 +19,7 @@ actor "System Operator" as SO
 
 SO -> FIS: Suspend SP qualfication
 activate SO
-deactivate SO 
+
 
 note left
     Info: 
@@ -30,21 +30,42 @@ end note
 
 activate FIS
 
+FIS --> SO: Ok
+deactivate SO 
 FIS --> SP: Notify 
 FIS --> EU: Notify
-FIS --> SO: Ok
+FIS --> SO: Notify
+
+note right
+    All procuring system operators
+    are notified about the suspension
+end note
+
 deactivate FIS
+
+note over FIS
+    All communication about the suspension will 
+    be handled by SO and SP outside of FIS
+end note
 
 == Reinstation of service provider qualification ==
 SO -> FIS: Reinstate SP qualfication
 activate SO
-deactivate SO
+
 
 activate FIS
 
+FIS --> SO: Ok
+deactivate SO
 FIS --> SP: Notify 
 FIS --> EU: Notify
-FIS --> SO: Ok
+FIS --> SO: Notify
+
+note right
+    All procuring system operators
+    are notified about the reinstation
+end note
+
 deactivate FIS
 
 
