@@ -38,3 +38,39 @@ ADD COLUMN party_id bigint;
 
 ALTER TABLE flex.entity_client
 ENABLE TRIGGER USER;
+
+-- trigger to restrict the party field (can only be added once the field is there)
+
+-- changeset flex:entity-client-check-assumable-party-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION entity_client_check_assumable_party()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NOT (
+        -- entity is member of party
+        EXISTS (
+            SELECT 1 FROM flex.party_membership AS pm
+            WHERE pm.entity_id = NEW.entity_id AND pm.party_id = NEW.party_id
+        )
+        -- entity owns party
+        OR EXISTS (
+            SELECT 1 FROM flex.party AS p
+            WHERE p.id = NEW.party_id AND p.entity_id = NEW.entity_id
+        )
+    ) THEN
+        RAISE EXCEPTION 'entity cannot assume the chosen party';
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:entity-client-check-assumable-party-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER entity_client_check_assumable_party
+BEFORE UPDATE ON entity_client
+FOR EACH ROW
+WHEN (new.party_id IS NOT null)
+EXECUTE FUNCTION entity_client_check_assumable_party();
