@@ -1469,7 +1469,7 @@ func (auth *API) jwtBearerHandler(
 		}
 		defer tx.Commit(ctx)
 
-		partyID, err := models.GetPartyMembership(
+		partyID, err := models.GetAssumablePartyIDFromGLN(
 			ctx, tx, entityID, grant.Subject.Identifier,
 		)
 		if err != nil {
