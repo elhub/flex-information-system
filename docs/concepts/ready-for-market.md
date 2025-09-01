@@ -1,7 +1,8 @@
 # Ready for market
 
 Before a service provider can use a service providing group (SPG) in the market,
-the SPG must be ready.
+the SPG must be ready. We can check if a SPG is ready to deliver a specific
+product type to a specific SO.
 
 This document contains a checklist for when an SPG is considered as ready for
 market. A prerequisite for that is understanding how to read and understand the
@@ -58,11 +59,11 @@ If approval is withdrawn, SO updates status and remove the timestsamp.
 
 ### Suspension
 
-Suspension is a temporary state set by SO. Suspension is added as separate
-fields on the resources. On product (pre) qualification, this takes the form of
-a list of suspended product types. On other resources it is set as a boolean
-flag indicating that the resource is suspended. To check if resource is
-suspended, these fields must be checked.
+[Suspension](./suspension.md) is a temporary state set by SO. Suspension is
+added as separate fields on the resources. On product (pre) qualification, this
+takes the form of a list of suspended product types. On other resources it is
+set as a boolean flag indicating that the resource is suspended. To check if
+resource is suspended, these fields must be checked.
 
 ### Future checks
 
