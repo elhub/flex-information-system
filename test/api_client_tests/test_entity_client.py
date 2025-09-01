@@ -10,6 +10,8 @@ from flex.models import (
     PartyMembershipCreateRequest,
     PartyMembershipUpdateRequest,
     PartyMembershipResponse,
+    PartyCreateRequest,
+    PartyBusinessIdType,
     PartyResponse,
     ErrorMessage,
     EmptyObject,
@@ -23,6 +25,10 @@ from flex.api.entity_client import (
 )
 from flex.api.party import (
     read_party,
+    create_party,
+)
+from test_party import (
+    unique_gln,
 )
 from flex.api.party_membership import (
     list_party_membership,
@@ -46,6 +52,7 @@ def test_entity_client_fiso(sts):
     client_other_ent = sts.get_client(TestEntity.COMMON)
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
+    other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
 
     # RLS: ECL-ENT001
     # entity can do everything on their own clients
@@ -114,14 +121,85 @@ def test_entity_client_fiso(sts):
     )
     assert isinstance(e, ErrorMessage)
 
+    # -------- test of restrictions on the party field
+
+    # set up two parties, one owned by each test entity
+
+    p = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="New Party Entity Client Test",
+            business_id=unique_gln(),
+            business_id_type=PartyBusinessIdType.GLN,
+            role="flex_service_provider",
+            type="service_provider",
+            entity_id=ent_id,
+        ),
+    )
+    assert isinstance(p, PartyResponse)
+
+    p2 = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="New Party Entity Client Test 2",
+            business_id=unique_gln(),
+            business_id_type=PartyBusinessIdType.GLN,
+            role="flex_energy_supplier",
+            type="energy_supplier",
+            entity_id=other_ent_id,
+        ),
+    )
+    assert isinstance(p2, PartyResponse)
+
+    # party ownership test
+    # entity can assume an owned party, so it should be able to set up a client for it
+
+    u = update_entity_client.sync(
+        client=client_ent,
+        id=cast(int, clt.id),
+        body=EntityClientUpdateRequest(party_id=cast(int, p.id)),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # not the other one
+
+    e = update_entity_client.sync(
+        client=client_ent,
+        id=cast(int, clt.id),
+        body=EntityClientUpdateRequest(party_id=cast(int, p2.id)),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # party membership test
+    # if the entity is added to the other party, it should now be able to set up a client for it
+
+    pm = create_party_membership.sync(
+        client=client_fiso,
+        body=PartyMembershipCreateRequest(
+            party_id=cast(int, p2.id),
+            entity_id=ent_id,
+            scopes=[AuthScope.MANAGEAUTH, AuthScope.MANAGEDATAENTITY_CLIENT],
+        ),
+    )
+    assert isinstance(pm, PartyMembershipResponse)
+
+    u = update_entity_client.sync(
+        client=client_ent,
+        id=cast(int, clt.id),
+        body=EntityClientUpdateRequest(party_id=cast(int, p2.id)),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # --------
+
+    # cleanup + only entity can delete their own clients
+
     e = delete_entity_client.sync(
         client=client_fiso,
         id=cast(int, clt.id),
         body=EmptyObject(),
     )
     assert isinstance(e, ErrorMessage)
-
-    # only the entity can delete its clients
 
     # endpoint: DELETE /entity_client/{id}
     d = delete_entity_client.sync(
