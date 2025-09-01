@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:entity-client runOnChange:false endDelimiter:--
+-- validCheckSum: 9:0e0ac95e8b5c61cba271b9601f08abab
 CREATE TABLE IF NOT EXISTS entity_client (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     entity_id bigint NOT NULL REFERENCES entity (id),
