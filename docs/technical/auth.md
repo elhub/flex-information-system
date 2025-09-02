@@ -143,6 +143,11 @@ identity of the user when it enters the system.
 In a production setting, the identity of the entity will be established through
 mechanisms such as IDPorten, Maskinporten or enterprise certificates.
 
+Entities can setup clients (credentials or private keys) to enable later
+automated login, without going through the identity provider. If such a client
+is used to log in, it will be recorded as part of the identity, mainly for
+security purposes, to distinguish human access from machine access.
+
 ### Party - market actors
 
 This is the market party like a system operator or service provider. Parties in
