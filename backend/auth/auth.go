@@ -884,7 +884,8 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
-		Scope:          auth.defaultEntityScopes,
+		// TODO: store client ID in identity and get scopes from there
+		Scope: auth.defaultEntityScopes,
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
