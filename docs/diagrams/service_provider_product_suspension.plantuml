@@ -24,7 +24,6 @@ activate SO
 note left
     Info: 
         - id
-        - suspension from-date
         - reason for suspension
 end note
 
@@ -32,7 +31,7 @@ activate FIS
 
 FIS --> SO: Ok
 deactivate SO 
-FIS --> SP: Notify 
+FIS --> SP: Reason for suspension
 FIS --> EU: Notify
 FIS --> SO: Notify
 
