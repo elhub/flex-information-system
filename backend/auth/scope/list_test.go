@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flex/auth/scope"
 	"slices"
+	"strings"
 	"testing"
 )
 
@@ -609,6 +610,10 @@ func TestListIntersection(t *testing.T) {
 		return l
 	}
 
+	stringCompare := func(a, b scope.Scope) int {
+		return strings.Compare(a.String(), b.String())
+	}
+
 	tests := []struct {
 		name     string
 		listA    scope.List
@@ -708,10 +713,10 @@ func TestListIntersection(t *testing.T) {
 			result := scope.ListIntersection(tt.listA, tt.listB)
 
 			// Sort both lists for consistent comparison
-			slices.SortFunc(result, scope.Compare)
-			slices.SortFunc(tt.expected, scope.Compare)
+			slices.SortFunc(result, stringCompare)
+			slices.SortFunc(tt.expected, stringCompare)
 
-			if slices.CompareFunc(result, tt.expected, scope.Compare) != 0 {
+			if slices.CompareFunc(result, tt.expected, stringCompare) != 0 {
 				t.Errorf("ListIntersection() = %v, want %v", result, tt.expected)
 			}
 		})
