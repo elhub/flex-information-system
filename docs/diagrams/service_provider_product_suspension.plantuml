@@ -47,7 +47,7 @@ note over FIS
     be handled by SO and SP outside of FIS
 end note
 
-== Reinstation of service provider qualification ==
+== Reinstatement of service provider qualification ==
 SO -> FIS: Reinstate SP qualfication
 activate SO
 
@@ -62,7 +62,7 @@ FIS --> SO: Notify
 
 note right
     All procuring system operators
-    are notified about the reinstation
+    are notified about the reinstatement
 end note
 
 deactivate FIS
