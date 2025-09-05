@@ -1,0 +1,77 @@
+@startuml service_provider_product_suspension
+
+!theme plain
+
+title Service Provider Product Suspension
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "End User (EU)" as EU
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator" as SO
+
+== Suspension of service provider qualification ==
+
+
+SO -> FIS: Suspend SP qualfication
+activate SO
+
+
+note left
+    Info: 
+        - id
+        - reason for suspension
+end note
+
+activate FIS
+
+FIS --> SO: Ok
+deactivate SO 
+FIS --> SP: Reason for suspension
+FIS --> EU: Notify
+FIS --> SO: Notify
+
+note right
+    All procuring system operators
+    are notified about the suspension
+end note
+
+deactivate FIS
+
+note over FIS
+    All communication about the suspension will 
+    be handled by SO and SP outside of FIS
+end note
+
+== Reinstatement of service provider qualification ==
+SO -> FIS: Reinstate SP qualfication
+activate SO
+
+
+activate FIS
+
+FIS --> SO: Ok
+deactivate SO
+FIS --> SP: Notify 
+FIS --> EU: Notify
+FIS --> SO: Notify
+
+note right
+    All procuring system operators
+    are notified about the reinstatement
+end note
+
+deactivate FIS
+
+
+
+
+
+
+
+
+@enduml
