@@ -182,19 +182,3 @@ get started with and understand. We value simplicity for flexibility.
 ### Test - Focus on the API
 
 We focus our testing on testing the API.
-
-## Decisions
-
-The following sub-sections document some of the decisions we have made that are
-not part of the high-level overview above.
-
-### Integrated CU and SP modules
-
-One of the things that is in the Network Code Demand Response is that they
-distinguish between the Controllable Unit and Service Provider modules. We have
-decided to integrate these into a single system/module in our Flexibility
-Information System.
-
-We believe that this is a good choice for a common flexibility information
-system in Norway as it is a small country with a small number of actors. It is
-also technically easier to have a single system.
