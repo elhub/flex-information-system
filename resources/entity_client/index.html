@@ -221,7 +221,7 @@
         
   
   <span class="md-ellipsis">
-    Introduction
+    Flexibility Information System
     
   </span>
   
@@ -2125,6 +2125,18 @@ methods. An entity can have several clients registered.</p>
 <td></td>
 </tr>
 <tr>
+<td><a name="field-party_id" href="#field-party_id">party_id</a></td>
+<td>Reference to the party this client allows to assume. A null value means the client cannot assume any party.</td>
+<td>bigint<br/>Required</td>
+<td><a href="../party/#field-id">party.id</a></td>
+</tr>
+<tr>
+<td><a name="field-scopes" href="#field-scopes">scopes</a></td>
+<td>List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.<br/>Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.</td>
+<td><br/>Required<br/>Array</td>
+<td></td>
+</tr>
+<tr>
 <td><a name="field-client_secret" href="#field-client_secret">client_secret</a></td>
 <td>The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.</td>
 <td>text<br/>Min length: <code>12</code></td>
@@ -2302,6 +2314,32 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>R</td>
 <td>R</td>
 <td>R</td>
+</tr>
+<tr>
+<td>party_id</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+</tr>
+<tr>
+<td>scopes</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
 </tr>
 <tr>
 <td>client_secret</td>
