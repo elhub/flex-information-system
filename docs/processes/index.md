@@ -160,7 +160,7 @@ wants to offer to that specific system operator. The procuring system operator
 will qualify the service provider for the product(s). Includes communication
 test.
 
-#### Service provider product suspension
+#### [Service provider product suspension](service-provider-product-suspension.md)
 
 Suspension of a service provider product application and qualification initiated
 by system operator.

@@ -1,6 +1,6 @@
 # SP Product Suspension
 
-This process is used to suspend the service provider product qualification temporarily. The process can only be triggered by the procuring system operator that already qualified the service provider. The procuring system operator suspends the service providers product qualification, but the product qualification will not be suspended for other system operators. The process also includes reinstatement of the service provider qualification, i.e. removing the suspension. 
+This process is used to [suspend](../concepts/suspension.md) the service provider product qualification temporarily. The process can only be triggered by the procuring system operator that already qualified the service provider. The procuring system operator suspends the service providers product qualification, but the product qualification will not be suspended for other system operators. The process also includes reinstatement of the service provider qualification, i.e. removing the suspension. 
 
 Reasons for suspension are:
 * Communication issues
@@ -13,7 +13,8 @@ All procuring system operators that have qualified the service provider for the 
 <!--Other communication between service provider and system operator will happen outside of FIS. -->
 End users will not be notified about the suspension from FIS. Service providers will notify end users when necessary. 
 
-The suspension of the SP qualification will impact [ready for market](https://elhub.github.io/flex-information-system/concepts/ready-for-market/). 
+The suspension of the SP qualification will impact
+[ready for market](https://elhub.github.io/flex-information-system/concepts/ready-for-market/).
 
 ## Prerequisites
 
