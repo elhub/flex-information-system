@@ -3,6 +3,8 @@ package scope_test
 import (
 	"encoding/json"
 	"flex/auth/scope"
+	"slices"
+	"strings"
 	"testing"
 )
 
@@ -589,6 +591,133 @@ func TestListFromStrings(t *testing.T) {
 				if scope.Asset != tt.expected[idx].Asset {
 					t.Errorf("FromStrings() scope[%d].Asset = %q, want %q", idx, scope.Asset, tt.expected[idx].Asset)
 				}
+			}
+		})
+	}
+}
+
+//nolint:funlen
+func TestListIntersection(t *testing.T) {
+	t.Parallel()
+
+	// mustListFromStrings is a helper that creates a scope.List from a slice of strings,
+	// panicking if any string is invalid. This is useful for test setup.
+	mustListFromStrings := func(s []string) scope.List {
+		l, err := scope.ListFromStrings(s)
+		if err != nil {
+			panic(err)
+		}
+		return l
+	}
+
+	stringCompare := func(a, b scope.Scope) int {
+		return strings.Compare(a.String(), b.String())
+	}
+
+	tests := []struct {
+		name     string
+		listA    scope.List
+		listB    scope.List
+		expected scope.List
+	}{
+		{
+			name:     "Both lists nil",
+			listA:    nil,
+			listB:    nil,
+			expected: nil,
+		},
+		{
+			name:     "One list nil, one empty",
+			listA:    nil,
+			listB:    mustListFromStrings([]string{}),
+			expected: nil,
+		},
+		{
+			name:     "One list nil, one with items",
+			listA:    mustListFromStrings([]string{"read:users"}),
+			listB:    nil,
+			expected: nil,
+		},
+		{
+			name:     "Both lists empty",
+			listA:    mustListFromStrings([]string{}),
+			listB:    mustListFromStrings([]string{}),
+			expected: mustListFromStrings([]string{}),
+		},
+		{
+			name:     "One list empty",
+			listA:    mustListFromStrings([]string{"read:users"}),
+			listB:    mustListFromStrings([]string{}),
+			expected: mustListFromStrings([]string{}),
+		},
+		{
+			name:     "No intersection",
+			listA:    mustListFromStrings([]string{"read:users"}),
+			listB:    mustListFromStrings([]string{"read:groups"}),
+			expected: mustListFromStrings([]string{}),
+		},
+		{
+			name:     "Simple intersection",
+			listA:    mustListFromStrings([]string{"read:users"}),
+			listB:    mustListFromStrings([]string{"read:users"}),
+			expected: mustListFromStrings([]string{"read:users"}),
+		},
+		{
+			name:     "Multiple intersections",
+			listA:    mustListFromStrings([]string{"read:users", "manage:groups"}),
+			listB:    mustListFromStrings([]string{"read:users", "manage:groups", "use:api"}),
+			expected: mustListFromStrings([]string{"read:users", "manage:groups"}),
+		},
+		{
+			name:     "Intersection with different verbs",
+			listA:    mustListFromStrings([]string{"manage:users"}),
+			listB:    mustListFromStrings([]string{"read:users"}),
+			expected: mustListFromStrings([]string{"read:users"}),
+		},
+		{
+			name:     "Intersection with parent/child assets",
+			listA:    mustListFromStrings([]string{"read:users"}),
+			listB:    mustListFromStrings([]string{"read:users:profile"}),
+			expected: mustListFromStrings([]string{"read:users:profile"}),
+		},
+		{
+			name:     "Intersection with child/parent assets",
+			listA:    mustListFromStrings([]string{"read:users:profile"}),
+			listB:    mustListFromStrings([]string{"read:users"}),
+			expected: mustListFromStrings([]string{"read:users:profile"}),
+		},
+		{
+			name:     "Redundant intersections are included",
+			listA:    mustListFromStrings([]string{"manage:users"}),
+			listB:    mustListFromStrings([]string{"read:users", "read:users:profile"}),
+			expected: mustListFromStrings([]string{"read:users", "read:users:profile"}),
+		},
+		{
+			name:     "Duplicate intersections are included",
+			listA:    mustListFromStrings([]string{"read:users", "read:users"}),
+			listB:    mustListFromStrings([]string{"read:users"}),
+			expected: mustListFromStrings([]string{"read:users"}),
+		},
+		{
+			name:     "Complex intersection scenario",
+			listA:    mustListFromStrings([]string{"manage:a:b", "read:c:d", "use:e"}),
+			listB:    mustListFromStrings([]string{"read:a", "manage:c:d:e", "use:e:f"}),
+			expected: mustListFromStrings([]string{"read:a:b", "read:c:d:e", "use:e:f"}),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			result := scope.ListIntersection(tt.listA, tt.listB)
+
+			// Sort both lists for consistent comparison
+			slices.SortFunc(result, stringCompare)
+			slices.SortFunc(tt.expected, stringCompare)
+
+			if slices.CompareFunc(result, tt.expected, stringCompare) != 0 {
+				t.Errorf("ListIntersection() = %v, want %v", result, tt.expected)
 			}
 		})
 	}

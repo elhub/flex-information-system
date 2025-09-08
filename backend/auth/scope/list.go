@@ -2,6 +2,7 @@ package scope
 
 import (
 	"encoding/json"
+	"slices"
 	"strings"
 )
 
@@ -82,4 +83,23 @@ func ListFromStrings(scopes []string) (List, error) {
 	}
 
 	return list, nil
+}
+
+// ListIntersection returns the intersection between lists a and b.
+// If there is no intersection, the result is an empty list.
+func ListIntersection(a, b List) List {
+	var intersections List
+	for _, scopeA := range a {
+		for _, scopeB := range b {
+			if ok, intersection := Intersection(scopeA, scopeB); ok {
+				intersections = append(intersections, intersection)
+			}
+		}
+	}
+	if len(intersections) == 0 {
+		return intersections
+	}
+
+	slices.SortFunc(intersections, Compare)
+	return slices.CompactFunc(intersections, Equal)
 }
