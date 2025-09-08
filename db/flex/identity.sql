@@ -13,12 +13,34 @@ CREATE TABLE IF NOT EXISTS identity (
     REFERENCES party (id),
     CONSTRAINT fk_identity_entity_id FOREIGN KEY (entity_id)
     REFERENCES entity (id),
-    CONSTRAINT fk_identity_client_id FOREIGN KEY (client_id)
-    REFERENCES entity_client (id),
     CONSTRAINT uk_identity_eid UNIQUE (eid),
     CONSTRAINT uk_identity_entity_id_party_id_client_id
     UNIQUE (entity_id, party_id, client_id)
 );
+
+-- changeset flex:identity-client-id-reference-check runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION identity_client_id_reference_check()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NEW.client_id IS NOT null AND NOT EXISTS (
+        SELECT 1 FROM flex.entity_client clt WHERE clt.id = NEW.client_id
+    ) THEN
+        RAISE EXCEPTION 'Non-null client_id should point to an existing entity client';
+    END IF;
+
+    RETURN NEW;
+END
+$$;
+
+-- changeset flex:identity-client-id-reference-check-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER identity_client_id_reference_check
+BEFORE INSERT ON identity
+FOR EACH ROW
+EXECUTE FUNCTION identity_client_id_reference_check();
 
 -- changeset flex:identity-external-id runOnChange:true endDelimiter:--
 DROP FUNCTION IF EXISTS identity_external_id(bigint, bigint);

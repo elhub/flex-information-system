@@ -8,10 +8,6 @@ ALTER TABLE flex.identity
 ADD COLUMN client_id bigint;
 
 ALTER TABLE flex.identity
-ADD CONSTRAINT fk_identity_client_id
-FOREIGN KEY (client_id) REFERENCES entity_client (id);
-
-ALTER TABLE flex.identity
 DROP CONSTRAINT uk_identity_entity_id_party_id;
 
 ALTER TABLE flex.identity
