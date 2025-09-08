@@ -884,7 +884,8 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
-		Scope:          auth.defaultEntityScopes,
+		// TODO: store client ID in identity and get scopes from there
+		Scope: auth.defaultEntityScopes,
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -1065,7 +1066,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		return
 	}
 
-	entityID, eid, err := models.GetEntityOfCredentials(
+	entityID, eid, scopeStrings, err := models.GetEntityOfCredentials(
 		ctx, tx, payload.ClientID, payload.ClientSecret,
 	)
 	if err != nil {
@@ -1083,13 +1084,24 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 	// this makes sure valid logins are not delayed
 	delayer.Cancel()
 
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"invalid scope format from database",
+			err,
+		))
+
+		return
+	}
+
 	accessToken := accessToken{
 		EntityID:       entityID,
 		ExpirationTime: newUnixExpirationTime(auth.tokenDurationSeconds),
 		ExternalID:     eid,
 		PartyID:        0,
 		Role:           "flex_entity",
-		Scope:          auth.defaultEntityScopes,
+		Scope:          scopes,
 	}
 
 	slog.InfoContext(
@@ -1381,7 +1393,7 @@ func (auth *API) jwtBearerHandler(
 	}
 	defer tx.Commit(ctx)
 
-	entityID, externalID, pubKeyPEM, err := models.GetEntityClientByUUID(
+	entityID, externalID, pubKeyPEM, scopeStrings, err := models.GetEntityClientByUUID(
 		ctx,
 		tx,
 		grant.Issuer,
@@ -1391,6 +1403,16 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "invalid or unknown client",
 		})
+
+		return
+	}
+	entityScopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
+			http.StatusInternalServerError,
+			"invalid scope format from database",
+			err,
+		))
 
 		return
 	}
@@ -1431,7 +1453,8 @@ func (auth *API) jwtBearerHandler(
 		rd := &RequestDetails{
 			role:       "flex_entity",
 			externalID: externalID,
-			scope:      auth.defaultEntityScopes,
+			// default scopes here because we just use them to get the party ID
+			scope: auth.defaultEntityScopes,
 		}
 		ctx.Set(auth.ctxKey, rd)
 
@@ -1447,7 +1470,7 @@ func (auth *API) jwtBearerHandler(
 		}
 		defer tx.Commit(ctx)
 
-		partyID, err := models.GetPartyMembership(
+		partyID, err := models.GetAssumablePartyIDFromGLN(
 			ctx, tx, entityID, grant.Subject.Identifier,
 		)
 		if err != nil {
@@ -1501,7 +1524,7 @@ func (auth *API) jwtBearerHandler(
 			ExternalID:     externalID,
 			PartyID:        0,
 			Role:           "flex_entity",
-			Scope:          auth.defaultEntityScopes,
+			Scope:          entityScopes,
 		}
 
 		slog.InfoContext(

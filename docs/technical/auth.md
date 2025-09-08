@@ -517,8 +517,8 @@ access.
 In our system, entities are made _members_ of parties to allow them to assume
 the parties and act on behalf of them. The party membership is restricted with a
 list of scopes. This allows fine-tuning the access control when the entity
-assumes the party. When the user authenticates and assumes a party, the
-session/token will have the scopes of the party membership.
+assumes the party. Entity clients, allowing users to log in as entities in an
+automated way, also contain scopes to limit what a machine can do in the system.
 
 The purpose of this is e.g. to allow one person to be able to read data in the
 system on behalf of a party, while another person can both read and write data.
@@ -585,6 +585,36 @@ The following are a few example scopes.
 
 * `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
   It is also covered by e.g. `manage:data` and `use:data:controllable_unit`.
+
+#### Scope assignment
+
+Everytime a user changes identity in the system, they get assigned different
+scopes.
+These scopes are then held in the session/token.
+
+This happens first when they log in as an entity.
+If they log in through an entity client, they get the scopes associated to that
+client.
+Otherwise, they get the default scopes `manage:auth` and `manage:data`, which
+are sufficient to assume a party and get read-write access to the resources in
+the system.
+
+This happens a second time when the user assumes a party.
+If they assume a party that they own, then there scopes do not change.
+If they assume a party they are a member of, then they get assigned the
+_intersection_ of the scopes they had as an entity with the scopes granted by
+the membership.
+In other words, they keep the most powerful scopes from their entity while still
+respecting the limitations set by the party membership.
+
+This enables administrators to choose what each user can do on behalf of their
+organisation, with the option of setting a different limit for each party,
+_i.e._, set to what extent the user can exploit each responsibility the
+organisation has in the market.
+But this also allows the administrators for instance to set up a client so that
+people can use the API to access the system in a read-only manner, thus reducing
+the risks of editing sensitive data by mistake when accessing the system
+programmatically.
 
 ### Party type check
 
