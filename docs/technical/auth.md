@@ -611,6 +611,8 @@ _intersection_ of the scopes they had as an entity with the scopes granted by
 the membership.
 In other words, they keep the most powerful scopes from their entity while still
 respecting the limitations set by the party membership.
+Unassuming the party will reset the scopes to those the user would be granted if
+logging in as an entity (through the entity client they provided, if they did).
 
 This enables administrators to choose what each user can do on behalf of their
 organisation, with the option of setting a different limit for each party,

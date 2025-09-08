@@ -36,24 +36,30 @@ func GetEntityOfCredentials(
 	return entityID, eid, scopes, nil
 }
 
-// GetExternalIDByEntityID gets the external ID of an entity.
-func GetExternalIDByEntityID(
+// RefreshIdentityDropParty returns an identity corresponding to the same
+// entity and client as the identity given as parameter, but without party
+// association.
+// Returns null scopes if no client was associated to the input identity.
+func RefreshIdentityDropParty(
 	ctx context.Context,
 	tx pgx.Tx,
-	entityID int,
-) (string, error) {
-	var eid string
+	externalID string,
+) (string, []string, error) {
+	var (
+		eid    string
+		scopes []string
+	)
 
 	err := tx.QueryRow(
 		ctx,
-		"select flex.identity_external_id($1, null)",
-		entityID,
-	).Scan(&eid)
+		"select external_id, scopes from flex.refresh_identity_drop_party($1)",
+		externalID,
+	).Scan(&eid, &scopes)
 	if err != nil {
-		return "", fmt.Errorf("failed to get external ID by entity ID: %w", err)
+		return "", nil, fmt.Errorf("failed to refresh identity without party: %w", err)
 	}
 
-	return eid, nil
+	return eid, scopes, nil
 }
 
 // GetEntityOfBusinessID gets the entity and external ID of a entity business id.

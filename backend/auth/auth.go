@@ -852,7 +852,9 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Commit(r.Context())
 
-	externalID, err := models.GetExternalIDByEntityID(r.Context(), tx, receivedToken.EntityID)
+	externalID, scopeStrings, err := models.RefreshIdentityDropParty(
+		r.Context(), tx, receivedToken.ExternalID,
+	)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 
@@ -863,6 +865,25 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write(body)
 
 		return
+	}
+
+	var scopes scope.List
+	if scopeStrings == nil {
+		// the identity did not log in with an entity client, using default scopes
+		scopes = auth.defaultEntityScopes
+	} else {
+		scopes, err = scope.ListFromStrings(scopeStrings)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+
+			body, _ := json.Marshal(oauthErrorMessage{
+				Error:            oauthErrorServerError,
+				ErrorDescription: "invalid scope format from database",
+			})
+			w.Write(body)
+
+			return
+		}
 	}
 
 	ui, err := models.GetCurrentUserInfo(r.Context(), tx)
@@ -884,8 +905,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
-		// TODO: store client ID in identity and get scopes from there
-		Scope: auth.defaultEntityScopes,
+		Scope:          scopes,
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))

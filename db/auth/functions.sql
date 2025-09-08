@@ -66,6 +66,24 @@ AS $$
     WHERE clt.client_id::text = in_client_id
 $$;
 
+-- changeset flex:auth-refresh-identity-drop-party runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.refresh_identity_drop_party(
+    in_external_id text
+) RETURNS TABLE (
+    external_id uuid,
+    scopes text []
+) SECURITY DEFINER VOLATILE
+LANGUAGE sql
+AS $$
+    SELECT
+        flex.identity_external_id(i.entity_id, null, clt.id) as external_id,
+        clt.scopes as scopes
+    FROM flex.identity i
+        LEFT JOIN flex.entity_client as clt
+            ON i.client_id = clt.id
+    WHERE i.eid::text = in_external_id
+$$;
+
 -- changeset flex:auth-assume-party runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.assume_party(in_party_id bigint)
 RETURNS TABLE (
