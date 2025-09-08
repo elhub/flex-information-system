@@ -9,17 +9,19 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-actor "End User (EU)" as EU
 actor "Service Provider (SP)" as SP
 participant "Flexibility\nInformation System (FIS)" as FIS
-actor "System Operator" as SO
+actor "System Operator (SO)" as SO
 
-== Suspension of service provider qualification ==
-
+== Suspension of service provider product qualification ==
 
 SO -> FIS: Suspend SP qualfication
 activate SO
 
+note right
+     The suspension counts only 
+     for one selected product
+end note
 
 note left
     Info: 
@@ -31,39 +33,51 @@ activate FIS
 
 FIS --> SO: Ok
 deactivate SO 
+FIS --> SP: Notify
+activate SP
+SP -> FIS: Get reason for suspension
 FIS --> SP: Reason for suspension
-FIS --> EU: Notify
-FIS --> SO: Notify
-
-note right
-    All procuring system operators
-    are notified about the suspension
+deactivate SP
+note left
+    SP notifies end users of 
+    the suspension when neccessary
 end note
+
+loop All procuring system operators connected to the product
+    |||
+    FIS --> SO: Notify
+    note right
+        All procuring SOs that have qualified 
+        the SP for the same product will be 
+        notified of the suspension
+    end note
+end
 
 deactivate FIS
 
-note over FIS
+/'note over FIS
     All communication about the suspension will 
     be handled by SO and SP outside of FIS
 end note
+'/
 
-== Reinstatement of service provider qualification ==
+== Reinstatement of service provider product qualification ==
 SO -> FIS: Reinstate SP qualfication
 activate SO
-
-
 activate FIS
-
 FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify 
-FIS --> EU: Notify
-FIS --> SO: Notify
 
-note right
-    All procuring system operators
-    are notified about the reinstatement
-end note
+loop All procuring system operators connected to the product
+    |||
+    FIS --> SO: Notify
+    note right
+        All procuring SOs that have qualified 
+        the SP for the same product will be 
+        notified of the reinstatement
+    end note
+end
 
 deactivate FIS
 
