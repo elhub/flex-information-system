@@ -127,7 +127,7 @@ where are also shown.
 
 ![api-surface](./diagrams/api-surface.drawio.png)
 
-To read about the API design, see the [API design documentation](./api-design.md).
+To read about the API design, see the [API design documentation](../docs/api-design.md).
 
 !!! info
 
