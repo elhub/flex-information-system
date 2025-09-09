@@ -20,7 +20,7 @@ product type will however be notified of the suspension.
 The system operator must include the reason for suspension when suspending. The
 reason for suspension is a predefined list. There are two reasons for that. The
 first is that the PSO is only allowed to suspend for valid reasons. The other is
-that it for allows a greater degree of automation in the process.
+that it allows for a greater degree of automation in the process.
 
 | Reason                 | Description                                                                                                                             |
 |------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -34,11 +34,11 @@ i.e. removing the suspension.
 ## Prerequisites
 
 * The issue that triggers the suspension is temporary.
-* Adding and lifting a suspension is instantaneus. There is not need to
-  communicate suspension or reinstatement in ahead in time.
+* Adding and lifting a suspension is instantaneus. There is no need to
+  communicate suspension or reinstatement ahead in time.
 * End users should not be notified about or view the suspension in FIS. Service
   providers will notify end users when necessary and dependent on the agreement
-  between the end user and the service provider.
+  between them and the end user.
 * The suspension of the SP qualification will impact the
   [ready for market](https://elhub.github.io/flex-information-system/concepts/ready-for-market/)
   status for a SPG.
