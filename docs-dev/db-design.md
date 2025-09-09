@@ -6,7 +6,7 @@ This document contains the database design guidelines for the project.
 
 The following diagram is an auto-generated representation of the `flex` schema database.
 
-![database tables](../diagrams/tables.png)
+![database tables](./diagrams/tables.png)
 
 ## Foreign keys to tables with multiple types
 
@@ -136,12 +136,12 @@ Included for completeness [Enumerated Types](https://www.postgresql.org/docs/cur
 ## Bi-temporal data
 
 Some of the data we model in the database is
-[bi-temporal](../time.md#bi-temporal-data). Most of our resources have record time
-history (provided as its own separate resource). Some resources have valid time
-timelines in addition.
+[bi-temporal](../docs/technical/time.md#bi-temporal-data). Most of our resources
+have record time history (provided as its own separate resource). Some resources
+have valid time timelines in addition.
 
 The
-[API docs on bi-temporal modelling](../api-design.md#time-dependent-resources-and-fields)
+[API docs on bi-temporal modelling](../docs/technical/api-design.md#time-dependent-resources-and-fields)
 have some details regarding what we present to the users. This is realized as a
 set of:
 

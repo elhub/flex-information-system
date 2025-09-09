@@ -47,8 +47,8 @@ The following diagram shows the sequence of OIDC logout.
 ## Assuming party
 
 After the user has logged in, the user must
-[assume a party](../docs/auth.md#assuming-party). The `/assume` endpoint is used
-by the frontend for this purpose.
+[assume a party](../docs/technical/auth.md#assuming-party). The `/assume`
+endpoint is used by the frontend for this purpose.
 
 ## Ensuring compatibility between IDPorten and our mock/test IDP
 
