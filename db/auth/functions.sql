@@ -66,8 +66,8 @@ AS $$
     WHERE clt.client_id::text = in_client_id
 $$;
 
--- changeset flex:auth-refresh-identity-drop-party runAlways:true endDelimiter:--
-CREATE OR REPLACE FUNCTION auth.refresh_identity_drop_party(
+-- changeset flex:unassumed-identity-of-external-id runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.unassumed_identity_of_external_id(
     in_external_id text
 ) RETURNS TABLE (
     external_id uuid,
@@ -77,7 +77,7 @@ LANGUAGE sql
 AS $$
     SELECT
         flex.identity_external_id(i.entity_id, null, clt.id) as external_id,
-        clt.scopes as scopes
+        COALESCE(clt.scopes, '{}'::text[]) as scopes
     FROM flex.identity i
         LEFT JOIN flex.entity_client as clt
             ON i.client_id = clt.id

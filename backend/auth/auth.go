@@ -852,7 +852,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Commit(r.Context())
 
-	externalID, scopeStrings, err := models.RefreshIdentityDropParty(
+	externalID, scopes, err := models.GetUnassumedIdentityByExternalID(
 		r.Context(), tx, receivedToken.ExternalID,
 	)
 	if err != nil {
@@ -860,30 +860,16 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
-			ErrorDescription: "could not get external ID",
+			ErrorDescription: "could not get unassumed identity",
 		})
 		w.Write(body)
 
 		return
 	}
 
-	var scopes scope.List
-	if scopeStrings == nil {
-		// the identity did not log in with an entity client, using default scopes
+	// if the identity did not log in with an entity client, use default scopes
+	if len(scopes) == 0 {
 		scopes = auth.defaultEntityScopes
-	} else {
-		scopes, err = scope.ListFromStrings(scopeStrings)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-
-			body, _ := json.Marshal(oauthErrorMessage{
-				Error:            oauthErrorServerError,
-				ErrorDescription: "invalid scope format from database",
-			})
-			w.Write(body)
-
-			return
-		}
 	}
 
 	ui, err := models.GetCurrentUserInfo(r.Context(), tx)
@@ -1494,6 +1480,9 @@ func (auth *API) jwtBearerHandler(
 			ctx, tx, entityID, grant.Subject.Identifier,
 		)
 		if err != nil {
+			slog.ErrorContext(
+				ctx, "getting assumable party ID from GLN failed", "error", err,
+			)
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidClient,
 				ErrorDescription: "could not assume the requested party in sub",

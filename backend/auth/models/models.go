@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"flex/auth/scope"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -36,27 +37,31 @@ func GetEntityOfCredentials(
 	return entityID, eid, scopes, nil
 }
 
-// RefreshIdentityDropParty returns an identity corresponding to the same
-// entity and client as the identity given as parameter, but without party
+// GetUnassumedIdentityByExternalID returns an identity corresponding to the
+// same entity and client as the identity given as parameter, but without party
 // association.
-// Returns null scopes if no client was associated to the input identity.
-func RefreshIdentityDropParty(
+func GetUnassumedIdentityByExternalID(
 	ctx context.Context,
 	tx pgx.Tx,
 	externalID string,
-) (string, []string, error) {
+) (string, scope.List, error) {
 	var (
-		eid    string
-		scopes []string
+		eid          string
+		scopeStrings []string
 	)
 
 	err := tx.QueryRow(
 		ctx,
-		"select external_id, scopes from flex.refresh_identity_drop_party($1)",
+		"select external_id, scopes from flex.unassumed_identity_of_external_id($1)",
 		externalID,
-	).Scan(&eid, &scopes)
+	).Scan(&eid, &scopeStrings)
 	if err != nil {
 		return "", nil, fmt.Errorf("failed to refresh identity without party: %w", err)
+	}
+
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		return "", nil, fmt.Errorf("failed to parse scopes: %w", err)
 	}
 
 	return eid, scopes, nil
@@ -222,7 +227,7 @@ func GetAssumablePartyIDFromGLN(
 		getAssumablePartyIDFromGLN,
 		entityID,
 		partyBusinessID,
-	).Scan(&partyID, &entityID)
+	).Scan(&partyID)
 	if err != nil {
 		return 0, fmt.Errorf("failed to get party ID: %w", err)
 	}
