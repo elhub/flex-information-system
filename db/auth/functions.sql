@@ -66,8 +66,8 @@ AS $$
     WHERE clt.client_id::text = in_client_id
 $$;
 
--- changeset flex:unassumed-identity-of-external-id runAlways:true endDelimiter:--
-CREATE OR REPLACE FUNCTION auth.unassumed_identity_of_external_id(
+-- changeset flex:entity-identity-of-external-id runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.entity_identity_of_external_id(
     in_external_id text
 ) RETURNS TABLE (
     external_id uuid,

@@ -37,10 +37,10 @@ func GetEntityOfCredentials(
 	return entityID, eid, scopes, nil
 }
 
-// GetUnassumedIdentityByExternalID returns an identity corresponding to the
-// same entity and client as the identity given as parameter, but without party
+// GetEntityIdentityByExternalID returns an identity corresponding to the same
+// entity and client as the identity given as parameter, but without party
 // association.
-func GetUnassumedIdentityByExternalID(
+func GetEntityIdentityByExternalID(
 	ctx context.Context,
 	tx pgx.Tx,
 	externalID string,
@@ -52,7 +52,7 @@ func GetUnassumedIdentityByExternalID(
 
 	err := tx.QueryRow(
 		ctx,
-		"select external_id, scopes from flex.unassumed_identity_of_external_id($1)",
+		"select external_id, scopes from auth.entity_identity_of_external_id($1)",
 		externalID,
 	).Scan(&eid, &scopeStrings)
 	if err != nil {

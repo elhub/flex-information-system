@@ -852,7 +852,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Commit(r.Context())
 
-	externalID, scopes, err := models.GetUnassumedIdentityByExternalID(
+	externalID, scopes, err := models.GetEntityIdentityByExternalID(
 		r.Context(), tx, receivedToken.ExternalID,
 	)
 	if err != nil {
@@ -860,7 +860,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
-			ErrorDescription: "could not get unassumed identity",
+			ErrorDescription: "could not get entity identity",
 		})
 		w.Write(body)
 
