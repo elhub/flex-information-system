@@ -44,27 +44,28 @@ func GetEntityIdentityByExternalID(
 	ctx context.Context,
 	tx pgx.Tx,
 	externalID string,
-) (string, scope.List, error) {
+) (string, *string, scope.List, error) {
 	var (
 		eid          string
+		clientID     *string
 		scopeStrings []string
 	)
 
 	err := tx.QueryRow(
 		ctx,
-		"select external_id, scopes from auth.entity_identity_of_external_id($1)",
+		"select external_id, client_id, scopes from auth.entity_identity_of_external_id($1)",
 		externalID,
-	).Scan(&eid, &scopeStrings)
+	).Scan(&eid, &clientID, &scopeStrings)
 	if err != nil {
-		return "", nil, fmt.Errorf("failed to refresh identity without party: %w", err)
+		return "", nil, nil, fmt.Errorf("failed to refresh identity without party: %w", err)
 	}
 
 	scopes, err := scope.ListFromStrings(scopeStrings)
 	if err != nil {
-		return "", nil, fmt.Errorf("failed to parse scopes: %w", err)
+		return "", nil, nil, fmt.Errorf("failed to parse scopes: %w", err)
 	}
 
-	return eid, scopes, nil
+	return eid, clientID, scopes, nil
 }
 
 // GetEntityOfBusinessID gets the entity and external ID of a entity business id.

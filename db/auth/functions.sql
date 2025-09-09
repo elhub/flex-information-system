@@ -71,13 +71,15 @@ CREATE OR REPLACE FUNCTION auth.entity_identity_of_external_id(
     in_external_id text
 ) RETURNS TABLE (
     external_id uuid,
+    client_id text,
     scopes text []
 ) SECURITY DEFINER VOLATILE
 LANGUAGE sql
 AS $$
     SELECT
         flex.identity_external_id(i.entity_id, null, clt.id) as external_id,
-        COALESCE(clt.scopes, '{}'::text[]) as scopes
+        clt.client_id as client_id,
+        clt.scopes as scopes
     FROM flex.identity i
         LEFT JOIN flex.entity_client as clt
             ON i.client_id = clt.id

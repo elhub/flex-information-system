@@ -852,7 +852,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Commit(r.Context())
 
-	externalID, scopes, err := models.GetEntityIdentityByExternalID(
+	externalID, clientID, scopes, err := models.GetEntityIdentityByExternalID(
 		r.Context(), tx, receivedToken.ExternalID,
 	)
 	if err != nil {
@@ -868,7 +868,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// if the identity did not log in with an entity client, use default scopes
-	if len(scopes) == 0 {
+	if clientID == nil {
 		scopes = auth.defaultEntityScopes
 	}
 
