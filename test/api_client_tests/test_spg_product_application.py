@@ -84,7 +84,13 @@ def data():
     )
     so_id = sts.get_userinfo(client_so)["party_id"]
 
-    # create an SPG and activate it
+    client_other_so = cast(
+        AuthenticatedClient,
+        sts.fresh_client(TestEntity.COMMON, "SO"),
+    )
+    other_so_id = sts.get_userinfo(client_other_so)["party_id"]
+
+    # create 2 SPGs and activate them
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -117,6 +123,15 @@ def data():
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
 
+    spg2 = create_service_providing_group.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupCreateRequest(
+            name="TEST-SPG-13",
+            service_provider_id=sp_id,
+        ),
+    )
+    assert isinstance(spg2, ServiceProvidingGroupResponse)
+
     # SO cannot read the SPG yet (cf SPG RLS below)
     err = read_service_providing_group.sync(
         client=client_so,
@@ -124,59 +139,68 @@ def data():
     )
     assert isinstance(err, ErrorMessage)
 
-    spgm = create_service_providing_group_membership.sync(
-        client=client_fiso,
-        body=ServiceProvidingGroupMembershipCreateRequest(
-            controllable_unit_id=cast(int, cu.id),
-            service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T00:00:00+1",
-        ),
-    )
-    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
+    spgm_ids = []
+    for spg_id in [spg.id, spg2.id]:
+        spgm = create_service_providing_group_membership.sync(
+            client=client_fiso,
+            body=ServiceProvidingGroupMembershipCreateRequest(
+                controllable_unit_id=cast(int, cu.id),
+                service_providing_group_id=spg_id,
+                valid_from="2024-01-01T00:00:00+1",
+            ),
+        )
+        assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
+        spgm_ids.append(spgm.id)
 
-    u = update_service_providing_group.sync(
-        client=client_fiso,
-        id=cast(int, spg.id),
-        body=ServiceProvidingGroupUpdateRequest(
-            status=ServiceProvidingGroupStatus.ACTIVE,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
+        u = update_service_providing_group.sync(
+            client=client_fiso,
+            id=cast(int, spg_id),
+            body=ServiceProvidingGroupUpdateRequest(
+                status=ServiceProvidingGroupStatus.ACTIVE,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
 
-    # apply for a product type for the SO and qualify this application
+    # apply for some product types for both SO and qualify the applications
 
     # random choice of product type, it does not matter
-    pt_id = 7
+    pt_ids = [5, 7]
 
-    sopt = create_system_operator_product_type.sync(
-        client=client_so,
-        body=SystemOperatorProductTypeCreateRequest(
-            system_operator_id=so_id,
-            product_type_id=pt_id,
-        ),
-    )
-    assert isinstance(sopt, SystemOperatorProductTypeResponse)
+    for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
+        for pt_id in pt_ids:
+            sopt = create_system_operator_product_type.sync(
+                client=clt,
+                body=SystemOperatorProductTypeCreateRequest(
+                    system_operator_id=id,
+                    product_type_id=pt_id,
+                ),
+            )
+            assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
-    sppa = create_service_provider_product_application.sync(
-        client=client_sp,
-        body=ServiceProviderProductApplicationCreateRequest(
-            service_provider_id=sp_id,
-            system_operator_id=so_id,
-            product_type_ids=[pt_id],
-        ),
-    )
-    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+        sppa = create_service_provider_product_application.sync(
+            client=client_sp,
+            body=ServiceProviderProductApplicationCreateRequest(
+                service_provider_id=sp_id,
+                system_operator_id=id,
+                product_type_ids=pt_ids,
+            ),
+        )
+        assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
-    u = update_service_provider_product_application.sync(
-        client=client_so,
-        id=cast(int, sppa.id),
-        body=ServiceProviderProductApplicationUpdateRequest(
-            status=ServiceProviderProductApplicationStatus.QUALIFIED,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
+        u = update_service_provider_product_application.sync(
+            client=clt,
+            id=cast(int, sppa.id),
+            body=ServiceProviderProductApplicationUpdateRequest(
+                status=ServiceProviderProductApplicationStatus.QUALIFIED,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
 
-    yield (sts, spg.id, spgm.id, client_sp, client_so, so_id, pt_id)
+    spg_ids = [spg.id, spg2.id]
+    so_clients = [client_so, client_other_so]
+    so_ids = [so_id, other_so_id]
+
+    yield (sts, spg_ids, spgm_ids, client_sp, so_clients, so_ids, pt_ids)
 
 
 # ---- ---- ---- ---- ----
@@ -185,18 +209,23 @@ def data():
 # test FISO, SP and SO together because FISO and SO cannot create
 # so we must get SP to do something before FISO and SO can do anything
 def test_spgpa_fiso_sp_so(data):
-    (sts, spg_id, spgm_id, client_sp, client_so, so_id, pt_id) = data
+    (sts, spg_ids, spgm_ids, client_sp, so_clients, so_ids, pt_ids) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_other_so = sts.get_client(TestEntity.TEST, "SO")
+
+    client_so = so_clients[0]
+    so_id = so_ids[0]
+
+    client_other_so = so_clients[1]
+    other_so_id = so_ids[1]
 
     # no one but SP can create SPGPA
     spgpa = create_service_providing_group_product_application.sync(
         client=client_so,
         body=ServiceProvidingGroupProductApplicationCreateRequest(
-            service_providing_group_id=spg_id,
+            service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_id,
+            product_type_id=pt_ids[0],
         ),
     )
     assert isinstance(spgpa, ErrorMessage)
@@ -207,9 +236,9 @@ def test_spgpa_fiso_sp_so(data):
     spgpa = create_service_providing_group_product_application.sync(
         client=client_sp,
         body=ServiceProvidingGroupProductApplicationCreateRequest(
-            service_providing_group_id=spg_id,
+            service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_id,
+            product_type_id=pt_ids[0],
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -223,19 +252,61 @@ def test_spgpa_fiso_sp_so(data):
 
     # RLS: SPG-SO002
     # BTW now SO can read the SPG
-    spg = read_service_providing_group.sync(client=client_so, id=spg_id)
+    spg = read_service_providing_group.sync(client=client_so, id=spg_ids[0])
     assert isinstance(spg, ServiceProvidingGroupResponse)
 
-    # other SO can read
+    # create 2 other SPGPAs:
+
+    # - one from the same SPG to the other SO
+    spgpa2 = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=other_so_id,
+            product_type_id=pt_ids[1],
+        ),
+    )
+    assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
+
+    # - one from another SPG to the first SO
+    spgpa3 = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[1],
+            procuring_system_operator_id=so_id,
+            product_type_id=pt_ids[1],
+        ),
+    )
+    assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
+
+    assert so_id != other_so_id
+
     # RLS: SPGPA-SO001
-    spgpa = read_service_providing_group_product_application.sync(
+
+    # other SO can read the SPGPA targeted to them
+    s = read_service_providing_group_product_application.sync(
+        client=client_other_so,
+        id=cast(int, spgpa2.id),
+    )
+    assert isinstance(s, ServiceProvidingGroupProductApplicationResponse)
+
+    # since they have one application, they can also read applications from the
+    # same SPG even if they are not targeted
+    s = read_service_providing_group_product_application.sync(
         client=client_other_so,
         id=cast(int, spgpa.id),
     )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+    assert isinstance(s, ServiceProvidingGroupProductApplicationResponse)
 
-    # but not update
+    # but they cannot read applications they have nothing to do with
+    s = read_service_providing_group_product_application.sync(
+        client=client_other_so,
+        id=cast(int, spgpa3.id),
+    )
+    assert isinstance(s, ErrorMessage)
+
     # RLS: SPGPA-SO002
+    # also they cannot update the ones they can read but that do not target them
     u = update_service_providing_group_product_application.sync(
         client=client_other_so,
         id=cast(int, spgpa.id),
@@ -245,7 +316,7 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert isinstance(u, ErrorMessage)
 
-    # the first SO can update
+    # the first SO can however update since they are the target
     # endpoint: PATCH /service_providing_group_product_application/{id}
     u = update_service_providing_group_product_application.sync(
         client=client_so,
@@ -308,12 +379,13 @@ def test_spgpa_fiso_sp_so(data):
     assert not isinstance(u, ErrorMessage)
 
     # just to trigger notification to SO
-    d = delete_service_providing_group_membership.sync(
-        client=client_fiso,
-        id=cast(int, spgm_id),
-        body=EmptyObject(),
-    )
-    assert not (isinstance(d, ErrorMessage))
+    for spgm_id in spgm_ids:
+        d = delete_service_providing_group_membership.sync(
+            client=client_fiso,
+            id=cast(int, spgm_id),
+            body=EmptyObject(),
+        )
+        assert not (isinstance(d, ErrorMessage))
 
 
 def test_spgpa_common(data):

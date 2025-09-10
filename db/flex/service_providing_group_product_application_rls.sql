@@ -48,13 +48,34 @@ USING (
 );
 
 -- RLS: SPGPA-SO001
+-- security definer function because we check the same resource
+CREATE OR REPLACE FUNCTION exists_spgpa_linking_spg_and_so(
+    in_spg_id bigint,
+    in_so_id bigint
+)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+SELECT EXISTS (
+    SELECT 1
+    FROM service_providing_group_product_application
+    WHERE service_providing_group_id = in_spg_id
+        AND procuring_system_operator_id = in_so_id
+)
+$$;
+
 GRANT SELECT, UPDATE ON service_providing_group_product_application
 TO flex_system_operator;
 CREATE POLICY "SPGPA_SO001"
 ON service_providing_group_product_application
 FOR SELECT
 TO flex_system_operator
-USING (true);
+USING (
+    exists_spgpa_linking_spg_and_so(
+        service_providing_group_id, (SELECT flex.current_party())
+    )
+);
 
 -- RLS: SPGPA-SO002
 CREATE POLICY "SPGPA_SO002"
