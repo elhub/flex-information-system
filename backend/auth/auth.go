@@ -852,17 +852,24 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Commit(r.Context())
 
-	externalID, err := models.GetExternalIDByEntityID(r.Context(), tx, receivedToken.EntityID)
+	externalID, clientID, scopes, err := models.GetEntityIdentityByExternalID(
+		r.Context(), tx, receivedToken.ExternalID,
+	)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 
 		body, _ := json.Marshal(oauthErrorMessage{
 			Error:            oauthErrorServerError,
-			ErrorDescription: "could not get external ID",
+			ErrorDescription: "could not get entity identity",
 		})
 		w.Write(body)
 
 		return
+	}
+
+	// if the identity did not log in with an entity client, use default scopes
+	if clientID == nil {
+		scopes = auth.defaultEntityScopes
 	}
 
 	ui, err := models.GetCurrentUserInfo(r.Context(), tx)
@@ -884,8 +891,7 @@ func (auth *API) DeleteAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		PartyID:        0,
 		EntityID:       receivedToken.EntityID,
 		ExternalID:     externalID,
-		// TODO: store client ID in identity and get scopes from there
-		Scope: auth.defaultEntityScopes,
+		Scope:          scopes,
 	}
 
 	signedEntityToken, err := entityToken.Sign(jws.WithKey(jwa.HS256(), auth.jwtSecret))
@@ -1474,6 +1480,9 @@ func (auth *API) jwtBearerHandler(
 			ctx, tx, entityID, grant.Subject.Identifier,
 		)
 		if err != nil {
+			slog.ErrorContext(
+				ctx, "getting assumable party ID from GLN failed", "error", err,
+			)
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidClient,
 				ErrorDescription: "could not assume the requested party in sub",

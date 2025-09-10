@@ -68,10 +68,13 @@ databaseChangeLog:
       file: ./party_staging_migrations.sql
       relativeToChangelogFile: true
   - include:
+      file: ./entity_client.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./identity.sql
       relativeToChangelogFile: true
   - include:
-      file: ./entity_client.sql
+      file: ./identity_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./party_membership.sql

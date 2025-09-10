@@ -111,9 +111,9 @@ they relate to each other.
 
 Any system or person interacting with the Flexibility Information System will
 always be authenticated as a legal og natural _entity_, possibly assuming the
-role of a market _party_. A entity might also interact with the FIS via a client
-(i.e an application or system). The entity, party and client together make up the
-_identity_ of the user.
+role of a market _party_. An entity might also interact with the FIS via a
+client (_i.e._, an application or system). The entity, party and client together
+make up the _identity_ of the user.
 
 The entity has very little functionality available in the system, most
 functionality will be available after assuming a _party_. The identity of the
@@ -152,7 +152,7 @@ mechanisms such as IDPorten, Maskinporten or enterprise certificates.
 We follow the OAuth 2.0 definition of a client as _"an application making
 protected resource requests"_. A client is basically a way for _an entity_ to
 interact with the FIS API. A client can use different
-[authentication methods](#authentication-methods). I client is restricted to a
+[authentication methods](#authentication-methods). A client is restricted to a
 specific party and with assigned scopes.
 
 ### Party - market actors
@@ -618,6 +618,8 @@ _intersection_ of the scopes they had as an entity with the scopes granted by
 the membership.
 In other words, they keep the most powerful scopes from their entity while still
 respecting the limitations set by the party membership.
+Unassuming the party will reset the scopes to those the user would be granted if
+logging in as an entity (through the entity client they provided, if they did).
 
 This enables administrators to choose what each user can do on behalf of their
 organisation, with the option of setting a different limit for each party,

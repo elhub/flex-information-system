@@ -14,7 +14,7 @@ LANGUAGE sql
 AS $$
     SELECT
         e.id,
-        flex.identity_external_id(e.id, null) AS external_id,
+        flex.identity_external_id(e.id, null, clt.id) AS external_id,
         clt.scopes as scopes
     FROM flex.entity e
     INNER JOIN flex.entity_client AS clt
@@ -39,7 +39,7 @@ LANGUAGE sql
 AS $$
     SELECT
         e.id,
-        flex.identity_external_id(e.id, null) as external_id
+        flex.identity_external_id(e.id, null, null) as external_id
     FROM flex.entity e
     WHERE e.business_id = in_business_id
 $$;
@@ -57,13 +57,33 @@ LANGUAGE sql
 AS $$
     SELECT
         e.id,
-        flex.identity_external_id(e.id, null) as external_id,
+        flex.identity_external_id(e.id, null, clt.id) as external_id,
         COALESCE(clt.public_key,'') as client_public_key,
         clt.scopes as scopes
     FROM flex.entity e
     INNER JOIN flex.entity_client as clt
         ON e.id = clt.entity_id
     WHERE clt.client_id::text = in_client_id
+$$;
+
+-- changeset flex:entity-identity-of-external-id runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION auth.entity_identity_of_external_id(
+    in_external_id text
+) RETURNS TABLE (
+    external_id uuid,
+    client_id text,
+    scopes text []
+) SECURITY DEFINER VOLATILE
+LANGUAGE sql
+AS $$
+    SELECT
+        flex.identity_external_id(i.entity_id, null, clt.id) as external_id,
+        clt.client_id as client_id,
+        clt.scopes as scopes
+    FROM flex.identity i
+        LEFT JOIN flex.entity_client as clt
+            ON i.client_id = clt.id
+    WHERE i.eid::text = in_external_id
 $$;
 
 -- changeset flex:auth-assume-party runAlways:true endDelimiter:--
@@ -80,11 +100,17 @@ AS $$
 declare
   l_party_membership record;
   l_entity_id bigint;
+  l_client_id bigint;
   l_eid uuid;
   l_role text;
   l_scopes text[];
 begin
   select flex.current_entity() into l_entity_id;
+
+  select clt.id into l_client_id
+  from flex.identity as i
+    left join flex.entity_client as clt on i.client_id = clt.id
+  where i.id = (select flex.current_identity());
 
   select * into l_party_membership
   from flex.party_membership as pm
@@ -92,7 +118,8 @@ begin
 
   if l_party_membership is not null then
     -- entity is member of party
-    select flex.identity_external_id(l_entity_id, in_party_id) into l_eid;
+    select flex.identity_external_id(l_entity_id, in_party_id, l_client_id)
+    into l_eid;
     select p.role into l_role from flex.party as p where p.id = in_party_id;
     select l_party_membership.scopes into l_scopes;
   elsif exists (
@@ -100,7 +127,8 @@ begin
     where p.id = in_party_id and p.entity_id = l_entity_id
   ) then
     -- entity owns party
-    select flex.identity_external_id(l_entity_id, in_party_id) into l_eid;
+    select flex.identity_external_id(l_entity_id, in_party_id, l_client_id)
+    into l_eid;
     select p.role into l_role from flex.party as p where p.id = in_party_id;
     select array['manage:data', 'manage:auth']::text[] into l_scopes;
   else

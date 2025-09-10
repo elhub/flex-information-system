@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"flex/auth/scope"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -36,24 +37,35 @@ func GetEntityOfCredentials(
 	return entityID, eid, scopes, nil
 }
 
-// GetExternalIDByEntityID gets the external ID of an entity.
-func GetExternalIDByEntityID(
+// GetEntityIdentityByExternalID returns an identity corresponding to the same
+// entity and client as the identity given as parameter, but without party
+// association.
+func GetEntityIdentityByExternalID(
 	ctx context.Context,
 	tx pgx.Tx,
-	entityID int,
-) (string, error) {
-	var eid string
+	externalID string,
+) (string, *string, scope.List, error) {
+	var (
+		eid          string
+		clientID     *string
+		scopeStrings []string
+	)
 
 	err := tx.QueryRow(
 		ctx,
-		"select flex.identity_external_id($1, null)",
-		entityID,
-	).Scan(&eid)
+		"select external_id, client_id, scopes from auth.entity_identity_of_external_id($1)",
+		externalID,
+	).Scan(&eid, &clientID, &scopeStrings)
 	if err != nil {
-		return "", fmt.Errorf("failed to get external ID by entity ID: %w", err)
+		return "", nil, nil, fmt.Errorf("failed to refresh identity without party: %w", err)
 	}
 
-	return eid, nil
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		return "", nil, nil, fmt.Errorf("failed to parse scopes: %w", err)
+	}
+
+	return eid, clientID, scopes, nil
 }
 
 // GetEntityOfBusinessID gets the entity and external ID of a entity business id.
@@ -216,7 +228,7 @@ func GetAssumablePartyIDFromGLN(
 		getAssumablePartyIDFromGLN,
 		entityID,
 		partyBusinessID,
-	).Scan(&partyID, &entityID)
+	).Scan(&partyID)
 	if err != nil {
 		return 0, fmt.Errorf("failed to get party ID: %w", err)
 	}
