@@ -157,7 +157,7 @@ def test_scopes_client_credentials(data):
         algorithms=["HS256"],
         options={"verify_signature": False},
     )
-    assert decoded_token["scope"].split(" ") == ["use:data", "manage:auth"]
+    assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
     # assume owned party
     response = requests.post(
@@ -175,15 +175,14 @@ def test_scopes_client_credentials(data):
     party_token = json.get("access_token")
     assert party_token is not None
 
-    # TODO(FLEX-696)
-    # # check scopes are still client scopes
-    # # (owned party = no extra scopes to take into account)
-    # decoded_token = jwt.decode(
-    #     party_token,
-    #     algorithms=["HS256"],
-    #     options={"verify_signature": False},
-    # )
-    # assert decoded_token["scope"].split(" ") == ["use:data", "manage:auth"]
+    # check scopes are still client scopes
+    # (owned party = no extra scopes to take into account)
+    decoded_token = jwt.decode(
+        party_token,
+        algorithms=["HS256"],
+        options={"verify_signature": False},
+    )
+    assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
     # unassume party
     response = requests.delete(
@@ -201,32 +200,35 @@ def test_scopes_client_credentials(data):
         algorithms=["HS256"],
         options={"verify_signature": False},
     )
-    assert decoded_token["scope"].split(" ") == ["use:data", "manage:auth"]
+    assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
-    # TODO(FLEX-696)
-    # # assume party via membership
-    # response = requests.post(
-    #     auth_url + "/token",
-    #     headers=auth_headers | {"Authorization": f"Bearer {entity_token}"},
-    #     data={
-    #         "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
-    #         "actor_token": entity_token,
-    #         "actor_token_type": "urn:ietf:params:oauth:token-type:jwt",
-    #         "scope": f"assume:party:{membership_party_id}",
-    #     },
-    # )
-    # assert response.status_code == 200
-    # json = response.json()
-    # party_token = json.get("access_token")
-    # assert party_token is not None
+    # assume party via membership
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers | {"Authorization": f"Bearer {entity_token}"},
+        data={
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "actor_token": entity_token,
+            "actor_token_type": "urn:ietf:params:oauth:token-type:jwt",
+            "scope": f"assume:party:{membership_party_id}",
+        },
+    )
+    assert response.status_code == 200
+    json = response.json()
+    party_token = json.get("access_token")
+    assert party_token is not None
 
-    # # check scopes = client scopes X party membership scopes
-    # decoded_token = jwt.decode(
-    #     party_token,
-    #     algorithms=["HS256"],
-    #     options={"verify_signature": False},
-    # )
-    # assert decoded_token["scope"].split(" ") == ["read:data", "use:data:party_membership", "manage:auth"]
+    # check scopes = client scopes X party membership scopes
+    decoded_token = jwt.decode(
+        party_token,
+        algorithms=["HS256"],
+        options={"verify_signature": False},
+    )
+    assert set(decoded_token["scope"].split(" ")) == {
+        "read:data",
+        "use:data:party_membership",
+        "manage:auth",
+    }
 
 
 def test_scopes_jwt_bearer_entity(data):
@@ -261,7 +263,7 @@ def test_scopes_jwt_bearer_entity(data):
         algorithms=["HS256"],
         options={"verify_signature": False},
     )
-    assert decoded_token["scope"].split(" ") == ["use:data", "manage:auth"]
+    assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
     # assume owned party
     response = requests.post(
@@ -279,15 +281,14 @@ def test_scopes_jwt_bearer_entity(data):
     party_token = json.get("access_token")
     assert party_token is not None
 
-    # TODO(FLEX-696)
     # check scopes are still client scopes
     # (owned party = no extra scopes to take into account)
-    # decoded_token = jwt.decode(
-    #     party_token,
-    #     algorithms=["HS256"],
-    #     options={"verify_signature": False},
-    # )
-    # assert decoded_token["scope"].split(" ") == ["use:data", "manage:auth"]
+    decoded_token = jwt.decode(
+        party_token,
+        algorithms=["HS256"],
+        options={"verify_signature": False},
+    )
+    assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
     # unassume party
     response = requests.delete(
@@ -305,32 +306,35 @@ def test_scopes_jwt_bearer_entity(data):
         algorithms=["HS256"],
         options={"verify_signature": False},
     )
-    assert decoded_token["scope"].split(" ") == ["use:data", "manage:auth"]
+    assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
-    # TODO(FLEX-696)
-    # # assume party via membership
-    # response = requests.post(
-    #     auth_url + "/token",
-    #     headers=auth_headers | {"Authorization": f"Bearer {entity_token}"},
-    #     data={
-    #         "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
-    #         "actor_token": entity_token,
-    #         "actor_token_type": "urn:ietf:params:oauth:token-type:jwt",
-    #         "scope": f"assume:party:{membership_party_id}",
-    #     },
-    # )
-    # assert response.status_code == 200
-    # json = response.json()
-    # party_token = json.get("access_token")
-    # assert party_token is not None
+    # assume party via membership
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers | {"Authorization": f"Bearer {entity_token}"},
+        data={
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "actor_token": entity_token,
+            "actor_token_type": "urn:ietf:params:oauth:token-type:jwt",
+            "scope": f"assume:party:{membership_party_id}",
+        },
+    )
+    assert response.status_code == 200
+    json = response.json()
+    party_token = json.get("access_token")
+    assert party_token is not None
 
-    # # check scopes = client scopes X party membership scopes
-    # decoded_token = jwt.decode(
-    #     party_token,
-    #     algorithms=["HS256"],
-    #     options={"verify_signature": False},
-    # )
-    # assert decoded_token["scope"].split(" ") == ["read:data", "use:data:party_membership", "manage:auth"]
+    # check scopes = client scopes X party membership scopes
+    decoded_token = jwt.decode(
+        party_token,
+        algorithms=["HS256"],
+        options={"verify_signature": False},
+    )
+    assert set(decoded_token["scope"].split(" ")) == {
+        "read:data",
+        "use:data:party_membership",
+        "manage:auth",
+    }
 
 
 def test_scopes_jwt_bearer_owned_party(data):
@@ -360,14 +364,13 @@ def test_scopes_jwt_bearer_owned_party(data):
     party_token = json.get("access_token")
     assert party_token is not None
 
-    # TODO(FLEX-696)
     # check scopes = client scopes
-    # decoded_token = jwt.decode(
-    #     party_token,
-    #     algorithms=["HS256"],
-    #     options={"verify_signature": False},
-    # )
-    # assert decoded_token["scope"].split(" ") == ["use:data", "manage:auth"]
+    decoded_token = jwt.decode(
+        party_token,
+        algorithms=["HS256"],
+        options={"verify_signature": False},
+    )
+    assert set(decoded_token["scope"].split(" ")) == {"use:data", "manage:auth"}
 
 
 def test_scopes_jwt_bearer_membership_party(data):
@@ -397,11 +400,14 @@ def test_scopes_jwt_bearer_membership_party(data):
     party_token = json.get("access_token")
     assert party_token is not None
 
-    # TODO(FLEX-696)
-    # # check scopes = client scopes X party membership scopes
-    # decoded_token = jwt.decode(
-    #     party_token,
-    #     algorithms=["HS256"],
-    #     options={"verify_signature": False},
-    # )
-    # assert decoded_token["scope"].split(" ") == ["read:data", "use:data:party_membership", "manage:auth"]
+    # check scopes = client scopes X party membership scopes
+    decoded_token = jwt.decode(
+        party_token,
+        algorithms=["HS256"],
+        options={"verify_signature": False},
+    )
+    assert set(decoded_token["scope"].split(" ")) == {
+        "read:data",
+        "use:data:party_membership",
+        "manage:auth",
+    }

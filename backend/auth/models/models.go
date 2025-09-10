@@ -99,11 +99,11 @@ func GetEntityClientByUUID(
 	ctx context.Context,
 	tx pgx.Tx,
 	clientID string,
-) (int, string, string, []string, error) {
+) (int, string, string, scope.List, error) {
 	var (
 		entityID       int
 		eid, pubKeyPEM string
-		scopes         []string
+		scopeStrings   []string
 	)
 
 	err := tx.QueryRow(
@@ -111,34 +111,53 @@ func GetEntityClientByUUID(
 		"select entity_id, external_id, client_public_key, scopes"+
 			" from auth.entity_client_by_uuid($1)",
 		clientID,
-	).Scan(&entityID, &eid, &pubKeyPEM, &scopes)
+	).Scan(&entityID, &eid, &pubKeyPEM, &scopeStrings)
 	if err != nil {
 		return -1, "", "", nil, fmt.Errorf("failed to get entity: %w", err)
+	}
+
+	if scopeStrings == nil {
+		return entityID, eid, pubKeyPEM, nil, nil
+	}
+
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		return -1, "", "", nil, fmt.Errorf("failed to parse scopes: %w", err)
 	}
 
 	return entityID, eid, pubKeyPEM, scopes, nil
 }
 
 // AssumeParty checks if a entity is allowed to assume a party and returns details.
+// Scopes are returned when the party is assumed through membership.
 func AssumeParty(
 	ctx context.Context,
 	tx pgx.Tx,
 	partyID int,
-) (string, string, []string, int, error) {
+) (string, string, scope.List, int, error) {
 	var (
-		eid      string
-		role     string
-		scopes   []string
-		entityID int
+		eid          string
+		role         string
+		scopeStrings []string
+		entityID     int
 	)
 
 	err := tx.QueryRow(
 		ctx,
 		`select eid, role, scopes, entity_id from auth.assume_party($1)`,
 		partyID,
-	).Scan(&eid, &role, &scopes, &entityID)
+	).Scan(&eid, &role, &scopeStrings, &entityID)
 	if err != nil {
 		return "", "", nil, 0, fmt.Errorf("failed to assume party %d for entity %d: %w", partyID, entityID, err)
+	}
+
+	if scopeStrings == nil {
+		return eid, role, nil, entityID, nil
+	}
+
+	scopes, err := scope.ListFromStrings(scopeStrings)
+	if err != nil {
+		return "", "", nil, 0, fmt.Errorf("failed to parse scopes: %w", err)
 	}
 
 	return eid, role, scopes, entityID, nil

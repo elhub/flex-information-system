@@ -57,6 +57,7 @@ type API struct {
 	loginDelayer             *IPLoginDelayer
 	defaultAnonymousScopes   scope.List // default scopes for an anonymous user
 	defaultEntityScopes      scope.List // default scopes for an entity user
+	defaultPartyScopes       scope.List // default scopes for a user assuming an owned party
 }
 
 // NewAPI creates a new auth.API instance.
@@ -114,6 +115,10 @@ func NewAPI(
 		defaultEntityScopes: scope.List{
 			scope.Scope{Verb: scope.Manage, Asset: "auth"}, // to be able to assume party
 			scope.Scope{Verb: scope.Manage, Asset: "data"}, // to be able to access their data
+		},
+		defaultPartyScopes: scope.List{ // full read-write access
+			scope.Scope{Verb: scope.Manage, Asset: "auth"},
+			scope.Scope{Verb: scope.Manage, Asset: "data"},
 		},
 	}
 }
@@ -659,7 +664,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	eid, role, scopeStrings, entityID, err := models.AssumeParty(ctx, tx, partyID)
+	eid, role, partyScopes, entityID, err := models.AssumeParty(ctx, tx, partyID)
 	tx.Commit(ctx)
 
 	if err != nil {
@@ -674,14 +679,8 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	scopes, err := scope.ListFromStrings(scopeStrings)
-	if err != nil {
-		slog.ErrorContext(ctx, "error in scope parsing in assume role handler", "error", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not parse scopes from database", err))
-		w.Write(body)
-
-		return
+	if partyScopes == nil { // assuming an owned party
+		partyScopes = auth.defaultPartyScopes
 	}
 
 	accessTokenCookie, err := r.Cookie(sessionCookieKey)
@@ -711,6 +710,9 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	entityScopes := entityToken.Scope
+	scopes := scope.ListIntersection(entityScopes, partyScopes)
 
 	partyToken := accessToken{
 		ExpirationTime: entityToken.ExpirationTime,
@@ -1236,7 +1238,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 	}
 	defer tx.Commit(ctx)
 
-	eid, role, scopeStrings, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
+	eid, role, partyScopes, entityID, err := models.AssumeParty(ctx, tx, assumePartyID)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidTarget,
@@ -1246,16 +1248,12 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 		return
 	}
 
-	scopes, err := scope.ListFromStrings(scopeStrings)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"invalid scope format from database",
-			err,
-		))
-
-		return
+	if partyScopes == nil { // assuming an owned party
+		partyScopes = auth.defaultPartyScopes
 	}
+
+	entityScopes := entityToken.Scope
+	scopes := scope.ListIntersection(entityScopes, partyScopes)
 
 	partyToken := accessToken{
 		ExpirationTime: entityToken.ExpirationTime,
@@ -1307,7 +1305,7 @@ func (j jwtBearerPayload) Validate() error {
 
 // jwtBearerHandler handles the jwt-bearer grant type.
 //
-//nolint:funlen,cyclop,maintidx
+//nolint:funlen,cyclop
 func (auth *API) jwtBearerHandler(
 	ctx *gin.Context,
 	payload jwtBearerPayload,
@@ -1399,7 +1397,7 @@ func (auth *API) jwtBearerHandler(
 	}
 	defer tx.Commit(ctx)
 
-	entityID, externalID, pubKeyPEM, scopeStrings, err := models.GetEntityClientByUUID(
+	entityID, externalID, pubKeyPEM, entityScopes, err := models.GetEntityClientByUUID(
 		ctx,
 		tx,
 		grant.Issuer,
@@ -1409,16 +1407,6 @@ func (auth *API) jwtBearerHandler(
 			Error:            oauthErrorInvalidClient,
 			ErrorDescription: "invalid or unknown client",
 		})
-
-		return
-	}
-	entityScopes, err := scope.ListFromStrings(scopeStrings)
-	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-			http.StatusInternalServerError,
-			"invalid scope format from database",
-			err,
-		))
 
 		return
 	}
@@ -1451,7 +1439,6 @@ func (auth *API) jwtBearerHandler(
 
 	var token accessToken
 
-	//nolint:nestif
 	if grant.Subject != nil {
 		// entity wants to assume a party
 		// we must first "log in" the entity to give it privileges in the database
@@ -1491,7 +1478,7 @@ func (auth *API) jwtBearerHandler(
 			return
 		}
 
-		eid, role, scopeStrings, entityID, err := models.AssumeParty(ctx, tx, partyID)
+		eid, role, partyScopes, entityID, err := models.AssumeParty(ctx, tx, partyID)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidTarget,
@@ -1501,17 +1488,7 @@ func (auth *API) jwtBearerHandler(
 			return
 		}
 
-		scopes, err := scope.ListFromStrings(scopeStrings)
-		if err != nil {
-			slog.ErrorContext(ctx, "invalid scope format from database", "error", err)
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(
-				http.StatusInternalServerError,
-				"invalid scope format from database",
-				err,
-			))
-
-			return
-		}
+		scopes := scope.ListIntersection(entityScopes, partyScopes)
 
 		token = accessToken{
 			EntityID:       entityID,
