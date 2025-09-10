@@ -102,14 +102,18 @@ We are also relying heavily on the JOSE (Javascript Object Signing and Encryptio
 ## Authentication model
 
 In this section, we describe the authentication model in the Flexibility
-Information System.
+Information System. This diagran shows the main concepts in the model and how
+they relate to each other.
+
+![../diagrams/auth_model.drawio.png](../diagrams/auth_model.drawio.png)
 
 ### Identity
 
 Any system or person interacting with the Flexibility Information System will
 always be authenticated as a legal og natural _entity_, possibly assuming the
-role of a market _party_. The entity and party together make up the _identity_
-of the user.
+role of a market _party_. An entity might also interact with the FIS via a
+client (_i.e._, an application or system). The entity, party and client together
+make up the _identity_ of the user.
 
 The entity has very little functionality available in the system, most
 functionality will be available after assuming a _party_. The identity of the
@@ -143,10 +147,13 @@ identity of the user when it enters the system.
 In a production setting, the identity of the entity will be established through
 mechanisms such as IDPorten, Maskinporten or enterprise certificates.
 
-Entities can setup clients (credentials or private keys) to enable later
-automated login, without going through the identity provider. If such a client
-is used to log in, it will be recorded as part of the identity, mainly for
-security purposes, to distinguish human access from machine access.
+### Client - application or system
+
+We follow the OAuth 2.0 definition of a client as _"an application making
+protected resource requests"_. A client is basically a way for _an entity_ to
+interact with the FIS API. A client can use different
+[authentication methods](#authentication-methods). A client is restricted to a
+specific party and with assigned scopes.
 
 ### Party - market actors
 
