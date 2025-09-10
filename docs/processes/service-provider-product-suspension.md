@@ -22,11 +22,19 @@ reason for suspension is a predefined list. There are two reasons for that. The
 first is that the PSO is only allowed to suspend for valid reasons. The other is
 that it allows for a greater degree of automation in the process.
 
-| Reason                 | Description                                                                                                                             |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| `communication_issues` | There are communication issues between the service provider and the procuring system operator. E.g. failing heartbeat.                  |
-| `system_issues`        | There are issues with the service providers systems. Their back office systems used in delivering flexibility.                          |
-| `other`                | Should generally _not_ be used, but can in cases where PSO have a valid reason for suspension that is outside the other defined reasons |
+Depending on the reason for suspension, the system operator should warn
+the service provider in advance of the suspension. The reasons for suspension
+that require a warning in advance of the suspension must be specified in
+the terms and conditions of the product type or service.
+
+| Reason                 | Description                                                                                                                              |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| `communication_issues` | There are communication issues between the service provider and the procuring system operator.                                           |
+| `failing_heartbeat`    | If SP does not respond to heartbeat, SO may consider the SP to be unavailable for activation.                                            |
+| `system_issues`        | There are issues with the service providers systems. Their back office systems used in delivering flexibility.                           |
+| `clearing_issues`      | Delayed or lack of payment.                                                                                                              |
+| `failed_verification`  | The agreed upon service has not been delivered.                                                                                          |
+| `other`                | Should generally _not_ be used, but can in cases where PSO have a valid reason for suspension that is outside the other defined reasons. |
 
 The process also includes reinstatement of the service provider qualification,
 i.e. removing the suspension.
