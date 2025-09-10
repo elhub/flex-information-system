@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:identity-create runOnChange:false endDelimiter:--
--- validCheckSum: 9:c225b08eddb9e77483af09af8db439fc
+-- validCheckSum: 9:f376fb08b470f2146fde7a05e9d81da1
 CREATE TABLE IF NOT EXISTS identity (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     eid uuid UNIQUE DEFAULT public.uuid_generate_v4(),
