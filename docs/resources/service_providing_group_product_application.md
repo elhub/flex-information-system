@@ -101,10 +101,10 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                       | Status |
-|-------------|------------------------------|--------|
-| SPGPA-SO001 | Read all SPGPA.              | DONE   |
-| SPGPA-SO002 | Update SPGPA targeting them. | DONE   |
+| Policy key  | Policy                                                            | Status |
+|-------------|-------------------------------------------------------------------|--------|
+| SPGPA-SO001 | Read SPGPA from SPGs that have at least one SPGPA targeting them. | TODO   |
+| SPGPA-SO002 | Update SPGPA targeting them.                                      | DONE   |
 
 #### Service Provider
 
