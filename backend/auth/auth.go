@@ -57,7 +57,7 @@ type API struct {
 	loginDelayer             *IPLoginDelayer
 	defaultAnonymousScopes   scope.List // default scopes for an anonymous user
 	defaultEntityScopes      scope.List // default scopes for an entity user
-	defaultPartyScopes       scope.List // default scopes for a user assuming an owned party
+	defaultOwnedPartyScopes  scope.List // default scopes for a user assuming an owned party
 }
 
 // NewAPI creates a new auth.API instance.
@@ -116,7 +116,7 @@ func NewAPI(
 			scope.Scope{Verb: scope.Manage, Asset: "auth"}, // to be able to assume party
 			scope.Scope{Verb: scope.Manage, Asset: "data"}, // to be able to access their data
 		},
-		defaultPartyScopes: scope.List{ // full read-write access
+		defaultOwnedPartyScopes: scope.List{ // full read-write access
 			scope.Scope{Verb: scope.Manage, Asset: "auth"},
 			scope.Scope{Verb: scope.Manage, Asset: "data"},
 		},
@@ -680,7 +680,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if partyScopes == nil { // assuming an owned party
-		partyScopes = auth.defaultPartyScopes
+		partyScopes = auth.defaultOwnedPartyScopes
 	}
 
 	accessTokenCookie, err := r.Cookie(sessionCookieKey)
@@ -1249,7 +1249,7 @@ func (auth *API) tokenExchangeHandler( //nolint:funlen
 	}
 
 	if partyScopes == nil { // assuming an owned party
-		partyScopes = auth.defaultPartyScopes
+		partyScopes = auth.defaultOwnedPartyScopes
 	}
 
 	entityScopes := entityToken.Scope
