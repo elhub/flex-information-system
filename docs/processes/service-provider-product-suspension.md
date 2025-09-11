@@ -4,7 +4,7 @@ This process is used to [suspend](../concepts/suspension.md) the service
 provider product qualification temporarily. The suspension is done by a
 procuring system operator and is registered in the flexibility information
 system (FIS) by updating the relevant SP product application. By registering it
-in the FIS, both the service provider and other relevant producuring system
+in the FIS, both the service provider and other relevant procuring system
 operators will be made aware of the suspension.
 
 The suspension is valid for the following combination.
