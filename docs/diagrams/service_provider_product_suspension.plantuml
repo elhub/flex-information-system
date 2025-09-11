@@ -16,7 +16,7 @@ actor "System Operator (SO)" as SO
 == Suspension of service provider product qualification ==
 
 activate SO
-SO -> FIS: Update SP product application
+SO -> FIS: Create SP product suspension
 
 note right
     Data:
@@ -30,9 +30,6 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 activate SP
-SP -> FIS: Get reason for suspension
-FIS --> SP: Reason for suspension
-
 loop All PSOs procuring the same product type from the SP
     |||
     FIS --> SO: Notify
@@ -40,11 +37,17 @@ loop All PSOs procuring the same product type from the SP
     |||
 end
 
+SP -> FIS: Get suspension
+activate FIS
+FIS --> SP: Data incl. reason for suspension
+deactivate FIS
+
 note over SP
     SP notifies end users
     of the suspension when
     neccessary.
 end note
+
 
 == Handle suspension ==
 |||
@@ -53,18 +56,13 @@ note over FIS
     suspension. This can be done using comments on the SP product application in
     the FIS or other communication mediums like email and phone.
 end note
-deactivate SP
 |||
+deactivate SP
 == Reinstatement of service provider product qualification ==
 
-SO -> FIS: Update SP product application
+SO -> FIS: Delete SP product suspension
 activate SO
-note right
-    Clear data for:
-        - suspended product types
-        - reason for suspension
-end note
-
+|||
 activate FIS
 FIS --> SO: Ok
 deactivate SO
