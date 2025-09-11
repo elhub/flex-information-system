@@ -1333,6 +1333,73 @@ resources:
           should be sanitised on the client side before being displayed, as
           there is currently no check performed on the server.
 
+  - id: service_provider_product_suspension
+    acronym: SPPS
+    summary: Service Provider Product Suspension
+    description: >-
+      The relation allowing a procuring system operator to temporarily suspend a
+      service provider from delivering them products of the given types.
+    operations:
+      - list
+      - read
+      - create
+      - update
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    history_rls: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 74
+      procuring_system_operator_id:
+        description: >-
+          Reference to the procuring system operator suspending the service
+          provider.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 9
+      service_provider_id:
+        description: Reference to the service provider being suspended.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 52
+      product_type_ids:
+        description: References to the suspended product types.
+        type: array
+        items:
+          format: bigint
+          type: integer
+        x-foreign-key:
+          resource: product_type
+          field: id
+        example: [1, 7]
+      reason:
+        description: The reason for the suspension.
+        format: text
+        type: string
+        enum:
+          - communication_issues
+          - failing_heartbeat
+          - system_issues
+          - clearing_issues
+          - failed_verification
+          - other
+        example: communication_issues
+
   - id: service_providing_group_product_application
     acronym: SPGPA
     summary: Service Providing Group Product Application
