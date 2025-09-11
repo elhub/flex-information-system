@@ -17,7 +17,7 @@ digraph G {
     // transitions
     start -> pending [label="", color="pink"];
     pending -> in_progress [label="CSO start\nvalidation", color="green"];
-    validated -> pending [label="SP significantly \nupdates data", color="pink"];
+    validated -> pending [label="SP significantly \nupdates data", color="green"];
     in_progress -> incomplete_information [label="CSO request \ndetails from SP", color="green"];
     incomplete_information -> pending [label="SP updates \ndata", color="pink"];
     in_progress -> validated [label="", color="green"];
