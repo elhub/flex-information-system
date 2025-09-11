@@ -1363,7 +1363,8 @@ resources:
           provider.
         format: bigint
         type: integer
-        readOnly: true
+        x-no-update: true
+        required: false
         x-foreign-key:
           resource: party
           field: id
