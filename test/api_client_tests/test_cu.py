@@ -11,6 +11,7 @@ from flex.models import (
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitStatus,
+    ControllableUnitGridValidationStatus,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
@@ -586,13 +587,37 @@ def test_controllable_unit_sp(sts):
     assert len(cus_sp1) > 0
 
     # NB: here checking on a few rows is sufficient
-    for cu in cus_sp1[:5]:
+    for cu_sp1 in cus_sp1[:5]:
         hist_sp1 = list_controllable_unit_history.sync(
             client=client_sp1,
-            controllable_unit_id=f"eq.{cu.id}",
+            controllable_unit_id=f"eq.{cu_sp1.id}",
         )
         assert isinstance(hist_sp1, list)
         assert len(hist_sp1) > 0
+
+    # verify that CU status is changed to "pending" when a CU is updated by SP
+    # must first set it to a state where it will be changed
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+    assert isinstance(u, ControllableUnitResponse)
+    assert (
+        u.grid_validation_status
+        == ControllableUnitGridValidationStatus.VALIDATION_FAILED
+    )
+
+    u = update_controllable_unit.sync(
+        client=client_sp2,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(maximum_available_capacity=500),
+    )
+    assert isinstance(u, ControllableUnitResponse)
+    assert u.grid_validation_status == ControllableUnitGridValidationStatus.PENDING
 
 
 def test_rla_absence(sts):
