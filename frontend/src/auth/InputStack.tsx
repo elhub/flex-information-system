@@ -37,7 +37,7 @@ export const InputStack = (props: any) => {
   return (
     <MUIStack {...rest}>
       {Children.map(children, (child: any) =>
-        child.props.source ? addPermissionToInput(child) : child,
+        child?.props.source ? addPermissionToInput(child) : child,
       )}
     </MUIStack>
   );
