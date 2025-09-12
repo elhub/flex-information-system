@@ -271,6 +271,29 @@ type ServiceProviderProductApplicationHistory struct {
 	ReplacedAt                          pgtype.Timestamptz
 }
 
+type ServiceProviderProductSuspension struct {
+	ID                        int
+	ProcuringSystemOperatorID int
+	ServiceProviderID         int
+	ProductTypeIds            []int
+	Reason                    string
+	RecordedBy                int
+	RecordedAt                pgtype.Timestamptz
+}
+
+type ServiceProviderProductSuspensionHistory struct {
+	ServiceProviderProductSuspensionID int
+	ID                                 int
+	ProcuringSystemOperatorID          int
+	ServiceProviderID                  int
+	ProductTypeIds                     []int
+	Reason                             string
+	RecordedBy                         int
+	RecordedAt                         pgtype.Timestamptz
+	ReplacedBy                         *int
+	ReplacedAt                         pgtype.Timestamptz
+}
+
 type ServiceProvidingGroup struct {
 	ID                int
 	Name              string

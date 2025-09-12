@@ -73,6 +73,7 @@ history_enabled = [
     "system_operator_product_type",
     "service_provider_product_application",
     "service_provider_product_application_comment",
+    "service_provider_product_suspension",
     "service_providing_group_product_application",
 ]
 

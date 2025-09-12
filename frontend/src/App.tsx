@@ -132,6 +132,10 @@ import { EntityClientShow } from "./entity/client/EntityClientShow";
 import { displayProductType } from "./product_type/components";
 import { EntityInput } from "./entity/EntityInput";
 import { EntityLookupInput } from "./entity/lookup/EntityLookupInput";
+import { ServiceProviderProductSuspensionList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionList";
+import { ServiceProviderProductSuspensionShow } from "./service_provider_product_suspension/ServiceProviderProductSuspensionShow";
+import { ServiceProviderProductSuspensionInput } from "./service_provider_product_suspension/ServiceProviderProductSuspensionInput";
+import { ServiceProviderProductSuspensionHistoryList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -352,6 +356,10 @@ const MainMenu = () => (
       <LabelledResourceMenuItem
         name="service_providing_group_product_application"
         label="SPG product applications"
+      />
+      <LabelledResourceMenuItem
+        name="service_provider_product_suspension"
+        label="SP product suspensions"
       />
     </SubMenu>
     <SubMenu text="Product type">
@@ -1156,6 +1164,49 @@ export const App = () => (
               element={
                 <ResourceContextProvider value="service_provider_product_application_comment_history">
                   <ServiceProviderProductApplicationCommentShow />
+                </ResourceContextProvider>
+              }
+            />
+          </Resource>
+        ) : null}
+        {permissions.includes("service_provider_product_suspension.read") ? (
+          <Resource
+            name="service_provider_product_suspension"
+            list={ServiceProviderProductSuspensionList}
+            show={ServiceProviderProductSuspensionShow}
+            edit={
+              permissions.includes(
+                "service_provider_product_suspension.update",
+              ) ? (
+                <Edit mutationMode="pessimistic">
+                  <ServiceProviderProductSuspensionInput />
+                </Edit>
+              ) : (
+                (null as any)
+              )
+            }
+            create={
+              permissions.includes(
+                "service_provider_product_suspension.create",
+              ) ? (
+                <Create redirect="list">
+                  <ServiceProviderProductSuspensionInput />
+                </Create>
+              ) : (
+                (null as any)
+              )
+            }
+          >
+            {/* service provider product suspension history */}
+            <Route
+              path=":service_provider_product_suspension_id/history"
+              element={<ServiceProviderProductSuspensionHistoryList />}
+            />
+            <Route
+              path=":service_provider_product_suspension_id/history/:id/show"
+              element={
+                <ResourceContextProvider value="service_provider_product_suspension_history">
+                  <ServiceProviderProductSuspensionShow />
                 </ResourceContextProvider>
               }
             />

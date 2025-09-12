@@ -336,6 +336,27 @@ CREATE TABLE service_provider_product_application_comment_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE service_provider_product_suspension (
+    id bigint NOT NULL,
+    procuring_system_operator_id bigint NOT NULL,
+    service_provider_id bigint NOT NULL,
+    product_type_ids bigint [] NOT NULL,
+    reason text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE service_provider_product_suspension_history (
+    service_provider_product_suspension_id bigint NOT NULL,
+    id bigint NOT NULL,
+    procuring_system_operator_id bigint NOT NULL,
+    service_provider_id bigint NOT NULL,
+    product_type_ids bigint [] NOT NULL,
+    reason text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
 CREATE TABLE service_providing_group_product_application (
     id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
