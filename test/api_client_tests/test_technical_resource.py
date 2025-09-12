@@ -6,10 +6,12 @@ from flex.models import (
     ErrorMessage,
     EmptyObject,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
+    ControllableUnitGridValidationStatus,
     TechnicalResourceResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceUpdateRequest,
@@ -17,7 +19,9 @@ from flex.models import (
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    read_controllable_unit,
     list_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -434,6 +438,37 @@ def test_tr_sp(sts):
         ),
     )
     assert isinstance(u, ErrorMessage)
+
+    # sp changes to TR should affect the CU validation status
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cu_id,
+        body=ControllableUnitUpdateRequest(
+            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
+        ),
+    )
+    assert isinstance(u, ControllableUnitResponse)
+    assert (
+        u.grid_validation_status
+        == ControllableUnitGridValidationStatus.VALIDATION_FAILED
+    )
+
+    i = create_technical_resource.sync(
+        client=client_common_sp,
+        body=TechnicalResourceCreateRequest(
+            name="MAGIC",
+            controllable_unit_id=cu_id,
+            details="This addition makes the CU go back to PENDING",
+        ),
+    )
+    assert not isinstance(i, ErrorMessage)
+
+    cu = read_controllable_unit.sync(
+        client=client_fiso,
+        id=cu_id,
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+    assert cu.grid_validation_status == ControllableUnitGridValidationStatus.PENDING
 
 
 def test_rla_absence(sts):
