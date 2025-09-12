@@ -137,9 +137,8 @@ ON controllable_unit
 FOR EACH ROW
 WHEN (
     OLD.grid_validation_status IS NOT DISTINCT FROM NEW.grid_validation_status -- noqa
-    AND NEW.grid_validation_status not in ('pending', 'in_progress') -- noqa
+    AND NEW.grid_validation_status not in ('pending', 'in_progress','validated') -- noqa
     AND current_user = 'flex_service_provider' -- noqa
-    AND old.last_validated IS NOT NULL
 )
 EXECUTE FUNCTION controllable_unit_grid_validation_status_reset();
 

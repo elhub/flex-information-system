@@ -4056,6 +4056,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -4972,6 +4982,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_service_provider_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -5952,6 +5972,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -6842,6 +6872,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_membership_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -7820,6 +7860,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -8693,6 +8743,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/entity_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -9251,6 +9311,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/entity_client_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -9888,6 +9958,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/party_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -10787,6 +10867,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/party_membership_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -12126,6 +12216,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/technical_resource_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -13287,6 +13387,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/notification_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -14876,6 +14986,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/system_operator_product_type_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -15784,6 +15904,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_provider_product_application_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -16668,6 +16798,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_provider_product_application_comment_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
@@ -17566,6 +17706,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"
