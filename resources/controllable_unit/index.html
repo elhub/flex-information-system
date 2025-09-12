@@ -2162,8 +2162,14 @@ controllable units.
 It normally starts as <code>pending</code>, then the system operator takes over to conclude
 on their validation or signal that information is missing.
 On any change to a technical information on a controllable unit or one of its
-technical resources, the grid validation status is reset if not already
-<code>pending</code> or <code>in_progress</code>.</p>
+technical resources, the grid validation status is reset to <code>pending</code> if not already
+<code>pending</code> or in statuses <code>in_progress</code> or <code>validated</code>.</p>
+<p>If the service provider significantly updates data on a controllable unit that
+has already been <code>validated</code> by CSO, then the CSO has the option to re-validate.
+The <code>last_validated</code> field can be used in combination with history on the
+controllable unit to determine if a significant change has occurred. The CSO can
+then either reset the status before doing the validation or directly do the
+validation and just update the <code>last_validated</code> timestamp.</p>
 <p><a href="../../diagrams/controllable_unit_grid_validation_status.png">Full Size</a>
 |
 <a href="../../diagrams/controllable_unit_grid_validation_status.plantuml">Plantuml description</a>
