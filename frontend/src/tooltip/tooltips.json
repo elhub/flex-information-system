@@ -156,6 +156,13 @@
         "visibility": "The level of visibility of the comment.",
         "content": "Free text content of the comment."
     },
+    "service_provider_product_suspension": {
+        "id": "Unique surrogate identifier.",
+        "procuring_system_operator_id": "Reference to the procuring system operator suspending the service provider.",
+        "service_provider_id": "Reference to the service provider being suspended.",
+        "product_type_ids": "References to the suspended product types.",
+        "reason": "The reason for the suspension."
+    },
     "service_providing_group_product_application": {
         "id": "Unique surrogate identifier.",
         "service_providing_group_id": "Reference to the service providing group.",

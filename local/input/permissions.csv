@@ -162,6 +162,8 @@ service_provider_product_suspension;procuring_system_operator_id;;R;R;R;RC;R;RC;
 service_provider_product_suspension;service_provider_id;;R;R;R;RC;R;RC;R;R;;;
 service_provider_product_suspension;product_type_ids;;R;R;R;RCU;R;RCU;R;R;;;
 service_provider_product_suspension;reason;;R;R;R;RCU;R;RCU;R;R;;;
+service_provider_product_suspension;recorded_at;;R;R;R;R;R;R;R;R;;;
+service_provider_product_suspension;recorded_by;;R;R;R;R;R;R;R;R;;;
 service_providing_group_product_application;;;;;;;;;;;;;R
 service_providing_group_product_application;id;;R;R;R;R;R;R;R;R;;;
 service_providing_group_product_application;service_providing_group_id;;R;R;R;R;R;R;RC;R;;;

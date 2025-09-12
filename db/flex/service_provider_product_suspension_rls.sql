@@ -55,18 +55,14 @@ ON service_provider_product_suspension
 FOR SELECT
 TO flex_system_operator
 USING (
-    SELECT EXISTS(
-        SELECT 1
-        FROM flex.service_providing_group_product_application AS spgpa
-            INNER JOIN flex.service_providing_group AS spg
-                ON spgpa.service_providing_group_id = spg.id
-        WHERE spg.service_provider_id
+    EXISTS (
+        SELECT
+            service_provider_product_suspension.product_type_ids -- noqa
+            && sppa.product_type_ids
+        FROM flex.service_provider_product_application AS sppa
+        WHERE sppa.service_provider_id
             = service_provider_product_suspension.service_provider_id -- noqa
-            AND spgpa.procuring_system_operator_id
-            = (SELECT flex.current_party())
-            AND spgpa.product_type_id
-            = ANY(service_provider_product_suspension.product_type_ids) -- noqa
-            AND spgpa.status
-            IN ('temporary_qualified', 'prequalified', 'verified')
+            AND sppa.system_operator_id = (SELECT flex.current_party())
+            AND sppa.status = 'qualified'
     )
 );

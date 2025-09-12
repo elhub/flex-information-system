@@ -1344,6 +1344,7 @@ resources:
       - read
       - create
       - update
+      - delete
     audit: true
     generate_views: true
     history:
@@ -1365,6 +1366,7 @@ resources:
         type: integer
         x-no-update: true
         required: false
+        x-details: Defaults to the system operator creating the resource.
         x-foreign-key:
           resource: party
           field: id
