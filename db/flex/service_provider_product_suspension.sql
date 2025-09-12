@@ -78,7 +78,7 @@ $$;
 -- SPPS-VAL001
 CREATE OR REPLACE TRIGGER
 service_provider_product_suspension_product_type_ids_insert
-BEFORE INSERT ON service_provider_product_suspension
+BEFORE INSERT OR UPDATE ON service_provider_product_suspension
 FOR EACH ROW
 EXECUTE FUNCTION
 service_provider_product_suspension_product_type_ids_insert();
