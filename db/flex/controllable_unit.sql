@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
         status IN (
             'new',
             'active',
-            'suspended',
+            'inactive',
             'terminated'
         )
     ),

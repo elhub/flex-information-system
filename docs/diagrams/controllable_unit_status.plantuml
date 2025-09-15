@@ -12,7 +12,7 @@ digraph G {
     new;
     {
         rank = same;
-        suspended;
+        inactive;
         active;
     }
     terminated [shape=oval];
@@ -21,8 +21,8 @@ digraph G {
     start -> new [label="", color="pink"];
     new -> active [label="", color="blue"];
     active -> terminated [label="", color="black"];
-    active -> suspended [label="", color="black"];
-    suspended-> active [label="", color="black"];
+    active -> inactive [label="", color="black"];
+    inactive -> active [label="", color="black"];
 
    }
 @enddot

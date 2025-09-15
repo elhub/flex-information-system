@@ -54,7 +54,7 @@ resources:
         enum:
           - new
           - active
-          - suspended
+          - inactive
           - terminated
         example: active
       regulation_direction:
@@ -303,6 +303,7 @@ resources:
         enum:
           - new
           - active
+          - inactive
           - terminated
         example: active
 

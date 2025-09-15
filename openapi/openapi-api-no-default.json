@@ -472,7 +472,7 @@
                 "enum": [
                     "new",
                     "active",
-                    "suspended",
+                    "inactive",
                     "terminated"
                 ],
                 "example": "active"
@@ -508,6 +508,7 @@
                 "enum": [
                     "new",
                     "active",
+                    "inactive",
                     "terminated"
                 ],
                 "example": "active"
@@ -17828,6 +17829,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"

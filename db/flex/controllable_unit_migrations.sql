@@ -52,3 +52,24 @@ RENAME COLUMN tmp_accounting_point_id TO accounting_point_id;
 --precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit' AND is_nullable = 'YES' AND column_name = 'accounting_point_id'
 ALTER TABLE flex.controllable_unit
 ALTER COLUMN accounting_point_id SET NOT NULL;
+
+-- changeset flex:controllable-unit-status-suspended-becomes-inactive runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'controllable_unit_status_check' AND conbin::text LIKE '%115 117 115 112 101 110 100 101 100%'
+-- (NB: searching for the ASCII codes for "suspended")
+ALTER TABLE flex.controllable_unit
+DROP CONSTRAINT controllable_unit_status_check;
+
+UPDATE flex.controllable_unit
+SET status = 'inactive'
+WHERE status = 'suspended';
+
+ALTER TABLE flex.controllable_unit
+ADD CONSTRAINT controllable_unit_status_check CHECK (
+    status IN (
+        'new',
+        'active',
+        'inactive',
+        'terminated'
+    )
+);
