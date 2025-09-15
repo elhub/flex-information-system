@@ -138,9 +138,23 @@ def test_controllable_unit_fiso(sts):
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
             status=ControllableUnitStatus.ACTIVE,
+            validated_at=None,  # resetting for next test below
         ),
     )
     assert not (isinstance(u, ErrorMessage))
+
+    # check validation time is set automatically when status is validated
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATED,
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+    cu = read_controllable_unit.sync(client=client_fiso, id=cast(int, cu.id))
+    assert isinstance(cu, ControllableUnitResponse)
+    assert cu.validated_at is not None
 
 
 def test_controllable_unit_so(sts):

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
         status IN (
             'new',
             'active',
-            'suspended',
+            'inactive',
             'terminated'
         )
     ),
@@ -104,7 +104,7 @@ BEFORE UPDATE OF grid_validation_status ON controllable_unit
 FOR EACH ROW
 WHEN (
     OLD.grid_validation_status IS DISTINCT FROM NEW.grid_validation_status -- noqa
-    AND NEW.grid_validation_status = 'approved' -- noqa
+    AND NEW.grid_validation_status = 'validated' -- noqa
     AND OLD.validated_at IS NULL AND NEW.validated_at IS NULL -- noqa
 )
 EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();

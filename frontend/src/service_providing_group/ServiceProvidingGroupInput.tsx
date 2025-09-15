@@ -39,7 +39,7 @@ export const ServiceProvidingGroupInput = () => {
           <SelectInput
             source="status"
             validate={createOrUpdate == "update" ? required() : undefined}
-            choices={["new", "active", "terminated"]}
+            choices={["new", "active", "inactive", "terminated"]}
           />
         </InputStack>
       </Stack>

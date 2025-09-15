@@ -31,7 +31,7 @@ export const ControllableUnitInput = () => {
           <SelectInput
             source="status"
             validate={createOrUpdate == "update" ? required() : undefined}
-            choices={["new", "active", "suspended", "terminated"]}
+            choices={["new", "active", "inactive", "terminated"]}
           />
         </InputStack>
 

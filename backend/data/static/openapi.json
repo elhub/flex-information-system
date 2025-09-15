@@ -473,7 +473,7 @@
                 "enum": [
                     "new",
                     "active",
-                    "suspended",
+                    "inactive",
                     "terminated"
                 ],
                 "example": "active"
@@ -511,6 +511,7 @@
                 "enum": [
                     "new",
                     "active",
+                    "inactive",
                     "terminated"
                 ],
                 "example": "active"

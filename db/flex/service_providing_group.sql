@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:service-providing-group-create runOnChange:false endDelimiter:--
+-- validCheckSum: 9:90adb1415f835d78a8d9d8ece3b8cf4e
 CREATE TABLE IF NOT EXISTS service_providing_group (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,
@@ -13,6 +14,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
         status IN (
             'new',
             'active',
+            'inactive',
             'terminated'
         )
     ),
