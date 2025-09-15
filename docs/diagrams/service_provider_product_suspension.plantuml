@@ -1,0 +1,86 @@
+@startuml service_provider_product_suspension
+
+!theme plain
+
+title Service Provider Product Suspension
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator (SO)" as SO
+
+== Suspension of service provider product qualification ==
+
+activate SO
+SO -> FIS: Create SP product suspension
+
+note right
+    Data:
+        - suspended product types
+        - reason for suspension
+end note
+
+activate FIS
+
+FIS --> SO: Ok
+deactivate SO
+FIS --> SP: Notify
+activate SP
+loop All PSOs procuring the same product type from the SP
+    |||
+    FIS --> SO: Notify
+    deactivate FIS
+    |||
+end
+
+SP -> FIS: Get suspension
+activate FIS
+FIS --> SP: Data incl. reason for suspension
+deactivate FIS
+
+note over SP
+    SP notifies end users
+    of the suspension when
+    neccessary.
+end note
+
+
+== Handle suspension ==
+|||
+note over FIS
+    SP and SO must probably communicate to sort out the issues that caused the
+    suspension. This can be done using comments on the SP product application in
+    the FIS or other communication mediums like email and phone.
+end note
+|||
+deactivate SP
+== Reinstatement of service provider product qualification ==
+
+SO -> FIS: Delete SP product suspension
+activate SO
+|||
+activate FIS
+FIS --> SO: Ok
+deactivate SO
+FIS --> SP: Notify
+
+loop All PSOs procuring the same product type from the SP
+    |||
+    FIS --> SO: Notify
+    deactivate FIS
+    |||
+end
+
+
+
+
+
+
+
+
+
+@enduml

@@ -217,7 +217,9 @@ func (p *Provider) Exchange(ctx context.Context, code string, verifier string) (
 }
 
 // GetKeySet returns the JWK key set from cache.
-func (p *Provider) GetKeySet(ctx context.Context) (jwk.Set, error) { //nolint: ireturn
+//
+//nolint:ireturn
+func (p *Provider) GetKeySet(ctx context.Context) (jwk.Set, error) {
 	set, err := p.jwksCache.Lookup(ctx, p.jwksURI)
 	if err != nil {
 		return nil, fmt.Errorf("could not lookup JWKS: %w", err)

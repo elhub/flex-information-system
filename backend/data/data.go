@@ -607,12 +607,14 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 
 	header.Set("Content-Type", "application/json")
 
-	if req.Method == http.MethodPost {
-		// ensure singular when object is created
+	// ensure singular when object is created
+	if req.Method == http.MethodPost || req.Method == http.MethodPatch {
 		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
 		header.Set("Accept", "application/vnd.pgrst.object+json")
+	}
 
-		// ensure that object is returned on insert and update
+	// ensure that object is returned on insert and update
+	if req.Method == http.MethodPost || req.Method == http.MethodPatch {
 		// https://postgrest.org/en/latest/references/preferences.html#prefer-return
 		header.Set("Prefer", "return=representation")
 	}

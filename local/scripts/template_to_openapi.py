@@ -172,6 +172,14 @@ def template_ok_response(resource):
             },
             "description": "OK",
         },
+        "update": {
+            "content": {
+                "application/json": {
+                    "schema": {"$ref": f"#/components/schemas/{resource}_response"}
+                }
+            },
+            "description": "OK",
+        },
     }
 
 
@@ -224,7 +232,7 @@ endpoint_templates = {
             "description": resource,
             "required": True,
         },
-        "g-responses": [204, 400, 401, 403, 404, 406, 409],
+        "g-responses": [200, 204, 400, 401, 403, 404, 406, 409],
     },
     "delete": lambda _base_resource, resource, resource_summary: {
         "operationId": f"delete_{resource}",
