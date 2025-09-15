@@ -96,7 +96,7 @@ export const ControllableUnitInput = () => {
             minRows={3}
             sx={{ minWidth: { xs: 300, md: 500 } }}
           />
-          <DateTimeInput source="last_validated" />
+          <DateTimeInput source="validated_at" />
         </InputStack>
       </Stack>
     </SimpleForm>

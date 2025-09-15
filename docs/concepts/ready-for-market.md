@@ -13,7 +13,7 @@ status of the resources in the FIS.
 Many resources in the register have a status and an associated timestamp. For
 example a
 [service providing group grid prequalification](../resources/service_providing_group_grid_prequalification.md)
-has the fields `status` and `last_prequalified`.
+has the fields `status` and `prequalified_at`.
 
 A status field represents the current stage of the approval processes of
 resources. This means different things for different resources, and includes:

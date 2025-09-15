@@ -19,7 +19,7 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
         status (Union[Unset, ServiceProvidingGroupGridPrequalificationStatus]): The status of the grid prequalification
             for this service providing group. Example: in_progress.
         notes (Union[None, Unset, str]): Free text notes on the current prequalification status.
-        last_prequalified (Union[None, Unset, str]): When the current grid prequalification was last approved. Example:
+        prequalified_at (Union[None, Unset, str]): When the current grid prequalification was last approved. Example:
             2023-01-08 10:00:00 CET.
         service_providing_group_id (Union[Unset, int]): Reference to the service providing group whose grid
             prequalification is tracked by the current resource. Example: 55.
@@ -29,7 +29,7 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
 
     status: Union[Unset, ServiceProvidingGroupGridPrequalificationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
-    last_prequalified: Union[None, Unset, str] = UNSET
+    prequalified_at: Union[None, Unset, str] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
     impacted_system_operator_id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -45,11 +45,11 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
         else:
             notes = self.notes
 
-        last_prequalified: Union[None, Unset, str]
-        if isinstance(self.last_prequalified, Unset):
-            last_prequalified = UNSET
+        prequalified_at: Union[None, Unset, str]
+        if isinstance(self.prequalified_at, Unset):
+            prequalified_at = UNSET
         else:
-            last_prequalified = self.last_prequalified
+            prequalified_at = self.prequalified_at
 
         service_providing_group_id = self.service_providing_group_id
 
@@ -62,8 +62,8 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
             field_dict["status"] = status
         if notes is not UNSET:
             field_dict["notes"] = notes
-        if last_prequalified is not UNSET:
-            field_dict["last_prequalified"] = last_prequalified
+        if prequalified_at is not UNSET:
+            field_dict["prequalified_at"] = prequalified_at
         if service_providing_group_id is not UNSET:
             field_dict["service_providing_group_id"] = service_providing_group_id
         if impacted_system_operator_id is not UNSET:
@@ -90,14 +90,14 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
 
         notes = _parse_notes(d.pop("notes", UNSET))
 
-        def _parse_last_prequalified(data: object) -> Union[None, Unset, str]:
+        def _parse_prequalified_at(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(Union[None, Unset, str], data)
 
-        last_prequalified = _parse_last_prequalified(d.pop("last_prequalified", UNSET))
+        prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 
         service_providing_group_id = d.pop("service_providing_group_id", UNSET)
 
@@ -106,7 +106,7 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
         service_providing_group_grid_prequalification_create_request = cls(
             status=status,
             notes=notes,
-            last_prequalified=last_prequalified,
+            prequalified_at=prequalified_at,
             service_providing_group_id=service_providing_group_id,
             impacted_system_operator_id=impacted_system_operator_id,
         )

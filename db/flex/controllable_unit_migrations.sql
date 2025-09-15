@@ -52,3 +52,9 @@ RENAME COLUMN tmp_accounting_point_id TO accounting_point_id;
 --precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit' AND is_nullable = 'YES' AND column_name = 'accounting_point_id'
 ALTER TABLE flex.controllable_unit
 ALTER COLUMN accounting_point_id SET NOT NULL;
+
+-- changeset flex:controllable-unit-rename-validated-at runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit' AND column_name = 'last_validated'
+ALTER TABLE flex.controllable_unit
+RENAME COLUMN last_validated TO validated_at;

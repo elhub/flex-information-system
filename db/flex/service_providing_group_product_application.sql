@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     notes text NULL CHECK (
         char_length(notes) <= 512
     ),
-    last_prequalified timestamp with time zone NULL,
-    last_verified timestamp with time zone NULL,
+    prequalified_at timestamp with time zone NULL,
+    verified_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -178,7 +178,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    NEW.last_prequalified := current_timestamp;
+    NEW.prequalified_at := current_timestamp;
     RETURN NEW;
 END;
 $$;
@@ -191,7 +191,7 @@ FOR EACH ROW
 WHEN (
     OLD.status IS DISTINCT FROM NEW.status -- noqa
     AND NEW.status = 'prequalified' -- noqa
-    AND OLD.last_prequalified IS NULL AND NEW.last_prequalified IS NULL -- noqa
+    AND OLD.prequalified_at IS NULL AND NEW.prequalified_at IS NULL -- noqa
 )
 EXECUTE FUNCTION
 service_providing_group_product_application_status_prequalified();
@@ -206,7 +206,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    NEW.last_verified := current_timestamp;
+    NEW.verified_at := current_timestamp;
     RETURN NEW;
 END;
 $$;
@@ -219,7 +219,7 @@ FOR EACH ROW
 WHEN (
     OLD.status IS DISTINCT FROM NEW.status -- noqa
     AND NEW.status = 'verified' -- noqa
-    AND OLD.last_verified IS NULL AND NEW.last_verified IS NULL -- noqa
+    AND OLD.verified_at IS NULL AND NEW.verified_at IS NULL -- noqa
 )
 EXECUTE FUNCTION service_providing_group_product_application_status_verified();
 

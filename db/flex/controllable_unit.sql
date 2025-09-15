@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     grid_validation_notes text NULL CHECK (
         char_length(grid_validation_notes) <= 512
     ),
-    last_validated timestamp with time zone NULL,
+    validated_at timestamp with time zone NULL,
     -- created_by_party_id is used to track the party that created the controllable unit.
     -- We use this in RLS policies to support the CU registration process - the party that creates the CU should be able to see it,
     -- even though they do not have a contract on the CU (yet).
@@ -93,7 +93,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    NEW.last_validated := current_timestamp;
+    NEW.validated_at := current_timestamp;
     RETURN NEW;
 END;
 $$;
@@ -105,7 +105,7 @@ FOR EACH ROW
 WHEN (
     OLD.grid_validation_status IS DISTINCT FROM NEW.grid_validation_status -- noqa
     AND NEW.grid_validation_status = 'approved' -- noqa
-    AND OLD.last_validated IS NULL AND NEW.last_validated IS NULL -- noqa
+    AND OLD.validated_at IS NULL AND NEW.validated_at IS NULL -- noqa
 )
 EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();
 

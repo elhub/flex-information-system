@@ -58,7 +58,7 @@ export const ServiceProviderProductApplicationList = () => {
           source="product_type_ids"
         />
         <TextField source="status" />
-        <DateField source="last_qualified" showTime />
+        <DateField source="qualified_at" showTime />
       </Datagrid>
     </List>
   );

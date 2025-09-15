@@ -134,6 +134,9 @@ databaseChangeLog:
       file: ./service_provider_product_application.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_provider_product_application_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./system_operator_product_type.sql
       relativeToChangelogFile: true
   - include:
@@ -149,7 +152,13 @@ databaseChangeLog:
       file: ./service_providing_group_grid_prequalification.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_grid_prequalification_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_product_application.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_product_application_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_provider_product_application_comment.sql

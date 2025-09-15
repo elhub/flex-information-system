@@ -50,7 +50,7 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
 
     client_so = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SO"))
     so_id = sts.get_userinfo(client_so)["party_id"]
@@ -360,7 +360,7 @@ def test_spggp_so(data):
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
             status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
             notes="Edited by SO",
-            last_prequalified="2024-01-01T08:00:00",
+            prequalified_at="2024-01-01T08:00:00",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -372,7 +372,7 @@ def test_spggp_so(data):
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
             status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
             notes="Edited by SO",
-            last_prequalified="2024-01-01T08:00:00",
+            prequalified_at="2024-01-01T08:00:00",
         ),
     )
     assert isinstance(u, ErrorMessage)

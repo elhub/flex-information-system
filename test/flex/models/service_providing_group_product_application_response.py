@@ -18,9 +18,9 @@ class ServiceProvidingGroupProductApplicationResponse:
             status (Union[Unset, ServiceProvidingGroupProductApplicationStatus]): The status of the application. Example:
                 in_progress.
             notes (Union[None, Unset, str]): Free text notes on the current product application status.
-            last_prequalified (Union[None, Unset, str]): When the product application was last prequalified. Example:
+            prequalified_at (Union[None, Unset, str]): When the product application was last prequalified. Example:
                 2022-08-08 12:00:00 CET.
-            last_verified (Union[None, Unset, str]): When the product application was last verified. Example: 2021-08-08
+            verified_at (Union[None, Unset, str]): When the product application was last verified. Example: 2021-08-08
                 10:00:00 CET.
             service_providing_group_id (Union[Unset, int]): Reference to the service providing group. Example: 18.
             procuring_system_operator_id (Union[Unset, int]): Reference to the procuring system operator. Example: 39.
@@ -33,8 +33,8 @@ class ServiceProvidingGroupProductApplicationResponse:
 
     status: Union[Unset, ServiceProvidingGroupProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
-    last_prequalified: Union[None, Unset, str] = UNSET
-    last_verified: Union[None, Unset, str] = UNSET
+    prequalified_at: Union[None, Unset, str] = UNSET
+    verified_at: Union[None, Unset, str] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
     procuring_system_operator_id: Union[Unset, int] = UNSET
     product_type_id: Union[Unset, int] = UNSET
@@ -54,17 +54,17 @@ class ServiceProvidingGroupProductApplicationResponse:
         else:
             notes = self.notes
 
-        last_prequalified: Union[None, Unset, str]
-        if isinstance(self.last_prequalified, Unset):
-            last_prequalified = UNSET
+        prequalified_at: Union[None, Unset, str]
+        if isinstance(self.prequalified_at, Unset):
+            prequalified_at = UNSET
         else:
-            last_prequalified = self.last_prequalified
+            prequalified_at = self.prequalified_at
 
-        last_verified: Union[None, Unset, str]
-        if isinstance(self.last_verified, Unset):
-            last_verified = UNSET
+        verified_at: Union[None, Unset, str]
+        if isinstance(self.verified_at, Unset):
+            verified_at = UNSET
         else:
-            last_verified = self.last_verified
+            verified_at = self.verified_at
 
         service_providing_group_id = self.service_providing_group_id
 
@@ -85,10 +85,10 @@ class ServiceProvidingGroupProductApplicationResponse:
             field_dict["status"] = status
         if notes is not UNSET:
             field_dict["notes"] = notes
-        if last_prequalified is not UNSET:
-            field_dict["last_prequalified"] = last_prequalified
-        if last_verified is not UNSET:
-            field_dict["last_verified"] = last_verified
+        if prequalified_at is not UNSET:
+            field_dict["prequalified_at"] = prequalified_at
+        if verified_at is not UNSET:
+            field_dict["verified_at"] = verified_at
         if service_providing_group_id is not UNSET:
             field_dict["service_providing_group_id"] = service_providing_group_id
         if procuring_system_operator_id is not UNSET:
@@ -123,23 +123,23 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         notes = _parse_notes(d.pop("notes", UNSET))
 
-        def _parse_last_prequalified(data: object) -> Union[None, Unset, str]:
+        def _parse_prequalified_at(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(Union[None, Unset, str], data)
 
-        last_prequalified = _parse_last_prequalified(d.pop("last_prequalified", UNSET))
+        prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 
-        def _parse_last_verified(data: object) -> Union[None, Unset, str]:
+        def _parse_verified_at(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(Union[None, Unset, str], data)
 
-        last_verified = _parse_last_verified(d.pop("last_verified", UNSET))
+        verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
         service_providing_group_id = d.pop("service_providing_group_id", UNSET)
 
@@ -156,8 +156,8 @@ class ServiceProvidingGroupProductApplicationResponse:
         service_providing_group_product_application_response = cls(
             status=status,
             notes=notes,
-            last_prequalified=last_prequalified,
-            last_verified=last_verified,
+            prequalified_at=prequalified_at,
+            verified_at=verified_at,
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_id=product_type_id,

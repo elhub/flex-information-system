@@ -720,7 +720,7 @@
                         "nullable": true,
                         "example": null
                     },
-                    "last_validated": {
+                    "validated_at": {
                         "description": "When the controllable unit was last validated.",
                         "format": "timestamp with time zone",
                         "type": "string",
@@ -1178,7 +1178,7 @@
                         "nullable": true,
                         "example": null
                     },
-                    "last_prequalified": {
+                    "prequalified_at": {
                         "description": "When the current grid prequalification was last approved.",
                         "format": "timestamp with time zone",
                         "type": "string",
@@ -2546,7 +2546,7 @@
                         "nullable": true,
                         "example": null
                     },
-                    "last_qualified": {
+                    "qualified_at": {
                         "description": "When the product application was last validated.",
                         "format": "timestamp with time zone",
                         "type": "string",
@@ -2884,14 +2884,14 @@
                         "nullable": true,
                         "example": null
                     },
-                    "last_prequalified": {
+                    "prequalified_at": {
                         "description": "When the product application was last prequalified.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08 12:00:00 CET"
                     },
-                    "last_verified": {
+                    "verified_at": {
                         "description": "When the product application was last verified.",
                         "format": "timestamp with time zone",
                         "type": "string",
@@ -17870,6 +17870,16 @@
                     "required": true
                 },
                 "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
                     "204": {
                         "content": {},
                         "description": "No Content"

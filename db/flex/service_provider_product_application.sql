@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application (
     notes text NULL CHECK (
         char_length(notes) <= 512
     ),
-    last_qualified timestamp with time zone NULL,
+    qualified_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -138,7 +138,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    NEW.last_qualified := current_timestamp;
+    NEW.qualified_at := current_timestamp;
     RETURN NEW;
 END;
 $$;
@@ -150,7 +150,7 @@ FOR EACH ROW
 WHEN (
     OLD.status IS DISTINCT FROM NEW.status -- noqa
     AND NEW.status = 'qualified' -- noqa
-    AND OLD.last_qualified IS NULL AND NEW.last_qualified IS NULL -- noqa
+    AND OLD.qualified_at IS NULL AND NEW.qualified_at IS NULL -- noqa
 )
 EXECUTE FUNCTION service_provider_product_application_status_qualified();
 

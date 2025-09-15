@@ -69,7 +69,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
               <TextField source="name" />
             </ReferenceField>
             <TextField source="status" />
-            <DateField source="last_prequalified" showTime />
+            <DateField source="prequalified_at" showTime />
             <TextField source="notes" />
           </FieldStack>
 

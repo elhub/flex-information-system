@@ -81,7 +81,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
               <TextField source="name" />
             </ReferenceField>
             <TextField source="status" />
-            <DateField source="last_prequalified" showTime />
+            <DateField source="prequalified_at" showTime />
             {permissions.includes(
               "service_providing_group_grid_prequalification.delete",
             ) && <DeleteButton mutationMode="pessimistic" redirect="" />}

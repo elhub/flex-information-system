@@ -32,10 +32,10 @@ technical resources, the grid validation status is reset to `pending` if not alr
 
 If the service provider significantly updates data on a controllable unit that
 has already been `validated` by CSO, then the CSO has the option to re-validate.
-The `last_validated` field can be used in combination with history on the
+The `validated_at` field can be used in combination with history on the
 controllable unit to determine if a significant change has occurred. The CSO can
 then either reset the status before doing the validation or directly do the
-validation and just update the `last_validated` timestamp.
+validation and just update the `validated_at` timestamp.
 
 [Full Size](../diagrams/controllable_unit_grid_validation_status.png)
 |
@@ -87,7 +87,7 @@ can only be edited by a FIS operator.
 | <a name="field-grid_node_id" href="#field-grid_node_id">grid_node_id</a>                                           | Reference to the node that the controllable unit is connected to.                                                                                                                               | text<br/>Pattern: `^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`                                                                                                                       |                                                     |
 | <a name="field-grid_validation_status" href="#field-grid_validation_status">grid_validation_status</a>             | The grid validation status of the controllable unit.                                                                                                                                            | text<br/>One of: `pending`, `in_progress`, `incomplete_information`, `validated`, `validation_failed`<br/>Default: `pending`                                                                                    |                                                     |
 | <a name="field-grid_validation_notes" href="#field-grid_validation_notes">grid_validation_notes</a>                | Free text notes on the current grid validation status.                                                                                                                                          | text<br/>Max length: `512`                                                                                                                                                                                      |                                                     |
-| <a name="field-last_validated" href="#field-last_validated">last_validated</a>                                     | When the controllable unit was last validated.                                                                                                                                                  | timestamp with time zone                                                                                                                                                                                        |                                                     |
+| <a name="field-validated_at" href="#field-validated_at">validated_at</a>                                           | When the controllable unit was last validated.                                                                                                                                                  | timestamp with time zone                                                                                                                                                                                        |                                                     |
 | <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                              | When the resource was recorded (created or updated) in the system.                                                                                                                              | timestamp with time zone<br/>Read only                                                                                                                                                                          |                                                     |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                              | The identity that recorded the resource.                                                                                                                                                        | bigint<br/>Read only                                                                                                                                                                                            |                                                     |
 
@@ -204,6 +204,6 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | grid_node_id               |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
 | grid_validation_status     |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
 | grid_validation_notes      |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
-| last_validated             |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
+| validated_at               |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
 | recorded_at                |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
 | recorded_by                |      | R   | R  | R  | R    | R  | R  | R   | R  |     |

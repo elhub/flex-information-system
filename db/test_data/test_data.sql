@@ -127,7 +127,7 @@ BEGIN
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated
+    validated_at
   ) VALUES (
     cu_name,
     '2020-01-01',
@@ -162,7 +162,7 @@ BEGIN
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     created_by_party_id,
     recorded_by,
     record_time_range,
@@ -184,7 +184,7 @@ BEGIN
     cu.grid_node_id,
     cu.grid_validation_status,
     cu.grid_validation_notes,
-    cu.last_validated,
+    cu.validated_at,
     cu.created_by_party_id,
     cu.recorded_by,
     -- the record must exist fully during the contract of the former end user
@@ -212,7 +212,7 @@ BEGIN
     cu.grid_node_id,
     cu.grid_validation_status,
     cu.grid_validation_notes,
-    cu.last_validated,
+    cu.validated_at,
     cu.created_by_party_id,
     cu.recorded_by,
     -- the record must have overlap with the first CUSP of Test SP
@@ -239,7 +239,7 @@ BEGIN
     cu.grid_node_id,
     cu.grid_validation_status,
     cu.grid_validation_notes,
-    cu.last_validated,
+    cu.validated_at,
     cu.created_by_party_id,
     cu.recorded_by,
     -- the record must exist while Common BRP is BRP on the AP
@@ -266,7 +266,7 @@ BEGIN
     cu.grid_node_id,
     cu.grid_validation_status,
     cu.grid_validation_notes,
-    cu.last_validated,
+    cu.validated_at,
     cu.created_by_party_id,
     cu.recorded_by,
     -- the record must contain the as-of timestamp of Common SP
@@ -293,7 +293,7 @@ BEGIN
     cu.grid_node_id,
     cu.grid_validation_status,
     cu.grid_validation_notes,
-    cu.last_validated,
+    cu.validated_at,
     cu.created_by_party_id,
     cu.recorded_by,
     -- the record acts as a newer version that Common SP cannot see

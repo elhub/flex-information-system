@@ -17,7 +17,7 @@ CREATE TABLE controllable_unit (
     grid_node_id text NULL,
     grid_validation_status text NOT NULL,
     grid_validation_notes text NULL,
-    last_validated timestamp with time zone NULL,
+    validated_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -39,7 +39,7 @@ CREATE TABLE controllable_unit_history (
     grid_node_id text NULL,
     grid_validation_status text NOT NULL,
     grid_validation_notes text NULL,
-    last_validated timestamp with time zone NULL,
+    validated_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -116,7 +116,7 @@ CREATE TABLE service_providing_group_grid_prequalification (
     impacted_system_operator_id bigint NOT NULL,
     status text NOT NULL,
     notes text NULL,
-    last_prequalified timestamp with time zone NULL,
+    prequalified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -127,7 +127,7 @@ CREATE TABLE service_providing_group_grid_prequalification_history (
     impacted_system_operator_id bigint NOT NULL,
     status text NOT NULL,
     notes text NULL,
-    last_prequalified timestamp with time zone NULL,
+    prequalified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -295,7 +295,7 @@ CREATE TABLE service_provider_product_application (
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
     notes text NULL,
-    last_qualified timestamp with time zone NULL,
+    qualified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -307,7 +307,7 @@ CREATE TABLE service_provider_product_application_history (
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
     notes text NULL,
-    last_qualified timestamp with time zone NULL,
+    qualified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -364,8 +364,8 @@ CREATE TABLE service_providing_group_product_application (
     product_type_id bigint NOT NULL,
     status text NOT NULL,
     notes text NULL,
-    last_prequalified timestamp with time zone NULL,
-    last_verified timestamp with time zone NULL,
+    prequalified_at timestamp with time zone NULL,
+    verified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -377,8 +377,8 @@ CREATE TABLE service_providing_group_product_application_history (
     product_type_id bigint NOT NULL,
     status text NOT NULL,
     notes text NULL,
-    last_prequalified timestamp with time zone NULL,
-    last_verified timestamp with time zone NULL,
+    prequalified_at timestamp with time zone NULL,
+    verified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

@@ -39,7 +39,7 @@ class ControllableUnitHistoryResponse:
         grid_validation_status (Union[Unset, ControllableUnitGridValidationStatus]): The grid validation status of the
             controllable unit. Example: validated.
         grid_validation_notes (Union[None, Unset, str]): Free text notes on the current grid validation status.
-        last_validated (Union[None, Unset, str]): When the controllable unit was last validated. Example: 2022-08-08
+        validated_at (Union[None, Unset, str]): When the controllable unit was last validated. Example: 2022-08-08
             12:00:00 CET.
         accounting_point_id (Union[Unset, int]): Reference to the accounting point that the controllable unit is
             connected to. Example: 10289.
@@ -68,7 +68,7 @@ class ControllableUnitHistoryResponse:
     grid_node_id: Union[None, Unset, str] = UNSET
     grid_validation_status: Union[Unset, ControllableUnitGridValidationStatus] = UNSET
     grid_validation_notes: Union[None, Unset, str] = UNSET
-    last_validated: Union[None, Unset, str] = UNSET
+    validated_at: Union[None, Unset, str] = UNSET
     accounting_point_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
@@ -142,11 +142,11 @@ class ControllableUnitHistoryResponse:
         else:
             grid_validation_notes = self.grid_validation_notes
 
-        last_validated: Union[None, Unset, str]
-        if isinstance(self.last_validated, Unset):
-            last_validated = UNSET
+        validated_at: Union[None, Unset, str]
+        if isinstance(self.validated_at, Unset):
+            validated_at = UNSET
         else:
-            last_validated = self.last_validated
+            validated_at = self.validated_at
 
         accounting_point_id = self.accounting_point_id
 
@@ -203,8 +203,8 @@ class ControllableUnitHistoryResponse:
             field_dict["grid_validation_status"] = grid_validation_status
         if grid_validation_notes is not UNSET:
             field_dict["grid_validation_notes"] = grid_validation_notes
-        if last_validated is not UNSET:
-            field_dict["last_validated"] = last_validated
+        if validated_at is not UNSET:
+            field_dict["validated_at"] = validated_at
         if accounting_point_id is not UNSET:
             field_dict["accounting_point_id"] = accounting_point_id
         if recorded_at is not UNSET:
@@ -325,14 +325,14 @@ class ControllableUnitHistoryResponse:
 
         grid_validation_notes = _parse_grid_validation_notes(d.pop("grid_validation_notes", UNSET))
 
-        def _parse_last_validated(data: object) -> Union[None, Unset, str]:
+        def _parse_validated_at(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(Union[None, Unset, str], data)
 
-        last_validated = _parse_last_validated(d.pop("last_validated", UNSET))
+        validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
 
         accounting_point_id = d.pop("accounting_point_id", UNSET)
 
@@ -378,7 +378,7 @@ class ControllableUnitHistoryResponse:
             grid_node_id=grid_node_id,
             grid_validation_status=grid_validation_status,
             grid_validation_notes=grid_validation_notes,
-            last_validated=last_validated,
+            validated_at=validated_at,
             accounting_point_id=accounting_point_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,

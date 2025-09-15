@@ -16,7 +16,7 @@
         "grid_node_id": "Reference to the node that the controllable unit is connected to.",
         "grid_validation_status": "The grid validation status of the controllable unit.",
         "grid_validation_notes": "Free text notes on the current grid validation status.",
-        "last_validated": "When the controllable unit was last validated."
+        "validated_at": "When the controllable unit was last validated."
     },
     "controllable_unit_service_provider": {
         "id": "Unique surrogate key.",
@@ -46,7 +46,7 @@
         "impacted_system_operator_id": "Reference to the `party` that is the impacted system operator.",
         "status": "The status of the grid prequalification for this service providing group.",
         "notes": "Free text notes on the current prequalification status.",
-        "last_prequalified": "When the current grid prequalification was last approved."
+        "prequalified_at": "When the current grid prequalification was last approved."
     },
     "entity": {
         "id": "Unique surrogate identifier.\n\nNote:\nThis is a Primary Key.",
@@ -146,7 +146,7 @@
         "product_type_ids": "References to the product types.",
         "status": "The status of the application.",
         "notes": "Free text notes on the current product application status.",
-        "last_qualified": "When the product application was last validated."
+        "qualified_at": "When the product application was last validated."
     },
     "service_provider_product_application_comment": {
         "id": "Unique surrogate identifier.",
@@ -170,8 +170,8 @@
         "product_type_id": "References to the product type.",
         "status": "The status of the application.",
         "notes": "Free text notes on the current product application status.",
-        "last_prequalified": "When the product application was last prequalified.",
-        "last_verified": "When the product application was last verified."
+        "prequalified_at": "When the product application was last prequalified.",
+        "verified_at": "When the product application was last verified."
     },
     "notice": {
         "party_id": "Reference to the party targeted by the notice.",

@@ -171,7 +171,7 @@ def test_controllable_unit_so(sts):
         client=client_so,
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
-            last_validated="2024-01-01T08:00:00",
+            validated_at="2024-01-01T08:00:00",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -181,7 +181,7 @@ def test_controllable_unit_so(sts):
         client=client_iso,
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
-            last_validated="2024-04-04T08:00:00",
+            validated_at="2024-04-04T08:00:00",
         ),
     )
     assert isinstance(u, ErrorMessage)

@@ -19,14 +19,14 @@ class ServiceProviderProductApplicationUpdateRequest:
             status (Union[Unset, ServiceProviderProductApplicationStatus]): The status of the application. Example:
                 in_progress.
             notes (Union[None, Unset, str]): Free text notes on the current product application status.
-            last_qualified (Union[None, Unset, str]): When the product application was last validated. Example: 2022-08-08
+            qualified_at (Union[None, Unset, str]): When the product application was last validated. Example: 2022-08-08
                 12:00:00 CET.
     """
 
     product_type_ids: Union[Unset, List[int]] = UNSET
     status: Union[Unset, ServiceProviderProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
-    last_qualified: Union[None, Unset, str] = UNSET
+    qualified_at: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -44,11 +44,11 @@ class ServiceProviderProductApplicationUpdateRequest:
         else:
             notes = self.notes
 
-        last_qualified: Union[None, Unset, str]
-        if isinstance(self.last_qualified, Unset):
-            last_qualified = UNSET
+        qualified_at: Union[None, Unset, str]
+        if isinstance(self.qualified_at, Unset):
+            qualified_at = UNSET
         else:
-            last_qualified = self.last_qualified
+            qualified_at = self.qualified_at
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -59,8 +59,8 @@ class ServiceProviderProductApplicationUpdateRequest:
             field_dict["status"] = status
         if notes is not UNSET:
             field_dict["notes"] = notes
-        if last_qualified is not UNSET:
-            field_dict["last_qualified"] = last_qualified
+        if qualified_at is not UNSET:
+            field_dict["qualified_at"] = qualified_at
 
         return field_dict
 
@@ -85,20 +85,20 @@ class ServiceProviderProductApplicationUpdateRequest:
 
         notes = _parse_notes(d.pop("notes", UNSET))
 
-        def _parse_last_qualified(data: object) -> Union[None, Unset, str]:
+        def _parse_qualified_at(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(Union[None, Unset, str], data)
 
-        last_qualified = _parse_last_qualified(d.pop("last_qualified", UNSET))
+        qualified_at = _parse_qualified_at(d.pop("qualified_at", UNSET))
 
         service_provider_product_application_update_request = cls(
             product_type_ids=product_type_ids,
             status=status,
             notes=notes,
-            last_qualified=last_qualified,
+            qualified_at=qualified_at,
         )
 
         service_provider_product_application_update_request.additional_properties = d

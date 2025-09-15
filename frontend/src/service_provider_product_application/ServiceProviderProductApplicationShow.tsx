@@ -53,7 +53,7 @@ export const ServiceProviderProductApplicationShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="status" />
             <TextField source="notes" />
-            <DateField source="last_qualified" showTime />
+            <DateField source="qualified_at" showTime />
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <ServiceProviderProductApplicationAlreadyQualified />

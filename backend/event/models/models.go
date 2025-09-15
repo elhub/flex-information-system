@@ -57,7 +57,7 @@ type ControllableUnit struct {
 	GridNodeID               *string
 	GridValidationStatus     string
 	GridValidationNotes      *string
-	LastValidated            pgtype.Timestamptz
+	ValidatedAt              pgtype.Timestamptz
 	RecordedBy               int
 	RecordedAt               pgtype.Timestamptz
 }
@@ -80,7 +80,7 @@ type ControllableUnitHistory struct {
 	GridNodeID               *string
 	GridValidationStatus     string
 	GridValidationNotes      *string
-	LastValidated            pgtype.Timestamptz
+	ValidatedAt              pgtype.Timestamptz
 	RecordedBy               int
 	RecordedAt               pgtype.Timestamptz
 	ReplacedBy               *int
@@ -235,7 +235,7 @@ type ServiceProviderProductApplication struct {
 	ProductTypeIds    []int
 	Status            string
 	Notes             *string
-	LastQualified     pgtype.Timestamptz
+	QualifiedAt       pgtype.Timestamptz
 	RecordedBy        int
 	RecordedAt        pgtype.Timestamptz
 }
@@ -273,7 +273,7 @@ type ServiceProviderProductApplicationHistory struct {
 	ProductTypeIds                      []int
 	Status                              string
 	Notes                               *string
-	LastQualified                       pgtype.Timestamptz
+	QualifiedAt                         pgtype.Timestamptz
 	RecordedBy                          int
 	RecordedAt                          pgtype.Timestamptz
 	ReplacedBy                          *int
@@ -318,7 +318,7 @@ type ServiceProvidingGroupGridPrequalification struct {
 	ImpactedSystemOperatorID int
 	Status                   string
 	Notes                    *string
-	LastPrequalified         pgtype.Timestamptz
+	PrequalifiedAt           pgtype.Timestamptz
 	RecordedBy               int
 	RecordedAt               pgtype.Timestamptz
 }
@@ -330,7 +330,7 @@ type ServiceProvidingGroupGridPrequalificationHistory struct {
 	ImpactedSystemOperatorID                    int
 	Status                                      string
 	Notes                                       *string
-	LastPrequalified                            pgtype.Timestamptz
+	PrequalifiedAt                              pgtype.Timestamptz
 	RecordedBy                                  int
 	RecordedAt                                  pgtype.Timestamptz
 	ReplacedBy                                  *int
@@ -379,8 +379,8 @@ type ServiceProvidingGroupProductApplication struct {
 	ProductTypeID             int
 	Status                    string
 	Notes                     *string
-	LastPrequalified          pgtype.Timestamptz
-	LastVerified              pgtype.Timestamptz
+	PrequalifiedAt            pgtype.Timestamptz
+	VerifiedAt                pgtype.Timestamptz
 	RecordedBy                int
 	RecordedAt                pgtype.Timestamptz
 }
@@ -393,8 +393,8 @@ type ServiceProvidingGroupProductApplicationHistory struct {
 	ProductTypeID                             int
 	Status                                    string
 	Notes                                     *string
-	LastPrequalified                          pgtype.Timestamptz
-	LastVerified                              pgtype.Timestamptz
+	PrequalifiedAt                            pgtype.Timestamptz
+	VerifiedAt                                pgtype.Timestamptz
 	RecordedBy                                int
 	RecordedAt                                pgtype.Timestamptz
 	ReplacedBy                                *int
