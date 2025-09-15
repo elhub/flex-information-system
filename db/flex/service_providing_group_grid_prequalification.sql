@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:service-providing-group-grid-prequalification-create runOnChange:false endDelimiter:--
+-- validCheckSum: 9:76cd8e2f4596c1bd2e019d353f952dba
 CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_providing_group_id bigint NOT NULL,
@@ -49,31 +50,6 @@ BEFORE UPDATE OF status ON service_providing_group_grid_prequalification
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION status.restrict_update('requested');
-
--- changeset flex:service-providing-group-grid-prequalification-status-approved-function runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION spg_grid_prequalification_status_approved()
-RETURNS trigger
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS
-$$
-BEGIN
-    NEW.prequalified_at := current_timestamp;
-    RETURN NEW;
-END;
-$$;
-
--- changeset flex:service-providing-group-grid-prequalification-status-approved-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER spg_grid_prequalification_status_approved
-BEFORE UPDATE OF status
-ON service_providing_group_grid_prequalification
-FOR EACH ROW
-WHEN (
-    OLD.status IS DISTINCT FROM NEW.status -- noqa
-    AND NEW.status = 'approved' -- noqa
-    AND OLD.prequalified_at IS NULL AND NEW.prequalified_at IS NULL -- noqa
-)
-EXECUTE FUNCTION spg_grid_prequalification_status_approved();
 
 -- changeset flex:service-providing-group-grid-prequalification-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_grid_prequalification_event

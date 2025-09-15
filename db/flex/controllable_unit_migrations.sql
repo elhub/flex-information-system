@@ -58,6 +58,8 @@ ALTER COLUMN accounting_point_id SET NOT NULL;
 --precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit' AND column_name = 'last_validated'
 ALTER TABLE flex.controllable_unit
 RENAME COLUMN last_validated TO validated_at;
+ALTER TABLE flex.controllable_unit_history
+RENAME COLUMN last_validated TO validated_at;
 
 -- changeset flex:controllable-unit-status-suspended-becomes-inactive runOnChange:false endDelimiter:;
 --preconditions onFail:MARK_RAN
@@ -79,3 +81,27 @@ ADD CONSTRAINT controllable_unit_status_check CHECK (
         'terminated'
     )
 );
+
+-- changeset flex:controllable-unit-grid-validation-status-approved-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION controllable_unit_grid_validation_status_approved()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    NEW.validated_at := current_timestamp;
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:controllable-unit-grid-validation-status-approved-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_approved
+BEFORE UPDATE OF grid_validation_status ON controllable_unit
+FOR EACH ROW
+WHEN (
+    OLD.grid_validation_status IS DISTINCT FROM NEW.grid_validation_status -- noqa
+    AND NEW.grid_validation_status = 'validated' -- noqa
+    AND OLD.validated_at IS NULL AND NEW.validated_at IS NULL -- noqa
+)
+EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();
