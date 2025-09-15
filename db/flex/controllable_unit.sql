@@ -104,7 +104,7 @@ BEFORE UPDATE OF grid_validation_status ON controllable_unit
 FOR EACH ROW
 WHEN (
     OLD.grid_validation_status IS DISTINCT FROM NEW.grid_validation_status -- noqa
-    AND NEW.grid_validation_status = 'approved' -- noqa
+    AND NEW.grid_validation_status = 'validated' -- noqa
     AND OLD.last_validated IS NULL AND NEW.last_validated IS NULL -- noqa
 )
 EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();
