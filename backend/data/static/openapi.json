@@ -511,6 +511,7 @@
                 "enum": [
                     "new",
                     "active",
+                    "inactive",
                     "terminated"
                 ],
                 "example": "active"
