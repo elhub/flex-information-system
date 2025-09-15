@@ -3,8 +3,8 @@ from enum import Enum
 
 class ControllableUnitStatus(str, Enum):
     ACTIVE = "active"
+    INACTIVE = "inactive"
     NEW = "new"
-    SUSPENDED = "suspended"
     TERMINATED = "terminated"
 
     def __str__(self) -> str:

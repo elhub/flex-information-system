@@ -44,7 +44,7 @@ export const ControllableUnitList = () => {
       key="status"
       label="Status"
       source="status@in"
-      choices={["new", "active", "suspended", "terminated"]}
+      choices={["new", "active", "inactive", "terminated"]}
       alwaysOn
     />,
   ];
