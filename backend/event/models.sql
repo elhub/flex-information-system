@@ -127,6 +127,23 @@ FROM service_provider_product_application_history
 WHERE service_provider_product_application_id = @resource_id
 AND tstzrange(recorded_at, replaced_at, '[)') @> @recorded_at::timestamptz;
 
+-- name: GetServiceProviderProductSuspensionNotificationRecipients :many
+SELECT sppsh.service_provider_id::bigint
+FROM service_provider_product_suspension_history AS sppsh
+WHERE sppsh.service_provider_product_suspension_id = @resource_id
+    AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]') @> @recorded_at::timestamptz
+UNION ALL
+SELECT sppah.system_operator_id::bigint
+FROM service_provider_product_suspension_history AS sppsh
+    INNER JOIN service_provider_product_application_history AS sppah
+        ON sppsh.service_provider_id = sppah.service_provider_id
+            AND sppsh.product_type_ids && sppah.product_type_ids
+            AND tstzrange(sppah.recorded_at, sppah.replaced_at, '[)')
+                @> @recorded_at::timestamptz
+WHERE sppsh.service_provider_product_suspension_id = @resource_id
+    AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz;
+
 -- name: GetServiceProvidingGroupCreateNotificationRecipients :many
 SELECT service_provider_id
 FROM service_providing_group spg

@@ -288,6 +288,44 @@ func (q *Queries) GetServiceProviderProductApplicationNotificationRecipients(ctx
 	return items, nil
 }
 
+const getServiceProviderProductSuspensionNotificationRecipients = `-- name: GetServiceProviderProductSuspensionNotificationRecipients :many
+SELECT sppsh.service_provider_id::bigint
+FROM service_provider_product_suspension_history AS sppsh
+WHERE sppsh.service_provider_product_suspension_id = $1
+    AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]') @> $2::timestamptz
+UNION ALL
+SELECT sppah.system_operator_id::bigint
+FROM service_provider_product_suspension_history AS sppsh
+    INNER JOIN service_provider_product_application_history AS sppah
+        ON sppsh.service_provider_id = sppah.service_provider_id
+            AND sppsh.product_type_ids && sppah.product_type_ids
+            AND tstzrange(sppah.recorded_at, sppah.replaced_at, '[)')
+                @> $2::timestamptz
+WHERE sppsh.service_provider_product_suspension_id = $1
+    AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
+        @> $2::timestamptz
+`
+
+func (q *Queries) GetServiceProviderProductSuspensionNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductSuspensionNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var sppsh_service_provider_id int
+		if err := rows.Scan(&sppsh_service_provider_id); err != nil {
+			return nil, err
+		}
+		items = append(items, sppsh_service_provider_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProvidingGroupCreateNotificationRecipients = `-- name: GetServiceProvidingGroupCreateNotificationRecipients :many
 SELECT service_provider_id
 FROM service_providing_group spg

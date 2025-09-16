@@ -31,11 +31,33 @@ FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
+-- RLS: SPPS-COM001
+GRANT SELECT ON service_provider_product_suspension_history
+TO flex_common;
+CREATE POLICY "SPPS_COM001"
+ON service_provider_product_suspension_history
+FOR SELECT
+TO flex_common
+USING (EXISTS (
+    SELECT 1
+    FROM service_provider_product_suspension
+    WHERE service_provider_product_suspension_history.id = service_provider_product_suspension.id -- noqa
+));
+
 -- RLS: SPPS-SP001
 GRANT SELECT ON service_provider_product_suspension
 TO flex_service_provider;
 CREATE POLICY "SPPS_SP001"
 ON service_provider_product_suspension
+FOR SELECT
+TO flex_service_provider
+USING (service_provider_id = (SELECT flex.current_party()));
+
+-- RLS: SPPS-SP002
+GRANT SELECT ON service_provider_product_suspension_history
+TO flex_service_provider;
+CREATE POLICY "SPPS_SP002"
+ON service_provider_product_suspension_history
 FOR SELECT
 TO flex_service_provider
 USING (service_provider_id = (SELECT flex.current_party()));

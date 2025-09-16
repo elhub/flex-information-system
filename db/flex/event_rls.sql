@@ -79,6 +79,7 @@ USING (
         'system_operator_product_type',
         'service_provider_product_application',
         'service_provider_product_application_comment',
+        'service_provider_product_suspension',
         'service_providing_group',
         'service_providing_group_membership',
         'service_providing_group_grid_prequalification',
@@ -221,5 +222,34 @@ USING (
                 ON spgpa.service_providing_group_id = spg.id
         WHERE spgpa.id = event.source_id -- noqa
             AND spg.service_provider_id = (SELECT flex.current_party())
+    )
+);
+
+-- RLS: EVENT-SP010
+CREATE POLICY "EVENT_SP010" ON event
+FOR SELECT
+TO flex_service_provider
+USING (source_resource = 'system_operator_product_type');
+
+-- RLS: EVENT-SP011
+CREATE POLICY "EVENT_SP011" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'service_provider_product_suspension'
+    AND (
+        EXISTS (
+            SELECT 1
+            FROM flex.service_provider_product_suspension AS spps
+            WHERE spps.id = event.source_id -- noqa
+                AND spps.service_provider_id = (SELECT flex.current_party())
+        )
+        -- checking history because the SPPS may have been deleted since
+        OR EXISTS (
+            SELECT 1
+            FROM flex.service_provider_product_suspension_history AS sppsh
+            WHERE sppsh.id = event.source_id -- noqa
+                AND sppsh.service_provider_id = (SELECT flex.current_party())
+        )
     )
 );

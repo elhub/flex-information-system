@@ -25,21 +25,6 @@ ALTER TABLE IF EXISTS
 flex.service_provider_product_suspension_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:service-provider-product-suspension-history-rls-com runAlways:true endDelimiter:--
--- RLS: SPPS-COM001
-GRANT SELECT ON flex.service_provider_product_suspension_history
-TO flex_common;
-
-CREATE POLICY "SPPS_COM001"
-ON flex.service_provider_product_suspension_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM service_provider_product_suspension
-    WHERE service_provider_product_suspension_history.id = service_provider_product_suspension.id -- noqa
-));
-
 -- changeset flex:service-provider-product-suspension-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_provider_product_suspension_audit_current

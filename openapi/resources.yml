@@ -1351,7 +1351,7 @@ resources:
     history:
       - list
       - read
-    history_rls: true
+    history_rls: false
     properties:
       id:
         description: Unique surrogate identifier.

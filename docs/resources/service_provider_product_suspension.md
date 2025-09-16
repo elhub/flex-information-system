@@ -46,7 +46,9 @@ No policies.
 
 #### Common
 
-No policies.
+| Policy key  | Policy                                   | Status |
+|-------------|------------------------------------------|--------|
+| SPPS-COM001 | Read history on SPPS that they can read. | DONE   |
 
 #### Balance Responsible Party
 
@@ -83,9 +85,10 @@ No policies.
 
 #### Service Provider
 
-| Policy key | Policy                    | Status |
-|------------|---------------------------|--------|
-| SPPS-SP001 | Read SPPS targeting them. | DONE   |
+| Policy key | Policy                               | Status |
+|------------|--------------------------------------|--------|
+| SPPS-SP001 | Read SPPS targeting them.            | DONE   |
+| SPPS-SP002 | Read history on SPPS targeting them. | DONE   |
 
 #### Third Party
 
