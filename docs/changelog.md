@@ -4,6 +4,22 @@ This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
 
+## 16.09.2025
+
+* **Renamed all `last_X` timestamp fields into `X_at`.**
+  This touches the following resources: controllable unit, service provider
+  product application, service providing group grid prequalification, and
+  service providing group product application.
+
+* **Added `inactive` status value for _Controllable Unit_ and _Service Providing Group_.**
+  In the case of controllable unit, this value replaces `suspended`.
+
+* **Added the _Service Provider Product Suspension_ resource.**
+
+## 29.08.2025
+
+* **Added `scopes` and `party_id` fields to the _Entity Client_ resource.**  
+
 ## 15.07.2025
 
 * **Introduced the _Entity Lookup_ operation.**  

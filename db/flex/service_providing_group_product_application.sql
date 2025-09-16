@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     notes text NULL CHECK (
         char_length(notes) <= 512
     ),
-    last_prequalified timestamp with time zone NULL,
-    last_verified timestamp with time zone NULL,
+    prequalified_at timestamp with time zone NULL,
+    verified_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -166,62 +166,6 @@ BEFORE INSERT ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_qualified_insert();
-
-
--- changeset flex:service-providing-group-product-application-status-prequalified-function runOnChange:true endDelimiter:--
--- trigger to first set the last prequalified timestamp if not done by the user
-CREATE OR REPLACE FUNCTION
-service_providing_group_product_application_status_prequalified()
-RETURNS trigger
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS
-$$
-BEGIN
-    NEW.last_prequalified := current_timestamp;
-    RETURN NEW;
-END;
-$$;
-
--- changeset flex:service-providing-group-product-application-status-prequalified-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER
-service_providing_group_product_application_status_prequalified
-BEFORE UPDATE OF status ON service_providing_group_product_application
-FOR EACH ROW
-WHEN (
-    OLD.status IS DISTINCT FROM NEW.status -- noqa
-    AND NEW.status = 'prequalified' -- noqa
-    AND OLD.last_prequalified IS NULL AND NEW.last_prequalified IS NULL -- noqa
-)
-EXECUTE FUNCTION
-service_providing_group_product_application_status_prequalified();
-
--- changeset flex:service-providing-group-product-application-status-verified-function runOnChange:true endDelimiter:--
--- trigger to first set the last verified timestamp if not done by the user
-CREATE OR REPLACE FUNCTION
-service_providing_group_product_application_status_verified()
-RETURNS trigger
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS
-$$
-BEGIN
-    NEW.last_verified := current_timestamp;
-    RETURN NEW;
-END;
-$$;
-
--- changeset flex:service-providing-group-product-application-status-verified-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER
-service_providing_group_product_application_status_verified
-BEFORE UPDATE OF status ON service_providing_group_product_application
-FOR EACH ROW
-WHEN (
-    OLD.status IS DISTINCT FROM NEW.status -- noqa
-    AND NEW.status = 'verified' -- noqa
-    AND OLD.last_verified IS NULL AND NEW.last_verified IS NULL -- noqa
-)
-EXECUTE FUNCTION service_providing_group_product_application_status_verified();
 
 -- changeset flex:service-providing-group-product-application-sp-status-update-function runOnChange:true endDelimiter:--
 -- trigger to check that a status update done by the SP is always a reset

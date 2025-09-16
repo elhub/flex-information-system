@@ -58,7 +58,7 @@ controllable_unit;accounting_point_id;;R;R;R;RC;R;R;RC;R;;;
 controllable_unit;grid_node_id;;R;R;R;RCU;R;RU;R;R;;;
 controllable_unit;grid_validation_status;;R;R;R;RCU;R;RU;R;R;;;
 controllable_unit;grid_validation_notes;;R;R;R;RCU;R;RU;R;R;;;
-controllable_unit;last_validated;;R;R;R;RCU;R;RU;R;R;;;
+controllable_unit;validated_at;;R;R;R;RCU;R;RU;R;R;;;
 controllable_unit;recorded_at;;R;R;R;R;R;R;R;R;;;
 controllable_unit;recorded_by;;R;R;R;R;R;R;R;R;;;
 controllable_unit_service_provider;;;;;;D;;;D;;;;R
@@ -92,7 +92,7 @@ service_providing_group_grid_prequalification;service_providing_group_id;;R;R;R;
 service_providing_group_grid_prequalification;impacted_system_operator_id;;R;R;R;RC;R;R;R;R;;;
 service_providing_group_grid_prequalification;status;;R;R;R;RU;R;RU;R;R;;;
 service_providing_group_grid_prequalification;notes;;R;R;R;R;R;RU;R;R;;;
-service_providing_group_grid_prequalification;last_prequalified;;R;R;R;RU;R;RU;R;R;;;
+service_providing_group_grid_prequalification;prequalified_at;;R;R;R;RU;R;RU;R;R;;;
 service_providing_group_grid_prequalification;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_prequalification;recorded_by;;R;R;R;R;R;R;R;R;;;
 technical_resource;;;;;;D;;;D;;;;R
@@ -153,7 +153,7 @@ service_provider_product_application;system_operator_id;;R;R;R;R;R;R;RC;R;;;
 service_provider_product_application;product_type_ids;;R;R;R;RU;R;R;RCU;R;;;
 service_provider_product_application;status;;R;R;R;RU;R;RU;R;R;;;
 service_provider_product_application;notes;;R;R;R;RU;R;RU;R;R;;;
-service_provider_product_application;last_qualified;;R;R;R;RU;R;RU;R;R;;;
+service_provider_product_application;qualified_at;;R;R;R;RU;R;RU;R;R;;;
 service_provider_product_application;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_provider_product_application;recorded_by;;R;R;R;R;R;R;R;R;;;
 service_provider_product_suspension;;;;;;D;;D;;;;;R
@@ -171,8 +171,8 @@ service_providing_group_product_application;procuring_system_operator_id;;R;R;R;
 service_providing_group_product_application;product_type_id;;R;R;R;R;R;R;RC;R;;;
 service_providing_group_product_application;status;;R;R;R;RU;R;RU;RU;R;;;
 service_providing_group_product_application;notes;;R;R;R;RU;R;RU;R;R;;;
-service_providing_group_product_application;last_prequalified;;R;R;R;RU;R;RU;R;R;;;
-service_providing_group_product_application;last_verified;;R;R;R;RU;R;RU;R;R;;;
+service_providing_group_product_application;prequalified_at;;R;R;R;RU;R;RU;R;R;;;
+service_providing_group_product_application;verified_at;;R;R;R;RU;R;RU;R;R;;;
 service_providing_group_product_application;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_providing_group_product_application;recorded_by;;R;R;R;R;R;R;R;R;;;
 service_provider_product_application_comment;;;;;;;;;;;;;R

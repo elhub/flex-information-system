@@ -89,7 +89,7 @@ export const ControllableUnitShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="grid_validation_status" />
             <TextField source="grid_validation_notes" />
-            <DateField source="last_validated" showTime />
+            <DateField source="validated_at" showTime />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>

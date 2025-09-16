@@ -77,8 +77,8 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="status" />
             <TextField source="notes" />
-            <DateField source="last_prequalified" showTime />
-            <DateField source="last_verified" showTime />
+            <DateField source="prequalified_at" showTime />
+            <DateField source="verified_at" showTime />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>

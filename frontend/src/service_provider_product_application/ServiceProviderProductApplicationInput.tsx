@@ -22,14 +22,14 @@ const filterRecord = ({
   product_type_ids,
   status,
   notes,
-  last_qualified,
+  qualified_at,
 }: any) => ({
   service_provider_id,
   system_operator_id,
   product_type_ids,
   status,
   notes,
-  last_qualified,
+  qualified_at,
 });
 
 // component restricting the selectable product types based on the
@@ -134,7 +134,7 @@ export const ServiceProviderProductApplicationInput = () => {
             minRows={3}
             sx={{ minWidth: { xs: 300, md: 500 } }}
           />
-          <DateTimeInput source="last_qualified" />
+          <DateTimeInput source="qualified_at" />
         </InputStack>
       </Stack>
     </SimpleForm>

@@ -6,9 +6,9 @@ CREATE OR REPLACE VIEW api.service_provider_product_application
 WITH (security_invoker = true) AS (
     SELECT
         id,
-        last_qualified,
         notes,
         product_type_ids,
+        qualified_at,
         service_provider_id,
         status,
         system_operator_id,
@@ -24,9 +24,9 @@ WITH (
     SELECT
         id,
         id AS service_provider_product_application_id,
-        last_qualified,
         notes,
         product_type_ids,
+        qualified_at,
         service_provider_id,
         status,
         system_operator_id,
@@ -39,9 +39,9 @@ WITH (
     SELECT
         history_id AS id,
         id AS service_provider_product_application_id,
-        last_qualified,
         notes,
         product_type_ids,
+        qualified_at,
         service_provider_id,
         status,
         system_operator_id,

@@ -116,9 +116,6 @@ databaseChangeLog:
       file: ./controllable_unit.sql
       relativeToChangelogFile: true
   - include:
-      file: ./controllable_unit_migrations.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./controllable_unit_service_provider.sql
       relativeToChangelogFile: true
   - include:
@@ -191,9 +188,20 @@ databaseChangeLog:
   - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true
-
   - include:
       file: ./entity_client_migrations.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_migrations.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_provider_product_application_migrations.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_grid_prequalification_migrations.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_product_application_migrations.sql
       relativeToChangelogFile: true
 
   # RLS, grants

@@ -35,7 +35,7 @@ export const ServiceProviderProductApplicationHistoryList = () => {
           <TextField source="name" />
         </ReferenceField>
         <TextField source="status" />
-        <DateField source="last_qualified" showTime />
+        <DateField source="qualified_at" showTime />
         <DateField source="recorded_at" showTime />
         <DateField source="replaced_at" showTime />
       </Datagrid>

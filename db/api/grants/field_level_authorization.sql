@@ -1097,7 +1097,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1121,7 +1121,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1145,7 +1145,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1165,7 +1165,7 @@ GRANT INSERT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated
+    validated_at
 ) ON TABLE api.controllable_unit
 TO flex_flexibility_information_system_operator;
 
@@ -1187,7 +1187,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1207,7 +1207,7 @@ GRANT UPDATE (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated
+    validated_at
 ) ON TABLE api.controllable_unit
 TO flex_flexibility_information_system_operator;
 
@@ -1229,7 +1229,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1253,7 +1253,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1264,7 +1264,7 @@ GRANT UPDATE (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated
+    validated_at
 ) ON TABLE api.controllable_unit
 TO flex_system_operator;
 
@@ -1300,7 +1300,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1338,7 +1338,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.controllable_unit
@@ -1367,7 +1367,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1394,7 +1394,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1421,7 +1421,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1448,7 +1448,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1475,7 +1475,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1502,7 +1502,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1529,7 +1529,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1556,7 +1556,7 @@ GRANT SELECT (
     grid_node_id,
     grid_validation_status,
     grid_validation_notes,
-    last_validated,
+    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2377,7 +2377,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2390,7 +2390,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2403,7 +2403,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2423,7 +2423,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2432,7 +2432,7 @@ TO flex_flexibility_information_system_operator;
 -- changeset flex:api-grant-service-providing-group-grid-prequalification-fiso-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
     status,
-    last_prequalified
+    prequalified_at
 ) ON TABLE api.service_providing_group_grid_prequalification
 TO flex_flexibility_information_system_operator;
 
@@ -2443,7 +2443,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2456,7 +2456,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2466,7 +2466,7 @@ TO flex_system_operator;
 GRANT UPDATE (
     status,
     notes,
-    last_prequalified
+    prequalified_at
 ) ON TABLE api.service_providing_group_grid_prequalification
 TO flex_system_operator;
 
@@ -2477,7 +2477,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2490,7 +2490,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_grid_prequalification
@@ -2508,7 +2508,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2524,7 +2524,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2540,7 +2540,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2556,7 +2556,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2572,7 +2572,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2588,7 +2588,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2604,7 +2604,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2620,7 +2620,7 @@ GRANT SELECT (
     impacted_system_operator_id,
     status,
     notes,
-    last_prequalified,
+    prequalified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3675,7 +3675,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3689,7 +3689,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3703,7 +3703,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3717,7 +3717,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3728,7 +3728,7 @@ GRANT UPDATE (
     product_type_ids,
     status,
     notes,
-    last_qualified
+    qualified_at
 ) ON TABLE api.service_provider_product_application
 TO flex_flexibility_information_system_operator;
 
@@ -3740,7 +3740,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3754,7 +3754,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3764,7 +3764,7 @@ TO flex_system_operator;
 GRANT UPDATE (
     status,
     notes,
-    last_qualified
+    qualified_at
 ) ON TABLE api.service_provider_product_application
 TO flex_system_operator;
 
@@ -3784,7 +3784,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3804,7 +3804,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_provider_product_application
@@ -3823,7 +3823,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3840,7 +3840,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3857,7 +3857,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3874,7 +3874,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3891,7 +3891,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3908,7 +3908,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3925,7 +3925,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -3942,7 +3942,7 @@ GRANT SELECT (
     product_type_ids,
     status,
     notes,
-    last_qualified,
+    qualified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4226,8 +4226,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4241,8 +4241,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4256,8 +4256,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4271,8 +4271,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4282,8 +4282,8 @@ TO flex_flexibility_information_system_operator;
 GRANT UPDATE (
     status,
     notes,
-    last_prequalified,
-    last_verified
+    prequalified_at,
+    verified_at
 ) ON TABLE api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
 
@@ -4295,8 +4295,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4310,8 +4310,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4321,8 +4321,8 @@ TO flex_system_operator;
 GRANT UPDATE (
     status,
     notes,
-    last_prequalified,
-    last_verified
+    prequalified_at,
+    verified_at
 ) ON TABLE api.service_providing_group_product_application
 TO flex_system_operator;
 
@@ -4342,8 +4342,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4363,8 +4363,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     recorded_by
 ) ON TABLE api.service_providing_group_product_application
@@ -4383,8 +4383,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4401,8 +4401,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4419,8 +4419,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4437,8 +4437,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4455,8 +4455,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4473,8 +4473,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4491,8 +4491,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4509,8 +4509,8 @@ GRANT SELECT (
     product_type_id,
     status,
     notes,
-    last_prequalified,
-    last_verified,
+    prequalified_at,
+    verified_at,
     recorded_at,
     replaced_at,
     recorded_by,

@@ -23,16 +23,16 @@ const filterRecord = ({
   product_type_id,
   status,
   notes,
-  last_prequalified,
-  last_verified,
+  prequalified_at,
+  verified_at,
 }: any) => ({
   service_providing_group_id,
   procuring_system_operator_id,
   product_type_id,
   status,
   notes,
-  last_prequalified,
-  last_verified,
+  prequalified_at,
+  verified_at,
 });
 
 // common layout to create and edit pages
@@ -86,8 +86,8 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             minRows={3}
             sx={{ minWidth: { xs: 300, md: 500 } }}
           />
-          <DateTimeInput source="last_prequalified" />
-          <DateTimeInput source="last_verified" />
+          <DateTimeInput source="prequalified_at" />
+          <DateTimeInput source="verified_at" />
         </InputStack>
       </Stack>
     </SimpleForm>

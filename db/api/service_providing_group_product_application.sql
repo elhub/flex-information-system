@@ -6,13 +6,13 @@ CREATE OR REPLACE VIEW api.service_providing_group_product_application
 WITH (security_invoker = true) AS (
     SELECT
         id,
-        last_prequalified,
-        last_verified,
         notes,
+        prequalified_at,
         procuring_system_operator_id,
         product_type_id,
         service_providing_group_id,
         status,
+        verified_at,
         recorded_by,
         lower(record_time_range) AS recorded_at
     FROM flex.service_providing_group_product_application
@@ -25,13 +25,13 @@ WITH (
     SELECT
         id,
         id AS service_providing_group_product_application_id,
-        last_prequalified,
-        last_verified,
         notes,
+        prequalified_at,
         procuring_system_operator_id,
         product_type_id,
         service_providing_group_id,
         status,
+        verified_at,
         recorded_by,
         lower(record_time_range) AS recorded_at,
         null AS replaced_by,
@@ -41,13 +41,13 @@ WITH (
     SELECT
         history_id AS id,
         id AS service_providing_group_product_application_id,
-        last_prequalified,
-        last_verified,
         notes,
+        prequalified_at,
         procuring_system_operator_id,
         product_type_id,
         service_providing_group_id,
         status,
+        verified_at,
         recorded_by,
         lower(record_time_range) AS recorded_at,
         replaced_by,

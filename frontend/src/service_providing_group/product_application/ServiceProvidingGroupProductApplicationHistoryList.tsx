@@ -59,8 +59,8 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
           sortable={false}
         />
         <TextField source="status" />
-        <DateField source="last_prequalified" showTime />
-        <DateField source="last_verified" showTime />
+        <DateField source="prequalified_at" showTime />
+        <DateField source="verified_at" showTime />
         <DateField source="recorded_at" showTime />
         <IdentityField source="recorded_by" />
         <DateField source="replaced_at" showTime />

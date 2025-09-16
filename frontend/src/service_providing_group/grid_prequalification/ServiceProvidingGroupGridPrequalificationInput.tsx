@@ -22,13 +22,13 @@ const filterRecord = ({
   impacted_system_operator_id,
   status,
   notes,
-  last_prequalified,
+  prequalified_at,
 }: any) => ({
   service_providing_group_id,
   impacted_system_operator_id,
   status,
   notes,
-  last_prequalified,
+  prequalified_at,
 });
 
 // common layout to create and edit pages
@@ -75,7 +75,7 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
             minRows={3}
             sx={{ minWidth: { xs: 300, md: 500 } }}
           />
-          <DateTimeInput source="last_prequalified" />
+          <DateTimeInput source="prequalified_at" />
         </InputStack>
       </Stack>
     </SimpleForm>

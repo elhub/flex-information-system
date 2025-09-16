@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:controllable-unit-create runOnChange:false endDelimiter:--
---validCheckSum: 9:054c5c4905551cea0bb2299fd88b8fdf
+--validCheckSum: 9:be85821939083383802960279ec168af
 CREATE TABLE IF NOT EXISTS controllable_unit (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id uuid UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()) CHECK (
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     grid_validation_notes text NULL CHECK (
         char_length(grid_validation_notes) <= 512
     ),
-    last_validated timestamp with time zone NULL,
+    validated_at timestamp with time zone NULL,
     -- created_by_party_id is used to track the party that created the controllable unit.
     -- We use this in RLS policies to support the CU registration process - the party that creates the CU should be able to see it,
     -- even though they do not have a contract on the CU (yet).
@@ -84,30 +84,6 @@ BEFORE UPDATE OF status ON controllable_unit
 FOR EACH ROW
 WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
 EXECUTE FUNCTION status.restrict_update('new');
-
--- changeset flex:controllable-unit-grid-validation-status-approved-function runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION controllable_unit_grid_validation_status_approved()
-RETURNS trigger
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS
-$$
-BEGIN
-    NEW.last_validated := current_timestamp;
-    RETURN NEW;
-END;
-$$;
-
--- changeset flex:controllable-unit-grid-validation-status-approved-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_approved
-BEFORE UPDATE OF grid_validation_status ON controllable_unit
-FOR EACH ROW
-WHEN (
-    OLD.grid_validation_status IS DISTINCT FROM NEW.grid_validation_status -- noqa
-    AND NEW.grid_validation_status = 'validated' -- noqa
-    AND OLD.last_validated IS NULL AND NEW.last_validated IS NULL -- noqa
-)
-EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();
 
 -- changeset flex:controllable-unit-grid-validation-status-reset-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION controllable_unit_grid_validation_status_reset()
