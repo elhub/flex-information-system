@@ -143,6 +143,10 @@ FROM service_provider_product_suspension_history AS sppsh
 WHERE sppsh.service_provider_product_suspension_id = @resource_id
     AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
         @> @recorded_at::timestamptz;
+-- using inclusive end record time here because SPPS is a deletable resource
+-- (in order to notify delete events, we need to catch the last version in the
+-- history, which ends right at the event timestamp, so its record time does
+-- NOT contain it, so we do not catch it if we filter with exclusive end)
 
 -- name: GetServiceProvidingGroupCreateNotificationRecipients :many
 SELECT service_provider_id
