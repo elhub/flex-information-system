@@ -913,6 +913,8 @@
       
         
       
+        
+      
     
     
     
@@ -1553,6 +1555,28 @@
   
   
     <li class="md-nav__item">
+      <a href="../service_provider_product_suspension/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Provider Product Suspension
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../service_providing_group/" class="md-nav__link">
         
   
@@ -2166,10 +2190,10 @@ technical resources, the grid validation status is reset to <code>pending</code>
 <code>pending</code> or in statuses <code>in_progress</code> or <code>validated</code>.</p>
 <p>If the service provider significantly updates data on a controllable unit that
 has already been <code>validated</code> by CSO, then the CSO has the option to re-validate.
-The <code>last_validated</code> field can be used in combination with history on the
+The <code>validated_at</code> field can be used in combination with history on the
 controllable unit to determine if a significant change has occurred. The CSO can
 then either reset the status before doing the validation or directly do the
-validation and just update the <code>last_validated</code> timestamp.</p>
+validation and just update the <code>validated_at</code> timestamp.</p>
 <p><a href="../../diagrams/controllable_unit_grid_validation_status.png">Full Size</a>
 |
 <a href="../../diagrams/controllable_unit_grid_validation_status.plantuml">Plantuml description</a>
@@ -2232,7 +2256,7 @@ can only be edited by a FIS operator.</p>
 <tr>
 <td><a name="field-status" href="#field-status">status</a></td>
 <td>The status of the controllable unit.</td>
-<td>text<br/>One of: <code>new</code>, <code>active</code>, <code>suspended</code>, <code>terminated</code><br/>Default: <code>new</code><br/><br/>Always <code>new</code> when created. Can then be updated to the other values. Once <code>terminated</code>, only editable by a FIS operator.</td>
+<td>text<br/>One of: <code>new</code>, <code>active</code>, <code>inactive</code>, <code>terminated</code><br/>Default: <code>new</code><br/><br/>Always <code>new</code> when created. Can then be updated to the other values. Once <code>terminated</code>, only editable by a FIS operator.</td>
 <td></td>
 </tr>
 <tr>
@@ -2302,7 +2326,7 @@ can only be edited by a FIS operator.</p>
 <td></td>
 </tr>
 <tr>
-<td><a name="field-last_validated" href="#field-last_validated">last_validated</a></td>
+<td><a name="field-validated_at" href="#field-validated_at">validated_at</a></td>
 <td>When the controllable unit was last validated.</td>
 <td>timestamp with time zone</td>
 <td></td>
@@ -2784,7 +2808,7 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td></td>
 </tr>
 <tr>
-<td>last_validated</td>
+<td>validated_at</td>
 <td></td>
 <td>R</td>
 <td>R</td>

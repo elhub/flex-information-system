@@ -12,13 +12,13 @@
       
       
       
-        <link rel="canonical" href="https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/">
+        <link rel="canonical" href="https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/">
       
       
-        <link rel="prev" href="../service_providing_group_grid_prequalification/">
+        <link rel="prev" href="../service_provider_product_application_comment/">
       
       
-        <link rel="next" href="../service_providing_group_product_application/">
+        <link rel="next" href="../service_providing_group/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Service Providing Group Membership - Flexibility Information System Documentation</title>
+        <title>Service Provider Product Suspension - Flexibility Information System Documentation</title>
       
     
     
@@ -70,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#service-providing-group-membership" class="md-skip">
+        <a href="#service-provider-product-suspension" class="md-skip">
           Skip to content
         </a>
       
@@ -124,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Service Providing Group Membership
+              Service Provider Product Suspension
             
           </span>
         </div>
@@ -1310,72 +1310,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../service_provider_product_suspension/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Service Provider Product Suspension
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../service_providing_group/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Service Providing Group
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../service_providing_group_grid_prequalification/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Service Providing Group Grid Prequalification
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -1392,7 +1326,7 @@
           
   
   <span class="md-ellipsis">
-    Service Providing Group Membership
+    Service Provider Product Suspension
     
   </span>
   
@@ -1404,7 +1338,7 @@
         
   
   <span class="md-ellipsis">
-    Service Providing Group Membership
+    Service Provider Product Suspension
     
   </span>
   
@@ -1604,6 +1538,72 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service_providing_group/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Providing Group
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service_providing_group_grid_prequalification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Providing Group Grid Prequalification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service_providing_group_membership/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Providing Group Membership
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -2111,14 +2111,13 @@
 
 
 
-<h1 id="service-providing-group-membership">Service Providing Group Membership</h1>
-<p>The relation that links a controllable unit to a service providing group.
-A service providing group can contain several controllable units, and a
-controllable unit can belong to several groups at the same time.</p>
+<h1 id="service-provider-product-suspension">Service Provider Product Suspension</h1>
+<p>The relation allowing a procuring system operator to temporarily suspend a
+service provider from delivering them products of the given types.</p>
 <h2 id="relevant-links">Relevant links</h2>
 <ul>
-<li><a href="../../api/v0/#/operations/list_service_providing_group_membership">API Documentation</a></li>
-<li><a href="../../download/service_providing_group_membership.docx">Download docx</a></li>
+<li><a href="../../api/v0/#/operations/list_service_provider_product_suspension">API Documentation</a></li>
+<li><a href="../../download/service_provider_product_suspension.docx">Download docx</a></li>
 </ul>
 <h2 id="fields">Fields</h2>
 <table>
@@ -2133,32 +2132,32 @@ controllable unit can belong to several groups at the same time.</p>
 <tbody>
 <tr>
 <td><a name="field-id" href="#field-id">id</a></td>
-<td>Unique surrogate key.</td>
+<td>Unique surrogate identifier.</td>
 <td>bigint<br/>Read only</td>
 <td></td>
 </tr>
 <tr>
-<td><a name="field-controllable_unit_id" href="#field-controllable_unit_id">controllable_unit_id</a></td>
-<td>Reference to the controllable unit this relation links to a service providing group.</td>
+<td><a name="field-procuring_system_operator_id" href="#field-procuring_system_operator_id">procuring_system_operator_id</a></td>
+<td>Reference to the procuring system operator suspending the service provider.</td>
+<td>bigint<br/>Non-updatable<br/><br/>Defaults to the system operator creating the resource.</td>
+<td><a href="../party/#field-id">party.id</a></td>
+</tr>
+<tr>
+<td><a name="field-service_provider_id" href="#field-service_provider_id">service_provider_id</a></td>
+<td>Reference to the service provider being suspended.</td>
 <td>bigint<br/>Required<br/>Non-updatable</td>
-<td><a href="../controllable_unit/#field-id">controllable_unit.id</a></td>
+<td><a href="../party/#field-id">party.id</a></td>
 </tr>
 <tr>
-<td><a name="field-service_providing_group_id" href="#field-service_providing_group_id">service_providing_group_id</a></td>
-<td>Reference to the service providing group this relation links to a controllable unit.</td>
-<td>bigint<br/>Required<br/>Non-updatable</td>
-<td><a href="../service_providing_group/#field-id">service_providing_group.id</a></td>
+<td><a name="field-product_type_ids" href="#field-product_type_ids">product_type_ids</a></td>
+<td>References to the suspended product types.</td>
+<td><br/>Required<br/>Array</td>
+<td><a href="../product_type/#field-id">product_type.id</a></td>
 </tr>
 <tr>
-<td><a name="field-valid_from" href="#field-valid_from">valid_from</a></td>
-<td>The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.</td>
-<td>timestamp with time zone<br/>Required</td>
-<td></td>
-</tr>
-<tr>
-<td><a name="field-valid_to" href="#field-valid_to">valid_to</a></td>
-<td>The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.</td>
-<td>timestamp with time zone</td>
+<td><a name="field-reason" href="#field-reason">reason</a></td>
+<td>The reason for the suspension.</td>
+<td>text<br/>One of: <code>communication_issues</code>, <code>failing_heartbeat</code>, <code>system_issues</code>, <code>clearing_issues</code>, <code>failed_verification</code>, <code>other</code><br/>Required</td>
 <td></td>
 </tr>
 <tr>
@@ -2176,7 +2175,22 @@ controllable unit can belong to several groups at the same time.</p>
 </tbody>
 </table>
 <h2 id="validation-rules">Validation Rules</h2>
-<p>No validation rules.</p>
+<table>
+<thead>
+<tr>
+<th>Validation rule key</th>
+<th>Validation rule</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SPPS-VAL001</td>
+<td>Suspended <code>product_type_ids</code> must be product types that the SO has qualified the SP for.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
 <h2 id="notifications">Notifications</h2>
 <table>
 <thead>
@@ -2189,8 +2203,13 @@ controllable unit can belong to several groups at the same time.</p>
 <tbody>
 <tr>
 <td>create, update, delete</td>
-<td>SP of SPG, Impacted SO on SPGGP</td>
-<td></td>
+<td>SP</td>
+<td>Suspended SP</td>
+</tr>
+<tr>
+<td>create, update, delete</td>
+<td>SO</td>
+<td>All PSOs procuring the same product type from the same SP</td>
 </tr>
 </tbody>
 </table>
@@ -2211,8 +2230,8 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPGM-COM001</td>
-<td>Read history on SPGM that they can read.</td>
+<td>SPPS-COM001</td>
+<td>Read history on SPPS that they can read.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2234,8 +2253,8 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPGM-FISO001</td>
-<td>Read, create, update and delete all SPG membership relations.</td>
+<td>SPPS-FISO001</td>
+<td>Create, read, update and delete all SPPS.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2255,8 +2274,13 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPGM-SO001</td>
-<td>Read SPGM belonging to SPGs they can read.</td>
+<td>SPPS-SO001</td>
+<td>Create, read, update and delete their own SPPS.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPPS-SO002</td>
+<td>Read SPPS targeted at any SP they have qualified for at least one of the product types.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2272,13 +2296,13 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPGM-SP001</td>
-<td>Create and update SPGM for SPGS that belongs to them, on periods where they are SP for the CU.</td>
+<td>SPPS-SP001</td>
+<td>Read SPPS targeting them.</td>
 <td>DONE</td>
 </tr>
 <tr>
-<td>SPGM-SP002</td>
-<td>Read, delete SPGM for SPGS that belongs to them.</td>
+<td>SPPS-SP002</td>
+<td>Read history on SPPS targeting them.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2318,54 +2342,54 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td></td>
 </tr>
 <tr>
-<td>controllable_unit_id</td>
+<td>procuring_system_operator_id</td>
 <td></td>
 <td>R</td>
 <td>R</td>
 <td>R</td>
 <td>RC</td>
 <td>R</td>
-<td>R</td>
 <td>RC</td>
+<td>R</td>
 <td>R</td>
 <td></td>
 </tr>
 <tr>
-<td>service_providing_group_id</td>
+<td>service_provider_id</td>
 <td></td>
 <td>R</td>
 <td>R</td>
 <td>R</td>
 <td>RC</td>
 <td>R</td>
-<td>R</td>
 <td>RC</td>
 <td>R</td>
-<td></td>
-</tr>
-<tr>
-<td>valid_from</td>
-<td></td>
-<td>R</td>
-<td>R</td>
-<td>R</td>
-<td>RCU</td>
-<td>R</td>
-<td>R</td>
-<td>RCU</td>
 <td>R</td>
 <td></td>
 </tr>
 <tr>
-<td>valid_to</td>
+<td>product_type_ids</td>
 <td></td>
 <td>R</td>
 <td>R</td>
 <td>R</td>
 <td>RCU</td>
 <td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>reason</td>
+<td></td>
+<td>R</td>
+<td>R</td>
 <td>R</td>
 <td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
 <td>R</td>
 <td></td>
 </tr>

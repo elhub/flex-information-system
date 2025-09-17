@@ -101,6 +101,10 @@
       "description": "Service Provider Product Application Comment"
     },
     {
+      "name": "service_provider_product_suspension",
+      "description": "Service Provider Product Suspension"
+    },
+    {
       "name": "service_providing_group_product_application",
       "description": "Service Providing Group Product Application"
     },
@@ -469,7 +473,7 @@
         "enum": [
           "new",
           "active",
-          "suspended",
+          "inactive",
           "terminated"
         ],
         "example": "active"
@@ -507,6 +511,7 @@
         "enum": [
           "new",
           "active",
+          "inactive",
           "terminated"
         ],
         "example": "active"
@@ -599,6 +604,20 @@
           "any_party"
         ],
         "example": "same_party"
+      },
+      "service_provider_product_suspension_reason": {
+        "description": "The reason for the suspension.",
+        "format": "text",
+        "type": "string",
+        "enum": [
+          "communication_issues",
+          "failing_heartbeat",
+          "system_issues",
+          "clearing_issues",
+          "failed_verification",
+          "other"
+        ],
+        "example": "communication_issues"
       },
       "service_providing_group_product_application_status": {
         "description": "The status of the application.",
@@ -702,7 +721,7 @@
             "nullable": true,
             "example": null
           },
-          "last_validated": {
+          "validated_at": {
             "description": "When the controllable unit was last validated.",
             "format": "timestamp with time zone",
             "type": "string",
@@ -1160,7 +1179,7 @@
             "nullable": true,
             "example": null
           },
-          "last_prequalified": {
+          "prequalified_at": {
             "description": "When the current grid prequalification was last approved.",
             "format": "timestamp with time zone",
             "type": "string",
@@ -2528,7 +2547,7 @@
             "nullable": true,
             "example": null
           },
-          "last_qualified": {
+          "qualified_at": {
             "description": "When the product application was last validated.",
             "format": "timestamp with time zone",
             "type": "string",
@@ -2740,6 +2759,116 @@
         ],
         "type": "object"
       },
+      "service_provider_product_suspension_update_request": {
+        "summary": "Update - Service Provider Product Suspension",
+        "description": "Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
+        "type": "object",
+        "properties": {
+          "product_type_ids": {
+            "description": "References to the suspended product types.",
+            "type": "array",
+            "items": {
+              "format": "bigint",
+              "type": "integer"
+            },
+            "example": [
+              1,
+              7
+            ]
+          },
+          "reason": {
+            "$ref": "#/components/schemas/service_provider_product_suspension_reason"
+          }
+        }
+      },
+      "service_provider_product_suspension_create_data": {
+        "summary": "Create data - Service Provider Product Suspension",
+        "description": "Data of the request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/service_provider_product_suspension_update_request"
+          },
+          {
+            "properties": {
+              "procuring_system_operator_id": {
+                "description": "Reference to the procuring system operator suspending the service provider.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 9
+              },
+              "service_provider_id": {
+                "description": "Reference to the service provider being suspended.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 52
+              }
+            }
+          }
+        ],
+        "type": "object"
+      },
+      "service_provider_product_suspension_create_request": {
+        "summary": "Create - Service Provider Product Suspension",
+        "description": "Request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/service_provider_product_suspension_create_data"
+          },
+          {
+            "required": [
+              "service_provider_id",
+              "product_type_ids",
+              "reason"
+            ]
+          }
+        ],
+        "type": "object"
+      },
+      "service_provider_product_suspension": {
+        "summary": "Data - Service Provider Product Suspension",
+        "description": "Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/service_provider_product_suspension_create_data"
+          },
+          {
+            "properties": {
+              "id": {
+                "description": "Unique surrogate identifier.",
+                "format": "bigint",
+                "type": "integer",
+                "readOnly": true,
+                "example": 74
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/audit_fields"
+          }
+        ],
+        "type": "object"
+      },
+      "service_provider_product_suspension_response": {
+        "summary": "Response - Service Provider Product Suspension",
+        "description": "Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/service_provider_product_suspension"
+          },
+          {
+            "required": [
+              "id",
+              "procuring_system_operator_id",
+              "service_provider_id",
+              "product_type_ids",
+              "reason",
+              "recorded_at",
+              "recorded_by"
+            ]
+          }
+        ],
+        "type": "object"
+      },
       "service_providing_group_product_application_update_request": {
         "summary": "Update - Service Providing Group Product Application",
         "description": "Request schema for update operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
@@ -2756,14 +2885,14 @@
             "nullable": true,
             "example": null
           },
-          "last_prequalified": {
+          "prequalified_at": {
             "description": "When the product application was last prequalified.",
             "format": "timestamp with time zone",
             "type": "string",
             "nullable": true,
             "example": "2022-08-08 12:00:00 CET"
           },
-          "last_verified": {
+          "verified_at": {
             "description": "When the product application was last verified.",
             "format": "timestamp with time zone",
             "type": "string",
@@ -3336,6 +3465,42 @@
             },
             "required": [
               "service_provider_product_application_comment_id"
+            ]
+          }
+        ]
+      },
+      "service_provider_product_suspension_history_response": {
+        "summary": "Service Provider Product Suspension - history",
+        "description": "Service Provider Product Suspension - history",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/service_provider_product_suspension_response"
+          },
+          {
+            "properties": {
+              "service_provider_product_suspension_id": {
+                "description": "Reference to the resource that was updated.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 48
+              },
+              "replaced_by": {
+                "description": "The identity that updated the resource when it was replaced.",
+                "format": "bigint",
+                "type": "integer",
+                "nullable": true,
+                "example": 90
+              },
+              "replaced_at": {
+                "description": "When the resource was replaced in the system.",
+                "format": "timestamp with time zone",
+                "type": "string",
+                "nullable": true,
+                "example": "2024-07-07 10:00:00 CET"
+              }
+            },
+            "required": [
+              "service_provider_product_suspension_id"
             ]
           }
         ]
@@ -4056,6 +4221,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/controllable_unit_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -4972,6 +5147,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/controllable_unit_service_provider_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -5952,6 +6137,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -6842,6 +7037,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_membership_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -7820,6 +8025,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -8693,6 +8908,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/entity_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -9251,6 +9476,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/entity_client_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -9888,6 +10123,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/party_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -10787,6 +11032,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/party_membership_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -12126,6 +12381,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/technical_resource_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -13287,6 +13552,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notification_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -14876,6 +15151,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/system_operator_product_type_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -15784,6 +16069,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_provider_product_application_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -16668,6 +16963,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_provider_product_application_comment_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"
@@ -17075,6 +17380,1021 @@
           {
             "bearerAuth": [
               "read:data:service_provider_product_application_comment_history"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/service_provider_product_suspension": {
+      "summary": "Service Provider Product Suspension",
+      "description": "",
+      "get": {
+        "operationId": "list_service_provider_product_suspension",
+        "summary": "List Service Provider Product Suspension",
+        "description": "",
+        "tags": [
+          "service_provider_product_suspension"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Unique surrogate identifier.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Reference to the procuring system operator suspending the service provider.",
+            "name": "procuring_system_operator_id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Reference to the service provider being suspended.",
+            "name": "service_provider_id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "References to the suspended product types.",
+            "name": "product_type_ids"
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "header",
+            "name": "Range",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "header",
+            "name": "Range-Unit",
+            "schema": {
+              "default": "items",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Preference",
+            "in": "header",
+            "name": "Prefer",
+            "schema": {
+              "enum": [
+                "count=none"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {},
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_provider_product_suspension"
+            ]
+          },
+          {}
+        ]
+      },
+      "post": {
+        "operationId": "create_service_provider_product_suspension",
+        "summary": "Create Service Provider Product Suspension",
+        "description": "",
+        "tags": [
+          "service_provider_product_suspension"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/service_provider_product_suspension_create_request"
+              }
+            }
+          },
+          "description": "service_provider_product_suspension",
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "manage:data:service_provider_product_suspension"
+            ]
+          }
+        ]
+      }
+    },
+    "/service_provider_product_suspension/{id}": {
+      "summary": "Service Provider Product Suspension - single",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14
+        }
+      ],
+      "get": {
+        "operationId": "read_service_provider_product_suspension",
+        "summary": "Read Service Provider Product Suspension",
+        "description": "",
+        "tags": [
+          "service_provider_product_suspension"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                }
+              }
+            },
+            "description": "OK",
+            "links": {
+              "procuring_system_operator_id": {
+                "operationId": "read_party",
+                "parameters": {
+                  "path.id": "$response.body#/procuring_system_operator_id"
+                },
+                "description": "The `procuring_system_operator_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
+              },
+              "service_provider_id": {
+                "operationId": "read_party",
+                "parameters": {
+                  "path.id": "$response.body#/service_provider_id"
+                },
+                "description": "The `service_provider_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
+              },
+              "product_type_ids": {
+                "operationId": "read_product_type",
+                "parameters": {
+                  "path.id": "$response.body#/product_type_ids"
+                },
+                "description": "The `product_type_ids` value returned in the response can be used as the `id` parameter in `GET /product_type/{id}`."
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_provider_product_suspension"
+            ]
+          },
+          {}
+        ]
+      },
+      "patch": {
+        "operationId": "update_service_provider_product_suspension",
+        "summary": "Update Service Provider Product Suspension",
+        "description": "",
+        "tags": [
+          "service_provider_product_suspension"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/service_provider_product_suspension_update_request"
+              }
+            }
+          },
+          "description": "service_provider_product_suspension",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "204": {
+            "content": {},
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "manage:data:service_provider_product_suspension"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "delete_service_provider_product_suspension",
+        "summary": "Delete Service Provider Product Suspension",
+        "description": "",
+        "tags": [
+          "service_provider_product_suspension"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/empty_object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "content": {},
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "manage:data:service_provider_product_suspension"
+            ]
+          }
+        ]
+      }
+    },
+    "/service_provider_product_suspension_history": {
+      "summary": "Service Provider Product Suspension - history",
+      "description": "",
+      "parameters": [
+        {
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "pattern": "^eq\\.[0-9]+$"
+          },
+          "example": "eq.55",
+          "description": "Identifier of the history record.",
+          "name": "id"
+        },
+        {
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "pattern": "^eq\\.[0-9]+$"
+          },
+          "example": "eq.55",
+          "description": "Identifier of the Service Provider Product Suspension whose history we want to inspect.",
+          "name": "service_provider_product_suspension_id"
+        }
+      ],
+      "get": {
+        "operationId": "list_service_provider_product_suspension_history",
+        "summary": "List Service Provider Product Suspension - history",
+        "description": "",
+        "tags": [
+          "service_provider_product_suspension"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Unique surrogate identifier.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Reference to the procuring system operator suspending the service provider.",
+            "name": "procuring_system_operator_id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Reference to the service provider being suspended.",
+            "name": "service_provider_id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "References to the suspended product types.",
+            "name": "product_type_ids"
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "header",
+            "name": "Range",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "header",
+            "name": "Range-Unit",
+            "schema": {
+              "default": "items",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Preference",
+            "in": "header",
+            "name": "Prefer",
+            "schema": {
+              "enum": [
+                "count=none"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/service_provider_product_suspension_history_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {},
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_provider_product_suspension_history"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/service_provider_product_suspension_history/{id}": {
+      "summary": "Service Provider Product Suspension - history record",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14,
+          "description": "Identifier of the history record we want to inspect."
+        }
+      ],
+      "get": {
+        "operationId": "read_service_provider_product_suspension_history",
+        "summary": "Read Service Provider Product Suspension - history",
+        "description": "",
+        "tags": [
+          "service_provider_product_suspension"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_provider_product_suspension_history_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_provider_product_suspension_history"
             ]
           },
           {}
@@ -17566,6 +18886,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
           "204": {
             "content": {},
             "description": "No Content"

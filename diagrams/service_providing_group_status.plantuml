@@ -10,12 +10,18 @@ digraph G {
 
     // status
     new;
-    active;
+    {
+        rank = same;
+        inactive;
+        active;
+    }
     terminated [shape=oval];
 
     // transitions
     start -> new [label="", color="pink"];
     new -> active [label="", color="blue"];
+    active -> inactive [label="", color="blue"];
+    inactive -> active [label="", color="blue"];
     active -> terminated [label="", color="blue"];
    }
 @enddot
