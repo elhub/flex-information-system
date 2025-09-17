@@ -289,12 +289,12 @@ func (q *Queries) GetServiceProviderProductApplicationNotificationRecipients(ctx
 }
 
 const getServiceProviderProductSuspensionNotificationRecipients = `-- name: GetServiceProviderProductSuspensionNotificationRecipients :many
-SELECT sppsh.service_provider_id::bigint
+SELECT DISTINCT sppsh.service_provider_id::bigint
 FROM service_provider_product_suspension_history AS sppsh
 WHERE sppsh.service_provider_product_suspension_id = $1
     AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]') @> $2::timestamptz
 UNION ALL
-SELECT sppah.system_operator_id::bigint
+SELECT DISTINCT sppah.system_operator_id::bigint
 FROM service_provider_product_suspension_history AS sppsh
     INNER JOIN service_provider_product_application_history AS sppah
         ON sppsh.service_provider_id = sppah.service_provider_id
