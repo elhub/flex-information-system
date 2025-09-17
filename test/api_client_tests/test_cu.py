@@ -143,7 +143,8 @@ def test_controllable_unit_fiso(sts):
     )
     assert not (isinstance(u, ErrorMessage))
 
-    # check validation time is set automatically when status is validated
+    # RLS: CU-VAL002
+    # check validation time is required when status is validated
     u = update_controllable_unit.sync(
         client=client_fiso,
         id=cast(int, cu.id),
@@ -151,10 +152,38 @@ def test_controllable_unit_fiso(sts):
             grid_validation_status=ControllableUnitGridValidationStatus.VALIDATED,
         ),
     )
-    assert not (isinstance(u, ErrorMessage))
-    cu = read_controllable_unit.sync(client=client_fiso, id=cast(int, cu.id))
-    assert isinstance(cu, ControllableUnitResponse)
-    assert cu.validated_at is not None
+    assert isinstance(u, ErrorMessage)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATED,
+            validated_at="2024-01-01T08:00:00",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # RLS: CU-VAL003
+    # validation failed requires timestamp reset
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
+            validated_at=None,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
 
 def test_controllable_unit_so(sts):

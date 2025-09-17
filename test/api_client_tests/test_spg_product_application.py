@@ -192,6 +192,7 @@ def data():
             id=cast(int, sppa.id),
             body=ServiceProviderProductApplicationUpdateRequest(
                 status=ServiceProviderProductApplicationStatus.QUALIFIED,
+                qualified_at="2024-01-01T00:00:00+1",
             ),
         )
         assert not isinstance(u, ErrorMessage)
@@ -312,6 +313,7 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
+            prequalified_at="2024-01-01T00:00:00+1",
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -323,6 +325,7 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
+            prequalified_at="2024-01-01T00:00:00+1",
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -351,7 +354,58 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             notes="test notes by FISO",
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION_PENDING,
+            prequalified_at=None,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # RLS: SPGPA-VAL003
+    # prequalified, verified, temporary qualified, but no timestamp: not ok
+    for s in [
+        ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
+        ServiceProvidingGroupProductApplicationStatus.VERIFIED,
+        ServiceProvidingGroupProductApplicationStatus.TEMPORARY_QUALIFIED,
+    ]:
+        u = update_service_providing_group_product_application.sync(
+            client=client_fiso,
+            id=cast(int, spgpa.id),
+            body=ServiceProvidingGroupProductApplicationUpdateRequest(status=s),
+        )
+        assert isinstance(u, ErrorMessage)
+
+    for s in [
+        ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
+        ServiceProvidingGroupProductApplicationStatus.VERIFIED,
+        ServiceProvidingGroupProductApplicationStatus.TEMPORARY_QUALIFIED,
+    ]:
+        u = update_service_providing_group_product_application.sync(
+            client=client_fiso,
+            id=cast(int, spgpa.id),
+            body=ServiceProvidingGroupProductApplicationUpdateRequest(
+                status=s,
+                prequalified_at="2024-01-01T00:00:00+1",
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
+
+    # RLS: SPGPA-VAL004
+    # rejected but timestamp: not ok
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.REJECTED,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.REJECTED,
+            prequalified_at=None,
         ),
     )
     assert not isinstance(u, ErrorMessage)

@@ -123,3 +123,13 @@ CREATE OR REPLACE TRIGGER controllable_unit_event
 AFTER INSERT OR UPDATE ON controllable_unit
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('controllable_unit');
+
+-- changeset flex:controllable-unit-check-timestamp-on-status-update runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER controllable_unit_check_timestamp_on_status_update
+BEFORE UPDATE ON controllable_unit
+FOR EACH ROW
+EXECUTE FUNCTION utils.check_timestamp_on_status_update(
+    'validated_at', 'grid_validation_status',
+    '{validated}',
+    '{validation_failed}'
+);

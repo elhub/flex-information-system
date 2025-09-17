@@ -135,7 +135,7 @@ def test_entity_lookup_fiso(sts):
     el = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id=random_number(11),
+            business_id="3" + random_number(10),
             name="TEST-ENTITY-LOOKUP",
             type=EntityLookupRequestType.PERSON,
         ),

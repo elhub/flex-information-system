@@ -148,3 +148,14 @@ CREATE OR REPLACE TRIGGER service_provider_product_application_event
 AFTER INSERT OR UPDATE ON service_provider_product_application
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_provider_product_application');
+
+-- changeset flex:service-provider-product-application-check-timestamp-on-status-update runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+service_provider_product_application_check_timestamp_on_status_update
+BEFORE UPDATE ON service_provider_product_application
+FOR EACH ROW
+EXECUTE FUNCTION utils.check_timestamp_on_status_update(
+    'qualified_at', 'status',
+    '{qualified}',
+    '{not_qualified}'
+);

@@ -248,6 +248,67 @@ def test_spggp_fiso(data):
     )
     assert isinstance(u, ErrorMessage)
 
+    # RLS: SPGGP-VAL001
+    # approved or conditionally approved but no timestamp: not ok
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        id=cast(int, spggp.id),
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.APPROVED,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        id=cast(int, spggp.id),
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.CONDITIONALLY_APPROVED,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        id=cast(int, spggp.id),
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.APPROVED,
+            prequalified_at="2024-01-01T08:00:00",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        id=cast(int, spggp.id),
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.CONDITIONALLY_APPROVED,
+            # timestamp was set right above
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # RLS: SPGGP-VAL002
+    # not approved but timestamp: not ok
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        id=cast(int, spggp.id),
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.NOT_APPROVED,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        id=cast(int, spggp.id),
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.NOT_APPROVED,
+            prequalified_at=None,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
 
 def test_spggp_sp(data):
     (sts, spg_id, _, so2_id, _) = data

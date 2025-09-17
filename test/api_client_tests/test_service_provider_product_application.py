@@ -145,11 +145,55 @@ def test_sppa_sp(sts):
     )
     assert not isinstance(u, ErrorMessage)
 
+    # qualify the SP with other SO (+ test timestamp requirements)
+
+    u = update_service_provider_product_application.sync(
+        client=client_other_so,
+        id=cast(int, sppa.id),
+        body=ServiceProviderProductApplicationUpdateRequest(
+            qualified_at="2024-01-01T00:00:00Z",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # RLS: SPPA-VAL003
+    # not qualified but keeping timestamp: not ok
+    u = update_service_provider_product_application.sync(
+        client=client_other_so,
+        id=cast(int, sppa.id),
+        body=ServiceProviderProductApplicationUpdateRequest(
+            status=ServiceProviderProductApplicationStatus.NOT_QUALIFIED,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_provider_product_application.sync(
+        client=client_other_so,
+        id=cast(int, sppa.id),
+        body=ServiceProviderProductApplicationUpdateRequest(
+            status=ServiceProviderProductApplicationStatus.NOT_QUALIFIED,
+            qualified_at=None,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # RLS: SPPA-VAL002
+    # qualified but no timestamp: not ok
     u = update_service_provider_product_application.sync(
         client=client_other_so,
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_provider_product_application.sync(
+        client=client_other_so,
+        id=cast(int, sppa.id),
+        body=ServiceProviderProductApplicationUpdateRequest(
+            status=ServiceProviderProductApplicationStatus.QUALIFIED,
+            qualified_at="2024-01-01T00:00:00Z",
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -215,6 +259,7 @@ def test_sppa_sp(sts):
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
+            qualified_at="2024-01-01T00:00:00Z",
         ),
     )
     assert not isinstance(u, ErrorMessage)
