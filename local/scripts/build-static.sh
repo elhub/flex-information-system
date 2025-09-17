@@ -8,7 +8,9 @@ mkdir -p dist
 
 # Print usage information
 function usage() {
-	echo "Usage: $0 [dev|prod|test|staging|local]"
+	echo "Usage: $0 <environment short name>"
+	echo "Environment short name can be one of: dev, local, prod, staging, test"
+	echo "If the environment name is not one of these, then the short name will be used as the long name."
 	exit 1
 }
 
@@ -29,7 +31,11 @@ env_map=(
 
 env_long_name() {
 	local env_short_name=$1
-	echo "${env_map[$env_short_name]}"
+	if [[ -n ${env_map[$env_short_name]:-} ]]; then
+		echo "${env_map[$env_short_name]}"
+	else
+		echo "$env_short_name"
+	fi
 }
 
 # build frontend
@@ -46,10 +52,6 @@ function frontend() {
 # script start
 env_short=$1
 if [ -z "$env_short" ]; then
-	usage
-fi
-if [[ -z ${env_map[$env_short]+unset} ]]; then
-	echo "Error: Invalid environment short name '$env_short_name'" >&2
 	usage
 fi
 
