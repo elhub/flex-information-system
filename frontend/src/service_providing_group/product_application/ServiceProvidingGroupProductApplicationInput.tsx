@@ -14,13 +14,13 @@ import {
   AutocompleteReferenceInput,
 } from "../../auth";
 import { DateTimeInput } from "../../components/datetime";
-import { ProductTypeInput } from "../../product_type/components";
+import { ProductTypeArrayInput } from "../../product_type/components";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
   service_providing_group_id,
   procuring_system_operator_id,
-  product_type_id,
+  product_type_ids,
   status,
   notes,
   prequalified_at,
@@ -28,7 +28,7 @@ const filterRecord = ({
 }: any) => ({
   service_providing_group_id,
   procuring_system_operator_id,
-  product_type_id,
+  product_type_ids,
   status,
   notes,
   prequalified_at,
@@ -61,7 +61,10 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             source="procuring_system_operator_id"
             filter={{ type: "system_operator" }}
           />
-          <ProductTypeInput source="product_type_id" validate={required()} />
+          <ProductTypeArrayInput
+            source="product_type_ids"
+            validate={required()}
+          />
         </InputStack>
         <Typography variant="h6" gutterBottom>
           Application process
