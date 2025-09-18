@@ -106,7 +106,7 @@ ALTER TABLE flex.service_providing_group_product_application_history
 DROP COLUMN product_type_id CASCADE;
 
 -- changeset flex:service-providing-group-product-application-product-type-insert-function runOnChange:true endDelimiter:--
--- trigger to check that the inserted product types are active for the SO
+-- trigger to check that the upserted product types are active for the SO
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_product_type_insert()
 RETURNS trigger
@@ -142,13 +142,13 @@ $$;
 -- SPGPA-VAL002
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_product_type_insert
-BEFORE INSERT ON service_providing_group_product_application
+BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_product_type_insert();
 
 -- changeset flex:service-providing-group-product-application-sp-qualified-insert-function runOnChange:true endDelimiter:--
--- trigger to check that the SP inserting the SPGPA was qualified by the SO
+-- trigger to check that the SP upserting the SPGPA was qualified by the SO
 -- for these product types
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_sp_qualified_insert()
@@ -195,7 +195,7 @@ $$;
 -- SPGPA-VAL003
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_sp_qualified_insert
-BEFORE INSERT ON service_providing_group_product_application
+BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_qualified_insert();
