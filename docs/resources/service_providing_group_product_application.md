@@ -35,7 +35,7 @@ again.
 | <a name="field-id" href="#field-id">id</a>                                                                               | Unique surrogate identifier.                                       | bigint<br/>Read only                                                                                                                                            |                                                                   |
 | <a name="field-service_providing_group_id" href="#field-service_providing_group_id">service_providing_group_id</a>       | Reference to the service providing group.                          | bigint<br/>Required<br/>Non-updatable                                                                                                                           | [service_providing_group.id](service_providing_group.md#field-id) |
 | <a name="field-procuring_system_operator_id" href="#field-procuring_system_operator_id">procuring_system_operator_id</a> | Reference to the procuring system operator.                        | bigint<br/>Required<br/>Non-updatable                                                                                                                           | [party.id](party.md#field-id)                                     |
-| <a name="field-product_type_id" href="#field-product_type_id">product_type_id</a>                                        | References to the product type.                                    | bigint<br/>Required<br/>Non-updatable                                                                                                                           | [product_type.id](product_type.md#field-id)                       |
+| <a name="field-product_type_ids" href="#field-product_type_ids">product_type_ids</a>                                     | References to the product types.                                   | <br/>Required<br/>Array of bigint                                                                                                                               | [product_type.id](product_type.md#field-id)                       |
 | <a name="field-status" href="#field-status">status</a>                                                                   | The status of the application.                                     | text<br/>One of: `requested`, `prequalification_pending`, `in_progress`, `temporary_qualified`, `prequalified`, `verified`, `rejected`<br/>Default: `requested` |                                                                   |
 | <a name="field-notes" href="#field-notes">notes</a>                                                                      | Free text notes on the current product application status.         | text<br/>Max length: `512`                                                                                                                                      |                                                                   |
 | <a name="field-prequalified_at" href="#field-prequalified_at">prequalified_at</a>                                        | When the product application was last prequalified.                | timestamp with time zone                                                                                                                                        |                                                                   |
@@ -45,10 +45,11 @@ again.
 
 ## Validation Rules
 
-| Validation rule key | Validation rule                                                                   | Status |
-|---------------------|-----------------------------------------------------------------------------------|--------|
-| SPGPA-VAL001        | Product applications can only be created on active SPGs.                          | DONE   |
-| SPGPA-VAL002        | Product applications can only be created on active system operator product types. | DONE   |
+| Validation rule key | Validation rule                                                                               | Status |
+|---------------------|-----------------------------------------------------------------------------------------------|--------|
+| SPGPA-VAL001        | Product applications can only be created on active SPGs.                                      | DONE   |
+| SPGPA-VAL002        | Product applications can only be created on active system operator product types.             | DONE   |
+| SPGPA-VAL003        | The SP opening the product application must be qualified for all the product types by the SO. | DONE   |
 
 ## Notifications
 
@@ -108,9 +109,10 @@ No policies.
 
 #### Service Provider
 
-| Policy key  | Policy                                                        | Status |
-|-------------|---------------------------------------------------------------|--------|
-| SPGPA-SP001 | Create, read and update SPGPA for SPG they are in charge for. | DONE   |
+| Policy key  | Policy                                                                       | Status |
+|-------------|------------------------------------------------------------------------------|--------|
+| SPGPA-SP001 | Create and read SPGPA for SPG they are in charge for.                        | DONE   |
+| SPGPA-SP002 | Update SPGPA for SPG they are in charge for, when the status is `requested`. | DONE   |
 
 #### Third Party
 
@@ -120,15 +122,15 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD                        | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|------------------------------|------|-----|----|----|------|----|----|----|----|-----|
-| id                           |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| service_providing_group_id   |      | R   | R  | R  | R    | R  | R  | RC | R  |     |
-| procuring_system_operator_id |      | R   | R  | R  | R    | R  | R  | RC | R  |     |
-| product_type_id              |      | R   | R  | R  | R    | R  | R  | RC | R  |     |
-| status                       |      | R   | R  | R  | RU   | R  | RU | RU | R  |     |
-| notes                        |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
-| prequalified_at              |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
-| verified_at                  |      | R   | R  | R  | RU   | R  | RU | R  | R  |     |
-| recorded_at                  |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| recorded_by                  |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| FIELD                        | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ORG |
+|------------------------------|------|-----|----|----|------|----|----|-----|----|-----|
+| id                           |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| service_providing_group_id   |      | R   | R  | R  | R    | R  | R  | RC  | R  |     |
+| procuring_system_operator_id |      | R   | R  | R  | R    | R  | R  | RC  | R  |     |
+| product_type_ids             |      | R   | R  | R  | RU   | R  | RU | RCU | R  |     |
+| status                       |      | R   | R  | R  | RU   | R  | RU | RU  | R  |     |
+| notes                        |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
+| prequalified_at              |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
+| verified_at                  |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
+| recorded_at                  |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| recorded_by                  |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
