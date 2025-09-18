@@ -2864,6 +2864,19 @@
                 "description": "Request schema for update operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
                 "type": "object",
                 "properties": {
+                    "product_type_ids": {
+                        "description": "References to the product types.",
+                        "type": "array",
+                        "items": {
+                            "format": "bigint",
+                            "type": "integer"
+                        },
+                        "example": [
+                            2,
+                            4,
+                            5
+                        ]
+                    },
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
@@ -2911,12 +2924,6 @@
                                 "format": "bigint",
                                 "type": "integer",
                                 "example": 39
-                            },
-                            "product_type_id": {
-                                "description": "References to the product type.",
-                                "format": "bigint",
-                                "type": "integer",
-                                "example": 2
                             }
                         }
                     }
@@ -2934,7 +2941,7 @@
                         "required": [
                             "service_providing_group_id",
                             "procuring_system_operator_id",
-                            "product_type_id",
+                            "product_type_ids",
                             "status"
                         ]
                     }
@@ -2977,7 +2984,7 @@
                             "id",
                             "service_providing_group_id",
                             "procuring_system_operator_id",
-                            "product_type_id",
+                            "product_type_ids",
                             "status",
                             "recorded_at",
                             "recorded_by"
@@ -18406,8 +18413,8 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "References to the product type.",
-                        "name": "product_type_id"
+                        "description": "References to the product types.",
+                        "name": "product_type_ids"
                     },
                     {
                         "description": "Filtering Columns",
@@ -18737,12 +18744,12 @@
                                 },
                                 "description": "The `procuring_system_operator_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
                             },
-                            "product_type_id": {
+                            "product_type_ids": {
                                 "operationId": "read_product_type",
                                 "parameters": {
-                                    "path.id": "$response.body#/product_type_id"
+                                    "path.id": "$response.body#/product_type_ids"
                                 },
-                                "description": "The `product_type_id` value returned in the response can be used as the `id` parameter in `GET /product_type/{id}`."
+                                "description": "The `product_type_ids` value returned in the response can be used as the `id` parameter in `GET /product_type/{id}`."
                             }
                         }
                     },
@@ -19003,8 +19010,8 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "References to the product type.",
-                        "name": "product_type_id"
+                        "description": "References to the product types.",
+                        "name": "product_type_ids"
                     },
                     {
                         "description": "Filtering Columns",

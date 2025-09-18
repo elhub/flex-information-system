@@ -79,7 +79,8 @@ for field, prop in properties.items():
         format += "<br/>Required"
 
     if prop.get("type") == "array":
-        format += "<br/>Array"
+        items_format = prop["items"].get("format")
+        format += "<br/>Array" + (f" of {items_format}" if items_format else "")
 
     if default:
         format += f"<br/>Default: `{prop['default']}`"

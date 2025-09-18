@@ -15,6 +15,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
     product type, for the SPG to deliver a product to the SO later.
 
         Attributes:
+            product_type_ids (Union[Unset, List[int]]): References to the product types. Example: [2, 4, 5].
             status (Union[Unset, ServiceProvidingGroupProductApplicationStatus]): The status of the application. Example:
                 in_progress.
             notes (Union[None, Unset, str]): Free text notes on the current product application status.
@@ -24,6 +25,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
                 10:00:00 CET.
     """
 
+    product_type_ids: Union[Unset, List[int]] = UNSET
     status: Union[Unset, ServiceProvidingGroupProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     prequalified_at: Union[None, Unset, str] = UNSET
@@ -31,6 +33,10 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        product_type_ids: Union[Unset, List[int]] = UNSET
+        if not isinstance(self.product_type_ids, Unset):
+            product_type_ids = self.product_type_ids
+
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -56,6 +62,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if product_type_ids is not UNSET:
+            field_dict["product_type_ids"] = product_type_ids
         if status is not UNSET:
             field_dict["status"] = status
         if notes is not UNSET:
@@ -70,6 +78,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        product_type_ids = cast(List[int], d.pop("product_type_ids", UNSET))
+
         _status = d.pop("status", UNSET)
         status: Union[Unset, ServiceProvidingGroupProductApplicationStatus]
         if isinstance(_status, Unset):
@@ -105,6 +115,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
         service_providing_group_product_application_update_request = cls(
+            product_type_ids=product_type_ids,
             status=status,
             notes=notes,
             prequalified_at=prequalified_at,
