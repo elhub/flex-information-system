@@ -348,7 +348,7 @@ def test_event_sp(sts):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=cast(int, spg.id),
             procuring_system_operator_id=so_id,
-            product_type_id=1,
+            product_type_ids=[1],
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

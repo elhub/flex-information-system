@@ -225,7 +225,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_ids[0],
+            product_type_ids=[pt_ids[0]],
         ),
     )
     assert isinstance(spgpa, ErrorMessage)
@@ -238,7 +238,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_ids[0],
+            product_type_ids=[pt_ids[0]],
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -263,7 +263,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=other_so_id,
-            product_type_id=pt_ids[1],
+            product_type_ids=[pt_ids[1]],
         ),
     )
     assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
@@ -274,7 +274,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[1],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_ids[1],
+            product_type_ids=[pt_ids[1]],
         ),
     )
     assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
