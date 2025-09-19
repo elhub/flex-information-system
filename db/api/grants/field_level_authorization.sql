@@ -4223,7 +4223,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4238,7 +4238,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4253,7 +4253,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4268,7 +4268,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4280,6 +4280,7 @@ TO flex_flexibility_information_system_operator;
 
 -- changeset flex:api-grant-service-providing-group-product-application-fiso-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4292,7 +4293,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4307,7 +4308,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4319,6 +4320,7 @@ TO flex_system_operator;
 
 -- changeset flex:api-grant-service-providing-group-product-application-so-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4330,7 +4332,7 @@ TO flex_system_operator;
 GRANT INSERT (
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id
+    product_type_ids
 ) ON TABLE api.service_providing_group_product_application
 TO flex_service_provider;
 
@@ -4339,7 +4341,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4351,6 +4353,7 @@ TO flex_service_provider;
 
 -- changeset flex:api-grant-service-providing-group-product-application-sp-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
+    product_type_ids,
     status
 ) ON TABLE api.service_providing_group_product_application
 TO flex_service_provider;
@@ -4360,7 +4363,7 @@ GRANT SELECT (
     id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4380,7 +4383,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4398,7 +4401,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4416,7 +4419,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4434,7 +4437,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4452,7 +4455,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4470,7 +4473,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4488,7 +4491,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,
@@ -4506,7 +4509,7 @@ GRANT SELECT (
     service_providing_group_product_application_id,
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id,
+    product_type_ids,
     status,
     notes,
     prequalified_at,

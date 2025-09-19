@@ -1446,15 +1446,16 @@ resources:
           resource: party
           field: id
         example: 39
-      product_type_id:
-        description: References to the product type.
-        format: bigint
-        type: integer
-        x-no-update: true
+      product_type_ids:
+        description: References to the product types.
+        type: array
+        items:
+          format: bigint
+          type: integer
         x-foreign-key:
           resource: product_type
           field: id
-        example: 2
+        example: [2, 4, 5]
       status:
         description: The status of the application.
         format: text

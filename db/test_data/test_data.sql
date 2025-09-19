@@ -964,11 +964,11 @@ BEGIN
   INSERT INTO flex.service_providing_group_product_application (
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_id
+    product_type_ids
   ) VALUES (
     spg_id,
     so_id,
-    1
+    array[pt_id]
   ) RETURNING id INTO spgpa_id;
 
   UPDATE flex.service_providing_group_product_application

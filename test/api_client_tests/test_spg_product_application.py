@@ -226,7 +226,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_ids[0],
+            product_type_ids=[pt_ids[0]],
         ),
     )
     assert isinstance(spgpa, ErrorMessage)
@@ -239,7 +239,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_ids[0],
+            product_type_ids=[pt_ids[0]],
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -264,7 +264,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=other_so_id,
-            product_type_id=pt_ids[1],
+            product_type_ids=[pt_ids[1]],
         ),
     )
     assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
@@ -275,7 +275,7 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationCreateRequest(
             service_providing_group_id=spg_ids[1],
             procuring_system_operator_id=so_id,
-            product_type_id=pt_ids[1],
+            product_type_ids=[pt_ids[1]],
         ),
     )
     assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
@@ -360,13 +360,13 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # RLS: SPGPA-VAL003
     # prequalified or verified, but no timestamp: not ok
     # cross-verification there:
     #   check on prequalified_at should be linked to prequalified status
     #   check on verified_at should be linked to verified status
     #   other combinations do not count
 
+    # RLS: SPGPA-VAL004
     u = update_service_providing_group_product_application.sync(
         client=client_fiso,
         id=cast(int, spgpa.id),
@@ -388,6 +388,7 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
+    # RLS: SPGPA-VAL005
     u = update_service_providing_group_product_application.sync(
         client=client_fiso,
         id=cast(int, spgpa.id),
@@ -408,7 +409,7 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # RLS: SPGPA-VAL004
+    # RLS: SPGPA-VAL006
     # rejected but timestamp: not ok
     u = update_service_providing_group_product_application.sync(
         client=client_fiso,

@@ -21,7 +21,7 @@ def _get_kwargs(
     id: Union[Unset, str] = UNSET,
     service_providing_group_id: Union[Unset, str] = UNSET,
     procuring_system_operator_id: Union[Unset, str] = UNSET,
-    product_type_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -48,7 +48,7 @@ def _get_kwargs(
 
     params["procuring_system_operator_id"] = procuring_system_operator_id
 
-    params["product_type_id"] = product_type_id
+    params["product_type_ids"] = product_type_ids
 
     params["select"] = select
 
@@ -160,7 +160,7 @@ def sync_detailed(
     id: Union[Unset, str] = UNSET,
     service_providing_group_id: Union[Unset, str] = UNSET,
     procuring_system_operator_id: Union[Unset, str] = UNSET,
-    product_type_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -179,7 +179,7 @@ def sync_detailed(
         id (Union[Unset, str]):
         service_providing_group_id (Union[Unset, str]):
         procuring_system_operator_id (Union[Unset, str]):
-        product_type_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -200,7 +200,7 @@ def sync_detailed(
         id=id,
         service_providing_group_id=service_providing_group_id,
         procuring_system_operator_id=procuring_system_operator_id,
-        product_type_id=product_type_id,
+        product_type_ids=product_type_ids,
         select=select,
         order=order,
         offset=offset,
@@ -223,7 +223,7 @@ def sync(
     id: Union[Unset, str] = UNSET,
     service_providing_group_id: Union[Unset, str] = UNSET,
     procuring_system_operator_id: Union[Unset, str] = UNSET,
-    product_type_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -242,7 +242,7 @@ def sync(
         id (Union[Unset, str]):
         service_providing_group_id (Union[Unset, str]):
         procuring_system_operator_id (Union[Unset, str]):
-        product_type_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -264,7 +264,7 @@ def sync(
         id=id,
         service_providing_group_id=service_providing_group_id,
         procuring_system_operator_id=procuring_system_operator_id,
-        product_type_id=product_type_id,
+        product_type_ids=product_type_ids,
         select=select,
         order=order,
         offset=offset,
@@ -281,7 +281,7 @@ async def asyncio_detailed(
     id: Union[Unset, str] = UNSET,
     service_providing_group_id: Union[Unset, str] = UNSET,
     procuring_system_operator_id: Union[Unset, str] = UNSET,
-    product_type_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -300,7 +300,7 @@ async def asyncio_detailed(
         id (Union[Unset, str]):
         service_providing_group_id (Union[Unset, str]):
         procuring_system_operator_id (Union[Unset, str]):
-        product_type_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -321,7 +321,7 @@ async def asyncio_detailed(
         id=id,
         service_providing_group_id=service_providing_group_id,
         procuring_system_operator_id=procuring_system_operator_id,
-        product_type_id=product_type_id,
+        product_type_ids=product_type_ids,
         select=select,
         order=order,
         offset=offset,
@@ -342,7 +342,7 @@ async def asyncio(
     id: Union[Unset, str] = UNSET,
     service_providing_group_id: Union[Unset, str] = UNSET,
     procuring_system_operator_id: Union[Unset, str] = UNSET,
-    product_type_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -361,7 +361,7 @@ async def asyncio(
         id (Union[Unset, str]):
         service_providing_group_id (Union[Unset, str]):
         procuring_system_operator_id (Union[Unset, str]):
-        product_type_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -384,7 +384,7 @@ async def asyncio(
             id=id,
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
-            product_type_id=product_type_id,
+            product_type_ids=product_type_ids,
             select=select,
             order=order,
             offset=offset,

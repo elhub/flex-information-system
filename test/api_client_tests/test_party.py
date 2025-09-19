@@ -136,7 +136,7 @@ def test_party_fiso(sts):
             name="New SP",
             # Using unix timestamp to get a unique value
             business_id=add_eic_check_char(
-                f"11X{str(int(time.time_ns()))[-12:]}",
+                f"11X7{str(int(time.time_ns()))[-11:]}",
             ),
             business_id_type=PartyBusinessIdType.EIC_X,
             role="flex_service_provider",

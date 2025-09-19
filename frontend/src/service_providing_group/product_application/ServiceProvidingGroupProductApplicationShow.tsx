@@ -17,6 +17,7 @@ import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
+import { ProductTypeArrayField } from "../../product_type/components";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -68,7 +69,10 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField reference="product_type" source="product_type_id" />
+            <ProductTypeArrayField
+              label="Product types"
+              source="product_type_ids"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>

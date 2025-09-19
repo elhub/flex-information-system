@@ -9,6 +9,7 @@ import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { ProductTypeArrayField } from "../../product_type/components";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const params = useParams();
@@ -53,9 +54,9 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField
-          reference="product_type"
-          source="product_type_id"
+        <ProductTypeArrayField
+          label="Product types"
+          source="product_type_ids"
           sortable={false}
         />
         <TextField source="status" />
