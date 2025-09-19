@@ -230,6 +230,6 @@ BEFORE UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION utils.check_timestamp_on_status_update(
     'verified_at', 'status',
-    '{verified, temporary_qualified}',
+    '{verified}',
     '{rejected}'
 );
