@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/lestrrat-go/httprc/v3"
+	"github.com/lestrrat-go/jwx/v3/jwa"
 	"github.com/lestrrat-go/jwx/v3/jwk"
 	"golang.org/x/oauth2"
 )
@@ -223,6 +224,22 @@ func (p *Provider) GetKeySet(ctx context.Context) (jwk.Set, error) {
 	set, err := p.jwksCache.Lookup(ctx, p.jwksURI)
 	if err != nil {
 		return nil, fmt.Errorf("could not lookup JWKS: %w", err)
+	}
+
+	// The lib we use for JWT verification requires that alg is set and matches
+	// the alg in the token. Some id providers do not set the alg. In those cases
+	// we set it to RS256 if the keytype is RSA.
+	// We assume and support only RS256 since it is what we see in the id providers
+	// at time of writing.
+	//
+	// See: https://github.com/lestrrat-go/jwx/issues/395#issuecomment-861061925
+	for i := range set.Len() {
+		key, _ := set.Key(i)
+		if _, ok := key.Algorithm(); !ok {
+			if key.KeyType() == jwa.RSA() {
+				key.Set(jwk.AlgorithmKey, jwa.RS256()) //nolint:errcheck
+			}
+		}
 	}
 
 	return set, nil

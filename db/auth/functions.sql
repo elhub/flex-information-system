@@ -42,6 +42,7 @@ AS $$
         flex.identity_external_id(e.id, null, null) as external_id
     FROM flex.entity e
     WHERE e.business_id = in_business_id
+    AND e.business_id_type = in_business_id_type
 $$;
 
 -- changeset flex:auth-entity-client-by-uuid runAlways:true endDelimiter:--

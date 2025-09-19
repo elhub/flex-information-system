@@ -14,7 +14,7 @@ In local dev we are using a OIDC compliant mock solution called
 [Authelia](https://www.authelia.com/), while in external test environments, we
 are using
 [Oracle Cloud Identity and Access Management (IAM)](https://docs.oracle.com/en-us/iaas/Content/Identity/getstarted/identity-domains.htm)
-(OCI IAM).
+(OCI IAM) and [Microsoft Azure Entra B2C](https://learn.microsoft.com/nb-no/entra/identity-platform/v2-protocols-oidc#fetch-the-openid-configuration-document).
 
 In this diagram with refer to these solutions as the _Identity Provider_ (IDp).
 
@@ -69,10 +69,11 @@ IDporten endpoints are:
 <!-- markdownlint-disable no-bare-urls -->
 * https://idp.flex.internal:9091/.well-known/openid-configuration
 * https://idporten.no/.well-known/openid-configuration
-* https://auth.bankid.no/auth/realms/prod/.well-known/openid-configuration
 * https://idcs-64b43b9cb198438ca17360d2c5bd4b9f.identity.oraclecloud.com/.well-known/openid-configuration
+* https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
 
-We include BankID in the list just for reference.
+The `common` part in the Entra url will be replaced by the tenant ID in a real
+setup.
 
 ### ID token format and claims
 
@@ -87,6 +88,14 @@ stored in other claims in the other two solutions:
 | Authelia | `preferred_username` | The username of the authenticated user. |
 | OCI IAM  | `sub`                | The subject of the authenticated user.  |
 | IDPorten | `pid`                | Custom claim                            |
+| Entra    | `preferred_username` | The email of the authenticated user.    |
+
+> [!NOTE]
+>
+> We really
+> [shouldn't use the `preferred_username` claim to identify the user](https://learn.microsoft.com/nb-no/entra/identity-platform/id-token-claims-reference#use-claims-to-reliably-identify-a-user).
+> We are doing it because it is simple, but we should move to using the
+> `sub`/`oid` claim.
 
 ### Logout endpoints
 
@@ -99,6 +108,7 @@ enough functionality to "make it work".
 | Authelia | `/logout`               | no                  | `rd`                       |
 | OCI IAM  | `/oauth2/v1/userlogout` | yes                 | `post_logout_redirect_uri` |
 | IDPorten | `/logout`               | yes                 | `post_logout_redirect_uri` |
+| Entra    | `/oauth2/v2.0/logout`   | yes                 | `post_logout_redirect_uri` |
 
 !!! note "IDPorten logout not fully implemented"
 

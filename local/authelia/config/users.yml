@@ -11,3 +11,8 @@ users:
     displayname: Test Suite
     email: test.suite@flex.test
     password: $argon2id$v=19$m=65536,t=3,p=4$gwGspsuAbuUOhDCsgbSpqw$ihRZwb6FTICgT/8LWhQFNgmNZK/q957xQEle6R1Wsog
+  'emil.post@example.com':
+    disabled: false
+    displayname: Emil Post
+    email: emil.post@example.com
+    password: $argon2id$v=19$m=65536,t=3,p=4$gwGspsuAbuUOhDCsgbSpqw$ihRZwb6FTICgT/8LWhQFNgmNZK/q957xQEle6R1Wsog
