@@ -290,6 +290,31 @@ type ServiceProviderProductSuspension struct {
 	RecordedAt                pgtype.Timestamptz
 }
 
+type ServiceProviderProductSuspensionComment struct {
+	ID                                 int
+	ServiceProviderProductSuspensionID int
+	CreatedBy                          int
+	CreatedAt                          pgtype.Timestamptz
+	Visibility                         string
+	Content                            string
+	RecordedBy                         int
+	RecordedAt                         pgtype.Timestamptz
+}
+
+type ServiceProviderProductSuspensionCommentHistory struct {
+	ServiceProviderProductSuspensionCommentID int
+	ID                                        int
+	ServiceProviderProductSuspensionID        int
+	CreatedBy                                 int
+	CreatedAt                                 pgtype.Timestamptz
+	Visibility                                string
+	Content                                   string
+	RecordedBy                                int
+	RecordedAt                                pgtype.Timestamptz
+	ReplacedBy                                *int
+	ReplacedAt                                pgtype.Timestamptz
+}
+
 type ServiceProviderProductSuspensionHistory struct {
 	ServiceProviderProductSuspensionID int
 	ID                                 int
