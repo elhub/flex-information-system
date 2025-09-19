@@ -518,7 +518,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		jwt.WithAudience(auth.oidcProvider.ClientID()),
 	)
 	if err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, fmt.Sprintf("invalid id_token: %v", idToken), err))
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "invalid id_token", err))
 		return
 	}
 
@@ -541,9 +541,9 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		return
 	}
 
-	pid := oidc.GetIdentifier(token)
+	id, idType := oidc.GetIdentifier(token)
 
-	slog.DebugContext(ctx, "callback", "token", idToken, "pid", pid)
+	slog.DebugContext(ctx, "callback", "token", idToken, "id", id)
 
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
@@ -552,12 +552,12 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 	defer tx.Commit(ctx)
 
-	entityID, eid, err := models.GetEntityOfBusinessID(ctx, tx, pid, "pid")
+	entityID, eid, err := models.GetEntityOfBusinessID(ctx, tx, id, idType)
 	if err != nil {
-		slog.DebugContext(ctx, "getting identity of person identifier failed", "token", idToken, "pid", pid, "error", err)
+		slog.DebugContext(ctx, "getting identity of person identifier failed", "token", idToken, "id", id, "idType", idType, "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 			Error:            oauthErrorInvalidClient,
-			ErrorDescription: "invalid person identifier",
+			ErrorDescription: "you are not a registered user",
 		})
 
 		return
