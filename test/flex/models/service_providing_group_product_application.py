@@ -15,6 +15,7 @@ class ServiceProvidingGroupProductApplication:
     deliver a product to the SO later.
 
         Attributes:
+            product_type_ids (Union[Unset, List[int]]): References to the product types. Example: [2, 4, 5].
             status (Union[Unset, ServiceProvidingGroupProductApplicationStatus]): The status of the application. Example:
                 in_progress.
             notes (Union[None, Unset, str]): Free text notes on the current product application status.
@@ -24,26 +25,29 @@ class ServiceProvidingGroupProductApplication:
                 10:00:00 CET.
             service_providing_group_id (Union[Unset, int]): Reference to the service providing group. Example: 18.
             procuring_system_operator_id (Union[Unset, int]): Reference to the procuring system operator. Example: 39.
-            product_type_id (Union[Unset, int]): References to the product type. Example: 2.
             recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31 23:59:00 CET.
             recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
             id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
     """
 
+    product_type_ids: Union[Unset, List[int]] = UNSET
     status: Union[Unset, ServiceProvidingGroupProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     prequalified_at: Union[None, Unset, str] = UNSET
     verified_at: Union[None, Unset, str] = UNSET
     service_providing_group_id: Union[Unset, int] = UNSET
     procuring_system_operator_id: Union[Unset, int] = UNSET
-    product_type_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        product_type_ids: Union[Unset, List[int]] = UNSET
+        if not isinstance(self.product_type_ids, Unset):
+            product_type_ids = self.product_type_ids
+
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -70,8 +74,6 @@ class ServiceProvidingGroupProductApplication:
 
         procuring_system_operator_id = self.procuring_system_operator_id
 
-        product_type_id = self.product_type_id
-
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
@@ -81,6 +83,8 @@ class ServiceProvidingGroupProductApplication:
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if product_type_ids is not UNSET:
+            field_dict["product_type_ids"] = product_type_ids
         if status is not UNSET:
             field_dict["status"] = status
         if notes is not UNSET:
@@ -93,8 +97,6 @@ class ServiceProvidingGroupProductApplication:
             field_dict["service_providing_group_id"] = service_providing_group_id
         if procuring_system_operator_id is not UNSET:
             field_dict["procuring_system_operator_id"] = procuring_system_operator_id
-        if product_type_id is not UNSET:
-            field_dict["product_type_id"] = product_type_id
         if recorded_at is not UNSET:
             field_dict["recorded_at"] = recorded_at
         if recorded_by is not UNSET:
@@ -107,6 +109,8 @@ class ServiceProvidingGroupProductApplication:
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
+        product_type_ids = cast(List[int], d.pop("product_type_ids", UNSET))
+
         _status = d.pop("status", UNSET)
         status: Union[Unset, ServiceProvidingGroupProductApplicationStatus]
         if isinstance(_status, Unset):
@@ -145,8 +149,6 @@ class ServiceProvidingGroupProductApplication:
 
         procuring_system_operator_id = d.pop("procuring_system_operator_id", UNSET)
 
-        product_type_id = d.pop("product_type_id", UNSET)
-
         recorded_at = d.pop("recorded_at", UNSET)
 
         recorded_by = d.pop("recorded_by", UNSET)
@@ -154,13 +156,13 @@ class ServiceProvidingGroupProductApplication:
         id = d.pop("id", UNSET)
 
         service_providing_group_product_application = cls(
+            product_type_ids=product_type_ids,
             status=status,
             notes=notes,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
-            product_type_id=product_type_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             id=id,

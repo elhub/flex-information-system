@@ -367,7 +367,7 @@ type ServiceProvidingGroupProductApplication struct {
 	ID                        int
 	ServiceProvidingGroupID   int
 	ProcuringSystemOperatorID int
-	ProductTypeID             int
+	ProductTypeIds            []int
 	Status                    string
 	Notes                     *string
 	PrequalifiedAt            pgtype.Timestamptz
@@ -381,7 +381,7 @@ type ServiceProvidingGroupProductApplicationHistory struct {
 	ID                                        int
 	ServiceProvidingGroupID                   int
 	ProcuringSystemOperatorID                 int
-	ProductTypeID                             int
+	ProductTypeIds                            []int
 	Status                                    string
 	Notes                                     *string
 	PrequalifiedAt                            pgtype.Timestamptz

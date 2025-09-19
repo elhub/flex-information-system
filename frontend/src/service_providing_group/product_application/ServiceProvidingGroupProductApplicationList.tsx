@@ -12,6 +12,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { ProductTypeArrayField } from "../../product_type/components";
 
 export const ServiceProvidingGroupProductApplicationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
@@ -83,9 +84,9 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField
-              reference="product_type"
-              source="product_type_id"
+            <ProductTypeArrayField
+              label="Product types"
+              source="product_type_ids"
               sortable={false}
             />
             <TextField source="status" />
