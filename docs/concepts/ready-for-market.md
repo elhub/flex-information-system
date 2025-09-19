@@ -103,15 +103,15 @@ We must check the service provider that owns the SPG.
 
 We must then check the SPG itself.
 
-| # | Process/check                              | Description                                            | Result                                                                             |
-|---|--------------------------------------------|--------------------------------------------------------|------------------------------------------------------------------------------------|
-| 1 | SPG status                                 | Check SPG status                                       | If SPG is deactivated, then not ready for market                                   |
-| 2 | SPG grid prequalification status           | Check SPG grid prequalification status                 | If SPG grid prequalification status is  `not_approved`, then not ready for market  |
-| 3 | SPG grid prequalification status timestamp | Check if grid prequalification timestamp is present    | If timestamp is missing, then not ready for market                                 |
-| 4 | SPG grid prequalification suspension       | Check if SPG grid prequalification is suspended        | If suspended, then not ready for market                                            |
-| 5 | SPG product application status             | Check SPG product application status                   | If SPG product application status is `rejected`, then not ready for market         |
-| 6 | SPG product application status timestamp   | Check if SPG product application timestamp is present  | If timestamp is missing, then not ready for market                                 |
-| 7 | SPG product application status supension   | Check if SPG product application is suspended          | If suspended, then not ready for market                                            |
+| # | Process/check                              | Description                                                   | Result                                                                                                                                |
+|---|--------------------------------------------|---------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| 1 | SPG status                                 | Check SPG status                                              | If SPG is deactivated, then not ready for market                                                                                      |
+| 2 | SPG grid prequalification status           | Check SPG grid prequalification status                        | If SPG grid prequalification status is  `not_approved`, then not ready for market                                                     |
+| 3 | SPG grid prequalification status timestamp | Check if grid prequalification timestamp is present           | If timestamp is missing, then not ready for market                                                                                    |
+| 4 | SPG grid prequalification suspension       | Check if SPG grid prequalification is suspended               | If suspended, then not ready for market                                                                                               |
+| 5 | SPG product application status             | Check SPG product application status                          | If SPG product application status is `rejected`, then not ready for market                                                            |
+| 6 | SPG product application status timestamps  | Check if one of SPG product application timestamps is present | If status is not `temporary_qualified` and both `prequalified_at` and `verified_at` timestamps are missing, then not ready for market |
+| 7 | SPG product application status supension   | Check if SPG product application is suspended                 | If suspended, then not ready for market                                                                                               |
 
 ### Controllable unit checklist
 
