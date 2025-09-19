@@ -180,6 +180,14 @@ func NewAPIHandler(
 	mux.Handle("GET /service_provider_product_suspension_history", dataListPostgRESTHandler)
 	mux.Handle("GET /service_provider_product_suspension_history/{id}", dataPostgRESTHandler)
 
+	mux.Handle("GET /service_provider_product_suspension_comment", dataListPostgRESTHandler)
+	mux.Handle("POST /service_provider_product_suspension_comment", dataPostgRESTHandler)
+	mux.Handle("GET /service_provider_product_suspension_comment/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_provider_product_suspension_comment/{id}", dataPostgRESTHandler)
+
+	mux.Handle("GET /service_provider_product_suspension_comment_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_provider_product_suspension_comment_history/{id}", dataPostgRESTHandler)
+
 	mux.Handle("GET /service_providing_group", dataListPostgRESTHandler)
 	mux.Handle("POST /service_providing_group", dataPostgRESTHandler)
 	mux.Handle("GET /service_providing_group/{id}", dataPostgRESTHandler)
