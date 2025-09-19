@@ -45,7 +45,7 @@ application is updated as the process and lifecycle of the application progresse
 |---------------------|------------------------------------------------------------------------------------------------------------------|--------|
 | SPPA-VAL001         | Inserted `product_type_ids` must be active product types asked by the SO.                                        | DONE   |
 | SPPA-VAL002         | If `status` is set to `qualified`, then `qualified_at` must already be specified in the resource or the request. | DONE   |
-| SPPA-VAL003         | If `status` is set to `not_qualified`, then `qualified_at` must be unspecified or removed in the request.        | DONE   |
+| SPPA-VAL003         | If `status` is set to `not_qualified`, then `qualified_at` must be unset in the resource or by the request.      | DONE   |
 
 ## Notifications
 

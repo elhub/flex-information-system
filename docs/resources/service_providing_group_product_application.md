@@ -50,7 +50,7 @@ again.
 | SPGPA-VAL001        | Product applications can only be created on active SPGs.                                                                                                     | DONE   |
 | SPGPA-VAL002        | Product applications can only be created on active system operator product types.                                                                            | DONE   |
 | SPGPA-VAL003        | If `status` is set to `prequalified`, `verified`, or `temporary_qualified`, then `prequalified_at` must already be specified in the resource or the request. | DONE   |
-| SPGPA-VAL004        | If `status` is set to `rejected`, then `prequalified_at` must be unspecified or removed in the request.                                                      | DONE   |
+| SPGPA-VAL004        | If `status` is set to `rejected`, then `prequalified_at` must be unset in the resource or by the request.                                                    | DONE   |
 
 ## Notifications
 
