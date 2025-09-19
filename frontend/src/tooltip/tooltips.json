@@ -163,6 +163,14 @@
         "product_type_ids": "References to the suspended product types.",
         "reason": "The reason for the suspension."
     },
+    "service_provider_product_suspension_comment": {
+        "id": "Unique surrogate identifier.",
+        "service_provider_product_suspension_id": "Reference to the service provider product suspension.",
+        "created_by": "Reference to the identity that created the comment.",
+        "created_at": "When the comment was added to the suspension.",
+        "visibility": "The level of visibility of the comment.",
+        "content": "Free text content of the comment."
+    },
     "service_providing_group_product_application": {
         "id": "Unique surrogate identifier.",
         "service_providing_group_id": "Reference to the service providing group.",

@@ -86,6 +86,10 @@ from .list_service_provider_product_application_comment_history_prefer import (
 from .list_service_provider_product_application_comment_prefer import ListServiceProviderProductApplicationCommentPrefer
 from .list_service_provider_product_application_history_prefer import ListServiceProviderProductApplicationHistoryPrefer
 from .list_service_provider_product_application_prefer import ListServiceProviderProductApplicationPrefer
+from .list_service_provider_product_suspension_comment_history_prefer import (
+    ListServiceProviderProductSuspensionCommentHistoryPrefer,
+)
+from .list_service_provider_product_suspension_comment_prefer import ListServiceProviderProductSuspensionCommentPrefer
 from .list_service_provider_product_suspension_history_prefer import ListServiceProviderProductSuspensionHistoryPrefer
 from .list_service_provider_product_suspension_prefer import ListServiceProviderProductSuspensionPrefer
 from .list_service_providing_group_grid_prequalification_history_prefer import (
@@ -156,6 +160,19 @@ from .service_provider_product_application_response import ServiceProviderProduc
 from .service_provider_product_application_status import ServiceProviderProductApplicationStatus
 from .service_provider_product_application_update_request import ServiceProviderProductApplicationUpdateRequest
 from .service_provider_product_suspension import ServiceProviderProductSuspension
+from .service_provider_product_suspension_comment import ServiceProviderProductSuspensionComment
+from .service_provider_product_suspension_comment_create_data import ServiceProviderProductSuspensionCommentCreateData
+from .service_provider_product_suspension_comment_create_request import (
+    ServiceProviderProductSuspensionCommentCreateRequest,
+)
+from .service_provider_product_suspension_comment_history_response import (
+    ServiceProviderProductSuspensionCommentHistoryResponse,
+)
+from .service_provider_product_suspension_comment_response import ServiceProviderProductSuspensionCommentResponse
+from .service_provider_product_suspension_comment_update_request import (
+    ServiceProviderProductSuspensionCommentUpdateRequest,
+)
+from .service_provider_product_suspension_comment_visibility import ServiceProviderProductSuspensionCommentVisibility
 from .service_provider_product_suspension_create_data import ServiceProviderProductSuspensionCreateData
 from .service_provider_product_suspension_create_request import ServiceProviderProductSuspensionCreateRequest
 from .service_provider_product_suspension_history_response import ServiceProviderProductSuspensionHistoryResponse
@@ -295,6 +312,8 @@ __all__ = (
     "ListServiceProviderProductApplicationCommentPrefer",
     "ListServiceProviderProductApplicationHistoryPrefer",
     "ListServiceProviderProductApplicationPrefer",
+    "ListServiceProviderProductSuspensionCommentHistoryPrefer",
+    "ListServiceProviderProductSuspensionCommentPrefer",
     "ListServiceProviderProductSuspensionHistoryPrefer",
     "ListServiceProviderProductSuspensionPrefer",
     "ListServiceProvidingGroupGridPrequalificationHistoryPrefer",
@@ -353,6 +372,13 @@ __all__ = (
     "ServiceProviderProductApplicationStatus",
     "ServiceProviderProductApplicationUpdateRequest",
     "ServiceProviderProductSuspension",
+    "ServiceProviderProductSuspensionComment",
+    "ServiceProviderProductSuspensionCommentCreateData",
+    "ServiceProviderProductSuspensionCommentCreateRequest",
+    "ServiceProviderProductSuspensionCommentHistoryResponse",
+    "ServiceProviderProductSuspensionCommentResponse",
+    "ServiceProviderProductSuspensionCommentUpdateRequest",
+    "ServiceProviderProductSuspensionCommentVisibility",
     "ServiceProviderProductSuspensionCreateData",
     "ServiceProviderProductSuspensionCreateRequest",
     "ServiceProviderProductSuspensionHistoryResponse",

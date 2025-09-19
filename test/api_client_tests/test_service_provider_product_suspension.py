@@ -153,13 +153,13 @@ def test_spps_fiso(data):
     assert len(sppss) > 0
 
     # endpoint: GET /service_provider_product_suspension/{id}
-    spps = read_service_provider_product_suspension.sync(
+    s = read_service_provider_product_suspension.sync(
         client=client_fiso,
         id=cast(int, sppss[0].id),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(s, ServiceProviderProductSuspensionResponse)
 
-    check_history(client_fiso, spps.id)
+    check_history(client_fiso, s.id)
 
     # endpoint: PATCH /service_provider_product_suspension/{id}
     u = update_service_provider_product_suspension.sync(

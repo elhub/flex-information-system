@@ -157,6 +157,9 @@ databaseChangeLog:
   - include:
       file: ./service_provider_product_suspension.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./service_provider_product_suspension_comment.sql
+      relativeToChangelogFile: true
 
   # Views
   - include:
