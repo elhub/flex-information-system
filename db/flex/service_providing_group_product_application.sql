@@ -123,3 +123,22 @@ CREATE OR REPLACE TRIGGER service_providing_group_product_application_event
 AFTER INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_providing_group_product_application');
+
+-- changeset flex:service-providing-group-product-application-check-timestamp-on-status-update runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER spgpa_check_timestamp_on_status_prequalified
+BEFORE UPDATE ON service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION utils.check_timestamp_on_status_update(
+    'prequalified_at', 'status',
+    '{prequalified}', -- SPGPA-VAL004
+    '{rejected}'      -- SPGPA-VAL006
+);
+
+CREATE OR REPLACE TRIGGER spgpa_check_timestamp_on_status_verified
+BEFORE UPDATE ON service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION utils.check_timestamp_on_status_update(
+    'verified_at', 'status',
+    '{verified}', -- SPGPA-VAL005
+    '{rejected}'  -- SPGPA-VAL006
+);

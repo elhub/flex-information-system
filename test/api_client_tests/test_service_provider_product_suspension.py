@@ -92,6 +92,7 @@ def data():
             id=cast(int, sppa.id),
             body=ServiceProviderProductApplicationUpdateRequest(
                 status=ServiceProviderProductApplicationStatus.QUALIFIED,
+                qualified_at="2024-01-01T00:00:00Z",
             ),
         )
         assert not isinstance(u, ErrorMessage)

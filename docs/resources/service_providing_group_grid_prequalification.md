@@ -33,7 +33,10 @@ group. One SPG grid prequalification per impacted system operator.
 
 ## Validation Rules
 
-No validation rules.
+| Validation rule key | Validation rule                                                                                                                                | Status |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| SPGGP-VAL001        | If `status` is set to `approved` or `conditionally_approved`, then `prequalified_at` must already be specified in the resource or the request. | DONE   |
+| SPGGP-VAL002        | If `status` is set to `not_approved`, then `prequalified_at` must be unset in the resource or by the request.                                  | DONE   |
 
 ## Notifications
 

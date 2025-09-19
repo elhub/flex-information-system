@@ -45,11 +45,14 @@ again.
 
 ## Validation Rules
 
-| Validation rule key | Validation rule                                                                               | Status |
-|---------------------|-----------------------------------------------------------------------------------------------|--------|
-| SPGPA-VAL001        | Product applications can only be created on active SPGs.                                      | DONE   |
-| SPGPA-VAL002        | Product applications can only be created on active system operator product types.             | DONE   |
-| SPGPA-VAL003        | The SP opening the product application must be qualified for all the product types by the SO. | DONE   |
+| Validation rule key | Validation rule                                                                                                                  | Status |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------|--------|
+| SPGPA-VAL001        | Product applications can only be created on active SPGs.                                                                         | DONE   |
+| SPGPA-VAL002        | Product applications can only be created on active system operator product types.                                                | DONE   |
+| SPGPA-VAL003        | The SP opening the product application must be qualified for all the product types by the SO.                                    | DONE   |
+| SPGPA-VAL004        | If `status` is set to `prequalified`, then `prequalified_at` must already be specified in the resource or the request.           | DONE   |
+| SPGPA-VAL005        | If `status` is set to `verified`, then `verified_at` must already be specified in the resource or the request.                   | DONE   |
+| SPGPA-VAL006        | If `status` is set to `rejected`, then both `prequalified_at` and `verified_at` must be unset in the resource or by the request. | DONE   |
 
 ## Notifications
 

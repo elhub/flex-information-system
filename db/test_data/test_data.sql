@@ -946,7 +946,7 @@ BEGIN
   ) RETURNING id INTO sppa_id;
 
   UPDATE flex.service_provider_product_application
-  SET status = 'qualified'
+  SET status = 'qualified', qualified_at = CURRENT_TIMESTAMP
   WHERE id = sppa_id;
 
   INSERT INTO flex.service_provider_product_application_comment (

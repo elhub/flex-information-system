@@ -282,6 +282,7 @@ def test_event_sp(sts):
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
+            qualified_at="2023-01-01T00:00:00+1",
         ),
     )
     assert not isinstance(u, ErrorMessage)

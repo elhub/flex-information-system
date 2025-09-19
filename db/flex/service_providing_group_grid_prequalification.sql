@@ -56,3 +56,14 @@ CREATE OR REPLACE TRIGGER service_providing_group_grid_prequalification_event
 AFTER INSERT OR UPDATE ON service_providing_group_grid_prequalification
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_providing_group_grid_prequalification');
+
+-- changeset flex:service-providing-group-grid-prequalification-check-timestamp-on-status-update runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+service_providing_group_grid_prequalification_check_timestamp_on_status_update
+BEFORE UPDATE ON service_providing_group_grid_prequalification
+FOR EACH ROW
+EXECUTE FUNCTION utils.check_timestamp_on_status_update(
+    'prequalified_at', 'status',
+    '{approved, conditionally_approved}',
+    '{not_approved}'
+);
