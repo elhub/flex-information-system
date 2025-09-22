@@ -14,27 +14,34 @@
 package oidc
 
 import (
+	"strings"
+
 	"github.com/lestrrat-go/jwx/v3/jwt/openid"
 )
 
-// GetIdentifier returns the identifier from the token.
+// GetIdentifier returns the identifier and type from the token.
+// Type is either "pid" (for person id) or "email".
 // This is just a convenience method since different OIDC providers have different claims for the identifier.
-func GetIdentifier(token openid.Token) string {
+func GetIdentifier(token openid.Token) (string, string) {
 	var id string
+	idType := "pid"
 	// iporten uses the pid claim
 	err := token.Get("pid", &id)
 	if err == nil {
-		return id
+		return id, idType
 	}
 
-	// authelia uses the preferred_username claim
+	// authelia and entra uses the preferred_username claim
 	id, ok := token.PreferredUsername()
-	if ok {
-		return id
+	if !ok {
+		// oidcs uses the sub claim
+		id, _ = token.Subject()
 	}
 
-	// oidcs uses the sub claim
-	id, _ = token.Subject()
+	if strings.Contains(id, "@") {
+		idType = "email"
+		id = strings.ToLower(id)
+	}
 
-	return id
+	return id, idType
 }
