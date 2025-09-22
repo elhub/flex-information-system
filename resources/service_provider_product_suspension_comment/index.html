@@ -12,13 +12,13 @@
       
       
       
-        <link rel="canonical" href="https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/">
+        <link rel="canonical" href="https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/">
       
       
-        <link rel="prev" href="../service_provider_product_application_comment/">
+        <link rel="prev" href="../service_provider_product_suspension/">
       
       
-        <link rel="next" href="../service_provider_product_suspension_comment/">
+        <link rel="next" href="../service_providing_group/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Service Provider Product Suspension - Flexibility Information System Documentation</title>
+        <title>Service Provider Product Suspension Comment - Flexibility Information System Documentation</title>
       
     
     
@@ -70,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#service-provider-product-suspension" class="md-skip">
+        <a href="#service-provider-product-suspension-comment" class="md-skip">
           Skip to content
         </a>
       
@@ -124,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Service Provider Product Suspension
+              Service Provider Product Suspension Comment
             
           </span>
         </div>
@@ -1358,6 +1358,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../service_provider_product_suspension/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Service Provider Product Suspension
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1375,7 +1398,7 @@
   
   
   <span class="md-ellipsis">
-    Service Provider Product Suspension
+    Service Provider Product Suspension Comment
     
   </span>
   
@@ -1388,7 +1411,7 @@
   
   
   <span class="md-ellipsis">
-    Service Provider Product Suspension
+    Service Provider Product Suspension Comment
     
   </span>
   
@@ -1588,29 +1611,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../service_provider_product_suspension_comment/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Service Provider Product Suspension Comment
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -2199,13 +2199,13 @@
 
 
 
-<h1 id="service-provider-product-suspension">Service Provider Product Suspension</h1>
-<p>The relation allowing a procuring system operator to temporarily suspend a
-service provider from delivering them products of the given types.</p>
+<h1 id="service-provider-product-suspension-comment">Service Provider Product Suspension Comment</h1>
+<p>Comment made by a party involved in a service provider product suspension.
+Several comments can be added to a given suspension.</p>
 <h2 id="relevant-links">Relevant links</h2>
 <ul>
-<li><a href="../../api/v0/#/operations/list_service_provider_product_suspension">API Documentation</a></li>
-<li><a href="../../download/service_provider_product_suspension.docx">Download docx</a></li>
+<li><a href="../../api/v0/#/operations/list_service_provider_product_suspension_comment">API Documentation</a></li>
+<li><a href="../../download/service_provider_product_suspension_comment.docx">Download docx</a></li>
 </ul>
 <h2 id="fields">Fields</h2>
 <table>
@@ -2225,27 +2225,33 @@ service provider from delivering them products of the given types.</p>
 <td></td>
 </tr>
 <tr>
-<td><a name="field-procuring_system_operator_id" href="#field-procuring_system_operator_id">procuring_system_operator_id</a></td>
-<td>Reference to the procuring system operator suspending the service provider.</td>
-<td>bigint<br/>Non-updatable<br/><br/>Defaults to the system operator creating the resource.</td>
-<td><a href="../party/#field-id">party.id</a></td>
-</tr>
-<tr>
-<td><a name="field-service_provider_id" href="#field-service_provider_id">service_provider_id</a></td>
-<td>Reference to the service provider being suspended.</td>
+<td><a name="field-service_provider_product_suspension_id" href="#field-service_provider_product_suspension_id">service_provider_product_suspension_id</a></td>
+<td>Reference to the service provider product suspension.</td>
 <td>bigint<br/>Required<br/>Non-updatable</td>
-<td><a href="../party/#field-id">party.id</a></td>
+<td><a href="../service_provider_product_suspension/#field-id">service_provider_product_suspension.id</a></td>
 </tr>
 <tr>
-<td><a name="field-product_type_ids" href="#field-product_type_ids">product_type_ids</a></td>
-<td>References to the suspended product types.</td>
-<td><br/>Required<br/>Array of bigint</td>
-<td><a href="../product_type/#field-id">product_type.id</a></td>
+<td><a name="field-created_by" href="#field-created_by">created_by</a></td>
+<td>Reference to the identity that created the comment.</td>
+<td>bigint<br/>Read only</td>
+<td></td>
 </tr>
 <tr>
-<td><a name="field-reason" href="#field-reason">reason</a></td>
-<td>The reason for the suspension.</td>
-<td>text<br/>One of: <code>communication_issues</code>, <code>failing_heartbeat</code>, <code>system_issues</code>, <code>clearing_issues</code>, <code>failed_verification</code>, <code>other</code><br/>Required</td>
+<td><a name="field-created_at" href="#field-created_at">created_at</a></td>
+<td>When the comment was added to the suspension.</td>
+<td>timestamp with time zone<br/>Read only</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-visibility" href="#field-visibility">visibility</a></td>
+<td>The level of visibility of the comment.</td>
+<td>text<br/>One of: <code>same_party</code>, <code>same_party_type</code>, <code>any_party</code><br/>Default: <code>same_party</code><br/><br/>Comments marked <code>same_party</code> are visible only to the party that creates them, whereas comments marked <code>same_party_type</code> can be seen by all parties of the same type, and comments marked <code>any_party</code> are visible to all parties that can see the application.</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-content" href="#field-content">content</a></td>
+<td>Free text content of the comment.</td>
+<td>text<br/>Required<br/>Max length: <code>2048</code><br/><br/>This field can contain rich text in raw HTML format. Its content should be sanitised on the client side before being displayed, as there is currently no check performed on the server.</td>
 <td></td>
 </tr>
 <tr>
@@ -2263,22 +2269,7 @@ service provider from delivering them products of the given types.</p>
 </tbody>
 </table>
 <h2 id="validation-rules">Validation Rules</h2>
-<table>
-<thead>
-<tr>
-<th>Validation rule key</th>
-<th>Validation rule</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SPPS-VAL001</td>
-<td>Suspended <code>product_type_ids</code> must be product types that the SO has qualified the SP for.</td>
-<td>DONE</td>
-</tr>
-</tbody>
-</table>
+<p>No validation rules.</p>
 <h2 id="notifications">Notifications</h2>
 <table>
 <thead>
@@ -2290,14 +2281,9 @@ service provider from delivering them products of the given types.</p>
 </thead>
 <tbody>
 <tr>
-<td>create, update, delete</td>
-<td>SP</td>
-<td>Suspended SP</td>
-</tr>
-<tr>
-<td>create, update, delete</td>
-<td>SO</td>
-<td>All PSOs procuring the same product type from the same SP</td>
+<td>create, update</td>
+<td>SO and SP of SPPS</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -2318,8 +2304,13 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPPS-COM001</td>
-<td>Read history on SPPS that they can read.</td>
+<td>SPPSC-COM001</td>
+<td>Read history on SPPSC that they can read.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPPSC-COM002</td>
+<td>Update SPPSC that they created.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2341,8 +2332,8 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPPS-FISO001</td>
-<td>Create, read, update and delete all SPPS.</td>
+<td>SPPSC-FISO001</td>
+<td>Read, create and update all SPPSC.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2362,13 +2353,13 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPPS-SO001</td>
-<td>Create, read, update and delete their own SPPS.</td>
+<td>SPPSC-SO001</td>
+<td>Create SPPSC on SPPS where they are PSO.</td>
 <td>DONE</td>
 </tr>
 <tr>
-<td>SPPS-SO002</td>
-<td>Read SPPS targeted at any SP they have qualified for at least one of the product types.</td>
+<td>SPPSC-SO002</td>
+<td>Read SPPSC that the visibility allows on SPPS where they are PSO.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2384,13 +2375,13 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>SPPS-SP001</td>
-<td>Read SPPS targeting them.</td>
+<td>SPPSC-SP001</td>
+<td>Create SPPSC on SPPS where they are SP.</td>
 <td>DONE</td>
 </tr>
 <tr>
-<td>SPPS-SP002</td>
-<td>Read history on SPPS targeting them.</td>
+<td>SPPSC-SP002</td>
+<td>Read SPPSC that the visibility allows on SPPS where they are SP.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2430,7 +2421,7 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td></td>
 </tr>
 <tr>
-<td>procuring_system_operator_id</td>
+<td>service_provider_product_suspension_id</td>
 <td></td>
 <td>R</td>
 <td>R</td>
@@ -2438,38 +2429,38 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>RC</td>
 <td>R</td>
 <td>RC</td>
+<td>RC</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>created_by</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
 <td>R</td>
 <td>R</td>
 <td></td>
 </tr>
 <tr>
-<td>service_provider_id</td>
+<td>created_at</td>
 <td></td>
 <td>R</td>
 <td>R</td>
 <td>R</td>
-<td>RC</td>
-<td>R</td>
-<td>RC</td>
-<td>R</td>
-<td>R</td>
-<td></td>
-</tr>
-<tr>
-<td>product_type_ids</td>
-<td></td>
 <td>R</td>
 <td>R</td>
 <td>R</td>
-<td>RCU</td>
-<td>R</td>
-<td>RCU</td>
 <td>R</td>
 <td>R</td>
 <td></td>
 </tr>
 <tr>
-<td>reason</td>
+<td>visibility</td>
 <td></td>
 <td>R</td>
 <td>R</td>
@@ -2477,7 +2468,20 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>RCU</td>
 <td>R</td>
 <td>RCU</td>
+<td>RCU</td>
 <td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>content</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>RCU</td>
 <td>R</td>
 <td></td>
 </tr>
