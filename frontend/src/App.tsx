@@ -136,6 +136,9 @@ import { ServiceProviderProductSuspensionList } from "./service_provider_product
 import { ServiceProviderProductSuspensionShow } from "./service_provider_product_suspension/ServiceProviderProductSuspensionShow";
 import { ServiceProviderProductSuspensionInput } from "./service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
+import { ServiceProviderProductSuspensionCommentShow } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentShow";
+import { ServiceProviderProductSuspensionCommentInput } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentInput";
+import { ServiceProviderProductSuspensionCommentHistoryList } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentHistoryList";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1207,6 +1210,58 @@ export const App = () => (
               element={
                 <ResourceContextProvider value="service_provider_product_suspension_history">
                   <ServiceProviderProductSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+            {/* service provider product suspension comments */}
+            {/* list is part of SPG show page */}
+            <Route
+              path=":service_provider_product_suspension_id/comment/:id/show"
+              element={
+                <ResourceContextProvider value="service_provider_product_suspension_comment">
+                  <ServiceProviderProductSuspensionCommentShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_provider_product_suspension_id/comment/create"
+              element={
+                <ResourceContextProvider value="service_provider_product_suspension_comment">
+                  <Create
+                    redirect={(_: any, _id: any, record: any) =>
+                      `service_provider_product_suspension/${record.service_provider_product_suspension_id}/show`
+                    }
+                  >
+                    <ServiceProviderProductSuspensionCommentInput />
+                  </Create>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_provider_product_suspension_id/comment/:id"
+              element={
+                <ResourceContextProvider value="service_provider_product_suspension_comment">
+                  <Edit
+                    mutationMode="pessimistic"
+                    redirect={(_: any, _id: any, record: any) =>
+                      `service_provider_product_suspension/${record.service_provider_product_suspension_id}/show`
+                    }
+                  >
+                    <ServiceProviderProductSuspensionCommentInput />
+                  </Edit>
+                </ResourceContextProvider>
+              }
+            />
+            {/* service provider product suspension comment history */}
+            <Route
+              path=":service_provider_product_suspension_id/comment_history"
+              element={<ServiceProviderProductSuspensionCommentHistoryList />}
+            />
+            <Route
+              path=":service_provider_product_suspension_id/comment_history/:id/show"
+              element={
+                <ResourceContextProvider value="service_provider_product_suspension_comment_history">
+                  <ServiceProviderProductSuspensionCommentShow />
                 </ResourceContextProvider>
               }
             />

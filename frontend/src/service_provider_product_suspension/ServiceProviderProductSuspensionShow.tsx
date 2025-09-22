@@ -7,11 +7,15 @@ import {
 } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
-import { ResourceHistoryButton } from "../components/history";
+import {
+  NestedResourceHistoryButton,
+  ResourceHistoryButton,
+} from "../components/history";
 import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
 import { ProductTypeArrayField } from "../product_type/components";
+import { ServiceProviderProductSuspensionCommentList } from "./comment/ServiceProviderProductSuspensionCommentList";
 
 export const ServiceProviderProductSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -55,6 +59,15 @@ export const ServiceProviderProductSuspensionShow = () => {
         </Stack>
         <ResourceHistoryButton />
         {!isHistory && <EventButton />}
+        {!isHistory && (
+          <>
+            <Typography variant="h6" gutterBottom>
+              Comments
+            </Typography>
+            <NestedResourceHistoryButton child="comment" label="comments" />
+            <ServiceProviderProductSuspensionCommentList />
+          </>
+        )}
       </SimpleShowLayout>
     </Show>
   );

@@ -32,3 +32,29 @@ CREATE OR REPLACE TRIGGER service_provider_product_suspension_comment_event
 AFTER INSERT OR UPDATE ON service_provider_product_suspension_comment
 FOR EACH ROW
 EXECUTE FUNCTION capture_event('service_provider_product_suspension_comment');
+
+-- changeset flex:service-provider-product-suspension-clear-comments-before-delete-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION
+service_provider_product_suspension_clear_comments_before_delete()
+RETURNS trigger
+-- DEFINER because the user deleting the SPPS did not necessarily have the right
+-- to delete all comments linked to the suspension while it was still active
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    DELETE FROM flex.service_provider_product_suspension_comment
+    WHERE service_provider_product_suspension_id = OLD.id;
+
+    RETURN OLD;
+END;
+$$;
+
+-- changeset flex:service-provider-product-suspension-clear-comments-before-delete-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+service_provider_product_suspension_clear_comments_before_delete
+BEFORE DELETE ON service_provider_product_suspension
+FOR EACH ROW
+EXECUTE FUNCTION
+service_provider_product_suspension_clear_comments_before_delete();
