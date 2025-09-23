@@ -196,9 +196,16 @@ def test_controllable_unit_so(sts):
     client_iso = sts.get_client(TestEntity.COMMON, "SO")
 
     # RLS: CU-SO001
-    # all test CUs on APs > 1000 are within one MGA belonging to Test SO,
+    # all test CUs on APs in 1000-2000 are within one MGA belonging to Test SO,
     # so the test SO should see them all
-    n_cus_so = len([cu for cu in all_cus if cast(int, cu.accounting_point_id) > 1000])
+    n_cus_so = len(
+        [
+            cu
+            for cu in all_cus
+            if cast(int, cu.accounting_point_id) > 1000
+            and cast(int, cu.accounting_point_id) < 2000
+        ]
+    )
 
     cus = list_controllable_unit.sync(client=client_so, limit="10000")
     assert isinstance(cus, list)
@@ -437,12 +444,26 @@ def test_controllable_unit_brp(sts):
 
     cus_former_brp = list_controllable_unit.sync(client=client_former_brp)
     assert isinstance(cus_former_brp, list)
+
+    # filtering on one test user
+    cus_former_brp = [
+        cu
+        for cu in cus_former_brp
+        if cast(int, cu.accounting_point_id) > 1000
+        and cast(int, cu.accounting_point_id) < 2000
+    ]
     assert len(cus_former_brp) == 3
+    cu_ids = {cast(int, cu.id) for cu in cus_former_brp}
 
     cuhs_former_brp = list_controllable_unit_history.sync(
         client=client_former_brp,
     )
     assert isinstance(cuhs_former_brp, list)
+    # filtering on one test user
+    cuhs_former_brp = [
+        cuh for cuh in cuhs_former_brp if cast(int, cuh.controllable_unit_id) in cu_ids
+    ]
+
     # they see the record designed for this test (COMMON-BRP-CUSP-2024) but as
     # they are BRP a bit longer before and after this test record, they can also
     # see the one before and the one after
