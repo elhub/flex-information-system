@@ -100,6 +100,7 @@ No policies.
 | Policy key | Policy                                                            | Status |
 |------------|-------------------------------------------------------------------|--------|
 | ENT-ORG001 | Read all entities belonging to parties owned by the organisation. | DONE   |
+| ENT-ORG002 | Read all entities with business id type `email`. | DONE   |
 
 #### System Operator
 

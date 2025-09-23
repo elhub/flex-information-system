@@ -8671,6 +8671,15 @@
                         "description": "The business identifier of the entity. Format depends on `business_id_type`."
                     },
                     {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type",
+                        "description": "The type of the business identifier."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -9877,6 +9886,14 @@
                         "description": "The business identifier of the party. Format depends on `business_id_type`."
                     },
                     {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -10457,6 +10474,14 @@
                         },
                         "example": "eq.somebusiness_id",
                         "description": "The business identifier of the party. Format depends on `business_id_type`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
                     },
                     {
                         "description": "Filtering Columns",

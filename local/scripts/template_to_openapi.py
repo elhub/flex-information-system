@@ -347,15 +347,19 @@ def generate_list_parameters(resource, foreign_key_fields):
         endpoint_parameters.append(parameter_template)
 
     # add some standard parameters if they exist
-    for prop in ["name", "business_id"]:
+    for prop in ["name", "business_id", "business_id_type"]:
         if resource["properties"].get(prop) is not None:
             parameter_template = {
                 "in": "query",
                 "name": prop,
                 "schema": {"type": "string"},
                 "example": f"eq.some{prop}",
-                "description": resource["properties"][prop]["description"],
             }
+            # add description if it exists
+            if resource["properties"][prop].get("description") is not None:
+                parameter_template["description"] = resource["properties"][prop][
+                    "description"
+                ]
             endpoint_parameters.append(parameter_template)
 
     endpoint_parameters += list_parameters_template

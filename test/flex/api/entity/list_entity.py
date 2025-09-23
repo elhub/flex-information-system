@@ -17,6 +17,7 @@ def _get_kwargs(
     id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
+    business_id_type: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -42,6 +43,8 @@ def _get_kwargs(
     params["name"] = name
 
     params["business_id"] = business_id
+
+    params["business_id_type"] = business_id_type
 
     params["select"] = select
 
@@ -145,6 +148,7 @@ def sync_detailed(
     id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
+    business_id_type: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -159,6 +163,7 @@ def sync_detailed(
         id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
+        business_id_type (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -179,6 +184,7 @@ def sync_detailed(
         id=id,
         name=name,
         business_id=business_id,
+        business_id_type=business_id_type,
         select=select,
         order=order,
         offset=offset,
@@ -201,6 +207,7 @@ def sync(
     id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
+    business_id_type: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -215,6 +222,7 @@ def sync(
         id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
+        business_id_type (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -236,6 +244,7 @@ def sync(
         id=id,
         name=name,
         business_id=business_id,
+        business_id_type=business_id_type,
         select=select,
         order=order,
         offset=offset,
@@ -252,6 +261,7 @@ async def asyncio_detailed(
     id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
+    business_id_type: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -266,6 +276,7 @@ async def asyncio_detailed(
         id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
+        business_id_type (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -286,6 +297,7 @@ async def asyncio_detailed(
         id=id,
         name=name,
         business_id=business_id,
+        business_id_type=business_id_type,
         select=select,
         order=order,
         offset=offset,
@@ -306,6 +318,7 @@ async def asyncio(
     id: Union[Unset, str] = UNSET,
     name: Union[Unset, str] = UNSET,
     business_id: Union[Unset, str] = UNSET,
+    business_id_type: Union[Unset, str] = UNSET,
     select: Union[Unset, str] = UNSET,
     order: Union[Unset, str] = UNSET,
     offset: Union[Unset, str] = UNSET,
@@ -320,6 +333,7 @@ async def asyncio(
         id (Union[Unset, str]):
         name (Union[Unset, str]):
         business_id (Union[Unset, str]):
+        business_id_type (Union[Unset, str]):
         select (Union[Unset, str]):
         order (Union[Unset, str]):
         offset (Union[Unset, str]):
@@ -342,6 +356,7 @@ async def asyncio(
             id=id,
             name=name,
             business_id=business_id,
+            business_id_type=business_id_type,
             select=select,
             order=order,
             offset=offset,
