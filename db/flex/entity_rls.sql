@@ -40,6 +40,7 @@ FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
+-- RLS: ENT-ORG001
 GRANT SELECT ON entity TO flex_organisation;
 CREATE POLICY "ENT_ORG001" ON entity
 FOR SELECT
@@ -55,4 +56,12 @@ USING (
                 WHERE cp.id = (SELECT flex.current_party())
             )
     )
+);
+
+-- RLS: ENT-ORG002
+CREATE POLICY "ENT_ORG002" ON entity
+FOR SELECT
+TO flex_organisation
+USING (
+    business_id_type = 'email'
 );

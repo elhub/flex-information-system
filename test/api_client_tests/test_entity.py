@@ -290,6 +290,12 @@ def test_entity_org(sts):
     )
     assert not isinstance(d, ErrorMessage)
 
+    # organisation should by default see the entity with email business id type
+    # TODO this is a temporary solution for pilot testing w/ email based entities
+    ent = list_entity.sync(client=client_org, business_id_type="eq.email")
+    assert isinstance(ent, list)
+    assert len(ent) >= 1
+
 
 def test_entity_com(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
