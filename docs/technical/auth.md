@@ -868,7 +868,7 @@ operations, _i.e._, the following ones:
 * `read:data` - required for instance to access readable parties
 * `use:data:entity:lookup` - to retrieve/create a technical identifier for the
   colleagues they want to add in the system
-* `manage:data:party_memberships` - to add/remove their colleagues from the
+* `manage:data:party_membership` - to add/remove their colleagues from the
   organisation's parties
 * `manage:data:entity_client` - to manage clients on the organisation and set up
   machine access for their colleagues
