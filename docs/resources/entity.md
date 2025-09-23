@@ -97,10 +97,10 @@ No policies.
 
 #### Organisation
 
-| Policy key | Policy                                                            | Status |
-|------------|-------------------------------------------------------------------|--------|
-| ENT-ORG001 | Read all entities belonging to parties owned by the organisation. | DONE   |
-| ENT-ORG002 | Read all entities with business id type `email`. | DONE   |
+| Policy key | Policy                                                                                                                                    | Status |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| ENT-ORG001 | Read all entities belonging to parties owned by the organisation.                                                                         | DONE   |
+| ENT-ORG002 | Read all entities with business id type `email`. Temporary policy for test environments with email based entities for professional users. | DONE   |
 
 #### System Operator
 
