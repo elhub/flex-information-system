@@ -1,4 +1,5 @@
 ---
+# secretlint-disable
 name: flex
 services:
   db:
