@@ -148,6 +148,21 @@ WHERE sppsh.service_provider_product_suspension_id = @resource_id
 -- history, which ends right at the event timestamp, so its record time does
 -- NOT contain it, so we do not catch it if we filter with exclusive end)
 
+-- name: GetServiceProviderProductSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(
+        ARRAY[sppsh.service_provider_id, sppsh.procuring_system_operator_id]
+    )::bigint
+FROM service_provider_product_suspension_comment_history AS sppsch
+    INNER JOIN service_provider_product_suspension_history AS sppsh
+        ON sppsch.service_provider_product_suspension_id
+            = sppsh.service_provider_product_suspension_id
+            AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
+                @> @recorded_at::timestamptz
+WHERE sppsch.service_provider_product_suspension_comment_id = @resource_id
+    AND tstzrange(sppsch.recorded_at, sppsch.replaced_at, '[]')
+        @> @recorded_at::timestamptz;
+
 -- name: GetServiceProvidingGroupCreateNotificationRecipients :many
 SELECT service_provider_id
 FROM service_providing_group spg

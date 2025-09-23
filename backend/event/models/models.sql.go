@@ -288,6 +288,47 @@ func (q *Queries) GetServiceProviderProductApplicationNotificationRecipients(ctx
 	return items, nil
 }
 
+const getServiceProviderProductSuspensionCommentNotificationRecipients = `-- name: GetServiceProviderProductSuspensionCommentNotificationRecipients :many
+
+SELECT DISTINCT
+    unnest(
+        ARRAY[sppsh.service_provider_id, sppsh.procuring_system_operator_id]
+    )::bigint
+FROM service_provider_product_suspension_comment_history AS sppsch
+    INNER JOIN service_provider_product_suspension_history AS sppsh
+        ON sppsch.service_provider_product_suspension_id
+            = sppsh.service_provider_product_suspension_id
+            AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
+                @> $1::timestamptz
+WHERE sppsch.service_provider_product_suspension_comment_id = $2
+    AND tstzrange(sppsch.recorded_at, sppsch.replaced_at, '[]')
+        @> $1::timestamptz
+`
+
+// using inclusive end record time here because SPPS is a deletable resource
+// (in order to notify delete events, we need to catch the last version in the
+// history, which ends right at the event timestamp, so its record time does
+// NOT contain it, so we do not catch it if we filter with exclusive end)
+func (q *Queries) GetServiceProviderProductSuspensionCommentNotificationRecipients(ctx context.Context, recordedAt pgtype.Timestamptz, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductSuspensionCommentNotificationRecipients, recordedAt, resourceID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProviderProductSuspensionNotificationRecipients = `-- name: GetServiceProviderProductSuspensionNotificationRecipients :many
 SELECT DISTINCT sppsh.service_provider_id::bigint
 FROM service_provider_product_suspension_history AS sppsh
@@ -327,16 +368,11 @@ func (q *Queries) GetServiceProviderProductSuspensionNotificationRecipients(ctx 
 }
 
 const getServiceProvidingGroupCreateNotificationRecipients = `-- name: GetServiceProvidingGroupCreateNotificationRecipients :many
-
 SELECT service_provider_id
 FROM service_providing_group spg
 WHERE spg.id = $1
 `
 
-// using inclusive end record time here because SPPS is a deletable resource
-// (in order to notify delete events, we need to catch the last version in the
-// history, which ends right at the event timestamp, so its record time does
-// NOT contain it, so we do not catch it if we filter with exclusive end)
 func (q *Queries) GetServiceProvidingGroupCreateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
 	rows, err := q.db.Query(ctx, getServiceProvidingGroupCreateNotificationRecipients, resourceID)
 	if err != nil {

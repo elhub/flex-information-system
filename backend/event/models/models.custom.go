@@ -7,7 +7,7 @@ import (
 )
 
 // GetNotificationRecipients returns a list of party IDs that should receive a notification for an event.
-func (q *Queries) GetNotificationRecipients( //nolint:cyclop
+func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 	ctx context.Context,
 	eventType string,
 	resourceID int,
@@ -44,6 +44,11 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop
 		"no.elhub.flex.service_provider_product_suspension.update",
 		"no.elhub.flex.service_provider_product_suspension.delete":
 		return q.GetServiceProviderProductSuspensionNotificationRecipients(ctx, resourceID, recordedAt)
+	case "no.elhub.flex.service_provider_product_suspension_comment.create",
+		"no.elhub.flex.service_provider_product_suspension_comment.update":
+		return q.GetServiceProviderProductSuspensionCommentNotificationRecipients(
+			ctx, recordedAt, resourceID,
+		)
 	case "no.elhub.flex.service_providing_group.create":
 		return q.GetServiceProvidingGroupCreateNotificationRecipients(ctx, resourceID)
 	case "no.elhub.flex.service_providing_group.update":
