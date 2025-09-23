@@ -20,26 +20,29 @@ def test_apes_fiso(sts):
     # check they can read all APES
 
     # endpoint: GET /accounting_point_energy_supplier
-    apess = list_accounting_point_energy_supplier.sync(
-        client=client_fiso,
-        offset="1950",
-    )
-    assert isinstance(apess, list)
-    assert len(apess) == 50  # 2000 APES in the test data
+    for offset in ["0", "1000", "3000"]:
+        apess = list_accounting_point_energy_supplier.sync(
+            client=client_fiso,
+            offset=offset,
+            limit="100",
+        )
+        assert isinstance(apess, list)
+        assert len(apess) == 100
 
 
 # RLS: APES-SO001
 def test_apes_so(sts):
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
-    # test data is created from one MGA belonging to Test SO
+    # test APs are in Test SO's MGA between 1000 and 2000
 
-    apess = list_accounting_point_energy_supplier.sync(
-        client=client_so,
-        offset="1950",
-    )
-    assert isinstance(apess, list)
-    assert len(apess) == 50  # 2000 APES in the test data
+    for ap_id in [1001, 1500, 1999]:
+        apes = list_accounting_point_energy_supplier.sync(
+            client=client_so,
+            accounting_point_id=f"eq.{ap_id}",
+        )
+        assert isinstance(apes, list)
+        assert len(apes) > 0
 
 
 def test_rla_absence(sts):

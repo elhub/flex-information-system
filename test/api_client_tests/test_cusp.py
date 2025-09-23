@@ -1,6 +1,7 @@
 from security_token_service import (
     SecurityTokenService,
     TestEntity,
+    AuthenticatedClient,
 )
 from flex.models import (
     ControllableUnitServiceProviderResponse,
@@ -34,7 +35,7 @@ from datetime import date, datetime, timedelta, time, timezone
 @pytest.fixture
 def data():
     sts = SecurityTokenService()
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
 
     # Create new controllable unit to play with
     cu = create_controllable_unit.sync(
@@ -339,7 +340,8 @@ def test_cusp_so(data):
 
     # SO can read the CUs where they are CSO
     # Test SO manages all CUs in the test data so all CUSPs should be visible
-    # (excepted the ones created during the test runs on APs < 1000)
+    # (excepted the ones created during the test runs on APs outside of the
+    #  1000-2000 range)
     cusps = list_controllable_unit_service_provider.sync(
         client=client_fiso,
         limit="10000",
@@ -351,7 +353,10 @@ def test_cusp_so(data):
         )
         assert isinstance(cu, ControllableUnitResponse)
 
-        if cast(int, cu.accounting_point_id) > 1000:
+        if (
+            cast(int, cu.accounting_point_id) > 1000
+            and cast(int, cu.accounting_point_id) < 2000
+        ):
             cusp = read_controllable_unit_service_provider.sync(
                 client=client_so, id=cast(int, cusp.id)
             )

@@ -26,27 +26,33 @@ def test_apbrp_fiso(sts):
 
     # check they can read all APBRP
 
+    # check a few random paginations and check we always get as many results as
+    # the limit we set
+
     # endpoint: GET /accounting_point_balance_responsible_party
-    apbrps = list_accounting_point_balance_responsible_party.sync(
-        client=client_fiso,
-        offset="2950",
-    )
-    assert isinstance(apbrps, list)
-    assert len(apbrps) == 50  # 3000 APBRP in the test data
+    for offset in ["0", "1000", "3000", "5000"]:
+        apbrps = list_accounting_point_balance_responsible_party.sync(
+            client=client_fiso,
+            offset=offset,
+            limit="100",
+        )
+        assert isinstance(apbrps, list)
+        assert len(apbrps) == 100
 
 
 # RLS: APBRP-SO001
 def test_apbrp_so(sts):
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
-    # test data in AP-BRP is created from one MGA belonging to Test SO
+    # test APs are in Test SO's MGA between 1000 and 2000
 
-    apbrps = list_accounting_point_balance_responsible_party.sync(
-        client=client_so,
-        offset="2950",
-    )
-    assert isinstance(apbrps, list)
-    assert len(apbrps) == 50  # 3000 APBRP in the test data
+    for ap_id in [1001, 1500, 1999]:
+        apbrp = list_accounting_point_balance_responsible_party.sync(
+            client=client_so,
+            accounting_point_id=f"eq.{ap_id}",
+        )
+        assert isinstance(apbrp, list)
+        assert len(apbrp) > 0
 
 
 # RLS: APBRP-SP001
