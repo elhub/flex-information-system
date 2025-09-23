@@ -54,11 +54,30 @@ def test_tr_brp(sts):
     # former AP BRP can see the old version of the TRs in the test data,
     # but not the current record
 
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
     client_former_brp = sts.get_client(TestEntity.COMMON, "BRP")
 
     # endpoint: GET /technical_resource
     trs_former_brp = list_technical_resource.sync(client=client_former_brp)
     assert isinstance(trs_former_brp, list)
+
+    # filtering for one user
+    def is_tr_on_ap_belonging_to_test_so(tr):
+        cu = read_controllable_unit.sync(
+            client=client_fiso,
+            id=cast(int, tr.controllable_unit_id),
+        )
+        assert isinstance(cu, ControllableUnitResponse)
+        return (
+            cast(int, cu.accounting_point_id) > 1000
+            and cast(int, cu.accounting_point_id) < 2000
+        )
+
+    trs_former_brp = [
+        tr for tr in trs_former_brp if is_tr_on_ap_belonging_to_test_so(tr)
+    ]
+
     # Common BRP sees the technical resources in their state at the end of their
     # period as BRP on the AP, i.e., 2024-09-10
     assert len(trs_former_brp) == 9
@@ -69,6 +88,10 @@ def test_tr_brp(sts):
         client=client_former_brp,
     )
     assert isinstance(trhs_former_brp, list)
+    # filtering for one user
+    trhs_former_brp = [
+        trh for trh in trhs_former_brp if is_tr_on_ap_belonging_to_test_so(trh)
+    ]
     # in the history, they see the same records, but also the 2 before for each
     # TR (in total 3x9)
     assert len(trhs_former_brp) == 27
