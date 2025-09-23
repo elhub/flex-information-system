@@ -1,4 +1,11 @@
-import { Avatar, Button, Card, CardActions } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardActions,
+  Typography,
+  Stack,
+} from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import { Form, useRedirect } from "react-admin";
 import { authURL, docsURL } from "./httpConfig";
@@ -14,68 +21,70 @@ export const LoginPage = () => {
   return (
     <Form onSubmit={startLogin} noValidate>
       <Box
-        sx={{
+        sx={(theme) => ({
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
           alignItems: "center",
           justifyContent: "flex-start",
-          background:
-            "linear-gradient(180deg, rgba(11,60,40,1) 30%, rgba(32,84,58,1) 60%, rgba(87,135,107,1) 80%, rgba(214,228,213,1) 100%)",
+          background: `linear-gradient(180deg, ${theme.palette.primary.main} 25%, ${theme.palette.common.white} 100%)`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-        }}
+        })}
       >
-        <Card sx={{ minWidth: 300, marginTop: "6em" }}>
-          <Box
-            sx={{
-              margin: "1em",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              alt="EuroFlex logo"
-              src="/euroflex_logo.png"
-              style={{ width: 150 }}
-            />
-          </Box>
-          <Box
-            sx={{
-              margin: "1em",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Avatar sx={{ bgcolor: "secondary.main" }}>
-              <LockIcon />
-            </Avatar>
-          </Box>
-          <Box
-            sx={{
-              margin: "2em",
-              display: "flex",
-              justifyContent: "center",
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            Sign in to the Flexibility Information System
-          </Box>
-          <CardActions sx={{ padding: "0 1em 1em 1em" }}>
-            <Button variant="contained" type="submit" color="primary" fullWidth>
-              Sign in
-            </Button>
-          </CardActions>
-          <Box
-            sx={{
-              margin: "1em",
-              display: "flex",
-              justifyContent: "center",
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <a href={`${docsURL}/privacy/`}>Privacy and cookies</a>
-          </Box>
+        <Card sx={{ maxWidth: 400, marginTop: "6em" }}>
+          <Stack spacing={2} sx={{ margin: "1em" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <img
+                alt="EuroFlex logo"
+                src="/euroflex_logo.png"
+                style={{ width: 150 }}
+              />
+              <Avatar
+                sx={{
+                  bgcolor: "secondary.main",
+                  marginTop: "1em",
+                  marginBottom: "0.5em",
+                }}
+              >
+                <LockIcon />
+              </Avatar>
+            </Box>
+            <Typography textAlign={"center"}>
+              Sign in to the Flexibility Information System
+            </Typography>
+            <Box textAlign={"center"} fontSize="0.8em" color="text.secondary">
+              This page stores strictly neccessary cookies in your browser when
+              you use it. Read about what we store in{" "}
+              <a href="https://elhub.github.io/flex-information-system/privacy/">
+                our documentation
+              </a>
+              .
+            </Box>
+            <CardActions sx={{ padding: "0 1em 1em 1em" }}>
+              <Button
+                variant="contained"
+                type="submit"
+                color="primary"
+                fullWidth
+              >
+                Sign in
+              </Button>
+            </CardActions>
+            <Typography
+              textAlign={"center"}
+              fontSize="0.8em"
+              color="text.secondary"
+            >
+              <a href={`${docsURL}/privacy/`}>Privacy and cookies</a>
+            </Typography>
+          </Stack>
         </Card>
       </Box>
     </Form>

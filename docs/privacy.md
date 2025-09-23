@@ -2,7 +2,7 @@
 
 This documentation and the flexibility pilot platform is developed by Elhub.
 Please read the general
-[Elhub privacy policy](https://elhub.no/personvern-og-sikkerhet/personvern-i-elhub/).
+[Elhub privacy policy](https://elhub.no/personvern-og-sikkerhet/elhubs-personvernerklaering).
 
 The service offered on this domain does use cookies and other storage mechanisms
 in your browser to store user preferences and session information. These are
