@@ -18,6 +18,7 @@ from flex.models import (
     ServiceProviderProductSuspensionCommentCreateRequest,
     ServiceProviderProductSuspensionCommentVisibility,
     ErrorMessage,
+    EmptyObject,
 )
 from flex.api.system_operator_product_type import (
     create_system_operator_product_type,
@@ -28,6 +29,7 @@ from flex.api.service_provider_product_application import (
 )
 from flex.api.service_provider_product_suspension import (
     create_service_provider_product_suspension,
+    delete_service_provider_product_suspension,
 )
 from flex.api.service_provider_product_suspension_comment import (
     list_service_provider_product_suspension_comment,
@@ -170,6 +172,21 @@ def test_sppsc_fiso(data):
         ),
     )
     assert not isinstance(u, ErrorMessage)
+
+    # ensure that deleting the suspension also deletes the comments
+    d = delete_service_provider_product_suspension.sync(
+        client=client_fiso,
+        id=spps_id,
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    comments = list_service_provider_product_suspension_comment.sync(
+        client=client_fiso,
+        service_provider_product_suspension_id=f"eq.{spps_id}",
+    )
+    assert isinstance(comments, list)
+    assert len(comments) == 0
 
 
 # RLS: SPPSC-SO002
