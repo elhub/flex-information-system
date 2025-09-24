@@ -55,6 +55,12 @@ const getSubResourceInformation = (resource: string) => {
         subResource: "comment",
         mainIDField: "service_provider_product_application_id",
       };
+    case "service_provider_product_suspension_comment":
+      return {
+        mainResource: "service_provider_product_suspension",
+        subResource: "comment",
+        mainIDField: "service_provider_product_suspension_id",
+      };
     default:
       return null;
   }
