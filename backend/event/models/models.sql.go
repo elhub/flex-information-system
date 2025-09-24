@@ -218,19 +218,22 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 }
 
 const getServiceProviderProductApplicationCommentNotificationRecipients = `-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
-SELECT unnest(array[sppa.service_provider_id, sppa.system_operator_id])::bigint
-FROM service_provider_product_application sppa
-JOIN service_provider_product_application_comment_history sppach
-ON sppa.id = sppach.service_provider_product_application_id
-WHERE sppach.service_provider_product_application_comment_id = $1
-AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[)') @> $2::timestamptz
-AND sppach.visibility = 'any_party'
+SELECT DISTINCT
+    unnest(ARRAY[sppah.service_provider_id, sppah.system_operator_id])::bigint
+FROM service_provider_product_application_comment_history AS sppach
+    INNER JOIN service_provider_product_application_history AS sppah
+        ON sppach.service_provider_product_application_id
+            = sppah.service_provider_product_application_id
+            AND tstzrange(sppah.recorded_at, sppah.replaced_at, '[]')
+                @> $1::timestamptz
+WHERE sppach.service_provider_product_application_comment_id = $2
+    AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]')
+        @> $1::timestamptz
+    AND sppach.visibility = 'any_party'
 `
 
-// not using SPPA history because SP and SO are stable
-// using SPPA comment history because the visibility can change over time
-func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
-	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, resourceID, recordedAt)
+func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, recordedAt pgtype.Timestamptz, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, recordedAt, resourceID)
 	if err != nil {
 		return nil, err
 	}
@@ -303,6 +306,7 @@ FROM service_provider_product_suspension_comment_history AS sppsch
 WHERE sppsch.service_provider_product_suspension_comment_id = $2
     AND tstzrange(sppsch.recorded_at, sppsch.replaced_at, '[]')
         @> $1::timestamptz
+    AND sppsch.visibility = 'any_party'
 `
 
 // using inclusive end record time here because SPPS is a deletable resource
@@ -368,11 +372,13 @@ func (q *Queries) GetServiceProviderProductSuspensionNotificationRecipients(ctx 
 }
 
 const getServiceProvidingGroupCreateNotificationRecipients = `-- name: GetServiceProvidingGroupCreateNotificationRecipients :many
+
 SELECT service_provider_id
 FROM service_providing_group spg
 WHERE spg.id = $1
 `
 
+// see query for SPPAC below for explanation about visibilities
 func (q *Queries) GetServiceProvidingGroupCreateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
 	rows, err := q.db.Query(ctx, getServiceProvidingGroupCreateNotificationRecipients, resourceID)
 	if err != nil {
