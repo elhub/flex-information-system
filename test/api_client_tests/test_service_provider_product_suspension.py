@@ -106,7 +106,7 @@ def data():
 # ---- ---- ---- ---- ----
 
 
-# RLS: SPPA-COM001
+# RLS: SPPS-COM001
 # function to check history (will be called in several tests)
 # harder to write a general function because of fresh clients
 def check_history(client, spps_id):
@@ -204,6 +204,15 @@ def test_spps_sp(data):
     )
     assert isinstance(spps, ServiceProviderProductSuspensionResponse)
 
+    check_history(client_sp, spps.id)
+
+    d = delete_service_provider_product_suspension.sync(
+        client=client_fiso, id=cast(int, spps.id), body=EmptyObject()
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    # RLS: SPPS-SP002
+    # they can still read history after deletion
     check_history(client_sp, spps.id)
 
 

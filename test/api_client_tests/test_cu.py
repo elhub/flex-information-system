@@ -559,6 +559,11 @@ def test_controllable_unit_sp(sts):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
+    # RLS: CU-SP005
+    # SP1 can read the CU they just created
+    r = read_controllable_unit.sync(client=client_sp1, id=cast(int, cu.id))
+    assert isinstance(r, ControllableUnitResponse)
+
     # RLS: CU-SP003
     # create CU-SP in the distant future
     cu_sp = create_controllable_unit_service_provider.sync(

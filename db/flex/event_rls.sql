@@ -80,6 +80,7 @@ USING (
         'service_provider_product_application',
         'service_provider_product_application_comment',
         'service_provider_product_suspension',
+        'service_provider_product_suspension_comment',
         'service_providing_group',
         'service_providing_group_membership',
         'service_providing_group_grid_prequalification',
@@ -251,5 +252,21 @@ USING (
             WHERE sppsh.id = event.source_id -- noqa
                 AND sppsh.service_provider_id = (SELECT flex.current_party())
         )
+    )
+);
+
+-- RLS: EVENT-SP012
+CREATE POLICY "EVENT_SP012" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'service_provider_product_suspension_comment'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_provider_product_suspension_comment AS sppsc
+            INNER JOIN flex.service_provider_product_suspension AS spps
+                ON sppsc.service_provider_product_suspension_id = spps.id
+        WHERE sppsc.id = event.source_id -- noqa
+            AND spps.service_provider_id = (SELECT flex.current_party())
     )
 );

@@ -33,7 +33,7 @@ func New() *Validate {
 
 // Check adds an error message to the list of error messages if the condition c is false.
 // Format and a are passed directly to fmt.Sprintf.
-func (v *Validate) Check(c bool, format string, a ...any) {
+func (v *Validate) Check(c bool, format string, a ...any) { //nolint:goprintffuncname
 	if !c {
 		v.errormsgs = append(v.errormsgs, fmt.Sprintf(format, a...))
 	}

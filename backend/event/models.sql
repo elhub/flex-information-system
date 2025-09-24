@@ -148,6 +148,25 @@ WHERE sppsh.service_provider_product_suspension_id = @resource_id
 -- history, which ends right at the event timestamp, so its record time does
 -- NOT contain it, so we do not catch it if we filter with exclusive end)
 
+-- name: GetServiceProviderProductSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(
+        ARRAY[sppsh.service_provider_id, sppsh.procuring_system_operator_id]
+    )::bigint
+-- using history because comments can be deleted
+FROM service_provider_product_suspension_comment_history AS sppsch
+    -- using history because suspensions can be deleted
+    INNER JOIN service_provider_product_suspension_history AS sppsh
+        ON sppsch.service_provider_product_suspension_id
+            = sppsh.service_provider_product_suspension_id
+            AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
+                @> @recorded_at::timestamptz
+WHERE sppsch.service_provider_product_suspension_comment_id = @resource_id
+    AND tstzrange(sppsch.recorded_at, sppsch.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND sppsch.visibility = 'any_party';
+-- see query for SPPAC below for explanation about visibilities
+
 -- name: GetServiceProvidingGroupCreateNotificationRecipients :many
 SELECT service_provider_id
 FROM service_providing_group spg
@@ -228,15 +247,17 @@ WHERE cu.id = (
 AND cu.status != 'new';
 
 -- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
-SELECT unnest(array[sppa.service_provider_id, sppa.system_operator_id])::bigint
--- not using SPPA history because SP and SO are stable
-FROM service_provider_product_application sppa
--- using SPPA comment history because the visibility can change over time
-JOIN service_provider_product_application_comment_history sppach
-ON sppa.id = sppach.service_provider_product_application_id
+SELECT DISTINCT
+    unnest(ARRAY[sppa.service_provider_id, sppa.system_operator_id])::bigint
+-- using SPPA comment history because visibility can change over time
+FROM service_provider_product_application_comment_history AS sppach
+    -- not using SPPA history because the resource cannot be deleted
+    INNER JOIN service_provider_product_application AS sppa
+        ON sppach.service_provider_product_application_id = sppa.id
 WHERE sppach.service_provider_product_application_comment_id = @resource_id
-AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[)') @> @recorded_at::timestamptz
-AND sppach.visibility = 'any_party';
+    AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND sppach.visibility = 'any_party';
 -- other visibilities mean no notification (empty notified parties list) :
 --   - 'same_party' leaves only the current party, removed from the list anyway
 --   - 'same_party_type' leaves only different party types :

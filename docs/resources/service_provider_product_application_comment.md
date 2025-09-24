@@ -27,9 +27,9 @@ No validation rules.
 
 ## Notifications
 
-| Action         | Recipient         | Comment |
-|----------------|-------------------|---------|
-| create, update | SO and SP of SPPA |         |
+| Action         | Recipient                                       | Comment |
+|----------------|-------------------------------------------------|---------|
+| create, update | SO and SP of SPPA when they can see the comment |         |
 
 ## Authorization
 

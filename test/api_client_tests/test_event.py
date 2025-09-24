@@ -23,6 +23,12 @@ from flex.models import (
     ServiceProviderProductApplicationCommentCreateRequest,
     ServiceProviderProductApplicationCommentVisibility,
     ServiceProviderProductApplicationCommentResponse,
+    ServiceProviderProductSuspensionCreateRequest,
+    ServiceProviderProductSuspensionReason,
+    ServiceProviderProductSuspensionResponse,
+    ServiceProviderProductSuspensionCommentCreateRequest,
+    ServiceProviderProductSuspensionCommentVisibility,
+    ServiceProviderProductSuspensionCommentResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
@@ -57,6 +63,12 @@ from flex.api.service_provider_product_application import (
 )
 from flex.api.service_provider_product_application_comment import (
     create_service_provider_product_application_comment,
+)
+from flex.api.service_provider_product_suspension import (
+    create_service_provider_product_suspension,
+)
+from flex.api.service_provider_product_suspension_comment import (
+    create_service_provider_product_suspension_comment,
 )
 from flex.api.service_providing_group import (
     create_service_providing_group,
@@ -163,36 +175,11 @@ def test_event_eu(sts):
     assert check(client_other_eu) == (0, 0, 0)
 
 
-# RLS: EVENT-FISO001
-# RLS: EVENT-SO001
-def test_event_fiso_so(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
-
-    def check(client):
-        events = list_event.sync(client=client, limit="10000")
-        assert isinstance(events, list)
-
-        # test some of the resources
-        for resource in (
-            "controllable_unit",
-            "technical_resource",
-            "service_provider_product_application_comment",
-            "service_providing_group_grid_prequalification",
-        ):
-            # only test one type of operation, as we don't filter by operation
-            # in the policies
-            assert any(e.type == f"no.elhub.flex.{resource}.create" for e in events)
-
-    check(client_fiso)
-    check(client_so)
-
-
 def test_event_sp(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
-    sp_id = sts.get_userinfo(sts.get_client(TestEntity.TEST, "SP"))["party_id"]
+    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     client_so = sts.fresh_client(TestEntity.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
@@ -307,6 +294,37 @@ def test_event_sp(sts):
     )
     assert isinstance(sppac_public, ServiceProviderProductApplicationCommentResponse)
 
+    spps = create_service_provider_product_suspension.sync(
+        client=client_fiso,
+        body=ServiceProviderProductSuspensionCreateRequest(
+            service_provider_id=sp_id,
+            procuring_system_operator_id=so_id,
+            product_type_ids=[1],
+            reason=ServiceProviderProductSuspensionReason.COMMUNICATION_ISSUES,
+        ),
+    )
+    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+
+    sppsc_hidden = create_service_provider_product_suspension_comment.sync(
+        client=client_fiso,
+        body=ServiceProviderProductSuspensionCommentCreateRequest(
+            service_provider_product_suspension_id=cast(int, spps.id),
+            content="Private comment",
+            visibility=ServiceProviderProductSuspensionCommentVisibility.SAME_PARTY,
+        ),
+    )
+    assert isinstance(sppsc_hidden, ServiceProviderProductSuspensionCommentResponse)
+
+    sppsc_public = create_service_provider_product_suspension_comment.sync(
+        client=client_fiso,
+        body=ServiceProviderProductSuspensionCommentCreateRequest(
+            service_provider_product_suspension_id=cast(int, spps.id),
+            content="Public comment",
+            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_PARTY,
+        ),
+    )
+    assert isinstance(sppsc_public, ServiceProviderProductSuspensionCommentResponse)
+
     spg = create_service_providing_group.sync(
         client=client_fiso,
         body=ServiceProvidingGroupCreateRequest(
@@ -362,7 +380,7 @@ def test_event_sp(sts):
     e = read_event.sync(client=client_sp, id=cast(int, events[0].id))
     assert isinstance(e, EventResponse)
 
-    client_other_sp = sts.get_client(TestEntity.COMMON, "SP")
+    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
     events_other = list_event.sync(client=client_other_sp, limit="10000")
     assert isinstance(events_other, list)
 
@@ -457,6 +475,41 @@ def test_event_sp(sts):
         and e.source == f"/service_providing_group_product_application/{spgpa.id}"
     )
 
+    # RLS: EVENT-SP010
+    # SP can see SOPT events
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.system_operator_product_type.create"
+        and e.source == f"/system_operator_product_type/{sopt.id}"
+    )
+
+    # RLS: EVENT-SP011
+    # SP can see SPPS events when they are SP
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension.create"
+        and e.source == f"/service_provider_product_suspension/{spps.id}"
+    )
+
+    # RLS: EVENT-SP012
+    # same for comments but only if they have the right visibility
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        and e.source
+        == f"/service_provider_product_suspension_comment/{sppsc_public.id}"
+    )
+    assert not any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        and e.source
+        == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
+    )
+
     # other SP cannot see stuff related to the first SP
     assert not any(
         e
@@ -509,6 +562,54 @@ def test_event_sp(sts):
         if e.type == "no.elhub.flex.service_providing_group_product_application.create"
         and e.source == f"/service_providing_group_product_application/{spgpa.id}"
     )
+    assert not any(
+        e
+        for e in events_other
+        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        and e.source
+        == f"/service_provider_product_suspension_comment/{sppsc_public.id}"
+    )
+    assert not any(
+        e
+        for e in events_other
+        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        and e.source
+        == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
+    )
+
+
+# RLS: EVENT-FISO001
+# RLS: EVENT-SO001
+# This test comes after the SP test. Doing so, we can then test all resources
+# because the SP test creates one of each.
+def test_event_fiso_so(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_so = sts.get_client(TestEntity.TEST, "SO")
+
+    def check(client):
+        events = list_event.sync(client=client, limit="10000")
+        assert isinstance(events, list)
+
+        for resource in (
+            "controllable_unit",
+            "controllable_unit_service_provider",
+            "technical_resource",
+            "system_operator_product_type",
+            "service_provider_product_application",
+            "service_provider_product_application_comment",
+            "service_provider_product_suspension",
+            "service_provider_product_suspension_comment",
+            "service_providing_group",
+            "service_providing_group_membership",
+            "service_providing_group_grid_prequalification",
+            "service_providing_group_product_application",
+        ):
+            # only test one type of operation, as we don't filter by operation
+            # in the policies
+            assert any(e.type == f"no.elhub.flex.{resource}.create" for e in events)
+
+    check(client_fiso)
+    check(client_so)
 
 
 def test_event_anon(sts):

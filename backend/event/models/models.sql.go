@@ -218,19 +218,22 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 }
 
 const getServiceProviderProductApplicationCommentNotificationRecipients = `-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
-SELECT unnest(array[sppa.service_provider_id, sppa.system_operator_id])::bigint
-FROM service_provider_product_application sppa
-JOIN service_provider_product_application_comment_history sppach
-ON sppa.id = sppach.service_provider_product_application_id
-WHERE sppach.service_provider_product_application_comment_id = $1
-AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[)') @> $2::timestamptz
-AND sppach.visibility = 'any_party'
+SELECT DISTINCT
+    unnest(ARRAY[sppah.service_provider_id, sppah.system_operator_id])::bigint
+FROM service_provider_product_application_comment_history AS sppach
+    INNER JOIN service_provider_product_application_history AS sppah
+        ON sppach.service_provider_product_application_id
+            = sppah.service_provider_product_application_id
+            AND tstzrange(sppah.recorded_at, sppah.replaced_at, '[]')
+                @> $1::timestamptz
+WHERE sppach.service_provider_product_application_comment_id = $2
+    AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]')
+        @> $1::timestamptz
+    AND sppach.visibility = 'any_party'
 `
 
-// not using SPPA history because SP and SO are stable
-// using SPPA comment history because the visibility can change over time
-func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
-	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, resourceID, recordedAt)
+func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, recordedAt pgtype.Timestamptz, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, recordedAt, resourceID)
 	if err != nil {
 		return nil, err
 	}
@@ -270,6 +273,48 @@ AND tstzrange(recorded_at, replaced_at, '[)') @> $2::timestamptz
 //	are in charge of the AP during at least a part of the CU-SP validity period
 func (q *Queries) GetServiceProviderProductApplicationNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
 	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getServiceProviderProductSuspensionCommentNotificationRecipients = `-- name: GetServiceProviderProductSuspensionCommentNotificationRecipients :many
+
+SELECT DISTINCT
+    unnest(
+        ARRAY[sppsh.service_provider_id, sppsh.procuring_system_operator_id]
+    )::bigint
+FROM service_provider_product_suspension_comment_history AS sppsch
+    INNER JOIN service_provider_product_suspension_history AS sppsh
+        ON sppsch.service_provider_product_suspension_id
+            = sppsh.service_provider_product_suspension_id
+            AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
+                @> $1::timestamptz
+WHERE sppsch.service_provider_product_suspension_comment_id = $2
+    AND tstzrange(sppsch.recorded_at, sppsch.replaced_at, '[]')
+        @> $1::timestamptz
+    AND sppsch.visibility = 'any_party'
+`
+
+// using inclusive end record time here because SPPS is a deletable resource
+// (in order to notify delete events, we need to catch the last version in the
+// history, which ends right at the event timestamp, so its record time does
+// NOT contain it, so we do not catch it if we filter with exclusive end)
+func (q *Queries) GetServiceProviderProductSuspensionCommentNotificationRecipients(ctx context.Context, recordedAt pgtype.Timestamptz, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductSuspensionCommentNotificationRecipients, recordedAt, resourceID)
 	if err != nil {
 		return nil, err
 	}
@@ -333,10 +378,7 @@ FROM service_providing_group spg
 WHERE spg.id = $1
 `
 
-// using inclusive end record time here because SPPS is a deletable resource
-// (in order to notify delete events, we need to catch the last version in the
-// history, which ends right at the event timestamp, so its record time does
-// NOT contain it, so we do not catch it if we filter with exclusive end)
+// see query for SPPAC below for explanation about visibilities
 func (q *Queries) GetServiceProvidingGroupCreateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
 	rows, err := q.db.Query(ctx, getServiceProvidingGroupCreateNotificationRecipients, resourceID)
 	if err != nil {
