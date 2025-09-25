@@ -46,8 +46,7 @@ No policies.
 
 | Policy key   | Policy                                        | Status |
 |--------------|-----------------------------------------------|--------|
-| SPPSC-COM001 | Read history on SPPSC that they can read.     | DONE   |
-| SPPSC-COM002 | Update SPPSC that they created.               | DONE   |
+| SPPSC-COM001 | Update SPPSC that they created.               | DONE   |
 
 #### Balance Responsible Party
 
@@ -66,6 +65,7 @@ No policies.
 | Policy key    | Policy                             | Status |
 |---------------|------------------------------------|--------|
 | SPPSC-FISO001 | Read, create and update all SPPSC. | DONE   |
+| SPPSC-FISO002 | Read history on all SPPSC.         | DONE   |
 
 #### Market Operator
 
@@ -77,17 +77,19 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                                            | Status |
-|-------------|-------------------------------------------------------------------|--------|
-| SPPSC-SO001 | Create SPPSC on SPPS where they are PSO.                          | DONE   |
-| SPPSC-SO002 | Read SPPSC that the visibility allows on SPPS where they are PSO. | DONE   |
+| Policy key  | Policy                                                                         | Status |
+|-------------|--------------------------------------------------------------------------------|--------|
+| SPPSC-SO001 | Create SPPSC on SPPS where they are PSO.                                       | DONE   |
+| SPPSC-SO002 | Read SPPSC that the visibility allows on SPPS where they are PSO.              | DONE   |
+| SPPSC-SO003 | Read history on SPPSC that the visibility allowed on SPPS where they were PSO. | DONE   |
 
 #### Service Provider
 
-| Policy key  | Policy                                                           | Status |
-|-------------|------------------------------------------------------------------|--------|
-| SPPSC-SP001 | Create SPPSC on SPPS where they are SP.                          | DONE   |
-| SPPSC-SP002 | Read SPPSC that the visibility allows on SPPS where they are SP. | DONE   |
+| Policy key  | Policy                                                                        | Status |
+|-------------|-------------------------------------------------------------------------------|--------|
+| SPPSC-SP001 | Create SPPSC on SPPS where they are SP.                                       | DONE   |
+| SPPSC-SP002 | Read SPPSC that the visibility allows on SPPS where they are SP.              | DONE   |
+| SPPSC-SP003 | Read history on SPPSC that the visibility allowed on SPPS where they were SP. | DONE   |
 
 #### Third Party
 
