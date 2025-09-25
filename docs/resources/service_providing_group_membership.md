@@ -44,9 +44,7 @@ No policies.
 
 #### Common
 
-| Policy key  | Policy                                   | Status |
-|-------------|------------------------------------------|--------|
-| SPGM-COM001 | Read history on SPGM that they can read. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
@@ -65,6 +63,7 @@ No policies.
 | Policy key   | Policy                                                        | Status |
 |--------------|---------------------------------------------------------------|--------|
 | SPGM-FISO001 | Read, create, update and delete all SPG membership relations. | DONE   |
+| SPGM-FISO002 | Read history on all SPG memberships.                          | TODO   |
 
 #### Market Operator
 
@@ -76,9 +75,10 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                     | Status |
-|------------|--------------------------------------------|--------|
-| SPGM-SO001 | Read SPGM belonging to SPGs they can read. | DONE   |
+| Policy key | Policy                                                | Status |
+|------------|-------------------------------------------------------|--------|
+| SPGM-SO001 | Read SPGM belonging to SPGs they can read.            | DONE   |
+| SPGM-SO002 | Read history on SPGM belonging to SPGs they can read. | TODO   |
 
 #### Service Provider
 
@@ -86,6 +86,7 @@ No policies.
 |------------|------------------------------------------------------------------------------------------------|--------|
 | SPGM-SP001 | Create and update SPGM for SPGS that belongs to them, on periods where they are SP for the CU. | DONE   |
 | SPGM-SP002 | Read, delete SPGM for SPGS that belongs to them.                                               | DONE   |
+| SPGM-SP003 | Read history on SPGM for SPGs that belong to them.                                             | TODO   |
 
 #### Third Party
 

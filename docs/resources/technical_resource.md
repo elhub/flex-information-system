@@ -93,10 +93,10 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                       | Status |
-|------------|----------------------------------------------|--------|
-| TR-SO001   | Read TR belonging to CU that the SO can see. | DONE   |
-| TR-SO002   | Read history on TR that they can read.       | DONE   |
+| Policy key | Policy                                                  | Status |
+|------------|---------------------------------------------------------|--------|
+| TR-SO001   | Read TR belonging to CU that the SO can see.            | DONE   |
+| TR-SO002   | Read history on TR belonging to CU that the SO can see. | TODO   |
 
 #### Service Provider
 
