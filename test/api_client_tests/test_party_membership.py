@@ -227,6 +227,19 @@ def test_ptym_org(sts):
     )
     assert not isinstance(d, ErrorMessage)
 
+    # --------------------------------------------------------------------------
+    # RLS: PTYM-ORG002
+    # they can read history on such PM
+
+    pmhs = list_party_membership_history.sync(
+        client=client_org,
+        party_membership_id=f"eq.{cast(int, pms[0].id)}",
+    )
+    assert isinstance(pmhs, list)
+    assert len(pmhs) > 0
+
+    # --------------------------------------------------------------------------
+
     pm = create_party_membership.sync(
         client=client_org,
         body=PartyMembershipCreateRequest(
@@ -276,21 +289,7 @@ def test_ptym_common(sts):
         pty_id = sts.get_userinfo(client)["party_id"]
 
         # RLS: PTYM-COM001
-        # check a role can see the history for PTYMs they can see
-        visible_ptyms = list_party_membership.sync(client=client)
-        assert isinstance(visible_ptyms, list)
-
-        # only checking a few entries is sufficient
-        for ptym in visible_ptyms[:5]:
-            # endpoint: GET /party_membership_history
-            hist = list_party_membership_history.sync(
-                client=client,
-                party_membership_id=f"eq.{ptym.id}",
-            )
-            assert isinstance(hist, list)
-            assert len(hist) > 0
-
-        # RLS: PTYM-COM002
+        # they can read PMs of their own party
         pms_current_party = list_party_membership.sync(
             client=client_fiso, party_id=f"eq.{pty_id}"
         )
@@ -299,10 +298,35 @@ def test_ptym_common(sts):
         assert isinstance(pms, list)
         assert len(pms) >= len(pms_current_party)
 
-        # RLS: PTYM-COM003
-        # is checked by both previous tests:
-        # - the role can see history of PTYM they can see
-        # - the PTYM they can see are the ones concerning their party
+        # cause some history entries to be created
+        pm = pms_current_party[0]
+
+        u = update_party_membership.sync(
+            client=client_fiso,
+            id=cast(int, pm.id),
+            body=PartyMembershipUpdateRequest(
+                scopes=[AuthScope.READDATA],
+            ),
+        )
+        assert not (isinstance(u, ErrorMessage))
+
+        u = update_party_membership.sync(
+            client=client_fiso,
+            id=cast(int, pm.id),
+            body=PartyMembershipUpdateRequest(
+                scopes=pm.scopes,
+            ),
+        )
+        assert not (isinstance(u, ErrorMessage))
+
+        # RLS: PTYM-COM002
+        # and they can read history on them
+        pmhs = list_party_membership_history.sync(
+            client=client,
+            party_membership_id=f"eq.{cast(int, pm.id)}",
+        )
+        assert isinstance(pmhs, list)
+        assert len(pmhs) > 0
 
 
 def test_rla_absence(sts):

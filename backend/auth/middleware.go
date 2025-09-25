@@ -82,6 +82,8 @@ func CheckScopeForRequest(module string, next http.Handler) http.Handler {
 		requestPath := req.URL.Path
 		requestPath = strings.TrimPrefix(requestPath, "/")
 		requestPath = strings.TrimSuffix(requestPath, "/") // Remove trailing slash if present
+		// if requesting a history resource, base the scope on the main resource
+		requestPath = strings.TrimSuffix(requestPath, "_history")
 		requestParts := strings.Split(requestPath, "/")
 
 		requiredScope := scope.Scope{Verb: verb, Asset: strings.Join(append([]string{module}, requestParts...), ":")}
