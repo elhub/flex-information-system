@@ -49,9 +49,8 @@ No policies.
 
 | Policy key  | Policy                                                    | Status |
 |-------------|-----------------------------------------------------------|--------|
-| PTYM-COM001 | Read history on all PTYM that they can read               | DONE   |
-| PTYM-COM002 | Read all the PTYM concerning the current party            | DONE   |
-| PTYM-COM003 | Read all the history of PTYM concerning the current party | DONE   |
+| PTYM-COM001 | Read all the PTYM concerning the current party            | DONE   |
+| PTYM-COM002 | Read all the history of PTYM concerning the current party | DONE   |
 
 #### Balance Responsible Party
 
@@ -81,6 +80,7 @@ No policies.
 | Policy key  | Policy                                                                                                 | Status |
 |-------------|--------------------------------------------------------------------------------------------------------|--------|
 | PTYM-ORG001 | Read, create, update and delete PTYM on all parties owned by the entity owning the organisation party. | DONE   |
+| PTYM-ORG002 | Read PTYM history on all parties owned by the entity owning the organisation party.                    | DONE   |
 
 #### System Operator
 

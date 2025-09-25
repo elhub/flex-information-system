@@ -219,21 +219,20 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 
 const getServiceProviderProductApplicationCommentNotificationRecipients = `-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
 SELECT DISTINCT
-    unnest(ARRAY[sppah.service_provider_id, sppah.system_operator_id])::bigint
+    unnest(ARRAY[sppa.service_provider_id, sppa.system_operator_id])::bigint
 FROM service_provider_product_application_comment_history AS sppach
-    INNER JOIN service_provider_product_application_history AS sppah
-        ON sppach.service_provider_product_application_id
-            = sppah.service_provider_product_application_id
-            AND tstzrange(sppah.recorded_at, sppah.replaced_at, '[]')
-                @> $1::timestamptz
-WHERE sppach.service_provider_product_application_comment_id = $2
+    -- not using SPPA history because the resource cannot be deleted
+    INNER JOIN service_provider_product_application AS sppa
+        ON sppach.service_provider_product_application_id = sppa.id
+WHERE sppach.service_provider_product_application_comment_id = $1
     AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]')
-        @> $1::timestamptz
+        @> $2::timestamptz
     AND sppach.visibility = 'any_party'
 `
 
-func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, recordedAt pgtype.Timestamptz, resourceID int) ([]int, error) {
-	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, recordedAt, resourceID)
+// using SPPA comment history because visibility can change over time
+func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProviderProductApplicationCommentNotificationRecipients, resourceID, recordedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -298,6 +297,7 @@ SELECT DISTINCT
         ARRAY[sppsh.service_provider_id, sppsh.procuring_system_operator_id]
     )::bigint
 FROM service_provider_product_suspension_comment_history AS sppsch
+    -- using history because suspensions can be deleted
     INNER JOIN service_provider_product_suspension_history AS sppsh
         ON sppsch.service_provider_product_suspension_id
             = sppsh.service_provider_product_suspension_id
@@ -313,6 +313,7 @@ WHERE sppsch.service_provider_product_suspension_comment_id = $2
 // (in order to notify delete events, we need to catch the last version in the
 // history, which ends right at the event timestamp, so its record time does
 // NOT contain it, so we do not catch it if we filter with exclusive end)
+// using history because comments can be deleted
 func (q *Queries) GetServiceProviderProductSuspensionCommentNotificationRecipients(ctx context.Context, recordedAt pgtype.Timestamptz, resourceID int) ([]int, error) {
 	rows, err := q.db.Query(ctx, getServiceProviderProductSuspensionCommentNotificationRecipients, recordedAt, resourceID)
 	if err != nil {
