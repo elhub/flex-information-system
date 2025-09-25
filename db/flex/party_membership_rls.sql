@@ -71,6 +71,8 @@ TO flex_organisation
 USING (entity_owns_party((SELECT flex.current_party_owner()), party_id));
 
 -- RLS: PTYM-ORG002
+-- can use the same check as the main table policy because entity/party are
+-- not deletable and owning party is immutable
 GRANT SELECT ON party_membership_history TO flex_organisation;
 CREATE POLICY "PTYM_ORG002" ON party_membership_history
 FOR SELECT
