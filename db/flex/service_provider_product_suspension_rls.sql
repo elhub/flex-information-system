@@ -31,18 +31,14 @@ FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
--- RLS: SPPS-COM001
+-- RLS: SPPS-FISO002
 GRANT SELECT ON service_provider_product_suspension_history
-TO flex_common;
-CREATE POLICY "SPPS_COM001"
+TO flex_flexibility_information_system_operator;
+CREATE POLICY "SPPS_FISO002"
 ON service_provider_product_suspension_history
 FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM service_provider_product_suspension
-    WHERE service_provider_product_suspension_history.id = service_provider_product_suspension.id -- noqa
-));
+TO flex_flexibility_information_system_operator
+USING (true);
 
 -- RLS: SPPS-SP001
 GRANT SELECT ON service_provider_product_suspension
@@ -72,7 +68,16 @@ TO flex_system_operator
 USING (procuring_system_operator_id = (SELECT flex.current_party()));
 
 -- RLS: SPPS-SO002
+GRANT SELECT ON service_provider_product_suspension_history
+TO flex_system_operator;
 CREATE POLICY "SPPS_SO002"
+ON service_provider_product_suspension_history
+FOR SELECT
+TO flex_system_operator
+USING (procuring_system_operator_id = (SELECT flex.current_party()));
+
+-- RLS: SPPS-SO003
+CREATE POLICY "SPPS_SO003"
 ON service_provider_product_suspension
 FOR SELECT
 TO flex_system_operator
@@ -86,5 +91,25 @@ USING (
             = service_provider_product_suspension.service_provider_id -- noqa
             AND sppa.system_operator_id = (SELECT flex.current_party())
             AND sppa.status = 'qualified'
+    )
+);
+
+-- RLS: SPPS-SO004
+CREATE POLICY "SPPS_SO004"
+ON service_provider_product_suspension_history
+FOR SELECT
+TO flex_system_operator
+USING (
+    EXISTS (
+        SELECT
+            service_provider_product_suspension_history.product_type_ids -- noqa
+            && sppah.product_type_ids
+        FROM flex.service_provider_product_application_history AS sppah
+        WHERE sppah.service_provider_id
+            = service_provider_product_suspension_history.service_provider_id -- noqa
+            AND sppah.system_operator_id = (SELECT flex.current_party())
+            AND sppah.record_time_range
+            && service_provider_product_suspension_history.record_time_range -- noqa
+            AND sppah.status = 'qualified'
     )
 );
