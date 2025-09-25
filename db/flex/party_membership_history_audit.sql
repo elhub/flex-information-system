@@ -25,21 +25,6 @@ ALTER TABLE IF EXISTS
 flex.party_membership_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:party-membership-history-rls-com runAlways:true endDelimiter:--
--- RLS: PTYM-COM001
-GRANT SELECT ON flex.party_membership_history
-TO flex_common;
-
-CREATE POLICY "PTYM_COM001"
-ON flex.party_membership_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM party_membership
-    WHERE party_membership_history.id = party_membership.id -- noqa
-));
-
 -- changeset flex:party-membership-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 party_membership_audit_current
