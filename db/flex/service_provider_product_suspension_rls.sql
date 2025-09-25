@@ -95,6 +95,8 @@ USING (
 );
 
 -- RLS: SPPS-SO004
+-- same check as above but with history tables, so that qualification can be
+-- removed later and/or suspension deleted, but history should still be readable
 CREATE POLICY "SPPS_SO004"
 ON service_provider_product_suspension_history
 FOR SELECT
