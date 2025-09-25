@@ -321,6 +321,7 @@ def test_ptym_common(sts):
 
         # RLS: PTYM-COM002
         # and they can read history on them
+        # endpoint: GET /party_membership_history
         pmhs = list_party_membership_history.sync(
             client=client,
             party_membership_id=f"eq.{cast(int, pm.id)}",
