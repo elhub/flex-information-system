@@ -31,6 +31,15 @@ FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
+-- RLS: SPGM-FISO002
+GRANT SELECT ON service_providing_group_membership_history
+TO flex_flexibility_information_system_operator;
+CREATE POLICY "SPGM_FISO002"
+ON service_providing_group_membership_history
+FOR ALL
+TO flex_flexibility_information_system_operator
+USING (true);
+
 -- SPGM-SP
 GRANT SELECT, INSERT, UPDATE, DELETE ON service_providing_group_membership
 TO flex_service_provider;
@@ -63,6 +72,22 @@ WITH CHECK (
     )
 );
 
+-- RLS: SPGM-SP003
+-- SPG cannot be deleted, SP ID is stable, no need to use history
+GRANT SELECT ON service_providing_group_membership_history
+TO flex_service_provider;
+CREATE POLICY "SPGM_SP003"
+ON service_providing_group_membership_history
+FOR SELECT
+TO flex_service_provider
+USING (EXISTS (
+    SELECT 1
+    FROM service_providing_group
+    WHERE service_providing_group_membership_history.service_providing_group_id = service_providing_group.id -- noqa
+        AND service_providing_group.service_provider_id
+        = (SELECT current_party())
+));
+
 -- RLS: SPGM-SO001
 GRANT SELECT ON service_providing_group_membership
 TO flex_system_operator;
@@ -75,5 +100,23 @@ USING (
         SELECT 1
         FROM service_providing_group
         WHERE service_providing_group_membership.service_providing_group_id = service_providing_group.id -- noqa
+    )
+);
+
+-- RLS: SPGM-SO002
+-- read access to SPG on SO is based on SPGPA/SPGGP, both have stable RLS for SO
+-- through history (once they become visible, it cannot be removed later)
+-- so we can use SPG for SO in a history policy as well
+GRANT SELECT ON service_providing_group_membership_history
+TO flex_system_operator;
+CREATE POLICY "SPGM_SO002"
+ON service_providing_group_membership_history
+FOR SELECT
+TO flex_system_operator
+USING (
+    EXISTS (
+        SELECT 1
+        FROM service_providing_group
+        WHERE service_providing_group_membership_history.service_providing_group_id = service_providing_group.id -- noqa
     )
 );

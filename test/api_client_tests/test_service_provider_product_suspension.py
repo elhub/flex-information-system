@@ -63,6 +63,8 @@ def data():
     product_type_ids2 = [5, 7]
     common_product_type_id = 5
 
+    sppa_ids = []
+
     for clt, id, pt_ids in [
         (client_so, so_id, product_type_ids),
         (client_so2, so2_id, product_type_ids2),
@@ -86,6 +88,7 @@ def data():
             ),
         )
         assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+        sppa_ids.append(sppa.id)
 
         u = update_service_provider_product_application.sync(
             client=clt,
@@ -97,7 +100,7 @@ def data():
         )
         assert not isinstance(u, ErrorMessage)
 
-    so = (client_so, so_id)
+    so = (client_so, so_id, sppa_ids[0])
     so2 = (client_so2, so2_id)
 
     yield (sts, so, so2, product_type_ids, common_product_type_id, client_sp, sp_id)
@@ -106,7 +109,6 @@ def data():
 # ---- ---- ---- ---- ----
 
 
-# RLS: SPPS-COM001
 # function to check history (will be called in several tests)
 # harder to write a general function because of fresh clients
 def check_history(client, spps_id):
@@ -131,7 +133,7 @@ def check_history(client, spps_id):
 
 # RLS: SPPS-FISO001
 def test_spps_fiso(data):
-    sts, (_, so_id), _, product_type_ids, _, _, sp_id = data
+    sts, (_, so_id, _), _, product_type_ids, _, _, sp_id = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -159,6 +161,7 @@ def test_spps_fiso(data):
     )
     assert isinstance(s, ServiceProviderProductSuspensionResponse)
 
+    # RLS: SPPS-FISO002
     check_history(client_fiso, s.id)
 
     # endpoint: PATCH /service_provider_product_suspension/{id}
@@ -181,7 +184,7 @@ def test_spps_fiso(data):
 
 # RLS: SPPS-SP001
 def test_spps_sp(data):
-    sts, (_, so_id), _, product_type_ids, _, client_sp, sp_id = data
+    sts, (_, so_id, _), _, product_type_ids, _, client_sp, sp_id = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -217,8 +220,8 @@ def test_spps_sp(data):
 
 
 def test_spps_so(data):
-    _, so, so2, product_type_ids, common_product_type_id, _, sp_id = data
-    client_so, _ = so
+    sts, so, so2, product_type_ids, common_product_type_id, _, sp_id = data
+    client_so, _, sppa_id = so
 
     # RLS: SPPS-SO001
     # SO can do everything on their own SPPS
@@ -243,6 +246,7 @@ def test_spps_so(data):
     )
     assert isinstance(spps, ServiceProviderProductSuspensionResponse)
 
+    # RLS: SPPS-SO002
     check_history(client_so, spps.id)
 
     u = update_service_provider_product_suspension.sync(
@@ -260,14 +264,14 @@ def test_spps_so(data):
     )
     assert not isinstance(d, ErrorMessage)
 
-    # RLS: SPPS-SO002
+    # RLS: SPPS-SO003
 
     # the other SO will create a SPPS targeting the same SP with one common
     # product type, and the first SO must be able to read it
 
     client_so2, _ = so2
 
-    spps = create_service_provider_product_suspension.sync(
+    spps2 = create_service_provider_product_suspension.sync(
         client=client_so2,
         body=ServiceProviderProductSuspensionCreateRequest(
             service_provider_id=sp_id,
@@ -275,10 +279,26 @@ def test_spps_so(data):
             reason=ServiceProviderProductSuspensionReason.FAILING_HEARTBEAT,
         ),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
 
-    spps = read_service_provider_product_suspension.sync(
+    spps2 = read_service_provider_product_suspension.sync(
         client=client_so,
-        id=cast(int, spps.id),
+        id=cast(int, spps2.id),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
+
+    # RLS: SPPS-SO004
+    # history still readable after SPPS deletion / SPPA unqualification
+
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    u = update_service_provider_product_application.sync(
+        client=client_fiso,
+        id=cast(int, sppa_id),
+        body=ServiceProviderProductApplicationUpdateRequest(
+            status=ServiceProviderProductApplicationStatus.NOT_QUALIFIED,
+            qualified_at=None,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    check_history(client_so, spps.id)

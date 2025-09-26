@@ -46,9 +46,7 @@ No policies.
 
 #### Common
 
-| Policy key  | Policy                                   | Status |
-|-------------|------------------------------------------|--------|
-| SPPS-COM001 | Read history on SPPS that they can read. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
@@ -67,6 +65,7 @@ No policies.
 | Policy key   | Policy                                    | Status |
 |--------------|-------------------------------------------|--------|
 | SPPS-FISO001 | Create, read, update and delete all SPPS. | DONE   |
+| SPPS-FISO002 | Read all SPPS history.                    | DONE   |
 
 #### Market Operator
 
@@ -78,10 +77,12 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                                                                  | Status |
-|------------|-----------------------------------------------------------------------------------------|--------|
-| SPPS-SO001 | Create, read, update and delete their own SPPS.                                         | DONE   |
-| SPPS-SO002 | Read SPPS targeted at any SP they have qualified for at least one of the product types. | DONE   |
+| Policy key | Policy                                                                                            | Status |
+|------------|---------------------------------------------------------------------------------------------------|--------|
+| SPPS-SO001 | Create, read, update and delete their own SPPS.                                                   | DONE   |
+| SPPS-SO002 | Read history on their own SPPS.                                                                   | DONE   |
+| SPPS-SO003 | Read SPPS targeted at any SP they have qualified for at least one of the product types.           | DONE   |
+| SPPS-SO004 | Read history on SPPS targeted at any SP they had qualified for at least one of the product types. | DONE   |
 
 #### Service Provider
 
