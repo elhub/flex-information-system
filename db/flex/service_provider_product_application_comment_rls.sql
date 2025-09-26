@@ -1,17 +1,6 @@
 --liquibase formatted sql
 -- Manually managed file
 
-
--- changeset flex:party-of-identity runOnChange:true endDelimiter:--
--- utility function to reduce joins in the policies below
-CREATE OR REPLACE FUNCTION party_of_identity(_identity bigint)
-RETURNS bigint
-SECURITY DEFINER
-LANGUAGE sql
-AS $$
-  SELECT party_id FROM flex.identity WHERE id = _identity;
-$$;
-
 -- changeset flex:service-provider-product-application-comment-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS service_provider_product_application_comment
 ENABLE ROW LEVEL SECURITY;
@@ -56,23 +45,24 @@ ON service_provider_product_application_comment
 FOR SELECT
 TO flex_common
 USING (
-    visibility = 'same_party' AND (
-        party_of_identity(
-            service_provider_product_application_comment.created_by
-        ) = (SELECT flex.current_party())
-    )
-    OR visibility = 'same_party_type' AND (
-        -- check current party and created_by party are of the same type
-        SELECT count(DISTINCT p.type) = 1
-        FROM party AS p
-        WHERE p.id IN (
-                (SELECT flex.current_party()),
-                party_of_identity(
-                    service_provider_product_application_comment.created_by -- noqa
+    EXISTS (
+        SELECT 1
+        FROM flex.service_provider_product_application AS sppa
+            INNER JOIN flex.identity AS comment_creator
+                ON service_provider_product_application_comment.created_by -- noqa
+                    = comment_creator.id
+        WHERE sppa.id = service_provider_product_application_comment.service_provider_product_application_id -- noqa
+            AND ((
+                service_provider_product_application_comment.visibility = 'same_party' -- noqa
+                AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
+            ) OR (
+                service_provider_product_application_comment.visibility = 'any_involved_party' -- noqa
+                AND (SELECT flex.current_party()) IN (
+                    sppa.system_operator_id,
+                    sppa.service_provider_id
                 )
-            )
+            ))
     )
-    OR visibility = 'any_party' -- no check there
 );
 
 -- RLS: SPPAC-FISO001

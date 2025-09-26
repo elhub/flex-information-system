@@ -5,13 +5,7 @@
 CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_provider_product_application_id bigint NOT NULL,
-    visibility text NOT NULL DEFAULT 'same_party' CHECK (
-        visibility IN (
-            'same_party',
-            'same_party_type',
-            'any_party'
-        )
-    ),
+    visibility text NOT NULL DEFAULT 'same_party',
     content text NULL CHECK (
         char_length(content) <= 2048
     ),
@@ -22,6 +16,13 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
+    CONSTRAINT service_provider_product_application_comment_visibility_check
+    CHECK (
+        visibility IN (
+            'same_party',
+            'any_involved_party'
+        )
+    ),
     CONSTRAINT service_provider_product_application_comment_sppa_fkey
     FOREIGN KEY (service_provider_product_application_id)
     REFERENCES service_provider_product_application (id)

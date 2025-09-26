@@ -955,7 +955,7 @@ BEGIN
     content
   ) VALUES (
     sppa_id,
-    'any_party',
+    'any_involved_party',
     'Test Comment'
   );
 
