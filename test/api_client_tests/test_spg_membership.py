@@ -49,7 +49,7 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
 
     client_sp = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
@@ -284,6 +284,26 @@ def test_spgm(data):
     )
     assert not (isinstance(u, ErrorMessage))
 
+    # --------------------------------------------------------------------------
+    # RLS: SPGM-SP003
+    # SP can read history
+
+    # endpoint: GET /service_providing_group_membership_history
+    h = list_service_providing_group_membership_history.sync(
+        client=client_sp,
+        service_providing_group_membership_id=f"eq.{spgm.id}",
+    )
+    assert isinstance(h, list)
+    assert len(h) > 0
+
+    # endpoint: GET /service_providing_group_membership_history/{id}
+    h1 = read_service_providing_group_membership_history.sync(
+        client=client_sp, id=cast(int, h[0].id)
+    )
+    assert isinstance(h1, ServiceProvidingGroupMembershipHistoryResponse)
+
+    # --------------------------------------------------------------------------
+
     # endpoint: DELETE /service_providing_group_membership/{id}
     d = delete_service_providing_group_membership.sync(
         client=client_fiso,
@@ -291,6 +311,15 @@ def test_spgm(data):
         body=EmptyObject(),
     )
     assert not (isinstance(d, ErrorMessage))
+
+    # RLS: SPGM-FISO002
+    # FISO can read history
+    h = list_service_providing_group_membership_history.sync(
+        client=client_fiso,
+        service_providing_group_membership_id=f"eq.{spgm.id}",
+    )
+    assert isinstance(h, list)
+    assert len(h) > 0
 
     # redo as SP
 
@@ -343,6 +372,16 @@ def test_spgm_so(data):
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
+    # add update to have some history
+    u = update_service_providing_group_membership.sync(
+        client=client_sp,
+        id=cast(int, spgm.id),
+        body=ServiceProvidingGroupMembershipUpdateRequest(
+            valid_to="2024-01-12 Europe/Oslo",
+        ),
+    )
+    assert not (isinstance(u, ErrorMessage))
+
     client_so = sts.get_client(TestEntity.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
@@ -353,6 +392,14 @@ def test_spgm_so(data):
         client=client_so, service_providing_group_id=f"eq.{spg_id}"
     )
     assert isinstance(spgms_spg, list)
+
+    # no history either
+    h = list_service_providing_group_membership_history.sync(
+        client=client_so,
+        service_providing_group_id=f"eq.{spg_id}",
+    )
+    assert isinstance(h, list)
+    assert len(h) == 0
 
     # create an SPGGP
     spggp = create_service_providing_group_grid_prequalification.sync(
@@ -376,35 +423,22 @@ def test_spgm_so(data):
     )
     assert isinstance(spg, ServiceProvidingGroupMembershipResponse)
 
+    # RLS: SPGM-SO002
+    # they can also read history
 
-# RLS: SPGM-COM001
-def test_spgm_common(data):
-    (sts, _, _) = data
+    h = list_service_providing_group_membership_history.sync(
+        client=client_so,
+        service_providing_group_membership_id=f"eq.{spgm.id}",
+    )
+    assert isinstance(h, list)
+    assert len(h) > 0
 
-    for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+    h1 = read_service_providing_group_membership_history.sync(
+        client=client_so, id=cast(int, h[0].id)
+    )
+    assert isinstance(h1, ServiceProvidingGroupMembershipHistoryResponse)
 
-        # can read history on SPGM they can read
-        spgm_visible = list_service_providing_group_membership.sync(
-            client=client,
-        )
-        assert isinstance(spgm_visible, list)
-
-        # only checking a few entries is sufficient
-        for spg in spgm_visible[:5]:
-            # endpoint: GET /service_providing_group_membership_history
-            hist = list_service_providing_group_membership_history.sync(
-                client=client,
-                service_providing_group_membership_id=f"eq.{spg.id}",
-            )
-            assert isinstance(hist, list)
-            assert len(hist) > 0
-
-            # endpoint: GET /service_providing_group_membership_history/{id}
-            hist_spg = read_service_providing_group_membership_history.sync(
-                client=client, id=cast(int, hist[0].id)
-            )
-            assert isinstance(hist_spg, ServiceProvidingGroupMembershipHistoryResponse)
+    # --------------------------------------------------------------------------
 
 
 def test_rla_absence(data):

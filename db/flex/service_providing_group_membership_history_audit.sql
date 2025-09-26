@@ -25,21 +25,6 @@ ALTER TABLE IF EXISTS
 flex.service_providing_group_membership_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:service-providing-group-membership-history-rls-com runAlways:true endDelimiter:--
--- RLS: SPGM-COM001
-GRANT SELECT ON flex.service_providing_group_membership_history
-TO flex_common;
-
-CREATE POLICY "SPGM_COM001"
-ON flex.service_providing_group_membership_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM service_providing_group_membership
-    WHERE service_providing_group_membership_history.id = service_providing_group_membership.id -- noqa
-));
-
 -- changeset flex:service-providing-group-membership-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_membership_audit_current
