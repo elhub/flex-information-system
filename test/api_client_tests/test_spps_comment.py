@@ -272,16 +272,13 @@ def test_sppsc_so_sp(data):
     # RLS: SPPSC-SP001
     #   are also tested here because both SO and SP create comments
 
-    # need a second SO for testing visibilities
-    client_so2 = sts.get_client(TestEntity.COMMON, "SO")
-
     # SO and SP both create an open comment
 
     sppsc_so = create_service_provider_product_suspension_comment.sync(
         client=client_so,
         body=ServiceProviderProductSuspensionCommentCreateRequest(
             service_provider_product_suspension_id=spps_id,
-            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
             content="Comment SO",
         ),
     )
@@ -291,7 +288,7 @@ def test_sppsc_so_sp(data):
         client=client_sp,
         body=ServiceProviderProductSuspensionCommentCreateRequest(
             service_provider_product_suspension_id=spps_id,
-            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
             content="Comment SP",
         ),
     )
@@ -311,31 +308,6 @@ def test_sppsc_so_sp(data):
     )
     assert isinstance(sppsc_sp_as_so, ServiceProviderProductSuspensionCommentResponse)
 
-    # SO's comment becomes open to system operators only
-
-    u = update_service_provider_product_suspension_comment.sync(
-        client=client_so,
-        id=cast(int, sppsc_so.id),
-        body=ServiceProviderProductSuspensionCommentUpdateRequest(
-            visibility=ServiceProviderProductSuspensionCommentVisibility.SAME_PARTY_TYPE,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    # the second SO should be able to read it but not the SP
-
-    sppsc_so_as_so2 = read_service_provider_product_suspension_comment.sync(
-        client=client_so2,
-        id=cast(int, sppsc_so.id),
-    )
-    assert isinstance(sppsc_so_as_so2, ServiceProviderProductSuspensionCommentResponse)
-
-    sppsc_so_as_sp = read_service_provider_product_suspension_comment.sync(
-        client=client_sp,
-        id=cast(int, sppsc_so.id),
-    )
-    assert isinstance(sppsc_so_as_sp, ErrorMessage)
-
     # SO's comment becomes open to this SO only
 
     u = update_service_provider_product_suspension_comment.sync(
@@ -347,13 +319,7 @@ def test_sppsc_so_sp(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # neither the second SO nor the SP should be able to read it
-
-    sppsc_so_as_so2 = read_service_provider_product_suspension_comment.sync(
-        client=client_so2,
-        id=cast(int, sppsc_so.id),
-    )
-    assert isinstance(sppsc_so_as_so2, ErrorMessage)
+    # SP should not be able to read it
 
     sppsc_so_as_sp = read_service_provider_product_suspension_comment.sync(
         client=client_sp,
@@ -380,10 +346,10 @@ def test_sppsc_so_sp(data):
     # RLS: SPPSC-SO003
     # RLS: SPPSC-SP003
 
-    # SO2 and SP can read history on the first SO's comment because when it was
-    # created it was open to all parties
-    check_history(client_so2, sppsc_so.id)
+    # SP can read history on the first SO's comment, and reverse, because when
+    # they were created, they were open to all involved parties
     check_history(client_sp, sppsc_so.id)
+    check_history(client_so, sppsc_sp.id)
 
     # delete the SPPS so that comments disappear
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -395,39 +361,5 @@ def test_sppsc_so_sp(data):
     assert not isinstance(d, ErrorMessage)
 
     # history is still reachable
-    check_history(client_so2, sppsc_so.id)
     check_history(client_sp, sppsc_so.id)
-
-
-def test_sppsc_common(data):
-    (sts, _, _, _) = data
-
-    for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
-
-        sppsc_visible = list_service_provider_product_suspension_comment.sync(
-            client=client,
-        )
-        assert isinstance(sppsc_visible, list)
-
-        # RLS: SPPSC-COM001
-        # can read history on SPPSC they can read
-        # only checking a few entries is sufficient
-        for sppsc in sppsc_visible[:5]:
-            # endpoint: GET /service_provider_product_suspension_comment_history
-            hist = list_service_provider_product_suspension_comment_history.sync(
-                client=client,
-                service_provider_product_suspension_comment_id=f"eq.{sppsc.id}",
-            )
-            assert isinstance(hist, list)
-            assert len(hist) > 0
-
-            # endpoint: GET /service_provider_product_suspension_comment_history/{id}
-            hist_sppsc = read_service_provider_product_suspension_comment_history.sync(
-                client=client,
-                id=cast(int, hist[0].id),
-            )
-            assert isinstance(
-                hist_sppsc,
-                ServiceProviderProductSuspensionCommentHistoryResponse,
-            )
+    check_history(client_so, sppsc_sp.id)

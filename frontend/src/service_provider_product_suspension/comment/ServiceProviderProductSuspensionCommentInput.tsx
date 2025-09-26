@@ -42,7 +42,7 @@ export const ServiceProviderProductSuspensionCommentInput = () => {
             source="visibility"
             validate={required()}
             defaultValue="same_party"
-            choices={["same_party", "same_party_type", "any_party"]}
+            choices={["same_party", "any_involved_party"]}
           />
         </InputStack>
 
