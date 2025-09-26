@@ -103,15 +103,83 @@ def data():
     )
     assert isinstance(spps, ServiceProviderProductSuspensionResponse)
 
-    yield (sts, client_so, client_sp, spps.id)
+    # create another, completely unrelated SPPS to check comments are
+    # unreachable there
+
+    client_so2 = sts.fresh_client(TestEntity.TEST, "SO")
+    so2_id = sts.get_userinfo(client_so2)["party_id"]
+
+    sopt = create_system_operator_product_type.sync(
+        client=client_fiso,
+        body=SystemOperatorProductTypeCreateRequest(
+            system_operator_id=so2_id,
+            product_type_id=6,
+        ),
+    )
+    assert not isinstance(sopt, ErrorMessage)
+
+    client_sp2 = sts.fresh_client(TestEntity.TEST, "SP")
+    sp2_id = sts.get_userinfo(client_sp2)["party_id"]
+
+    sppa = create_service_provider_product_application.sync(
+        client=client_sp2,
+        body=ServiceProviderProductApplicationCreateRequest(
+            service_provider_id=sp2_id,
+            system_operator_id=so2_id,
+            product_type_ids=[6],
+        ),
+    )
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+
+    u = update_service_provider_product_application.sync(
+        client=client_so2,
+        id=cast(int, sppa.id),
+        body=ServiceProviderProductApplicationUpdateRequest(
+            status=ServiceProviderProductApplicationStatus.QUALIFIED,
+            qualified_at="2025-08-08 Europe/Oslo",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    spps2 = create_service_provider_product_suspension.sync(
+        client=client_so2,
+        body=ServiceProviderProductSuspensionCreateRequest(
+            service_provider_id=sp2_id,
+            product_type_ids=[6],
+            reason=ServiceProviderProductSuspensionReason.FAILED_VERIFICATION,
+        ),
+    )
+    assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
+
+    yield (sts, client_so, client_sp, spps.id, spps2.id)
 
 
 # ---- ---- ---- ---- ----
 
 
+def check_history(clt, sppsc_id):
+    # endpoint: GET /service_provider_product_suspension_comment_history
+    h = list_service_provider_product_suspension_comment_history.sync(
+        client=clt,
+        service_provider_product_suspension_comment_id=f"eq.{sppsc_id}",
+    )
+    assert isinstance(h, list)
+    assert len(h) > 0
+
+    # endpoint: GET /service_provider_product_suspension_comment_history/{id}
+    h1 = read_service_provider_product_suspension_comment_history.sync(
+        client=clt,
+        id=cast(int, h[0].id),
+    )
+    assert isinstance(
+        h1,
+        ServiceProviderProductSuspensionCommentHistoryResponse,
+    )
+
+
 # RLS: SPPSC-FISO001
 def test_sppsc_fiso(data):
-    (sts, client_so, _, spps_id) = data
+    (sts, client_so, _, spps_id, _) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -173,6 +241,9 @@ def test_sppsc_fiso(data):
     )
     assert not isinstance(u, ErrorMessage)
 
+    # RLS: SPPSC-FISO002
+    check_history(client_fiso, sppsc1.id)
+
     # ensure that deleting the suspension also deletes the comments
     d = delete_service_provider_product_suspension.sync(
         client=client_fiso,
@@ -192,17 +263,14 @@ def test_sppsc_fiso(data):
 # RLS: SPPSC-SO002
 # RLS: SPPSC-SP002
 def test_sppsc_so_sp(data):
-    (sts, client_so, client_sp, spps_id) = data
+    (sts, client_so, client_sp, spps_id, unrelated_spps_id) = data
 
-    # RLS: SPPSC-COM002
+    # RLS: SPPSC-COM001
     #   is also tested here because parties update their comments (visibility)
 
     # RLS: SPPSC-SO001
     # RLS: SPPSC-SP001
     #   are also tested here because both SO and SP create comments
-
-    # need a second SO for testing visibilities
-    client_so2 = sts.get_client(TestEntity.COMMON, "SO")
 
     # SO and SP both create an open comment
 
@@ -210,7 +278,7 @@ def test_sppsc_so_sp(data):
         client=client_so,
         body=ServiceProviderProductSuspensionCommentCreateRequest(
             service_provider_product_suspension_id=spps_id,
-            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
             content="Comment SO",
         ),
     )
@@ -220,7 +288,7 @@ def test_sppsc_so_sp(data):
         client=client_sp,
         body=ServiceProviderProductSuspensionCommentCreateRequest(
             service_provider_product_suspension_id=spps_id,
-            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
             content="Comment SP",
         ),
     )
@@ -240,31 +308,6 @@ def test_sppsc_so_sp(data):
     )
     assert isinstance(sppsc_sp_as_so, ServiceProviderProductSuspensionCommentResponse)
 
-    # SO's comment becomes open to system operators only
-
-    u = update_service_provider_product_suspension_comment.sync(
-        client=client_so,
-        id=cast(int, sppsc_so.id),
-        body=ServiceProviderProductSuspensionCommentUpdateRequest(
-            visibility=ServiceProviderProductSuspensionCommentVisibility.SAME_PARTY_TYPE,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    # the second SO should be able to read it but not the SP
-
-    sppsc_so_as_so2 = read_service_provider_product_suspension_comment.sync(
-        client=client_so2,
-        id=cast(int, sppsc_so.id),
-    )
-    assert isinstance(sppsc_so_as_so2, ServiceProviderProductSuspensionCommentResponse)
-
-    sppsc_so_as_sp = read_service_provider_product_suspension_comment.sync(
-        client=client_sp,
-        id=cast(int, sppsc_so.id),
-    )
-    assert isinstance(sppsc_so_as_sp, ErrorMessage)
-
     # SO's comment becomes open to this SO only
 
     u = update_service_provider_product_suspension_comment.sync(
@@ -276,13 +319,7 @@ def test_sppsc_so_sp(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # neither the second SO nor the SP should be able to read it
-
-    sppsc_so_as_so2 = read_service_provider_product_suspension_comment.sync(
-        client=client_so2,
-        id=cast(int, sppsc_so.id),
-    )
-    assert isinstance(sppsc_so_as_so2, ErrorMessage)
+    # SP should not be able to read it
 
     sppsc_so_as_sp = read_service_provider_product_suspension_comment.sync(
         client=client_sp,
@@ -290,36 +327,39 @@ def test_sppsc_so_sp(data):
     )
     assert isinstance(sppsc_so_as_sp, ErrorMessage)
 
+    # check they cannot read anything from the unrelated SPPS
 
-def test_sppsc_common(data):
-    (sts, _, _, _) = data
+    usppscs_as_so = list_service_provider_product_suspension_comment.sync(
+        client=client_so,
+        service_provider_product_suspension_id=f"eq.{unrelated_spps_id}",
+    )
+    assert isinstance(usppscs_as_so, list)
+    assert len(usppscs_as_so) == 0
 
-    for role in sts.COMMON_ROLES:
-        client = sts.get_client(TestEntity.TEST, role)
+    usppscs_as_sp = list_service_provider_product_suspension_comment.sync(
+        client=client_sp,
+        service_provider_product_suspension_id=f"eq.{unrelated_spps_id}",
+    )
+    assert isinstance(usppscs_as_sp, list)
+    assert len(usppscs_as_sp) == 0
 
-        sppsc_visible = list_service_provider_product_suspension_comment.sync(
-            client=client,
-        )
-        assert isinstance(sppsc_visible, list)
+    # RLS: SPPSC-SO003
+    # RLS: SPPSC-SP003
 
-        # RLS: SPPSC-COM001
-        # can read history on SPPSC they can read
-        # only checking a few entries is sufficient
-        for sppsc in sppsc_visible[:5]:
-            # endpoint: GET /service_provider_product_suspension_comment_history
-            hist = list_service_provider_product_suspension_comment_history.sync(
-                client=client,
-                service_provider_product_suspension_comment_id=f"eq.{sppsc.id}",
-            )
-            assert isinstance(hist, list)
-            assert len(hist) > 0
+    # SP can read history on the first SO's comment, and reverse, because when
+    # they were created, they were open to all involved parties
+    check_history(client_sp, sppsc_so.id)
+    check_history(client_so, sppsc_sp.id)
 
-            # endpoint: GET /service_provider_product_suspension_comment_history/{id}
-            hist_sppsc = read_service_provider_product_suspension_comment_history.sync(
-                client=client,
-                id=cast(int, hist[0].id),
-            )
-            assert isinstance(
-                hist_sppsc,
-                ServiceProviderProductSuspensionCommentHistoryResponse,
-            )
+    # delete the SPPS so that comments disappear
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    d = delete_service_provider_product_suspension.sync(
+        client=client_fiso,
+        id=spps_id,
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    # history is still reachable
+    check_history(client_sp, sppsc_so.id)
+    check_history(client_so, sppsc_sp.id)

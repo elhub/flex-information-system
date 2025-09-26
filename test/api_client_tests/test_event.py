@@ -289,7 +289,7 @@ def test_event_sp(sts):
         body=ServiceProviderProductApplicationCommentCreateRequest(
             service_provider_product_application_id=cast(int, sppa.id),
             content="Public comment",
-            visibility=ServiceProviderProductApplicationCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductApplicationCommentVisibility.ANY_INVOLVED_PARTY,
         ),
     )
     assert isinstance(sppac_public, ServiceProviderProductApplicationCommentResponse)
@@ -320,7 +320,7 @@ def test_event_sp(sts):
         body=ServiceProviderProductSuspensionCommentCreateRequest(
             service_provider_product_suspension_id=cast(int, spps.id),
             content="Public comment",
-            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
         ),
     )
     assert isinstance(sppsc_public, ServiceProviderProductSuspensionCommentResponse)

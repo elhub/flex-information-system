@@ -1315,14 +1315,12 @@ resources:
         default: same_party
         enum:
           - same_party
-          - same_party_type
-          - any_party
+          - any_involved_party
         example: same_party
         x-details: >-
           Comments marked `same_party` are visible only to the party that
-          creates them, whereas comments marked `same_party_type` can be seen by
-          all parties of the same type, and comments marked `any_party` are
-          visible to all parties that can see the application.
+          creates them, whereas comments marked `any_involved_party` can be seen
+          by all parties involved in the application.
       content:
         description: Free text content of the comment.
         format: text
@@ -1419,7 +1417,7 @@ resources:
     history:
       - list
       - read
-    history_rls: true
+    history_rls: false
     properties:
       id:
         description: Unique surrogate identifier.
@@ -1455,14 +1453,12 @@ resources:
         default: same_party
         enum:
           - same_party
-          - same_party_type
-          - any_party
+          - any_involved_party
         example: same_party
         x-details: >-
           Comments marked `same_party` are visible only to the party that
-          creates them, whereas comments marked `same_party_type` can be seen by
-          all parties of the same type, and comments marked `any_party` are
-          visible to all parties that can see the application.
+          creates them, whereas comments marked `any_involved_party` can be seen
+          by all parties involved in the suspension.
       content:
         description: Free text content of the comment.
         format: text

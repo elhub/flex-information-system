@@ -595,8 +595,7 @@
                 "type": "string",
                 "enum": [
                     "same_party",
-                    "same_party_type",
-                    "any_party"
+                    "any_involved_party"
                 ],
                 "example": "same_party"
             },
@@ -620,8 +619,7 @@
                 "type": "string",
                 "enum": [
                     "same_party",
-                    "same_party_type",
-                    "any_party"
+                    "any_involved_party"
                 ],
                 "example": "same_party"
             },

@@ -1,6 +1,7 @@
 from security_token_service import (
     SecurityTokenService,
     TestEntity,
+    AuthenticatedClient,
 )
 from flex.models import (
     SystemOperatorProductTypeCreateRequest,
@@ -38,7 +39,7 @@ from typing import cast
 def data():
     sts = SecurityTokenService()
 
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
 
     pts = list_product_type.sync(client=client_fiso)
     assert isinstance(pts, list)
@@ -154,16 +155,13 @@ def test_sppac_so_sp(data):
     # RLS: SPPAC-COM003
     #   is also tested here because both SO and SP create comments
 
-    # need a second SO for testing visibilities
-    client_so2 = sts.get_client(TestEntity.COMMON, "SO")
-
     # SO and SP both create an open comment
 
     sppac_so = create_service_provider_product_application_comment.sync(
         client=client_so,
         body=ServiceProviderProductApplicationCommentCreateRequest(
             service_provider_product_application_id=sppa_id,
-            visibility=ServiceProviderProductApplicationCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductApplicationCommentVisibility.ANY_INVOLVED_PARTY,
             content="Comment SO",
         ),
     )
@@ -173,7 +171,7 @@ def test_sppac_so_sp(data):
         client=client_sp,
         body=ServiceProviderProductApplicationCommentCreateRequest(
             service_provider_product_application_id=sppa_id,
-            visibility=ServiceProviderProductApplicationCommentVisibility.ANY_PARTY,
+            visibility=ServiceProviderProductApplicationCommentVisibility.ANY_INVOLVED_PARTY,
             content="Comment SP",
         ),
     )
@@ -193,31 +191,6 @@ def test_sppac_so_sp(data):
     )
     assert isinstance(sppac_sp_as_so, ServiceProviderProductApplicationCommentResponse)
 
-    # SO's comment becomes open to system operators only
-
-    u = update_service_provider_product_application_comment.sync(
-        client=client_so,
-        id=cast(int, sppac_so.id),
-        body=ServiceProviderProductApplicationCommentUpdateRequest(
-            visibility=ServiceProviderProductApplicationCommentVisibility.SAME_PARTY_TYPE,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    # the second SO should be able to read it but not the SP
-
-    sppac_so_as_so2 = read_service_provider_product_application_comment.sync(
-        client=client_so2,
-        id=cast(int, sppac_so.id),
-    )
-    assert isinstance(sppac_so_as_so2, ServiceProviderProductApplicationCommentResponse)
-
-    sppac_so_as_sp = read_service_provider_product_application_comment.sync(
-        client=client_sp,
-        id=cast(int, sppac_so.id),
-    )
-    assert isinstance(sppac_so_as_sp, ErrorMessage)
-
     # SO's comment becomes open to this SO only
 
     u = update_service_provider_product_application_comment.sync(
@@ -229,45 +202,13 @@ def test_sppac_so_sp(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # neither the second SO nor the SP should be able to read it
-
-    sppac_so_as_so2 = read_service_provider_product_application_comment.sync(
-        client=client_so2,
-        id=cast(int, sppac_so.id),
-    )
-    assert isinstance(sppac_so_as_so2, ErrorMessage)
+    # SP should not be able to read it
 
     sppac_so_as_sp = read_service_provider_product_application_comment.sync(
         client=client_sp,
         id=cast(int, sppac_so.id),
     )
     assert isinstance(sppac_so_as_sp, ErrorMessage)
-
-    # TODO: uncomment for testing same_party visibility a little better
-
-    # # the second SO's entity is added to the party
-
-    # client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-
-    # pm = create_party_membership.sync(
-    #     client=client_fiso,
-    #     body=PartyMembershipCreateRequest(
-    #         party_id=so_id,
-    #         entity_id=sts.get_userinfo(client_so2)["entity_id"],
-    #     ),
-    # )
-    # assert isinstance(pm, PartyMembershipResponse)
-
-    # # the second SO should now be able to read the comment
-
-    # # NOTE: this method does not exist yet
-    # # client_so2 = sts.get_client_by_party_id(TestEntity.COMMON, so_id)
-
-    # sppac_so_as_so2 = read_service_provider_product_application_comment.sync(
-    #     client=client_so2,
-    #     id=cast(int, sppac_so.id),
-    # )
-    # assert isinstance(sppac_so_as_so2, ServiceProviderProductApplicationCommentResponse)
 
 
 def test_sppa_common(data):
