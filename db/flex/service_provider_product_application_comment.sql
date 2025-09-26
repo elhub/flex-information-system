@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:service-provider-product-application-comment-create runOnChange:false endDelimiter:--
+-- validCheckSum: 9:97f1f204aa46130c720cd3b63b49cb8d
 CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_provider_product_application_id bigint NOT NULL,
