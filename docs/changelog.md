@@ -4,6 +4,13 @@ This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
 
+## 26.09.2025
+
+* **Updated the `visibility` field's specification on the _SP product application comment_ and the _SP product suspension comment_ resources.**  
+  Comments now have only two possible visibilities: they can either be private
+  comments internal to a given party, or comments opened to any party related to
+  the application or suspension.
+
 ## 16.09.2025
 
 * **Renamed all `last_X` timestamp fields into `X_at`.**
