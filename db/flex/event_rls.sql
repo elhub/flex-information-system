@@ -106,8 +106,8 @@ USING (
     )
 );
 
--- RLS: EVENT-SP002
-CREATE POLICY "EVENT_SP002" ON event
+-- RLS: EVENT-SP003
+CREATE POLICY "EVENT_SP003" ON event
 FOR SELECT
 TO flex_service_provider
 USING (
@@ -119,21 +119,21 @@ USING (
     )
 );
 
--- RLS: EVENT-SP003
-CREATE POLICY "EVENT_SP003" ON event
+-- RLS: EVENT-SP002
+CREATE POLICY "EVENT_SP002" ON event
 FOR SELECT
 TO flex_service_provider
 USING (
     source_resource = 'technical_resource'
     AND EXISTS (
         SELECT 1
-        FROM flex.technical_resource AS tr
+        FROM flex.technical_resource_history AS trh
             INNER JOIN flex.controllable_unit AS cu
-                ON tr.controllable_unit_id = cu.id
+                ON trh.controllable_unit_id = cu.id
             INNER JOIN flex.controllable_unit_service_provider AS cusp
                 ON cu.id = cusp.controllable_unit_id
                     AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
-        WHERE tr.id = event.source_id -- noqa
+        WHERE trh.id = event.source_id -- noqa
             AND cusp.service_provider_id = (SELECT flex.current_party())
     )
 );
@@ -187,10 +187,10 @@ TO flex_service_provider
 USING (
     source_resource = 'service_providing_group_membership' AND EXISTS (
         SELECT 1
-        FROM flex.service_providing_group_membership AS spgm
+        FROM flex.service_providing_group_membership_history AS spgmh
             INNER JOIN flex.service_providing_group AS spg
-                ON spgm.service_providing_group_id = spg.id
-        WHERE spgm.id = event.source_id -- noqa
+                ON spgmh.service_providing_group_id = spg.id
+        WHERE spgmh.id = event.source_id -- noqa
             AND spg.service_provider_id = (SELECT flex.current_party())
     )
 );
@@ -263,10 +263,11 @@ USING (
     source_resource = 'service_provider_product_suspension_comment'
     AND EXISTS (
         SELECT 1
-        FROM flex.service_provider_product_suspension_comment AS sppsc
-            INNER JOIN flex.service_provider_product_suspension AS spps
-                ON sppsc.service_provider_product_suspension_id = spps.id
-        WHERE sppsc.id = event.source_id -- noqa
-            AND spps.service_provider_id = (SELECT flex.current_party())
+        FROM flex.service_provider_product_suspension_comment_history AS sppsch
+            INNER JOIN flex.service_provider_product_suspension_history AS sppsh
+                ON sppsch.service_provider_product_suspension_id = sppsh.id
+        WHERE sppsch.id = event.source_id -- noqa
+            AND sppsh.service_provider_id = (SELECT flex.current_party())
+            AND sppsch.record_time_range @> lower(event.record_time_range) -- noqa
     )
 );

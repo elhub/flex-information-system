@@ -4,6 +4,7 @@ from security_token_service import (
 )
 from flex.models import (
     ErrorMessage,
+    EmptyObject,
     EventResponse,
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
@@ -53,6 +54,7 @@ from flex.api.controllable_unit_service_provider import (
 )
 from flex.api.technical_resource import (
     create_technical_resource,
+    delete_technical_resource,
 )
 from flex.api.system_operator_product_type import (
     create_system_operator_product_type,
@@ -66,6 +68,7 @@ from flex.api.service_provider_product_application_comment import (
 )
 from flex.api.service_provider_product_suspension import (
     create_service_provider_product_suspension,
+    delete_service_provider_product_suspension,
 )
 from flex.api.service_provider_product_suspension_comment import (
     create_service_provider_product_suspension_comment,
@@ -76,6 +79,7 @@ from flex.api.service_providing_group import (
 )
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
+    delete_service_providing_group_membership,
 )
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
@@ -372,6 +376,30 @@ def test_event_sp(sts):
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
+    # delete resources to test that we can still see the create events after
+    # + that we can see delete events
+
+    d = delete_technical_resource.sync(
+        client=client_fiso,
+        id=cast(int, tr.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    d = delete_service_providing_group_membership.sync(
+        client=client_fiso,
+        id=cast(int, spgm.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    d = delete_service_provider_product_suspension.sync(
+        client=client_fiso,
+        id=cast(int, spps.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
     events = list_event.sync(client=client_sp, limit="10000")
     assert isinstance(events, list)
     assert len(events) > 0
@@ -395,6 +423,13 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type == "no.elhub.flex.technical_resource.create"
+        and e.source == f"/technical_resource/{tr.id}"
+    )
+    # and delete for TR
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.technical_resource.delete"
         and e.source == f"/technical_resource/{tr.id}"
     )
 
@@ -455,6 +490,13 @@ def test_event_sp(sts):
         if e.type == "no.elhub.flex.service_providing_group_membership.create"
         and e.source == f"/service_providing_group_membership/{spgm.id}"
     )
+    # + delete event
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_providing_group_membership.delete"
+        and e.source == f"/service_providing_group_membership/{spgm.id}"
+    )
 
     # RLS: EVENT-SP008
     # same for SPGGP
@@ -490,6 +532,13 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type == "no.elhub.flex.service_provider_product_suspension.create"
+        and e.source == f"/service_provider_product_suspension/{spps.id}"
+    )
+    # + delete event
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension.delete"
         and e.source == f"/service_provider_product_suspension/{spps.id}"
     )
 
