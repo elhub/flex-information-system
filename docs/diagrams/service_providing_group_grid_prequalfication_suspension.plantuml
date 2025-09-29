@@ -68,7 +68,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 
-loop All All other ISOs and all PSOs procuring the SPG
+loop All other ISOs and all PSOs procuring the SPG
     |||
     FIS --> SO: Notify
     deactivate FIS
