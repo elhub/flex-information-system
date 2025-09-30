@@ -1,3 +1,4 @@
 BUSINESS_ID,BUSINESS_ID_TYPE,ENTITY_ID,NAME,TYPE,ROLE,STATUS
 123456789,org,"(select id from flex.entity where business_id='123456789')",LB Entity AS,organisation,flex_organisation,active
 a8976a02-15ab-4740-89fa-38f9924b4f87,uuid,"(select id from flex.entity where business_id='123456789')",LB Entity AS,end_user,flex_end_user,active
+1337123400004,gln,"(select id from flex.entity where business_id='987654321')",LB Nett AS,system_operator,flex_system_operator,active

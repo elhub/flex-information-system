@@ -291,6 +291,24 @@ databaseChangeLog:
             primaryKey: BUSINESS_ID
             header: true
 
+  - changeSet:
+      id: mga-structure-data
+      author: flex
+      changes:
+        - loadUpdateData:
+            file: ./structure_data/mga.csv
+            relativeToChangelogFile: true
+            schemaName: flex
+            tableName: metering_grid_area
+            separator: ";"  # valid time ranges contain commas
+            primaryKey: BUSINESS_ID
+            header: true
+            columns:
+              # allow computing the range from a query
+              - column:
+                  header: VALID_TIME_RANGE
+                  type: COMPUTED
+
   # Replication slots
   - include:
       file: ./replication/slots.sql
