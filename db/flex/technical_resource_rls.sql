@@ -155,11 +155,13 @@ CREATE POLICY "TR_SO002"
 ON technical_resource_history
 FOR SELECT
 TO flex_system_operator
-USING (EXISTS (
-    SELECT 1
-    FROM controllable_unit
-    WHERE controllable_unit.id = technical_resource_history.controllable_unit_id -- noqa
-));
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit
+        WHERE controllable_unit.id = technical_resource_history.controllable_unit_id -- noqa
+    )
+);
 
 -- RLS: TR-SP001
 GRANT INSERT, UPDATE, DELETE ON technical_resource TO flex_service_provider;
