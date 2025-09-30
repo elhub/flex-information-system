@@ -376,6 +376,46 @@ def test_event_sp(sts):
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
+    events = list_event.sync(client=client_sp, limit="10000")
+    assert isinstance(events, list)
+    assert len(events) > 0
+
+    # endpoint: GET /event/{id}
+    e = read_event.sync(client=client_sp, id=cast(int, events[0].id))
+    assert isinstance(e, EventResponse)
+
+    # now SP can see CU/TR creation events
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.controllable_unit.create"
+        and e.source == f"/controllable_unit/{cu.id}"
+    )
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.technical_resource.create"
+        and e.source == f"/technical_resource/{tr.id}"
+    )
+
+    # RLS: EVENT-SP007
+    # SP can see SPGM when they are SP on the SPG
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_providing_group_membership.create"
+        and e.source == f"/service_providing_group_membership/{spgm.id}"
+    )
+
+    # RLS: EVENT-SP011
+    # SP can see SPPS events when they are SP
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension.create"
+        and e.source == f"/service_provider_product_suspension/{spps.id}"
+    )
+
     # delete resources to test that we can still see the create events after
     # + that we can see delete events
 
@@ -400,32 +440,12 @@ def test_event_sp(sts):
     )
     assert not isinstance(d, ErrorMessage)
 
+    # re-read events
     events = list_event.sync(client=client_sp, limit="10000")
     assert isinstance(events, list)
     assert len(events) > 0
 
-    # endpoint: GET /event/{id}
-    e = read_event.sync(client=client_sp, id=cast(int, events[0].id))
-    assert isinstance(e, EventResponse)
-
-    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
-    events_other = list_event.sync(client=client_other_sp, limit="10000")
-    assert isinstance(events_other, list)
-
-    # now SP can see CU/TR creation events
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.controllable_unit.create"
-        and e.source == f"/controllable_unit/{cu.id}"
-    )
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.technical_resource.create"
-        and e.source == f"/technical_resource/{tr.id}"
-    )
-    # and delete for TR
+    # SP can see delete for TR
     assert any(
         e
         for e in events
@@ -436,6 +456,22 @@ def test_event_sp(sts):
     # but never lookup
     assert not any(
         e for e in events if e.type == "no.elhub.flex.controllable_unit.lookup"
+    )
+
+    # SP can see delete for SPGM
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_providing_group_membership.delete"
+        and e.source == f"/service_providing_group_membership/{spgm.id}"
+    )
+
+    # SP can see delete for SPPS
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension.delete"
+        and e.source == f"/service_provider_product_suspension/{spps.id}"
     )
 
     # RLS: EVENT-SP003
@@ -482,22 +518,6 @@ def test_event_sp(sts):
         and e.source == f"/service_providing_group/{spg.id}"
     )
 
-    # RLS: EVENT-SP007
-    # SP can see SPGM when they are SP on the SPG
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.service_providing_group_membership.create"
-        and e.source == f"/service_providing_group_membership/{spgm.id}"
-    )
-    # + delete event
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.service_providing_group_membership.delete"
-        and e.source == f"/service_providing_group_membership/{spgm.id}"
-    )
-
     # RLS: EVENT-SP008
     # same for SPGGP
     assert any(
@@ -526,22 +546,6 @@ def test_event_sp(sts):
         and e.source == f"/system_operator_product_type/{sopt.id}"
     )
 
-    # RLS: EVENT-SP011
-    # SP can see SPPS events when they are SP
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.service_provider_product_suspension.create"
-        and e.source == f"/service_provider_product_suspension/{spps.id}"
-    )
-    # + delete event
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.service_provider_product_suspension.delete"
-        and e.source == f"/service_provider_product_suspension/{spps.id}"
-    )
-
     # RLS: EVENT-SP012
     # same for comments but only if they have the right visibility
     assert any(
@@ -558,6 +562,10 @@ def test_event_sp(sts):
         and e.source
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
+
+    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
+    events_other = list_event.sync(client=client_other_sp, limit="10000")
+    assert isinstance(events_other, list)
 
     # other SP cannot see stuff related to the first SP
     assert not any(

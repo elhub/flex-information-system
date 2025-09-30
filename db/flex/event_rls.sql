@@ -126,15 +126,25 @@ TO flex_service_provider
 USING (
     source_resource = 'technical_resource'
     AND EXISTS (
+        WITH
+            trh AS (
+                SELECT tr.controllable_unit_id
+                FROM flex.technical_resource AS tr
+                WHERE tr.id = event.source_id -- noqa
+                UNION ALL
+                SELECT trh.controllable_unit_id
+                FROM flex.technical_resource_history AS trh
+                WHERE trh.id = event.source_id -- noqa
+            )
+
         SELECT 1
-        FROM flex.technical_resource_history AS trh
+        FROM trh
             INNER JOIN flex.controllable_unit AS cu
                 ON trh.controllable_unit_id = cu.id
             INNER JOIN flex.controllable_unit_service_provider AS cusp
                 ON cu.id = cusp.controllable_unit_id
                     AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
-        WHERE trh.id = event.source_id -- noqa
-            AND cusp.service_provider_id = (SELECT flex.current_party())
+        WHERE cusp.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -186,12 +196,22 @@ FOR SELECT
 TO flex_service_provider
 USING (
     source_resource = 'service_providing_group_membership' AND EXISTS (
+        WITH
+            spgmh AS (
+                SELECT spgm.service_providing_group_id
+                FROM flex.service_providing_group_membership AS spgm
+                WHERE spgm.id = event.source_id -- noqa
+                UNION ALL
+                SELECT spgmh.service_providing_group_id
+                FROM flex.service_providing_group_membership_history AS spgmh
+                WHERE spgmh.id = event.source_id -- noqa
+            )
+
         SELECT 1
-        FROM flex.service_providing_group_membership_history AS spgmh
+        FROM spgmh
             INNER JOIN flex.service_providing_group AS spg
                 ON spgmh.service_providing_group_id = spg.id
-        WHERE spgmh.id = event.source_id -- noqa
-            AND spg.service_provider_id = (SELECT flex.current_party())
+        WHERE spg.service_provider_id = (SELECT flex.current_party())
     )
 );
 
@@ -262,12 +282,28 @@ TO flex_service_provider
 USING (
     source_resource = 'service_provider_product_suspension_comment'
     AND EXISTS (
+        WITH
+            sppsch AS (
+                SELECT
+                    sppsc.service_provider_product_suspension_id,
+                    sppsc.record_time_range
+                FROM flex.service_provider_product_suspension_comment AS sppsc
+                WHERE sppsc.id = event.source_id -- noqa
+                UNION ALL
+                SELECT
+                    sppsch.service_provider_product_suspension_id,
+                    sppsch.record_time_range
+                FROM
+                    flex.service_provider_product_suspension_comment_history
+                        AS sppsch -- noqa
+                WHERE sppsch.id = event.source_id -- noqa
+            )
+
         SELECT 1
-        FROM flex.service_provider_product_suspension_comment_history AS sppsch
+        FROM sppsch
             INNER JOIN flex.service_provider_product_suspension_history AS sppsh
                 ON sppsch.service_provider_product_suspension_id = sppsh.id
-        WHERE sppsch.id = event.source_id -- noqa
-            AND sppsh.service_provider_id = (SELECT flex.current_party())
+        WHERE sppsh.service_provider_id = (SELECT flex.current_party())
             AND sppsch.record_time_range @> lower(event.record_time_range) -- noqa
     )
 );
