@@ -199,7 +199,10 @@ def test_ptym_org(sts):
         client=client_fiso,
         id=cast(int, org_pm.id),
         body=PartyMembershipUpdateRequest(
-            scopes=[AuthScope.MANAGEDATAPARTY_MEMBERSHIP],
+            scopes=[
+                AuthScope.MANAGEDATAPARTY_MEMBERSHIP,
+                AuthScope.READDATA,
+            ],
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -230,17 +233,6 @@ def test_ptym_org(sts):
     # --------------------------------------------------------------------------
     # RLS: PTYM-ORG002
     # they can read history on such PM
-
-    # TODO: edit when the manage:data:party_membership_history scope exists
-    u = update_party_membership.sync(
-        client=client_fiso,
-        id=cast(int, org_pm.id),
-        body=PartyMembershipUpdateRequest(
-            scopes=[AuthScope.MANAGEDATA],
-        ),
-    )
-    assert not (isinstance(u, ErrorMessage))
-    client_org = sts.get_client(TestEntity.TEST, "ORG", reset=True)
 
     pmhs = list_party_membership_history.sync(
         client=client_org,
