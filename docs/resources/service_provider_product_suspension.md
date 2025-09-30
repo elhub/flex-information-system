@@ -80,8 +80,9 @@ No policies.
 | Policy key | Policy                                                                                            | Status |
 |------------|---------------------------------------------------------------------------------------------------|--------|
 | SPPS-SO001 | Create, read, update and delete their own SPPS.                                                   | DONE   |
-| SPPS-SO002 | Read SPPS targeted at any SP they have qualified for at least one of the product types.           | DONE   |
-| SPPS-SO003 | Read history on SPPS targeted at any SP they had qualified for at least one of the product types. | DONE   |
+| SPPS-SO002 | Read history on their own SPPS.                                                                   | DONE   |
+| SPPS-SO003 | Read SPPS targeted at any SP they have qualified for at least one of the product types.           | DONE   |
+| SPPS-SO004 | Read history on SPPS targeted at any SP they had qualified for at least one of the product types. | DONE   |
 
 #### Service Provider
 

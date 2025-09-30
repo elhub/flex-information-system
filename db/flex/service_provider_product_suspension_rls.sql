@@ -68,7 +68,16 @@ TO flex_system_operator
 USING (procuring_system_operator_id = (SELECT flex.current_party()));
 
 -- RLS: SPPS-SO002
+GRANT SELECT ON service_provider_product_suspension_history
+TO flex_system_operator;
 CREATE POLICY "SPPS_SO002"
+ON service_provider_product_suspension_history
+FOR SELECT
+TO flex_system_operator
+USING (procuring_system_operator_id = (SELECT flex.current_party()));
+
+-- RLS: SPPS-SO003
+CREATE POLICY "SPPS_SO003"
 ON service_provider_product_suspension
 FOR SELECT
 TO flex_system_operator
@@ -85,12 +94,10 @@ USING (
     )
 );
 
--- RLS: SPPS-SO003
+-- RLS: SPPS-SO004
 -- same check as above but with history tables, so that qualification can be
 -- removed later and/or suspension deleted, but history should still be readable
-GRANT SELECT ON service_provider_product_suspension_history
-TO flex_system_operator;
-CREATE POLICY "SPPS_SO003"
+CREATE POLICY "SPPS_SO004"
 ON service_provider_product_suspension_history
 FOR SELECT
 TO flex_system_operator

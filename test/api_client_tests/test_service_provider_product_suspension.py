@@ -264,7 +264,7 @@ def test_spps_so(data):
     )
     assert not isinstance(d, ErrorMessage)
 
-    # RLS: SPPS-SO002
+    # RLS: SPPS-SO003
 
     # the other SO will create a SPPS targeting the same SP with one common
     # product type, and the first SO must be able to read it
@@ -287,7 +287,7 @@ def test_spps_so(data):
     )
     assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
 
-    # RLS: SPPS-SO003
+    # RLS: SPPS-SO004
     # history still readable after SPPS deletion / SPPA unqualification
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -302,3 +302,4 @@ def test_spps_so(data):
     assert not isinstance(u, ErrorMessage)
 
     check_history(client_so, spps.id)
+    check_history(client_so2, spps.id)
