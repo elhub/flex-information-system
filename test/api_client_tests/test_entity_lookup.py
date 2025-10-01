@@ -6,11 +6,9 @@ from flex.models import (
     EntityLookupRequest,
     EntityLookupRequestType,
     EntityLookupResponse,
-    EntityResponse,
     ErrorMessage,
 )
 from flex.api.entity import (
-    read_entity,
     list_entity,
     call_entity_lookup,
 )
@@ -103,12 +101,10 @@ def test_entity_lookup_params(sts):
 def test_entity_lookup_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    e = read_entity.sync(
-        client=client_fiso,
-        id=1,
-    )
-    assert isinstance(e, EntityResponse)
-    assert e.business_id == "13370000000"
+    es = list_entity.sync(client=client_fiso, business_id="eq.13370000000")
+    assert isinstance(es, list)
+    assert len(es) == 1
+    ent_id = es[0].id
 
     # lookup existing entity
     el = call_entity_lookup.sync(
@@ -121,7 +117,7 @@ def test_entity_lookup_fiso(sts):
     )
     assert isinstance(el, EntityLookupResponse)
 
-    assert el.entity_id == e.id
+    assert el.entity_id == ent_id
 
     def random_number(length):
         return "".join([random.choice(string.digits) for _ in range(length)])
