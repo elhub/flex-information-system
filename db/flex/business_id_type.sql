@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS flex.business_id_type (
     )
 );
 
--- changeset flex:validate-business-id endDelimiter:-- runOnChange: true
+-- changeset flex:validate-business-id endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION flex.validate_business_id(
     business_id text, business_id_type text
 )
@@ -23,6 +23,14 @@ BEGIN
 
     IF business_id_type = 'eic_x' THEN
         IF business_id !~ '^[0-9]{2}X[0-9A-Z-]{12}[0-9A-Z]$' THEN
+            RETURN false;
+        END IF;
+
+        RETURN (
+            eic.validate_check_char(business_id)
+        );
+    ELSIF business_id_type = 'eic_y' THEN
+        IF business_id !~ '^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$' THEN
             RETURN false;
         END IF;
 
