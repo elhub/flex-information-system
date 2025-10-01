@@ -309,7 +309,7 @@ CREATE VIEW notice AS (
     UNION ALL
     SELECT
         spps.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_provider_product_suspension.inactive' AS type, -- noqa
+        'no.elhub.flex.service_provider_product_suspension.lingering' AS type, -- noqa
         '/service_provider_product_suspension/' || spps.id AS source,
         null::jsonb AS data -- noqa
     FROM flex.service_provider_product_suspension AS spps

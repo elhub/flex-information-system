@@ -22,7 +22,7 @@ from the responsible party.
 | no.elhub.flex.service_providing_group_membership.valid_time.outside_contract  | Inconsistency: SPG contains expired CU(s)                                              | SP                | Validate and update SPG membership                                                                |
 | no.elhub.flex.service_providing_group_product_application.status.requested    | SPG product application status requested                                               | PSO               | Initiate SPG product prequalification and update status                                           |
 | no.elhub.flex.service_provider_product_suspension.product_type.not_qualified  | Inconsistency: suspending a SP on a product type that they are no longer qualified for | PSO               | Delete the suspension because it is useless                                                       |
-| no.elhub.flex.service_provider_product_suspension.inactive                    | Inactivity: nothing has happened on the suspension in 2 weeks                          | PSO               | Remind the service provider to apply the actions required to close this suspension                |
+| no.elhub.flex.service_provider_product_suspension.lingering                   | Inactivity: nothing has happened on the suspension in 2 weeks                          | PSO               | Suspension is a temporary procedure. Consider reinstating the SP or removing their qualification. |
 
 ## Relevant links
 
