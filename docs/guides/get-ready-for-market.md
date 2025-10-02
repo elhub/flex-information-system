@@ -49,7 +49,7 @@ We are using the following notation:
 
 * `ellipses` - start and end states
 * `rectangles` - processes
-    * `solid border` - main process
+    * `solid border` - main process ([Processes](../processes/index.md))
     * `dotted border` - sub-process driving/responsible market party
 * colors indicating the driving/responsible market party for a (sub-)process
     * `green` - system operator
