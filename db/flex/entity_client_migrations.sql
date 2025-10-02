@@ -69,8 +69,9 @@ END;
 $$;
 
 -- changeset flex:entity-client-check-assumable-party-trigger runOnChange:true endDelimiter:--
+-- ECL-VAL001
 CREATE OR REPLACE TRIGGER entity_client_check_assumable_party
-BEFORE UPDATE ON entity_client
+BEFORE INSERT OR UPDATE ON entity_client
 FOR EACH ROW
 WHEN (new.party_id IS NOT null)
 EXECUTE FUNCTION entity_client_check_assumable_party();

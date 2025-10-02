@@ -25,7 +25,9 @@ methods. An entity can have several clients registered.
 
 ## Validation Rules
 
-No validation rules.
+| Validation rule key | Validation rule                                               | Status |
+|---------------------|---------------------------------------------------------------|--------|
+| ECL-VAL001          | Entity clients can only target a party the entity can assume. | DONE   |
 
 ## Notifications
 
