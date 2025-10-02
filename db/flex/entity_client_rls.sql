@@ -24,11 +24,14 @@ CREATE OR REPLACE FUNCTION user_is_human()
 RETURNS boolean
 SECURITY INVOKER
 LANGUAGE sql
+STABLE
 AS $$
-    -- TODO: also check the user did login without an entity client
     SELECT EXISTS (
-        SELECT 1 FROM flex.entity AS e
-        WHERE e.id = (SELECT flex.current_entity()) AND e.type = 'person'
+        SELECT 1 FROM flex.identity AS i
+            INNER JOIN flex.entity AS e ON i.entity_id = e.id
+        WHERE i.id = (SELECT flex.current_identity())
+            AND e.type = 'person'
+            AND i.client_id IS null
     )
 $$;
 
