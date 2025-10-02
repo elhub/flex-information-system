@@ -272,6 +272,7 @@ databaseChangeLog:
   - changeSet:
       id: entity-structure-data
       author: flex
+      runOnChange: true
       changes:
         - loadUpdateData:
             file: ./structure_data/entity.csv
@@ -285,6 +286,7 @@ databaseChangeLog:
   - changeSet:
       id: party-structure-data
       author: flex
+      runOnChange: true
       changes:
         - loadUpdateData:
             file: ./structure_data/party.csv
@@ -298,6 +300,7 @@ databaseChangeLog:
   - changeSet:
       id: metering-grid-area-structure-data
       author: flex
+      runOnChange: true
       changes:
         - loadUpdateData:
             file: ./structure_data/metering_grid_area.csv
