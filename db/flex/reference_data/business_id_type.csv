@@ -6,3 +6,4 @@ gsrn,Global Service Relation Number
 gln,Global Location Number
 uuid,Universally Unique IDentifier
 eic_x,Energy Identification Code (Market Parties)
+eic_y,Energy Identification Code (Grid Areas)

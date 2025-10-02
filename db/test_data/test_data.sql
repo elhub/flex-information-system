@@ -571,10 +571,10 @@ AS $$
 DECLARE
     l_eic text;
 BEGIN
-    -- EIC of the form PPX-NNNN-NNNN--
+    -- EIC of the form PPY-NNNN-NNNN--
     -- where P is a character in the prefix and N is a character in the name
     l_eic := eic.add_check_char(
-        lpad(left(in_prefix::text, 2), 2, '0') || 'X-' ||
+        lpad(left(in_prefix::text, 2), 2, '0') || 'Y-' ||
         upper(replace(rpad(left(in_entity_name, 10), 10), ' ', '-')) || '-'
     );
 

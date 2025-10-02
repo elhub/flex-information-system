@@ -2,11 +2,10 @@
 -- Manually managed file
 
 -- changeset flex:metering-grid-area runOnChange:false endDelimiter:--
+-- validCheckSum: 9:c8e823394c7199030f393a7360a14616
 CREATE TABLE IF NOT EXISTS metering_grid_area (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    business_id text UNIQUE NOT NULL CHECK (
-        validate_business_id(business_id, 'eic_x')
-    ),
+    business_id text UNIQUE NOT NULL,
     name text NOT NULL CHECK ((char_length(name) <= 128)),
     price_area text NOT NULL CHECK (
         price_area IN ('NO1', 'NO2', 'NO3', 'NO4', 'NO5')
@@ -27,6 +26,10 @@ CREATE TABLE IF NOT EXISTS metering_grid_area (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
+    CONSTRAINT metering_grid_area_business_id_check
+    CHECK (
+        validate_business_id(business_id, 'eic_y')
+    ),
     CONSTRAINT metering_grid_area_system_operator_fkey
     FOREIGN KEY (
         system_operator_id, system_operator_party_type
