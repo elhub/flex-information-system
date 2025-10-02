@@ -58,7 +58,7 @@ load: liquibase
         psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
             -c "BEGIN" \
             -c "SELECT set_config('flex.current_identity', '0', true);" \
-            -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', client_secret='87h87hijhulO', recorded_by = 0 WHERE id = (SELECT e.id FROM flex.entity AS e WHERE name ilike '${entity}%' AND NOT name ilike '%AS');" \
+            -c "UPDATE flex.entity_client SET client_id = '${UUID}', public_key = '${PUBKEY}', client_secret='87h87hijhulO', recorded_by = 0 WHERE entity_id = (SELECT e.id FROM flex.entity AS e WHERE name ilike '${entity}%' AND NOT name ilike '%AS');" \
             -c "COMMIT"
     done
 
@@ -67,7 +67,7 @@ load: liquibase
     psql -X -v ON_ERROR_STOP=1 -d flex -U postgres \
         -c "BEGIN" \
         -c "SELECT set_config('flex.current_identity', '0', true);" \
-        -c "UPDATE flex.entity_client SET client_id = '${UUID_TESTAS}', client_secret='87h87hijhulO', recorded_by = 0 WHERE id = (SELECT e.id FROM flex.entity AS e WHERE name = 'Test Suite AS');" \
+        -c "UPDATE flex.entity_client SET client_id = '${UUID_TESTAS}', client_secret='87h87hijhulO', recorded_by = 0 WHERE entity_id = (SELECT e.id FROM flex.entity AS e WHERE name = 'Test Suite AS');" \
         -c "COMMIT"
 
     docker compose kill -s SIGUSR1 postgrest

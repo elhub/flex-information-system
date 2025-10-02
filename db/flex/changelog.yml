@@ -202,6 +202,9 @@ databaseChangeLog:
       maxDepth: 1
 
   - include:
+      file: ./metering_grid_area_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true
   - include:
@@ -241,6 +244,7 @@ databaseChangeLog:
   - changeSet:
       id: business-id-type-reference-data
       author: flex
+      validCheckSum: 9:1b2b49b6c93cea9eb2d24459a538974b
       changes:
         - loadUpdateData:
             file: ./reference_data/business_id_type.csv

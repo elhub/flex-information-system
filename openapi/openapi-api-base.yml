@@ -299,11 +299,24 @@ components:
         party:
           description: Updated fields of the party.
           $ref: '#/components/schemas/party'
+    notice_data_product_type_not_qualified:
+      description: >-
+        Format of the data field in a notice of type
+        no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+      properties:
+        product_type_ids:
+          description: List of product types that are not qualified.
+          type: array
+          items:
+            format: bigint
+            type: integer
+            example: 2
     notice_data:
       oneOf:
         - $ref: '#/components/schemas/notice_data_valid_time_outside_contract'
         - $ref: '#/components/schemas/notice_data_party_missing'
         - $ref: '#/components/schemas/notice_data_party_outdated'
+        - $ref: '#/components/schemas/notice_data_product_type_not_qualified'
 paths:
   /openapi.json:
     get:

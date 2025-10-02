@@ -302,3 +302,4 @@ def test_spps_so(data):
     assert not isinstance(u, ErrorMessage)
 
     check_history(client_so, spps.id)
+    check_history(client_so2, spps.id)

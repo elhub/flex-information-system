@@ -4,6 +4,7 @@ from security_token_service import (
 )
 from flex.models import (
     ErrorMessage,
+    EmptyObject,
     EventResponse,
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
@@ -53,6 +54,7 @@ from flex.api.controllable_unit_service_provider import (
 )
 from flex.api.technical_resource import (
     create_technical_resource,
+    delete_technical_resource,
 )
 from flex.api.system_operator_product_type import (
     create_system_operator_product_type,
@@ -66,6 +68,7 @@ from flex.api.service_provider_product_application_comment import (
 )
 from flex.api.service_provider_product_suspension import (
     create_service_provider_product_suspension,
+    delete_service_provider_product_suspension,
 )
 from flex.api.service_provider_product_suspension_comment import (
     create_service_provider_product_suspension_comment,
@@ -76,6 +79,7 @@ from flex.api.service_providing_group import (
 )
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
+    delete_service_providing_group_membership,
 )
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
@@ -184,6 +188,9 @@ def test_event_sp(sts):
     client_so = sts.fresh_client(TestEntity.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
+    client_eu = sts.fresh_client(TestEntity.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -228,7 +235,7 @@ def test_event_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="EVENT-TEST-CONTRACT",
             valid_from="2020-01-01T00:00:00+1",
             valid_to=None,
@@ -380,10 +387,6 @@ def test_event_sp(sts):
     e = read_event.sync(client=client_sp, id=cast(int, events[0].id))
     assert isinstance(e, EventResponse)
 
-    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
-    events_other = list_event.sync(client=client_other_sp, limit="10000")
-    assert isinstance(events_other, list)
-
     # now SP can see CU/TR creation events
     assert any(
         e
@@ -398,9 +401,80 @@ def test_event_sp(sts):
         and e.source == f"/technical_resource/{tr.id}"
     )
 
+    # RLS: EVENT-SP007
+    # SP can see SPGM when they are SP on the SPG
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_providing_group_membership.create"
+        and e.source == f"/service_providing_group_membership/{spgm.id}"
+    )
+
+    # RLS: EVENT-SP011
+    # SP can see SPPS events when they are SP
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension.create"
+        and e.source == f"/service_provider_product_suspension/{spps.id}"
+    )
+
+    # delete resources to test that we can still see the create events after
+    # + that we can see delete events
+
+    d = delete_technical_resource.sync(
+        client=client_fiso,
+        id=cast(int, tr.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    d = delete_service_providing_group_membership.sync(
+        client=client_fiso,
+        id=cast(int, spgm.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    d = delete_service_provider_product_suspension.sync(
+        client=client_fiso,
+        id=cast(int, spps.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    # re-read events
+    events = list_event.sync(client=client_sp, limit="10000")
+    assert isinstance(events, list)
+    assert len(events) > 0
+
+    # SP can see delete for TR
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.technical_resource.delete"
+        and e.source == f"/technical_resource/{tr.id}"
+    )
+
     # but never lookup
     assert not any(
         e for e in events if e.type == "no.elhub.flex.controllable_unit.lookup"
+    )
+
+    # SP can see delete for SPGM
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_providing_group_membership.delete"
+        and e.source == f"/service_providing_group_membership/{spgm.id}"
+    )
+
+    # SP can see delete for SPPS
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_provider_product_suspension.delete"
+        and e.source == f"/service_provider_product_suspension/{spps.id}"
     )
 
     # RLS: EVENT-SP003
@@ -447,15 +521,6 @@ def test_event_sp(sts):
         and e.source == f"/service_providing_group/{spg.id}"
     )
 
-    # RLS: EVENT-SP007
-    # SP can see SPGM when they are SP on the SPG
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.service_providing_group_membership.create"
-        and e.source == f"/service_providing_group_membership/{spgm.id}"
-    )
-
     # RLS: EVENT-SP008
     # same for SPGGP
     assert any(
@@ -484,15 +549,6 @@ def test_event_sp(sts):
         and e.source == f"/system_operator_product_type/{sopt.id}"
     )
 
-    # RLS: EVENT-SP011
-    # SP can see SPPS events when they are SP
-    assert any(
-        e
-        for e in events
-        if e.type == "no.elhub.flex.service_provider_product_suspension.create"
-        and e.source == f"/service_provider_product_suspension/{spps.id}"
-    )
-
     # RLS: EVENT-SP012
     # same for comments but only if they have the right visibility
     assert any(
@@ -509,6 +565,10 @@ def test_event_sp(sts):
         and e.source
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
+
+    client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
+    events_other = list_event.sync(client=client_other_sp, limit="10000")
+    assert isinstance(events_other, list)
 
     # other SP cannot see stuff related to the first SP
     assert not any(
