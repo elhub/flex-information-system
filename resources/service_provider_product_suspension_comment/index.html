@@ -2245,7 +2245,7 @@ Several comments can be added to a given suspension.</p>
 <tr>
 <td><a name="field-visibility" href="#field-visibility">visibility</a></td>
 <td>The level of visibility of the comment.</td>
-<td>text<br/>One of: <code>same_party</code>, <code>same_party_type</code>, <code>any_party</code><br/>Default: <code>same_party</code><br/><br/>Comments marked <code>same_party</code> are visible only to the party that creates them, whereas comments marked <code>same_party_type</code> can be seen by all parties of the same type, and comments marked <code>any_party</code> are visible to all parties that can see the application.</td>
+<td>text<br/>One of: <code>same_party</code>, <code>any_involved_party</code><br/>Default: <code>same_party</code><br/><br/>Comments marked <code>same_party</code> are visible only to the party that creates them, whereas comments marked <code>any_involved_party</code> can be seen by all parties involved in the suspension.</td>
 <td></td>
 </tr>
 <tr>
@@ -2305,11 +2305,6 @@ resource. The default policy is <strong>deny</strong>.</p>
 <tbody>
 <tr>
 <td>SPPSC-COM001</td>
-<td>Read history on SPPSC that they can read.</td>
-<td>DONE</td>
-</tr>
-<tr>
-<td>SPPSC-COM002</td>
 <td>Update SPPSC that they created.</td>
 <td>DONE</td>
 </tr>
@@ -2336,6 +2331,11 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>Read, create and update all SPPSC.</td>
 <td>DONE</td>
 </tr>
+<tr>
+<td>SPPSC-FISO002</td>
+<td>Read history on all SPPSC.</td>
+<td>DONE</td>
+</tr>
 </tbody>
 </table>
 <h4 id="market-operator">Market Operator</h4>
@@ -2359,7 +2359,12 @@ resource. The default policy is <strong>deny</strong>.</p>
 </tr>
 <tr>
 <td>SPPSC-SO002</td>
-<td>Read SPPSC that the visibility allows on SPPS where they are PSO.</td>
+<td>Read SPPSC that the visibility allows.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPPSC-SO003</td>
+<td>Read history on SPPSC that the visibility allows.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -2381,7 +2386,12 @@ resource. The default policy is <strong>deny</strong>.</p>
 </tr>
 <tr>
 <td>SPPSC-SP002</td>
-<td>Read SPPSC that the visibility allows on SPPS where they are SP.</td>
+<td>Read SPPSC that the visibility allows.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPPSC-SP003</td>
+<td>Read history on SPPSC that the visibility allows.</td>
 <td>DONE</td>
 </tr>
 </tbody>
