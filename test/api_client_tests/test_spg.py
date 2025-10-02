@@ -50,6 +50,9 @@ def sts():
 def test_spg_fiso_sp(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
     # RLS: SPG-FISO001
     # RLS: SPG-SP001
 
@@ -109,7 +112,7 @@ def test_spg_fiso_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),

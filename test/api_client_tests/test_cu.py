@@ -269,12 +269,14 @@ def test_controllable_unit_so(sts):
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
 
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),
@@ -503,6 +505,9 @@ def test_controllable_unit_sp(sts):
     client_sp2 = sts.get_client(TestEntity.COMMON, "SP")
     sp2_id = sts.get_userinfo(client_sp2)["party_id"]
 
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -525,7 +530,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp1_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2099-01-01T00:00:00+1",
             valid_to=None,
@@ -571,7 +576,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp1_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2099-01-01T00:00:00+1",
             valid_to=None,
@@ -585,7 +590,7 @@ def test_controllable_unit_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp2_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2000-01-01T00:00:00+1",
             valid_to="2090-01-01T00:00:00+1",

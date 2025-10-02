@@ -405,12 +405,14 @@ def test_tr_sp(sts):
     # add common CUSP from today midnight on new CU
 
     common_sp_id = sts.get_userinfo(client_common_sp)["party_id"]
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
     cusp_common = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=common_sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="1111r4128",
             valid_from=f"{date.today().isoformat()} Europe/Oslo",
         ),

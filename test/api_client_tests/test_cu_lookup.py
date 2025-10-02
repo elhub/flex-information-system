@@ -226,9 +226,11 @@ def test_cu_lookup_params(sts):
 def test_cu_lookup_flow(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
+    eu_userinfo = sts.get_userinfo(sts.get_client(TestEntity.TEST, "EU"))
+
     eu_entity = read_entity.sync(
         client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+        id=eu_userinfo["entity_id"],
     )
     assert isinstance(eu_entity, EntityResponse)
 
@@ -280,7 +282,7 @@ def test_cu_lookup_flow(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cul.controllable_units[0].id,
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_userinfo["party_id"],
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(20),
         ),

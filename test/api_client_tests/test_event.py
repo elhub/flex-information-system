@@ -188,6 +188,9 @@ def test_event_sp(sts):
     client_so = sts.fresh_client(TestEntity.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
+    client_eu = sts.fresh_client(TestEntity.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -232,7 +235,7 @@ def test_event_sp(sts):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="EVENT-TEST-CONTRACT",
             valid_from="2020-01-01T00:00:00+1",
             valid_to=None,

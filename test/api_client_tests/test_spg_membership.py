@@ -54,6 +54,9 @@ def data():
     client_sp = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "SP"))
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
     # Create new controllable unit and spg to play with
     cu = create_controllable_unit.sync(
         client=client_fiso,
@@ -77,14 +80,14 @@ def data():
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
 
-    yield (sts, cu.id, spg.id)
+    yield (sts, cu.id, spg.id, eu_id)
 
 
 # ---- ---- ---- ---- ----
 
 
 def test_cusp_spgm_consistency_not_ok(data):
-    (sts, cu_id, spg_id) = data
+    (sts, cu_id, spg_id, eu_id) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -98,7 +101,7 @@ def test_cusp_spgm_consistency_not_ok(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-08T00:00:00+1",
             valid_to="2024-01-12T00:00:00+1",
@@ -135,7 +138,7 @@ def test_cusp_spgm_consistency_not_ok(data):
 
 # RLS: SPGM-SP002
 def test_spgm_sp002(data):
-    (sts, cu_id, spg_id) = data
+    (sts, cu_id, spg_id, eu_id) = data
 
     client_sp = sts.get_client(TestEntity.TEST, "SP")
 
@@ -163,7 +166,7 @@ def test_spgm_sp002(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-08T00:00:00+1",
             valid_to="2024-01-12T00:00:00+1",
@@ -209,7 +212,7 @@ def test_spgm_sp002(data):
 
 
 def test_spgm(data):
-    (sts, cu_id, spg_id) = data
+    (sts, cu_id, spg_id, eu_id) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -224,7 +227,7 @@ def test_spgm(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-08T00:00:00+1",
             valid_to="2024-01-12T00:00:00+1",
@@ -343,7 +346,7 @@ def test_spgm(data):
 
 
 def test_spgm_so(data):
-    (sts, cu_id, spg_id) = data
+    (sts, cu_id, spg_id, eu_id) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
     # add a contract between CU and SP, add CU to the SPG
@@ -354,7 +357,7 @@ def test_spgm_so(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-09T00:00:00+1",
         ),
@@ -442,7 +445,7 @@ def test_spgm_so(data):
 
 
 def test_rla_absence(data):
-    (sts, _, _) = data
+    (sts, _, _, _) = data
 
     roles_without_rla = ["BRP", "EU", "ES", "MO", "TP"]
 
