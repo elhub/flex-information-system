@@ -14,6 +14,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import { FieldStack } from "../auth";
 import { DateField } from "../components/datetime";
+import { ProductTypeArrayField } from "../product_type/components";
 
 // button to jump to the party input page in update mode with autofilled form
 const PartyUpdateButton = (props: any) => {
@@ -246,6 +247,28 @@ const NoticeCUSPValidTimeOutsideContractShow = () => {
   );
 };
 
+// component to show details of a notice of type
+// no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+const NoticeSPPSProductTypeNotQualifiedShow = () => {
+  const record = useRecordContext()!;
+
+  return (
+    <SimpleShowLayout>
+      <Stack direction="column" spacing={2}>
+        <Typography variant="h6" gutterBottom>
+          The following product types are not qualified for the service
+          provider:
+        </Typography>
+        <RecordContextProvider value={record.data}>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
+            <ProductTypeArrayField source="product_type_ids" />
+          </FieldStack>
+        </RecordContextProvider>
+      </Stack>
+    </SimpleShowLayout>
+  );
+};
+
 export const NoticeShow = () => {
   const record = useRecordContext()!;
 
@@ -256,6 +279,8 @@ export const NoticeShow = () => {
       return <NoticePartyMissingShow />;
     case "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
       return <NoticeCUSPValidTimeOutsideContractShow />;
+    case "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":
+      return <NoticeSPPSProductTypeNotQualifiedShow />;
     default:
       return (
         <Typography gutterBottom>

@@ -228,5 +228,8 @@
         "entity": "Details about the possibly new entity owning the party.",
         "party": "Updated fields of the party."
     },
+    "notice_data_product_type_not_qualified": {
+        "product_type_ids": "List of product types that are not qualified."
+    },
     "notice_data": null
 }
