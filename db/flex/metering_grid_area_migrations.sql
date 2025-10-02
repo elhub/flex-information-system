@@ -17,7 +17,8 @@ UPDATE flex.metering_grid_area
 SET
     business_id
     = substring(business_id, 1, 2) || 'Y'
-    || substring(business_id, 4, 12) || '-';
+    || substring(business_id, 4, 12) || '-'
+WHERE substring(business_id, 3, 1) = 'X';
 -- initially set check digit to '-' (invalid) so it is recomputed
 
 
