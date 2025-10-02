@@ -244,7 +244,7 @@ databaseChangeLog:
   - changeSet:
       id: business-id-type-reference-data
       author: flex
-      validCheckSum: 9:1b2b49b6c93cea9eb2d24459a538974b
+      runOnChange: true
       changes:
         - loadUpdateData:
             file: ./reference_data/business_id_type.csv
