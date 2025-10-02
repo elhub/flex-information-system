@@ -63,36 +63,6 @@ so-called "happy path".
 The diagram definition is a simple text format that is easy to read and write
 and is included for download.
 
-## Registration process overview
-
-The following diagram shows dependencies between the registration processes that
-takes a service provider from an empty FIS to a place where the service
-providing groups are ready for use in the market(s).
-
-Related processes are not included in the diagram on purpose. The diagram is
-ment to highlight the main processes to inform us about what processes we should
-prioritize discussing in the project as well as show a overview to the
-registration.
-
-We are using the following notation:
-
-* `ellipses` - start and end states
-* `rectangles` - processes
-    * `solid border` - main process listed below
-    * `dotted border` - sub-process
-  driving/responsible market party (see above)
-* colors indicating the driving/responsible market party for a (sub-)process
-    * `green` - system operator
-    * `blue` - service provider
-    * `pink` - flexibility information system operator
-    * `white` - unspecified
-* `arrows` - dependencies between processes
-
-The diagram shows us that a service provider can register all their data at
-once, and that the (pre)qualification processes can run in parallel.
-
-![Process priority - the happy path](../diagrams/registration_happy_path.png)
-
 ## Process list
 
 The following is a list of processes where the Flexibility Information System
