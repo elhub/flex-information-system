@@ -1,0 +1,2 @@
+BUSINESS_ID,NAME,PRICE_AREA,SYSTEM_OPERATOR_ID,VALID_TIME_RANGE
+42YTEST-TEST-00P,TEST MGA,NO3,(select id from flex.party where business_id='1337123400004'),"tstzrange('2000-01-01 Europe/Oslo', null)"
