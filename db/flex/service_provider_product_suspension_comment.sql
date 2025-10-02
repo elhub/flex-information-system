@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:service-provider-product-suspension-comment-create runOnChange:false endDelimiter:--
--- validCheckSum: 9:e5006abf85ece9e7bfa299e46f2df16f
+-- validCheckSum: 9:5e2a329a77b6d2feb6c1a208c0551e16
 CREATE TABLE IF NOT EXISTS service_provider_product_suspension_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_provider_product_suspension_id bigint NOT NULL,
