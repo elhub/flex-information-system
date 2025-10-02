@@ -103,15 +103,35 @@ FOR SELECT
 TO flex_system_operator
 USING (
     EXISTS (
+        WITH
+            -- history of applications from suspended SP to current SO
+            -- including current SPPA if it has never been updated/deleted
+            sppa_sp_so_history AS (
+                SELECT
+                    sppah.product_type_ids,
+                    sppah.record_time_range,
+                    sppah.status
+                FROM flex.service_provider_product_application_history AS sppah
+                WHERE sppah.service_provider_id
+                    = service_provider_product_suspension_history.service_provider_id -- noqa
+                    AND sppah.system_operator_id = (SELECT flex.current_party())
+                UNION ALL
+                SELECT
+                    sppa.product_type_ids,
+                    sppa.record_time_range,
+                    sppa.status
+                FROM flex.service_provider_product_application AS sppa
+                WHERE sppa.service_provider_id
+                    = service_provider_product_suspension_history.service_provider_id -- noqa
+                    AND sppa.system_operator_id = (SELECT flex.current_party())
+            )
+
         SELECT
             service_provider_product_suspension_history.product_type_ids -- noqa
-            && sppah.product_type_ids
-        FROM flex.service_provider_product_application_history AS sppah
-        WHERE sppah.service_provider_id
-            = service_provider_product_suspension_history.service_provider_id -- noqa
-            AND sppah.system_operator_id = (SELECT flex.current_party())
-            AND sppah.record_time_range
+            && sppa_sp_so_history.product_type_ids
+        FROM sppa_sp_so_history
+        WHERE sppa_sp_so_history.record_time_range
             && service_provider_product_suspension_history.record_time_range -- noqa
-            AND sppah.status = 'qualified'
+            AND sppa_sp_so_history.status = 'qualified'
     )
 );

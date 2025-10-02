@@ -49,7 +49,10 @@ def data():
     )
     assert isinstance(cu, ControllableUnitResponse)
 
-    yield (sts, cu.id)
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
+    yield (sts, cu.id, eu_id)
 
 
 # ---- ---- ---- ---- ----
@@ -57,7 +60,7 @@ def data():
 
 # RLS: CUSP-FISO001
 def test_cusp_fiso(data):
-    (sts, cu_id) = data
+    (sts, cu_id, eu_id) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
     # create a CU-SP relation, check the visible list is one relation longer
@@ -77,7 +80,7 @@ def test_cusp_fiso(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2020-01-01T00:00:00+1",
             valid_to=None,
@@ -181,7 +184,7 @@ def test_cusp_fiso(data):
 
 # RLS: CUSP-SP001
 def test_cusp_sp(data):
-    (sts, cu_id) = data
+    (sts, cu_id, eu_id) = data
 
     sp1_client = sts.get_client(TestEntity.TEST, "SP")
     sp1_id = sts.get_userinfo(sp1_client)["party_id"]
@@ -215,7 +218,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(-5),
         ),
@@ -229,7 +232,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(1),
         ),
@@ -243,7 +246,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp2_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(0),
         ),
@@ -257,7 +260,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT-2",
             valid_from=midnight_n_days_diff(16),
         ),
@@ -282,7 +285,7 @@ def test_cusp_sp(data):
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cu_id,
             service_provider_id=sp1_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from=midnight_n_days_diff(16),
         ),
@@ -334,7 +337,7 @@ def test_cusp_sp(data):
 
 # RLS: CUSP-SO001
 def test_cusp_so(data):
-    (sts, _) = data
+    (sts, _, _) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
@@ -367,7 +370,7 @@ def test_cusp_so(data):
 # RLS: CUSP-SO002
 # RLS: CUSP-SP002
 def test_cusp_history(data):
-    (sts, _) = data
+    (sts, _, _) = data
 
     for role in ["FISO", "SO", "SP"]:
         client = sts.get_client(TestEntity.TEST, role)
@@ -389,7 +392,7 @@ def test_cusp_history(data):
 # RLS: CUSP-EU001
 # RLS: CUSP-EU002
 def test_cusp_eu(data):
-    (sts, _) = data
+    (sts, _, _) = data
 
     # former AP end user can see the old version of the CU-SPs in the test data,
     # but not the current contracts
@@ -444,7 +447,7 @@ def test_cusp_eu(data):
 
 
 def test_rla_absence(data):
-    (sts, _) = data
+    (sts, _, _) = data
 
     roles_without_rla = ["BRP", "ES", "MO", "TP"]
 

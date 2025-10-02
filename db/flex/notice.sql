@@ -6,7 +6,7 @@
 DROP VIEW IF EXISTS notice CASCADE;
 CREATE VIEW notice AS (
     -- CU grid node ID missing
-    SELECT
+    SELECT -- noqa
         ap_so.system_operator_id AS party_id,
         'no.elhub.flex.controllable_unit.grid_node_id.missing' AS type, -- noqa
         '/controllable_unit/' || cu.id AS source,
@@ -62,7 +62,7 @@ CREATE VIEW notice AS (
         null::jsonb AS data -- noqa
     FROM flex.service_providing_group_membership AS spgm -- noqa
         INNER JOIN flex.service_providing_group AS spg
-            ON spg.id = spgm.service_providing_group_id
+            ON spgm.service_providing_group_id = spg.id
     WHERE NOT EXISTS (
             SELECT 1 FROM (
                 SELECT
@@ -197,7 +197,7 @@ CREATE VIEW notice AS (
         ) AS data -- noqa
     FROM flex.party_staging AS p_stg -- noqa
         LEFT JOIN flex.entity AS e_stg
-            ON e_stg.business_id = p_stg.org
+            ON p_stg.org = e_stg.business_id
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'
@@ -237,11 +237,11 @@ CREATE VIEW notice AS (
         INNER JOIN flex.entity AS e
             ON p.entity_id = e.id
         INNER JOIN flex.party_staging AS p_stg
-            ON p_stg.gln = p.business_id
+            ON p.business_id = p_stg.gln
                 -- party has changed name or owning entity
-                AND (p_stg.name != p.name OR p_stg.org != e.business_id)
+                AND (p.name != p_stg.name OR e.business_id != p_stg.org)
         LEFT JOIN flex.entity AS e_stg
-            ON e_stg.business_id = p_stg.org
+            ON p_stg.org = e_stg.business_id
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
             ON p_fiso.type = 'flexibility_information_system_operator'
@@ -262,5 +262,63 @@ CREATE VIEW notice AS (
         AND NOT EXISTS (
             SELECT 1 FROM flex.party_staging AS p_stg
             WHERE p_stg.gln = p.business_id
+        )
+
+    -- suspension on product type no longer qualified
+    UNION ALL
+    (
+        WITH
+            qualified_product_types AS (
+                SELECT
+                    sppa.service_provider_id,
+                    sppa.system_operator_id,
+                    array_agg(DISTINCT sppa.product_type_id) AS product_type_ids
+                FROM (
+                    SELECT
+                        sppa.service_provider_id,
+                        sppa.system_operator_id,
+                        unnest(sppa.product_type_ids) AS product_type_id
+                    FROM flex.service_provider_product_application AS sppa
+                    WHERE sppa.qualified_at IS NOT null
+                ) AS sppa
+                GROUP BY sppa.service_provider_id, sppa.system_operator_id
+            )
+
+        SELECT
+            spps.procuring_system_operator_id AS party_id,
+            'no.elhub.flex.service_provider_product_suspension.product_type.not_qualified' AS type, -- noqa
+            '/service_provider_product_suspension/' || spps.id AS source,
+            jsonb_build_object(
+                'product_type_ids', (
+                    SELECT array(
+                        SELECT unnest(spps.product_type_ids)
+                        EXCEPT
+                        SELECT unnest(coalesce(qpts.product_type_ids, '{}'))
+                    )
+                )
+            ) AS data -- noqa
+        FROM flex.service_provider_product_suspension AS spps
+            LEFT JOIN qualified_product_types AS qpts
+                ON spps.service_provider_id = qpts.service_provider_id
+                    AND spps.procuring_system_operator_id
+                    = qpts.system_operator_id
+        WHERE NOT spps.product_type_ids <@ coalesce(qpts.product_type_ids, '{}')
+    )
+
+    -- inactive suspension
+    UNION ALL
+    SELECT
+        spps.procuring_system_operator_id AS party_id,
+        'no.elhub.flex.service_provider_product_suspension.lingering' AS type, -- noqa
+        '/service_provider_product_suspension/' || spps.id AS source,
+        null::jsonb AS data -- noqa
+    FROM flex.service_provider_product_suspension AS spps
+    WHERE lower(spps.record_time_range) < current_timestamp - interval '2 weeks'
+        AND NOT EXISTS (
+            SELECT 1
+            FROM flex.service_provider_product_suspension_comment AS sppsc
+            WHERE spps.id = sppsc.service_provider_product_suspension_id
+                AND lower(sppsc.record_time_range)
+                >= current_timestamp - interval '2 weeks'
         )
 );

@@ -113,12 +113,15 @@ def data():
 
     # relate the CUs to the SP in charge of the test SPG
 
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
     cu_sp1 = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu1.id),
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),
@@ -130,7 +133,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu2.id),
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),
@@ -142,7 +145,7 @@ def data():
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu3.id),
             service_provider_id=sp_id,
-            end_user_id=11,
+            end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),
