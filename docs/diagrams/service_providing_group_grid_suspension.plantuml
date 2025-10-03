@@ -1,8 +1,8 @@
-@startuml service_providing_group_suspension
+@startuml service_providing_group_grid_suspension
 
 !theme plain
 
-title Service providing group suspension
+title Service providing group grid suspension
 
 autonumber
 skinparam note {
@@ -13,10 +13,10 @@ actor "Service Provider (SP)" as SP
 participant "Flexibility\nInformation System (FIS)" as FIS
 actor "System Operator (SO)" as SO
 
-== Suspension of service providing group ==
+== Suspension of service providing group grid prequalification ==
 
 activate SO
-SO -> FIS: Create SPG suspension
+SO -> FIS: Create SPG grid suspension
 
 note right
     Data:
@@ -60,7 +60,7 @@ end note
 deactivate SP
 == Reinstatement of service providing group ==
 
-SO -> FIS: Delete SPG suspension
+SO -> FIS: Delete SPG grid suspension
 activate SO
 |||
 activate FIS
@@ -68,7 +68,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 
-loop All other ISOs and all PSOs procuring the SPG
+loop All other ISOs and all PSOs for which the SPG is prequalified/validated
     |||
     FIS --> SO: Notify
     deactivate FIS
