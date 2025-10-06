@@ -32,8 +32,7 @@ in the process.
 Depending on the reason for suspension, the system operator should warn the
 service provider in advance of the suspension. The reasons for suspension that
 require a warning in advance of the suspension - and how that warning is
-conveyed - must be specified in the terms and conditions of the product type or
-service.
+conveyed - must be specified in the national terms and conditions.
 
 The process also includes reinstatement of the service providing group grid prequalification,
 i.e. removing the suspension.
