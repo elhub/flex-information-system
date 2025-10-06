@@ -156,6 +156,9 @@ databaseChangeLog:
       file: ./service_providing_group_grid_prequalification.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_grid_suspension.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_product_application.sql
       relativeToChangelogFile: true
   - include:

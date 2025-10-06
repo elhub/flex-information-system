@@ -61,8 +61,8 @@ No policies.
 
 | Policy key    | Policy                                     | Status |
 |---------------|--------------------------------------------|--------|
-| SPGGS-FISO001 | Create, read, update and delete all SPGGS. | TODO   |
-| SPGGS-FISO002 | Read all SPGGS history.                    | TODO   |
+| SPGGS-FISO001 | Create, read, update and delete all SPGGS. | DONE   |
+| SPGGS-FISO002 | Read all SPGGS history.                    | DONE   |
 
 #### Market Operator
 
@@ -74,21 +74,21 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                                                                                    | Status |
-|-------------|-----------------------------------------------------------------------------------------------------------|--------|
-| SPGGS-SO001 | Create, read, update and delete their own SPGGS.                                                          | TODO   |
-| SPGGS-SO002 | Read history on their own SPGGS.                                                                          | TODO   |
-| SPGGS-SO003 | Read SPGGS targeted at any SPG for which they have qualified or verified a product application.           | TODO   |
-| SPGGS-SO004 | Read history on SPGGS targeted at any SPG for which they had qualified or verified a product application. | TODO   |
-| SPGGS-SO003 | Read SPGGS targeted at any SPG for which they have received a grid prequalification.                      | TODO   |
-| SPGGS-SO003 | Read history on SPGGS targeted at any SPG for which they have received a grid prequalification.           | TODO   |
+| Policy key  | Policy                                                                                                       | Status |
+|-------------|--------------------------------------------------------------------------------------------------------------|--------|
+| SPGGS-SO001 | Create, read, update and delete their own SPGGS.                                                             | DONE   |
+| SPGGS-SO002 | Read history on their own SPGGS.                                                                             | DONE   |
+| SPGGS-SO003 | Read SPGGS targeted at any SPG for which they have prequalified or verified a product application.           | DONE   |
+| SPGGS-SO004 | Read history on SPGGS targeted at any SPG for which they had prequalified or verified a product application. | DONE   |
+| SPGGS-SO005 | Read SPGGS targeted at any SPG for which they have approved a grid prequalification.                         | DONE   |
+| SPGGS-SO006 | Read history on SPGGS targeted at any SPG for which they had approved a grid prequalification.               | DONE   |
 
 #### Service Provider
 
-| Policy key  | Policy                                | Status |
-|-------------|---------------------------------------|--------|
-| SPGGS-SP001 | Read SPGGS targeting them.            | TODO   |
-| SPGGS-SP002 | Read history on SPGGS targeting them. | TODO   |
+| Policy key  | Policy                                      | Status |
+|-------------|---------------------------------------------|--------|
+| SPGGS-SP001 | Read SPGGS targeting their SPGs.            | DONE   |
+| SPGGS-SP002 | Read history on SPGGS targeting their SPGs. | DONE   |
 
 #### Third Party
 
@@ -102,7 +102,7 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 |-----------------------------|------|-----|----|----|------|----|-----|----|----|-----|
 | id                          |      | R   | R  | R  | R    | R  | R   | R  | R  |     |
 | impacted_system_operator_id |      | R   | R  | R  | RC   | R  | RC  | R  | R  |     |
-| service_provider_id         |      | R   | R  | R  | RC   | R  | RC  | R  | R  |     |
+| service_providing_group_id  |      | R   | R  | R  | RC   | R  | RC  | R  | R  |     |
 | reason                      |      | R   | R  | R  | RCU  | R  | RCU | R  | R  |     |
 | recorded_at                 |      | R   | R  | R  | R    | R  | R   | R  | R  |     |
 | recorded_by                 |      | R   | R  | R  | R    | R  | R   | R  | R  |     |

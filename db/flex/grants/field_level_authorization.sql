@@ -810,6 +810,66 @@ TO flex_third_party;
 GRANT SELECT ON TABLE flex.service_providing_group_grid_prequalification_history
 TO flex_internal_event_notification;
 
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_end_user;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE flex.service_providing_group_grid_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-fiso-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE flex.service_providing_group_grid_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-so-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-so-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE flex.service_providing_group_grid_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-so-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE flex.service_providing_group_grid_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_third_party;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE flex.service_providing_group_grid_suspension
+TO flex_internal_event_notification;
+
 -- changeset flex:flex-grant-technical-resource-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE flex.technical_resource
 TO flex_balance_responsible_party;
