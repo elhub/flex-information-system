@@ -32,6 +32,41 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_suspension (
     REFERENCES service_providing_group (id)
 );
 
+-- changeset flex:service-providing-group-grid-suspension-upsert-function runOnChange:true endDelimiter:--
+-- trigger to check that the suspending SO has qualified the SPG
+CREATE OR REPLACE FUNCTION service_providing_group_grid_suspension_upsert()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM flex.service_providing_group_grid_prequalification AS spggp
+        WHERE spggp.service_providing_group_id = NEW.service_providing_group_id
+        AND spggp.impacted_system_operator_id = NEW.impacted_system_operator_id
+        AND spggp.status = 'approved'
+    ) THEN
+        RAISE sqlstate 'PT400' using
+            message =
+                'service providing group is not qualified by impacted system operator';
+        RETURN null;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-grid-suspension-upsert-trigger runOnChange:true endDelimiter:--
+-- SPGGS-VAL001
+CREATE OR REPLACE TRIGGER
+service_providing_group_grid_suspension_upsert
+BEFORE INSERT OR UPDATE ON service_providing_group_grid_suspension
+FOR EACH ROW
+EXECUTE FUNCTION
+service_providing_group_grid_suspension_upsert();
+
 -- changeset flex:service-providing-group-grid-suspension-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER service_providing_group_grid_suspension_event
 AFTER INSERT OR UPDATE OR DELETE ON service_providing_group_grid_suspension

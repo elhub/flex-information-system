@@ -21,7 +21,9 @@ service providing group from delivering products.
 
 ## Validation Rules
 
-No validation rules.
+| Validation rule key | Validation rule                                                                          | Status |
+|---------------------|------------------------------------------------------------------------------------------|--------|
+| SPGGS-VAL001        | Service providing groups can only be suspended by ISOs by whom they are qualified.       | DONE   |
 
 ## Notifications
 
