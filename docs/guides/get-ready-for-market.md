@@ -11,7 +11,7 @@ and system operators to participate in the market.
 
 ## Prerequisites
 
-* System operator is registrated in FIS.
+* System operator is registered in FIS.
 * System operator has registered the products they want to procure in FIS.
 
 ## Process Groups
