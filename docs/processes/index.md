@@ -70,11 +70,16 @@ might take part in. This is an evolving list. If we have started detailing the
 process, you will find that the process heading is a link to a sub-page. You can
 also use the menu to find process details.
 
+### Access control
+
+Entitled parties have permission to access data in the flexbility information
+system as described in the Authorization section for each [resource](../resources/).
+
 ### Controllable unit
 
 #### [Controllable Unit Lookup](controllable-unit-lookup.md)
 
-Before a service provider registers or switch a controllable unit, they must
+Before a service provider registers or switches a controllable unit, they must
 look up the controllable unit to see if it is already registered in the system.
 
 #### [Controllable unit registration](controllable-unit-registration.md)
@@ -101,7 +106,8 @@ user, implicit contract termination or service provider.
 
 #### Controllable unit suspension
 
-Entitled parties can suspend a controllable unit.
+Entitled parties can suspend a controllable unit. Includes re-activation of the
+suspended controllable unit.
 
 #### Controllable unit de-registration
 
@@ -117,10 +123,12 @@ system operator.
 #### Service provider suspension
 
 Entitled parties, such as the regulator, can suspend a service provider.
+Includes re-activation of the suspended service provider.
 
 #### Service provider update
 
-Update of service provider information from service provider.
+Update of service provider information from service provider. This process may
+include separate procedures for updating profile information and critical information.
 
 #### [Service provider product application and qualification](service-provider-product-application.md)
 
@@ -132,8 +140,9 @@ test.
 
 #### [Service provider product suspension](service-provider-product-suspension.md)
 
-Suspension of a service provider product application and qualification initiated
-by system operator.
+Suspension of a service provider product qualification initiated
+by system operator. Includes re-activation of the
+suspended service provider product qualification.
 
 #### Service provider de-registration
 
@@ -152,7 +161,8 @@ Registering a new service providing group. Includes grid prequalification.
 #### Service providing group suspension
 
 Suspension of a service providing group grid prequalification initiated by
-system operator.
+system operator. Includes re-activation of the
+suspended service providing group grid prequalification.
 
 #### Update service providing group
 
@@ -209,18 +219,38 @@ Temporary limits on grid elements. Initiated by system operator.
 
 Temporary limits on service providing groups. Initiated by system operator.
 
-### Grid topology
-
-TODO - processes related to maintaining the grid topology.
-
-### Metering values
+### [Time series](../concepts/time-series.md)
 
 TODO - processes related to collecting, validating, storing and distributing
 metering values and other time-series like baselines.
 
-### Imbalance adjustment
+#### Baseline data handling
+
+How a baseline is established and stored for later use according to the
+selected baselining method.
+
+#### Making measurement data available
+
+How validated metering, measurement, or calculated data are gathered
+and made accessible for quantification.
+
+### Grid topology
+
+TODO - processes related to maintaining the grid topology.
+
+### Quantification and verification
 
 TODO - processes related to imbalance adjustment.
+
+#### Quantification
+
+How activation and baseline data are used to determine the delivered
+volume across relevant aggregation levels.
+
+#### (Optional) Baseline validation
+
+The process of verifying that a calculated baseline accurately reflects normal
+consumption or generation patterns.
 
 ### Not in scope
 
@@ -239,5 +269,9 @@ This is not relevant since we are assuming the national terms in norway will
 dictate a single, integrated system operated by the system responsible.
 
 #### Set, update or remove temporary limits on bids
+
+This must be handled in the market place.
+
+#### Bidding and activation of a flexibility product
 
 This must be handled in the market place.
