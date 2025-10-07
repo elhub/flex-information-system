@@ -16,6 +16,11 @@ Impacted system operators will have to consider if they need to do a new SPG
 grid prequalification due to the suspension of the CU. The impacted systemoperators
 will receive notification of the suspension.
 
+Procuring system operators are _not_ impacted by the suspension unless the suspension
+affects the SPG grid prequalification. Procuring system operators will not receive
+notification of the suspension, but will receive notification in case of a new
+SPG grid prequalification.
+
 The connecting system operator must include the reason for suspension when
 suspending.The reason for suspension is a predefined list. There are two
 reasons for that. The first is that the CSO is only allowed to suspend for
@@ -24,7 +29,6 @@ in the process.
 
 | Reason                   | Description                                                                                                                     |
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| `significant_alteration` | In cases where the CU is altered significantly and CSO needs time to consider if they need to do a new grid validation.         |
 | `incorrect_data`         | The CU data is incorrect.                                                                                                       |
 | `other`                  | Should generally _not_ be used, but can in cases where CSO has a valid reason for suspension that is outside the other defined. |
 

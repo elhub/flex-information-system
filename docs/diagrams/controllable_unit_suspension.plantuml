@@ -52,7 +52,7 @@ end note
 |||
 note over FIS
     SP and SO must probably communicate to sort out the issues that caused the 
-    suspension. This can be done using comments on the CU validation in the FIS
+    suspension. This can be done using comments on the CU suspension in the FIS
     or other communication mediums like email and phone. 
 end note
 |||
