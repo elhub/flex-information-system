@@ -20,7 +20,7 @@ SO -> FIS: Create CU suspension
 
 note right
     Data:
-        - id of CU
+        - name of CU
         - reason for suspension
 end note
 
