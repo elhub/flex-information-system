@@ -21,8 +21,8 @@ If there are significant changes in CU data, the CSO can perform a new
 grid validation instead of relying on CU suspension.
 
 If the changes in data result in that the CU is a threat to safe operations,
-the system operator canset the grid validation status to _validation failed_.
-If the registered data isincorrect, CSO can set the grid validation status to
+the system operator can set the grid validation status to _validation failed_.
+If the registered data is incorrect, CSO can set the grid validation status to
 _incomplete information_.
 
 If there are issues in the grid where the CU will temporarily be a threat to safe
