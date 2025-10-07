@@ -47,6 +47,7 @@ We are relying on the markdown linting tools made by David Anson.
 To make life easier in VSCode, consider installing the following extensions:
 
 * [marvhen.reflow-markdown](https://marketplace.visualstudio.com/items?itemName=marvhen.reflow-markdown)
+* [saeris.markdown-github-alerts](https://marketplace.visualstudio.com/items?itemName=saeris.markdown-github-alerts)
 * [yzhang.markdown-all-in-one](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 
 ### SQL
