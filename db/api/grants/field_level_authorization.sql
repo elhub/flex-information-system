@@ -2760,6 +2760,122 @@ TO flex_third_party;
 GRANT SELECT ON TABLE api.service_providing_group_grid_suspension
 TO flex_internal_event_notification;
 
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_end_user;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_market_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_service_provider;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_suspension_id,
+    impacted_system_operator_id,
+    service_providing_group_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_third_party;
+
+-- changeset flex:api-grant-service-providing-group-grid-suspension-history-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE api.service_providing_group_grid_suspension_history
+TO flex_internal_event_notification;
+
 -- changeset flex:api-grant-technical-resource-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
