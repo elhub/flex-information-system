@@ -20,7 +20,7 @@ SO -> FIS: Create SPG grid suspension
 
 note right
     Data:
-        - id of SPG
+        - service providing group
         - reason for suspension
 end note
 
@@ -74,3 +74,5 @@ loop All other ISOs and all PSOs for which the SPG is prequalified/validated
     deactivate FIS
     |||
 end
+
+@enduml
