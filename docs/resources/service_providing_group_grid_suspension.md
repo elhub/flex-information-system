@@ -1,7 +1,7 @@
 # Service Providing Group Grid Suspension
 
 The relation allowing an impacted system operator to temporarily suspend a
-service providing group from delivering products.
+service providing group from delivering services.
 
 ## Relevant links
 

@@ -453,7 +453,7 @@ resources:
     summary: Service Providing Group Grid Suspension
     description: >-
       The relation allowing an impacted system operator to temporarily suspend a
-      service providing group from delivering products.
+      service providing group from delivering services.
     operations:
       - list
       - read

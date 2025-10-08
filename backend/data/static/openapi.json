@@ -1323,7 +1323,7 @@
             },
             "service_providing_group_grid_suspension_update_request": {
                 "summary": "Update - Service Providing Group Grid Suspension",
-                "description": "Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering products.",
+                "description": "Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "type": "object",
                 "properties": {
                     "reason": {
@@ -1333,7 +1333,7 @@
             },
             "service_providing_group_grid_suspension_create_data": {
                 "summary": "Create data - Service Providing Group Grid Suspension",
-                "description": "Data of the request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering products.",
+                "description": "Data of the request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension_update_request"
@@ -1359,7 +1359,7 @@
             },
             "service_providing_group_grid_suspension_create_request": {
                 "summary": "Create - Service Providing Group Grid Suspension",
-                "description": "Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering products.",
+                "description": "Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension_create_data"
@@ -1375,7 +1375,7 @@
             },
             "service_providing_group_grid_suspension": {
                 "summary": "Data - Service Providing Group Grid Suspension",
-                "description": "Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering products.",
+                "description": "Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension_create_data"
@@ -1399,7 +1399,7 @@
             },
             "service_providing_group_grid_suspension_response": {
                 "summary": "Response - Service Providing Group Grid Suspension",
-                "description": "Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering products.",
+                "description": "Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension"
