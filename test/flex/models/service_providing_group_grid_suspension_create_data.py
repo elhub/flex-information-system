@@ -16,7 +16,7 @@ class ServiceProvidingGroupGridSuspensionCreateData:
 
         Attributes:
             reason (Union[Unset, ServiceProvidingGroupGridSuspensionReason]): The reason for the suspension. Example:
-                significant_alteration.
+                significant_group_change.
             impacted_system_operator_id (Union[Unset, int]): Reference to the impacted system operator suspending the
                 service providing group. Example: 7.
             service_providing_group_id (Union[Unset, int]): Reference to the service providing group being suspended.

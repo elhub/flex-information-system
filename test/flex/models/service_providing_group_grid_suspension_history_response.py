@@ -16,7 +16,7 @@ class ServiceProvidingGroupGridSuspensionHistoryResponse:
     Attributes:
         service_providing_group_grid_suspension_id (int): Reference to the resource that was updated. Example: 48.
         reason (Union[Unset, ServiceProvidingGroupGridSuspensionReason]): The reason for the suspension. Example:
-            significant_alteration.
+            significant_group_change.
         impacted_system_operator_id (Union[Unset, int]): Reference to the impacted system operator suspending the
             service providing group. Example: 7.
         service_providing_group_id (Union[Unset, int]): Reference to the service providing group being suspended.

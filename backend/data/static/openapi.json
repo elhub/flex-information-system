@@ -561,10 +561,10 @@
                 "type": "string",
                 "enum": [
                     "breach_of_conditions",
-                    "significant_alteration",
+                    "significant_group_change",
                     "other"
                 ],
-                "example": "significant_alteration"
+                "example": "significant_group_change"
             },
             "party_business_id_type": {
                 "description": "The type of the business identifier.",

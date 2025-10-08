@@ -501,9 +501,9 @@ resources:
         type: string
         enum:
           - breach_of_conditions
-          - significant_alteration
+          - significant_group_change
           - other
-        example: significant_alteration
+        example: significant_group_change
 
   - id: entity
     acronym: ENT

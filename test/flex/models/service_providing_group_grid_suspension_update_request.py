@@ -16,7 +16,7 @@ class ServiceProvidingGroupGridSuspensionUpdateRequest:
 
         Attributes:
             reason (Union[Unset, ServiceProvidingGroupGridSuspensionReason]): The reason for the suspension. Example:
-                significant_alteration.
+                significant_group_change.
     """
 
     reason: Union[Unset, ServiceProvidingGroupGridSuspensionReason] = UNSET

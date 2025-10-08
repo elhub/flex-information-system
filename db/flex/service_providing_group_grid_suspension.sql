@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_suspension (
     CONSTRAINT service_providing_group_grid_suspension_reason_check CHECK (
         reason IN (
             'breach_of_conditions',
-            'significant_alteration',
+            'significant_group_change',
             'other'
         )
     ),

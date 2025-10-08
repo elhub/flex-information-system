@@ -447,7 +447,7 @@ def test_spggs_so(data):
         client=client_so,
         id=cast(int, s.id),
         body=ServiceProvidingGroupGridSuspensionUpdateRequest(
-            reason=ServiceProvidingGroupGridSuspensionReason.SIGNIFICANT_ALTERATION,
+            reason=ServiceProvidingGroupGridSuspensionReason.SIGNIFICANT_GROUP_CHANGE,
         ),
     )
     assert not isinstance(u, ErrorMessage)
