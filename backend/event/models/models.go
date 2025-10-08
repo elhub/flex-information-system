@@ -362,6 +362,27 @@ type ServiceProvidingGroupGridPrequalificationHistory struct {
 	ReplacedAt                                  pgtype.Timestamptz
 }
 
+type ServiceProvidingGroupGridSuspension struct {
+	ID                       int
+	ImpactedSystemOperatorID int
+	ServiceProvidingGroupID  int
+	Reason                   string
+	RecordedBy               int
+	RecordedAt               pgtype.Timestamptz
+}
+
+type ServiceProvidingGroupGridSuspensionHistory struct {
+	ServiceProvidingGroupGridSuspensionID int
+	ID                                    int
+	ImpactedSystemOperatorID              int
+	ServiceProvidingGroupID               int
+	Reason                                string
+	RecordedBy                            int
+	RecordedAt                            pgtype.Timestamptz
+	ReplacedBy                            *int
+	ReplacedAt                            pgtype.Timestamptz
+}
+
 type ServiceProvidingGroupHistory struct {
 	ServiceProvidingGroupID int
 	ID                      int

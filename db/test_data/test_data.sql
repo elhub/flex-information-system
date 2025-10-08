@@ -812,7 +812,7 @@ BEGIN
     PERFORM test_data.add_accounting_points(
       accounting_point_prefix,
       so_mga_id,
-      null,
+      (eu_id, eu_id),
       null,
       so_id
     );

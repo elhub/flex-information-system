@@ -48,6 +48,12 @@
         "notes": "Free text notes on the current prequalification status.",
         "prequalified_at": "When the current grid prequalification was last approved."
     },
+    "service_providing_group_grid_suspension": {
+        "id": "Unique surrogate identifier.",
+        "impacted_system_operator_id": "Reference to the impacted system operator suspending the service providing group.",
+        "service_providing_group_id": "Reference to the service providing group being suspended.",
+        "reason": "The reason for the suspension."
+    },
     "entity": {
         "id": "Unique surrogate identifier.\n\nNote:\nThis is a Primary Key.",
         "business_id": "The business identifier of the entity. Format depends on `business_id_type`.",
