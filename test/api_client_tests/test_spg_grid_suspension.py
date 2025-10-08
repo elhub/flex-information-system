@@ -427,7 +427,7 @@ def test_spggs_so(data):
         client=client_pso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
+            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
             prequalified_at="2024-01-01T00:00:00+1",
         ),
     )

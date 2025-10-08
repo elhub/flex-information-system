@@ -103,7 +103,11 @@ USING (
             = service_providing_group_grid_suspension.service_providing_group_id -- noqa
             AND spgpa.procuring_system_operator_id
             = (SELECT flex.current_party())
-            AND spgpa.status IN ('prequalified', 'verified')
+            AND (
+                spgpa.status IN ('prequalified', 'verified')
+                OR spgpa.prequalified_at IS NOT null
+                OR spgpa.verified_at IS NOT null
+            )
     )
 );
 
@@ -120,7 +124,11 @@ USING (
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
             AND spgpa.procuring_system_operator_id
             = (SELECT flex.current_party())
-            AND spgpa.status IN ('prequalified', 'verified')
+            AND (
+                spgpa.status IN ('prequalified', 'verified')
+                OR spgpa.prequalified_at IS NOT null
+                OR spgpa.verified_at IS NOT null
+            )
         UNION ALL
         SELECT 1
         FROM
@@ -130,7 +138,11 @@ USING (
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
             AND spgpah.procuring_system_operator_id
             = (SELECT flex.current_party())
-            AND spgpah.status IN ('prequalified', 'verified')
+            AND (
+                spgpah.status IN ('prequalified', 'verified')
+                OR spgpah.prequalified_at IS NOT null
+                OR spgpah.verified_at IS NOT null
+            )
             AND spgpah.record_time_range && service_providing_group_grid_suspension_history.record_time_range -- noqa
     )
 );
