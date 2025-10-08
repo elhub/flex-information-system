@@ -123,7 +123,7 @@ system operator.
 #### Service provider suspension
 
 Entitled parties, such as the regulator, can suspend a service provider.
-Includes re-activation of the suspended service provider.
+Includes reinstatement of the suspended service provider.
 
 #### Service provider update
 
@@ -141,7 +141,7 @@ test.
 #### [Service provider product suspension](service-provider-product-suspension.md)
 
 Suspension of a service provider product qualification initiated
-by system operator. Includes re-activation of the
+by system operator. Includes reinstatement of the
 suspended service provider product qualification.
 
 #### Service provider de-registration
@@ -161,7 +161,7 @@ Registering a new service providing group. Includes grid prequalification.
 #### Service providing group suspension
 
 Suspension of a service providing group grid prequalification initiated by
-system operator. Includes re-activation of the
+system operator. Includes reinstatement of the
 suspended service providing group grid prequalification.
 
 #### Update service providing group
