@@ -106,7 +106,7 @@ user, implicit contract termination or service provider.
 
 #### Controllable unit suspension
 
-Entitled parties can suspend a controllable unit. Includes re-activation of the
+Entitled parties can suspend a controllable unit. Includes reinstatement of the
 suspended controllable unit.
 
 #### Controllable unit de-registration
@@ -219,10 +219,12 @@ Temporary limits on grid elements. Initiated by system operator.
 
 Temporary limits on service providing groups. Initiated by system operator.
 
-### [Time series](../concepts/time-series.md)
+### Time series
 
 TODO - processes related to collecting, validating, storing and distributing
 metering values and other time-series like baselines.
+
+Link to the consept : [Time series](../concepts/time-series.md)
 
 #### Baseline data handling
 
@@ -275,3 +277,4 @@ This must be handled in the market place.
 #### Bidding and activation of a flexibility product
 
 This must be handled in the market place.
+We may need to manage the activation period to enable accurate quantification
