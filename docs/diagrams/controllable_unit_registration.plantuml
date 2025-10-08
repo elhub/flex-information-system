@@ -23,6 +23,8 @@ note left
     Minimum data required:
     - name
     - accounting point
+    - max. available capacity
+    - regulation direction
 end note
 
 activate FIS
@@ -60,7 +62,7 @@ activate FIS
 FIS --> SP: Return CU data
 deactivate FIS
 
-== Register Controllable Unit Data ==
+== Update Controllable Unit Data ==
 
 SP -> FIS: Update CU data
 note left
