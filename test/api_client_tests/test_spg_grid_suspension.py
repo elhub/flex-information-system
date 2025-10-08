@@ -162,7 +162,7 @@ def data():
         client=client_fiso,
         id=cast(int, spggps[0].id),
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
-            status=ServiceProvidingGroupGridPrequalificationStatus.APPROVED,
+            status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
             prequalified_at="2025-01-01T00:00:00+1",
         ),
     )
@@ -340,7 +340,7 @@ def test_spggs_so(data):
         client=client_fiso,
         id=cast(int, spggp.id),
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
-            status=ServiceProvidingGroupGridPrequalificationStatus.APPROVED,
+            status=ServiceProvidingGroupGridPrequalificationStatus.CONDITIONALLY_APPROVED,
             prequalified_at="2025-01-01T00:00:00+1",
         ),
     )

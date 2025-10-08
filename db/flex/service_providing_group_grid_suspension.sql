@@ -46,7 +46,10 @@ BEGIN
         FROM flex.service_providing_group_grid_prequalification AS spggp
         WHERE spggp.service_providing_group_id = NEW.service_providing_group_id
         AND spggp.impacted_system_operator_id = NEW.impacted_system_operator_id
-        AND spggp.status = 'approved'
+        AND (
+            spggp.status IN ('approved', 'conditionally_approved')
+            OR spggp.prequalified_at IS NOT null
+        )
     ) THEN
         RAISE sqlstate 'PT400' using
             message =

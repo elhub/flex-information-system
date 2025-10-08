@@ -148,7 +148,10 @@ USING (
             = service_providing_group_grid_suspension.service_providing_group_id -- noqa
             AND spggp.impacted_system_operator_id
             = (SELECT flex.current_party())
-            AND spggp.status = 'approved'
+            AND (
+                spggp.status IN ('approved', 'conditionally_approved')
+                OR spggp.prequalified_at IS NOT null
+            )
     )
 );
 
@@ -165,7 +168,10 @@ USING (
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
             AND spggp.impacted_system_operator_id
             = (SELECT flex.current_party())
-            AND spggp.status = 'approved'
+            AND (
+                spggp.status IN ('approved', 'conditionally_approved')
+                OR spggp.prequalified_at IS NOT null
+            )
         UNION ALL
         SELECT 1
         FROM
@@ -175,7 +181,10 @@ USING (
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
             AND spggph.impacted_system_operator_id
             = (SELECT flex.current_party())
-            AND spggph.status = 'approved'
+            AND (
+                spggph.status IN ('approved', 'conditionally_approved')
+                OR spggph.prequalified_at IS NOT null
+            )
             AND spggph.record_time_range && service_providing_group_grid_suspension_history.record_time_range -- noqa
     )
 );
