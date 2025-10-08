@@ -76,14 +76,12 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                                                                                       | Status |
-|-------------|--------------------------------------------------------------------------------------------------------------|--------|
-| SPGGS-SO001 | Create, read, update and delete their own SPGGS.                                                             | DONE   |
-| SPGGS-SO002 | Read history on their own SPGGS.                                                                             | DONE   |
-| SPGGS-SO003 | Read SPGGS targeted at any SPG for which they have prequalified or verified a product application.           | DONE   |
-| SPGGS-SO004 | Read history on SPGGS targeted at any SPG for which they had prequalified or verified a product application. | DONE   |
-| SPGGS-SO005 | Read SPGGS targeted at any SPG for which they have approved a grid prequalification.                         | DONE   |
-| SPGGS-SO006 | Read history on SPGGS targeted at any SPG for which they had approved a grid prequalification.               | DONE   |
+| Policy key  | Policy                                               | Status |
+|-------------|------------------------------------------------------|--------|
+| SPGGS-SO001 | Create, read, update and delete their own SPGGS.     | DONE   |
+| SPGGS-SO002 | Read history on their own SPGGS.                     | DONE   |
+| SPGGS-SO003 | Read SPGGS targeted at SPGs they can see.            | DONE   |
+| SPGGS-SO004 | Read history on SPGGS targeted at SPGs they can see. | DONE   |
 
 #### Service Provider
 

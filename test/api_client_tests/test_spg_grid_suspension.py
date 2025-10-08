@@ -11,8 +11,6 @@ from flex.models import (
     ServiceProvidingGroupGridSuspensionReason,
     ServiceProvidingGroupProductApplicationCreateRequest,
     ServiceProvidingGroupProductApplicationResponse,
-    ServiceProvidingGroupProductApplicationUpdateRequest,
-    ServiceProvidingGroupProductApplicationStatus,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupResponse,
@@ -64,7 +62,6 @@ from flex.api.service_provider_product_application import (
 )
 from flex.api.service_providing_group_product_application import (
     create_service_providing_group_product_application,
-    update_service_providing_group_product_application,
 )
 from flex.api.service_providing_group_grid_suspension import (
     list_service_providing_group_grid_suspension,
@@ -318,9 +315,8 @@ def test_spggs_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # RLS: SPGGS-SO005
-
-    # create ISO through grid prequalification
+    # RLS: SPGGS-SO003
+    # (see SPG by being ISO through grid prequalification)
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -336,25 +332,12 @@ def test_spggs_so(data):
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
-    u = update_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
-        id=cast(int, spggp.id),
-        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
-            status=ServiceProvidingGroupGridPrequalificationStatus.CONDITIONALLY_APPROVED,
-            prequalified_at="2025-01-01T00:00:00+1",
-        ),
-    )
-    assert not (isinstance(u, ErrorMessage))
-
     # they should be able to read SPGGS
     spggs = read_service_providing_group_grid_suspension.sync(
         client=client_other_iso,
         id=cast(int, s.id),
     )
     assert isinstance(spggs, ServiceProvidingGroupGridSuspensionResponse)
-
-    # RLS: SPGGS-SO006
-    check_history(client_other_iso, spggs.id)
 
     u = update_service_providing_group_grid_suspension.sync(
         client=client_so,
@@ -365,21 +348,12 @@ def test_spggs_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    u = update_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
-        id=cast(int, spggp.id),
-        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
-            status=ServiceProvidingGroupGridPrequalificationStatus.NOT_APPROVED,
-            prequalified_at=None,
-        ),
-    )
-    assert not (isinstance(u, ErrorMessage))
-
+    # RLS: SPGGS-SO004
     check_history(client_other_iso, s.id)
 
     # RLS: SPGGS-SO003
-    # create a PSO and make a qualified product application
-    # SOPT -> SPPA -> SPGPA
+    # (see SPG by being PSO through product application)
+    # dependencies: SOPT -> SPPA -> SPGPA
 
     client_pso = sts.fresh_client(TestEntity.TEST, "SO")
     pso_id = sts.get_userinfo(client_pso)["party_id"]
@@ -423,25 +397,12 @@ def test_spggs_so(data):
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
-    u = update_service_providing_group_product_application.sync(
-        client=client_pso,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
-            prequalified_at="2024-01-01T00:00:00+1",
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
     # they should be able to read SPGGS
     spggs = read_service_providing_group_grid_suspension.sync(
         client=client_pso,
         id=cast(int, s.id),
     )
     assert isinstance(spggs, ServiceProvidingGroupGridSuspensionResponse)
-
-    # RLS: SPGGS-SO004
-    check_history(client_pso, s.id)
 
     u = update_service_providing_group_grid_suspension.sync(
         client=client_so,
@@ -452,16 +413,7 @@ def test_spggs_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    u = update_service_providing_group_product_application.sync(
-        client=client_pso,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.REJECTED,
-            prequalified_at=None,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
+    # RLS: SPGGS-SO004
     check_history(client_pso, s.id)
 
     # now delete suspension and check everyone can still see the history

@@ -98,16 +98,9 @@ TO flex_system_operator
 USING (
     EXISTS (
         SELECT 1
-        FROM flex.service_providing_group_product_application AS spgpa
-        WHERE spgpa.service_providing_group_id
+        FROM flex.service_providing_group AS spg
+        WHERE spg.id
             = service_providing_group_grid_suspension.service_providing_group_id -- noqa
-            AND spgpa.procuring_system_operator_id
-            = (SELECT flex.current_party())
-            AND (
-                spgpa.status IN ('prequalified', 'verified')
-                OR spgpa.prequalified_at IS NOT null
-                OR spgpa.verified_at IS NOT null
-            )
     )
 );
 
@@ -119,84 +112,14 @@ TO flex_system_operator
 USING (
     EXISTS (
         SELECT 1
-        FROM flex.service_providing_group_product_application AS spgpa
-        WHERE spgpa.service_providing_group_id
+        FROM flex.service_providing_group AS spg
+        WHERE spg.id
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
-            AND spgpa.procuring_system_operator_id
-            = (SELECT flex.current_party())
-            AND (
-                spgpa.status IN ('prequalified', 'verified')
-                OR spgpa.prequalified_at IS NOT null
-                OR spgpa.verified_at IS NOT null
-            )
         UNION ALL
         SELECT 1
-        FROM
-            flex.service_providing_group_product_application_history
-                AS spgpah -- noqa
-        WHERE spgpah.service_providing_group_id
+        FROM flex.service_providing_group_history AS spgh
+        WHERE spgh.id
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
-            AND spgpah.procuring_system_operator_id
-            = (SELECT flex.current_party())
-            AND (
-                spgpah.status IN ('prequalified', 'verified')
-                OR spgpah.prequalified_at IS NOT null
-                OR spgpah.verified_at IS NOT null
-            )
-            AND spgpah.record_time_range && service_providing_group_grid_suspension_history.record_time_range -- noqa
-    )
-);
-
--- RLS: SPGGS-SO005
-CREATE POLICY "SPGGS_SO005"
-ON service_providing_group_grid_suspension
-FOR SELECT
-TO flex_system_operator
-USING (
-    EXISTS (
-        SELECT 1
-        FROM flex.service_providing_group_grid_prequalification AS spggp
-        WHERE spggp.service_providing_group_id
-            = service_providing_group_grid_suspension.service_providing_group_id -- noqa
-            AND spggp.impacted_system_operator_id
-            = (SELECT flex.current_party())
-            AND (
-                spggp.status IN ('approved', 'conditionally_approved')
-                OR spggp.prequalified_at IS NOT null
-            )
-    )
-);
-
--- RLS: SPGGS-SO006
-CREATE POLICY "SPGGS_SO006"
-ON service_providing_group_grid_suspension_history
-FOR SELECT
-TO flex_system_operator
-USING (
-    EXISTS (
-        SELECT 1
-        FROM flex.service_providing_group_grid_prequalification AS spggp
-        WHERE spggp.service_providing_group_id
-            = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
-            AND spggp.impacted_system_operator_id
-            = (SELECT flex.current_party())
-            AND (
-                spggp.status IN ('approved', 'conditionally_approved')
-                OR spggp.prequalified_at IS NOT null
-            )
-        UNION ALL
-        SELECT 1
-        FROM
-            flex.service_providing_group_grid_prequalification_history
-                AS spggph -- noqa
-        WHERE spggph.service_providing_group_id
-            = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
-            AND spggph.impacted_system_operator_id
-            = (SELECT flex.current_party())
-            AND (
-                spggph.status IN ('approved', 'conditionally_approved')
-                OR spggph.prequalified_at IS NOT null
-            )
-            AND spggph.record_time_range && service_providing_group_grid_suspension_history.record_time_range -- noqa
+            AND spgh.record_time_range && service_providing_group_grid_suspension_history.record_time_range -- noqa
     )
 );
