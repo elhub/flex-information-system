@@ -22,6 +22,140 @@ AS $$
     WHERE cu.business_id = l_controllable_unit_business_id::uuid;
 $$;
 
+-- changeset flex:api-controllable-unit-lookup-sync-accounting-point endDelimiter:-- runAlways:true
+-- this function creates an accounting point and makes sure some related data is also in place
+-- (mainly MGA, AP-MGA, AP-EU)
+CREATE OR REPLACE FUNCTION api.controllable_unit_lookup_sync_accounting_point(
+    in_accounting_point_business_id text,
+    in_metering_grid_area_business_id text,
+    in_metering_grid_area_name text,
+    in_metering_grid_area_price_area text,
+    in_system_operator_org text,
+    in_system_operator_gln text,
+    in_system_operator_name text,
+    in_end_user_business_id text
+)
+RETURNS TABLE (
+    accounting_point_id bigint
+)
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    l_ap_id bigint;
+    l_so_entity_id bigint;
+    l_so_party_id bigint;
+    l_mga_id bigint;
+    l_eu_entity_id bigint;
+    l_eu_party_id bigint;
+BEGIN
+    -- we must insert data for AP, AP-MGA and AP-EU
+
+    -- AP is independent
+
+    INSERT INTO flex.accounting_point (business_id)
+    VALUES (in_accounting_point_business_id)
+    RETURNING id INTO l_ap_id;
+
+    -- AP-MGA requires MGA, which requires SO party, which requires SO entity
+
+    INSERT INTO flex.entity (name, type, business_id, business_id_type)
+    VALUES (
+        in_system_operator_name,
+        'organisation',
+        in_system_operator_org,
+        'org'
+    )
+    RETURNING id INTO l_so_entity_id;
+
+    INSERT INTO flex.party (
+        business_id,
+        business_id_type,
+        entity_id,
+        name,
+        type
+        role,
+        status,
+    ) VALUES (
+        in_system_operator_gln,
+        'gln',
+        l_so_entity_id,
+        in_system_operator_name || ' - SO',
+        'system_operator',
+        'flex_system_operator',
+        'active'
+    )
+    RETURNING id INTO l_so_party_id;
+
+    INSERT INTO flex.metering_grid_area (
+        business_id,
+        name,
+        price_area,
+        system_operator_id,
+        valid_time_range
+    ) VALUES (
+        in_metering_grid_area_business_id,
+        in_metering_grid_area_name,
+        in_metering_grid_area_price_area,
+        l_so_party_id,
+        tstzrange(current_timestamp, null, '[)')
+    )
+    RETURNING id INTO l_mga_id;
+
+    INSERT INTO flex.accounting_point_metering_grid_area (
+        accounting_point_id,
+        metering_grid_area_id,
+        valid_time_range
+    ) VALUES (
+        l_ap_id,
+        l_mga_id,
+        tstzrange(current_timestamp, null, '[)')
+    );
+
+    -- AP-EU requires EU party, which requires EU entity
+
+    -- Note:
+    --   We do not have access to the end user's name, so we use the AP ID.
+    --   FISO is supposed to edit this data afterwards.
+
+    INSERT INTO flex.entity (name, type, business_id, business_id_type)
+    VALUES (
+        in_accounting_point_business_id || ' - ENT',
+        'person',
+        in_end_user_business_id,
+        'pid'
+    )
+    RETURNING id INTO l_eu_entity_id;
+
+    INSERT INTO flex.party (
+        entity_id,
+        name,
+        type
+        role,
+        status,
+    ) VALUES (
+        l_eu_entity_id,
+        in_accounting_point_business_id || ' - EU',
+        'end_user',
+        'flex_end_user',
+        'active'
+    )
+    RETURNING id INTO l_eu_party_id;
+
+    INSERT INTO flex.accounting_point_end_user (
+        accounting_point_id,
+        end_user_id,
+        valid_time_range
+    ) VALUES (
+        l_ap_id,
+        l_eu_party_id,
+        tstzrange(current_timestamp, null, '[)')
+    );
+
+    RETURN QUERY SELECT l_ap_id AS accounting_point_id;
+END;
+$$;
+
 -- changeset flex:api-controllable-unit-lookup-check-end-user-matches-accounting-point endDelimiter:-- runAlways:true
 CREATE OR REPLACE FUNCTION
 api.controllable_unit_lookup_check_end_user_matches_accounting_point(

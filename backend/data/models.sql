@@ -37,3 +37,17 @@ FROM entity_lookup(
   @entity_name::text,
   @entity_type::text
 );
+
+-- name: ControllableUnitLookupSyncAccountingPoint :one
+SELECT
+    accounting_point_id::bigint
+FROM controllable_unit_lookup_sync_accounting_point(
+    @accounting_point_business_id::text,
+    @metering_grid_area_business_id::text,
+    @metering_grid_area_name::text,
+    @metering_grid_area_price_area::text,
+    @system_operator_org::text,
+    @system_operator_gln::text,
+    @system_operator_name::text,
+    @end_user_business_id::text
+);

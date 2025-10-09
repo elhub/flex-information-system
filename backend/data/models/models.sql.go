@@ -41,6 +41,48 @@ func (q *Queries) ControllableUnitLookupCheckEndUserMatchesAccountingPoint(ctx c
 	return end_user_id, err
 }
 
+const controllableUnitLookupSyncAccountingPoint = `-- name: ControllableUnitLookupSyncAccountingPoint :one
+SELECT
+    accounting_point_id::bigint
+FROM controllable_unit_lookup_sync_accounting_point(
+    $1::text,
+    $2::text,
+    $3::text,
+    $4::text,
+    $5::text,
+    $6::text,
+    $7::text,
+    $8::text
+)
+`
+
+type ControllableUnitLookupSyncAccountingPointParams struct {
+	AccountingPointBusinessID  string
+	MeteringGridAreaBusinessID string
+	MeteringGridAreaName       string
+	MeteringGridAreaPriceArea  string
+	SystemOperatorOrg          string
+	SystemOperatorGln          string
+	SystemOperatorName         string
+	EndUserBusinessID          string
+}
+
+func (q *Queries) ControllableUnitLookupSyncAccountingPoint(ctx context.Context, arg ControllableUnitLookupSyncAccountingPointParams) (int, error) {
+	row := q.db.QueryRow(ctx, controllableUnitLookupSyncAccountingPoint,
+		arg.AccountingPointBusinessID,
+		arg.MeteringGridAreaBusinessID,
+		arg.MeteringGridAreaName,
+		arg.MeteringGridAreaPriceArea,
+		arg.SystemOperatorOrg,
+		arg.SystemOperatorGln,
+		arg.SystemOperatorName,
+		arg.EndUserBusinessID,
+	)
+	var accounting_point_id int
+	err := row.Scan(&accounting_point_id)
+	return accounting_point_id, err
+}
+
 const entityLookup = `-- name: EntityLookup :one
 SELECT
     entity_id::bigint,

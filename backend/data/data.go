@@ -10,6 +10,7 @@ import (
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/validate"
+	"flex/meteringpointdatahub"
 	"flex/pgpool"
 	"fmt"
 	"io"
@@ -32,6 +33,8 @@ type api struct {
 	db           *pgpool.Pool
 	ctxKey       string
 	mux          *http.ServeMux
+	// external datahub used to sync accounting point data when missing
+	meteringPointDatahubService meteringpointdatahub.Service
 }
 
 var _ http.Handler = &api{} //nolint:exhaustruct
@@ -44,6 +47,7 @@ func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
+	meteringPointDatahubService meteringpointdatahub.Service,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -53,10 +57,11 @@ func NewAPIHandler(
 	mux := http.NewServeMux()
 
 	data := &api{
-		postgRESTURL: postgRESTURL,
-		db:           db,
-		mux:          mux,
-		ctxKey:       ctxKey,
+		postgRESTURL:                postgRESTURL,
+		db:                          db,
+		mux:                         mux,
+		ctxKey:                      ctxKey,
+		meteringPointDatahubService: meteringPointDatahubService,
 	}
 
 	// OpenAPI documentation handlers
@@ -314,9 +319,11 @@ func (data *api) controllableUnitLookupHandler(
 
 	queries := models.New(tx)
 
-	// get accounting point data
-
 	var accountingPointID int
+
+	// try to get accounting point data from database
+
+	accountingPointFoundInDatabase := false
 
 	if controllableUnitBusinessID != "" {
 		currentAP, err := queries.GetCurrentControllableUnitAccountingPoint(
@@ -336,8 +343,9 @@ func (data *api) controllableUnitLookupHandler(
 
 		accountingPointID = currentAP.AccountingPointID
 		accountingPointBusinessID = currentAP.AccountingPointBusinessID
+		accountingPointFoundInDatabase = true
 	} else {
-		accountingPointID, err = queries.GetAccountingPointIDFromBusinessID(
+		apID, err := queries.GetAccountingPointIDFromBusinessID(
 			ctx, accountingPointBusinessID,
 		)
 		if err != nil {
@@ -345,12 +353,44 @@ func (data *api) controllableUnitLookupHandler(
 				ctx, "accounting point does not exist",
 				"business_id", accountingPointBusinessID,
 			)
+		} else {
+			accountingPointID = apID
+			accountingPointFoundInDatabase = true
+		}
+	}
+
+	// not found in the database, need to sync some data from the outside
+	if !accountingPointFoundInDatabase {
+		accountingPointData, err := data.meteringPointDatahubService.FetchAccountingPointData(
+			ctx, accountingPointBusinessID,
+		)
+		if err != nil {
 			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 				Message: "accounting point does not exist",
 			})
 
 			return
 		}
+
+		// the AP exists, we can complete the database when data is missing
+		apID, err := queries.ControllableUnitLookupSyncAccountingPoint(
+			ctx,
+			models.ControllableUnitLookupSyncAccountingPointParams{
+				AccountingPointBusinessID:  accountingPointData.AccountingPointBusinessID,
+				MeteringGridAreaBusinessID: accountingPointData.MeteringGridAreaBusinessID,
+				MeteringGridAreaName:       accountingPointData.MeteringGridAreaName,
+				MeteringGridAreaPriceArea:  accountingPointData.MeteringGridAreaPriceArea,
+				SystemOperatorOrg:          accountingPointData.SystemOperatorORG,
+				SystemOperatorGln:          accountingPointData.SystemOperatorGLN,
+				SystemOperatorName:         accountingPointData.SystemOperatorName,
+				EndUserBusinessID:          endUserBusinessID,
+			},
+		)
+		if err != nil {
+			writeInternalServerError(w)
+			return
+		}
+		accountingPointID = apID
 	}
 
 	// check end user matches and get their ID
