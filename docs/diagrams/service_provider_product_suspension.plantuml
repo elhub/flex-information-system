@@ -20,6 +20,7 @@ SO -> FIS: Create SP product suspension
 
 note right
     Data:
+        - service provider
         - suspended product types
         - reason for suspension
 end note
@@ -74,13 +75,5 @@ loop All PSOs procuring the same product type from the SP
     deactivate FIS
     |||
 end
-
-
-
-
-
-
-
-
 
 @enduml

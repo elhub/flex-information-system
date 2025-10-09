@@ -9,6 +9,12 @@ The diagram below highlights the key steps and their dependencies. It is not a
 map of all the processes, but shows the processes required for service providers
 and system operators to participate in the market.
 
+> [!TIP]
+>
+> For a detailed definition of when a service providing group (SPG) is
+> considered *ready for market*, check the
+> [Ready for market](../concepts/ready-for-market.md) concept page.
+
 ## Prerequisites
 
 * System operator is registered in FIS.
@@ -19,17 +25,17 @@ and system operators to participate in the market.
 The registration and qualification steps can be grouped into two purposes,
 which explains why these processes are necessary for market participation:
 
-1. **Ensuring safe operation**  
+1. **Ensuring safe operation**
 Covers the technical registration of controllable units and the formation of
 service providing groups. This ensures that units do not compromise system
 security when participating in the market.
-Approved by connecting/impacted system operators.  
+Approved by connecting/impacted system operators.
 
-2. **Ensuring delivery capability**  
+2. **Ensuring delivery capability**
 Covers product applications and (pre)qualification steps for both service
 providers and service providing groups. This ensures that the provider can
 actually deliver the requested product type according to the requirements.
-Approved by procuring system operators.  
+Approved by procuring system operators.
 
 ## Registration and Qualification Overview
 
@@ -57,8 +63,3 @@ We are using the following notation:
     * `red` - flexibility information system operator
     * `white` - unspecified
 * `arrows` - dependencies between processes
-
-!!! note "For a detailed definition of when a Service Providing Group (SPG) is
-considered *ready for market*"
-
-    See the [Ready for market](../concepts/ready_for_market.md) concept page.

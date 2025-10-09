@@ -133,6 +133,25 @@ CREATE TABLE service_providing_group_grid_prequalification_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE service_providing_group_grid_suspension (
+    id bigint NOT NULL,
+    impacted_system_operator_id bigint NOT NULL,
+    service_providing_group_id bigint NOT NULL,
+    reason text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE service_providing_group_grid_suspension_history (
+    service_providing_group_grid_suspension_id bigint NOT NULL,
+    id bigint NOT NULL,
+    impacted_system_operator_id bigint NOT NULL,
+    service_providing_group_id bigint NOT NULL,
+    reason text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
 CREATE TABLE entity (
     id bigint NOT NULL,
     business_id text NOT NULL,
