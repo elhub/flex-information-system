@@ -25,7 +25,7 @@ operation, then temporary limits should be used.
 
 Suspension is a powerful tool, and it should not be the primary way to limit the
 use of a CU. A CU suspension will effectively prevent the CU from delivering _any_
-services to _any_ procuring system operator.The combination of temporary limits
+services to _any_ procuring system operator. The combination of temporary limits
 and new grid validation status should be sufficient to ensure safe operation.
 Consequently, CU suspension should not be neccessary unless there is an extraordinary
 case. Rather than serving as a primary solution, CU suspension functions as a
@@ -36,10 +36,10 @@ reason for suspension is a predefined list. There are two reasons for that. The
 first is that the ISO is only allowed to suspend for valid reasons. The other is
 that it allows for a greater degree of automation in the process.
 
-| Reason                  | Description                                                                                                    |
-|-------------------------|----------------------------------------------------------------------------------------------------------------|
-| `safe_operation_issues` | CU is a threat to safe operation and neither temporary limits nor a new grid validation can resolve the issue. |
-| `other`                 | Should generally _not_ be used, but can in cases where ISO has a valid reason for suspension.                  |
+| Reason                       | Description                                                                                                                                               |
+|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `compromises_safe_operation` | Delivery of services from the CU might compromise the safe operation of the ISOs grid Temporary limits or a new grid validation cannot resolve the issue. |
+| `other`                      | Should generally _not_ be used, but can in cases where ISO has a valid reason for suspension.                                                             |
 
 Depending on the reason for suspension, the system operator should warn the
 service provider in advance of the suspension. The reasons for suspension that
