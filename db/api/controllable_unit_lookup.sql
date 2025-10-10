@@ -24,15 +24,10 @@ $$;
 
 -- changeset flex:api-controllable-unit-lookup-sync-accounting-point endDelimiter:-- runAlways:true
 -- this function creates an accounting point and makes sure some related data is also in place
--- (mainly MGA, AP-MGA, AP-EU)
+-- (AP, AP-MGA, AP-EU, creating the end user)
 CREATE OR REPLACE FUNCTION api.controllable_unit_lookup_sync_accounting_point(
     in_accounting_point_business_id text,
     in_metering_grid_area_business_id text,
-    in_metering_grid_area_name text,
-    in_metering_grid_area_price_area text,
-    in_system_operator_org text,
-    in_system_operator_gln text,
-    in_system_operator_name text,
     in_end_user_business_id text
 )
 RETURNS TABLE (
@@ -43,64 +38,23 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
     l_ap_id bigint;
-    l_so_entity_id bigint;
-    l_so_party_id bigint;
     l_mga_id bigint;
+    l_end_user_business_id_type text;
     l_eu_entity_id bigint;
     l_eu_party_id bigint;
 BEGIN
-    -- we must insert data for AP, AP-MGA and AP-EU
-
-    -- AP is independent
+    -- create AP from business ID
 
     INSERT INTO flex.accounting_point (business_id)
     VALUES (in_accounting_point_business_id)
     RETURNING id INTO l_ap_id;
 
-    -- AP-MGA requires MGA, which requires SO party, which requires SO entity
+    -- find MGA by business ID and create AP-MGA
 
-    INSERT INTO flex.entity (name, type, business_id, business_id_type)
-    VALUES (
-        in_system_operator_name,
-        'organisation',
-        in_system_operator_org,
-        'org'
-    )
-    RETURNING id INTO l_so_entity_id;
-
-    INSERT INTO flex.party (
-        business_id,
-        business_id_type,
-        entity_id,
-        name,
-        type
-        role,
-        status,
-    ) VALUES (
-        in_system_operator_gln,
-        'gln',
-        l_so_entity_id,
-        in_system_operator_name || ' - SO',
-        'system_operator',
-        'flex_system_operator',
-        'active'
-    )
-    RETURNING id INTO l_so_party_id;
-
-    INSERT INTO flex.metering_grid_area (
-        business_id,
-        name,
-        price_area,
-        system_operator_id,
-        valid_time_range
-    ) VALUES (
-        in_metering_grid_area_business_id,
-        in_metering_grid_area_name,
-        in_metering_grid_area_price_area,
-        l_so_party_id,
-        tstzrange(current_timestamp, null, '[)')
-    )
-    RETURNING id INTO l_mga_id;
+    SELECT mga.id INTO l_mga_id
+    FROM flex.metering_grid_area AS mga
+    WHERE mga.business_id = in_metering_grid_area_business_id
+        AND mga.valid_time_range @> current_timestamp;
 
     INSERT INTO flex.accounting_point_metering_grid_area (
         accounting_point_id,
@@ -113,34 +67,61 @@ BEGIN
     );
 
     -- AP-EU requires EU party, which requires EU entity
+    -- we create each of them if they do not already exist
 
     -- Note:
-    --   We do not have access to the end user's name, so we use the AP ID.
-    --   FISO is supposed to edit this data afterwards.
+    --   We do not have access to the end user's name, so if we have to create
+    --   an entity or party, we use the AP ID as name. FISO is supposed to edit
+    --   this data afterwards.
 
-    INSERT INTO flex.entity (name, type, business_id, business_id_type)
-    VALUES (
-        in_accounting_point_business_id || ' - ENT',
-        'person',
-        in_end_user_business_id,
-        'pid'
-    )
-    RETURNING id INTO l_eu_entity_id;
+    IF NOT EXISTS (
+        SELECT 1 FROM flex.entity AS e
+        WHERE e.business_id = in_end_user_business_id
+    ) THEN
+        -- end user can be person or organisation
+        IF flex.validate_business_id(in_end_user_business_id, 'pid') THEN
+            l_end_user_business_id_type := 'pid';
+        ELSE
+            l_end_user_business_id_type := 'org';
+        END IF;
 
-    INSERT INTO flex.party (
-        entity_id,
-        name,
-        type
-        role,
-        status,
-    ) VALUES (
-        l_eu_entity_id,
-        in_accounting_point_business_id || ' - EU',
-        'end_user',
-        'flex_end_user',
-        'active'
-    )
-    RETURNING id INTO l_eu_party_id;
+        INSERT INTO flex.entity (name, type, business_id, business_id_type)
+        VALUES (
+            in_accounting_point_business_id || ' - ENT',
+            'person',
+            in_end_user_business_id,
+            l_end_user_business_id_type
+        )
+        RETURNING id INTO l_eu_entity_id;
+    ELSE
+        SELECT e.id INTO l_eu_entity_id
+        FROM flex.entity AS e
+        WHERE e.business_id = in_end_user_business_id;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM flex.party AS p
+        WHERE p.entity_id = l_eu_entity_id AND p.type = 'end_user'
+    ) THEN
+        INSERT INTO flex.party (
+            entity_id,
+            name,
+            type,
+            role,
+            status
+        ) VALUES (
+            l_eu_entity_id,
+            in_accounting_point_business_id || ' - EU',
+            'end_user',
+            'flex_end_user',
+            'active'
+        )
+        RETURNING id INTO l_eu_party_id;
+    ELSE
+        SELECT p.id INTO l_eu_party_id
+        FROM flex.party AS p
+        WHERE p.entity_id = l_eu_entity_id AND p.type = 'end_user';
+    END IF;
 
     INSERT INTO flex.accounting_point_end_user (
         accounting_point_id,

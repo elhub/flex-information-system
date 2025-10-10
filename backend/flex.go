@@ -230,7 +230,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		slog.InfoContext(ctx, "Default login limiting")
 	}
 
-	var meteringPointDatahubService meteringpointdatahub.Service
+	var meteringPointDatahubService data.MeteringPointDatahubService
 	meteringPointDatahubURL, exists := lookupenv("FLEX_METERING_POINT_DATAHUB_URL")
 	if !exists {
 		slog.InfoContext(

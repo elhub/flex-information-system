@@ -2,6 +2,7 @@ package data
 
 import (
 	"bytes"
+	"context"
 	_ "embed"
 	"encoding/json"
 	"flex/auth"
@@ -10,7 +11,6 @@ import (
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/validate"
-	"flex/meteringpointdatahub"
 	"flex/pgpool"
 	"fmt"
 	"io"
@@ -27,6 +27,14 @@ import (
 //go:embed static/openapi.json
 var openapiInput []byte
 
+// MeteringPointDatahubService defines the data fetching operations we can
+// execute thanks to an external Metering Point Datahub.
+type MeteringPointDatahubService interface {
+	FetchAccountingPointMeteringGridArea(
+		ctx context.Context, accountingPointBusinessID string,
+	) (string, error)
+}
+
 // api gathers handlers for all endpoints of the data API.
 type api struct {
 	postgRESTURL *url.URL
@@ -34,7 +42,7 @@ type api struct {
 	ctxKey       string
 	mux          *http.ServeMux
 	// external datahub used to sync accounting point data when missing
-	meteringPointDatahubService meteringpointdatahub.Service
+	meteringPointDatahubService MeteringPointDatahubService
 }
 
 var _ http.Handler = &api{} //nolint:exhaustruct
@@ -47,7 +55,7 @@ func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
-	meteringPointDatahubService meteringpointdatahub.Service,
+	meteringPointDatahubService MeteringPointDatahubService,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -361,7 +369,7 @@ func (data *api) controllableUnitLookupHandler(
 
 	// not found in the database, need to sync some data from the outside
 	if !accountingPointFoundInDatabase {
-		accountingPointData, err := data.meteringPointDatahubService.FetchAccountingPointData(
+		meteringGridAreaBusinessID, err := data.meteringPointDatahubService.FetchAccountingPointMeteringGridArea(
 			ctx, accountingPointBusinessID,
 		)
 		if err != nil {
@@ -375,16 +383,9 @@ func (data *api) controllableUnitLookupHandler(
 		// the AP exists, we can complete the database when data is missing
 		apID, err := queries.ControllableUnitLookupSyncAccountingPoint(
 			ctx,
-			models.ControllableUnitLookupSyncAccountingPointParams{
-				AccountingPointBusinessID:  accountingPointData.AccountingPointBusinessID,
-				MeteringGridAreaBusinessID: accountingPointData.MeteringGridAreaBusinessID,
-				MeteringGridAreaName:       accountingPointData.MeteringGridAreaName,
-				MeteringGridAreaPriceArea:  accountingPointData.MeteringGridAreaPriceArea,
-				SystemOperatorOrg:          accountingPointData.SystemOperatorORG,
-				SystemOperatorGln:          accountingPointData.SystemOperatorGLN,
-				SystemOperatorName:         accountingPointData.SystemOperatorName,
-				EndUserBusinessID:          endUserBusinessID,
-			},
+			accountingPointBusinessID,
+			meteringGridAreaBusinessID,
+			endUserBusinessID,
 		)
 		if err != nil {
 			writeInternalServerError(w)
