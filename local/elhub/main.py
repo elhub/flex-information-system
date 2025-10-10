@@ -8,9 +8,9 @@ app = Flask(__name__)
 # in our local test environment.
 # Check the db/test_data package for how this stuff is generated.
 TEST_DATA_SUFFIX_TO_GLN_MGA_MBA = {
-    "000": ("1337000000044", "42X-COMMON-SHA-9", "NO4"),
-    "001": ("1337000100041", "42X-TEST-SUITE-K", "NO4"),
-    "002": ("1337000200048", "42X-EMIL-POST--3", "NO4"),
+    "000": ("1337000000044", "42Y-COMMON-SHA-W", "NO4"),
+    "001": ("1337000100041", "42Y-TEST-SUITE-6", "NO4"),
+    "002": ("1337000200048", "42Y-EMIL-POST--Q", "NO4"),
 }
 
 
