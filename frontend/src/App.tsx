@@ -97,8 +97,11 @@ import {
   ServiceProvidingGroupMembershipHistoryList,
   ServiceProvidingGroupProductApplicationInput,
   ServiceProvidingGroupProductApplicationShow,
+  ServiceProvidingGroupGridSuspensionShow,
+  ServiceProvidingGroupGridSuspensionInput,
   ServiceProvidingGroupProductApplicationHistoryList,
   ServiceProvidingGroupProductApplicationList,
+  ServiceProvidingGroupGridSuspensionList,
 } from "./service_providing_group";
 
 import { roleNames } from "./roles";
@@ -982,6 +985,45 @@ export const App = () => (
                 </ResourceContextProvider>
               }
             />
+            {/* service providing group grid suspension */}
+            {/* list is also part of SPG show page ?? */}
+            <Route
+              path=":service_providing_group_id/grid_suspension/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension">
+                  <ServiceProvidingGroupGridSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension/create"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension">
+                  <Create
+                    redirect={(_: any, _id: any, record: any) =>
+                      `service_providing_group/${record.service_providing_group_id}/show`
+                    }
+                  >
+                    <ServiceProvidingGroupGridSuspensionInput />
+                  </Create>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension/:id"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension">
+                  <Edit
+                    mutationMode="pessimistic"
+                    redirect={(_: any, _id: any, record: any) =>
+                      `service_providing_group/${record.service_providing_group_id}/show`
+                    }
+                  >
+                    <ServiceProvidingGroupGridSuspensionInput />
+                  </Edit>
+                </ResourceContextProvider>
+              }
+            />
           </Resource>
         ) : null}
         {permissions.includes(
@@ -1069,7 +1111,40 @@ export const App = () => (
                 "service_providing_group_product_application.create",
               ) ? (
                 <Create redirect="list">
+                  <h1>hei hei hei</h1>
                   <ServiceProvidingGroupProductApplicationInput />
+                </Create>
+              ) : (
+                (null as any)
+              )
+            }
+          />
+        ) : null}
+        {permissions.includes(
+          "service_providing_group_grid_suspension.read",
+        ) ? (
+          <Resource
+            name="service_providing_group_grid_suspension"
+            list={ServiceProvidingGroupGridSuspensionList}
+            show={ServiceProvidingGroupGridSuspensionShow}
+            edit={
+              permissions.includes(
+                "service_providing_group_grid_suspension.update",
+              ) ? (
+                <Edit mutationMode="pessimistic">
+                  <ServiceProvidingGroupGridSuspensionInput />
+                </Edit>
+              ) : (
+                (null as any)
+              )
+            }
+            create={
+              permissions.includes(
+                "service_providing_group_grid_suspension.create",
+              ) ? (
+                <Create redirect="list">
+                  <ServiceProvidingGroupGridSuspensionInput />
+                  <h1>hei hei hei</h1>
                 </Create>
               ) : (
                 (null as any)
