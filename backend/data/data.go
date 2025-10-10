@@ -8,6 +8,7 @@ import (
 	"flex/auth"
 	"flex/auth/scope"
 	"flex/data/models"
+	"flex/internal/gs1"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/validate"
@@ -358,7 +359,7 @@ func (data *api) controllableUnitLookupHandler(
 		)
 		if err != nil {
 			slog.InfoContext(
-				ctx, "accounting point does not exist",
+				ctx, "accounting point does not exist in database",
 				"business_id", accountingPointBusinessID,
 			)
 		} else {
@@ -373,6 +374,11 @@ func (data *api) controllableUnitLookupHandler(
 			ctx, accountingPointBusinessID,
 		)
 		if err != nil {
+			slog.ErrorContext(
+				ctx, "accounting point does not exist in datahub",
+				"business_id", accountingPointBusinessID,
+				"error", err,
+			)
 			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 				Message: "accounting point does not exist",
 			})
@@ -388,6 +394,13 @@ func (data *api) controllableUnitLookupHandler(
 			endUserBusinessID,
 		)
 		if err != nil {
+			slog.ErrorContext(
+				ctx, "failed accounting point sync",
+				"business_id", accountingPointBusinessID,
+				"metering_grid_area_business_id", meteringGridAreaBusinessID,
+				"end_user_business_id", endUserBusinessID,
+				"error", err,
+			)
 			writeInternalServerError(w)
 			return
 		}
@@ -482,11 +495,6 @@ func controllableUnitLookupValidateInput( //nolint:cyclop
 	accountingPointBusinessID := ""
 	if cuLookupRequestBody.AccountingPointBusinessID != nil {
 		accountingPointBusinessID = *cuLookupRequestBody.AccountingPointBusinessID
-
-		regexAccountingPointBusinessID := regexp.MustCompile("^[1-9][0-9]{17}$")
-		if !regexAccountingPointBusinessID.MatchString(accountingPointBusinessID) {
-			return &errorMessage{Message: "ill formed accounting point business ID"} //nolint:exhaustruct
-		}
 	}
 
 	if accountingPointBusinessID == "" && controllableUnitBusinessID == "" {
@@ -499,6 +507,10 @@ func controllableUnitLookupValidateInput( //nolint:cyclop
 		return &errorMessage{ //nolint:exhaustruct
 			Message: "request contains business IDs for both accounting point and controllable unit",
 		}
+	}
+
+	if accountingPointBusinessID != "" && !gs1.IsValidGS1(accountingPointBusinessID) {
+		return &errorMessage{Message: "ill formed accounting point business ID"} //nolint:exhaustruct
 	}
 
 	// no nil pointers so we can trust the (now validated) input for the rest of
