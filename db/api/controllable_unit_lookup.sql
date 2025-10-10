@@ -40,6 +40,7 @@ DECLARE
     l_ap_id bigint;
     l_mga_id bigint;
     l_valid_from timestamptz;
+    l_end_user_type text;
     l_end_user_business_id_type text;
     l_eu_entity_id bigint;
     l_eu_party_id bigint;
@@ -88,14 +89,16 @@ BEGIN
         -- end user can be person or organisation
         IF flex.validate_business_id(in_end_user_business_id, 'pid') THEN
             l_end_user_business_id_type := 'pid';
+            l_end_user_type := 'person';
         ELSE
             l_end_user_business_id_type := 'org';
+            l_end_user_type := 'organisation';
         END IF;
 
         INSERT INTO flex.entity (name, type, business_id, business_id_type)
         VALUES (
             in_accounting_point_business_id || ' - ENT',
-            'person',
+            l_end_user_type,
             in_end_user_business_id,
             l_end_user_business_id_type
         )
