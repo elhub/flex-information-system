@@ -39,6 +39,7 @@ AS $$
 DECLARE
     l_ap_id bigint;
     l_mga_id bigint;
+    l_valid_from timestamptz;
     l_end_user_business_id_type text;
     l_eu_entity_id bigint;
     l_eu_party_id bigint;
@@ -56,6 +57,12 @@ BEGIN
     WHERE mga.business_id = in_metering_grid_area_business_id
         AND mga.valid_time_range @> current_timestamp;
 
+    -- we assume the links between the AP and the MGA/EU are valid from a few
+    -- days back in time
+    l_valid_from := (
+        (current_date - '2 days'::interval)::text || ' Europe/Oslo'
+    )::timestamptz;
+
     INSERT INTO flex.accounting_point_metering_grid_area (
         accounting_point_id,
         metering_grid_area_id,
@@ -63,7 +70,7 @@ BEGIN
     ) VALUES (
         l_ap_id,
         l_mga_id,
-        tstzrange(current_timestamp, null, '[)')
+        tstzrange(l_valid_from, null, '[)')
     );
 
     -- AP-EU requires EU party, which requires EU entity
@@ -130,7 +137,7 @@ BEGIN
     ) VALUES (
         l_ap_id,
         l_eu_party_id,
-        tstzrange(current_timestamp, null, '[)')
+        tstzrange(l_valid_from, null, '[)')
     );
 
     RETURN QUERY SELECT l_ap_id AS accounting_point_id;
