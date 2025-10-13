@@ -99,6 +99,7 @@ import {
   ServiceProvidingGroupProductApplicationShow,
   ServiceProvidingGroupGridSuspensionShow,
   ServiceProvidingGroupGridSuspensionInput,
+  ServiceProvidingGroupGridSuspensionHistoryList,
   ServiceProvidingGroupProductApplicationHistoryList,
   ServiceProvidingGroupProductApplicationList,
   ServiceProvidingGroupGridSuspensionList,
@@ -986,7 +987,7 @@ export const App = () => (
               }
             />
             {/* service providing group grid suspension */}
-            {/* list is also part of SPG show page ?? */}
+            {/* list is also part of SPG show page */}
             <Route
               path=":service_providing_group_id/grid_suspension/:id/show"
               element={
@@ -1006,6 +1007,19 @@ export const App = () => (
                   >
                     <ServiceProvidingGroupGridSuspensionInput />
                   </Create>
+                </ResourceContextProvider>
+              }
+            />
+            {/* service providing group grid suspension relation history */}
+            <Route
+              path=":service_providing_group_id/grid_suspension_history"
+              element={<ServiceProvidingGroupGridSuspensionHistoryList />}
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension_history/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_history">
+                  <ServiceProvidingGroupGridSuspensionShow />
                 </ResourceContextProvider>
               }
             />

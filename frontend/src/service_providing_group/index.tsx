@@ -13,3 +13,4 @@ export * from "./product_application/ServiceProvidingGroupProductApplicationShow
 export * from "./grid_suspension/ServiceProvidingGroupGridSuspensionInput";
 export * from "./grid_suspension/ServiceProvidingGroupGridSuspensionShow";
 export * from "./grid_suspension/ServiceProvidingGroupGridSuspensionList";
+export * from "./grid_suspension/ServiceProvidingGroupGridSuspensionHistoryList";
