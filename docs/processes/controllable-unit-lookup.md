@@ -13,6 +13,13 @@ appropriate process to execute.
 To prevent unauthorized use, FIS requires the end user id for the service
 provider to access CU data.
 
+An external metering point datahub can be used in addition to FIS in case the
+accounting point exists but is not yet registered in the FIS. If the feature is
+activated, the operation updates internal information related to the accounting
+point while doing the lookup. For now, the operation also creates the end user
+if it does not exist, in order to avoid adding person data in the context of the
+research project, and only use open data.
+
 ## Prerequisites
 
 - Service provider has a consent from the end user to request data on the
