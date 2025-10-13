@@ -45,7 +45,6 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
   return (
     permissions.includes("service_providing_group_grid_suspension.read") && (
       <ResourceContextProvider value="service_providing_group_grid_suspension">
-        <h1> HEI HEI HEI HEI</h1>
         <List
           title={false}
           perPage={10}
