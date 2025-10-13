@@ -52,7 +52,9 @@ def data():
     client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
-    yield (sts, cu.id, eu_id)
+    unrelated_eu_id = 4  # Common AS end user, has no relation to AP 1002
+
+    yield (sts, cu.id, eu_id, unrelated_eu_id)
 
 
 # ---- ---- ---- ---- ----
@@ -60,7 +62,7 @@ def data():
 
 # RLS: CUSP-FISO001
 def test_cusp_fiso(data):
-    (sts, cu_id, eu_id) = data
+    (sts, cu_id, eu_id, unrelated_eu_id) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
     # create a CU-SP relation, check the visible list is one relation longer
@@ -73,6 +75,20 @@ def test_cusp_fiso(data):
 
     client_sp = sts.get_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
+
+    # cannot create a CUSP for an end user not related to the CU
+    e = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cu_id,
+            service_provider_id=sp_id,
+            end_user_id=unrelated_eu_id,
+            contract_reference="TEST-CONTRACT",
+            valid_from="2020-01-01T00:00:00+1",
+            valid_to=None,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
 
     # endpoint: POST /controllable_unit_service_provider
     cusp = create_controllable_unit_service_provider.sync(
@@ -184,7 +200,7 @@ def test_cusp_fiso(data):
 
 # RLS: CUSP-SP001
 def test_cusp_sp(data):
-    (sts, cu_id, eu_id) = data
+    (sts, cu_id, eu_id, _) = data
 
     sp1_client = sts.get_client(TestEntity.TEST, "SP")
     sp1_id = sts.get_userinfo(sp1_client)["party_id"]
@@ -337,7 +353,7 @@ def test_cusp_sp(data):
 
 # RLS: CUSP-SO001
 def test_cusp_so(data):
-    (sts, _, _) = data
+    (sts, _, _, _) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
@@ -370,7 +386,7 @@ def test_cusp_so(data):
 # RLS: CUSP-SO002
 # RLS: CUSP-SP002
 def test_cusp_history(data):
-    (sts, _, _) = data
+    (sts, _, _, _) = data
 
     for role in ["FISO", "SO", "SP"]:
         client = sts.get_client(TestEntity.TEST, role)
@@ -392,7 +408,7 @@ def test_cusp_history(data):
 # RLS: CUSP-EU001
 # RLS: CUSP-EU002
 def test_cusp_eu(data):
-    (sts, _, _) = data
+    (sts, _, _, _) = data
 
     # former AP end user can see the old version of the CU-SPs in the test data,
     # but not the current contracts
@@ -447,7 +463,7 @@ def test_cusp_eu(data):
 
 
 def test_rla_absence(data):
-    (sts, _, _) = data
+    (sts, _, _, _) = data
 
     roles_without_rla = ["BRP", "ES", "MO", "TP"]
 
