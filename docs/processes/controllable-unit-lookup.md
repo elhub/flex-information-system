@@ -5,20 +5,20 @@ initiating controllable unit registration or service provider switching, in
 order to verify whether the unit is already registered in the system.
 
 Before starting the CU registration or switching process, the service provider
-needs to verify the linkage between the end user and the accounting point / CU, as
+needs to verify the link between the end user and the accounting point / CU, as
 well as validate CU data. This process retrieves the necessary information from
 FIS, to ensure that the service provider has sufficient data to determine the
 appropriate process to execute.
 
-To prevent unauthorized use, FIS requires the end user id for the service
-provider to access CU data.
+To prevent unauthorized use, FIS requires the end user id from the service
+provider to allow them to access CU data. If the accounting point or CU is
+already part of the system, this validation will be done based on existing data
+in FIS. Data for accounting points with CUs will always be synced from Elhub.
 
-An external metering point datahub can be used in addition to FIS in case the
-accounting point exists but is not yet registered in the FIS. If the feature is
-activated, the operation updates internal information related to the accounting
-point while doing the lookup. For now, the operation also creates the end user
-if it does not exist, in order to avoid adding person data in the context of the
-research project, and only use open data.
+If, however, the service provider is requesting data for an accounting point
+that does not have any CUs registered in FIS, there will be a synchronous lookup
+towards Elhub to validate the accounting point end user relation. From then on,
+the accounting point will be part of the regular data sync from Elhub.
 
 ## Prerequisites
 
@@ -71,4 +71,4 @@ the expected response. The column `Next action` is just ment as a guide.
 
 [Full Size](../diagrams/controllable_unit_lookup.png) | [PlantUML description](../diagrams/controllable_unit_lookup.plantuml)
 
-![Controllable Unit Registration](../diagrams/controllable_unit_lookup.png)
+![Controllable Unit Lookup](../diagrams/controllable_unit_lookup.png)

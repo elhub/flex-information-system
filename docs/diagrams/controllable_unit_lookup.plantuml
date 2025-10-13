@@ -11,6 +11,7 @@ skinparam note {
 actor "End User (EU)" AS EU
 actor "Service Provider (SP)" as SP
 participant "Flexibility Information System (FIS)" as FIS
+participant "Elhub" as ELHUB
 
 EU <- SP: Obtain consent to request CU data
 activate SP
@@ -25,6 +26,14 @@ note left
     - end user and controllable unit
 end note
 activate FIS
+opt Accounting point not in FIS
+    FIS -> ELHUB: Get accounting point data
+    activate ELHUB
+    ELHUB --> FIS: AP data
+    deactivate ELHUB
+    |||
+end
+FIS -> FIS: Validate end user relation
 FIS --> SP: CU data
 deactivate SP
 
