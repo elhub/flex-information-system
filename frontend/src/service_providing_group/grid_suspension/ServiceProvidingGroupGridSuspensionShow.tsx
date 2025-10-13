@@ -16,7 +16,6 @@ import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-import { ProductTypeArrayField } from "../../product_type/components";
 
 export const ServiceProvidingGroupGridSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -63,22 +62,18 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
               <TextField source="name" />
             </ReferenceField>
             <ReferenceField
-              source="impact_system_operator_id"
+              source="impacted_system_operator_id"
               reference="party"
             >
               <TextField source="name" />
             </ReferenceField>
-            <ProductTypeArrayField
-              label="Product types"
-              source="product_type_ids"
-            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Grid suspension process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="reson" />
+            <TextField source="reason" />
             <DateField source="recorded_at" showTime />
             <DateField source="recorded_by" showTime />
           </FieldStack>
