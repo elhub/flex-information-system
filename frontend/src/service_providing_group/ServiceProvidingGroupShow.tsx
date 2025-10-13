@@ -17,6 +17,7 @@ import { ServiceProvidingGroupGridPrequalificationList } from "./grid_prequalifi
 import { EventButton } from "../event/EventButton";
 import { ServiceProvidingGroupProductApplicationList } from "./product_application/ServiceProvidingGroupProductApplicationList";
 import { IdentityField } from "../components/IdentityField";
+import { ServiceProvidingGroupGridSuspensionList } from "./grid_suspension/ServiceProvidingGroupGridSuspensionList";
 
 export const ServiceProvidingGroupShow = () => {
   const resource = useResourceContext()!;
@@ -68,6 +69,14 @@ export const ServiceProvidingGroupShow = () => {
               label="grid prequalification resources"
             />
             <ServiceProvidingGroupGridPrequalificationList />
+            <Typography variant="h6" gutterBottom>
+              Grid suspension
+            </Typography>
+            <NestedResourceHistoryButton
+              child="grid_suspension"
+              label="grid suspension resources"
+            />
+            <ServiceProvidingGroupGridSuspensionList />
             <Typography variant="h6" gutterBottom>
               Product applications
             </Typography>

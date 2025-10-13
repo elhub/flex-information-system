@@ -1111,7 +1111,6 @@ export const App = () => (
                 "service_providing_group_product_application.create",
               ) ? (
                 <Create redirect="list">
-                  <h1>hei hei hei</h1>
                   <ServiceProvidingGroupProductApplicationInput />
                 </Create>
               ) : (
@@ -1144,7 +1143,6 @@ export const App = () => (
               ) ? (
                 <Create redirect="list">
                   <ServiceProvidingGroupGridSuspensionInput />
-                  <h1>hei hei hei</h1>
                 </Create>
               ) : (
                 (null as any)
