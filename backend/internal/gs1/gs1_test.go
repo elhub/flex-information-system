@@ -21,6 +21,8 @@ func TestGSRN(t *testing.T) {
 		{"123456789012345606", true},
 		{"777756789012345603", false},
 		{"777756789012345608", true},
+		{"133700000000000053", true},
+		{"133700000000000060", true},
 	}
 
 	for _, testCase := range testCases {
