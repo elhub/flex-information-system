@@ -36,10 +36,10 @@ reason for suspension is a predefined list. There are two reasons for that. The
 first is that the ISO is only allowed to suspend for valid reasons. The other is
 that it allows for a greater degree of automation in the process.
 
-| Reason                       | Description                                                                                                                                               |
-|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `compromises_safe_operation` | Delivery of services from the CU might compromise the safe operation of the ISOs grid Temporary limits or a new grid validation cannot resolve the issue. |
-| `other`                      | Should generally _not_ be used, but can in cases where ISO has a valid reason for suspension.                                                             |
+| Reason                       | Description                                                                                   |
+|------------------------------|-----------------------------------------------------------------------------------------------|
+| `compromises_safe_operation` | Delivery of services from the CU might compromise the safe operation of the ISOs grid.        |
+| `other`                      | Should generally _not_ be used, but can in cases where ISO has a valid reason for suspension. |
 
 Depending on the reason for suspension, the system operator should warn the
 service provider in advance of the suspension. The reasons for suspension that
