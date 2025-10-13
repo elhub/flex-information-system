@@ -448,6 +448,63 @@ resources:
         nullable: true
         example: 2023-01-08 10:00:00 CET
 
+  - id: service_providing_group_grid_suspension
+    acronym: SPGGS
+    summary: Service Providing Group Grid Suspension
+    description: >-
+      The relation allowing an impacted system operator to temporarily suspend a
+      service providing group from delivering services.
+    operations:
+      - list
+      - read
+      - create
+      - update
+      - delete
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    history_rls: false
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 49
+      impacted_system_operator_id:
+        description: >-
+          Reference to the impacted system operator suspending the service
+          providing group.
+        format: bigint
+        type: integer
+        x-no-update: true
+        required: false
+        x-details: Defaults to the system operator creating the resource.
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 7
+      service_providing_group_id:
+        description: Reference to the service providing group being suspended.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: service_providing_group
+          field: id
+        example: 13
+      reason:
+        description: The reason for the suspension.
+        format: text
+        type: string
+        enum:
+          - breach_of_conditions
+          - significant_group_change
+          - other
+        example: significant_group_change
+
   - id: entity
     acronym: ENT
     summary: Entity
