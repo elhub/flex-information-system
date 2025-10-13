@@ -84,7 +84,7 @@ def test_cusp_fiso(data):
             service_provider_id=sp_id,
             end_user_id=unrelated_eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2020-01-01T00:00:00+1",
+            valid_from="2024-01-01T00:00:00+1",
             valid_to=None,
         ),
     )
