@@ -69,7 +69,7 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
             validate={required()}
             choices={[
               "breach_of_conditions",
-              "significant_alteration",
+              "significant_group_change",
               "other",
             ]}
           />
