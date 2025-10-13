@@ -5,8 +5,8 @@ import (
 	"strconv"
 )
 
-// IsValidGS1 checks if a given GS1 code is valid.
-func IsValidGS1(gs1 string) bool {
+// IsValidGSRN checks if a given GSRN code is valid.
+func IsValidGSRN(gs1 string) bool {
 	regex := regexp.MustCompile("^[1-9][0-9]{17}$")
 	if !regex.MatchString(gs1) {
 		return false

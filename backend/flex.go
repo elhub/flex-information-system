@@ -239,7 +239,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 				"not using any metering point datahub",
 		)
 
-		meteringPointDatahubService = &meteringpointdatahub.UnimplementedService{}
+		meteringPointDatahubService = nil
 	} else {
 		service := meteringpointdatahub.NewService(meteringPointDatahubURL)
 		meteringPointDatahubService = &service

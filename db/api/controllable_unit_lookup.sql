@@ -47,9 +47,18 @@ DECLARE
 BEGIN
     -- create AP from business ID
 
-    INSERT INTO flex.accounting_point (business_id)
-    VALUES (in_accounting_point_business_id)
-    RETURNING id INTO l_ap_id;
+    IF NOT EXISTS (
+        SELECT 1 FROM flex.accounting_point AS ap
+        WHERE ap.business_id = in_accounting_point_business_id
+    ) THEN
+        INSERT INTO flex.accounting_point (business_id)
+        VALUES (in_accounting_point_business_id)
+        RETURNING id INTO l_ap_id;
+    ELSE
+        SELECT ap.id INTO l_ap_id
+        FROM flex.accounting_point AS ap
+        WHERE ap.business_id = in_accounting_point_business_id;
+    END IF;
 
     -- find MGA by business ID and create AP-MGA
 

@@ -8,49 +8,32 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 )
 
-// UnimplementedService is a service that always fails. This is used to switch the feature off on
-// environments that do not need it.
-type UnimplementedService struct{}
-
-// FetchAccountingPointMeteringGridArea returns an error indicating that the service is not
-// implemented.
-func (*UnimplementedService) FetchAccountingPointMeteringGridArea(
-	context.Context, string,
-) (string, error) {
-	return "", errNotImplemented
+// service is the implementation of the Metering Point Datahub service.
+type service struct {
+	url     string
+	timeout time.Duration
 }
 
-// defaultService is the default implementation for a metering point datahub service.
-type defaultService struct {
-	url string
-}
-
-// NewService is a convenience function to create a new defaultService.
-func NewService(url string) defaultService { //nolint:revive
-	return defaultService{url: url}
+// NewService is a convenience function to create a new service.
+func NewService(url string) service { //nolint:revive
+	return service{
+		url:     url,
+		timeout: 5 * time.Second,
+	}
 }
 
 // FetchAccountingPointMeteringGridArea fetches the accounting point's metering grid area from the
 // external Metering Point Datahub.
-func (mpDatahubService *defaultService) FetchAccountingPointMeteringGridArea(
+func (mpDatahubService *service) FetchAccountingPointMeteringGridArea(
 	ctx context.Context,
 	accountingPointBusinessID string,
 ) (string, error) {
-	req, err := http.NewRequestWithContext(
-		ctx,
-		http.MethodGet,
-		mpDatahubService.url+"/metering-points/"+accountingPointBusinessID,
-		nil,
-	)
+	resp, err := mpDatahubService.requestMeteringPointData(ctx, accountingPointBusinessID)
 	if err != nil {
-		return "", fmt.Errorf("could not create request: %w", err)
-	}
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return "", fmt.Errorf("connection to the metering point datahub failed: %w", err)
+		return "", fmt.Errorf("could not request data from datahub: %w", err)
 	}
 	defer resp.Body.Close()
 
@@ -86,7 +69,26 @@ func (mpDatahubService *defaultService) FetchAccountingPointMeteringGridArea(
 	return mpdRaw.Data[0].Relationships.GridArea.Data.ID, nil
 }
 
-var (
-	errNotImplemented       = errors.New("not implemented")
-	errUnexpectedStatusCode = errors.New("unexpected status code")
-)
+func (mpDatahubService *service) requestMeteringPointData(ctx context.Context, id string) (*http.Response, error) {
+	ctx, cancel := context.WithTimeout(ctx, mpDatahubService.timeout)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		mpDatahubService.url+"/metering-points/"+id,
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("could not create request: %w", err)
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("connection to the metering point datahub failed: %w", err)
+	}
+
+	return resp, nil
+}
+
+var errUnexpectedStatusCode = errors.New("unexpected status code")

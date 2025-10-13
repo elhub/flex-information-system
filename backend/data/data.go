@@ -370,6 +370,14 @@ func (data *api) controllableUnitLookupHandler(
 
 	// not found in the database, need to sync some data from the outside
 	if !accountingPointFoundInDatabase {
+		if data.meteringPointDatahubService == nil {
+			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+				Message: "accounting point does not exist",
+			})
+
+			return
+		}
+
 		meteringGridAreaBusinessID, err := data.meteringPointDatahubService.FetchAccountingPointMeteringGridArea(
 			ctx, accountingPointBusinessID,
 		)
@@ -509,7 +517,7 @@ func controllableUnitLookupValidateInput( //nolint:cyclop
 		}
 	}
 
-	if accountingPointBusinessID != "" && !gs1.IsValidGS1(accountingPointBusinessID) {
+	if accountingPointBusinessID != "" && !gs1.IsValidGSRN(accountingPointBusinessID) {
 		return &errorMessage{Message: "ill formed accounting point business ID"} //nolint:exhaustruct
 	}
 
