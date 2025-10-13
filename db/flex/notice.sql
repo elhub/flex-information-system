@@ -29,6 +29,7 @@ CREATE VIEW notice AS (
             ON cu.accounting_point_id = ap_so.accounting_point_id
                 AND ap_so.valid_time_range @> current_timestamp
     WHERE cu.grid_validation_status = 'pending'
+        AND cu.status = 'active'
 
     -- CU grid validation status incomplete information
     UNION ALL
@@ -42,6 +43,7 @@ CREATE VIEW notice AS (
             ON cu.id = cusp.controllable_unit_id
     WHERE cusp.valid_time_range @> current_timestamp
         AND cu.grid_validation_status = 'incomplete_information'
+        AND cu.status = 'active'
 
     -- SP product application status requested
     UNION ALL
