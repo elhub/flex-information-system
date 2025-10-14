@@ -52,6 +52,7 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
           empty={false}
           filter={id ? { service_providing_group_id: id } : undefined}
           sort={{ field: "id", order: "DESC" }}
+          sx={{ mb: 4 }}
           // disable read/writes to/from the URL by this component
           // (necessary on pages with several List components,
           // i.e., in our case, subresources)

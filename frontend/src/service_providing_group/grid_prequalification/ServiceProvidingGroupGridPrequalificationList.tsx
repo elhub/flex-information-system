@@ -56,6 +56,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
           filter={id ? { service_providing_group_id: id } : undefined}
           sort={{ field: "id", order: "DESC" }}
           disableSyncWithLocation
+          sx={{ mb: 4 }}
         >
           <Datagrid
             bulkActionButtons={false}
