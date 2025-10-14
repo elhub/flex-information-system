@@ -2,6 +2,7 @@ import {
   required,
   SelectInput,
   SimpleForm,
+  useGetIdentity,
   useRecordContext,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
@@ -17,27 +18,21 @@ import { DateTimeInput } from "../../components/datetime";
 // keep only the fields that map to the UI
 const filterRecord = ({
   service_providing_group_id,
-  procuring_system_operator_id,
-  product_type_ids,
-  status,
-  notes,
-  prequalified_at,
-  verified_at,
+  impacted_system_operator_id,
+  reason,
 }: any) => ({
   service_providing_group_id,
-  procuring_system_operator_id,
-  product_type_ids,
-  status,
-  notes,
-  prequalified_at,
-  verified_at,
+  impacted_system_operator_id,
+  reason,
 });
 
 // common layout to create and edit pages
 export const ServiceProvidingGroupGridSuspensionInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
+  const { data: identity } = useGetIdentity();
   const record = filterRecord({ ...actualRecord, ...overrideRecord });
+  const isSystemOperator = identity?.role == "flex_system_operator";
 
   return (
     <SimpleForm
@@ -55,10 +50,14 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
             reference="service_providing_group"
             readOnly={!!record?.service_providing_group_id}
           />
-          <PartyReferenceInput
-            source="impacted_system_operator_id"
-            filter={{ type: "system_operator" }}
-          />
+        </InputStack>
+        <InputStack direction="row" flexWrap="wrap">
+          {!isSystemOperator && (
+            <PartyReferenceInput
+              source="impacted_system_operator_id"
+              filter={{ type: "system_operator" }}
+            />
+          )}
         </InputStack>
         <Typography variant="h6" gutterBottom>
           Grid suspension process

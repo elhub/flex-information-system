@@ -1162,7 +1162,21 @@ export const App = () => (
                 (null as any)
               )
             }
-          />
+          >
+            {/* service_providing_group_grid_suspension history */}
+            <Route
+              path=":service_providing_group_id/history"
+              element={<ServiceProvidingGroupGridSuspensionHistoryList />}
+            />
+            <Route
+              path=":service_providing_group_id/history/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_history">
+                  <ServiceProvidingGroupGridSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+          </Resource>
         ) : null}
         {permissions.includes("service_provider_product_application.read") ? (
           <Resource
