@@ -279,3 +279,40 @@ AND apeu.valid_time_range @> @recorded_at::timestamptz;
 -- not using history on CU because AP ID is stable
 -- not using history on APEU because we take the latest knowledge we have to
 --   identify who to notify
+
+-- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
+-- SP
+SELECT spg.service_provider_id
+FROM service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN service_providing_group AS spg
+        ON spggsh.service_providing_group_id = spg.id
+    -- SPG cannot be deleted + SP does not change
+WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+-- ISO
+UNION ALL
+SELECT spggp.impacted_system_operator_id
+FROM service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN service_providing_group_grid_prequalification AS spggp
+        ON spggsh.service_providing_group_id = spggp.service_providing_group_id
+    -- SPGGP cannot be deleted + ISO does not change
+    -- we want to notify the ISOs currently having approved prequalifications
+    -- we also want to notify possible new ISOs coming after the suspension
+WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND spggp.status IN ('approved', 'conditionally_approved')
+-- PSO
+UNION ALL
+SELECT spgpa.procuring_system_operator_id
+FROM service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN service_providing_group_product_application AS spgpa
+        ON spggsh.service_providing_group_id = spgpa.service_providing_group_id
+    -- SPGPA cannot be deleted + PSO does not change
+    -- we want to notify the PSOs currently having accepted product applications
+    -- we also want to notify possible new PSOs coming after the suspension
+WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND spgpa.status IN ('verified', 'prequalified');

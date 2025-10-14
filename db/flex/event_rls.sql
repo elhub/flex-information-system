@@ -84,6 +84,7 @@ USING (
         'service_providing_group',
         'service_providing_group_membership',
         'service_providing_group_grid_prequalification',
+        'service_providing_group_grid_suspension',
         'service_providing_group_product_application'
     )
 );
@@ -305,5 +306,32 @@ USING (
                 ON sppsch.service_provider_product_suspension_id = sppsh.id
         WHERE sppsh.service_provider_id = (SELECT flex.current_party())
             AND sppsch.record_time_range @> lower(event.record_time_range) -- noqa
+    )
+);
+
+-- RLS: EVENT-SP013
+CREATE POLICY "EVENT_SP013" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'service_providing_group_grid_suspension'
+    AND (
+        EXISTS (
+            SELECT 1
+            FROM flex.service_providing_group_grid_suspension AS spggs
+                INNER JOIN flex.service_providing_group AS spg
+                    ON spggs.service_providing_group_id = spg.id
+            WHERE spggs.id = event.source_id -- noqa
+                AND spg.service_provider_id = (SELECT flex.current_party())
+        )
+        -- checking history because the SPGGS may have been deleted since
+        OR EXISTS (
+            SELECT 1
+            FROM flex.service_providing_group_grid_suspension_history AS spggsh
+                INNER JOIN flex.service_providing_group AS spg
+                    ON spggsh.service_providing_group_id = spg.id
+            WHERE spggsh.id = event.source_id -- noqa
+                AND spg.service_provider_id = (SELECT flex.current_party())
+        )
     )
 );
