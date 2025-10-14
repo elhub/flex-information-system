@@ -2,11 +2,13 @@ package data
 
 import (
 	"bytes"
+	"context"
 	_ "embed"
 	"encoding/json"
 	"flex/auth"
 	"flex/auth/scope"
 	"flex/data/models"
+	"flex/internal/gs1"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/validate"
@@ -26,12 +28,22 @@ import (
 //go:embed static/openapi.json
 var openapiInput []byte
 
+// MeteringPointDatahubService defines the data fetching operations we can
+// execute thanks to an external Metering Point Datahub.
+type MeteringPointDatahubService interface {
+	FetchAccountingPointMeteringGridArea(
+		ctx context.Context, accountingPointBusinessID string,
+	) (string, error)
+}
+
 // api gathers handlers for all endpoints of the data API.
 type api struct {
 	postgRESTURL *url.URL
 	db           *pgpool.Pool
 	ctxKey       string
 	mux          *http.ServeMux
+	// external datahub used to sync accounting point data when missing
+	meteringPointDatahubService MeteringPointDatahubService
 }
 
 var _ http.Handler = &api{} //nolint:exhaustruct
@@ -44,6 +56,7 @@ func NewAPIHandler(
 	postgRESTUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
+	meteringPointDatahubService MeteringPointDatahubService,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -53,10 +66,11 @@ func NewAPIHandler(
 	mux := http.NewServeMux()
 
 	data := &api{
-		postgRESTURL: postgRESTURL,
-		db:           db,
-		mux:          mux,
-		ctxKey:       ctxKey,
+		postgRESTURL:                postgRESTURL,
+		db:                          db,
+		mux:                         mux,
+		ctxKey:                      ctxKey,
+		meteringPointDatahubService: meteringPointDatahubService,
 	}
 
 	// OpenAPI documentation handlers
@@ -314,9 +328,11 @@ func (data *api) controllableUnitLookupHandler(
 
 	queries := models.New(tx)
 
-	// get accounting point data
-
 	var accountingPointID int
+
+	// try to get accounting point data from database
+
+	accountingPointFoundInDatabase := false
 
 	if controllableUnitBusinessID != "" {
 		currentAP, err := queries.GetCurrentControllableUnitAccountingPoint(
@@ -336,14 +352,40 @@ func (data *api) controllableUnitLookupHandler(
 
 		accountingPointID = currentAP.AccountingPointID
 		accountingPointBusinessID = currentAP.AccountingPointBusinessID
+		accountingPointFoundInDatabase = true
 	} else {
-		accountingPointID, err = queries.GetAccountingPointIDFromBusinessID(
+		apID, err := queries.GetAccountingPointIDFromBusinessID(
 			ctx, accountingPointBusinessID,
 		)
 		if err != nil {
 			slog.InfoContext(
-				ctx, "accounting point does not exist",
+				ctx, "accounting point does not exist in database",
 				"business_id", accountingPointBusinessID,
+			)
+		} else {
+			accountingPointID = apID
+			accountingPointFoundInDatabase = true
+		}
+	}
+
+	// not found in the database, need to sync some data from the outside
+	if !accountingPointFoundInDatabase {
+		if data.meteringPointDatahubService == nil {
+			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
+				Message: "accounting point does not exist",
+			})
+
+			return
+		}
+
+		meteringGridAreaBusinessID, err := data.meteringPointDatahubService.FetchAccountingPointMeteringGridArea(
+			ctx, accountingPointBusinessID,
+		)
+		if err != nil {
+			slog.ErrorContext(
+				ctx, "accounting point does not exist in datahub",
+				"business_id", accountingPointBusinessID,
+				"error", err,
 			)
 			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
 				Message: "accounting point does not exist",
@@ -351,6 +393,26 @@ func (data *api) controllableUnitLookupHandler(
 
 			return
 		}
+
+		// the AP exists, we can complete the database when data is missing
+		apID, err := queries.ControllableUnitLookupSyncAccountingPoint(
+			ctx,
+			accountingPointBusinessID,
+			meteringGridAreaBusinessID,
+			endUserBusinessID,
+		)
+		if err != nil {
+			slog.ErrorContext(
+				ctx, "failed accounting point sync",
+				"business_id", accountingPointBusinessID,
+				"metering_grid_area_business_id", meteringGridAreaBusinessID,
+				"end_user_business_id", endUserBusinessID,
+				"error", err,
+			)
+			writeInternalServerError(w)
+			return
+		}
+		accountingPointID = apID
 	}
 
 	// check end user matches and get their ID
@@ -441,11 +503,6 @@ func controllableUnitLookupValidateInput( //nolint:cyclop
 	accountingPointBusinessID := ""
 	if cuLookupRequestBody.AccountingPointBusinessID != nil {
 		accountingPointBusinessID = *cuLookupRequestBody.AccountingPointBusinessID
-
-		regexAccountingPointBusinessID := regexp.MustCompile("^[1-9][0-9]{17}$")
-		if !regexAccountingPointBusinessID.MatchString(accountingPointBusinessID) {
-			return &errorMessage{Message: "ill formed accounting point business ID"} //nolint:exhaustruct
-		}
 	}
 
 	if accountingPointBusinessID == "" && controllableUnitBusinessID == "" {
@@ -458,6 +515,10 @@ func controllableUnitLookupValidateInput( //nolint:cyclop
 		return &errorMessage{ //nolint:exhaustruct
 			Message: "request contains business IDs for both accounting point and controllable unit",
 		}
+	}
+
+	if accountingPointBusinessID != "" && !gs1.IsValidGSRN(accountingPointBusinessID) {
+		return &errorMessage{Message: "ill formed accounting point business ID"} //nolint:exhaustruct
 	}
 
 	// no nil pointers so we can trust the (now validated) input for the rest of
