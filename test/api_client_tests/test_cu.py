@@ -592,7 +592,7 @@ def test_controllable_unit_sp(sts):
             service_provider_id=sp2_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2000-01-01T00:00:00+1",
+            valid_from="2024-01-01T00:00:00+1",
             valid_to="2090-01-01T00:00:00+1",
         ),
     )

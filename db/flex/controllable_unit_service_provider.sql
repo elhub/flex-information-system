@@ -136,3 +136,44 @@ BEFORE INSERT ON controllable_unit_service_provider
 FOR EACH ROW
 WHEN (current_role = 'flex_service_provider')
 EXECUTE FUNCTION controllable_unit_service_provider_no_duplicates();
+
+-- changeset flex:controllable-unit-service-provider-end-user-check-function runOnChange:true endDelimiter:--
+-- CUSP-VAL004
+CREATE OR REPLACE FUNCTION controllable_unit_service_provider_end_user_check()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    -- soft delete operations are not concerned
+    IF lower(NEW.valid_time_range) IS NULL THEN
+        RETURN NEW;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit_end_user AS cueu
+        WHERE cueu.controllable_unit_id = NEW.controllable_unit_id
+            AND cueu.valid_time_range @> lower(NEW.valid_time_range)
+            AND cueu.end_user_id = NEW.end_user_id
+    ) THEN
+        RAISE EXCEPTION 'End user must be the one owning the accounting point at the start of the contract';
+    END IF;
+
+    RETURN NEW;
+END
+$$;
+
+-- changeset flex:controllable-unit-service-provider-end-user-check-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+controllable_unit_service_provider_end_user_check_insert
+BEFORE INSERT ON controllable_unit_service_provider
+FOR EACH ROW
+EXECUTE FUNCTION controllable_unit_service_provider_end_user_check();
+
+CREATE OR REPLACE TRIGGER
+controllable_unit_service_provider_end_user_check_update
+BEFORE UPDATE OF valid_time_range ON controllable_unit_service_provider
+FOR EACH ROW
+EXECUTE FUNCTION controllable_unit_service_provider_end_user_check();
