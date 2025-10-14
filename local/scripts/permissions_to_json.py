@@ -67,6 +67,7 @@ history_enabled = [
     "service_providing_group",
     "service_providing_group_membership",
     "service_providing_group_grid_prequalification",
+    "service_providing_group_grid_suspension",
     "party",
     "party_membership",
     "technical_resource",

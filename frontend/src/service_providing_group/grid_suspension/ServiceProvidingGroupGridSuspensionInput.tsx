@@ -72,7 +72,6 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
               "other",
             ]}
           />
-          <DateTimeInput source="recorded_at" />
         </InputStack>
       </Stack>
     </SimpleForm>
