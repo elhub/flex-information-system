@@ -97,8 +97,12 @@ import {
   ServiceProvidingGroupMembershipHistoryList,
   ServiceProvidingGroupProductApplicationInput,
   ServiceProvidingGroupProductApplicationShow,
+  ServiceProvidingGroupGridSuspensionShow,
+  ServiceProvidingGroupGridSuspensionInput,
+  ServiceProvidingGroupGridSuspensionHistoryList,
   ServiceProvidingGroupProductApplicationHistoryList,
   ServiceProvidingGroupProductApplicationList,
+  ServiceProvidingGroupGridSuspensionList,
 } from "./service_providing_group";
 
 import { roleNames } from "./roles";
@@ -982,6 +986,58 @@ export const App = () => (
                 </ResourceContextProvider>
               }
             />
+            {/* service providing group grid suspension */}
+            {/* list is also part of SPG show page */}
+            <Route
+              path=":service_providing_group_id/grid_suspension/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension">
+                  <ServiceProvidingGroupGridSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension/create"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension">
+                  <Create
+                    redirect={(_: any, _id: any, record: any) =>
+                      `service_providing_group/${record.service_providing_group_id}/show`
+                    }
+                  >
+                    <ServiceProvidingGroupGridSuspensionInput />
+                  </Create>
+                </ResourceContextProvider>
+              }
+            />
+            {/* service providing group grid suspension relation history */}
+            <Route
+              path=":service_providing_group_id/grid_suspension_history"
+              element={<ServiceProvidingGroupGridSuspensionHistoryList />}
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension_history/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_history">
+                  <ServiceProvidingGroupGridSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension/:id"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension">
+                  <Edit
+                    mutationMode="pessimistic"
+                    redirect={(_: any, _id: any, record: any) =>
+                      `service_providing_group/${record.service_providing_group_id}/show`
+                    }
+                  >
+                    <ServiceProvidingGroupGridSuspensionInput />
+                  </Edit>
+                </ResourceContextProvider>
+              }
+            />
           </Resource>
         ) : null}
         {permissions.includes(
@@ -1076,6 +1132,51 @@ export const App = () => (
               )
             }
           />
+        ) : null}
+        {permissions.includes(
+          "service_providing_group_grid_suspension.read",
+        ) ? (
+          <Resource
+            name="service_providing_group_grid_suspension"
+            list={ServiceProvidingGroupGridSuspensionList}
+            show={ServiceProvidingGroupGridSuspensionShow}
+            edit={
+              permissions.includes(
+                "service_providing_group_grid_suspension.update",
+              ) ? (
+                <Edit mutationMode="pessimistic">
+                  <ServiceProvidingGroupGridSuspensionInput />
+                </Edit>
+              ) : (
+                (null as any)
+              )
+            }
+            create={
+              permissions.includes(
+                "service_providing_group_grid_suspension.create",
+              ) ? (
+                <Create redirect="list">
+                  <ServiceProvidingGroupGridSuspensionInput />
+                </Create>
+              ) : (
+                (null as any)
+              )
+            }
+          >
+            {/* service_providing_group_grid_suspension history */}
+            <Route
+              path=":service_providing_group_id/history"
+              element={<ServiceProvidingGroupGridSuspensionHistoryList />}
+            />
+            <Route
+              path=":service_providing_group_id/history/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_history">
+                  <ServiceProvidingGroupGridSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+          </Resource>
         ) : null}
         {permissions.includes("service_provider_product_application.read") ? (
           <Resource

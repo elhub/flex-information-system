@@ -12,11 +12,10 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { DateField } from "../../components/datetime";
 
-export const ServiceProvidingGroupGridPrequalificationList = () => {
+export const ServiceProvidingGroupGridSuspensionList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
-  const record = useRecordContext()!;
+  const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
 
@@ -25,8 +24,8 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
       component={Link}
       to={
         id
-          ? `/service_providing_group/${id}/grid_prequalification/create`
-          : "/service_providing_group_grid_prequalification/create"
+          ? `/service_providing_group/${id}/grid_suspension/create`
+          : "/service_providing_group_grid_suspension/create"
       }
       startIcon={<AddIcon />}
       state={{ service_providing_group_id: id }}
@@ -37,16 +36,14 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
   const ListActions = () => (
     <TopToolbar>
       {permissions.includes(
-        "service_providing_group_grid_prequalification.create",
+        "service_providing_group_grid_suspension.create",
       ) && <CreateButton />}
     </TopToolbar>
   );
 
   return (
-    permissions.includes(
-      "service_providing_group_grid_prequalification.read",
-    ) && (
-      <ResourceContextProvider value="service_providing_group_grid_prequalification">
+    permissions.includes("service_providing_group_grid_suspension.read") && (
+      <ResourceContextProvider value="service_providing_group_grid_suspension">
         <List
           title={false}
           perPage={10}
@@ -55,13 +52,17 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
           empty={false}
           filter={id ? { service_providing_group_id: id } : undefined}
           sort={{ field: "id", order: "DESC" }}
-          disableSyncWithLocation
           sx={{ mb: 4 }}
+          // disable read/writes to/from the URL by this component
+          // (necessary on pages with several List components,
+          // i.e., in our case, subresources)
+          // see https://github.com/marmelab/react-admin/pull/5741
+          disableSyncWithLocation
         >
           <Datagrid
             bulkActionButtons={false}
             rowClick={(_id, _res, record) =>
-              `/service_providing_group/${record.service_providing_group_id}/grid_prequalification/${record.id}/show`
+              `/service_providing_group/${record.service_providing_group_id}/grid_suspension/${record.id}/show`
             }
           >
             <TextField source="id" label="ID" />
@@ -81,10 +82,9 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="status" />
-            <DateField source="prequalified_at" showTime />
+            <TextField source="reason" />
             {permissions.includes(
-              "service_providing_group_grid_prequalification.delete",
+              "service_providing_group_grid_suspension.delete",
             ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
           </Datagrid>
         </List>
