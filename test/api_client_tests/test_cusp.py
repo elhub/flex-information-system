@@ -98,7 +98,7 @@ def test_cusp_fiso(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2020-01-01T00:00:00+1",
+            valid_from="2024-01-01T00:00:00+1",
             valid_to=None,
         ),
     )
@@ -144,12 +144,22 @@ def test_cusp_fiso(data):
         )
     )
 
-    # endpoint: PATCH /controllable_unit_service_provider/{id}
+    # cannot update to a date where end user was not owning the AP
     u = update_controllable_unit_service_provider.sync(
         client=client_fiso,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
             valid_to="2020-01-02T00:00:00+1",
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+    # endpoint: PATCH /controllable_unit_service_provider/{id}
+    u = update_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        id=cast(int, cusp.id),
+        body=ControllableUnitServiceProviderUpdateRequest(
+            valid_to="2024-01-02T00:00:00+1",
         ),
     )
     assert not (isinstance(u, ErrorMessage))

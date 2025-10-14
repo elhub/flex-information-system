@@ -140,12 +140,17 @@ def data():
     )
     assert isinstance(cu_sp2, ControllableUnitServiceProviderResponse)
 
+    client_common_eu = cast(
+        AuthenticatedClient, sts.get_client(TestEntity.COMMON, "EU")
+    )
+    common_eu_id = sts.get_userinfo(client_common_eu)["party_id"]
+
     cu_sp3 = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
             controllable_unit_id=cast(int, cu3.id),
             service_provider_id=sp_id,
-            end_user_id=eu_id,
+            end_user_id=common_eu_id,
             contract_reference="TEST-CONTRACT",
             valid_from="2024-01-01T00:00:00+1",
         ),

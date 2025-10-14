@@ -92,7 +92,7 @@ def data():
 
     client_eu = cast(
         AuthenticatedClient,
-        sts.fresh_client(TestEntity.TEST, "EU"),
+        sts.get_client(TestEntity.TEST, "EU"),
     )
     eu_id = sts.get_userinfo(client_eu)["party_id"]
 
