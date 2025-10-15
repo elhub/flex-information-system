@@ -104,7 +104,7 @@ service provider.
 Ending the service provider contract on a controllable unit. Initiated by end
 user, implicit contract termination or service provider.
 
-#### Controllable unit suspension
+#### [Controllable unit suspension](controllable-unit-suspension.md)
 
 Entitled parties can suspend a controllable unit. Includes reinstatement of the
 suspended controllable unit.
