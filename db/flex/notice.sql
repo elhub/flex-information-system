@@ -328,7 +328,7 @@ CREATE VIEW notice AS (
     UNION ALL
     SELECT
         spggs.impacted_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_grid_suspension.not_grid_qualified' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_grid_suspension.not_grid_prequalified' AS type, -- noqa
         '/service_providing_group_grid_suspension/' || spggs.id AS source,
         null::jsonb AS data -- noqa
     FROM flex.service_providing_group_grid_suspension AS spggs
