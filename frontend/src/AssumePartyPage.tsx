@@ -26,9 +26,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
 import { ScopesField } from "./components/scopes";
+import { useTheme } from "@mui/material/styles";
 
 export const AssumePartyPage = () => {
-  const [loading, setLoading] = useState(false);
   const [unAssumed, setUnAssumed] = useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -59,6 +59,8 @@ export const AssumePartyPage = () => {
 
   const AssumePartyButton = ({ field }: any) => {
     const record = useRecordContext()!;
+    const elhubTheme = useTheme();
+    const [loading, setLoading] = useState(false);
     const assumeParty = async () => {
       setLoading(true);
       return login({ party_id: record[field] })
@@ -92,9 +94,8 @@ export const AssumePartyPage = () => {
           fontWeight: "bold",
           border: "2px solid transparent",
           ":hover": {
-            background: "primaryDark",
-            color: "darkGreen",
-            border: "2px solid darkGray",
+            color: elhubTheme.custom.buttonTextHover,
+            border: `2px solid ${elhubTheme.custom.borderColor}`,
           },
         }}
       >
