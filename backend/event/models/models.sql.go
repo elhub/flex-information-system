@@ -434,6 +434,77 @@ func (q *Queries) GetServiceProvidingGroupGridPrequalificationNotificationRecipi
 	return items, nil
 }
 
+const getServiceProvidingGroupGridSuspensionNotificationRecipients = `-- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
+
+SELECT spg.service_provider_id
+FROM service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN service_providing_group AS spg
+        ON spggsh.service_providing_group_id = spg.id
+    -- SPG cannot be deleted + SP does not change
+WHERE spggsh.service_providing_group_grid_suspension_id = $1
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> $2::timestamptz
+UNION ALL
+SELECT spggp.impacted_system_operator_id
+FROM service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN service_providing_group_grid_prequalification AS spggp
+        ON spggsh.service_providing_group_id = spggp.service_providing_group_id
+    -- SPGGP cannot be deleted + ISO does not change
+    -- we want to notify the ISOs currently having approved prequalifications
+    -- we also want to notify possible new ISOs coming after the suspension
+WHERE spggsh.service_providing_group_grid_suspension_id = $1
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> $2::timestamptz
+    AND (
+        spggp.status IN ('approved', 'conditionally_approved')
+        OR spggp.prequalified_at IS NOT null
+    )
+UNION ALL
+SELECT spgpa.procuring_system_operator_id
+FROM service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN service_providing_group_product_application AS spgpa
+        ON spggsh.service_providing_group_id = spgpa.service_providing_group_id
+    -- SPGPA cannot be deleted + PSO does not change
+    -- we want to notify the PSOs currently having accepted product applications
+    -- we also want to notify possible new PSOs coming after the suspension
+WHERE spggsh.service_providing_group_grid_suspension_id = $1
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> $2::timestamptz
+    AND (
+        spgpa.status IN ('verified', 'prequalified')
+        OR spgpa.verified_at IS NOT null
+        OR spgpa.prequalified_at IS NOT null
+    )
+`
+
+// not using history on CU because AP ID is stable
+// not using history on APEU because we take the latest knowledge we have to
+//
+//	identify who to notify
+//
+// SP
+// ISO
+// PSO
+func (q *Queries) GetServiceProvidingGroupGridSuspensionNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupGridSuspensionNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var service_provider_id int
+		if err := rows.Scan(&service_provider_id); err != nil {
+			return nil, err
+		}
+		items = append(items, service_provider_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProvidingGroupMembershipNotificationRecipients = `-- name: GetServiceProvidingGroupMembershipNotificationRecipients :many
 SELECT service_provider_id
 FROM service_providing_group spg

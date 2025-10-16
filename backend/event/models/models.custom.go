@@ -63,6 +63,10 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 	case "no.elhub.flex.service_providing_group_grid_prequalification.create",
 		"no.elhub.flex.service_providing_group_grid_prequalification.update":
 		return q.GetServiceProvidingGroupGridPrequalificationNotificationRecipients(ctx, resourceID)
+	case "no.elhub.flex.service_providing_group_grid_suspension.create",
+		"no.elhub.flex.service_providing_group_grid_suspension.update",
+		"no.elhub.flex.service_providing_group_grid_suspension.delete":
+		return q.GetServiceProvidingGroupGridSuspensionNotificationRecipients(ctx, resourceID, recordedAt)
 	case "no.elhub.flex.technical_resource.create",
 		"no.elhub.flex.technical_resource.update",
 		"no.elhub.flex.technical_resource.delete":

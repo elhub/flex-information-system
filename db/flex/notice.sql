@@ -323,4 +323,36 @@ CREATE VIEW notice AS (
                 AND lower(sppsc.record_time_range)
                 >= current_timestamp - interval '2 weeks'
         )
+
+    -- suspension on SPG no longer qualified
+    UNION ALL
+    SELECT
+        spggs.impacted_system_operator_id AS party_id,
+        'no.elhub.flex.service_providing_group_grid_suspension.not_grid_prequalified' AS type, -- noqa
+        '/service_providing_group_grid_suspension/' || spggs.id AS source,
+        null::jsonb AS data -- noqa
+    FROM flex.service_providing_group_grid_suspension AS spggs
+    WHERE NOT EXISTS (
+            SELECT 1
+            FROM flex.service_providing_group_grid_prequalification AS spggp
+            WHERE spggp.service_providing_group_id
+                = spggs.service_providing_group_id
+                AND spggp.impacted_system_operator_id
+                = spggs.impacted_system_operator_id
+                AND (
+                    spggp.status IN ('approved', 'conditionally_approved')
+                    OR spggp.prequalified_at IS NOT null
+                )
+        )
+
+    -- inactive suspension
+    UNION ALL
+    SELECT
+        spggs.impacted_system_operator_id AS party_id,
+        'no.elhub.flex.service_providing_group_grid_suspension.lingering' AS type, -- noqa
+        '/service_providing_group_grid_suspension/' || spggs.id AS source,
+        null::jsonb AS data -- noqa
+    FROM flex.service_providing_group_grid_suspension AS spggs
+    WHERE lower(spggs.record_time_range)
+        < current_timestamp - interval '2 weeks'
 );
