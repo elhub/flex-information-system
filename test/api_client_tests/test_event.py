@@ -37,7 +37,12 @@ from flex.models import (
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
+    ServiceProvidingGroupGridPrequalificationUpdateRequest,
+    ServiceProvidingGroupGridPrequalificationStatus,
     ServiceProvidingGroupGridPrequalificationResponse,
+    ServiceProvidingGroupGridSuspensionCreateRequest,
+    ServiceProvidingGroupGridSuspensionReason,
+    ServiceProvidingGroupGridSuspensionResponse,
     ServiceProvidingGroupProductApplicationCreateRequest,
     ServiceProvidingGroupProductApplicationResponse,
 )
@@ -83,6 +88,11 @@ from flex.api.service_providing_group_membership import (
 )
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
+    update_service_providing_group_grid_prequalification,
+)
+from flex.api.service_providing_group_grid_suspension import (
+    create_service_providing_group_grid_suspension,
+    delete_service_providing_group_grid_suspension,
 )
 from flex.api.service_providing_group_product_application import (
     create_service_providing_group_product_application,
@@ -369,6 +379,26 @@ def test_event_sp(sts):
     )
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
+    u = update_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        id=cast(int, spggp.id),
+        body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
+            status=ServiceProvidingGroupGridPrequalificationStatus.APPROVED,
+            prequalified_at="2023-01-01T00:00:00+1",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    spggs = create_service_providing_group_grid_suspension.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupGridSuspensionCreateRequest(
+            service_providing_group_id=cast(int, spg.id),
+            impacted_system_operator_id=so_id,
+            reason=ServiceProvidingGroupGridSuspensionReason.BREACH_OF_CONDITIONS,
+        ),
+    )
+    assert isinstance(spggs, ServiceProvidingGroupGridSuspensionResponse)
+
     spgpa = create_service_providing_group_product_application.sync(
         client=client_sp,
         body=ServiceProvidingGroupProductApplicationCreateRequest(
@@ -419,6 +449,15 @@ def test_event_sp(sts):
         and e.source == f"/service_provider_product_suspension/{spps.id}"
     )
 
+    # RLS: EVENT-SP013
+    # SP can see SPGGS events when they are SP
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_providing_group_grid_suspension.create"
+        and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
+    )
+
     # delete resources to test that we can still see the create events after
     # + that we can see delete events
 
@@ -439,6 +478,13 @@ def test_event_sp(sts):
     d = delete_service_provider_product_suspension.sync(
         client=client_fiso,
         id=cast(int, spps.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    d = delete_service_providing_group_grid_suspension.sync(
+        client=client_fiso,
+        id=cast(int, spggs.id),
         body=EmptyObject(),
     )
     assert not isinstance(d, ErrorMessage)
@@ -475,6 +521,14 @@ def test_event_sp(sts):
         for e in events
         if e.type == "no.elhub.flex.service_provider_product_suspension.delete"
         and e.source == f"/service_provider_product_suspension/{spps.id}"
+    )
+
+    # SP can see delete for SPGGS
+    assert any(
+        e
+        for e in events
+        if e.type == "no.elhub.flex.service_providing_group_grid_suspension.delete"
+        and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
     # RLS: EVENT-SP003
@@ -636,6 +690,12 @@ def test_event_sp(sts):
         and e.source
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
+    assert not any(
+        e
+        for e in events_other
+        if e.type == "no.elhub.flex.service_providing_group_grid_suspension.create"
+        and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
+    )
 
 
 # RLS: EVENT-FISO001
@@ -662,6 +722,7 @@ def test_event_fiso_so(sts):
             "service_providing_group",
             "service_providing_group_membership",
             "service_providing_group_grid_prequalification",
+            "service_providing_group_grid_suspension",
             "service_providing_group_product_application",
         ):
             # only test one type of operation, as we don't filter by operation
