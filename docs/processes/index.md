@@ -158,7 +158,7 @@ service providing groups.
 
 Registering a new service providing group. Includes grid prequalification.
 
-#### Service providing group suspension
+#### [Service providing group suspension](service-providing-group-grid-suspension.md)
 
 Suspension of a service providing group grid prequalification initiated by
 system operator. Includes reinstatement of the
@@ -187,7 +187,7 @@ pre-qualification that might end in temporary qualification until the product
 verification is concluded. Includes procuring system operators to confirm the
 SPG characteristics registered by the service provider.
 
-#### Service providing group product suspension
+#### [Service providing group product suspension](service-providing-group-product-suspension.md)
 
 This process is used to suspend the prequalification of a SPG.
 Initiated by system operator.

@@ -1,8 +1,8 @@
-@startuml service_provider_product_suspension
+@startuml service_providing_group_product_suspension
 
 !theme plain
 
-title Service Provider Product Suspension
+title Service Providing Group Product Suspension
 
 autonumber
 skinparam note {
@@ -13,15 +13,15 @@ actor "Service Provider (SP)" as SP
 participant "Flexibility\nInformation System (FIS)" as FIS
 actor "System Operator (SO)" as SO
 
-== Suspension of service provider product qualification ==
+== Suspension of service providing group product prequalification ==
 
 activate SO
-SO -> FIS: Create SP product suspension
+SO -> FIS: Create SPG product suspension
 
 note right
     Data:
         - service provider
-        - suspended product types
+        - suspended SPG product
         - reason for suspension
 end note
 
@@ -31,7 +31,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 activate SP
-loop All PSOs procuring the same product type from the SP
+loop All PSOs procuring the same SPG product from the SP
     |||
     FIS --> SO: Notify
     deactivate FIS
@@ -54,12 +54,12 @@ end note
 |||
 note over FIS
     SP and SO must probably communicate to sort out the issues that caused the
-    suspension. This can be done using comments on the SP product suspension in
+    suspension. This can be done using comments on the SPG product suspension in
     the FIS or other communication mediums like email and phone.
 end note
 |||
 deactivate SP
-== Reinstatement of service provider product qualification ==
+== Reinstatement of service providing group product prequalification ==
 
 SO -> FIS: Delete SP product suspension
 activate SO
@@ -69,7 +69,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 
-loop All PSOs procuring the same product type from the SP
+loop All PSOs procuring the same SPG product from the SP
     |||
     FIS --> SO: Notify
     deactivate FIS
