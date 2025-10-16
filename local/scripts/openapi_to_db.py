@@ -2,6 +2,8 @@
 import yaml
 import sys
 import j2
+import os
+from copy import deepcopy
 
 """
 This script generates SQL statements to create views in the `api` schema,
@@ -80,6 +82,79 @@ CREATE TABLE {resource}_history (
 """
 
 
+def base_comment_resource_data(base_resource):
+    return {
+        "id": base_resource["id"] + "_comment",
+        "acronym": base_resource["acronym"] + "C",
+        "summary": base_resource["summary"] + " Comment",
+        "description": f"Comment made by a party involved in a {base_resource['id'].replace('_', ' ')}.",
+        "operations": ["list", "read", "create", "update"],
+        "audit": True,
+        "generate_views": True,
+        "history": ["list", "read"],
+        "history_rls": True,
+        "properties": {
+            "id": {
+                "description": "Unique surrogate identifier.",
+                "format": "bigint",
+                "type": "integer",
+                "readOnly": True,
+                "example": 9,
+            },
+            f"{base_resource['id']}_id": {
+                "description": f"Reference to the {base_resource['id'].replace('_', ' ')}.",
+                "format": "bigint",
+                "type": "integer",
+                "x-no-update": True,
+                "x-foreign-key": {
+                    "resource": base_resource["id"],
+                    "field": "id",
+                },
+                "example": 7,
+            },
+            "created_by": {
+                "description": "Reference to the identity that created the comment.",
+                "format": "bigint",
+                "type": "integer",
+                "readOnly": True,
+                "example": 94,
+            },
+            "created_at": {
+                "description": "When the comment was added to the application.",
+                "format": "timestamp with time zone",
+                "type": "string",
+                "readOnly": True,
+                "example": "2022-08-08 12:00:00 CET",
+            },
+            "visibility": {
+                "description": "The level of visibility of the comment.",
+                "format": "text",
+                "type": "string",
+                "default": "same_party",
+                "enum": ["same_party", "any_involved_party"],
+                "example": "same_party",
+                "x-details": (
+                    "Comments marked `same_party` are visible only to the party that "
+                    + "creates them, whereas comments marked `any_involved_party` can be seen "
+                    + f"by all parties involved in the {base_resource['acronym'].replace('_', ' ').lower()}."
+                ),
+            },
+            "content": {
+                "description": "Free text content of the comment.",
+                "format": "text",
+                "type": "string",
+                "maxLength": 2048,
+                "example": "Missing document.",
+                "x-details": (
+                    "This field can contain rich text in raw HTML format. Its content "
+                    + "should be sanitised on the client side before being displayed, as "
+                    + "there is currently no check performed on the server."
+                ),
+            },
+        },
+    }
+
+
 if __name__ == "__main__":
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
     resources = yaml.safe_load(sys.stdin)
@@ -125,3 +200,39 @@ if __name__ == "__main__":
                     "resource_api.j2.sql",
                     f"{DB_DIR}/api/{resource['id']}.sql",
                 )
+
+            # generate files for the comment resource
+            if resource.get("comments", False):
+                comment_resource_file = f"{DB_DIR}/flex/{resource['id']}_comment.sql"
+                if not os.path.exists(comment_resource_file):
+                    j2.template(
+                        resource,
+                        "comment_resource.j2.sql",
+                        comment_resource_file,
+                    )
+
+                base_resource = deepcopy(resource)
+                resource = base_comment_resource_data(base_resource)
+
+                # let the user override the config in resources.yml if needed
+                if isinstance(base_resource["comments"], dict):
+                    for p in base_resource["comments"]:
+                        resource[p] = base_resource["comments"][p]
+
+                comment_history_file = (
+                    f"{DB_DIR}/flex/{resource['id']}_history_audit.sql"
+                )
+                if not os.path.exists(comment_history_file):
+                    j2.template(
+                        resource,
+                        "resource_history_audit.j2.sql",
+                        comment_history_file,
+                    )
+
+                comment_view_file = f"{DB_DIR}/api/{resource['id']}.sql"
+                if not os.path.exists(comment_view_file):
+                    j2.template(
+                        resource,
+                        "resource_api.j2.sql",
+                        comment_view_file,
+                    )

@@ -1255,6 +1255,7 @@ resources:
       - update
     audit: true
     generate_views: true
+    comments: true
     history:
       - list
       - read
@@ -1320,75 +1321,6 @@ resources:
         nullable: true
         example: 2022-08-08 12:00:00 CET
 
-  - id: service_provider_product_application_comment
-    acronym: SPPAC
-    summary: Service Provider Product Application Comment
-    description: >-
-      Comment made by a party involved in a service provider product
-      application.
-    operations:
-      - list
-      - read
-      - create
-      - update
-    audit: true
-    generate_views: true
-    history:
-      - list
-      - read
-    history_rls: true
-    properties:
-      id:
-        description: Unique surrogate identifier.
-        format: bigint
-        type: integer
-        readOnly: true
-        example: 9
-      service_provider_product_application_id:
-        description: Reference to the service provider product application.
-        format: bigint
-        type: integer
-        x-no-update: true
-        x-foreign-key:
-          resource: service_provider_product_application
-          field: id
-        example: 7
-      created_by:
-        description: Reference to the identity that created the comment.
-        format: bigint
-        type: integer
-        readOnly: true
-        example: 94
-      created_at:
-        description: When the comment was added to the application.
-        format: timestamp with time zone
-        type: string
-        readOnly: true
-        example: 2022-08-08 12:00:00 CET
-      visibility:
-        description: The level of visibility of the comment.
-        format: text
-        type: string
-        default: same_party
-        enum:
-          - same_party
-          - any_involved_party
-        example: same_party
-        x-details: >-
-          Comments marked `same_party` are visible only to the party that
-          creates them, whereas comments marked `any_involved_party` can be seen
-          by all parties involved in the application.
-      content:
-        description: Free text content of the comment.
-        format: text
-        type: string
-        maxLength: 2048
-        example: Missing document.
-        x-details: >-
-          This field can contain rich text in raw HTML format. Its content
-          should be sanitised on the client side before being displayed, as
-          there is currently no check performed on the server.
-
   - id: service_provider_product_suspension
     acronym: SPPS
     summary: Service Provider Product Suspension
@@ -1403,6 +1335,8 @@ resources:
       - delete
     audit: true
     generate_views: true
+    comments:
+      history_rls: false
     history:
       - list
       - read
@@ -1458,74 +1392,6 @@ resources:
           - failed_verification
           - other
         example: communication_issues
-
-  - id: service_provider_product_suspension_comment
-    acronym: SPPSC
-    summary: Service Provider Product Suspension Comment
-    description: >-
-      Comment made by a party involved in a service provider product suspension.
-    operations:
-      - list
-      - read
-      - create
-      - update
-    audit: true
-    generate_views: true
-    history:
-      - list
-      - read
-    history_rls: false
-    properties:
-      id:
-        description: Unique surrogate identifier.
-        format: bigint
-        type: integer
-        readOnly: true
-        example: 9
-      service_provider_product_suspension_id:
-        description: Reference to the service provider product suspension.
-        format: bigint
-        type: integer
-        x-no-update: true
-        x-foreign-key:
-          resource: service_provider_product_suspension
-          field: id
-        example: 7
-      created_by:
-        description: Reference to the identity that created the comment.
-        format: bigint
-        type: integer
-        readOnly: true
-        example: 94
-      created_at:
-        description: When the comment was added to the suspension.
-        format: timestamp with time zone
-        type: string
-        readOnly: true
-        example: 2022-08-08 12:00:00 CET
-      visibility:
-        description: The level of visibility of the comment.
-        format: text
-        type: string
-        default: same_party
-        enum:
-          - same_party
-          - any_involved_party
-        example: same_party
-        x-details: >-
-          Comments marked `same_party` are visible only to the party that
-          creates them, whereas comments marked `any_involved_party` can be seen
-          by all parties involved in the suspension.
-      content:
-        description: Free text content of the comment.
-        format: text
-        type: string
-        maxLength: 2048
-        example: Missing document.
-        x-details: >-
-          This field can contain rich text in raw HTML format. Its content
-          should be sanitised on the client side before being displayed, as
-          there is currently no check performed on the server.
 
   - id: service_providing_group_product_application
     acronym: SPGPA
