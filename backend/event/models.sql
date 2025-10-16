@@ -302,7 +302,10 @@ FROM service_providing_group_grid_suspension_history AS spggsh
 WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
     AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
         @> @recorded_at::timestamptz
-    AND spggp.status IN ('approved', 'conditionally_approved')
+    AND (
+        spggp.status IN ('approved', 'conditionally_approved')
+        OR spggp.prequalified_at IS NOT null
+    )
 -- PSO
 UNION ALL
 SELECT spgpa.procuring_system_operator_id
@@ -315,4 +318,8 @@ FROM service_providing_group_grid_suspension_history AS spggsh
 WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
     AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
         @> @recorded_at::timestamptz
-    AND spgpa.status IN ('verified', 'prequalified');
+    AND (
+        spgpa.status IN ('verified', 'prequalified')
+        OR spgpa.verified_at IS NOT null
+        OR spgpa.prequalified_at IS NOT null
+    );
