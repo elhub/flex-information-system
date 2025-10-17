@@ -10,6 +10,7 @@ import { InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { RichTextInput } from "ra-input-rich-text";
+import { useMemo } from "react";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -26,8 +27,13 @@ const filterRecord = ({
 export const ServiceProviderProductApplicationCommentInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
+
   // priority to the restored values if they exist, otherwise normal edit mode
-  const record: any = filterRecord({ ...actualRecord, ...overrideRecord });
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
 
   return (
     <SimpleForm

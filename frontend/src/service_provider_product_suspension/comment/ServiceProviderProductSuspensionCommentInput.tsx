@@ -10,6 +10,7 @@ import { InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { RichTextInput } from "ra-input-rich-text";
+import { useMemo } from "react";
 
 const filterRecord = ({
   service_provider_product_suspension_id,
@@ -24,7 +25,13 @@ const filterRecord = ({
 export const ServiceProviderProductSuspensionCommentInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
-  const record: any = filterRecord({ ...actualRecord, ...overrideRecord });
+
+  // priority to the restored values if they exist, otherwise normal edit mode
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
 
   return (
     <SimpleForm

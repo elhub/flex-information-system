@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
+import { useMemo } from "react";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -37,6 +38,13 @@ export const ControllableUnitServiceProviderInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
 
+  // priority to the restored values if they exist, otherwise normal edit mode
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
+
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   if (identityLoading) return <>Loading...</>;
 
@@ -44,9 +52,6 @@ export const ControllableUnitServiceProviderInput = () => {
   // CU ID, instead of using the autocomplete component that works from the list
   // of readable CUs
   const cuIDAsNumber: boolean = !!overrideRecord?.cuIDAsNumber;
-
-  // priority to the restored values if they exist, otherwise normal edit mode
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
 
   const isServiceProvider = identity?.role == "flex_service_provider";
   if (isServiceProvider) {
