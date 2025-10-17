@@ -368,8 +368,7 @@ template-to-openapi:
 resources-to-diagram:
     #!/usr/bin/env bash
     set -euo pipefail
-    yq eval-all '. as $item ireduce ({}; . *d $item )' openapi/resources.yml openapi/resources-future.yml | \
-    .venv/bin/python3 local/scripts/resources_to_diagram.py | tee docs/diagrams/resources.plantuml
+    cat openapi/resources.yml | .venv/bin/python3 local/scripts/resources_to_diagram.py | tee docs/diagrams/resources.plantuml
 
 openapi-to-db:
     #!/usr/bin/env bash
