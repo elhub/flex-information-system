@@ -462,6 +462,7 @@ resources:
       - delete
     audit: true
     generate_views: true
+    comments: true
     history:
       - list
       - read

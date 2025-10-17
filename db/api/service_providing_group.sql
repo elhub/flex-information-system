@@ -2,7 +2,8 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:api-service-providing-group-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.service_providing_group
+CREATE OR REPLACE VIEW
+api.service_providing_group
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -14,7 +15,8 @@ WITH (security_invoker = true) AS (
     FROM flex.service_providing_group
 );
 -- changeset flex:api-service-providing-group-history-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.service_providing_group_history
+CREATE OR REPLACE VIEW
+api.service_providing_group_history
 WITH (
     security_invoker = true
 ) AS (
