@@ -59,16 +59,27 @@ USING (EXISTS (
 ))
 WITH CHECK (
     EXISTS (
-        SELECT
-            range_agg(cusp.valid_time_range)
-                @> service_providing_group_membership.valid_time_range -- noqa
-        FROM controllable_unit_service_provider AS cusp
-            INNER JOIN service_providing_group AS spg
-                ON cusp.service_provider_id = spg.service_provider_id
-        WHERE spg.service_provider_id = (SELECT current_party())
-            AND cusp.controllable_unit_id = service_providing_group_membership.controllable_unit_id -- noqa
-            AND spg.id = service_providing_group_membership.service_providing_group_id -- noqa
-            AND cusp.valid_time_range && service_providing_group_membership.valid_time_range -- noqa
+        -- part of the CUSP timeline for this SP and this CU that overlaps with
+        -- the valid time of the tentative SPG membership
+        WITH
+            cusp_spgm_timeline_overlap AS (
+                SELECT range_agg(cusp.valid_time_range) AS timeline
+                FROM controllable_unit_service_provider AS cusp
+                    INNER JOIN service_providing_group AS spg
+                        ON cusp.service_provider_id = spg.service_provider_id
+                WHERE spg.service_provider_id = (SELECT current_party())
+                    AND cusp.controllable_unit_id
+                    = service_providing_group_membership.controllable_unit_id -- noqa
+                    AND spg.id
+                    = service_providing_group_membership.service_providing_group_id -- noqa
+                    AND cusp.valid_time_range
+                    && service_providing_group_membership.valid_time_range -- noqa
+            )
+
+        -- the valid time must be totally covered
+        SELECT 1
+        FROM cusp_spgm_timeline_overlap AS t
+        WHERE t.timeline @> service_providing_group_membership.valid_time_range -- noqa
     )
 );
 
