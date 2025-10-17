@@ -1335,8 +1335,7 @@ resources:
       - delete
     audit: true
     generate_views: true
-    comments:
-      history_rls: false
+    comments: true
     history:
       - list
       - read
