@@ -44,3 +44,10 @@ i.e. removing the suspension.
 * The suspension of the SPG product prequalification will impact the
   [ready for market](https://elhub.github.io/flex-information-system/concepts/ready-for-market/)
   status for a SPG.
+
+## Sequence
+
+[Full Size](../diagrams/service_providing_group_product_suspension.png) |
+[PlantUML description](../diagrams/service_providing_group_product_suspension.plantuml)
+
+![Service Provider contract and termination](../diagrams/service_providing_group_product_suspension.png)
