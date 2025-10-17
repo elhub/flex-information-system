@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -20,7 +21,7 @@ class EntityClientUpdateRequest:
                 method. Example: addr@flex.test.
             party_id (Union[Unset, int]): Reference to the party this client allows to assume. A null value means the client
                 cannot assume any party. Example: 30.
-            scopes (Union[Unset, List[AuthScope]]): List of scopes granted to the user when it logs in as an entity or when
+            scopes (Union[Unset, list[AuthScope]]): List of scopes granted to the user when it logs in as an entity or when
                 it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be
                 kept.
                 Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
@@ -39,12 +40,12 @@ class EntityClientUpdateRequest:
     name: Union[None, Unset, str] = UNSET
     client_id: Union[Unset, str] = UNSET
     party_id: Union[Unset, int] = UNSET
-    scopes: Union[Unset, List[AuthScope]] = UNSET
+    scopes: Union[Unset, list[AuthScope]] = UNSET
     client_secret: Union[None, Unset, str] = UNSET
     public_key: Union[None, Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         name: Union[None, Unset, str]
         if isinstance(self.name, Unset):
             name = UNSET
@@ -55,7 +56,7 @@ class EntityClientUpdateRequest:
 
         party_id = self.party_id
 
-        scopes: Union[Unset, List[str]] = UNSET
+        scopes: Union[Unset, list[str]] = UNSET
         if not isinstance(self.scopes, Unset):
             scopes = []
             for scopes_item_data in self.scopes:
@@ -74,7 +75,7 @@ class EntityClientUpdateRequest:
         else:
             public_key = self.public_key
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if name is not UNSET:
@@ -93,8 +94,8 @@ class EntityClientUpdateRequest:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
 
         def _parse_name(data: object) -> Union[None, Unset, str]:
             if data is None:
@@ -147,7 +148,7 @@ class EntityClientUpdateRequest:
         return entity_client_update_request
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

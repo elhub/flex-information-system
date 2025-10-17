@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Union
 
 import httpx
 
@@ -10,8 +10,8 @@ from ...models.read_openapi_json_response_200 import ReadOpenapiJsonResponse200
 from ...types import Response
 
 
-def _get_kwargs() -> Dict[str, Any]:
-    _kwargs: Dict[str, Any] = {
+def _get_kwargs() -> dict[str, Any]:
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/openapi.json",
     }
@@ -21,15 +21,17 @@ def _get_kwargs() -> Dict[str, Any]:
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorMessage, ReadOpenapiJsonResponse200]]:
+) -> Union[ErrorMessage, ReadOpenapiJsonResponse200] | None:
     if response.status_code == 200:
         response_200 = ReadOpenapiJsonResponse200.from_dict(response.json())
 
         return response_200
+
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
 
         return response_400
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -76,7 +78,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorMessage, ReadOpenapiJsonResponse200]]:
+) -> Union[ErrorMessage, ReadOpenapiJsonResponse200] | None:
     """Read OpenAPI JSON Document
 
      Introspection for the Flexibility Information System main API. The document is following the OpenAPI
@@ -122,7 +124,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Union[ErrorMessage, ReadOpenapiJsonResponse200]]:
+) -> Union[ErrorMessage, ReadOpenapiJsonResponse200] | None:
     """Read OpenAPI JSON Document
 
      Introspection for the Flexibility Information System main API. The document is following the OpenAPI

@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,7 +18,7 @@ class EventResponse:
         specversion (Union[Unset, str]): The version of the CloudEvents specification followed by the resource. Example:
             1.0.
         time (Union[Unset, str]): The time at which the event was generated. Example: 2022-08-08 12:00:00 CET.
-        type (Union[Unset, str]): The type of the event. Example: no.elhub.flex.service_providing_group.update.
+        type_ (Union[Unset, str]): The type of the event. Example: no.elhub.flex.service_providing_group.update.
         source (Union[Unset, str]): The URI of the resource concerned by the event. Example: /service_providing_group/4.
         data (Union[None, Unset, str]): The data of the event.
     """
@@ -25,19 +26,19 @@ class EventResponse:
     id: Union[Unset, int] = UNSET
     specversion: Union[Unset, str] = UNSET
     time: Union[Unset, str] = UNSET
-    type: Union[Unset, str] = UNSET
+    type_: Union[Unset, str] = UNSET
     source: Union[Unset, str] = UNSET
     data: Union[None, Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         id = self.id
 
         specversion = self.specversion
 
         time = self.time
 
-        type = self.type
+        type_ = self.type_
 
         source = self.source
 
@@ -47,7 +48,7 @@ class EventResponse:
         else:
             data = self.data
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if id is not UNSET:
@@ -56,8 +57,8 @@ class EventResponse:
             field_dict["specversion"] = specversion
         if time is not UNSET:
             field_dict["time"] = time
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
         if source is not UNSET:
             field_dict["source"] = source
         if data is not UNSET:
@@ -66,15 +67,15 @@ class EventResponse:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         id = d.pop("id", UNSET)
 
         specversion = d.pop("specversion", UNSET)
 
         time = d.pop("time", UNSET)
 
-        type = d.pop("type", UNSET)
+        type_ = d.pop("type", UNSET)
 
         source = d.pop("source", UNSET)
 
@@ -91,7 +92,7 @@ class EventResponse:
             id=id,
             specversion=specversion,
             time=time,
-            type=type,
+            type_=type_,
             source=source,
             data=data,
         )
@@ -100,7 +101,7 @@ class EventResponse:
         return event_response
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:
