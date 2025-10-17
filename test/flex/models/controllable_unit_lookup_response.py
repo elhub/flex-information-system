@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -25,16 +26,16 @@ class ControllableUnitLookupResponse:
             controllable units are located.
         end_user (ControllableUnitLookupResponseEndUser): The end user on the accounting point where the controllable
             units are located.
-        controllable_units (List['ControllableUnitLookupResponseControllableUnitsItem']): The controllable units that
+        controllable_units (list['ControllableUnitLookupResponseControllableUnitsItem']): The controllable units that
             were found for the given end user or accounting point.
     """
 
     accounting_point: "ControllableUnitLookupResponseAccountingPoint"
     end_user: "ControllableUnitLookupResponseEndUser"
-    controllable_units: List["ControllableUnitLookupResponseControllableUnitsItem"]
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    controllable_units: list["ControllableUnitLookupResponseControllableUnitsItem"]
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         accounting_point = self.accounting_point.to_dict()
 
         end_user = self.end_user.to_dict()
@@ -44,7 +45,7 @@ class ControllableUnitLookupResponse:
             controllable_units_item = controllable_units_item_data.to_dict()
             controllable_units.append(controllable_units_item)
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -57,7 +58,7 @@ class ControllableUnitLookupResponse:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_lookup_response_accounting_point import (
             ControllableUnitLookupResponseAccountingPoint,
         )
@@ -66,7 +67,7 @@ class ControllableUnitLookupResponse:
         )
         from ..models.controllable_unit_lookup_response_end_user import ControllableUnitLookupResponseEndUser
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         accounting_point = ControllableUnitLookupResponseAccountingPoint.from_dict(d.pop("accounting_point"))
 
         end_user = ControllableUnitLookupResponseEndUser.from_dict(d.pop("end_user"))
@@ -90,7 +91,7 @@ class ControllableUnitLookupResponse:
         return controllable_unit_lookup_response
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

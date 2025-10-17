@@ -162,7 +162,7 @@ def test_ptym_org(sts):
             name="Test Org SP",
             entity_id=org_ent_id,
             role="flex_service_provider",
-            type="service_provider",
+            type_="service_provider",
             business_id_type=PartyBusinessIdType.GLN,
             business_id=unique_gln(),
         ),

@@ -128,7 +128,7 @@ def test_entity_client_fiso(sts):
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
             role="flex_service_provider",
-            type="service_provider",
+            type_="service_provider",
             entity_id=ent_id,
         ),
     )
@@ -141,7 +141,7 @@ def test_entity_client_fiso(sts):
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
             role="flex_energy_supplier",
-            type="energy_supplier",
+            type_="energy_supplier",
             entity_id=other_ent_id,
         ),
     )

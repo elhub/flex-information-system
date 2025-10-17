@@ -1,5 +1,6 @@
 import datetime
-from typing import Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -21,9 +22,9 @@ class TimelineMultiRangeItem:
 
     valid_from: Union[Unset, datetime.datetime] = UNSET
     valid_to: Union[Unset, datetime.datetime] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         valid_from: Union[Unset, str] = UNSET
         if not isinstance(self.valid_from, Unset):
             valid_from = self.valid_from.isoformat()
@@ -32,7 +33,7 @@ class TimelineMultiRangeItem:
         if not isinstance(self.valid_to, Unset):
             valid_to = self.valid_to.isoformat()
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if valid_from is not UNSET:
@@ -43,8 +44,8 @@ class TimelineMultiRangeItem:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         _valid_from = d.pop("valid_from", UNSET)
         valid_from: Union[Unset, datetime.datetime]
         if isinstance(_valid_from, Unset):
@@ -68,7 +69,7 @@ class TimelineMultiRangeItem:
         return timeline_multi_range_item
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

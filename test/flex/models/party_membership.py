@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -14,7 +15,7 @@ class PartyMembership:
     """Data schema - The relation between a party and entity.
 
     Attributes:
-        scopes (Union[Unset, List[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
+        scopes (Union[Unset, list[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
             are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
         party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
@@ -25,16 +26,16 @@ class PartyMembership:
         id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
     """
 
-    scopes: Union[Unset, List[AuthScope]] = UNSET
+    scopes: Union[Unset, list[AuthScope]] = UNSET
     party_id: Union[Unset, int] = UNSET
     entity_id: Union[Unset, int] = UNSET
     recorded_at: Union[Unset, str] = UNSET
     recorded_by: Union[Unset, int] = UNSET
     id: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
-        scopes: Union[Unset, List[str]] = UNSET
+    def to_dict(self) -> dict[str, Any]:
+        scopes: Union[Unset, list[str]] = UNSET
         if not isinstance(self.scopes, Unset):
             scopes = []
             for scopes_item_data in self.scopes:
@@ -51,7 +52,7 @@ class PartyMembership:
 
         id = self.id
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if scopes is not UNSET:
@@ -70,8 +71,8 @@ class PartyMembership:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         scopes = []
         _scopes = d.pop("scopes", UNSET)
         for scopes_item_data in _scopes or []:
@@ -102,7 +103,7 @@ class PartyMembership:
         return party_membership
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

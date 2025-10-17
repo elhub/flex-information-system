@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Union
 
 import httpx
 
@@ -15,8 +15,8 @@ from ...types import Response
 
 def _get_kwargs(
     id: int,
-) -> Dict[str, Any]:
-    _kwargs: Dict[str, Any] = {
+) -> dict[str, Any]:
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": f"/service_provider_product_suspension_comment_history/{id}",
     }
@@ -26,25 +26,30 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[
+) -> (
     Union[ErrorMessage, ServiceProviderProductSuspensionCommentHistoryResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+    | None
+):
     if response.status_code == 200:
         response_200 = ServiceProviderProductSuspensionCommentHistoryResponse.from_dict(response.json())
 
         return response_200
+
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
 
         return response_400
+
     if response.status_code == 401:
         response_401 = ErrorMessage.from_dict(response.json())
 
         return response_401
+
     if response.status_code == 403:
         response_403 = ErrorMessage.from_dict(response.json())
 
         return response_403
+
     if response.status_code == 404:
 
         def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
@@ -65,14 +70,17 @@ def _parse_response(
         response_404 = _parse_response_404(response.json())
 
         return response_404
+
     if response.status_code == 406:
         response_406 = ErrorMessage.from_dict(response.json())
 
         return response_406
+
     if response.status_code == 500:
         response_500 = ErrorMessage.from_dict(response.json())
 
         return response_500
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -127,9 +135,10 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[
+) -> (
     Union[ErrorMessage, ServiceProviderProductSuspensionCommentHistoryResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+    | None
+):
     """Read Service Provider Product Suspension Comment - history
 
     Args:
@@ -182,9 +191,10 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Optional[
+) -> (
     Union[ErrorMessage, ServiceProviderProductSuspensionCommentHistoryResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+    | None
+):
     """Read Service Provider Product Suspension Comment - history
 
     Args:

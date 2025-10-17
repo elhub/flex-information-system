@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -33,9 +34,9 @@ class ControllableUnitServiceProviderCreateRequest:
     controllable_unit_id: Union[Unset, int] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
     end_user_id: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         contract_reference = self.contract_reference
 
         valid_from: Union[None, Unset, str]
@@ -56,7 +57,7 @@ class ControllableUnitServiceProviderCreateRequest:
 
         end_user_id = self.end_user_id
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if contract_reference is not UNSET:
@@ -75,8 +76,8 @@ class ControllableUnitServiceProviderCreateRequest:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         contract_reference = d.pop("contract_reference", UNSET)
 
         def _parse_valid_from(data: object) -> Union[None, Unset, str]:
@@ -116,7 +117,7 @@ class ControllableUnitServiceProviderCreateRequest:
         return controllable_unit_service_provider_create_request
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

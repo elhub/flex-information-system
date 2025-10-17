@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -31,7 +32,7 @@ class PartyCreateRequest:
             entity_id (Union[Unset, int]): Reference to the entity that is the parent of the party. Example: 30.
             role (Union[Unset, str]): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
                 service_provider. Example: flex_energy_supplier.
-            type (Union[Unset, str]): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
+            type_ (Union[Unset, str]): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
     """
 
     business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
@@ -40,10 +41,10 @@ class PartyCreateRequest:
     business_id: Union[Unset, str] = UNSET
     entity_id: Union[Unset, int] = UNSET
     role: Union[Unset, str] = UNSET
-    type: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    type_: Union[Unset, str] = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         business_id_type: Union[Unset, str] = UNSET
         if not isinstance(self.business_id_type, Unset):
             business_id_type = self.business_id_type.value
@@ -60,9 +61,9 @@ class PartyCreateRequest:
 
         role = self.role
 
-        type = self.type
+        type_ = self.type_
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if business_id_type is not UNSET:
@@ -77,14 +78,14 @@ class PartyCreateRequest:
             field_dict["entity_id"] = entity_id
         if role is not UNSET:
             field_dict["role"] = role
-        if type is not UNSET:
-            field_dict["type"] = type
+        if type_ is not UNSET:
+            field_dict["type"] = type_
 
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         _business_id_type = d.pop("business_id_type", UNSET)
         business_id_type: Union[Unset, PartyBusinessIdType]
         if isinstance(_business_id_type, Unset):
@@ -107,7 +108,7 @@ class PartyCreateRequest:
 
         role = d.pop("role", UNSET)
 
-        type = d.pop("type", UNSET)
+        type_ = d.pop("type", UNSET)
 
         party_create_request = cls(
             business_id_type=business_id_type,
@@ -116,14 +117,14 @@ class PartyCreateRequest:
             business_id=business_id,
             entity_id=entity_id,
             role=role,
-            type=type,
+            type_=type_,
         )
 
         party_create_request.additional_properties = d
         return party_create_request
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

@@ -157,7 +157,7 @@ def test_event_eu(sts):
         cu_event = [
             e
             for e in events
-            if e.type == "no.elhub.flex.controllable_unit.create"
+            if e.type_ == "no.elhub.flex.controllable_unit.create"
             and e.source == f"/controllable_unit/{cu.id}"
         ]
 
@@ -166,7 +166,7 @@ def test_event_eu(sts):
         cusp_event = [
             e
             for e in events
-            if e.type == "no.elhub.flex.controllable_unit_service_provider.create"
+            if e.type_ == "no.elhub.flex.controllable_unit_service_provider.create"
             and e.source == f"/controllable_unit_service_provider/{cusp.id}"
         ]
 
@@ -175,7 +175,7 @@ def test_event_eu(sts):
         tr_event = [
             e
             for e in events
-            if e.type == "no.elhub.flex.technical_resource.create"
+            if e.type_ == "no.elhub.flex.technical_resource.create"
             and e.source == f"/technical_resource/{tr.id}"
         ]
 
@@ -231,11 +231,11 @@ def test_event_sp(sts):
         e
         for e in events
         if (
-            e.type == "no.elhub.flex.controllable_unit.create"
+            e.type_ == "no.elhub.flex.controllable_unit.create"
             and e.source == f"/controllable_unit/{cu.id}"
         )
         or (
-            e.type == "no.elhub.flex.technical_resource.create"
+            e.type_ == "no.elhub.flex.technical_resource.create"
             and e.source == f"/technical_resource/{tr.id}"
         )
     )
@@ -421,13 +421,13 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.controllable_unit.create"
+        if e.type_ == "no.elhub.flex.controllable_unit.create"
         and e.source == f"/controllable_unit/{cu.id}"
     )
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.technical_resource.create"
+        if e.type_ == "no.elhub.flex.technical_resource.create"
         and e.source == f"/technical_resource/{tr.id}"
     )
 
@@ -436,7 +436,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_providing_group_membership.create"
+        if e.type_ == "no.elhub.flex.service_providing_group_membership.create"
         and e.source == f"/service_providing_group_membership/{spgm.id}"
     )
 
@@ -445,7 +445,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_provider_product_suspension.create"
+        if e.type_ == "no.elhub.flex.service_provider_product_suspension.create"
         and e.source == f"/service_provider_product_suspension/{spps.id}"
     )
 
@@ -454,7 +454,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_providing_group_grid_suspension.create"
+        if e.type_ == "no.elhub.flex.service_providing_group_grid_suspension.create"
         and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
@@ -498,20 +498,20 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.technical_resource.delete"
+        if e.type_ == "no.elhub.flex.technical_resource.delete"
         and e.source == f"/technical_resource/{tr.id}"
     )
 
     # but never lookup
     assert not any(
-        e for e in events if e.type == "no.elhub.flex.controllable_unit.lookup"
+        e for e in events if e.type_ == "no.elhub.flex.controllable_unit.lookup"
     )
 
     # SP can see delete for SPGM
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_providing_group_membership.delete"
+        if e.type_ == "no.elhub.flex.service_providing_group_membership.delete"
         and e.source == f"/service_providing_group_membership/{spgm.id}"
     )
 
@@ -519,7 +519,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_provider_product_suspension.delete"
+        if e.type_ == "no.elhub.flex.service_provider_product_suspension.delete"
         and e.source == f"/service_provider_product_suspension/{spps.id}"
     )
 
@@ -527,7 +527,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_providing_group_grid_suspension.delete"
+        if e.type_ == "no.elhub.flex.service_providing_group_grid_suspension.delete"
         and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
@@ -536,7 +536,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.controllable_unit_service_provider.create"
+        if e.type_ == "no.elhub.flex.controllable_unit_service_provider.create"
         and e.source == f"/controllable_unit_service_provider/{cusp.id}"
     )
 
@@ -545,7 +545,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_provider_product_application.create"
+        if e.type_ == "no.elhub.flex.service_provider_product_application.create"
         and e.source == f"/service_provider_product_application/{sppa.id}"
     )
 
@@ -554,14 +554,16 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_provider_product_application_comment.create"
+        if e.type_
+        == "no.elhub.flex.service_provider_product_application_comment.create"
         and e.source
         == f"/service_provider_product_application_comment/{sppac_public.id}"
     )
     assert not any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_provider_product_application_comment.create"
+        if e.type_
+        == "no.elhub.flex.service_provider_product_application_comment.create"
         and e.source
         == f"/service_provider_product_application_comment/{sppac_hidden.id}"
     )
@@ -571,7 +573,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_providing_group.create"
+        if e.type_ == "no.elhub.flex.service_providing_group.create"
         and e.source == f"/service_providing_group/{spg.id}"
     )
 
@@ -580,7 +582,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type
+        if e.type_
         == "no.elhub.flex.service_providing_group_grid_prequalification.create"
         and e.source == f"/service_providing_group_grid_prequalification/{spggp.id}"
     )
@@ -590,7 +592,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_providing_group_product_application.create"
+        if e.type_ == "no.elhub.flex.service_providing_group_product_application.create"
         and e.source == f"/service_providing_group_product_application/{spgpa.id}"
     )
 
@@ -599,7 +601,7 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.system_operator_product_type.create"
+        if e.type_ == "no.elhub.flex.system_operator_product_type.create"
         and e.source == f"/system_operator_product_type/{sopt.id}"
     )
 
@@ -608,14 +610,14 @@ def test_event_sp(sts):
     assert any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
         and e.source
         == f"/service_provider_product_suspension_comment/{sppsc_public.id}"
     )
     assert not any(
         e
         for e in events
-        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
         and e.source
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
@@ -628,72 +630,74 @@ def test_event_sp(sts):
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.controllable_unit_service_provider.create"
+        if e.type_ == "no.elhub.flex.controllable_unit_service_provider.create"
         and e.source == f"/controllable_unit_service_provider/{cusp.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_provider_product_application.create"
+        if e.type_ == "no.elhub.flex.service_provider_product_application.create"
         and e.source == f"/service_provider_product_application/{sppa.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_provider_product_application_comment.create"
+        if e.type_
+        == "no.elhub.flex.service_provider_product_application_comment.create"
         and e.source
         == f"/service_provider_product_application_comment/{sppac_public.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_provider_product_application_comment.create"
+        if e.type_
+        == "no.elhub.flex.service_provider_product_application_comment.create"
         and e.source
         == f"/service_provider_product_application_comment/{sppac_hidden.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_providing_group.create"
+        if e.type_ == "no.elhub.flex.service_providing_group.create"
         and e.source == f"/service_providing_group/{spg.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_providing_group_membership.create"
+        if e.type_ == "no.elhub.flex.service_providing_group_membership.create"
         and e.source == f"/service_providing_group_membership/{spgm.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type
+        if e.type_
         == "no.elhub.flex.service_providing_group_grid_prequalification.create"
         and e.source == f"/service_providing_group_grid_prequalification/{spggp.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_providing_group_product_application.create"
+        if e.type_ == "no.elhub.flex.service_providing_group_product_application.create"
         and e.source == f"/service_providing_group_product_application/{spgpa.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
         and e.source
         == f"/service_provider_product_suspension_comment/{sppsc_public.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_provider_product_suspension_comment.create"
+        if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
         and e.source
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
     assert not any(
         e
         for e in events_other
-        if e.type == "no.elhub.flex.service_providing_group_grid_suspension.create"
+        if e.type_ == "no.elhub.flex.service_providing_group_grid_suspension.create"
         and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
@@ -725,9 +729,9 @@ def test_event_fiso_so(sts):
             "service_providing_group_grid_suspension",
             "service_providing_group_product_application",
         ):
-            # only test one type of operation, as we don't filter by operation
+            # only test one.type_ of operation, as we don't filter by operation
             # in the policies
-            assert any(e.type == f"no.elhub.flex.{resource}.create" for e in events)
+            assert any(e.type_ == f"no.elhub.flex.{resource}.create" for e in events)
 
     check(client_fiso)
     check(client_so)
