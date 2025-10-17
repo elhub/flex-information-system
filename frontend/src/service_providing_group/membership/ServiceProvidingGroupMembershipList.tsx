@@ -14,34 +14,40 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 
+const CreateButton = ({ id }: { id: any }) => {
+  let createUrl = "/service_providing_group_membership/create";
+  if (id) createUrl = `/service_providing_group/${id}/membership/create`;
+
+  return (
+    <Button
+      component={Link}
+      to={createUrl}
+      startIcon={<AddIcon />}
+      state={{ service_providing_group_id: id }}
+      label="Create"
+    />
+  );
+};
+
+const ListActions = ({
+  permissions,
+  id,
+}: {
+  permissions: string[];
+  id: any;
+}) => (
+  <TopToolbar>
+    {permissions.includes("service_providing_group_membership.create") && (
+      <CreateButton id={id} />
+    )}
+  </TopToolbar>
+);
+
 export const ServiceProvidingGroupMembershipList = () => {
   // id of the SPG
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
-
-  const CreateButton = () => {
-    let createUrl = "/service_providing_group_membership/create";
-    if (id) createUrl = `/service_providing_group/${id}/membership/create`;
-
-    return (
-      <Button
-        component={Link}
-        to={createUrl}
-        startIcon={<AddIcon />}
-        state={{ service_providing_group_id: id }}
-        label="Create"
-      />
-    );
-  };
-
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes("service_providing_group_membership.create") && (
-        <CreateButton />
-      )}
-    </TopToolbar>
-  );
 
   return (
     permissions.includes("service_providing_group_membership.read") && (
@@ -49,7 +55,7 @@ export const ServiceProvidingGroupMembershipList = () => {
         <List
           title={false}
           perPage={10}
-          actions={<ListActions />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           filter={

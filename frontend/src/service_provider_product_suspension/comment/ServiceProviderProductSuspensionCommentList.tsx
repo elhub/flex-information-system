@@ -14,29 +14,35 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 
+const CreateButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={`/service_provider_product_suspension/${id}/comment/create`}
+    startIcon={<AddIcon />}
+    state={{ service_provider_product_suspension_id: id }}
+    label="Create"
+  />
+);
+
+const ListActions = ({
+  permissions,
+  id,
+}: {
+  permissions: string[];
+  id: any;
+}) => (
+  <TopToolbar>
+    {permissions.includes(
+      "service_provider_product_suspension_comment.create",
+    ) && <CreateButton id={id} />}
+  </TopToolbar>
+);
+
 export const ServiceProviderProductSuspensionCommentList = () => {
   // id of the SPPA
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
-
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={`/service_provider_product_suspension/${id}/comment/create`}
-      startIcon={<AddIcon />}
-      state={{ service_provider_product_suspension_id: id }}
-      label="Create"
-    />
-  );
-
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes(
-        "service_provider_product_suspension_comment.create",
-      ) && <CreateButton />}
-    </TopToolbar>
-  );
 
   return (
     permissions.includes(
@@ -46,7 +52,7 @@ export const ServiceProviderProductSuspensionCommentList = () => {
         <List
           title={false}
           perPage={10}
-          actions={<ListActions />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           filter={{ service_provider_product_suspension_id: id }}
