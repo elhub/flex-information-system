@@ -28,7 +28,7 @@ class ServiceProviderProductSuspensionCommentResponse:
             recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
             id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
             created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
-            created_at (Union[Unset, str]): When the comment was added to the suspension. Example: 2022-08-08 12:00:00 CET.
+            created_at (Union[Unset, str]): When the comment was added to the SPPS. Example: 2022-08-08 12:00:00 CET.
     """
 
     visibility: Union[Unset, ServiceProviderProductSuspensionCommentVisibility] = UNSET

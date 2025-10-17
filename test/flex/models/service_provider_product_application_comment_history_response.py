@@ -28,7 +28,7 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
         created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
-        created_at (Union[Unset, str]): When the comment was added to the application. Example: 2022-08-08 12:00:00 CET.
+        created_at (Union[Unset, str]): When the comment was added to the SPPA. Example: 2022-08-08 12:00:00 CET.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
             10:00:00 CET.
