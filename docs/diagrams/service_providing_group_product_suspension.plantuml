@@ -16,12 +16,12 @@ actor "System Operator (SO)" as SO
 == Suspension of service providing group product prequalification ==
 
 activate SO
-SO -> FIS: Create SPG product suspension
+SO -> FIS: Create product suspension
 
 note right
     Data:
-        - service provider
-        - suspended SPG product
+        - service providing group
+        - suspended product types
         - reason for suspension
 end note
 

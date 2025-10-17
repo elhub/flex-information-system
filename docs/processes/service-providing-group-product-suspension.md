@@ -8,9 +8,8 @@ the service provider will be made aware of the suspension.
 
 The suspension is valid for the following combination:
 
-* `service providing group product`- the combination of SPG and product type that
-is suspended.
-* `service provider` - the supplier of the SPG product.
+* `service providing group`- the group that is suspended.
+* `product types` - a list of product types that the SPG is qualified for.
 * `procuring system operator`- the one that suspends.
 
 This means that the suspension does _not_ impact other procuring system operators.
@@ -42,6 +41,6 @@ i.e. removing the suspension.
 * End users should not be notified about or view the suspension in FIS. Service
   providers will notify end users when necessary and dependent on the agreement
   between them and the end user.
-* The suspension of the SPG product qualification will impact the
+* The suspension of the SPG product prequalification will impact the
   [ready for market](https://elhub.github.io/flex-information-system/concepts/ready-for-market/)
   status for a SPG.

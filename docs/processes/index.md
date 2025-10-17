@@ -158,7 +158,7 @@ service providing groups.
 
 Registering a new service providing group. Includes grid prequalification.
 
-#### [Service providing group suspension](service-providing-group-grid-suspension.md)
+#### [Service providing group grid suspension](service-providing-group-grid-suspension.md)
 
 Suspension of a service providing group grid prequalification initiated by
 system operator. Includes reinstatement of the
