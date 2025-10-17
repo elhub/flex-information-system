@@ -36,20 +36,10 @@ const CULookupButton = () => (
   />
 );
 
-export const ControllableUnitList = () => {
+const ListActions = () => {
   const { permissions } = usePermissions();
 
-  const controllableUnitFilters = [
-    <SelectArrayInput
-      key="status"
-      label="Status"
-      source="status@in"
-      choices={["new", "active", "inactive", "terminated"]}
-      alwaysOn
-    />,
-  ];
-
-  const ListActions = () => (
+  return (
     <TopToolbar>
       {permissions.includes("controllable_unit.lookup") && <CULookupButton />}
       {permissions.includes("controllable_unit_service_provider.create") && (
@@ -59,6 +49,18 @@ export const ControllableUnitList = () => {
       <ExportButton />
     </TopToolbar>
   );
+};
+
+export const ControllableUnitList = () => {
+  const controllableUnitFilters = [
+    <SelectArrayInput
+      key="status"
+      label="Status"
+      source="status@in"
+      choices={["new", "active", "inactive", "terminated"]}
+      alwaysOn
+    />,
+  ];
 
   return (
     <List
