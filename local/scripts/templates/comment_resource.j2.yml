@@ -56,7 +56,7 @@ data:
       x-details: >-
         Comments marked `same_party` are visible only to the party that
         creates them, whereas comments marked `any_involved_party` can be seen
-        by all parties involved in the application.
+        by all parties involved in the {{ data.acronym }}.
     content:
       description: Free text content of the comment.
       format: text
