@@ -288,7 +288,7 @@ def test_cu_lookup_remote(sts):
             name="TEST-CU-LOOKUP-REMOTE",
             business_id=random_pid(),
             business_id_type="pid",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, EntityResponse)
@@ -317,7 +317,7 @@ def test_cu_lookup_remote(sts):
     )
     assert isinstance(ps, list)
     assert len(ps) == 1
-    assert ap_business_id in cast(str, ps[0].name) and ps[0].type == "end_user"
+    assert ap_business_id in cast(str, ps[0].name) and ps[0].type_ == "end_user"
 
     # end user does not exist at all
 
@@ -349,7 +349,7 @@ def test_cu_lookup_remote(sts):
     assert isinstance(es, list)
     assert len(es) == 1
     e = es[0]
-    assert ap_business_id in cast(str, e.name) and e.type == "organisation"
+    assert ap_business_id in cast(str, e.name) and e.type_ == "organisation"
 
     ps = list_party.sync(
         client=client_fiso,
@@ -357,7 +357,7 @@ def test_cu_lookup_remote(sts):
     )
     assert isinstance(ps, list)
     assert len(ps) == 1
-    assert ap_business_id in cast(str, ps[0].name) and ps[0].type == "end_user"
+    assert ap_business_id in cast(str, ps[0].name) and ps[0].type_ == "end_user"
 
 
 def test_cu_lookup_flow(sts):

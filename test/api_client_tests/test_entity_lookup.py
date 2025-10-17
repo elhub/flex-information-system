@@ -33,7 +33,7 @@ def test_entity_lookup_params(sts):
         body=EntityLookupRequest(
             business_id="",
             name="TEST-ENTITY-LOOKUP",
-            type=EntityLookupRequestType.ORGANISATION,
+            type_=EntityLookupRequestType.ORGANISATION,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -45,7 +45,7 @@ def test_entity_lookup_params(sts):
         body=EntityLookupRequest(
             business_id="badformat",
             name="TEST-ENTITY-LOOKUP",
-            type=EntityLookupRequestType.ORGANISATION,
+            type_=EntityLookupRequestType.ORGANISATION,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -57,7 +57,7 @@ def test_entity_lookup_params(sts):
         body=EntityLookupRequest(
             business_id="4337000099",
             name="TEST-ENTITY-LOOKUP",
-            type=EntityLookupRequestType.ORGANISATION,
+            type_=EntityLookupRequestType.ORGANISATION,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -68,7 +68,7 @@ def test_entity_lookup_params(sts):
         body=EntityLookupRequest(
             business_id="43370099",
             name="TEST-ENTITY-LOOKUP",
-            type=EntityLookupRequestType.PERSON,
+            type_=EntityLookupRequestType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -79,7 +79,7 @@ def test_entity_lookup_params(sts):
         body=EntityLookupRequest(
             business_id="0337000099",
             name="TEST-ENTITY-LOOKUP",
-            type=EntityLookupRequestType.PERSON,
+            type_=EntityLookupRequestType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -91,7 +91,7 @@ def test_entity_lookup_params(sts):
         body=EntityLookupRequest(
             business_id="4337000099",
             name="",
-            type=EntityLookupRequestType.PERSON,
+            type_=EntityLookupRequestType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -112,7 +112,7 @@ def test_entity_lookup_fiso(sts):
         body=EntityLookupRequest(
             business_id="13370000000",
             name="x",
-            type=EntityLookupRequestType.PERSON,
+            type_=EntityLookupRequestType.PERSON,
         ),
     )
     assert isinstance(el, EntityLookupResponse)
@@ -133,7 +133,7 @@ def test_entity_lookup_fiso(sts):
         body=EntityLookupRequest(
             business_id="3" + random_number(10),
             name="TEST-ENTITY-LOOKUP",
-            type=EntityLookupRequestType.PERSON,
+            type_=EntityLookupRequestType.PERSON,
         ),
     )
     assert isinstance(el, EntityLookupResponse)
@@ -153,7 +153,7 @@ def test_entity_lookup_other(sts):
             body=EntityLookupRequest(
                 business_id="13370000000",
                 name="x",
-                type=EntityLookupRequestType.PERSON,
+                type_=EntityLookupRequestType.PERSON,
             ),
         )
         assert isinstance(e, ErrorMessage)
