@@ -31,7 +31,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 activate SP
-loop All PSOs procuring the same SPG product from the SP
+loop All PSOs procuring the same product type from the SP
     |||
     FIS --> SO: Notify
     deactivate FIS
@@ -61,7 +61,7 @@ end note
 deactivate SP
 == Reinstatement of service providing group product prequalification ==
 
-SO -> FIS: Delete SP product suspension
+SO -> FIS: Delete SPG product suspension
 activate SO
 |||
 activate FIS
@@ -69,7 +69,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 
-loop All PSOs procuring the same SPG product from the SP
+loop All PSOs procuring the same product type from the SP
     |||
     FIS --> SO: Notify
     deactivate FIS
