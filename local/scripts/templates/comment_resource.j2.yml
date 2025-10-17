@@ -1,9 +1,9 @@
-{%- set resource_spaces = resource | replace("_", "-") %}
+{%- set resource_spaces = resource | replace("_", " ") %}
 data:
   id: {{ resource }}_comment
   acronym: {{ data.acronym }}C
   summary: {{ data.summary }} Comment
-  description: >
+  description: >-
     Comment made by a party involved in a {{ resource_spaces }}.
   operations:
     - list
@@ -39,7 +39,7 @@ data:
       readOnly: true
       example: 94
     created_at:
-      description: When the comment was added to the application.
+      description: When the comment was added to the {{ data.acronym }}.
       format: timestamp with time zone
       type: string
       readOnly: true
