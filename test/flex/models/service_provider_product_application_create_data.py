@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,7 +16,7 @@ class ServiceProviderProductApplicationCreateData:
     the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
 
         Attributes:
-            product_type_ids (Union[Unset, List[int]]): References to the product types. Example: [2, 4, 5].
+            product_type_ids (Union[Unset, list[int]]): References to the product types. Example: [2, 4, 5].
             status (Union[Unset, ServiceProviderProductApplicationStatus]): The status of the application. Example:
                 in_progress.
             notes (Union[None, Unset, str]): Free text notes on the current product application status.
@@ -25,16 +26,16 @@ class ServiceProviderProductApplicationCreateData:
             system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 39.
     """
 
-    product_type_ids: Union[Unset, List[int]] = UNSET
+    product_type_ids: Union[Unset, list[int]] = UNSET
     status: Union[Unset, ServiceProviderProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     qualified_at: Union[None, Unset, str] = UNSET
     service_provider_id: Union[Unset, int] = UNSET
     system_operator_id: Union[Unset, int] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
-        product_type_ids: Union[Unset, List[int]] = UNSET
+    def to_dict(self) -> dict[str, Any]:
+        product_type_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.product_type_ids, Unset):
             product_type_ids = self.product_type_ids
 
@@ -58,7 +59,7 @@ class ServiceProviderProductApplicationCreateData:
 
         system_operator_id = self.system_operator_id
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if product_type_ids is not UNSET:
@@ -77,9 +78,9 @@ class ServiceProviderProductApplicationCreateData:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
-        product_type_ids = cast(List[int], d.pop("product_type_ids", UNSET))
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
+        product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, ServiceProviderProductApplicationStatus]
@@ -123,7 +124,7 @@ class ServiceProviderProductApplicationCreateData:
         return service_provider_product_application_create_data
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

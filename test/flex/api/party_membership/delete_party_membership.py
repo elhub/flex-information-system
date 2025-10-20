@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union, cast
+from typing import Any, Union, cast
 
 import httpx
 
@@ -14,17 +14,16 @@ def _get_kwargs(
     id: int,
     *,
     body: EmptyObject,
-) -> Dict[str, Any]:
-    headers: Dict[str, Any] = {}
+) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": f"/party_membership/{id}",
     }
 
-    _body = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
@@ -33,22 +32,26 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+) -> Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]] | None:
     if response.status_code == 204:
         response_204 = cast(Any, None)
         return response_204
+
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
 
         return response_400
+
     if response.status_code == 401:
         response_401 = ErrorMessage.from_dict(response.json())
 
         return response_401
+
     if response.status_code == 403:
         response_403 = ErrorMessage.from_dict(response.json())
 
         return response_403
+
     if response.status_code == 404:
 
         def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
@@ -69,10 +72,12 @@ def _parse_response(
         response_404 = _parse_response_404(response.json())
 
         return response_404
+
     if response.status_code == 406:
         response_406 = ErrorMessage.from_dict(response.json())
 
         return response_406
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -127,7 +132,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: EmptyObject,
-) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+) -> Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]] | None:
     """Delete Party Membership
 
     Args:
@@ -184,7 +189,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: EmptyObject,
-) -> Optional[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]]]:
+) -> Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"]] | None:
     """Delete Party Membership
 
     Args:

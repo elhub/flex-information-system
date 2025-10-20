@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union, cast
+from typing import Any, Union, cast
 
 import httpx
 
@@ -29,8 +29,8 @@ def _get_kwargs(
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
     prefer: Union[Unset, ListServiceProvidingGroupGridSuspensionHistoryPrefer] = UNSET,
-) -> Dict[str, Any]:
-    headers: Dict[str, Any] = {}
+) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
     if not isinstance(range_, Unset):
         headers["Range"] = range_
 
@@ -40,7 +40,7 @@ def _get_kwargs(
     if not isinstance(prefer, Unset):
         headers["Prefer"] = str(prefer)
 
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
 
     params["id"] = id
 
@@ -60,7 +60,7 @@ def _get_kwargs(
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/service_providing_group_grid_suspension_history",
         "params": params,
@@ -72,14 +72,15 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[
+) -> (
     Union[
         Any,
         ErrorMessage,
-        List["ServiceProvidingGroupGridSuspensionHistoryResponse"],
         Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridSuspensionHistoryResponse"],
     ]
-]:
+    | None
+):
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -89,21 +90,26 @@ def _parse_response(
             response_200.append(response_200_item)
 
         return response_200
+
     if response.status_code == 206:
         response_206 = cast(Any, None)
         return response_206
+
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
 
         return response_400
+
     if response.status_code == 401:
         response_401 = ErrorMessage.from_dict(response.json())
 
         return response_401
+
     if response.status_code == 403:
         response_403 = ErrorMessage.from_dict(response.json())
 
         return response_403
+
     if response.status_code == 404:
 
         def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
@@ -124,18 +130,22 @@ def _parse_response(
         response_404 = _parse_response_404(response.json())
 
         return response_404
+
     if response.status_code == 406:
         response_406 = ErrorMessage.from_dict(response.json())
 
         return response_406
+
     if response.status_code == 416:
         response_416 = ErrorMessage.from_dict(response.json())
 
         return response_416
+
     if response.status_code == 500:
         response_500 = ErrorMessage.from_dict(response.json())
 
         return response_500
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -148,8 +158,8 @@ def _build_response(
     Union[
         Any,
         ErrorMessage,
-        List["ServiceProvidingGroupGridSuspensionHistoryResponse"],
         Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridSuspensionHistoryResponse"],
     ]
 ]:
     return Response(
@@ -178,8 +188,8 @@ def sync_detailed(
     Union[
         Any,
         ErrorMessage,
-        List["ServiceProvidingGroupGridSuspensionHistoryResponse"],
         Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridSuspensionHistoryResponse"],
     ]
 ]:
     """List Service Providing Group Grid Suspension - history
@@ -202,7 +212,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, List['ServiceProvidingGroupGridSuspensionHistoryResponse'], Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridSuspensionHistoryResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -240,14 +250,15 @@ def sync(
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
     prefer: Union[Unset, ListServiceProvidingGroupGridSuspensionHistoryPrefer] = UNSET,
-) -> Optional[
+) -> (
     Union[
         Any,
         ErrorMessage,
-        List["ServiceProvidingGroupGridSuspensionHistoryResponse"],
         Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridSuspensionHistoryResponse"],
     ]
-]:
+    | None
+):
     """List Service Providing Group Grid Suspension - history
 
     Args:
@@ -268,7 +279,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, List['ServiceProvidingGroupGridSuspensionHistoryResponse'], Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridSuspensionHistoryResponse']]
     """
 
     return sync_detailed(
@@ -305,8 +316,8 @@ async def asyncio_detailed(
     Union[
         Any,
         ErrorMessage,
-        List["ServiceProvidingGroupGridSuspensionHistoryResponse"],
         Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridSuspensionHistoryResponse"],
     ]
 ]:
     """List Service Providing Group Grid Suspension - history
@@ -329,7 +340,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, List['ServiceProvidingGroupGridSuspensionHistoryResponse'], Union['EmptyObject', 'ErrorMessage']]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridSuspensionHistoryResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -365,14 +376,15 @@ async def asyncio(
     range_: Union[Unset, str] = UNSET,
     range_unit: Union[Unset, str] = UNSET,
     prefer: Union[Unset, ListServiceProvidingGroupGridSuspensionHistoryPrefer] = UNSET,
-) -> Optional[
+) -> (
     Union[
         Any,
         ErrorMessage,
-        List["ServiceProvidingGroupGridSuspensionHistoryResponse"],
         Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridSuspensionHistoryResponse"],
     ]
-]:
+    | None
+):
     """List Service Providing Group Grid Suspension - history
 
     Args:
@@ -393,7 +405,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, List['ServiceProvidingGroupGridSuspensionHistoryResponse'], Union['EmptyObject', 'ErrorMessage']]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridSuspensionHistoryResponse']]
     """
 
     return (

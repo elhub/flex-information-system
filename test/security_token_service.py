@@ -239,7 +239,7 @@ class SecurityTokenService:
             client=client_fiso,
             body=PartyCreateRequest(
                 role=f"flex_{party_type}",
-                type=party_type,
+                type_=party_type,
                 name=f"{entity} {party_name} #{
                     ''.join(
                         random.choices(
