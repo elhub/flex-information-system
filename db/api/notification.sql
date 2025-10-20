@@ -2,7 +2,8 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:api-notification-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.notification
+CREATE OR REPLACE VIEW
+api.notification
 WITH (security_invoker = true) AS (
     SELECT
         id,
