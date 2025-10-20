@@ -1,0 +1,21 @@
+# used to generate resources.png
+# Add future resources here
+
+resources: []
+  # - id: future_resource
+  #   future: true
+  #   acronym: FR
+  #   name: Future Resource
+  #   summary: Yep, its the future
+  #   description: Some meaningful description of the resource
+  #   properties:
+  #     connecting_system_operator_id:
+  #       description: >-
+  #         Reference to the `party` that is the connecting system operator.
+  #         Derived from the `accounting_point_id`.
+  #       format: bigint
+  #       type: integer
+  #       readOnly: true
+  #       x-foreign-key:
+  #         resource: party
+  #         field: id
