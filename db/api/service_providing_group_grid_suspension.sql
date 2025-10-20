@@ -2,7 +2,8 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:api-service-providing-group-grid-suspension-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.service_providing_group_grid_suspension
+CREATE OR REPLACE VIEW
+api.service_providing_group_grid_suspension
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -14,7 +15,8 @@ WITH (security_invoker = true) AS (
     FROM flex.service_providing_group_grid_suspension
 );
 -- changeset flex:api-service-providing-group-grid-suspension-history-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.service_providing_group_grid_suspension_history
+CREATE OR REPLACE VIEW
+api.service_providing_group_grid_suspension_history
 WITH (
     security_invoker = true
 ) AS (

@@ -2,7 +2,8 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:api-service-provider-product-application-comment-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.service_provider_product_application_comment
+CREATE OR REPLACE VIEW
+api.service_provider_product_application_comment
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -16,7 +17,8 @@ WITH (security_invoker = true) AS (
     FROM flex.service_provider_product_application_comment
 );
 -- changeset flex:api-service-provider-product-application-comment-history-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.service_provider_product_application_comment_history
+CREATE OR REPLACE VIEW
+api.service_provider_product_application_comment_history
 WITH (
     security_invoker = true
 ) AS (

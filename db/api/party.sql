@@ -2,7 +2,8 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:api-party-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.party
+CREATE OR REPLACE VIEW
+api.party
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -18,7 +19,8 @@ WITH (security_invoker = true) AS (
     FROM flex.party
 );
 -- changeset flex:api-party-history-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.party_history
+CREATE OR REPLACE VIEW
+api.party_history
 WITH (
     security_invoker = true
 ) AS (
