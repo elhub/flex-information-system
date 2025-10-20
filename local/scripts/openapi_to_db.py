@@ -2,6 +2,7 @@
 import yaml
 import sys
 import j2
+from copy import deepcopy
 
 """
 This script generates SQL statements to create views in the `api` schema,
@@ -120,6 +121,42 @@ if __name__ == "__main__":
 
             # generate views and history views
             if resource.get("generate_views", False):
+                j2.template(
+                    resource,
+                    "resource_api.j2.sql",
+                    f"{DB_DIR}/api/{resource['id']}.sql",
+                )
+
+            # generate files for the comment resource
+            if resource.get("comments", False):
+                base_resource = deepcopy(resource)
+                resource = yaml.safe_load(
+                    j2.template_str(base_resource, "comment_resource.j2.yml"),
+                )["data"]
+
+                print(
+                    fake_table_create_statement(
+                        resource["id"],
+                        resource["properties"],
+                        True,
+                    ),
+                    file=backend_schema_f,
+                )
+
+                print(
+                    fake_history_table_create_statement(
+                        resource["id"],
+                        resource["properties"],
+                    ),
+                    file=backend_schema_f,
+                )
+
+                j2.template(
+                    resource,
+                    "resource_history_audit.j2.sql",
+                    f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
+                )
+
                 j2.template(
                     resource,
                     "resource_api.j2.sql",

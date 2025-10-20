@@ -461,8 +461,7 @@ openapi-client:
 openapi-to-tooltips:
     #!/usr/bin/env bash
     cat openapi/resources.yml \
-        | yq '.resources[] as $res ireduce ({};
-            .[$res.id] = ($res.properties | map_values (.description)))' \
+        | .venv/bin/python3 local/scripts/openapi_to_tooltips.py \
             > tmp.yml
     cat openapi/openapi-api-base.yml \
         | yq '.components.schemas | to_entries[] as $sch ireduce({};

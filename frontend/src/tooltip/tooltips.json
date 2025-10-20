@@ -158,7 +158,7 @@
         "id": "Unique surrogate identifier.",
         "service_provider_product_application_id": "Reference to the service provider product application.",
         "created_by": "Reference to the identity that created the comment.",
-        "created_at": "When the comment was added to the application.",
+        "created_at": "When the comment was added to the SPPA.",
         "visibility": "The level of visibility of the comment.",
         "content": "Free text content of the comment."
     },
@@ -173,7 +173,7 @@
         "id": "Unique surrogate identifier.",
         "service_provider_product_suspension_id": "Reference to the service provider product suspension.",
         "created_by": "Reference to the identity that created the comment.",
-        "created_at": "When the comment was added to the suspension.",
+        "created_at": "When the comment was added to the SPPS.",
         "visibility": "The level of visibility of the comment.",
         "content": "Free text content of the comment."
     },
