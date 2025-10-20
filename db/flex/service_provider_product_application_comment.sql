@@ -1,8 +1,7 @@
 --liquibase formatted sql
--- Manually managed file
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
--- changeset flex:service-provider-product-application-comment-create runOnChange:false endDelimiter:--
--- validCheckSum: 9:97f1f204aa46130c720cd3b63b49cb8d
+-- changeset flex:service-provider-product-application-comment-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_provider_product_application_id bigint NOT NULL,
@@ -30,7 +29,10 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
 );
 
 -- changeset flex:service-provider-product-application-comment-capture-event runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER service_provider_product_application_comment_event
-AFTER INSERT OR UPDATE ON service_provider_product_application_comment
+CREATE OR REPLACE TRIGGER
+service_provider_product_application_comment_event
+AFTER INSERT OR UPDATE
+ON service_provider_product_application_comment
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('service_provider_product_application_comment');
+EXECUTE FUNCTION
+capture_event('service_provider_product_application_comment');
