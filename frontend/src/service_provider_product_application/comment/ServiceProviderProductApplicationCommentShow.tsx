@@ -81,11 +81,7 @@ export const ServiceProviderProductApplicationCommentShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
-        <NestedResourceHistoryButton
-          parent="service_provider_product_application"
-          child="comment"
-          label="comments"
-        />
+        <NestedResourceHistoryButton child="comment" label="comments" />
       </SimpleShowLayout>
     </Show>
   );

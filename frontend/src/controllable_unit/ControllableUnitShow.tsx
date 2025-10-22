@@ -119,8 +119,8 @@ export const ControllableUnitShow = () => {
             </Typography>
             <NestedResourceHistoryButton
               child="technical_resource"
+              childAPIResource="technical_resource"
               label="technical resources"
-              noResourceNameMerge
             />
             <TechnicalResourceList />
             <Typography variant="h6" gutterBottom>

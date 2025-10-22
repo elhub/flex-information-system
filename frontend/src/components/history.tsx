@@ -7,8 +7,9 @@ import {
   useResourceContext,
 } from "react-admin";
 import HistoryIcon from "@mui/icons-material/History";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import RestorePageIcon from "@mui/icons-material/RestorePage";
+import { chunksOf, removeSuffix } from "../util";
 
 export const historyRowClick = (
   _: Identifier,
@@ -48,61 +49,73 @@ export const ResourceHistoryButton = () => {
   return false;
 };
 
-export const NestedResourceHistoryButton = (props: any) => {
-  const record = useRecordContext()!;
+// NestedResourceHistoryButton navigates to the history of a child resource
+// (parent resource is inferred from the URL of the page where the button is)
+
+export type NestedResourceHistoryButtonProps = {
+  // name of the child resource in the frontend (target history)
+  child: string;
+  // name of the child resource in the *API* if different
+  // (default will be parent1_..._parentN_child, but some resources do not carry
+  // the parent prefix in the API, e.g., technical_resource)
+  childAPIResource?: string;
+  // possible override of the parent path extracted from the URL
+  // (escape hatch allowing to target a custom history page from anywhere)
+  parentPath?: { resource: string; id: number }[];
+  // name of the resource to show on the button
+  label?: string;
+};
+
+export const NestedResourceHistoryButton = (
+  props: NestedResourceHistoryButtonProps,
+) => {
   const { permissions } = usePermissions();
-  const resource = useResourceContext();
+  const location = useLocation();
 
-  const childResource: string = props.child;
-  const parentResource: string = props.parent ?? resource;
+  // URL looks like /r1/:id1/.../rN/:idN[/show]
+  const url = removeSuffix("/show", location.pathname);
 
-  // if the child resource lives on its own in the database (it does not have
-  // the parent resource name as a prefix), this must be true
-  const noResourceNameMerge: boolean = props.noResourceNameMerge ?? false;
+  // turn it into [{r1, id1}, ..., {rN, idN}] (unless overridden in the props)
+  const parentPath =
+    props.parentPath ??
+    chunksOf(2, url.split("/").slice(1)).map(([resource, id]) => ({
+      resource,
+      id: Number(id),
+    }));
 
-  // this button goes to the history of the relations linked to one row of the
-  // parent resource, and possibly only one relation depending on where the
-  // button is displayed
+  // If rN == *_history, it means we are coming from a history record view.
+  // In this case, ignore this last segment to come back to the history list.
+  if (parentPath.at(-1)?.resource == `${props.child}_history`) parentPath.pop();
 
-  // if we are in the history or the child resource, the row ID is given in the
-  // [parentresource]_id field, otherwise it is in the id field
+  // If rN == child, it means we are coming from the page of a single row from
+  // the child resource, and we want to read its history.
+  const targetingHistoryOfSingleRow =
+    props.child == parentPath.at(-1)?.resource;
+  // in this case, get the ID of the single row to add it as a filter on history
+  const childID = targetingHistoryOfSingleRow
+    ? parentPath.at(-1)?.id
+    : undefined;
+  // we can now forget that last segment
+  if (targetingHistoryOfSingleRow) parentPath.pop();
 
-  // if we are in the parent resource, then there is no child and we display
-  // the full history of relations for the row ID
+  // reconstruct as string to make the link later
+  const parentPathS = parentPath.map((p) => `/${p.resource}/${p.id}`).join("");
 
-  // otherwise, we display the history only for the child concerned by the
-  // history or child show page we come from
+  // name of the child resource in the API, for permissions check / filtering
+  const childAPIResource =
+    props.childAPIResource ??
+    `${parentPath.map((p) => p.resource).join("_")}_${props.child}`;
 
-  const parentIdEntry = record[parentResource + "_id"];
-  const childIdEntry = noResourceNameMerge
-    ? record[`${childResource}_id`]
-    : record[`${parentResource}_${childResource}_id`];
-
-  const [parentId, childId] = parentIdEntry
-    ? [parentIdEntry, childIdEntry ?? record.id]
-    : [record.id, null];
-
-  const filter =
-    childId != null
-      ? "?filter=" +
-        encodeURIComponent(
-          noResourceNameMerge
-            ? `{ "${childResource}_id" : ${childId} }`
-            : `{ "${parentResource}_${childResource}_id" : ${childId} }`,
-        )
-      : "";
+  const filter = childID
+    ? `?filter=` +
+      encodeURIComponent(`{ "${childAPIResource}_id": ${childID} }`)
+    : "";
 
   return (
     <Button
-      disabled={
-        !permissions.includes(
-          noResourceNameMerge
-            ? `${childResource}_history.read`
-            : `${parentResource}_${childResource}_history.read`,
-        )
-      }
+      disabled={!permissions.includes(`${childAPIResource}_history.read`)}
       component={Link}
-      to={`/${parentResource}/${parentId}/${childResource}_history${filter}`}
+      to={`${parentPathS}/${props.child}_history${filter}`}
       startIcon={<HistoryIcon />}
       label={`View History of ${props.label ?? "Relations"}`}
     />
