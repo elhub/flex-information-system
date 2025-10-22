@@ -126,7 +126,6 @@ import { ServiceProviderProductApplicationInput } from "./service_provider_produ
 import { ServiceProviderProductApplicationHistoryList } from "./service_provider_product_application/ServiceProviderProductApplicationHistoryList";
 import { ServiceProvidingGroupGridPrequalificationList } from "./service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
 import { ServiceProviderProductApplicationCommentInput } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentInput";
-import { ServiceProviderProductApplicationCommentShow } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentShow";
 import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
 import { NoticeList } from "./notice/NoticeList";
 import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
@@ -140,9 +139,9 @@ import { ServiceProviderProductSuspensionList } from "./service_provider_product
 import { ServiceProviderProductSuspensionShow } from "./service_provider_product_suspension/ServiceProviderProductSuspensionShow";
 import { ServiceProviderProductSuspensionInput } from "./service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
-import { ServiceProviderProductSuspensionCommentShow } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentShow";
 import { ServiceProviderProductSuspensionCommentInput } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentInput";
 import { ServiceProviderProductSuspensionCommentHistoryList } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentHistoryList";
+import { CommentShow } from "./components/comments";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1225,7 +1224,7 @@ export const App = () => (
               path=":service_provider_product_application_id/comment/:id/show"
               element={
                 <ResourceContextProvider value="service_provider_product_application_comment">
-                  <ServiceProviderProductApplicationCommentShow />
+                  <CommentShow />
                 </ResourceContextProvider>
               }
             />
@@ -1267,7 +1266,7 @@ export const App = () => (
               path=":service_provider_product_application_id/comment_history/:id/show"
               element={
                 <ResourceContextProvider value="service_provider_product_application_comment_history">
-                  <ServiceProviderProductApplicationCommentShow />
+                  <CommentShow />
                 </ResourceContextProvider>
               }
             />
@@ -1320,7 +1319,7 @@ export const App = () => (
               path=":service_provider_product_suspension_id/comment/:id/show"
               element={
                 <ResourceContextProvider value="service_provider_product_suspension_comment">
-                  <ServiceProviderProductSuspensionCommentShow />
+                  <CommentShow />
                 </ResourceContextProvider>
               }
             />
@@ -1362,7 +1361,7 @@ export const App = () => (
               path=":service_provider_product_suspension_id/comment_history/:id/show"
               element={
                 <ResourceContextProvider value="service_provider_product_suspension_comment_history">
-                  <ServiceProviderProductSuspensionCommentShow />
+                  <CommentShow />
                 </ResourceContextProvider>
               }
             />

@@ -6,45 +6,49 @@ import {
   TextField,
   TopToolbar,
   usePermissions,
-  useRecordContext,
   useResourceContext,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../../auth";
-import { NestedResourceHistoryButton } from "../../components/history";
+import { FieldStack } from "../auth";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../components/IdentityField";
+import { Link, useLocation } from "react-router-dom";
+import { IdentityField } from "./IdentityField";
+import { EventButton } from "../event/EventButton";
+import { NestedResourceHistoryButton } from "./history";
+import { DateField } from "./datetime";
+import { capitaliseFirstLetter, removeSuffix } from "../util";
 
-export const ServiceProviderProductApplicationCommentShow = () => {
+const EditButton = (props: { url: string }) => (
+  <Button
+    component={Link}
+    to={removeSuffix("/show", props.url)}
+    startIcon={<EditIcon />}
+    label="Edit"
+  />
+);
+
+export const CommentShow = () => {
   const resource = useResourceContext()!;
   const { permissions } = usePermissions();
+  const location = useLocation();
 
   const isHistory = resource.endsWith("_history");
 
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/service_provider_product_application/${record.service_provider_product_application_id}/comment/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
+  const baseResource = removeSuffix(
+    "_comment",
+    removeSuffix("_history", resource),
+  );
+  const baseResourceHumanName = capitaliseFirstLetter(
+    baseResource.replaceAll("_", " "),
+  );
 
   return (
     <Show
       actions={
         !isHistory &&
-        permissions.includes(
-          "service_provider_product_application_comment.update",
-        ) && (
+        permissions.includes(`${baseResource}_comment.update`) && (
           <TopToolbar>
-            <EditButton />
+            <EditButton url={location.pathname} />
           </TopToolbar>
         )
       }
@@ -57,8 +61,8 @@ export const ServiceProviderProductApplicationCommentShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="id" label="ID" />
             <TextField
-              source="service_provider_product_application_id"
-              label="Service provider product application ID"
+              source={`${baseResource}_id`}
+              label={`${baseResourceHumanName} ID`}
             />
             <IdentityField source="created_by" />
             <TextField source="visibility" />
