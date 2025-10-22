@@ -11,6 +11,7 @@ import {
   useResourceContext,
   required,
   SelectInput,
+  NumberInput,
   SimpleForm,
   TextInput,
   useRecordContext,
@@ -230,5 +231,73 @@ export const CommentInput = () => {
         </InputStack>
       </Stack>
     </SimpleForm>
+  );
+};
+
+export type CommentHistoryListProps = {
+  // API resource where comments are attached
+  // (override if not to be derived from URL)
+  baseResource?: string;
+};
+
+export const CommentHistoryList = (props: CommentHistoryListProps) => {
+  const location = useLocation();
+
+  const parentPath = chunksOf(
+    2,
+    removeSuffix("/comment_history", location.pathname).split("/").slice(1),
+  ).map(([resource, id]) => ({
+    resource,
+    id: Number(id),
+  }));
+
+  const baseResource =
+    props.baseResource ?? parentPath.map((p) => p.resource).join("_");
+  const baseResourceHumanName = capitaliseFirstLetter(
+    baseResource.replaceAll("_", " "),
+  );
+
+  // ID of the row in the base resource we are listing comments for
+  const baseID = parentPath.at(-1)!.id;
+  const baseIDInformation: Record<string, number> = {};
+  baseIDInformation[`${baseResource}_id`] = baseID;
+
+  // reconstruct as string to make the link later
+  const parentPathS = parentPath.map((p) => `/${p.resource}/${p.id}`).join("");
+
+  const ServiceProviderProductApplicationCommentHistoryListFilters = [
+    <NumberInput
+      key={`${baseResource}_comment_id`}
+      min="0"
+      label={`${baseResourceHumanName} Comment ID`}
+      source={`${baseResource}_comment_id`}
+    />,
+  ];
+
+  return (
+    <List
+      resource={`${baseResource}_comment_history`}
+      title={`Comment history for ${baseResourceHumanName} ${baseID}`}
+      filter={baseIDInformation}
+      filters={ServiceProviderProductApplicationCommentHistoryListFilters}
+      perPage={25}
+      sort={{ field: "created_at", order: "DESC" }}
+      empty={false}
+    >
+      <Datagrid
+        rowClick={(_id, _res, record) =>
+          `${parentPathS}/comment_history/${record.id}/show`
+        }
+      >
+        <TextField source="id" label="ID" />
+        <TextField source="visibility" />
+        <IdentityField source="created_by" />
+        <RichTextField source="content" />
+        <DateField source="recorded_at" showTime />
+        <IdentityField source="recorded_by" />
+        <DateField source="replaced_at" showTime />
+        <IdentityField source="replaced_by" />
+      </Datagrid>
+    </List>
   );
 };

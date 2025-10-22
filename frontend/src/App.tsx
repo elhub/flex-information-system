@@ -125,7 +125,6 @@ import { ServiceProviderProductApplicationShow } from "./service_provider_produc
 import { ServiceProviderProductApplicationInput } from "./service_provider_product_application/ServiceProviderProductApplicationInput";
 import { ServiceProviderProductApplicationHistoryList } from "./service_provider_product_application/ServiceProviderProductApplicationHistoryList";
 import { ServiceProvidingGroupGridPrequalificationList } from "./service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
-import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
 import { NoticeList } from "./notice/NoticeList";
 import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
 import { ControllableUnitLookupResult } from "./controllable_unit/lookup/ControllableUnitLookupResult";
@@ -138,8 +137,11 @@ import { ServiceProviderProductSuspensionList } from "./service_provider_product
 import { ServiceProviderProductSuspensionShow } from "./service_provider_product_suspension/ServiceProviderProductSuspensionShow";
 import { ServiceProviderProductSuspensionInput } from "./service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
-import { ServiceProviderProductSuspensionCommentHistoryList } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentHistoryList";
-import { CommentInput, CommentShow } from "./components/comments";
+import {
+  CommentHistoryList,
+  CommentInput,
+  CommentShow,
+} from "./components/comments";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1258,7 +1260,7 @@ export const App = () => (
             {/* service provider product application comment history */}
             <Route
               path=":service_provider_product_application_id/comment_history"
-              element={<ServiceProviderProductApplicationCommentHistoryList />}
+              element={<CommentHistoryList />}
             />
             <Route
               path=":service_provider_product_application_id/comment_history/:id/show"
@@ -1353,7 +1355,7 @@ export const App = () => (
             {/* service provider product suspension comment history */}
             <Route
               path=":service_provider_product_suspension_id/comment_history"
-              element={<ServiceProviderProductSuspensionCommentHistoryList />}
+              element={<CommentHistoryList />}
             />
             <Route
               path=":service_provider_product_suspension_id/comment_history/:id/show"
