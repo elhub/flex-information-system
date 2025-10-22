@@ -3,6 +3,7 @@
 !.gitignore
 !.gitattributes
 !.gitkeep
+!.github/
 !.pre-commit-config.yaml
 !.markdownlint.json
 !.mega-linter.yml
@@ -22,6 +23,7 @@
 !.dockerignore
 *.dot
 !.air.toml
+
 # draw.io
 *:PG$Secure
 *:Zone.Identifier
