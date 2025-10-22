@@ -98,6 +98,12 @@ from .list_service_providing_group_grid_prequalification_history_prefer import (
 from .list_service_providing_group_grid_prequalification_prefer import (
     ListServiceProvidingGroupGridPrequalificationPrefer,
 )
+from .list_service_providing_group_grid_suspension_comment_history_prefer import (
+    ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer,
+)
+from .list_service_providing_group_grid_suspension_comment_prefer import (
+    ListServiceProvidingGroupGridSuspensionCommentPrefer,
+)
 from .list_service_providing_group_grid_suspension_history_prefer import (
     ListServiceProvidingGroupGridSuspensionHistoryPrefer,
 )
@@ -202,6 +208,23 @@ from .service_providing_group_grid_prequalification_update_request import (
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
 )
 from .service_providing_group_grid_suspension import ServiceProvidingGroupGridSuspension
+from .service_providing_group_grid_suspension_comment import ServiceProvidingGroupGridSuspensionComment
+from .service_providing_group_grid_suspension_comment_create_data import (
+    ServiceProvidingGroupGridSuspensionCommentCreateData,
+)
+from .service_providing_group_grid_suspension_comment_create_request import (
+    ServiceProvidingGroupGridSuspensionCommentCreateRequest,
+)
+from .service_providing_group_grid_suspension_comment_history_response import (
+    ServiceProvidingGroupGridSuspensionCommentHistoryResponse,
+)
+from .service_providing_group_grid_suspension_comment_response import ServiceProvidingGroupGridSuspensionCommentResponse
+from .service_providing_group_grid_suspension_comment_update_request import (
+    ServiceProvidingGroupGridSuspensionCommentUpdateRequest,
+)
+from .service_providing_group_grid_suspension_comment_visibility import (
+    ServiceProvidingGroupGridSuspensionCommentVisibility,
+)
 from .service_providing_group_grid_suspension_create_data import ServiceProvidingGroupGridSuspensionCreateData
 from .service_providing_group_grid_suspension_create_request import ServiceProvidingGroupGridSuspensionCreateRequest
 from .service_providing_group_grid_suspension_history_response import ServiceProvidingGroupGridSuspensionHistoryResponse
@@ -329,6 +352,8 @@ __all__ = (
     "ListServiceProviderProductSuspensionPrefer",
     "ListServiceProvidingGroupGridPrequalificationHistoryPrefer",
     "ListServiceProvidingGroupGridPrequalificationPrefer",
+    "ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer",
+    "ListServiceProvidingGroupGridSuspensionCommentPrefer",
     "ListServiceProvidingGroupGridSuspensionHistoryPrefer",
     "ListServiceProvidingGroupGridSuspensionPrefer",
     "ListServiceProvidingGroupHistoryPrefer",
@@ -409,6 +434,13 @@ __all__ = (
     "ServiceProvidingGroupGridPrequalificationStatus",
     "ServiceProvidingGroupGridPrequalificationUpdateRequest",
     "ServiceProvidingGroupGridSuspension",
+    "ServiceProvidingGroupGridSuspensionComment",
+    "ServiceProvidingGroupGridSuspensionCommentCreateData",
+    "ServiceProvidingGroupGridSuspensionCommentCreateRequest",
+    "ServiceProvidingGroupGridSuspensionCommentHistoryResponse",
+    "ServiceProvidingGroupGridSuspensionCommentResponse",
+    "ServiceProvidingGroupGridSuspensionCommentUpdateRequest",
+    "ServiceProvidingGroupGridSuspensionCommentVisibility",
     "ServiceProvidingGroupGridSuspensionCreateData",
     "ServiceProvidingGroupGridSuspensionCreateRequest",
     "ServiceProvidingGroupGridSuspensionHistoryResponse",

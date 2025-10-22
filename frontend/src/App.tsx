@@ -46,7 +46,7 @@ import {
   DataProvider,
 } from "ra-core";
 
-import { Route, Navigate } from "react-router-dom";
+import { Route, Navigate, useNavigate } from "react-router-dom";
 import { apiURL, serverURL, httpClient, authURL, docsURL } from "./httpConfig";
 
 import { authProvider, sessionInfoKey } from "./auth";
@@ -1037,6 +1037,49 @@ export const App = () => (
                 </ResourceContextProvider>
               }
             />
+            {/* service providing group grid suspension comments */}
+            {/* list is part of SPG grid suspension show page */}
+            <Route
+              path=":service_providing_group_id/grid_suspension/:service_providing_group_grid_suspension_id/comment/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_comment">
+                  <CommentShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension/:service_providing_group_grid_suspension_id/comment/create"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_comment">
+                  <CreateRedirectPreviousPage>
+                    <CommentInput />
+                  </CreateRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension/:service_providing_group_grid_suspension_id/comment/:id"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_comment">
+                  <EditRedirectPreviousPage>
+                    <CommentInput />
+                  </EditRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            {/* service provider product suspension comment history */}
+            <Route
+              path=":service_providing_group_id/grid_suspension/:service_providing_group_grid_suspension_id/comment_history"
+              element={<CommentHistoryList />}
+            />
+            <Route
+              path=":service_providing_group_id/grid_suspension/:service_providing_group_grid_suspension_id/comment_history/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_grid_suspension_comment_history">
+                  <CommentShow />
+                </ResourceContextProvider>
+              }
+            />
           </Resource>
         ) : null}
         {permissions.includes(
@@ -1441,3 +1484,29 @@ export const App = () => (
     )}
   </Admin>
 );
+
+// helper components to redirect to previous page after edit/create
+// (the redirect property of Edit/Create does not have access to hooks)
+
+const EditRedirectPreviousPage = (props: any) => {
+  const navigate = useNavigate();
+
+  return (
+    <Edit
+      mutationMode="pessimistic"
+      mutationOptions={{ onSuccess: () => navigate(-1) }}
+    >
+      {props.children}
+    </Edit>
+  );
+};
+
+const CreateRedirectPreviousPage = (props: any) => {
+  const navigate = useNavigate();
+
+  return (
+    <Create mutationOptions={{ onSuccess: () => navigate(-1) }}>
+      {props.children}
+    </Create>
+  );
+};
