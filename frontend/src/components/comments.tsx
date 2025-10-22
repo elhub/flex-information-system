@@ -1,7 +1,9 @@
 import {
   Button,
   RichTextField,
+  List,
   Show,
+  ResourceContextProvider,
   SimpleShowLayout,
   TextField,
   TopToolbar,
@@ -9,14 +11,15 @@ import {
   useResourceContext,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../auth";
+import { FieldStack, Datagrid } from "../auth";
+import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, useLocation } from "react-router-dom";
 import { IdentityField } from "./IdentityField";
 import { EventButton } from "../event/EventButton";
 import { NestedResourceHistoryButton } from "./history";
 import { DateField } from "./datetime";
-import { capitaliseFirstLetter, removeSuffix } from "../util";
+import { capitaliseFirstLetter, chunksOf, removeSuffix } from "../util";
 
 const EditButton = (props: { url: string }) => (
   <Button
@@ -88,5 +91,84 @@ export const CommentShow = () => {
         <NestedResourceHistoryButton child="comment" label="comments" />
       </SimpleShowLayout>
     </Show>
+  );
+};
+
+export type CommentListProps = {
+  // API resource where comments are attached
+  // (override if not to be derived from URL)
+  baseResource?: string;
+};
+
+export const CommentList = (props: CommentListProps) => {
+  const { permissions } = usePermissions();
+  const location = useLocation();
+
+  const resource = useResourceContext()!;
+  const baseResource = props.baseResource ?? resource;
+
+  // TODO: just throw the first '/' and extract the last ID, no need to chunk
+  const parentPath = chunksOf(
+    2,
+    removeSuffix("/show", location.pathname).split("/").slice(1),
+  ).map(([resource, id]) => ({
+    resource,
+    id: Number(id),
+  }));
+
+  // ID of the row in the base resource we are listing comments for
+  const baseID = parentPath.at(-1)!.id;
+  const baseIDInformation: Record<string, number> = {};
+  baseIDInformation[`${baseResource}_id`] = baseID;
+
+  // reconstruct as string to make the link later
+  const parentPathS = parentPath.map((p) => `/${p.resource}/${p.id}`).join("");
+
+  const CreateButton = () => (
+    <Button
+      component={Link}
+      to={`${parentPathS}/comment/create`}
+      startIcon={<AddIcon />}
+      state={baseIDInformation}
+      label="Create"
+    />
+  );
+
+  const ListActions = () => (
+    <TopToolbar>
+      {permissions.includes(`${baseResource}_comment.create`) && (
+        <CreateButton />
+      )}
+    </TopToolbar>
+  );
+
+  return (
+    permissions.includes(`${baseResource}_comment.read`) && (
+      <ResourceContextProvider value={`${baseResource}_comment`}>
+        <List
+          title={false}
+          perPage={10}
+          actions={<ListActions />}
+          exporter={false}
+          empty={false}
+          filter={baseIDInformation}
+          sort={{ field: "created_at", order: "ASC" }}
+        >
+          <Datagrid
+            bulkActionButtons={false}
+            rowClick={(_id, _res, record) =>
+              `${parentPathS}/comment/${record.id}/show`
+            }
+          >
+            <TextField source="id" label="Comment ID" />
+            <DateField source="created_at" showTime />
+            <DateField source="recorded_at" label="Last updated" showTime />
+            <IdentityField source="created_by" />
+            <TextField source="visibility" />
+            <RichTextField source="content" />
+          </Datagrid>
+        </List>
+      </ResourceContextProvider>
+    )
   );
 };
