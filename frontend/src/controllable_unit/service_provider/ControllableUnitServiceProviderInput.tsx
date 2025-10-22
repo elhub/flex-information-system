@@ -46,7 +46,6 @@ export const ControllableUnitServiceProviderInput = () => {
   );
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
-  if (identityLoading) return <>Loading...</>;
 
   // if we came to this page as a user who cannot see the CU, we want to input a
   // CU ID, instead of using the autocomplete component that works from the list
@@ -54,13 +53,20 @@ export const ControllableUnitServiceProviderInput = () => {
   const cuIDAsNumber: boolean = !!overrideRecord?.cuIDAsNumber;
 
   const isServiceProvider = identity?.role == "flex_service_provider";
-  if (isServiceProvider) {
-    record.service_provider_id = identity?.partyID;
-  }
+
+  const finalRecord = useMemo(() => {
+    const baseRecord = { ...record };
+    if (isServiceProvider) {
+      baseRecord.service_provider_id = identity?.partyID;
+    }
+    return baseRecord;
+  }, [record, isServiceProvider, identity?.partyID]);
+
+  if (identityLoading) return <>Loading...</>;
 
   return (
     <SimpleForm
-      record={record}
+      record={finalRecord}
       maxWidth={1280}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.
