@@ -125,7 +125,6 @@ import { ServiceProviderProductApplicationShow } from "./service_provider_produc
 import { ServiceProviderProductApplicationInput } from "./service_provider_product_application/ServiceProviderProductApplicationInput";
 import { ServiceProviderProductApplicationHistoryList } from "./service_provider_product_application/ServiceProviderProductApplicationHistoryList";
 import { ServiceProvidingGroupGridPrequalificationList } from "./service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationList";
-import { ServiceProviderProductApplicationCommentInput } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentInput";
 import { ServiceProviderProductApplicationCommentHistoryList } from "./service_provider_product_application/comment/ServiceProviderProductApplicationCommentHistoryList";
 import { NoticeList } from "./notice/NoticeList";
 import { ControllableUnitLookupInput } from "./controllable_unit/lookup/ControllableUnitLookupInput";
@@ -139,9 +138,8 @@ import { ServiceProviderProductSuspensionList } from "./service_provider_product
 import { ServiceProviderProductSuspensionShow } from "./service_provider_product_suspension/ServiceProviderProductSuspensionShow";
 import { ServiceProviderProductSuspensionInput } from "./service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
-import { ServiceProviderProductSuspensionCommentInput } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentInput";
 import { ServiceProviderProductSuspensionCommentHistoryList } from "./service_provider_product_suspension/comment/ServiceProviderProductSuspensionCommentHistoryList";
-import { CommentShow } from "./components/comments";
+import { CommentInput, CommentShow } from "./components/comments";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1237,7 +1235,7 @@ export const App = () => (
                       `service_provider_product_application/${record.service_provider_product_application_id}/show`
                     }
                   >
-                    <ServiceProviderProductApplicationCommentInput />
+                    <CommentInput />
                   </Create>
                 </ResourceContextProvider>
               }
@@ -1252,7 +1250,7 @@ export const App = () => (
                       `service_provider_product_application/${record.service_provider_product_application_id}/show`
                     }
                   >
-                    <ServiceProviderProductApplicationCommentInput />
+                    <CommentInput />
                   </Edit>
                 </ResourceContextProvider>
               }
@@ -1332,7 +1330,7 @@ export const App = () => (
                       `service_provider_product_suspension/${record.service_provider_product_suspension_id}/show`
                     }
                   >
-                    <ServiceProviderProductSuspensionCommentInput />
+                    <CommentInput />
                   </Create>
                 </ResourceContextProvider>
               }
@@ -1347,7 +1345,7 @@ export const App = () => (
                       `service_provider_product_suspension/${record.service_provider_product_suspension_id}/show`
                     }
                   >
-                    <ServiceProviderProductSuspensionCommentInput />
+                    <CommentInput />
                   </Edit>
                 </ResourceContextProvider>
               }

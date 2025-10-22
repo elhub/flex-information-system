@@ -9,9 +9,14 @@ import {
   TopToolbar,
   usePermissions,
   useResourceContext,
+  required,
+  SelectInput,
+  SimpleForm,
+  TextInput,
+  useRecordContext,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
-import { FieldStack, Datagrid } from "../auth";
+import { FieldStack, InputStack, Datagrid } from "../auth";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, useLocation } from "react-router-dom";
@@ -20,6 +25,8 @@ import { EventButton } from "../event/EventButton";
 import { NestedResourceHistoryButton } from "./history";
 import { DateField } from "./datetime";
 import { capitaliseFirstLetter, chunksOf, removeSuffix } from "../util";
+import { Toolbar } from "./Toolbar";
+import { RichTextInput } from "ra-input-rich-text";
 
 const EditButton = (props: { url: string }) => (
   <Button
@@ -170,5 +177,58 @@ export const CommentList = (props: CommentListProps) => {
         </List>
       </ResourceContextProvider>
     )
+  );
+};
+
+export const CommentInput = () => {
+  const resource = useResourceContext()!;
+  const { state: overrideRecord } = useLocation();
+  const actualRecord = useRecordContext();
+
+  const baseResource = removeSuffix("_comment", resource);
+
+  const filterRecord = (record: any) => {
+    const idField = `${baseResource}_id`;
+
+    const filteredRecord: any = {};
+    filteredRecord[idField] = record[idField];
+    filteredRecord.visibility = record.visibility;
+    filteredRecord.content = record.content;
+    return filteredRecord;
+  };
+
+  const record: any = filterRecord({ ...actualRecord, ...overrideRecord });
+
+  return (
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      toolbar={<Toolbar saveAlwaysEnabled />}
+    >
+      <Stack direction="column" spacing={1}>
+        <Typography variant="h6" gutterBottom>
+          Basic information
+        </Typography>
+        <InputStack direction="row" flexWrap="wrap">
+          <TextInput source={`${baseResource}_id`} readOnly />
+          <SelectInput
+            source="visibility"
+            validate={required()}
+            defaultValue="same_party"
+            choices={["same_party", "any_involved_party"]}
+          />
+        </InputStack>
+
+        <Typography variant="h6" gutterBottom>
+          Content
+        </Typography>
+        <InputStack direction="row" flexWrap="wrap">
+          <RichTextInput
+            source="content"
+            sx={{ minWidth: { xs: 300, md: 500 } }}
+          />
+        </InputStack>
+      </Stack>
+    </SimpleForm>
   );
 };
