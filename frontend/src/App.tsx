@@ -843,13 +843,9 @@ export const App = () => (
               path=":service_providing_group_id/membership/create"
               element={
                 <ResourceContextProvider value="service_providing_group_membership">
-                  <Create
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <CreateRedirectPreviousPage>
                     <ServiceProvidingGroupMembershipInput />
-                  </Create>
+                  </CreateRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -857,14 +853,9 @@ export const App = () => (
               path=":service_providing_group_id/membership/:id"
               element={
                 <ResourceContextProvider value="service_providing_group_membership">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <ServiceProvidingGroupMembershipInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -895,13 +886,9 @@ export const App = () => (
               path=":service_providing_group_id/grid_prequalification/create"
               element={
                 <ResourceContextProvider value="service_providing_group_grid_prequalification">
-                  <Create
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <CreateRedirectPreviousPage>
                     <ServiceProvidingGroupGridPrequalificationInput />
-                  </Create>
+                  </CreateRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -909,14 +896,9 @@ export const App = () => (
               path=":service_providing_group_id/grid_prequalification/:id"
               element={
                 <ResourceContextProvider value="service_providing_group_grid_prequalification">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <ServiceProvidingGroupGridPrequalificationInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -947,13 +929,9 @@ export const App = () => (
               path=":service_providing_group_id/product_application/create"
               element={
                 <ResourceContextProvider value="service_providing_group_product_application">
-                  <Create
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <CreateRedirectPreviousPage>
                     <ServiceProvidingGroupProductApplicationInput />
-                  </Create>
+                  </CreateRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -961,14 +939,9 @@ export const App = () => (
               path=":service_providing_group_id/product_application/:id"
               element={
                 <ResourceContextProvider value="service_providing_group_product_application">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <ServiceProvidingGroupProductApplicationInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -999,13 +972,9 @@ export const App = () => (
               path=":service_providing_group_id/grid_suspension/create"
               element={
                 <ResourceContextProvider value="service_providing_group_grid_suspension">
-                  <Create
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <CreateRedirectPreviousPage>
                     <ServiceProvidingGroupGridSuspensionInput />
-                  </Create>
+                  </CreateRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -1026,14 +995,9 @@ export const App = () => (
               path=":service_providing_group_id/grid_suspension/:id"
               element={
                 <ResourceContextProvider value="service_providing_group_grid_suspension">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_providing_group/${record.service_providing_group_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <ServiceProvidingGroupGridSuspensionInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -1094,9 +1058,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_grid_prequalification.update",
               ) ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ServiceProvidingGroupGridPrequalificationInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1105,9 +1069,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_grid_prequalification.create",
               ) ? (
-                <Create redirect="list">
+                <CreateRedirectPreviousPage>
                   <ServiceProvidingGroupGridPrequalificationInput />
-                </Create>
+                </CreateRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1124,9 +1088,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_membership.update",
               ) ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ServiceProvidingGroupMembershipInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1135,9 +1099,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_membership.create",
               ) ? (
-                <Create redirect="list">
+                <CreateRedirectPreviousPage>
                   <ServiceProvidingGroupMembershipInput />
-                </Create>
+                </CreateRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1155,9 +1119,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_product_application.update",
               ) ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ServiceProvidingGroupProductApplicationInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1166,9 +1130,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_product_application.create",
               ) ? (
-                <Create redirect="list">
+                <CreateRedirectPreviousPage>
                   <ServiceProvidingGroupProductApplicationInput />
-                </Create>
+                </CreateRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1186,9 +1150,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_grid_suspension.update",
               ) ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ServiceProvidingGroupGridSuspensionInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1197,9 +1161,9 @@ export const App = () => (
               permissions.includes(
                 "service_providing_group_grid_suspension.create",
               ) ? (
-                <Create redirect="list">
+                <CreateRedirectPreviousPage>
                   <ServiceProvidingGroupGridSuspensionInput />
-                </Create>
+                </CreateRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1229,9 +1193,9 @@ export const App = () => (
               permissions.includes(
                 "service_provider_product_application.update",
               ) ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ServiceProviderProductApplicationInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1240,9 +1204,9 @@ export const App = () => (
               permissions.includes(
                 "service_provider_product_application.create",
               ) ? (
-                <Create redirect="list">
+                <CreateRedirectPreviousPage>
                   <ServiceProviderProductApplicationInput />
-                </Create>
+                </CreateRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1275,13 +1239,9 @@ export const App = () => (
               path=":service_provider_product_application_id/comment/create"
               element={
                 <ResourceContextProvider value="service_provider_product_application_comment">
-                  <Create
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_provider_product_application/${record.service_provider_product_application_id}/show`
-                    }
-                  >
+                  <CreateRedirectPreviousPage>
                     <CommentInput />
-                  </Create>
+                  </CreateRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -1289,14 +1249,9 @@ export const App = () => (
               path=":service_provider_product_application_id/comment/:id"
               element={
                 <ResourceContextProvider value="service_provider_product_application_comment">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_provider_product_application/${record.service_provider_product_application_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <CommentInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -1324,9 +1279,9 @@ export const App = () => (
               permissions.includes(
                 "service_provider_product_suspension.update",
               ) ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ServiceProviderProductSuspensionInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1335,9 +1290,9 @@ export const App = () => (
               permissions.includes(
                 "service_provider_product_suspension.create",
               ) ? (
-                <Create redirect="list">
+                <CreateRedirectPreviousPage>
                   <ServiceProviderProductSuspensionInput />
-                </Create>
+                </CreateRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1370,13 +1325,9 @@ export const App = () => (
               path=":service_provider_product_suspension_id/comment/create"
               element={
                 <ResourceContextProvider value="service_provider_product_suspension_comment">
-                  <Create
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_provider_product_suspension/${record.service_provider_product_suspension_id}/show`
-                    }
-                  >
+                  <CreateRedirectPreviousPage>
                     <CommentInput />
-                  </Create>
+                  </CreateRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -1384,14 +1335,9 @@ export const App = () => (
               path=":service_provider_product_suspension_id/comment/:id"
               element={
                 <ResourceContextProvider value="service_provider_product_suspension_comment">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `service_provider_product_suspension/${record.service_provider_product_suspension_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <CommentInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -1425,18 +1371,18 @@ export const App = () => (
             show={SystemOperatorProductTypeShow}
             edit={
               permissions.includes("system_operator_product_type.update") ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <SystemOperatorProductTypeInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
             }
             create={
               permissions.includes("system_operator_product_type.create") ? (
-                <Create redirect="list">
+                <CreateRedirectPreviousPage>
                   <SystemOperatorProductTypeInput />
-                </Create>
+                </CreateRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1486,8 +1432,9 @@ export const App = () => (
 );
 
 // helper components to redirect to previous page after edit/create
-// (the redirect property of Edit/Create does not have access to hooks)
 
+// Wrapper on Edit to redirect to previous page on submit
+// (the redirect property of Edit does not have access to hooks)
 const EditRedirectPreviousPage = (props: any) => {
   const navigate = useNavigate();
 
@@ -1501,6 +1448,8 @@ const EditRedirectPreviousPage = (props: any) => {
   );
 };
 
+// Wrapper on Create to redirect to previous page on submit
+// (the redirect property of Create does not have access to hooks)
 const CreateRedirectPreviousPage = (props: any) => {
   const navigate = useNavigate();
 
