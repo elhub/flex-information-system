@@ -9,10 +9,12 @@ export const ScopesField = (props: any) => (
           {data?.map((scope) => (
             <Chip
               key={scope as any}
-              sx={{ marginBottom: 1, borderRadius: 2 }}
               label={`${scope}`}
-              variant="outlined"
-              color="primary"
+              size="small"
+              sx={{
+                borderRadius: 2,
+                fontWeight: 500,
+              }}
             />
           ))}
         </Stack>

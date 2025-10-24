@@ -22,13 +22,13 @@ import {
   CardContent,
   CardHeader,
 } from "@mui/material";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonIcon from "@mui/icons-material/Person";
 import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
 import { ScopesField } from "./components/scopes";
+import { useTheme } from "@mui/material/styles";
 
 export const AssumePartyPage = () => {
-  const [loading, setLoading] = useState(false);
   const [unAssumed, setUnAssumed] = useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -59,6 +59,8 @@ export const AssumePartyPage = () => {
 
   const AssumePartyButton = ({ field }: any) => {
     const record = useRecordContext()!;
+    const elhubTheme = useTheme();
+    const [loading, setLoading] = useState(false);
     const assumeParty = async () => {
       setLoading(true);
       return login({ party_id: record[field] })
@@ -84,11 +86,22 @@ export const AssumePartyPage = () => {
     };
 
     return (
-      <Button label="Act on behalf of this party" onClick={assumeParty}>
-        <>
-          <PeopleAltIcon />
-          {loading && <CircularProgress size={25} thickness={2} />}
-        </>
+      <Button
+        color="secondary"
+        size="medium"
+        onClick={assumeParty}
+        sx={{
+          fontWeight: "bold",
+          border: "2px solid transparent",
+          ":hover": {
+            color: elhubTheme.custom.buttonTextHover,
+            border: `2px solid ${elhubTheme.custom.borderColor}`,
+          },
+        }}
+      >
+        {loading && <CircularProgress size={25} thickness={2} sx={{ mr: 1 }} />}
+        <PersonIcon sx={{ mr: 1 }} />
+        Act on behalf of {record.name}
       </Button>
     );
   };
@@ -134,7 +147,6 @@ export const AssumePartyPage = () => {
         >
           <Datagrid bulkActionButtons={false}>
             <TextField label="ID" source="party_id" />
-            <AssumePartyButton field="party_id" />
             <ReferenceField
               label="Name"
               source="party_id"
@@ -152,6 +164,15 @@ export const AssumePartyPage = () => {
               <TextField source="type" />
             </ReferenceField>
             <ScopesField source="scopes" />
+            <ReferenceField
+              label="Assume party"
+              source="party_id"
+              reference="party"
+              link={false}
+              sortable={false}
+            >
+              <AssumePartyButton field="id" />
+            </ReferenceField>
           </Datagrid>
         </List>
       )}
@@ -177,9 +198,9 @@ export const AssumePartyPage = () => {
           >
             <Datagrid bulkActionButtons={false}>
               <TextField label="ID" source="id" />
-              <AssumePartyButton field="id" />
               <TextField source="name" />
               <TextField source="type" />
+              <AssumePartyButton field="id" />
             </Datagrid>
           </List>
         </ResourceContextProvider>
