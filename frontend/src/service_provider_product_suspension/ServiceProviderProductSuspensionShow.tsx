@@ -15,7 +15,7 @@ import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
 import { ProductTypeArrayField } from "../product_type/components";
-import { ServiceProviderProductSuspensionCommentList } from "./comment/ServiceProviderProductSuspensionCommentList";
+import { CommentList } from "../components/comments";
 
 export const ServiceProviderProductSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -65,7 +65,7 @@ export const ServiceProviderProductSuspensionShow = () => {
               Comments
             </Typography>
             <NestedResourceHistoryButton child="comment" label="comments" />
-            <ServiceProviderProductSuspensionCommentList />
+            <CommentList />
           </>
         )}
       </SimpleShowLayout>

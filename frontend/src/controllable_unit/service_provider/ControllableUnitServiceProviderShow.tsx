@@ -91,7 +91,6 @@ export const ControllableUnitServiceProviderShow = () => {
         </Stack>
         {!isHistory && <EventButton />}
         <NestedResourceHistoryButton
-          parent="controllable_unit"
           child="service_provider"
           label="service provider contracts"
         />
