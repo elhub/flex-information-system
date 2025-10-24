@@ -26,21 +26,17 @@ const CreateButton = ({ id }: { id: any }) => (
   />
 );
 
-const ListActions = (permissions: string[], id: any) => (
-  <TopToolbar>
-    {permissions.includes("entity_client.create") && <CreateButton id={id} />}
-  </TopToolbar>
-);
-
-const ActionListWrapper = ({
+const ListActions = ({
   permissions,
   id,
 }: {
   permissions: string[];
   id: any;
-}) => {
-  return ListActions(permissions, id);
-};
+}) => (
+  <TopToolbar>
+    {permissions.includes("entity_client.create") && <CreateButton id={id} />}
+  </TopToolbar>
+);
 
 export const EntityClientList = () => {
   // id of the entity
@@ -52,7 +48,7 @@ export const EntityClientList = () => {
       <ResourceContextProvider value="entity_client">
         <List
           perPage={10}
-          actions={<ActionListWrapper permissions={permissions} id={id} />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           title={false}
