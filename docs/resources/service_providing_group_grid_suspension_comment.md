@@ -46,7 +46,7 @@ No policies.
 
 | Policy key    | Policy                                         | Status |
 |---------------|------------------------------------------------|--------|
-| SPGGSC-COM001 | Update SPGGSC that they created.               | TODO   |
+| SPGGSC-COM001 | Update SPGGSC that they created.               | DONE   |
 
 #### Balance Responsible Party
 
@@ -64,8 +64,8 @@ No policies.
 
 | Policy key     | Policy                              | Status |
 |----------------|-------------------------------------|--------|
-| SPGGSC-FISO001 | Read, create and update all SPGGSC. | TODO   |
-| SPGGSC-FISO002 | Read history on all SPGGSC.         | TODO   |
+| SPGGSC-FISO001 | Read, create and update all SPGGSC. | DONE   |
+| SPGGSC-FISO002 | Read history on all SPGGSC.         | DONE   |
 
 #### Market Operator
 
@@ -79,17 +79,17 @@ No policies.
 
 | Policy key   | Policy                                            | Status |
 |--------------|---------------------------------------------------|--------|
-| SPGGSC-SO001 | Create SPGGSC on SPGGS where they are ISO.        | TODO   |
-| SPGGSC-SO002 | Read SPGGSC that the visibility allows.           | TODO   |
-| SPGGSC-SO003 | Read history on SPPSC that the visibility allows. | TODO   |
+| SPGGSC-SO001 | Create SPGGSC on SPGGS where they are ISO.        | DONE   |
+| SPGGSC-SO002 | Read SPGGSC that the visibility allows.           | DONE   |
+| SPGGSC-SO003 | Read history on SPPSC that the visibility allows. | DONE   |
 
 #### Service Provider
 
 | Policy key   | Policy                                             | Status |
 |--------------|----------------------------------------------------|--------|
-| SPGGSC-SP001 | Create SPGGSC on SPGGS where they are SP.          | TODO   |
-| SPGGSC-SP002 | Read SPGGSC that the visibility allows.            | TODO   |
-| SPGGSC-SP003 | Read history on SPGGSC that the visibility allows. | TODO   |
+| SPGGSC-SP001 | Create SPGGSC on SPGGS where they are SP.          | DONE   |
+| SPGGSC-SP002 | Read SPGGSC that the visibility allows.            | DONE   |
+| SPGGSC-SP003 | Read history on SPGGSC that the visibility allows. | DONE   |
 
 #### Third Party
 
