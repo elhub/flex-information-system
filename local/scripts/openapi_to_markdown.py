@@ -4,6 +4,7 @@
 
 import yaml
 import sys
+import j2
 
 import tabulate as t
 import argparse
@@ -43,7 +44,15 @@ audit_fields = {
     },
 }
 
-yaml_resource = next(r for r in doc["resources"] if r["id"] == resource)
+if resource.endswith("_comment"):
+    base_resource = next(
+        r for r in doc["resources"] if r["id"] == resource.removesuffix("_comment")
+    )
+    yaml_resource = yaml.safe_load(
+        j2.template_str(base_resource, "comment_resource.j2.yml"),
+    )["data"]
+else:
+    yaml_resource = next(r for r in doc["resources"] if r["id"] == resource)
 properties = yaml_resource["properties"]
 if yaml_resource.get("audit"):
     properties = {**properties, **audit_fields}

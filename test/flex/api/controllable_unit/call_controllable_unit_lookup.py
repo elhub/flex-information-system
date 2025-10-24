@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Union
 
 import httpx
 
@@ -14,17 +14,16 @@ from ...types import Response
 def _get_kwargs(
     *,
     body: ControllableUnitLookupRequest,
-) -> Dict[str, Any]:
-    headers: Dict[str, Any] = {}
+) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/controllable_unit/lookup",
     }
 
-    _body = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
@@ -33,31 +32,37 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ControllableUnitLookupResponse, ErrorMessage]]:
+) -> Union[ControllableUnitLookupResponse, ErrorMessage] | None:
     if response.status_code == 200:
         response_200 = ControllableUnitLookupResponse.from_dict(response.json())
 
         return response_200
+
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
 
         return response_400
+
     if response.status_code == 401:
         response_401 = ErrorMessage.from_dict(response.json())
 
         return response_401
+
     if response.status_code == 403:
         response_403 = ErrorMessage.from_dict(response.json())
 
         return response_403
+
     if response.status_code == 404:
         response_404 = ErrorMessage.from_dict(response.json())
 
         return response_404
+
     if response.status_code == 500:
         response_500 = ErrorMessage.from_dict(response.json())
 
         return response_500
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -111,7 +116,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitLookupRequest,
-) -> Optional[Union[ControllableUnitLookupResponse, ErrorMessage]]:
+) -> Union[ControllableUnitLookupResponse, ErrorMessage] | None:
     """Call - Controllable unit lookup
 
      Lookup a controllable unit from end user ID and business and/or accounting point ID.
@@ -168,7 +173,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitLookupRequest,
-) -> Optional[Union[ControllableUnitLookupResponse, ErrorMessage]]:
+) -> Union[ControllableUnitLookupResponse, ErrorMessage] | None:
     """Call - Controllable unit lookup
 
      Lookup a controllable unit from end user ID and business and/or accounting point ID.

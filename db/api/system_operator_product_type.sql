@@ -2,7 +2,8 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:api-system-operator-product-type-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.system_operator_product_type
+CREATE OR REPLACE VIEW
+api.system_operator_product_type
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -14,7 +15,8 @@ WITH (security_invoker = true) AS (
     FROM flex.system_operator_product_type
 );
 -- changeset flex:api-system-operator-product-type-history-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.system_operator_product_type_history
+CREATE OR REPLACE VIEW
+api.system_operator_product_type_history
 WITH (
     security_invoker = true
 ) AS (

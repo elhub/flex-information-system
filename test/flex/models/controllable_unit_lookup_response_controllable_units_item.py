@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,17 +20,17 @@ class ControllableUnitLookupResponseControllableUnitsItem:
         id (int): The surrogate key of the controllable unit. Example: 11.
         business_id (str): The business ID of the controllable unit. Example: 53919b79-876f-4dad-8bde-b29368367604.
         name (str): The name of the controllable unit. Example: Car Charger #54.
-        technical_resources (List['ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem']): The
+        technical_resources (list['ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem']): The
             technical resources belonging to the controllable unit.
     """
 
     id: int
     business_id: str
     name: str
-    technical_resources: List["ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem"]
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    technical_resources: list["ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem"]
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         id = self.id
 
         business_id = self.business_id
@@ -41,7 +42,7 @@ class ControllableUnitLookupResponseControllableUnitsItem:
             technical_resources_item = technical_resources_item_data.to_dict()
             technical_resources.append(technical_resources_item)
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -55,12 +56,12 @@ class ControllableUnitLookupResponseControllableUnitsItem:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_lookup_response_controllable_units_item_technical_resources_item import (
             ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem,
         )
 
-        d = src_dict.copy()
+        d = dict(src_dict)
         id = d.pop("id")
 
         business_id = d.pop("business_id")
@@ -89,7 +90,7 @@ class ControllableUnitLookupResponseControllableUnitsItem:
         return controllable_unit_lookup_response_controllable_units_item
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

@@ -86,10 +86,12 @@ repos:
     hooks:
       - id: check-yaml
         args: []
+        exclude: ^local/scripts/templates/.*$
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.37.1
     hooks:
       - id: yamllint
+        exclude: ^local/scripts/templates/.*$
   #
   ## JSON
   #

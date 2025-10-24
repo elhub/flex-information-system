@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Union
 
 import httpx
 
@@ -19,17 +19,16 @@ from ...types import Response
 def _get_kwargs(
     *,
     body: ServiceProvidingGroupGridPrequalificationCreateRequest,
-) -> Dict[str, Any]:
-    headers: Dict[str, Any] = {}
+) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
 
-    _kwargs: Dict[str, Any] = {
+    _kwargs: dict[str, Any] = {
         "method": "post",
         "url": "/service_providing_group_grid_prequalification",
     }
 
-    _body = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
-    _kwargs["json"] = _body
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
@@ -38,25 +37,29 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[
-    Union[ErrorMessage, ServiceProvidingGroupGridPrequalificationResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+) -> (
+    Union[ErrorMessage, ServiceProvidingGroupGridPrequalificationResponse, Union["EmptyObject", "ErrorMessage"]] | None
+):
     if response.status_code == 201:
         response_201 = ServiceProvidingGroupGridPrequalificationResponse.from_dict(response.json())
 
         return response_201
+
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
 
         return response_400
+
     if response.status_code == 401:
         response_401 = ErrorMessage.from_dict(response.json())
 
         return response_401
+
     if response.status_code == 403:
         response_403 = ErrorMessage.from_dict(response.json())
 
         return response_403
+
     if response.status_code == 404:
 
         def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
@@ -77,18 +80,22 @@ def _parse_response(
         response_404 = _parse_response_404(response.json())
 
         return response_404
+
     if response.status_code == 406:
         response_406 = ErrorMessage.from_dict(response.json())
 
         return response_406
+
     if response.status_code == 409:
         response_409 = ErrorMessage.from_dict(response.json())
 
         return response_409
+
     if response.status_code == 500:
         response_500 = ErrorMessage.from_dict(response.json())
 
         return response_500
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -144,9 +151,9 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationCreateRequest,
-) -> Optional[
-    Union[ErrorMessage, ServiceProvidingGroupGridPrequalificationResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+) -> (
+    Union[ErrorMessage, ServiceProvidingGroupGridPrequalificationResponse, Union["EmptyObject", "ErrorMessage"]] | None
+):
     """Create Grid prequalification for service providing group
 
     Args:
@@ -201,9 +208,9 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationCreateRequest,
-) -> Optional[
-    Union[ErrorMessage, ServiceProvidingGroupGridPrequalificationResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+) -> (
+    Union[ErrorMessage, ServiceProvidingGroupGridPrequalificationResponse, Union["EmptyObject", "ErrorMessage"]] | None
+):
     """Create Grid prequalification for service providing group
 
     Args:

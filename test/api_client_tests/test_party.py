@@ -123,7 +123,7 @@ def test_party_fiso(sts):
         body=PartyCreateRequest(
             name="New End User",
             role="flex_end_user",
-            type="end_user",
+            type_="end_user",
             entity_id=ent_id,
         ),
     )
@@ -140,7 +140,7 @@ def test_party_fiso(sts):
             ),
             business_id_type=PartyBusinessIdType.EIC_X,
             role="flex_service_provider",
-            type="service_provider",
+            type_="service_provider",
             entity_id=ent_id,
         ),
     )
@@ -154,7 +154,7 @@ def test_party_fiso(sts):
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
             role="flex_flexibility_information_system_operator",
-            type="flexibility_information_system_operator",
+            type_="flexibility_information_system_operator",
             entity_id=ent_id,
         ),
     )
@@ -212,7 +212,7 @@ def test_party_common(sts):
             client=client_fiso,
         )
         assert isinstance(parties, list)
-        n_non_end_user_parties = len([p for p in parties if p.type != "end_user"])
+        n_non_end_user_parties = len([p for p in parties if p.type_ != "end_user"])
         assert len(parties_visible) >= n_non_end_user_parties
 
 
@@ -263,7 +263,7 @@ def test_rla_absence(sts):
                     limit="10000",
                 ),
             )
-            if p.type != "end_user"
+            if p.type_ != "end_user"
         ]
     )
 

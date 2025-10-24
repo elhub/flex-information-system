@@ -10,14 +10,21 @@ env = jinja2.Environment(
 )
 
 
+def template_str(resource, template):
+    """
+    Templates to a string using the resource object
+    """
+    # Load the template
+    template = env.get_template(template)
+    # Render the template with the resource data
+    return template.render(resource=resource["id"], data=resource)
+
+
 def template(resource, template, outfile):
     """
     Templates to a file using the resource object
     """
-    # Load the template
-    template = env.get_template(template)
+    rendered = template_str(resource, template)
     with open(outfile, "w") as f:
-        # Render the template with the resource data
-        rendered = template.render(resource=resource["id"], data=resource)
         # Write the rendered content to the file
         f.write(rendered)

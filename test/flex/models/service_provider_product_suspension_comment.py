@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -26,7 +27,7 @@ class ServiceProviderProductSuspensionComment:
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
         created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
-        created_at (Union[Unset, str]): When the comment was added to the suspension. Example: 2022-08-08 12:00:00 CET.
+        created_at (Union[Unset, str]): When the comment was added to the SPPS. Example: 2022-08-08 12:00:00 CET.
     """
 
     visibility: Union[Unset, ServiceProviderProductSuspensionCommentVisibility] = UNSET
@@ -37,9 +38,9 @@ class ServiceProviderProductSuspensionComment:
     id: Union[Unset, int] = UNSET
     created_by: Union[Unset, int] = UNSET
     created_at: Union[Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         visibility: Union[Unset, str] = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
@@ -58,7 +59,7 @@ class ServiceProviderProductSuspensionComment:
 
         created_at = self.created_at
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if visibility is not UNSET:
@@ -81,8 +82,8 @@ class ServiceProviderProductSuspensionComment:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         _visibility = d.pop("visibility", UNSET)
         visibility: Union[Unset, ServiceProviderProductSuspensionCommentVisibility]
         if isinstance(_visibility, Unset):
@@ -119,7 +120,7 @@ class ServiceProviderProductSuspensionComment:
         return service_provider_product_suspension_comment
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

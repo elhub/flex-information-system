@@ -83,14 +83,14 @@ FOR SELECT
 TO flex_system_operator
 USING (
     EXISTS (
-        SELECT
-            service_provider_product_suspension.product_type_ids -- noqa
-            && sppa.product_type_ids
+        SELECT 1
         FROM flex.service_provider_product_application AS sppa
         WHERE sppa.service_provider_id
             = service_provider_product_suspension.service_provider_id -- noqa
             AND sppa.system_operator_id = (SELECT flex.current_party())
             AND sppa.status = 'qualified'
+            AND service_provider_product_suspension.product_type_ids -- noqa
+            && sppa.product_type_ids
     )
 );
 
@@ -126,12 +126,12 @@ USING (
                     AND sppa.system_operator_id = (SELECT flex.current_party())
             )
 
-        SELECT
-            service_provider_product_suspension_history.product_type_ids -- noqa
-            && sppa_sp_so_history.product_type_ids
+        SELECT 1
         FROM sppa_sp_so_history
         WHERE sppa_sp_so_history.record_time_range
             && service_provider_product_suspension_history.record_time_range -- noqa
             AND sppa_sp_so_history.status = 'qualified'
+            AND service_provider_product_suspension_history.product_type_ids -- noqa
+            && sppa_sp_so_history.product_type_ids
     )
 );

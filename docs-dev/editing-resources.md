@@ -23,6 +23,11 @@ Note that the OpenAPI specification also enjoys automation, and that the manual
 edits should be done in the `resources.yml` file. This file contains the exposed
 fields but also drives the generation of endpoint documentation.
 
+> [!NOTE]
+> In case the resource to add is a comment resource, it can be added by just
+> adding `comments: true` to the resource the comments should be attached to, in
+> the resources YAML file.
+
 More detailed documentation about a resource can be added under the `x-details`
 attribute. It will be included in the Markdown table of the resource.
 Read-only fields and generated fields like surrogate keys should be marked as
