@@ -97,7 +97,6 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
         </Stack>
         {!isHistory && <EventButton />}
         <NestedResourceHistoryButton
-          parent="service_providing_group"
           child="product_application"
           label="product applications"
         />

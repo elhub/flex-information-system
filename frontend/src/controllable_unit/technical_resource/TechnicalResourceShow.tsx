@@ -76,10 +76,9 @@ export const TechnicalResourceShow = () => {
         </Stack>
         {!isHistory && <EventButton />}
         <NestedResourceHistoryButton
-          parent="controllable_unit"
           child="technical_resource"
+          childAPIResource="technical_resource"
           label="technical resources"
-          noResourceNameMerge
         />
       </SimpleShowLayout>
     </Show>
