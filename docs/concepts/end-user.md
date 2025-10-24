@@ -141,22 +141,14 @@ must make sure that the process of giving and getting access is smooth but safe.
 
 ### End user and contract relations
 
-A controllable unit service provider contract is decoupled from the end user and
-can span multiple end users from Elhub. This means there is no direct
-relationship between the service provider contract in FIS and the end user
-contract on the accounting point in Elhub. This allows for more adaptable
-service arrangements, accommodating changes in end user ownership without
-disrupting the service provider contract. However, end users access to the
-controllable unit is given based on continuously updated end user information
-from Elhub.
+A
+[controllable unit service provider](../resources/controllable_unit_service_provider.md)
+contract contains a reference to the end user. Upon creation of the contract,
+the FIS will verify that the end user is the same as the end user on the
+accounting point using data from Elhub.
 
-This raises several discussion points:
-
-- Should there be a direct link between the end user at the metering point in
-  Elhub and the service provider contract in FIS?  
-    - If so, why?
-- Is it likely that a service provider would enter into a contract with an end
-user who is not the actual registered end user at the accounting point in Elhub?
-    - If so, would it be problematic if the end user registered in Elhub is the one
-    who has access to the controllable unit data in FIS, and not the one SP has an
-    agreement with?
+If the end user changes on the accounting point in Elhub, the FIS will raise a
+[notice](../resources/notice.md) to the service provider indicating that there
+is an inconsistency between the end user on the contract and the end user on the
+accounting point. The service provider must then update the contract - typically
+the end-date.
