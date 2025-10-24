@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -27,7 +28,7 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
         id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
         created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
-        created_at (Union[Unset, str]): When the comment was added to the application. Example: 2022-08-08 12:00:00 CET.
+        created_at (Union[Unset, str]): When the comment was added to the SPPA. Example: 2022-08-08 12:00:00 CET.
         replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
             10:00:00 CET.
@@ -44,9 +45,9 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
     created_at: Union[Unset, str] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         service_provider_product_application_comment_id = self.service_provider_product_application_comment_id
 
         visibility: Union[Unset, str] = UNSET
@@ -79,7 +80,7 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -110,8 +111,8 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         service_provider_product_application_comment_id = d.pop("service_provider_product_application_comment_id")
 
         _visibility = d.pop("visibility", UNSET)
@@ -171,7 +172,7 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         return service_provider_product_application_comment_history_response
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

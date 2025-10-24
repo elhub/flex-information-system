@@ -2854,7 +2854,7 @@
                                 "example": 94
                             },
                             "created_at": {
-                                "description": "When the comment was added to the application.",
+                                "description": "When the comment was added to the SPPA.",
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "readOnly": true,
@@ -3078,7 +3078,7 @@
                                 "example": 94
                             },
                             "created_at": {
-                                "description": "When the comment was added to the suspension.",
+                                "description": "When the comment was added to the SPPS.",
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "readOnly": true,

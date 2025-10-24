@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -21,14 +22,14 @@ class AccountingPointBalanceResponsiblePartyUpdateRequest:
     """
 
     energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         energy_direction: Union[Unset, str] = UNSET
         if not isinstance(self.energy_direction, Unset):
             energy_direction = self.energy_direction.value
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if energy_direction is not UNSET:
@@ -37,8 +38,8 @@ class AccountingPointBalanceResponsiblePartyUpdateRequest:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         _energy_direction = d.pop("energy_direction", UNSET)
         energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]
         if isinstance(_energy_direction, Unset):
@@ -54,7 +55,7 @@ class AccountingPointBalanceResponsiblePartyUpdateRequest:
         return accounting_point_balance_responsible_party_update_request
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

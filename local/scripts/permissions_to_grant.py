@@ -128,11 +128,11 @@ if __name__ == "__main__":
                 if columns is not None:
                     print(
                         f"\n-- changeset flex:api-grant-{resource.replace('_', '-').lower()}-{party_type.lower()}-{grant.lower()} endDelimiter:-- runAlways:true"
-                        + f"\nGRANT {grant}{columns} ON TABLE api.{resource}\nTO flex_{party_type_abbr[party_type]};",
+                        + f"\nGRANT {grant}{columns} ON TABLE\napi.{resource}\nTO flex_{party_type_abbr[party_type]};",
                         file=sys.stdout,
                     )
                     print(
                         f"\n-- changeset flex:flex-grant-{resource.replace('_', '-').lower()}-{party_type.lower()}-{grant.lower()} endDelimiter:-- runAlways:true"
-                        + f"\nGRANT {grant} ON TABLE flex.{resource}\nTO flex_{party_type_abbr[party_type]};",
+                        + f"\nGRANT {grant} ON TABLE\nflex.{resource}\nTO flex_{party_type_abbr[party_type]};",
                         file=sys.stderr,
                     )

@@ -7,7 +7,8 @@
 {%- set has_record_time = data.get('audit') %}
 
 -- changeset flex:api-{{ resource | replace("_", "-") }}-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.{{ resource }}
+CREATE OR REPLACE VIEW
+api.{{ resource }}
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -24,7 +25,8 @@ WITH (security_invoker = true) AS (
 
 {%- if data.get('history') %}
 -- changeset flex:api-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.{{ resource }}_history
+CREATE OR REPLACE VIEW
+api.{{ resource }}_history
 WITH (
     security_invoker = true
 ) AS (

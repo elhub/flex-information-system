@@ -1,0 +1,69 @@
+{%- set resource_spaces = resource | replace("_", " ") %}
+data:
+  id: {{ resource }}_comment
+  acronym: {{ data.acronym }}C
+  summary: {{ data.summary }} Comment
+  description: >-
+    Comment made by a party involved in a {{ resource_spaces }}.
+  operations:
+    - list
+    - read
+    - create
+    - update
+  audit: true
+  generate_views: true
+  history:
+    - list
+    - read
+  history_rls: {{ data.history_rls }}
+  properties:
+    id:
+      description: Unique surrogate identifier.
+      format: bigint
+      type: integer
+      readOnly: true
+      example: 9
+    {{ resource }}_id:
+      description: Reference to the {{ resource_spaces }}.
+      format: bigint
+      type: integer
+      x-no-update: true
+      x-foreign-key:
+        resource: {{ resource }}
+        field: id
+      example: 7
+    created_by:
+      description: Reference to the identity that created the comment.
+      format: bigint
+      type: integer
+      readOnly: true
+      example: 94
+    created_at:
+      description: When the comment was added to the {{ data.acronym }}.
+      format: timestamp with time zone
+      type: string
+      readOnly: true
+      example: 2022-08-08 12:00:00 CET
+    visibility:
+      description: The level of visibility of the comment.
+      format: text
+      type: string
+      default: same_party
+      enum:
+        - same_party
+        - any_involved_party
+      example: same_party
+      x-details: >-
+        Comments marked `same_party` are visible only to the party that
+        creates them, whereas comments marked `any_involved_party` can be seen
+        by all parties involved in the {{ data.acronym }}.
+    content:
+      description: Free text content of the comment.
+      format: text
+      type: string
+      maxLength: 2048
+      example: Missing document.
+      x-details: >-
+        This field can contain rich text in raw HTML format. Its content
+        should be sanitised on the client side before being displayed, as
+        there is currently no check performed on the server.

@@ -91,7 +91,8 @@ def test_cusp_spgm_consistency_not_ok(data):
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    sp_id = sts.get_userinfo(sts.get_client(TestEntity.TEST, "SP"))["party_id"]
+    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
 
     # Create a contract
     #   between the CU and the SP
@@ -111,7 +112,7 @@ def test_cusp_spgm_consistency_not_ok(data):
 
     # Put the CU into the SPG from 07.01.2024 to 11.01.2024
     spgm = create_service_providing_group_membership.sync(
-        client=client_fiso,
+        client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
@@ -124,7 +125,7 @@ def test_cusp_spgm_consistency_not_ok(data):
 
     # Put the CU into the SPG from 09.01.2024 to 13.01.2024
     spgm = create_service_providing_group_membership.sync(
-        client=client_fiso,
+        client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,

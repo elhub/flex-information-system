@@ -7,5 +7,5 @@ post_hooks:
   # => this schema causes a minor error in the generated API client
   #
   # UP006 and UP035 are deprecation warning about typing.
-  - "ruff check . --fix --ignore F841,UP006,UP035"
+  - "ruff check . --fix --ignore F841,UP006,UP007,UP035"
   - "ruff format ."

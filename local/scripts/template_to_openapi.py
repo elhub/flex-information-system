@@ -29,6 +29,7 @@ from typing import Any, cast
 import json
 import click
 from copy import deepcopy
+import j2
 
 # templates
 
@@ -419,6 +420,21 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     servers = yaml.safe_load(servers_file)
 
     resources = resources["resources"]
+
+    # generate and add comment resources
+
+    comment_resources = []
+    shift = 0
+    for i, resource in enumerate(resources):
+        if resource.get("comments"):
+            comment_resource = yaml.safe_load(
+                j2.template_str(resource, "comment_resource.j2.yml"),
+            )["data"]
+            comment_resources.append((i + 1 + shift, comment_resource))
+            shift += 1
+
+    for i, comment_resource in comment_resources:
+        resources.insert(i, comment_resource)
 
     # ---- TAGS ----
 

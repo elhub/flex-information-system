@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Type, TypeVar, Union, cast
+from collections.abc import Mapping
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,7 +16,7 @@ class ServiceProviderProductApplicationHistoryResponse:
 
     Attributes:
         service_provider_product_application_id (int): Reference to the resource that was updated. Example: 48.
-        product_type_ids (Union[Unset, List[int]]): References to the product types. Example: [2, 4, 5].
+        product_type_ids (Union[Unset, list[int]]): References to the product types. Example: [2, 4, 5].
         status (Union[Unset, ServiceProviderProductApplicationStatus]): The status of the application. Example:
             in_progress.
         notes (Union[None, Unset, str]): Free text notes on the current product application status.
@@ -33,7 +34,7 @@ class ServiceProviderProductApplicationHistoryResponse:
     """
 
     service_provider_product_application_id: int
-    product_type_ids: Union[Unset, List[int]] = UNSET
+    product_type_ids: Union[Unset, list[int]] = UNSET
     status: Union[Unset, ServiceProviderProductApplicationStatus] = UNSET
     notes: Union[None, Unset, str] = UNSET
     qualified_at: Union[None, Unset, str] = UNSET
@@ -44,12 +45,12 @@ class ServiceProviderProductApplicationHistoryResponse:
     id: Union[Unset, int] = UNSET
     replaced_by: Union[None, Unset, int] = UNSET
     replaced_at: Union[None, Unset, str] = UNSET
-    additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         service_provider_product_application_id = self.service_provider_product_application_id
 
-        product_type_ids: Union[Unset, List[int]] = UNSET
+        product_type_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.product_type_ids, Unset):
             product_type_ids = self.product_type_ids
 
@@ -91,7 +92,7 @@ class ServiceProviderProductApplicationHistoryResponse:
         else:
             replaced_at = self.replaced_at
 
-        field_dict: Dict[str, Any] = {}
+        field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
@@ -124,11 +125,11 @@ class ServiceProviderProductApplicationHistoryResponse:
         return field_dict
 
     @classmethod
-    def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        d = src_dict.copy()
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        d = dict(src_dict)
         service_provider_product_application_id = d.pop("service_provider_product_application_id")
 
-        product_type_ids = cast(List[int], d.pop("product_type_ids", UNSET))
+        product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, ServiceProviderProductApplicationStatus]
@@ -202,7 +203,7 @@ class ServiceProviderProductApplicationHistoryResponse:
         return service_provider_product_application_history_response
 
     @property
-    def additional_keys(self) -> List[str]:
+    def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
     def __getitem__(self, key: str) -> Any:

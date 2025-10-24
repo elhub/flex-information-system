@@ -303,3 +303,93 @@ def test_spps_so(data):
 
     check_history(client_so, spps.id)
     check_history(client_so2, spps.id)
+
+
+# negative test for SPPS-SO003: existing valid SPPA but no common product type
+def test_spps_so_003_negative(data):
+    (sts, _, _, _, _, _, _) = data
+
+    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+
+    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    so_id = sts.get_userinfo(client_so)["party_id"]
+
+    client_so2 = sts.fresh_client(TestEntity.TEST, "SO")
+    so2_id = sts.get_userinfo(client_so2)["party_id"]
+
+    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
+
+    # activate product 1 for SO1 and product 2 for SO2
+    for clt, id, pt_id in [
+        (client_so, so_id, 1),
+        (client_so2, so2_id, 2),
+    ]:
+        sopt = create_system_operator_product_type.sync(
+            client=client_fiso,
+            body=SystemOperatorProductTypeCreateRequest(
+                system_operator_id=id,
+                product_type_id=pt_id,
+            ),
+        )
+        assert isinstance(sopt, SystemOperatorProductTypeResponse)
+
+        sppa = create_service_provider_product_application.sync(
+            client=client_sp,
+            body=ServiceProviderProductApplicationCreateRequest(
+                service_provider_id=sp_id,
+                system_operator_id=id,
+                product_type_ids=[pt_id],
+            ),
+        )
+        assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+
+        u = update_service_provider_product_application.sync(
+            client=clt,
+            id=cast(int, sppa.id),
+            body=ServiceProviderProductApplicationUpdateRequest(
+                status=ServiceProviderProductApplicationStatus.QUALIFIED,
+                qualified_at="2024-01-01T00:00:00Z",
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
+
+    # suspend the SP as SO1
+    spps = create_service_provider_product_suspension.sync(
+        client=client_so,
+        body=ServiceProviderProductSuspensionCreateRequest(
+            service_provider_id=sp_id,
+            product_type_ids=[1],
+            reason=ServiceProviderProductSuspensionReason.CLEARING_ISSUES,
+        ),
+    )
+    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+
+    u = update_service_provider_product_suspension.sync(
+        client=client_so,
+        id=cast(int, spps.id),
+        body=ServiceProviderProductSuspensionUpdateRequest(
+            reason=ServiceProviderProductSuspensionReason.FAILED_VERIFICATION,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # SO2 should not be able to read it (no common product type)
+    e = read_service_provider_product_suspension.sync(
+        client=client_so2,
+        id=cast(int, spps.id),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # delete suspension
+    d = delete_service_provider_product_suspension.sync(
+        client=client_so, id=cast(int, spps.id), body=EmptyObject()
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    # SO2 should not be able to read history either
+    e = read_service_provider_product_suspension_history.sync(
+        client=client_so2,
+        id=cast(int, spps.id),
+    )
+    assert isinstance(e, ErrorMessage)

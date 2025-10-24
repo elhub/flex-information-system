@@ -90,7 +90,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_pid(),
             business_id_type="pid",
-            type="organisation",
+            type_="organisation",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -101,7 +101,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_gsrn(),
             business_id_type="gsrn",
-            type="organisation",
+            type_="organisation",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -112,7 +112,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_pid(),
             business_id_type="org",
-            type="organisation",
+            type_="organisation",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -123,7 +123,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_org(),
             business_id_type="pid",
-            type="organisation",
+            type_="organisation",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -134,7 +134,7 @@ def test_entity_fiso(sts):
             name="Test Entity VALID ORG",
             business_id=random_org(),
             business_id_type="org",
-            type="organisation",
+            type_="organisation",
         ),
     )
     assert isinstance(e, EntityResponse)
@@ -147,7 +147,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_gsrn(),
             business_id_type="gsrn",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -158,7 +158,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_org(),
             business_id_type="org",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -169,7 +169,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_org(),
             business_id_type="pid",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -180,7 +180,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_email(),
             business_id_type="pid",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -191,7 +191,7 @@ def test_entity_fiso(sts):
             name="Test Entity",
             business_id=random_pid(),
             business_id_type="email",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -202,7 +202,7 @@ def test_entity_fiso(sts):
             name="Test Entity VALID EMAIL",
             business_id=random_email(),
             business_id_type="email",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, EntityResponse)
@@ -213,7 +213,7 @@ def test_entity_fiso(sts):
             name="Test Entity VALID PID",
             business_id=random_pid(),
             business_id_type="pid",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(e, EntityResponse)
@@ -249,7 +249,7 @@ def test_entity_org(sts):
     assert isinstance(ptys, list)
 
     # pick one, for instance the energy supplier
-    pty_es = next((p for p in ptys if p.type == "energy_supplier"))
+    pty_es = next((p for p in ptys if p.type_ == "energy_supplier"))
 
     # new entity
     ent = create_entity.sync(
@@ -258,7 +258,7 @@ def test_entity_org(sts):
             name="Test Entity Seen By Org",
             business_id=random_pid(),
             business_id_type="pid",
-            type="person",
+            type_="person",
         ),
     )
     assert isinstance(ent, EntityResponse)
@@ -305,7 +305,7 @@ def test_entity_com(sts):
     n_organisations = len(
         list(
             filter(
-                lambda ent: ent.type == "organisation",
+                lambda ent: ent.type_ == "organisation",
                 entities,
             )
         )
@@ -369,7 +369,7 @@ def test_entity_ent(sts):
     entities_ent = list_entity.sync(client=client_ent)
     assert isinstance(entities_ent, list)
     assert len(entities_ent) == 1
-    assert entities_ent[0].type == "person"
+    assert entities_ent[0].type_ == "person"
 
 
 def test_rla_absence(sts):
@@ -383,7 +383,7 @@ def test_rla_absence(sts):
                     client=sts.get_client(TestEntity.TEST, "FISO"),
                 ),
             )
-            if ent.type == "organisation"
+            if ent.type_ == "organisation"
         ]
     )
 

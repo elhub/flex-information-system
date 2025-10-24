@@ -2,7 +2,8 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:api-controllable-unit-service-provider-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.controllable_unit_service_provider
+CREATE OR REPLACE VIEW
+api.controllable_unit_service_provider
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -17,7 +18,8 @@ WITH (security_invoker = true) AS (
     FROM flex.controllable_unit_service_provider
 );
 -- changeset flex:api-controllable-unit-service-provider-history-create endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW api.controllable_unit_service_provider_history
+CREATE OR REPLACE VIEW
+api.controllable_unit_service_provider_history
 WITH (
     security_invoker = true
 ) AS (

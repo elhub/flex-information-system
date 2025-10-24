@@ -125,3 +125,44 @@ if __name__ == "__main__":
                     "resource_api.j2.sql",
                     f"{DB_DIR}/api/{resource['id']}.sql",
                 )
+
+            # generate files for the comment resource
+            if resource.get("comments", False):
+                j2.template(
+                    resource,
+                    "comment_resource.j2.sql",
+                    f"{DB_DIR}/flex/{resource['id']}_comment.sql",
+                )
+
+                resource = yaml.safe_load(
+                    j2.template_str(resource, "comment_resource.j2.yml"),
+                )["data"]
+
+                print(
+                    fake_table_create_statement(
+                        resource["id"],
+                        resource["properties"],
+                        True,
+                    ),
+                    file=backend_schema_f,
+                )
+
+                print(
+                    fake_history_table_create_statement(
+                        resource["id"],
+                        resource["properties"],
+                    ),
+                    file=backend_schema_f,
+                )
+
+                j2.template(
+                    resource,
+                    "resource_history_audit.j2.sql",
+                    f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
+                )
+
+                j2.template(
+                    resource,
+                    "resource_api.j2.sql",
+                    f"{DB_DIR}/api/{resource['id']}.sql",
+                )
