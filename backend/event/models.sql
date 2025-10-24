@@ -164,8 +164,8 @@ FROM service_provider_product_suspension_comment_history AS sppsch
 WHERE sppsch.service_provider_product_suspension_comment_id = @resource_id
     AND tstzrange(sppsch.recorded_at, sppsch.replaced_at, '[]')
         @> @recorded_at::timestamptz
-    AND sppsch.visibility = 'any_party';
--- see query for SPPAC below for explanation about visibilities
+    -- private comments do not lead to notifications
+    AND sppsch.visibility = 'any_involved_party';
 
 -- name: GetServiceProvidingGroupCreateNotificationRecipients :many
 SELECT service_provider_id
@@ -257,13 +257,8 @@ FROM service_provider_product_application_comment_history AS sppach
 WHERE sppach.service_provider_product_application_comment_id = @resource_id
     AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]')
         @> @recorded_at::timestamptz
-    AND sppach.visibility = 'any_party';
--- other visibilities mean no notification (empty notified parties list) :
---   - 'same_party' leaves only the current party, removed from the list anyway
---   - 'same_party_type' leaves only different party types :
---       + FISO comments, SO and SP notified but they do not have the FISO type
---       + SO comments, SP notified but they do not have the SO type
---       + SP comments, SO notified but they do not have the SP type
+    -- private comments do not lead to notifications
+    AND sppach.visibility = 'any_involved_party';
 
 -- name: Notify :exec
 INSERT INTO notification (event_id, party_id)
