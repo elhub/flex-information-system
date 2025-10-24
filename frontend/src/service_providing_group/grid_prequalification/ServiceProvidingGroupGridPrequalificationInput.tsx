@@ -15,6 +15,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { DateTimeInput } from "../../components/datetime";
+import { useMemo } from "react";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -36,8 +37,14 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
   const createOrUpdate = useCreateOrUpdate();
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
+
   // priority to the restored values if they exist, otherwise normal edit mode
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
+
   return (
     <SimpleForm
       record={record}

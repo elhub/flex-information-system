@@ -14,7 +14,7 @@ import {
 import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { roleNames } from "../roles";
-import { useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 // component updating the role field automatically based on the type field
@@ -113,7 +113,11 @@ export const PartyInput = () => {
   const { state: overrideRecord } = useLocation();
 
   // priority to the values coming from notice buttons if they exist
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
 
   return (
     <SimpleForm

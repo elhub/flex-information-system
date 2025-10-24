@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
+import { useMemo } from "react";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -37,25 +38,35 @@ export const ControllableUnitServiceProviderInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
 
+  // priority to the restored values if they exist, otherwise normal edit mode
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
+
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
-  if (identityLoading) return <>Loading...</>;
 
   // if we came to this page as a user who cannot see the CU, we want to input a
   // CU ID, instead of using the autocomplete component that works from the list
   // of readable CUs
   const cuIDAsNumber: boolean = !!overrideRecord?.cuIDAsNumber;
 
-  // priority to the restored values if they exist, otherwise normal edit mode
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
-
   const isServiceProvider = identity?.role == "flex_service_provider";
-  if (isServiceProvider) {
-    record.service_provider_id = identity?.partyID;
-  }
+
+  const finalRecord = useMemo(() => {
+    const baseRecord = { ...record };
+    if (isServiceProvider) {
+      baseRecord.service_provider_id = identity?.partyID;
+    }
+    return baseRecord;
+  }, [record, isServiceProvider, identity?.partyID]);
+
+  if (identityLoading) return <>Loading...</>;
 
   return (
     <SimpleForm
-      record={record}
+      record={finalRecord}
       maxWidth={1280}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.

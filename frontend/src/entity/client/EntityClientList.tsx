@@ -16,33 +16,39 @@ import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
 
+const CreateButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={`/entity/${id}/client/create`}
+    startIcon={<AddIcon />}
+    state={{ entity_id: id }}
+    label="Create"
+  />
+);
+
+const ListActions = ({
+  permissions,
+  id,
+}: {
+  permissions: string[];
+  id: any;
+}) => (
+  <TopToolbar>
+    {permissions.includes("entity_client.create") && <CreateButton id={id} />}
+  </TopToolbar>
+);
+
 export const EntityClientList = () => {
   // id of the entity
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
-
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={`/entity/${id}/client/create`}
-      startIcon={<AddIcon />}
-      state={{ entity_id: id }}
-      label="Create"
-    />
-  );
-
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes("entity_client.create") && <CreateButton />}
-    </TopToolbar>
-  );
 
   return (
     permissions.includes("entity_client.read") && (
       <ResourceContextProvider value="entity_client">
         <List
           perPage={10}
-          actions={<ListActions />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           title={false}

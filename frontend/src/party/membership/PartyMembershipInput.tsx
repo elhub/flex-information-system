@@ -8,6 +8,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ScopesInput } from "../../components/scopes";
+import { useMemo } from "react";
 
 // keep only the fields that map to the UI
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
@@ -21,7 +22,12 @@ export const PartyMembershipInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
   // priority to the restored values if they exist, otherwise normal edit mode
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
+
   return (
     <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>

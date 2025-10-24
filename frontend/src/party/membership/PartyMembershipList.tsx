@@ -17,45 +17,55 @@ import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
 
+const CreateButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={`/party/${id}/membership/create`}
+    startIcon={<AddIcon />}
+    state={{ party_id: id }}
+    label="Create"
+  />
+);
+
+const CreateViaLookupButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={`/entity/lookup`}
+    startIcon={<TravelExploreIcon />}
+    state={{ party_id: id }}
+    label="Create via Entity Lookup"
+  />
+);
+
+const ListActions = ({
+  permissions,
+  id,
+}: {
+  permissions: string[];
+  id: any;
+}) => (
+  <TopToolbar>
+    {permissions.includes("party_membership.create") && (
+      <CreateButton id={id} />
+    )}
+    {permissions.includes("party_membership.create") &&
+      permissions.includes("entity.lookup") && (
+        <CreateViaLookupButton id={id} />
+      )}
+  </TopToolbar>
+);
+
 export const PartyMembershipList = () => {
   // id of the SPG
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
-
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={`/party/${id}/membership/create`}
-      startIcon={<AddIcon />}
-      state={{ party_id: id }}
-      label="Create"
-    />
-  );
-
-  const CreateViaLookupButton = () => (
-    <Button
-      component={Link}
-      to={`/entity/lookup`}
-      startIcon={<TravelExploreIcon />}
-      state={{ party_id: id }}
-      label="Create via Entity Lookup"
-    />
-  );
-
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes("party_membership.create") && <CreateButton />}
-      {permissions.includes("party_membership.create") &&
-        permissions.includes("entity.lookup") && <CreateViaLookupButton />}
-    </TopToolbar>
-  );
 
   return (
     permissions.includes("party_membership.read") && (
       <ResourceContextProvider value="party_membership">
         <List
           perPage={10}
-          actions={<ListActions />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           filter={{ party_id: id }}

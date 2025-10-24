@@ -14,33 +14,39 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 
+const CreateButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={
+      id
+        ? `/service_providing_group/${id}/grid_prequalification/create`
+        : "/service_providing_group_grid_prequalification/create"
+    }
+    startIcon={<AddIcon />}
+    state={{ service_providing_group_id: id }}
+    label="Create"
+  />
+);
+
+const ListActions = ({
+  permissions,
+  id,
+}: {
+  permissions: string[];
+  id: any;
+}) => (
+  <TopToolbar>
+    {permissions.includes(
+      "service_providing_group_grid_prequalification.create",
+    ) && <CreateButton id={id} />}
+  </TopToolbar>
+);
+
 export const ServiceProvidingGroupGridPrequalificationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext()!;
   const id = record?.id;
   const { permissions } = usePermissions();
-
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={
-        id
-          ? `/service_providing_group/${id}/grid_prequalification/create`
-          : "/service_providing_group_grid_prequalification/create"
-      }
-      startIcon={<AddIcon />}
-      state={{ service_providing_group_id: id }}
-      label="Create"
-    />
-  );
-
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes(
-        "service_providing_group_grid_prequalification.create",
-      ) && <CreateButton />}
-    </TopToolbar>
-  );
 
   return (
     permissions.includes(
@@ -50,7 +56,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
         <List
           title={false}
           perPage={10}
-          actions={<ListActions />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           filter={id ? { service_providing_group_id: id } : undefined}

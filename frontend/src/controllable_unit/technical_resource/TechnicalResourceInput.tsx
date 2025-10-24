@@ -3,6 +3,7 @@ import { Typography, Stack } from "@mui/material";
 import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
+import { useMemo } from "react";
 
 const filterRecord = ({ name, controllable_unit_id, details }: any) => ({
   name,
@@ -15,7 +16,12 @@ export const TechnicalResourceInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
 
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
+  // priority to the restored values if they exist, otherwise normal edit mode
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
 
   return (
     <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>

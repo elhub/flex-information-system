@@ -38,6 +38,43 @@ const EditButton = (props: { url: string }) => (
   />
 );
 
+const CreateButton = ({
+  parentPath,
+  baseIDInformation,
+}: {
+  parentPath: string;
+  baseIDInformation: any;
+}) => (
+  <Button
+    component={Link}
+    to={`${parentPath}/comment/create`}
+    startIcon={<AddIcon />}
+    state={baseIDInformation}
+    label="Create"
+  />
+);
+
+const ListActions = ({
+  permissions,
+  baseResource,
+  parentPathS,
+  baseIDInformation,
+}: {
+  permissions: string[];
+  baseResource: string;
+  parentPathS: string;
+  baseIDInformation: any;
+}) => (
+  <TopToolbar>
+    {permissions.includes(`${baseResource}_comment.create`) && (
+      <CreateButton
+        parentPath={parentPathS}
+        baseIDInformation={baseIDInformation}
+      />
+    )}
+  </TopToolbar>
+);
+
 export const CommentShow = () => {
   const resource = useResourceContext()!;
   const { permissions } = usePermissions();
@@ -132,31 +169,20 @@ export const CommentList = (props: CommentListProps) => {
   // reconstruct as string to make the link later
   const parentPathS = parentPath.map((p) => `/${p.resource}/${p.id}`).join("");
 
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={`${parentPathS}/comment/create`}
-      startIcon={<AddIcon />}
-      state={baseIDInformation}
-      label="Create"
-    />
-  );
-
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes(`${baseResource}_comment.create`) && (
-        <CreateButton />
-      )}
-    </TopToolbar>
-  );
-
   return (
     permissions.includes(`${baseResource}_comment.read`) && (
       <ResourceContextProvider value={`${baseResource}_comment`}>
         <List
           title={false}
           perPage={10}
-          actions={<ListActions />}
+          actions={
+            <ListActions
+              permissions={permissions}
+              baseResource={baseResource}
+              parentPathS={parentPathS}
+              baseIDInformation={baseIDInformation}
+            />
+          }
           exporter={false}
           empty={false}
           filter={baseIDInformation}

@@ -12,14 +12,10 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 
-export const TechnicalResourceList = () => {
-  // id of the controllable unit whose technical resources we want to get
-  const { id } = useRecordContext()!;
-  const { permissions } = usePermissions();
-
-  // automatically fill the controllable_unit_id field with the ID of the
-  // show page the create button is displayed on
-  const CreateButton = () => (
+// automatically fill the controllable_unit_id field with the ID of the
+// show page the create button is displayed on
+const CreateButton = ({ id }: { id: any }) => {
+  return (
     <Button
       component={Link}
       to={`/controllable_unit/${id}/technical_resource/create`}
@@ -28,12 +24,28 @@ export const TechnicalResourceList = () => {
       label="Create"
     />
   );
+};
 
-  const ListActions = () => (
+const ListActions = ({
+  permissions,
+  id,
+}: {
+  permissions: string[];
+  id: any;
+}) => {
+  return (
     <TopToolbar>
-      {permissions.includes("technical_resource.create") && <CreateButton />}
+      {permissions.includes("technical_resource.create") && (
+        <CreateButton id={id} />
+      )}
     </TopToolbar>
   );
+};
+
+export const TechnicalResourceList = () => {
+  // id of the controllable unit whose technical resources we want to get
+  const { id } = useRecordContext()!;
+  const { permissions } = usePermissions();
 
   return (
     permissions.includes("technical_resource.read") && (
@@ -41,7 +53,7 @@ export const TechnicalResourceList = () => {
         <List
           title={false}
           perPage={10}
-          actions={<ListActions />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           filter={{ controllable_unit_id: id }}

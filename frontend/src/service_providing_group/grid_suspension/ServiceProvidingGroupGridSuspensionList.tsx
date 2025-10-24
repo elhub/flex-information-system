@@ -13,33 +13,39 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 
+const CreateButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={
+      id
+        ? `/service_providing_group/${id}/grid_suspension/create`
+        : "/service_providing_group_grid_suspension/create"
+    }
+    startIcon={<AddIcon />}
+    state={{ service_providing_group_id: id }}
+    label="Create"
+  />
+);
+
+const ListActions = ({
+  permissions,
+  id,
+}: {
+  permissions: string[];
+  id: any;
+}) => (
+  <TopToolbar>
+    {permissions.includes("service_providing_group_grid_suspension.create") && (
+      <CreateButton id={id} />
+    )}
+  </TopToolbar>
+);
+
 export const ServiceProvidingGroupGridSuspensionList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
-
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={
-        id
-          ? `/service_providing_group/${id}/grid_suspension/create`
-          : "/service_providing_group_grid_suspension/create"
-      }
-      startIcon={<AddIcon />}
-      state={{ service_providing_group_id: id }}
-      label="Create"
-    />
-  );
-
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes(
-        "service_providing_group_grid_suspension.create",
-      ) && <CreateButton />}
-    </TopToolbar>
-  );
 
   return (
     permissions.includes("service_providing_group_grid_suspension.read") && (
@@ -47,7 +53,7 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
         <List
           title={false}
           perPage={10}
-          actions={<ListActions />}
+          actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
           filter={id ? { service_providing_group_id: id } : undefined}
