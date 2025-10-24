@@ -65,30 +65,38 @@ WITH CHECK (
 
 -- RLS: SPGGSC-SO002
 -- RLS: SPGGSC-SP002
-CREATE POLICY "SPGGSC_SO002_SP002"
+CREATE POLICY "SPGGSC_SO002_SP002_private"
 ON service_providing_group_grid_suspension_comment
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    EXISTS (
+    service_providing_group_grid_suspension_comment.visibility = 'same_party'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+        WHERE comment_creator.id
+        = service_providing_group_grid_suspension_comment.created_by -- noqa
+            AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
+    )
+);
+
+CREATE POLICY "SPGGSC_SO002_SP002_public"
+ON service_providing_group_grid_suspension_comment
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    service_providing_group_grid_suspension_comment.visibility
+    = 'any_involved_party'
+    AND EXISTS (
         SELECT 1
         FROM flex.service_providing_group_grid_suspension AS spggs
-            INNER JOIN flex.identity AS comment_creator
-                ON service_providing_group_grid_suspension_comment.created_by -- noqa
-                    = comment_creator.id
             INNER JOIN flex.service_providing_group AS spg
                 ON spggs.service_providing_group_id = spg.id
         WHERE spggs.id = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
-            AND ((
-                service_providing_group_grid_suspension_comment.visibility = 'same_party' -- noqa
-                AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
-            ) OR (
-                service_providing_group_grid_suspension_comment.visibility = 'any_involved_party' -- noqa
-                AND (SELECT flex.current_party()) IN (
-                    spggs.impacted_system_operator_id,
-                    spg.service_provider_id
-                )
-            ))
+            AND (SELECT flex.current_party()) IN (
+                spggs.impacted_system_operator_id,
+                spg.service_provider_id
+            )
     )
 );
 
@@ -96,12 +104,30 @@ USING (
 -- RLS: SPGGSC-SP003
 GRANT SELECT ON service_providing_group_grid_suspension_comment_history
 TO flex_common;
-CREATE POLICY "SPGGSC_SO003_SP003"
+CREATE POLICY "SPGGSC_SO003_SP003_private"
 ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    EXISTS (
+    service_providing_group_grid_suspension_comment_history.visibility
+    = 'same_party'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+        WHERE comment_creator.id
+        = service_providing_group_grid_suspension_comment_history.created_by -- noqa
+            AND comment_creator.party_id = (SELECT flex.current_party())
+    )
+);
+
+CREATE POLICY "SPGGSC_SO003_SP003_public"
+ON service_providing_group_grid_suspension_comment_history
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    service_providing_group_grid_suspension_comment_history.visibility
+    = 'any_involved_party'
+    AND EXISTS (
         WITH
             -- history + current SPGGS if it has never been updated/deleted
             spggs_history AS (
@@ -126,20 +152,10 @@ USING (
 
         SELECT 1
         FROM spggs_history
-            INNER JOIN flex.identity AS comment_creator
-                ON service_providing_group_grid_suspension_comment_history.created_by -- noqa
-                    = comment_creator.id
-        WHERE ((
-            service_providing_group_grid_suspension_comment_history.visibility = 'same_party' -- noqa
-            AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
-        ) OR (
-            service_providing_group_grid_suspension_comment_history.visibility -- noqa
-            = 'any_involved_party' -- noqa
-            AND (SELECT flex.current_party()) IN (
+        WHERE (SELECT flex.current_party()) IN (
                 spggs_history.impacted_system_operator_id,
                 spggs_history.service_provider_id
             )
-        ))
     )
 );
 
