@@ -49,6 +49,10 @@
             "description": "Service Providing Group Grid Suspension"
         },
         {
+            "name": "service_providing_group_grid_suspension_comment",
+            "description": "Service Providing Group Grid Suspension Comment"
+        },
+        {
             "name": "entity_client",
             "description": "Entity client"
         },
@@ -565,6 +569,17 @@
                     "other"
                 ],
                 "example": "significant_group_change"
+            },
+            "service_providing_group_grid_suspension_comment_visibility": {
+                "description": "The level of visibility of the comment.",
+                "format": "text",
+                "type": "string",
+                "default": "same_party",
+                "enum": [
+                    "same_party",
+                    "any_involved_party"
+                ],
+                "example": "same_party"
             },
             "party_business_id_type": {
                 "description": "The type of the business identifier.",
@@ -1410,6 +1425,120 @@
                             "impacted_system_operator_id",
                             "service_providing_group_id",
                             "reason",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_grid_suspension_comment_update_request": {
+                "summary": "Update - Service Providing Group Grid Suspension Comment",
+                "description": "Request schema for update operations - Comment made by a party involved in a service providing group grid suspension.",
+                "type": "object",
+                "properties": {
+                    "visibility": {
+                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_visibility"
+                    },
+                    "content": {
+                        "description": "Free text content of the comment.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 2048,
+                        "example": "Missing document."
+                    }
+                }
+            },
+            "service_providing_group_grid_suspension_comment_create_data": {
+                "summary": "Create data - Service Providing Group Grid Suspension Comment",
+                "description": "Data of the request schema for create operations - Comment made by a party involved in a service providing group grid suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_update_request"
+                    },
+                    {
+                        "properties": {
+                            "service_providing_group_grid_suspension_id": {
+                                "description": "Reference to the service providing group grid suspension.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 7
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_grid_suspension_comment_create_request": {
+                "summary": "Create - Service Providing Group Grid Suspension Comment",
+                "description": "Request schema for create operations - Comment made by a party involved in a service providing group grid suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_create_data"
+                    },
+                    {
+                        "required": [
+                            "service_providing_group_grid_suspension_id",
+                            "visibility",
+                            "content"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_grid_suspension_comment": {
+                "summary": "Data - Service Providing Group Grid Suspension Comment",
+                "description": "Data schema - Comment made by a party involved in a service providing group grid suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_create_data"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "Unique surrogate identifier.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 9
+                            },
+                            "created_by": {
+                                "description": "Reference to the identity that created the comment.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 94
+                            },
+                            "created_at": {
+                                "description": "When the comment was added to the SPGGS.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2022-08-08 12:00:00 CET"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "service_providing_group_grid_suspension_comment_response": {
+                "summary": "Response - Service Providing Group Grid Suspension Comment",
+                "description": "Response schema for operations with return values - Comment made by a party involved in a service providing group grid suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "service_providing_group_grid_suspension_id",
+                            "created_by",
+                            "created_at",
+                            "visibility",
+                            "content",
                             "recorded_at",
                             "recorded_by"
                         ]
@@ -3548,6 +3677,42 @@
                         },
                         "required": [
                             "service_providing_group_grid_suspension_id"
+                        ]
+                    }
+                ]
+            },
+            "service_providing_group_grid_suspension_comment_history_response": {
+                "summary": "Service Providing Group Grid Suspension Comment - history",
+                "description": "Service Providing Group Grid Suspension Comment - history",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                    },
+                    {
+                        "properties": {
+                            "service_providing_group_grid_suspension_comment_id": {
+                                "description": "Reference to the resource that was updated.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 48
+                            },
+                            "replaced_by": {
+                                "description": "The identity that updated the resource when it was replaced.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "nullable": true,
+                                "example": 90
+                            },
+                            "replaced_at": {
+                                "description": "When the resource was replaced in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "nullable": true,
+                                "example": "2024-07-07 10:00:00 CET"
+                            }
+                        },
+                        "required": [
+                            "service_providing_group_grid_suspension_comment_id"
                         ]
                     }
                 ]
@@ -9775,6 +9940,880 @@
                     {
                         "bearerAuth": [
                             "read:data:service_providing_group_grid_suspension_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/service_providing_group_grid_suspension_comment": {
+            "summary": "Service Providing Group Grid Suspension Comment",
+            "description": "",
+            "get": {
+                "operationId": "list_service_providing_group_grid_suspension_comment",
+                "summary": "List Service Providing Group Grid Suspension Comment",
+                "description": "",
+                "tags": [
+                    "service_providing_group_grid_suspension_comment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the service providing group grid suspension.",
+                        "name": "service_providing_group_grid_suspension_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "default": "items",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_suspension_comment"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "post": {
+                "operationId": "create_service_providing_group_grid_suspension_comment",
+                "summary": "Create Service Providing Group Grid Suspension Comment",
+                "description": "",
+                "tags": [
+                    "service_providing_group_grid_suspension_comment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_create_request"
+                            }
+                        }
+                    },
+                    "description": "service_providing_group_grid_suspension_comment",
+                    "required": false
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                                }
+                            }
+                        },
+                        "description": "Created"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_grid_suspension_comment"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_grid_suspension_comment/{id}": {
+            "summary": "Service Providing Group Grid Suspension Comment - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_grid_suspension_comment",
+                "summary": "Read Service Providing Group Grid Suspension Comment",
+                "description": "",
+                "tags": [
+                    "service_providing_group_grid_suspension_comment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "service_providing_group_grid_suspension_id": {
+                                "operationId": "read_service_providing_group_grid_suspension",
+                                "parameters": {
+                                    "path.id": "$response.body#/service_providing_group_grid_suspension_id"
+                                },
+                                "description": "The `service_providing_group_grid_suspension_id` value returned in the response can be used as the `id` parameter in `GET /service_providing_group_grid_suspension/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_suspension_comment"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "patch": {
+                "operationId": "update_service_providing_group_grid_suspension_comment",
+                "summary": "Update Service Providing Group Grid Suspension Comment",
+                "description": "",
+                "tags": [
+                    "service_providing_group_grid_suspension_comment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_update_request"
+                            }
+                        }
+                    },
+                    "description": "service_providing_group_grid_suspension_comment",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "204": {
+                        "content": {},
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:service_providing_group_grid_suspension_comment"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_grid_suspension_comment_history": {
+            "summary": "Service Providing Group Grid Suspension Comment - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Service Providing Group Grid Suspension Comment whose history we want to inspect.",
+                    "name": "service_providing_group_grid_suspension_comment_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_service_providing_group_grid_suspension_comment_history",
+                "summary": "List Service Providing Group Grid Suspension Comment - history",
+                "description": "",
+                "tags": [
+                    "service_providing_group_grid_suspension_comment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the service providing group grid suspension.",
+                        "name": "service_providing_group_grid_suspension_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "default": "items",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_suspension_comment_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/service_providing_group_grid_suspension_comment_history/{id}": {
+            "summary": "Service Providing Group Grid Suspension Comment - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_grid_suspension_comment_history",
+                "summary": "Read Service Providing Group Grid Suspension Comment - history",
+                "description": "",
+                "tags": [
+                    "service_providing_group_grid_suspension_comment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_grid_suspension_comment_history"
                         ]
                     },
                     {}

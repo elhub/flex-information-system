@@ -16,6 +16,7 @@ import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
+import { CommentList } from "../../components/comments";
 
 export const ServiceProvidingGroupGridSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -83,6 +84,15 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
           child="grid_suspension"
           label="grid suspension"
         />
+        {!isHistory && (
+          <>
+            <Typography variant="h6" gutterBottom>
+              Comments
+            </Typography>
+            <NestedResourceHistoryButton child="comment" label="comments" />
+            <CommentList />
+          </>
+        )}
       </SimpleShowLayout>
     </Show>
   );

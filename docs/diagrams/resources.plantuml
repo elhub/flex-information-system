@@ -20,6 +20,8 @@ digraph flex {
     service_providing_group_grid_suspension    [label="{service_providing_group_grid_suspension}|{The relation allowing an impacted\nsystem operator to temporarily suspend\na service providing group from\ndelivering services.}|{🕰️}" shape=record style=solid]
     service_providing_group_grid_suspension -> party     [label=impacted_system_operator_id]
     service_providing_group_grid_suspension -> service_providing_group     [label=service_providing_group_id]
+    service_providing_group_grid_suspension_comment    [label="{service_providing_group_grid_suspension_comment}|{Comment made by a party involved in a service\nproviding group grid suspension.}|{🕰️}" shape=record style=solid]
+    service_providing_group_grid_suspension_comment -> service_providing_group_grid_suspension     [label=service_providing_group_grid_suspension_id]
     entity    [label="{entity}|{Entity - Natural or\nlegal person}" shape=record style=solid]
     entity_client    [label="{entity_client}|{Client linked to an\nentity for client\ncredentials and JWT\ngrant authentication\nmethods.}" shape=record style=solid]
     entity_client -> entity     [label=entity_id]
