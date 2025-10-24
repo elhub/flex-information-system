@@ -21,7 +21,7 @@ that it allows for a greater degree of automation in the process.
 
 | Reason                | Description                                                                                                                              |
 |-----------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| `failed_verification` | The agreed upon service has not been delividered or been delivered in a different way that  - in multiple consecutive trades.            |
+| `failed_verification` | The agreed upon service has not been delividered - in multiple consecutive trades.                                                       |
 | `other`               | Should generally _not_ be used, but can in cases where PSO have a valid reason for suspension that is outside the other defined reasons. |
 
 Depending on the reason for suspension, the system operator should warn the
