@@ -204,15 +204,15 @@ def check_history(clt, spggsc_id):
         client=clt,
         service_providing_group_grid_suspension_comment_id=f"eq.{spggsc_id}",
     )
-    assert isinstance(h, list)
-    assert len(h) > 0
+    if not isinstance(h, list) or len(h) == 0:
+        return False
 
     # endpoint: GET /service_providing_group_grid_suspension_comment_history/{id}
     h1 = read_service_providing_group_grid_suspension_comment_history.sync(
         client=clt,
         id=cast(int, h[0].id),
     )
-    assert isinstance(
+    return isinstance(
         h1,
         ServiceProvidingGroupGridSuspensionCommentHistoryResponse,
     )
@@ -283,7 +283,7 @@ def test_spggsc_fiso(data):
     assert not isinstance(u, ErrorMessage)
 
     # RLS: SPGGSC-FISO002
-    check_history(client_fiso, spggsc1.id)
+    assert check_history(client_fiso, spggsc1.id)
 
     # ensure that deleting the suspension also deletes the comments
     d = delete_service_providing_group_grid_suspension.sync(
@@ -299,6 +299,8 @@ def test_spggsc_fiso(data):
     )
     assert isinstance(comments, list)
     assert len(comments) == 0
+
+    assert check_history(client_fiso, spggsc1.id)
 
 
 # RLS: SPGGSC-SO002
@@ -372,7 +374,7 @@ def test_spggsc_so_sp(data):
     )
     assert isinstance(spggsc_so_as_sp, ErrorMessage)
 
-    # check they cannot read anything from the unrelated SPPS
+    # check they cannot read anything from the unrelated SPGGS
 
     uspggscs_as_so = list_service_providing_group_grid_suspension_comment.sync(
         client=client_so,
@@ -391,10 +393,23 @@ def test_spggsc_so_sp(data):
     # RLS: SPGGSC-SO003
     # RLS: SPGGSC-SP003
 
-    # SP can read history on the first SO's comment, and reverse, because when
-    # they were created, they were open to all involved parties
-    check_history(client_sp, spggsc_so.id)
-    check_history(client_so, spggsc_sp.id)
+    # SO can read history on SP's comment because it is public
+    assert check_history(client_so, spggsc_sp.id)
+    # but SP cannot read history on SO's comment because it is now private
+    assert not check_history(client_sp, spggsc_so.id)
+
+    # SO makes comment public again
+    u = update_service_providing_group_grid_suspension_comment.sync(
+        client=client_so,
+        id=cast(int, spggsc_so.id),
+        body=ServiceProvidingGroupGridSuspensionCommentUpdateRequest(
+            visibility=ServiceProvidingGroupGridSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # now SP can read history
+    assert check_history(client_sp, spggsc_so.id)
 
     # delete the SPPS so that comments disappear
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")

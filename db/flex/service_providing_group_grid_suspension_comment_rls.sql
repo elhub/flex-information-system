@@ -100,6 +100,32 @@ USING (
     )
 );
 
+CREATE OR REPLACE FUNCTION latest_spggs_comment_visibility(id bigint)
+RETURNS text
+SECURITY DEFINER
+LANGUAGE sql
+STABLE
+AS $$
+    WITH
+        spggs_history AS (
+            SELECT spggsc.visibility
+            FROM flex.service_providing_group_grid_suspension_comment AS spggsc
+            WHERE spggsc.id = id
+            UNION ALL (
+                SELECT spggsch.visibility
+                FROM
+                    flex.service_providing_group_grid_suspension_comment_history
+                        AS spggsch -- noqa
+                WHERE spggsch.id = id
+                ORDER BY spggsch.record_time_range DESC
+            )
+        )
+
+    SELECT spggs_history.visibility
+    FROM spggs_history
+    LIMIT 1
+$$;
+
 -- RLS: SPGGSC-SO003
 -- RLS: SPGGSC-SP003
 GRANT SELECT ON service_providing_group_grid_suspension_comment_history
@@ -109,8 +135,9 @@ ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    service_providing_group_grid_suspension_comment_history.visibility
-    = 'same_party'
+    latest_spggs_comment_visibility(
+        service_providing_group_grid_suspension_comment_history.id
+    ) = 'same_party'
     AND EXISTS (
         SELECT 1
         FROM flex.identity AS comment_creator
@@ -125,8 +152,9 @@ ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    service_providing_group_grid_suspension_comment_history.visibility
-    = 'any_involved_party'
+    latest_spggs_comment_visibility(
+        service_providing_group_grid_suspension_comment_history.id
+    ) = 'any_involved_party'
     AND EXISTS (
         WITH
             -- history + current SPGGS if it has never been updated/deleted
