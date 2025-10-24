@@ -68,7 +68,7 @@ WITH CHECK (
 CREATE POLICY "SPGGSC_SO002_SP002"
 ON service_providing_group_grid_suspension_comment
 FOR SELECT
-TO flex_common
+TO flex_system_operator, flex_service_provider
 USING (
     EXISTS (
         SELECT 1
@@ -99,7 +99,7 @@ TO flex_common;
 CREATE POLICY "SPGGSC_SO003_SP003"
 ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
-TO flex_common
+TO flex_system_operator, flex_service_provider
 USING (
     EXISTS (
         WITH
@@ -114,7 +114,7 @@ USING (
                     INNER JOIN flex.service_providing_group AS spg
                         ON spggsh.service_providing_group_id = spg.id
                 WHERE spggsh.id = service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id -- noqa
-                UNION ALL
+                UNION
                 SELECT
                     spggs.impacted_system_operator_id,
                     spg.service_provider_id
@@ -151,8 +151,6 @@ TO flex_flexibility_information_system_operator
 USING (true);
 
 -- RLS: SPGGSC-FISO002
-GRANT SELECT ON service_providing_group_grid_suspension_comment_history
-TO flex_flexibility_information_system_operator;
 CREATE POLICY "SPGGSC_FISO002"
 ON service_providing_group_grid_suspension_comment_history
 FOR ALL
