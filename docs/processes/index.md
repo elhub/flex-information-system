@@ -73,7 +73,7 @@ also use the menu to find process details.
 ### Access control
 
 Entitled parties have permission to access data in the flexbility information
-system as described in the Authorization section for each [resource](../resources/).
+system as described in the Authorization section for each [resource](../resources/index.md).
 
 ### Controllable unit
 

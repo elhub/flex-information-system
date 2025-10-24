@@ -1,4 +1,4 @@
-# SPG product suspension
+# SPG Product Suspension
 
 This process is used to [suspend](../concepts/suspension.md) the service
 providing group (SPG) product prequalification temporarily. The suspension is done
