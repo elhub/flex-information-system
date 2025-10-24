@@ -19,11 +19,10 @@ reason for suspension is a predefined list. There are two reasons for that. The
 first is that the PSO is only allowed to suspend for valid reasons. The other is
 that it allows for a greater degree of automation in the process.
 
-| Reason                 | Description                                                                                                                              |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| `failed_verification`  | The agreed upon service har not been delividered - in multiple consecutive trades.                                                       |
-| `breach_of_conditions` | The terms of the agreement between the service provider and system operators have been breached multiple consecutive times               |
-| `other`                | Should generally _not_ be used, but can in cases where PSO have a valid reason for suspension that is outside the other defined reasons. |
+| Reason                | Description                                                                                                                              |
+|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| `failed_verification` | The agreed upon service has not been delividered or been delivered in a different way that  - in multiple consecutive trades.            |
+| `other`               | Should generally _not_ be used, but can in cases where PSO have a valid reason for suspension that is outside the other defined reasons. |
 
 Depending on the reason for suspension, the system operator should warn the
 service provider in advance of the suspension. The reasons for suspension that

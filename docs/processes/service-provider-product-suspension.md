@@ -28,6 +28,7 @@ that it allows for a greater degree of automation in the process.
 | `failing_heartbeat`    | If SP does not respond to heartbeat, SO may consider the SP to be unavailable for activation.                                            |
 | `system_issues`        | There are issues with the service providers systems. Their back office systems used in delivering flexibility.                           |
 | `clearing_issues`      | Delayed or lack of payment.                                                                                                              |
+| `breach_of_conditions` | The terms of the agreement between the service provider and system operator have been breached multiple consecutive times                |
 | `other`                | Should generally _not_ be used, but can in cases where PSO have a valid reason for suspension that is outside the other defined reasons. |
 
 Depending on the reason for suspension, the system operator should warn the
