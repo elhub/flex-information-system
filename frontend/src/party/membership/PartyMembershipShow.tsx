@@ -74,7 +74,6 @@ export const PartyMembershipShow = () => {
         </Stack>
         <EventButton />
         <NestedResourceHistoryButton
-          parent="party"
           child="membership"
           label="party memberships"
         />

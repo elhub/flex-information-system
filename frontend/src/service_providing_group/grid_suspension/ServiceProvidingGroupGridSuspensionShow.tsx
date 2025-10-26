@@ -80,7 +80,6 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
         </Stack>
         {!isHistory && <EventButton />}
         <NestedResourceHistoryButton
-          parent="service_providing_group"
           child="grid_suspension"
           label="grid suspension"
         />

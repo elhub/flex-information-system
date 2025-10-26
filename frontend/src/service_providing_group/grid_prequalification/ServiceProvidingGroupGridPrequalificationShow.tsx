@@ -83,7 +83,6 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
         </Stack>
         {!isHistory && <EventButton />}
         <NestedResourceHistoryButton
-          parent="service_providing_group"
           child="grid_prequalification"
           label="grid prequalification resources"
         />

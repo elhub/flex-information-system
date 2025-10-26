@@ -13,13 +13,13 @@ import {
 } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
-import { ServiceProviderProductApplicationCommentList } from "./comment/ServiceProviderProductApplicationCommentList";
 import { IdentityField } from "../components/IdentityField";
 import { ProductTypeArrayField } from "../product_type/components";
 import {
   ServiceProviderProductApplicationAlreadyQualified,
   SPPAForSPButton,
 } from "./components";
+import { CommentList } from "../components/comments";
 
 export const ServiceProviderProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -80,7 +80,7 @@ export const ServiceProviderProductApplicationShow = () => {
               Comments
             </Typography>
             <NestedResourceHistoryButton child="comment" label="comments" />
-            <ServiceProviderProductApplicationCommentList />
+            <CommentList />
           </>
         )}
       </SimpleShowLayout>

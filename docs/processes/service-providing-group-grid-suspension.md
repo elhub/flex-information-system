@@ -1,4 +1,4 @@
-# SPG grid suspension
+# SPG Grid Suspension
 
 This process is used to [suspend](../concepts/suspension.md) the service
 providing group (SPG) temporarily. The suspension is done by an impacted system

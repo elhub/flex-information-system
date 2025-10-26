@@ -86,7 +86,6 @@ export const ServiceProvidingGroupMembershipShow = () => {
         </Stack>
         {!isHistory && <EventButton />}
         <NestedResourceHistoryButton
-          parent="service_providing_group"
           child="membership"
           label="memberships in this group"
         />
