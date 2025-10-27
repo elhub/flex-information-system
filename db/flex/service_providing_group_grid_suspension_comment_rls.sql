@@ -130,7 +130,7 @@ $$;
 -- RLS: SPGGSC-SO003
 -- RLS: SPGGSC-SP003
 GRANT SELECT ON service_providing_group_grid_suspension_comment_history
-TO flex_common;
+TO flex_system_operator, flex_service_provider;
 CREATE POLICY "SPGGSC_SO003_SP003_same_party"
 ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
