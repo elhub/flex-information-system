@@ -19,3 +19,9 @@ CREATE OR REPLACE VIEW spggs_involved_parties AS (
         INNER JOIN flex.service_providing_group AS spg
             ON spggsh.service_providing_group_id = spg.id
 );
+
+-- changeset flex:service-providing-group-grid-suspension-involved-parties-grants runAlways:true endDelimiter:;
+GRANT SELECT ON TABLE spggs_involved_parties TO flex_common;
+
+GRANT SELECT ON TABLE spggs_involved_parties
+TO flex_internal_event_notification;
