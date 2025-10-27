@@ -1,10 +1,8 @@
 import { defaultLightTheme } from "react-admin";
 
 const darkGreen = "#0b3c28";
-const brightGreen = "#198F5D";
 const lightGreen = "#d6e4d5";
 const grey = "#f6f6f6";
-const darkGray = "#76777F";
 const orange = "rgba(213, 128, 0, 1)";
 
 const darkColor =
@@ -17,10 +15,6 @@ export const elhubTheme = {
   sidebar: {
     width: 350, // The default value is 240
     closedWidth: 55, // The default value is 55
-  },
-  custom: {
-    buttonTextHover: brightGreen,
-    borderColor: darkGray,
   },
   palette: {
     ...defaultLightTheme.palette,

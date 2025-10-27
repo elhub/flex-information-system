@@ -94,8 +94,7 @@ export const AssumePartyPage = () => {
           fontWeight: "bold",
           border: "2px solid transparent",
           ":hover": {
-            color: elhubTheme.custom.buttonTextHover,
-            border: `2px solid ${elhubTheme.custom.borderColor}`,
+            border: `2px solid ${elhubTheme.palette.primary.main}`,
           },
         }}
       >
@@ -135,7 +134,7 @@ export const AssumePartyPage = () => {
           actions={false}
           perPage={25}
           sort={{ field: "id", order: "ASC" }}
-          filter={{ entity_id: identity.data!.entityID }}
+          filter={{ entity_id: identity.data?.entityID ?? "" }}
           empty={
             <Box textAlign="center" m={1}>
               <Typography variant="h5">
@@ -157,6 +156,7 @@ export const AssumePartyPage = () => {
             </ReferenceField>
             <ReferenceField
               label="Type"
+              link={false}
               source="party_id"
               reference="party"
               sortable={false}
@@ -184,7 +184,7 @@ export const AssumePartyPage = () => {
       ) : (
         <ResourceContextProvider value="party">
           <List
-            title={false}
+            title=""
             actions={false}
             perPage={5}
             sort={{ field: "id", order: "ASC" }}
@@ -200,7 +200,15 @@ export const AssumePartyPage = () => {
               <TextField label="ID" source="id" />
               <TextField source="name" />
               <TextField source="type" />
-              <AssumePartyButton field="id" />
+              <ReferenceField
+                label="Assume party"
+                source="id"
+                reference="party"
+                link={false}
+                sortable={false}
+              >
+                <AssumePartyButton field="id" />
+              </ReferenceField>
             </Datagrid>
           </List>
         </ResourceContextProvider>
