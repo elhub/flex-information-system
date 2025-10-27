@@ -100,7 +100,7 @@ USING (
     )
 );
 
-CREATE OR REPLACE FUNCTION latest_spggs_comment_visibility(id bigint)
+CREATE OR REPLACE FUNCTION spggs_latest_comment_visibility(id bigint)
 RETURNS text
 SECURITY DEFINER
 LANGUAGE sql
@@ -108,21 +108,23 @@ STABLE
 AS $$
     WITH
         spggs_history AS (
-            SELECT spggsc.visibility
+            SELECT
+                spggsc.visibility,
+                spggsch.record_time_range
             FROM flex.service_providing_group_grid_suspension_comment AS spggsc
             WHERE spggsc.id = id
-            UNION ALL (
-                SELECT spggsch.visibility
-                FROM
-                    flex.service_providing_group_grid_suspension_comment_history
-                        AS spggsch -- noqa
-                WHERE spggsch.id = id
-                ORDER BY spggsch.record_time_range DESC
-            )
+            UNION ALL
+            SELECT
+                spggsch.visibility,
+                spggsch.record_time_range
+            FROM flex.service_providing_group_grid_suspension_comment_history
+                AS spggsch -- noqa
+            WHERE spggsch.id = id
         )
 
     SELECT spggs_history.visibility
     FROM spggs_history
+    ORDER BY spggsch.record_time_range DESC
     LIMIT 1
 $$;
 
@@ -135,7 +137,7 @@ ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    latest_spggs_comment_visibility(
+    spggs_latest_comment_visibility(
         service_providing_group_grid_suspension_comment_history.id
     ) = 'same_party'
     AND EXISTS (
@@ -152,7 +154,7 @@ ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    latest_spggs_comment_visibility(
+    spggs_latest_comment_visibility(
         service_providing_group_grid_suspension_comment_history.id
     ) = 'any_involved_party'
     AND EXISTS (
