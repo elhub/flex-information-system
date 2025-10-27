@@ -15,10 +15,18 @@ import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
 
 export const ServiceProvidingGroupProductApplicationList = () => {
-  // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext();
   const id = record?.id;
-  const { permissions } = usePermissions();
+
+  const { permissions, isLoading } = usePermissions();
+
+  if (isLoading) return null; // or a loading spinner
+
+  if (
+    !permissions.includes("service_providing_group_product_application.read")
+  ) {
+    return null; // or <NotAllowed /> component
+  }
 
   const CreateButton = () => (
     <Button
@@ -34,69 +42,64 @@ export const ServiceProvidingGroupProductApplicationList = () => {
     />
   );
 
-  const ListActions = () => (
-    <TopToolbar>
-      {permissions.includes(
-        "service_providing_group_product_application.create",
-      ) && <CreateButton />}
-    </TopToolbar>
-  );
+  const ListActions = () => {
+    const { permissions } = usePermissions();
+    return (
+      <TopToolbar>
+        {permissions.includes(
+          "service_providing_group_product_application.create",
+        ) && <CreateButton />}
+      </TopToolbar>
+    );
+  };
 
   return (
-    permissions.includes(
-      "service_providing_group_product_application.read",
-    ) && (
-      <ResourceContextProvider value="service_providing_group_product_application">
-        <List
-          title={false}
-          perPage={10}
-          actions={<ListActions />}
-          exporter={false}
-          empty={false}
-          filter={id ? { service_providing_group_id: id } : undefined}
-          sort={{ field: "id", order: "DESC" }}
-          sx={{ mb: 4 }}
-          // disable read/writes to/from the URL by this component
-          // (necessary on pages with several List components,
-          // i.e., in our case, subresources)
-          // see https://github.com/marmelab/react-admin/pull/5741
-          disableSyncWithLocation
+    <ResourceContextProvider value="service_providing_group_product_application">
+      <List
+        title={false}
+        perPage={10}
+        actions={<ListActions />}
+        exporter={false}
+        empty={false}
+        filter={id ? { service_providing_group_id: id } : undefined}
+        sort={{ field: "id", order: "DESC" }}
+        sx={{ mb: 4 }}
+        disableSyncWithLocation
+      >
+        <Datagrid
+          bulkActionButtons={false}
+          rowClick={(_id, _res, record) =>
+            `/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}/show`
+          }
         >
-          <Datagrid
-            bulkActionButtons={false}
-            rowClick={(_id, _res, record) =>
-              `/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}/show`
-            }
-          >
-            <TextField source="id" label="ID" />
-            {!record?.id && (
-              <ReferenceField
-                source="service_providing_group_id"
-                reference="service_providing_group"
-                sortable={false}
-              >
-                <TextField source="name" />
-              </ReferenceField>
-            )}
+          <TextField source="id" label="ID" />
+          {!record?.id && (
             <ReferenceField
-              source="procuring_system_operator_id"
-              reference="party"
+              source="service_providing_group_id"
+              reference="service_providing_group"
               sortable={false}
             >
               <TextField source="name" />
             </ReferenceField>
-            <ProductTypeArrayField
-              label="Product types"
-              source="product_type_ids"
-              sortable={false}
-            />
-            <TextField source="status" />
-            {permissions.includes(
-              "service_providing_group_product_application.delete",
-            ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
-          </Datagrid>
-        </List>
-      </ResourceContextProvider>
-    )
+          )}
+          <ReferenceField
+            source="procuring_system_operator_id"
+            reference="party"
+            sortable={false}
+          >
+            <TextField source="name" />
+          </ReferenceField>
+          <ProductTypeArrayField
+            label="Product types"
+            source="product_type_ids"
+            sortable={false}
+          />
+          <TextField source="status" />
+          {permissions.includes(
+            "service_providing_group_product_application.delete",
+          ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
+        </Datagrid>
+      </List>
+    </ResourceContextProvider>
   );
 };

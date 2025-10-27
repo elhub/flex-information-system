@@ -13,6 +13,7 @@ import {
   InputStack,
   AutocompleteReferenceInput,
 } from "../../auth";
+import { useMemo } from "react";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -30,8 +31,13 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
   const { data: identity } = useGetIdentity();
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
   const isSystemOperator = identity?.role == "flex_system_operator";
+
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
 
   return (
     <SimpleForm

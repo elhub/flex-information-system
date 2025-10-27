@@ -15,6 +15,7 @@ import {
 } from "../../auth";
 import { DateTimeInput } from "../../components/datetime";
 import { ProductTypeArrayInput } from "../../product_type/components";
+import { useMemo } from "react";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -39,7 +40,11 @@ const filterRecord = ({
 export const ServiceProvidingGroupProductApplicationInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
-  const record = filterRecord({ ...actualRecord, ...overrideRecord });
+  // Memoize the combined record to avoid re-renders causing errors
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
 
   return (
     <SimpleForm
