@@ -3,7 +3,7 @@ import { defaultLightTheme } from "react-admin";
 const darkGreen = "#0b3c28";
 const lightGreen = "#d6e4d5";
 const grey = "#f6f6f6";
-const orange = "#d58000";
+const orange = "rgba(213, 128, 0, 1)";
 
 const darkColor =
   window.env.VITE_FLEX_COLOR_DARK ??
