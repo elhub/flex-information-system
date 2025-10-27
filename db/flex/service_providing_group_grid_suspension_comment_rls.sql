@@ -99,7 +99,7 @@ USING (
     )
 );
 
-CREATE OR REPLACE FUNCTION spggs_latest_comment_visibility(id bigint)
+CREATE OR REPLACE FUNCTION spggs_comment_latest_visibility(id bigint)
 RETURNS text
 SECURITY DEFINER
 LANGUAGE sql
@@ -136,7 +136,7 @@ ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    spggs_latest_comment_visibility(
+    spggs_comment_latest_visibility(
         service_providing_group_grid_suspension_comment_history.id
     ) = 'same_party'
     AND EXISTS (
@@ -153,7 +153,7 @@ ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    spggs_latest_comment_visibility(
+    spggs_comment_latest_visibility(
         service_providing_group_grid_suspension_comment_history.id
     ) = 'any_involved_party'
     AND EXISTS (
