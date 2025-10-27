@@ -196,7 +196,7 @@ export const AssumePartyPage = () => {
             }
             disableSyncWithLocation
           >
-            <Datagrid bulkActionButtons={false}>
+            <Datagrid bulkActionButtons={false} rowClick={false}>
               <TextField label="ID" source="id" />
               <TextField source="name" />
               <TextField source="type" />
