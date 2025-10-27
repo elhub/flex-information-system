@@ -4,6 +4,7 @@
 -- changeset flex:service-providing-group-grid-suspension-involved-parties endDelimiter:-- runAlways:true
 CREATE OR REPLACE VIEW
 service_providing_group_grid_suspension_involved_parties
+WITH (security_invoker = false)
 AS (
     SELECT
         spggs.id AS service_providing_group_grid_suspension_id,
