@@ -1132,6 +1132,126 @@ GRANT SELECT ON TABLE
 flex.service_providing_group_grid_suspension_history
 TO flex_internal_event_notification;
 
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_end_user;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-so-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-so-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-sp-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-sp-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_third_party;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment
+TO flex_internal_event_notification;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_end_user;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_third_party;
+
+-- changeset flex:flex-grant-service-providing-group-grid-suspension-comment-history-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_grid_suspension_comment_history
+TO flex_internal_event_notification;
+
 -- changeset flex:flex-grant-technical-resource-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE
 flex.technical_resource

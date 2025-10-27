@@ -227,6 +227,15 @@ func NewAPIHandler(
 	mux.Handle("GET /service_providing_group_grid_suspension_history", dataListPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_grid_suspension_history/{id}", dataPostgRESTHandler)
 
+	mux.Handle("GET /service_providing_group_grid_suspension_comment", dataListPostgRESTHandler)
+	mux.Handle("POST /service_providing_group_grid_suspension_comment", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_suspension_comment/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group_grid_suspension_comment/{id}", dataPostgRESTHandler)
+	mux.Handle("DELETE /service_providing_group_grid_suspension_comment/{id}", dataPostgRESTHandler)
+
+	mux.Handle("GET /service_providing_group_grid_suspension_comment_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_suspension_comment_history/{id}", dataPostgRESTHandler)
+
 	mux.Handle("GET /service_providing_group_membership", dataListPostgRESTHandler)
 	mux.Handle("POST /service_providing_group_membership", dataPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_membership/{id}", dataPostgRESTHandler)
