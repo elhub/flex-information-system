@@ -34,32 +34,18 @@ TO flex_common
 USING (created_by = (SELECT flex.current_identity()));
 
 -- RLS: SPGGSC-SO001
-CREATE POLICY "SPGGSC_SO001"
-ON service_providing_group_grid_suspension_comment
-FOR INSERT
-TO flex_system_operator
-WITH CHECK (
-    EXISTS (
-        SELECT 1
-        FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
-        WHERE spggs_ip.service_providing_group_grid_suspension_id
-        = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
-            AND spggs_ip.system_operator_id = (SELECT flex.current_party())
-    )
-);
-
 -- RLS: SPGGSC-SP001
-CREATE POLICY "SPGGSC_SP001"
+CREATE POLICY "SPGGSC_SO001_SP001"
 ON service_providing_group_grid_suspension_comment
 FOR INSERT
-TO flex_service_provider
+TO flex_system_operator, flex_service_provider
 WITH CHECK (
     EXISTS (
         SELECT 1
         FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
         WHERE spggs_ip.service_providing_group_grid_suspension_id
         = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
-            AND spggs_ip.service_provider_id = (SELECT flex.current_party())
+            AND spggs_ip.party_id = (SELECT flex.current_party())
     )
 );
 
@@ -92,10 +78,7 @@ USING (
         FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
         WHERE spggs_ip.service_providing_group_grid_suspension_id
         = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
-            AND (SELECT flex.current_party()) IN (
-                spggs_ip.system_operator_id,
-                spggs_ip.service_provider_id
-            )
+            AND spggs_ip.party_id = (SELECT flex.current_party())
     )
 );
 
@@ -161,10 +144,7 @@ USING (
         FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
         WHERE spggs_ip.service_providing_group_grid_suspension_id
         = service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id -- noqa
-            AND (SELECT flex.current_party()) IN (
-                spggs_ip.system_operator_id,
-                spggs_ip.service_provider_id
-            )
+            AND spggs_ip.party_id = (SELECT flex.current_party())
     )
 );
 
