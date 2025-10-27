@@ -65,7 +65,7 @@ WITH CHECK (
 
 -- RLS: SPGGSC-SO002
 -- RLS: SPGGSC-SP002
-CREATE POLICY "SPGGSC_SO002_SP002_private"
+CREATE POLICY "SPGGSC_SO002_SP002_same_party"
 ON service_providing_group_grid_suspension_comment
 FOR SELECT
 TO flex_system_operator, flex_service_provider
@@ -80,7 +80,7 @@ USING (
     )
 );
 
-CREATE POLICY "SPGGSC_SO002_SP002_public"
+CREATE POLICY "SPGGSC_SO002_SP002_any_involved_party"
 ON service_providing_group_grid_suspension_comment
 FOR SELECT
 TO flex_system_operator, flex_service_provider
@@ -131,7 +131,7 @@ $$;
 -- RLS: SPGGSC-SP003
 GRANT SELECT ON service_providing_group_grid_suspension_comment_history
 TO flex_common;
-CREATE POLICY "SPGGSC_SO003_SP003_private"
+CREATE POLICY "SPGGSC_SO003_SP003_same_party"
 ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
@@ -148,7 +148,7 @@ USING (
     )
 );
 
-CREATE POLICY "SPGGSC_SO003_SP003_public"
+CREATE POLICY "SPGGSC_SO003_SP003_any_involved_party"
 ON service_providing_group_grid_suspension_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
