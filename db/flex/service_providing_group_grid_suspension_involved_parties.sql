@@ -2,7 +2,9 @@
 -- Manually managed file
 
 -- changeset flex:service-providing-group-grid-suspension-involved-parties endDelimiter:-- runAlways:true
-CREATE OR REPLACE VIEW spggs_involved_parties AS (
+CREATE OR REPLACE VIEW
+service_providing_group_grid_suspension_involved_parties
+AS (
     SELECT
         spggs.id AS service_providing_group_grid_suspension_id,
         spggs.impacted_system_operator_id AS system_operator_id,
@@ -21,7 +23,10 @@ CREATE OR REPLACE VIEW spggs_involved_parties AS (
 );
 
 -- changeset flex:service-providing-group-grid-suspension-involved-parties-grants runAlways:true endDelimiter:;
-GRANT SELECT ON TABLE spggs_involved_parties TO flex_common;
+GRANT SELECT ON TABLE
+service_providing_group_grid_suspension_involved_parties
+TO flex_common;
 
-GRANT SELECT ON TABLE spggs_involved_parties
+GRANT SELECT ON TABLE
+service_providing_group_grid_suspension_involved_parties
 TO flex_internal_event_notification;

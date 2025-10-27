@@ -41,7 +41,7 @@ TO flex_system_operator
 WITH CHECK (
     EXISTS (
         SELECT 1
-        FROM flex.spggs_involved_parties AS spggs_ip
+        FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
         WHERE spggs_ip.service_providing_group_grid_suspension_id
         = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
             AND spggs_ip.system_operator_id = (SELECT flex.current_party())
@@ -56,7 +56,7 @@ TO flex_service_provider
 WITH CHECK (
     EXISTS (
         SELECT 1
-        FROM flex.spggs_involved_parties AS spggs_ip
+        FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
         WHERE spggs_ip.service_providing_group_grid_suspension_id
         = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
             AND spggs_ip.service_provider_id = (SELECT flex.current_party())
@@ -89,7 +89,7 @@ USING (
     = 'any_involved_party'
     AND EXISTS (
         SELECT 1
-        FROM flex.spggs_involved_parties AS spggs_ip
+        FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
         WHERE spggs_ip.service_providing_group_grid_suspension_id
         = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
             AND (SELECT flex.current_party()) IN (
@@ -158,7 +158,7 @@ USING (
     ) = 'any_involved_party'
     AND EXISTS (
         SELECT 1
-        FROM flex.spggs_involved_parties AS spggs_ip
+        FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
         WHERE spggs_ip.service_providing_group_grid_suspension_id
         = service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id -- noqa
             AND (SELECT flex.current_party()) IN (
