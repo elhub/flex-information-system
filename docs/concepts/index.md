@@ -1,7 +1,9 @@
 # Concepts
 
-This chapter defines the main ideas and terms used in the Flex Information
-System (FIS). Its purpose is to provide a shared understanding of what the
+This section focuses on **what** concepts mean, not **how** they are implemented.
+
+*Concepts* defines the main ideas and terms used in the Flexibility Information
+System (FIS). The purpose is to provide a shared understanding of what the
 core elements in the system represent, and to establish a common language
 for everyone involved in developing, operating, and using FIS.
 
@@ -36,10 +38,9 @@ A temporary deactivation of market participation.
 
 Overview of time-series in the context of a flexibility value chain.
 
-## Looking for something else?
+## Where to go next
 
-This section focuses on **what** concepts mean, not **how** they are implemented.
-For that, see:
+If you want to learn more about how FIS works in practice, continue with:
 
 - **[Processes](../processes/index.md)** – workflows and interactions.  
 - **[Resources](../resources/index.md)** – resources in the API.  
