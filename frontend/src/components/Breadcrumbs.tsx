@@ -11,26 +11,26 @@ const Link = styled(RaLink)`
     padding-right: 0.5em;
   }
 `;
+// Helper to determine if a breadcrumb is a numeric ID
+function isBreadcrumbId(breadcrumb: any): boolean {
+  if (typeof breadcrumb === "string") {
+    return /^\d+$/.test(breadcrumb);
+  }
+  if (typeof breadcrumb === "number") {
+    return /^\d+$/.test(String(breadcrumb));
+  }
+  if (breadcrumb && typeof breadcrumb.props?.children === "string") {
+    return /^\d+$/.test(breadcrumb.props.children);
+  }
+  return false;
+}
 
 export const Breadcrumbs = () => {
   const breadcrumbs = useBreadcrumbs();
 
   const patchedBreadcrumbs = breadcrumbs.map(({ match, breadcrumb }, idx) => {
     let to = match.pathname;
-    let breadcrumbStr = "";
-    if (typeof breadcrumb === "string") {
-      breadcrumbStr = breadcrumb;
-    } else if (typeof breadcrumb === "number") {
-      breadcrumbStr = String(breadcrumb);
-    } else if (
-      breadcrumb &&
-      typeof (breadcrumb as any).props?.children === "string"
-    ) {
-      breadcrumbStr = (breadcrumb as any).props.children;
-    }
-    const isId = /^\d+$/.test(breadcrumbStr);
-    // Only append /show for numeric IDs, not categories
-    if (isId && to !== "/" && !to.endsWith("/show")) {
+    if (isBreadcrumbId(breadcrumb) && to !== "/" && !to.endsWith("/show")) {
       to = `${to}/show`;
     }
     return { match: { pathname: to }, breadcrumb };
