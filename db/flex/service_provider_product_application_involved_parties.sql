@@ -8,22 +8,18 @@ WITH (security_invoker = false)
 AS (
     SELECT
         sppa.id AS service_provider_product_application_id,
-        sppa.system_operator_id AS party_id
+        unnest(ARRAY[
+            sppa.system_operator_id,
+            sppa.service_provider_id
+        ]) AS party_id
     FROM flex.service_provider_product_application AS sppa
     UNION
     SELECT
         sppah.id,
-        sppah.system_operator_id AS party_id
-    FROM flex.service_provider_product_application_history AS sppah
-    UNION
-    SELECT
-        sppa.id AS service_provider_product_application_id,
-        sppa.service_provider_id AS party_id
-    FROM flex.service_provider_product_application AS sppa
-    UNION
-    SELECT
-        sppah.id,
-        sppah.service_provider_id AS party_id
+        unnest(ARRAY[
+            sppah.system_operator_id,
+            sppah.service_provider_id
+        ]) AS party_id
     FROM flex.service_provider_product_application_history AS sppah
 );
 
