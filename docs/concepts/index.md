@@ -1,6 +1,6 @@
 # Concepts
 
-This section focuses on **what** concepts mean, not **how** they are implemented.
+This section focuses on **what** the concepts mean, not **how** they are implemented.
 
 *Concepts* defines the main ideas and terms used in the Flexibility Information
 System (FIS). The purpose is to provide a shared understanding of what the
