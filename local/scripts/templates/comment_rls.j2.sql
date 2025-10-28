@@ -85,7 +85,7 @@ USING (
 );
 
 CREATE OR REPLACE FUNCTION
-{{ base_resource_initials }}_comment_latest_visibility(id bigint)
+{{ base_resource_initials }}_comment_latest_visibility(in_{{ base_resource_initials }}c_id bigint)
 RETURNS text
 SECURITY DEFINER
 LANGUAGE sql
@@ -97,13 +97,13 @@ AS $$
                 {{ base_resource_initials }}c.visibility,
                 {{ base_resource_initials }}c.record_time_range
             FROM flex.{{ resource }}_comment AS {{ base_resource_initials }}c -- noqa
-            WHERE {{ base_resource_initials }}c.id = id
+            WHERE {{ base_resource_initials }}c.id = in_{{ base_resource_initials }}c_id
             UNION ALL
             SELECT
                 {{ base_resource_initials }}ch.visibility,
                 {{ base_resource_initials }}ch.record_time_range
             FROM flex.{{ resource }}_comment_history AS {{ base_resource_initials }}ch -- noqa
-            WHERE {{ base_resource_initials }}ch.id = id
+            WHERE {{ base_resource_initials }}ch.id = in_{{ base_resource_initials }}c_id
         )
 
     SELECT {{ base_resource_initials }}_history.visibility

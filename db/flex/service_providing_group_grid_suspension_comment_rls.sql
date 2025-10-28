@@ -82,7 +82,7 @@ USING (
 );
 
 CREATE OR REPLACE FUNCTION
-spggs_comment_latest_visibility(id bigint)
+spggs_comment_latest_visibility(in_spggsc_id bigint)
 RETURNS text
 SECURITY DEFINER
 LANGUAGE sql
@@ -94,13 +94,13 @@ AS $$
                 spggsc.visibility,
                 spggsc.record_time_range
             FROM flex.service_providing_group_grid_suspension_comment AS spggsc -- noqa
-            WHERE spggsc.id = id
+            WHERE spggsc.id = in_spggsc_id
             UNION ALL
             SELECT
                 spggsch.visibility,
                 spggsch.record_time_range
             FROM flex.service_providing_group_grid_suspension_comment_history AS spggsch -- noqa
-            WHERE spggsch.id = id
+            WHERE spggsch.id = in_spggsc_id
         )
 
     SELECT spggs_history.visibility
