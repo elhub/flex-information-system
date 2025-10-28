@@ -3,7 +3,7 @@ module flex
 go 1.24.3
 
 require (
-	github.com/cenkalti/backoff/v4 v4.3.0
+	github.com/cenkalti/backoff/v5 v5.0.3
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-contrib/graceful v1.1.4
 	github.com/gin-gonic/gin v1.10.1
