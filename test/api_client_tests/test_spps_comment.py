@@ -163,15 +163,15 @@ def check_history(clt, sppsc_id):
         client=clt,
         service_provider_product_suspension_comment_id=f"eq.{sppsc_id}",
     )
-    assert isinstance(h, list)
-    assert len(h) > 0
+    if not isinstance(h, list) or len(h) == 0:
+        return False
 
     # endpoint: GET /service_provider_product_suspension_comment_history/{id}
     h1 = read_service_provider_product_suspension_comment_history.sync(
         client=clt,
         id=cast(int, h[0].id),
     )
-    assert isinstance(
+    return isinstance(
         h1,
         ServiceProviderProductSuspensionCommentHistoryResponse,
     )
@@ -346,10 +346,23 @@ def test_sppsc_so_sp(data):
     # RLS: SPPSC-SO003
     # RLS: SPPSC-SP003
 
-    # SP can read history on the first SO's comment, and reverse, because when
-    # they were created, they were open to all involved parties
-    check_history(client_sp, sppsc_so.id)
-    check_history(client_so, sppsc_sp.id)
+    # SO can read history on SP's comment because it is public
+    assert check_history(client_so, sppsc_sp.id)
+    # but SP cannot read history on SO's comment because it is now private
+    assert not check_history(client_sp, sppsc_so.id)
+
+    # SO makes comment public again
+    u = update_service_provider_product_suspension_comment.sync(
+        client=client_so,
+        id=cast(int, sppsc_so.id),
+        body=ServiceProviderProductSuspensionCommentUpdateRequest(
+            visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # now SP can read history
+    assert check_history(client_sp, sppsc_so.id)
 
     # delete the SPPS so that comments disappear
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
@@ -361,5 +374,5 @@ def test_sppsc_so_sp(data):
     assert not isinstance(d, ErrorMessage)
 
     # history is still reachable
-    check_history(client_sp, sppsc_so.id)
-    check_history(client_so, sppsc_sp.id)
+    assert check_history(client_sp, sppsc_so.id)
+    assert check_history(client_so, sppsc_sp.id)

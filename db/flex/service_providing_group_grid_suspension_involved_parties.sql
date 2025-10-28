@@ -8,24 +8,20 @@ WITH (security_invoker = false)
 AS (
     SELECT
         spggs.id AS service_providing_group_grid_suspension_id,
-        spggs.impacted_system_operator_id AS party_id
-    FROM flex.service_providing_group_grid_suspension AS spggs
-    UNION
-    SELECT
-        spggsh.id,
-        spggsh.impacted_system_operator_id AS party_id
-    FROM flex.service_providing_group_grid_suspension_history AS spggsh
-    UNION
-    SELECT
-        spggs.id AS service_providing_group_grid_suspension_id,
-        spg.service_provider_id AS party_id
+        unnest(ARRAY[
+            spggs.impacted_system_operator_id,
+            spg.service_provider_id
+        ]) AS party_id
     FROM flex.service_providing_group_grid_suspension AS spggs
         INNER JOIN flex.service_providing_group AS spg
             ON spggs.service_providing_group_id = spg.id
     UNION
     SELECT
         spggsh.id,
-        spg.service_provider_id AS party_id
+        unnest(ARRAY[
+            spggsh.impacted_system_operator_id,
+            spg.service_provider_id
+        ]) AS party_id
     FROM flex.service_providing_group_grid_suspension_history AS spggsh
         INNER JOIN flex.service_providing_group AS spg
             ON spggsh.service_providing_group_id = spg.id
