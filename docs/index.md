@@ -109,3 +109,14 @@ EuroFlex project have access to the pilot system.
     Should you inadvertently add sensitive data to a resource, please
     [contact us](mailto:post@elhub.no) so that we can manually clean the
     problematic records.
+
+## How to use the documentation
+
+Learn more about how FIS works and how to use it:
+
+* [Concepts](concepts/index.md) – understand the main ideas and terms used
+in FIS.  
+* [Processes](processes/index.md) – how FIS supports flexibility workflows.
+* [Resources](resources/index.md) – explore API endpoints and data structures.  
+* [Guides](guides/index.md) – how to use and test FIS.  
+* [Technical](technical/index.md) – read about system architecture and integrations.
