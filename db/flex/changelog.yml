@@ -230,6 +230,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
+      file: ./service_provider_product_suspension_involved_parties.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_grid_suspension_involved_parties.sql
       relativeToChangelogFile: true
 

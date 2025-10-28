@@ -1,15 +1,26 @@
 --liquibase formatted sql
--- Manually managed file
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:service-provider-product-suspension-comment-rls runAlways:true endDelimiter:;
-ALTER TABLE IF EXISTS service_provider_product_suspension_comment
+ALTER TABLE IF EXISTS
+service_provider_product_suspension_comment
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
-GRANT SELECT ON service_provider_product_suspension_comment
+GRANT SELECT
+ON service_provider_product_suspension_comment
 TO flex_internal_event_notification;
 CREATE POLICY "SPPSC_INTERNAL_EVENT_NOTIFICATION"
 ON service_provider_product_suspension_comment
+FOR SELECT
+TO flex_internal_event_notification
+USING (true);
+
+GRANT SELECT
+ON service_provider_product_suspension_comment_history
+TO flex_internal_event_notification;
+CREATE POLICY "SPPSCH_INTERNAL_EVENT_NOTIFICATION"
+ON service_provider_product_suspension_comment_history
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
@@ -26,115 +37,125 @@ TO flex_common
 USING (created_by = (SELECT flex.current_identity()));
 
 -- RLS: SPPSC-SO001
-CREATE POLICY "SPPSC_SO001"
-ON service_provider_product_suspension_comment
-FOR INSERT
-TO flex_system_operator
-WITH CHECK (
-    EXISTS (
-        SELECT 1 FROM flex.service_provider_product_suspension AS spps
-        WHERE spps.id = service_provider_product_suspension_comment.service_provider_product_suspension_id -- noqa
-            AND spps.procuring_system_operator_id
-            = (SELECT flex.current_party())
-    )
-);
-
 -- RLS: SPPSC-SP001
-CREATE POLICY "SPPSC_SP001"
+CREATE POLICY "SPPSC_SO001_SP001"
 ON service_provider_product_suspension_comment
 FOR INSERT
-TO flex_service_provider
+TO flex_system_operator, flex_service_provider
 WITH CHECK (
     EXISTS (
-        SELECT 1 FROM flex.service_provider_product_suspension AS spps
-        WHERE spps.id = service_provider_product_suspension_comment.service_provider_product_suspension_id -- noqa
-            AND spps.service_provider_id = (SELECT flex.current_party())
+        SELECT 1
+        FROM flex.service_provider_product_suspension_involved_parties AS spps_ip -- noqa
+        WHERE spps_ip.service_provider_product_suspension_id = service_provider_product_suspension_comment.service_provider_product_suspension_id -- noqa
+            AND spps_ip.party_id = (SELECT flex.current_party())
     )
 );
 
 -- RLS: SPPSC-SO002
 -- RLS: SPPSC-SP002
-CREATE POLICY "SPPSC_SO002_SP002"
+CREATE POLICY "SPPSC_SO002_SP002_same_party"
 ON service_provider_product_suspension_comment
 FOR SELECT
-TO flex_common
+TO flex_system_operator, flex_service_provider
 USING (
-    EXISTS (
+    service_provider_product_suspension_comment.visibility = 'same_party' -- noqa
+    AND EXISTS (
         SELECT 1
-        FROM flex.service_provider_product_suspension AS spps
-            INNER JOIN flex.identity AS comment_creator
-                ON service_provider_product_suspension_comment.created_by -- noqa
-                    = comment_creator.id
-        WHERE spps.id = service_provider_product_suspension_comment.service_provider_product_suspension_id -- noqa
-            AND ((
-                service_provider_product_suspension_comment.visibility = 'same_party' -- noqa
-                AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
-            ) OR (
-                service_provider_product_suspension_comment.visibility = 'any_involved_party' -- noqa
-                AND (SELECT flex.current_party()) IN (
-                    spps.procuring_system_operator_id,
-                    spps.service_provider_id
-                )
-            ))
+        FROM flex.identity AS comment_creator
+        WHERE comment_creator.id = service_provider_product_suspension_comment.created_by -- noqa
+            AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
     )
 );
+
+CREATE POLICY "SPPSC_SO002_SP002_any_involved_party"
+ON service_provider_product_suspension_comment
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    service_provider_product_suspension_comment.visibility = 'any_involved_party' -- noqa
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_provider_product_suspension_involved_parties AS spps_ip -- noqa
+        WHERE spps_ip.service_provider_product_suspension_id = service_provider_product_suspension_comment.service_provider_product_suspension_id -- noqa
+            AND spps_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
+CREATE OR REPLACE FUNCTION
+spps_comment_latest_visibility(id bigint)
+RETURNS text
+SECURITY DEFINER
+LANGUAGE sql
+STABLE
+AS $$
+    WITH
+        spps_history AS (
+            SELECT
+                sppsc.visibility,
+                sppsc.record_time_range
+            FROM flex.service_provider_product_suspension_comment AS sppsc -- noqa
+            WHERE sppsc.id = id
+            UNION ALL
+            SELECT
+                sppsch.visibility,
+                sppsch.record_time_range
+            FROM flex.service_provider_product_suspension_comment_history AS sppsch -- noqa
+            WHERE sppsch.id = id
+        )
+
+    SELECT spps_history.visibility
+    FROM spps_history
+    ORDER BY spps_history.record_time_range DESC
+    LIMIT 1
+$$;
 
 -- RLS: SPPSC-SO003
 -- RLS: SPPSC-SP003
-GRANT SELECT ON service_provider_product_suspension_comment_history
-TO flex_common;
-CREATE POLICY "SPPSC_SO003_SP003"
+GRANT SELECT
+ON service_provider_product_suspension_comment_history
+TO flex_system_operator, flex_service_provider;
+CREATE POLICY "SPPSC_SO003_SP003_same_party"
 ON service_provider_product_suspension_comment_history
 FOR SELECT
-TO flex_common
+TO flex_system_operator, flex_service_provider
 USING (
-    EXISTS (
-        WITH
-            -- history + current SPPS if it has never been updated/deleted
-            spps_history AS (
-                SELECT
-                    sppsh.procuring_system_operator_id,
-                    sppsh.service_provider_id
-                FROM flex.service_provider_product_suspension_history AS sppsh
-                WHERE sppsh.id = service_provider_product_suspension_comment_history.service_provider_product_suspension_id -- noqa
-                UNION ALL
-                SELECT
-                    spps.procuring_system_operator_id,
-                    spps.service_provider_id
-                FROM flex.service_provider_product_suspension AS spps
-                WHERE spps.id = service_provider_product_suspension_comment_history.service_provider_product_suspension_id -- noqa
-            )
-
+    spps_comment_latest_visibility(
+        service_provider_product_suspension_comment_history.id -- noqa
+    ) = 'same_party'
+    AND EXISTS (
         SELECT 1
-        FROM spps_history
-            INNER JOIN flex.identity AS comment_creator
-                ON service_provider_product_suspension_comment_history.created_by -- noqa
-                    = comment_creator.id
-        WHERE ((
-            service_provider_product_suspension_comment_history.visibility = 'same_party' -- noqa
-            AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
-        ) OR (
-            service_provider_product_suspension_comment_history.visibility -- noqa
-            = 'any_involved_party' -- noqa
-            AND (SELECT flex.current_party()) IN (
-                spps_history.procuring_system_operator_id,
-                spps_history.service_provider_id
-            )
-        ))
+        FROM flex.identity AS comment_creator
+        WHERE comment_creator.id
+        = service_provider_product_suspension_comment_history.created_by -- noqa
+            AND comment_creator.party_id = (SELECT flex.current_party())
     )
 );
 
--- RLS: SPPAC-FISO001
-CREATE POLICY "SPPAC_FISO001"
+CREATE POLICY "SPPSC_SO003_SP003_any_involved_party"
+ON service_provider_product_suspension_comment_history
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    spps_comment_latest_visibility(
+        service_provider_product_suspension_comment_history.id -- noqa
+    ) = 'any_involved_party'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_provider_product_suspension_involved_parties AS spps_ip -- noqa
+        WHERE spps_ip.service_provider_product_suspension_id = service_provider_product_suspension_comment_history.service_provider_product_suspension_id -- noqa
+            AND spps_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
+-- RLS: SPPSC-FISO001
+CREATE POLICY "SPPSC_FISO001"
 ON service_provider_product_suspension_comment
 FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
--- RLS: SPPAC-FISO002
-GRANT SELECT ON service_provider_product_suspension_comment_history
-TO flex_flexibility_information_system_operator;
-CREATE POLICY "SPPAC_FISO002"
+-- RLS: SPPSC-FISO002
+CREATE POLICY "SPPSC_FISO002"
 ON service_provider_product_suspension_comment_history
 FOR ALL
 TO flex_flexibility_information_system_operator
