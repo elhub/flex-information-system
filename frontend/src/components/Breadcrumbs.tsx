@@ -25,7 +25,7 @@ function isBreadcrumbId(breadcrumb: any): boolean {
 export const Breadcrumbs = () => {
   const breadcrumbs = useBreadcrumbs();
 
-  const patchedBreadcrumbs = breadcrumbs.map(({ match, breadcrumb }, idx) => {
+  const patchedBreadcrumbs = breadcrumbs.map(({ match, breadcrumb }) => {
     let to = match.pathname;
     if (isBreadcrumbId(breadcrumb) && to !== "/" && !to.endsWith("/show")) {
       to = `${to}/show`;
