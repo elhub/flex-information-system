@@ -68,7 +68,7 @@ const PartyBusinessIDTypeInput = (props: any) => {
     if (isEndUser) {
       formContext.setValue("business_id_type", "uuid");
     }
-  }, [isEndUser]);
+  }, [formContext, isEndUser]);
 
   // Map for human-readable display names
   const businessIDTypeLabels: Record<string, string> = {
