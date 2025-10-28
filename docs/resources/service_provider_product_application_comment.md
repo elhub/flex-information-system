@@ -44,11 +44,9 @@ No policies.
 
 #### Common
 
-| Policy key   | Policy                                        | Status |
-|--------------|-----------------------------------------------|--------|
-| SPPAC-COM001 | Read history on SPPAC that they can read.     | DONE   |
-| SPPAC-COM002 | Update SPPAC that they created.               | DONE   |
-| SPPAC-COM003 | Create SPPAC on SPPA that they are linked to. | DONE   |
+| Policy key   | Policy                          | Status |
+|--------------|---------------------------------|--------|
+| SPPAC-COM001 | Update SPPAC that they created. | DONE   |
 
 #### Balance Responsible Party
 
@@ -67,6 +65,7 @@ No policies.
 | Policy key    | Policy                             | Status |
 |---------------|------------------------------------|--------|
 | SPPAC-FISO001 | Read, create and update all SPPAC. | DONE   |
+| SPPAC-FISO002 | Read history on all SPPSC.         | DONE   |
 
 #### Market Operator
 
@@ -78,15 +77,19 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                            | Status |
-|-------------|---------------------------------------------------|--------|
-| SPPAC-SO001 | Read SPPAC that the visibility allows.            | DONE   |
+| Policy key  | Policy                                                   | Status |
+|-------------|----------------------------------------------------------|--------|
+| SPPAC-SO001 | Create SPPAC on SPPA where they are the SO.              | DONE   |
+| SPPAC-SO002 | Read SPPAC that the visibility allows.                   | DONE   |
+| SPPAC-SO003 | Read history on SPPAC that the latest visibility allows. | DONE   |
 
 #### Service Provider
 
-| Policy key  | Policy                                            | Status |
-|-------------|---------------------------------------------------|--------|
-| SPPAC-SP001 | Read SPPAC that the visibility allows.            | DONE   |
+| Policy key  | Policy                                                   | Status |
+|-------------|----------------------------------------------------------|--------|
+| SPPAC-SP001 | Create SPPAC on SPPA where they are SP.                  | DONE   |
+| SPPAC-SP002 | Read SPPAC that the visibility allows.                   | DONE   |
+| SPPAC-SP003 | Read history on SPPAC that the latest visibility allows. | DONE   |
 
 #### Third Party
 
