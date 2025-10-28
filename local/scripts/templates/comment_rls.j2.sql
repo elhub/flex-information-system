@@ -2,7 +2,7 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 {%- set liquibase_resource = resource | replace("_", "-") %}
-{%- set base_resource_initials = resource.split('_') | map('first') | join  %}
+{%- set lower_acronym = data.acronym | lower %}
 
 -- changeset flex:{{ liquibase_resource }}-comment-rls runAlways:true endDelimiter:;
 ALTER TABLE IF EXISTS
@@ -48,9 +48,9 @@ TO flex_system_operator, flex_service_provider
 WITH CHECK (
     EXISTS (
         SELECT 1
-        FROM flex.{{ resource }}_involved_parties AS {{ base_resource_initials }}_ip -- noqa
-        WHERE {{ base_resource_initials }}_ip.{{ resource }}_id = {{ resource }}_comment.{{ resource }}_id -- noqa
-            AND {{ base_resource_initials }}_ip.party_id = (SELECT flex.current_party())
+        FROM flex.{{ resource }}_involved_parties AS {{ lower_acronym }}_ip -- noqa
+        WHERE {{ lower_acronym }}_ip.{{ resource }}_id = {{ resource }}_comment.{{ resource }}_id -- noqa
+            AND {{ lower_acronym }}_ip.party_id = (SELECT flex.current_party())
     )
 );
 
@@ -78,37 +78,37 @@ USING (
     {{ resource }}_comment.visibility = 'any_involved_party' -- noqa
     AND EXISTS (
         SELECT 1
-        FROM flex.{{ resource }}_involved_parties AS {{ base_resource_initials }}_ip -- noqa
-        WHERE {{ base_resource_initials }}_ip.{{ resource }}_id = {{ resource }}_comment.{{ resource }}_id -- noqa
-            AND {{ base_resource_initials }}_ip.party_id = (SELECT flex.current_party())
+        FROM flex.{{ resource }}_involved_parties AS {{ lower_acronym }}_ip -- noqa
+        WHERE {{ lower_acronym }}_ip.{{ resource }}_id = {{ resource }}_comment.{{ resource }}_id -- noqa
+            AND {{ lower_acronym }}_ip.party_id = (SELECT flex.current_party())
     )
 );
 
 CREATE OR REPLACE FUNCTION
-{{ base_resource_initials }}_comment_latest_visibility(in_{{ base_resource_initials }}c_id bigint)
+{{ lower_acronym }}_comment_latest_visibility(in_{{ lower_acronym }}c_id bigint)
 RETURNS text
 SECURITY DEFINER
 LANGUAGE sql
 STABLE
 AS $$
     WITH
-        {{ base_resource_initials }}_history AS (
+        {{ lower_acronym }}_history AS (
             SELECT
-                {{ base_resource_initials }}c.visibility,
-                {{ base_resource_initials }}c.record_time_range
-            FROM flex.{{ resource }}_comment AS {{ base_resource_initials }}c -- noqa
-            WHERE {{ base_resource_initials }}c.id = in_{{ base_resource_initials }}c_id
+                {{ lower_acronym }}c.visibility,
+                {{ lower_acronym }}c.record_time_range
+            FROM flex.{{ resource }}_comment AS {{ lower_acronym }}c -- noqa
+            WHERE {{ lower_acronym }}c.id = in_{{ lower_acronym }}c_id
             UNION ALL
             SELECT
-                {{ base_resource_initials }}ch.visibility,
-                {{ base_resource_initials }}ch.record_time_range
-            FROM flex.{{ resource }}_comment_history AS {{ base_resource_initials }}ch -- noqa
-            WHERE {{ base_resource_initials }}ch.id = in_{{ base_resource_initials }}c_id
+                {{ lower_acronym }}ch.visibility,
+                {{ lower_acronym }}ch.record_time_range
+            FROM flex.{{ resource }}_comment_history AS {{ lower_acronym }}ch -- noqa
+            WHERE {{ lower_acronym }}ch.id = in_{{ lower_acronym }}c_id
         )
 
-    SELECT {{ base_resource_initials }}_history.visibility
-    FROM {{ base_resource_initials }}_history
-    ORDER BY {{ base_resource_initials }}_history.record_time_range DESC
+    SELECT {{ lower_acronym }}_history.visibility
+    FROM {{ lower_acronym }}_history
+    ORDER BY {{ lower_acronym }}_history.record_time_range DESC
     LIMIT 1
 $$;
 
@@ -122,7 +122,7 @@ ON {{ resource }}_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    {{ base_resource_initials }}_comment_latest_visibility(
+    {{ lower_acronym }}_comment_latest_visibility(
         {{ resource }}_comment_history.id -- noqa
     ) = 'same_party'
     AND EXISTS (
@@ -139,14 +139,14 @@ ON {{ resource }}_comment_history
 FOR SELECT
 TO flex_system_operator, flex_service_provider
 USING (
-    {{ base_resource_initials }}_comment_latest_visibility(
+    {{ lower_acronym }}_comment_latest_visibility(
         {{ resource }}_comment_history.id -- noqa
     ) = 'any_involved_party'
     AND EXISTS (
         SELECT 1
-        FROM flex.{{ resource }}_involved_parties AS {{ base_resource_initials }}_ip -- noqa
-        WHERE {{ base_resource_initials }}_ip.{{ resource }}_id = {{ resource }}_comment_history.{{ resource }}_id -- noqa
-            AND {{ base_resource_initials }}_ip.party_id = (SELECT flex.current_party())
+        FROM flex.{{ resource }}_involved_parties AS {{ lower_acronym }}_ip -- noqa
+        WHERE {{ lower_acronym }}_ip.{{ resource }}_id = {{ resource }}_comment_history.{{ resource }}_id -- noqa
+            AND {{ lower_acronym }}_ip.party_id = (SELECT flex.current_party())
     )
 );
 
