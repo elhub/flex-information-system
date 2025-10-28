@@ -21,7 +21,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/cenkalti/backoff/v4"
+	"github.com/cenkalti/backoff/v5"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/graceful"
 	"github.com/gin-gonic/gin"
@@ -253,25 +253,20 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	ebo.RandomizationFactor = 0.2
 	ebo.Multiplier = 2
 	ebo.MaxInterval = 10 * time.Minute
-	ebo.MaxElapsedTime = 1 * time.Hour
 
-	backoffWithContext := backoff.WithContext(ebo, ctx)
-
-	var dbPool *pgpool.Pool
-
-	err = backoff.Retry(func() error {
+	dbPool, err := backoff.Retry(ctx, func() (*pgpool.Pool, error) {
 		var err error
 
 		slog.InfoContext(ctx, "Trying to connect...")
 
-		dbPool, err = pgpool.New(ctx, dbURI, requestDetailsContextKey)
+		pool, err := pgpool.New(ctx, dbURI, requestDetailsContextKey)
 		if err != nil {
 			slog.InfoContext(ctx, "Failed: ", "error", err.Error())
-			return fmt.Errorf("could not connect to the database: %w", err)
+			return nil, fmt.Errorf("could not connect to the database: %w", err)
 		}
 
-		return nil
-	}, backoffWithContext)
+		return pool, nil
+	}, backoff.WithBackOff(ebo), backoff.WithMaxElapsedTime(1*time.Hour))
 	if err != nil {
 		return fmt.Errorf("exhausted db connection retries: %w", err)
 	}
@@ -327,16 +322,13 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 				return
 			default:
 				slog.InfoContext(ctx, "Launching the event worker...")
-				backoffWithContext = backoff.WithContext(ebo, ctx)
 
-				var replConn *pgrepl.Connection
-
-				err = backoff.Retry(func() error {
+				replConn, err := backoff.Retry(ctx, func() (*pgrepl.Connection, error) {
 					var err error
 
 					slog.InfoContext(ctx, "Trying to connect to the replication slot...")
 
-					replConn, err = pgrepl.NewConnection(
+					conn, err := pgrepl.NewConnection(
 						ctx,
 						replURI,
 						eventSlotName,
@@ -345,11 +337,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 					)
 					if err != nil {
 						slog.InfoContext(ctx, "Failed", "error", err.Error())
-						return fmt.Errorf("failed to create replication listener: %w", err)
+						return nil, fmt.Errorf("failed to create replication listener: %w", err)
 					}
 
-					return nil
-				}, backoffWithContext)
+					return conn, nil
+				}, backoff.WithBackOff(ebo), backoff.WithMaxElapsedTime(1*time.Hour))
 				if err != nil {
 					slog.InfoContext(ctx, "exhausted db connection retries", "error", err.Error())
 					return
