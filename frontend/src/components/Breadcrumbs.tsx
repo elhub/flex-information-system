@@ -13,16 +13,13 @@ const Link = styled(RaLink)`
 `;
 // Helper to determine if a breadcrumb is a numeric ID
 function isBreadcrumbId(breadcrumb: any): boolean {
-  if (typeof breadcrumb === "string") {
-    return /^\d+$/.test(breadcrumb);
+  let value = "";
+  if (typeof breadcrumb === "string" || typeof breadcrumb === "number") {
+    value = String(breadcrumb);
+  } else if (breadcrumb && typeof breadcrumb.props?.children === "string") {
+    value = breadcrumb.props.children;
   }
-  if (typeof breadcrumb === "number") {
-    return /^\d+$/.test(String(breadcrumb));
-  }
-  if (breadcrumb && typeof breadcrumb.props?.children === "string") {
-    return /^\d+$/.test(breadcrumb.props.children);
-  }
-  return false;
+  return /^\d+$/.test(value);
 }
 
 export const Breadcrumbs = () => {
