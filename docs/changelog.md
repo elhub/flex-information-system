@@ -3,6 +3,13 @@
 This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
+## 27.10.2025
+
+* **Added the _Service Providing Group Grid Suspension Comment_ resource.**
+
+## 08.10.2025
+
+* **Added the _Service Providing Group Grid Suspension_ resource.**
 
 ## 26.09.2025
 
