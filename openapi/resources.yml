@@ -193,8 +193,7 @@ resources:
         example: 74
       controllable_unit_id:
         description: >-
-          Reference to the controllable unit this relation links to a
-          service provider.
+          Reference to the suspended controllable unit.
         format: bigint
         type: integer
         x-no-update: true
@@ -212,6 +211,8 @@ resources:
           resource: party
           field: id
         example: 7
+        required: false
+        x-details: Defaults to the system operator creating the resource.
       service_provider_id:
         description: Reference to the service provider being suspended.
         format: bigint
