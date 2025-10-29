@@ -73,7 +73,7 @@ const PartyBusinessIDTypeInput = (props: any) => {
   // Map for human-readable display names
   const businessIDTypeLabels: Record<string, string> = {
     uuid: "UUID (Universally Unique Identifier)",
-    eic_x: "EIC X (Energy Identification Code X)",
+    eic_x: "EIC-X (Energy Identification Code for Parties)",
     gln: "GLN (Global Location Number)",
     org: "ORG (Organization Number)",
   };
