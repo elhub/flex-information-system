@@ -63,8 +63,8 @@ No policies.
 
 | Policy key    | Policy                                     | Status |
 |---------------|--------------------------------------------|--------|
-| CUS-FISO001 | Create, read, update and delete all CUS. | DONE   |
-| CUS-FISO002 | Read all CUS history.                    | DONE   |
+| CUS-FISO001 | Create, read, update and delete all CUS. | TODO   |
+| CUS-FISO002 | Read all CUS history.                    | TODO   |
 
 #### Market Operator
 
@@ -78,17 +78,17 @@ No policies.
 
 | Policy key  | Policy                                               | Status |
 |-------------|------------------------------------------------------|--------|
-| CUS-SO001 | Create, read, update and delete their own CUS.     | DONE   |
-| CUS-SO002 | Read history on their own CUS.                     | DONE   |
-| CUS-SO003 | Read CUS targeted at CUs they can see.            | DONE   |
-| CUS-SO004 | Read history on CUS targeted at CUs they can see. | DONE   |
+| CUS-SO001 | Create, read, update and delete their own CUS.     | TODO   |
+| CUS-SO002 | Read history on their own CUS.                     | TODO   |
+| CUS-SO003 | Read CUS targeted at CUs they can see.            | TODO   |
+| CUS-SO004 | Read history on CUS targeted at CUs they can see. | TODO   |
 
 #### Service Provider
 
 | Policy key  | Policy                                      | Status |
 |-------------|---------------------------------------------|--------|
-| CUS-SP001 | Read CUS targeting their CUs.            | DONE   |
-| CUS-SP002 | Read history on CUS targeting their CUs. | DONE   |
+| CUS-SP001 | Read CUS targeting their CUs.            | TODO   |
+| CUS-SP002 | Read history on CUS targeting their CUs. | TODO   |
 
 #### Third Party
 
