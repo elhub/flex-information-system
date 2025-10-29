@@ -24,14 +24,14 @@ service providing group from delivering products of certain types.
 
 | Validation rule key | Validation rule                                                                           | Status |
 |---------------------|-------------------------------------------------------------------------------------------|--------|
-| SPGPS-VAL001        | Suspended `product_type_ids` must be product types that the SO has qualified the SPG for. | TODO   |
+| SPGPS-VAL001        | Suspended `product_type_ids` must be product types that the SO has qualified the SPG for. | DONE   |
 
 ## Notifications
 
-| Action                 | Recipient | Comment                                                   |
-|------------------------|-----------|-----------------------------------------------------------|
-| create, update, delete | SP        | Suspended SP                                              |
-| create, update, delete | SO        | All PSOs procuring the same product type from the same SP |
+| Action                 | Recipient | Comment                                                    |
+|------------------------|-----------|------------------------------------------------------------|
+| create, update, delete | SP        | Suspended SP                                               |
+| create, update, delete | SO        | All PSOs procuring the same product type from the same SPG |
 
 ## Authorization
 
@@ -64,8 +64,8 @@ No policies.
 
 | Policy key    | Policy                                     | Status |
 |---------------|--------------------------------------------|--------|
-| SPGPS-FISO001 | Create, read, update and delete all SPGPS. | TODO   |
-| SPGPS-FISO002 | Read all SPGPS history.                    | TODO   |
+| SPGPS-FISO001 | Create, read, update and delete all SPGPS. | DONE   |
+| SPGPS-FISO002 | Read all SPGPS history.                    | DONE   |
 
 #### Market Operator
 
@@ -79,17 +79,17 @@ No policies.
 
 | Policy key  | Policy                                                                                           | Status |
 |-------------|--------------------------------------------------------------------------------------------------|--------|
-| SPGPS-SO001 | Create, read, update and delete their own SPGPS.                                                 | TODO   |
-| SPGPS-SO002 | Read history on their own SPGPS.                                                                 | TODO   |
-| SPGPS-SO003 | Read SPGPS targeted at SPGs they have qualified for at least one of the product types.           | TODO   |
-| SPGPS-SO004 | Read history on SPGPS targeted at SPGs they had qualified for at least one of the product types. | TODO   |
+| SPGPS-SO001 | Create, read, update and delete their own SPGPS.                                                 | DONE   |
+| SPGPS-SO002 | Read history on their own SPGPS.                                                                 | DONE   |
+| SPGPS-SO003 | Read SPGPS targeted at SPGs they have qualified for at least one of the product types.           | DONE   |
+| SPGPS-SO004 | Read history on SPGPS targeted at SPGs they had qualified for at least one of the product types. | DONE   |
 
 #### Service Provider
 
 | Policy key  | Policy                                      | Status |
 |-------------|---------------------------------------------|--------|
-| SPGPS-SP001 | Read SPGPS targeting their SPGs.            | TODO   |
-| SPGPS-SP002 | Read history on SPGPS targeting their SPGs. | TODO   |
+| SPGPS-SP001 | Read SPGPS targeting their SPGs.            | DONE   |
+| SPGPS-SP002 | Read history on SPGPS targeting their SPGs. | DONE   |
 
 #### Third Party
 
