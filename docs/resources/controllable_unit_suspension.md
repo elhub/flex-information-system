@@ -29,7 +29,7 @@ Controllable Unit from delivering services.
 
 | Action                 | Recipient | Comment                                                             |
 |------------------------|-----------|---------------------------------------------------------------------|
-| create, update, delete | SP        | Suspended SP                                                        |
+| create, update, delete | SP        | Service provider with current contract to the suspended controllable unit                                                       |
 | create, update, delete | SO        | All ISOs and all PSOs for which the CU is prequalified or verified |
 
 ## Authorization
