@@ -75,7 +75,7 @@ const PartyBusinessIDTypeInput = (props: any) => {
     uuid: "UUID (Universally Unique Identifier)",
     eic_x: "EIC-X (Energy Identification Code for Parties)",
     gln: "GLN (Global Location Number)",
-    org: "ORG (Organization Number)",
+    org: "ORG (Organisation Number)",
   };
   const businessIDTypes = ["uuid", "eic_x", "gln", "org"];
 
