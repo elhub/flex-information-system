@@ -71,6 +71,12 @@ controllable_unit_service_provider;valid_from;;R;R;R;RCU;R;R;RCU;R;;;
 controllable_unit_service_provider;valid_to;;R;R;R;RCU;R;R;RCU;R;;;
 controllable_unit_service_provider;recorded_at;;R;R;R;R;R;R;R;R;;;
 controllable_unit_service_provider;recorded_by;;R;R;R;R;R;R;R;R;;;
+controllable_unit_suspension;;;;;;D;;D;;;;;R
+controllable_unit_suspension;id;;R;R;R;R;R;R;R;R;;;
+controllable_unit_suspension;controllable_unit_id;;R;R;R;RC;R;R;RC;R;;;
+controllable_unit_suspension;impacted_system_operator_id;;R;R;R;RC;R;RC;R;R;;;
+controllable_unit_suspension;service_provider_id;;R;R;R;RC;R;R;RC;R;;;
+controllable_unit_suspension;reason;;R;R;R;RCU;R;RCU;R;R;;;
 service_providing_group;;;;;;;;;;;;;R
 service_providing_group;id;;R;R;R;R;R;R;R;R;;;
 service_providing_group;name;;R;R;R;RCU;R;R;RCU;R;;;
