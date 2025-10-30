@@ -93,11 +93,11 @@ The following sections outline the checklist for each level.
 
 We must check the service provider that owns the SPG.
 
-| # | Process/check                           | Description                                           | Result                                                   |
-|---|-----------------------------------------|-------------------------------------------------------|----------------------------------------------------------|
-| 1 | SP product application status           | Check SP product application status                   | If status is `not_qualified`, then not ready for market  |
-| 2 | SP product application status timestamp | Check if SP product application timestamp is present  | If timestamp is missing, then not ready for market       |
-| 3 | SP product application suspension       | Check if SP product application is suspended          | If suspended, then not ready for market                  |
+| # | Process/check                           | Description                                          | Result                                                  |
+|---|-----------------------------------------|------------------------------------------------------|---------------------------------------------------------|
+| 1 | SP product application status           | Check SP product application status                  | If status is `not_qualified`, then not ready for market |
+| 2 | SP product application status timestamp | Check if SP product application timestamp is present | If timestamp is missing, then not ready for market      |
+| 3 | SP product suspension                   | Check if SP product is suspended                     | If suspended, then not ready for market                 |
 
 ### Service providing group checklist
 
@@ -108,19 +108,19 @@ We must then check the SPG itself.
 | 1 | SPG status                                 | Check SPG status                                              | If SPG is deactivated, then not ready for market                                                                                      |
 | 2 | SPG grid prequalification status           | Check SPG grid prequalification status                        | If SPG grid prequalification status is  `not_approved`, then not ready for market                                                     |
 | 3 | SPG grid prequalification status timestamp | Check if grid prequalification timestamp is present           | If timestamp is missing, then not ready for market                                                                                    |
-| 4 | SPG grid prequalification suspension       | Check if SPG grid prequalification is suspended               | If suspended, then not ready for market                                                                                               |
+| 4 | SPG grid suspension                        | Check if SPG is suspended                                     | If suspended, then not ready for market                                                                                               |
 | 5 | SPG product application status             | Check SPG product application status                          | If SPG product application status is `rejected`, then not ready for market                                                            |
 | 6 | SPG product application status timestamps  | Check if one of SPG product application timestamps is present | If status is not `temporary_qualified` and both `prequalified_at` and `verified_at` timestamps are missing, then not ready for market |
-| 7 | SPG product application status supension   | Check if SPG product application is suspended                 | If suspended, then not ready for market                                                                                               |
+| 7 | SPG product supension                      | Check if SPG product is suspended                             | If suspended, then not ready for market                                                                                               |
 
 ### Controllable unit checklist
 
 An SPG consists of one or more controllable units. When we check if the SPG is
 ready, then we can check that _at least one_ CU is ready.
 
-| # | Process/check                       | Description                               | Result                                                                          |
-|---|-------------------------------------|-------------------------------------------|---------------------------------------------------------------------------------|
-| 1 | CU status                           | Check CU status                           | If CU is deactivated, then not ready for market                                 |
-| 2 | CU grid validation status           | Check CU grid validation status           | If CU grid validation status is `validation_failed`, then not ready for market  |
-| 3 | CU grid validation status timestamp | Check if validated timestamp present      | If timestamp is missing, then not ready for market                              |
-| 4 | CU grid validation suspension       | Check if CU grid validation is suspended  | If suspended, then not ready for market                                         |
+| # | Process/check                       | Description                          | Result                                                                         |
+|---|-------------------------------------|--------------------------------------|--------------------------------------------------------------------------------|
+| 1 | CU status                           | Check CU status                      | If CU is deactivated, then not ready for market                                |
+| 2 | CU grid validation status           | Check CU grid validation status      | If CU grid validation status is `validation_failed`, then not ready for market |
+| 3 | CU grid validation status timestamp | Check if validated timestamp present | If timestamp is missing, then not ready for market                             |
+| 4 | CU suspension                       | Check if CU is suspended             | If suspended, then not ready for market                                        |

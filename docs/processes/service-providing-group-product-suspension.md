@@ -24,12 +24,6 @@ i.e. removing the suspension.
 ## Prerequisites
 
 * The issue that triggers the suspension is temporary.
-* End users should not be notified about or view the suspension in FIS. Service
-  providers will notify end users when necessary and dependent on the agreement
-  between them and the end user.
-* The suspension of the SPG product prequalification will impact the
-  [ready for market](https://elhub.github.io/flex-information-system/concepts/ready-for-market/)
-  status for a SPG.
 
 ## Sequence
 
