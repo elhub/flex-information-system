@@ -1496,6 +1496,7 @@ resources:
     history:
       - list
       - read
+    comments: true
     history_rls: false
     properties:
       id:
