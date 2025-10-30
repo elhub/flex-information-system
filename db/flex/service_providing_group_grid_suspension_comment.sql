@@ -16,14 +16,16 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_suspension_comment (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT service_providing_group_grid_suspension_comment_visibility_check
+    CONSTRAINT
+    service_providing_group_grid_suspension_comment_visibility_check
     CHECK (
         visibility IN (
             'same_party',
             'any_involved_party'
         )
     ),
-    CONSTRAINT service_providing_group_grid_suspension_comment_spggs_fkey
+    CONSTRAINT
+    service_providing_group_grid_suspension_comment_spggs_fkey
     FOREIGN KEY (service_providing_group_grid_suspension_id)
     REFERENCES service_providing_group_grid_suspension (id)
     ON DELETE CASCADE

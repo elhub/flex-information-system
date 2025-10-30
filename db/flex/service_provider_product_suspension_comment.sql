@@ -16,14 +16,16 @@ CREATE TABLE IF NOT EXISTS service_provider_product_suspension_comment (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT service_provider_product_suspension_comment_visibility_check
+    CONSTRAINT
+    service_provider_product_suspension_comment_visibility_check
     CHECK (
         visibility IN (
             'same_party',
             'any_involved_party'
         )
     ),
-    CONSTRAINT service_provider_product_suspension_comment_spps_fkey
+    CONSTRAINT
+    service_provider_product_suspension_comment_spps_fkey
     FOREIGN KEY (service_provider_product_suspension_id)
     REFERENCES service_provider_product_suspension (id)
     ON DELETE CASCADE
