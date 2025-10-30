@@ -6,7 +6,6 @@ providing group (SPG) temporarily.
 The suspension is valid for the following combination:
 
 * `service providing group`- the SPG that is suspended.
-* `service provider` - the supplier of the SPG.
 * `impacted system operator`- the one that suspends.
 
 All procuring system operators will be affected by the suspension as the SPG

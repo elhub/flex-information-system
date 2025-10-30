@@ -5,9 +5,19 @@
 ALTER TABLE IF EXISTS notification ENABLE ROW LEVEL SECURITY;
 
 -- internal
-GRANT SELECT, INSERT ON notification TO flex_internal_event_notification;
-CREATE POLICY "PTY_INTERNAL_EVENT_NOTIFICATION" ON notification
+GRANT SELECT, INSERT ON notification
+TO flex_internal_event_notification;
+CREATE POLICY "NOTIFICATION_INTERNAL_EVENT_NOTIFICATION"
+ON notification
 FOR ALL
+TO flex_internal_event_notification
+USING (true);
+
+GRANT SELECT, INSERT ON notification_history
+TO flex_internal_event_notification;
+CREATE POLICY "NOTIFICATIONH_INTERNAL_EVENT_NOTIFICATION"
+ON notification_history
+FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 

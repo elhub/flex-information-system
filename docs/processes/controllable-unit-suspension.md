@@ -6,16 +6,16 @@ unit (CU) temporarily.
 The suspension is valid for the following combination:
 
 * `controllable unit` - the CU that is suspended.
-* `service provider`- the supplier of the CU.
 * `impacted system operator`- the one that suspends.
 
 All procuring system operators will be affected by the suspension as the CU
 will no longer be approved to deliver services. Procuring system operators and
 impacted system operators will receive notification of the suspension.
 
-Changes in CU data is handled by the [CU Update](../processes/controllable-unit-update.md) process.
-If there are significant changes in CU data or the data is incorrect, the CSO
-can perform a new grid validation instead of relying on CU suspension.
+Changes in CU data is handled by the
+[CU Update](../processes/controllable-unit-update.md) process. If there are
+significant changes in CU data or the data is incorrect, the CSO can perform a
+new grid validation instead of relying on CU suspension.
 
 If there are issues in the grid where the CU will temporarily be a threat to safe
 operation, then temporary limits should be used.
