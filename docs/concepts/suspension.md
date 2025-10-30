@@ -1,5 +1,7 @@
 # Suspension
 
+## Definition of suspension
+
 ACERs recommendation for NC DR has two mentions of "suspension procedures".
 
 > Article 27
@@ -24,8 +26,8 @@ recommendation suggests that it is *temporary* - for a *period of time*.
 Another aspect of suspension is that it is *sometimes* considered as a
 punishment because someone has done something wrong. We do *not* interpret
 suspension to signal or exclusively be about sanctioning, but rather just a way
-to enforce or convey temporary deactivation. Suspension thus works as both
-a sanctioning option and a safety valve when issues occur.
+to enforce or convey temporary deactivation. Suspension thus works as either
+a sanctioning option or a safety valve when issues occur.
 
 A broad definition of suspension also implies that it can be done both by the
 party that is doing the activity (I am suspending my activity), but also by
@@ -39,6 +41,8 @@ In total, our definition of suspension is:
 
 > Suspension: Temporary deactivation done by entitled parties to pause
 > another party's activities.
+
+## Suspension in the Flexibility Information System
 
 Suspension is done by an entitled system operator and is registered in the
 flexibility information system (FIS) by creating a relevant suspension. By
@@ -59,7 +63,7 @@ require a warning in advance of the suspension - and how that warning is
 conveyed - must be specified in the national terms and conditions.
 
 End users should not be notified about or view the suspension in FIS. Service
-providers will notify end users when necessary and dependent on the agreement
+providers will notify end users when necessary and depending on the agreement
 between them and the end user.
 
 Suspension is a powerful tool as suspension will impact the [ready for market](https://elhub.github.io/flex-information-system/concepts/ready-for-market/)
