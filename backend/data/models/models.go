@@ -473,6 +473,31 @@ type ServiceProvidingGroupProductSuspension struct {
 	RecordedAt                pgtype.Timestamptz
 }
 
+type ServiceProvidingGroupProductSuspensionComment struct {
+	ID                                       int
+	ServiceProvidingGroupProductSuspensionID int
+	CreatedBy                                int
+	CreatedAt                                pgtype.Timestamptz
+	Visibility                               string
+	Content                                  string
+	RecordedBy                               int
+	RecordedAt                               pgtype.Timestamptz
+}
+
+type ServiceProvidingGroupProductSuspensionCommentHistory struct {
+	ServiceProvidingGroupProductSuspensionCommentID int
+	ID                                              int
+	ServiceProvidingGroupProductSuspensionID        int
+	CreatedBy                                       int
+	CreatedAt                                       pgtype.Timestamptz
+	Visibility                                      string
+	Content                                         string
+	RecordedBy                                      int
+	RecordedAt                                      pgtype.Timestamptz
+	ReplacedBy                                      *int
+	ReplacedAt                                      pgtype.Timestamptz
+}
+
 type ServiceProvidingGroupProductSuspensionHistory struct {
 	ServiceProvidingGroupProductSuspensionID int
 	ID                                       int
