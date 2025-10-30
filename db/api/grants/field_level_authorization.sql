@@ -5787,6 +5787,292 @@ GRANT SELECT ON TABLE
 api.service_providing_group_product_application_history
 TO flex_internal_event_notification;
 
+-- changeset flex:api-grant-service-providing-group-product-suspension-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_end_user;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    reason
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-fiso-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE
+api.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_market_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-so-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-so-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    reason
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-so-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE
+api.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_service_provider;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_suspension
+TO flex_third_party;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.service_providing_group_product_suspension
+TO flex_internal_event_notification;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_end_user;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_market_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_service_provider;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_product_suspension_id,
+    procuring_system_operator_id,
+    service_providing_group_id,
+    product_type_ids,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_third_party;
+
+-- changeset flex:api-grant-service-providing-group-product-suspension-history-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.service_providing_group_product_suspension_history
+TO flex_internal_event_notification;
+
 -- changeset flex:api-grant-service-provider-product-application-comment-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,

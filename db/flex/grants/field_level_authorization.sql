@@ -2242,6 +2242,126 @@ GRANT SELECT ON TABLE
 flex.service_providing_group_product_application_history
 TO flex_internal_event_notification;
 
+-- changeset flex:flex-grant-service-providing-group-product-suspension-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_end_user;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-fiso-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-so-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-so-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-so-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_third_party;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension
+TO flex_internal_event_notification;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_end_user;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_third_party;
+
+-- changeset flex:flex-grant-service-providing-group-product-suspension-history-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_suspension_history
+TO flex_internal_event_notification;
+
 -- changeset flex:flex-grant-service-provider-product-application-comment-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE
 flex.service_provider_product_application_comment
