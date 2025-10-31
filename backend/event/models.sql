@@ -318,3 +318,25 @@ WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
         OR spgpa.verified_at IS NOT null
         OR spgpa.prequalified_at IS NOT null
     );
+
+-- name: GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[
+        spg.service_provider_id,
+        spggsh.impacted_system_operator_id
+    ])::bigint
+-- using SPGGS(C) history because of visibility + possible deletion
+FROM service_providing_group_grid_suspension_comment_history AS spggsch
+    INNER JOIN service_providing_group_grid_suspension_history AS spggsh
+        ON spggsch.service_providing_group_grid_suspension_id
+            = spggsh.service_providing_group_grid_suspension_id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN service_providing_group AS spg
+        ON spggsh.service_providing_group_id = spg.id
+WHERE spggsch.service_providing_group_grid_suspension_comment_id = @resource_id
+    AND tstzrange(spggsch.recorded_at, spggsch.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    -- private comments do not lead to notifications
+    AND spggsch.visibility = 'any_involved_party';
