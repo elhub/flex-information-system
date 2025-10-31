@@ -20,14 +20,16 @@ CREATE TABLE IF NOT EXISTS {{ resource }}_comment (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT {{ resource }}_comment_visibility_check
+    CONSTRAINT
+    {{ resource }}_comment_visibility_check
     CHECK (
         visibility IN (
             'same_party',
             'any_involved_party'
         )
     ),
-    CONSTRAINT {{ resource }}_comment_{{ lower_acronym }}_fkey
+    CONSTRAINT
+    {{ resource }}_comment_{{ lower_acronym }}_fkey
     FOREIGN KEY ({{ resource }}_id)
     REFERENCES {{ resource }} (id)
     {%- if "delete" in base_resource_ops %}
