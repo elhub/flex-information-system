@@ -1,16 +1,14 @@
 # Controllable Unit
 
-A controllable unit is defined as "a single power-generating module and/or
-demand unit" in
-[public consultation on the draft network code on demand response](https://www.acer.europa.eu/documents/public-consultations/pc2024e07-public-consultation-draft-network-code-demand-response).
+A controllable unit (CU) is a unit in the power system that can be
+actively controlled.
 
-The controllable unit is connected to a single accounting point. This
-restriction is there to provide a unambiguous connection between the
-controllable unit and the balance responsible party of the energy supplier. This
-enables us to do imbalance adjustment.
+In FIS, each CU is linked to exactly one accounting point, ensuring a unique
+connection to the balance responsible party (BRP) and determining its location
+in the grid.
 
-The accounting point is also used to determine the locational information of the
-controllable unit.
+For more information about the CU concept and its role in the flexibility structure,
+see [Controllable Unit and Service Providing Group](../concepts/cu-spg.md#what-is-a-controllable-unit).
 
 ## Business Identifiers
 

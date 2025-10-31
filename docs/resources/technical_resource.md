@@ -6,6 +6,9 @@ information that can help procuring system operators performing product
 pre-qualification and simplify that evaluation if controllable units are
 identical. A controllable unit can contain several technical resources.
 
+For more information about the technical resource and its role in the
+flexibility structure, see [Controllable Unit and Service Providing Group](../concepts/cu-spg.md).
+
 ## Relevant links
 
 * [API Documentation](../api/v0/index.html#/operations/list_technical_resource)

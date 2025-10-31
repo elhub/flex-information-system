@@ -18,6 +18,11 @@ continues to evolve.
 
 ## Current concepts
 
+### [Controllable Unit and Service Providing Group](cu-spg.md)
+
+Defines controllable units as individual controllable assets and service
+providing groups as collections of such units used to deliver flexibility.
+
 ### [End User](end-user.md)
 
 The owner of the controllable unit.

@@ -1,0 +1,20 @@
+@startwbs spg_cu_ev_example
+title ""
+
+* SPG 
+** CU1 - Charging Site A 
+*** EV Charger (Technical resource)
+*** EV Charger (Technical resource)
+*** ... 
+** CU2 - Charging Site B 
+*** EV Charger (Technical resource)
+*** EV Charger (Technical resource)
+*** ... 
+** CU3 - Charging Site C 
+*** EV Charger (Technical resource)
+*** EV Charger (Technical resource)
+*** ...
+** ...
+@endwbs
+
+
