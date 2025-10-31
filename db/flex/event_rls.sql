@@ -85,7 +85,8 @@ USING (
         'service_providing_group_membership',
         'service_providing_group_grid_prequalification',
         'service_providing_group_grid_suspension',
-        'service_providing_group_product_application'
+        'service_providing_group_product_application',
+        'service_providing_group_product_suspension_comment'
     )
 );
 
@@ -333,5 +334,32 @@ USING (
             WHERE spggsh.id = event.source_id -- noqa
                 AND spg.service_provider_id = (SELECT flex.current_party())
         )
+    )
+);
+
+-- RLS: EVENT-SP014
+CREATE POLICY "EVENT_SP014" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'service_providing_group_product_suspension_comment'
+    AND EXISTS (
+        SELECT
+            spgpsc.service_providing_group_product_suspension_id,
+            spgpsc.record_time_range
+        FROM
+            flex.service_providing_group_product_suspension_comment
+                AS spgpsc -- noqa
+        WHERE spgpsc.id = event.source_id -- noqa
+            AND spgpsc.record_time_range @> lower(event.record_time_range) -- noqa
+        UNION ALL
+        SELECT
+            spgpsch.service_providing_group_product_suspension_id,
+            spgpsch.record_time_range
+        FROM
+            flex.service_providing_group_product_suspension_comment_history
+                AS spgpsch -- noqa
+        WHERE spgpsch.id = event.source_id -- noqa
+            AND spgpsch.record_time_range @> lower(event.record_time_range) -- noqa
     )
 );

@@ -18,6 +18,7 @@ import { EventButton } from "../event/EventButton";
 import { ServiceProvidingGroupProductApplicationList } from "./product_application/ServiceProvidingGroupProductApplicationList";
 import { IdentityField } from "../components/IdentityField";
 import { ServiceProvidingGroupGridSuspensionList } from "./grid_suspension/ServiceProvidingGroupGridSuspensionList";
+import { ServiceProvidingGroupProductSuspensionList } from "./product_suspension/ServiceProvidingGroupProductSuspensionList";
 
 export const ServiceProvidingGroupShow = () => {
   const resource = useResourceContext()!;
@@ -85,6 +86,14 @@ export const ServiceProvidingGroupShow = () => {
               label="product applications"
             />
             <ServiceProvidingGroupProductApplicationList />
+            <Typography variant="h6" gutterBottom>
+              Product suspensions
+            </Typography>
+            <NestedResourceHistoryButton
+              child="product_suspension"
+              label="product suspensions"
+            />
+            <ServiceProvidingGroupProductSuspensionList />
           </>
         )}
       </SimpleShowLayout>
