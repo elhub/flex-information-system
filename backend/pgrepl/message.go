@@ -16,18 +16,18 @@ type Message struct {
 // Change defines a modification that happened on a database and was logged
 // to a replication connection.
 type Change struct {
-	Kind         string        `json:"kind"`
-	Schema       string        `json:"schema"`
-	Table        string        `json:"table"`
-	ColumnNames  []string      `json:"columnnames"`
-	ColumnTypes  []string      `json:"columntypes"`
-	ColumnValues []interface{} `json:"columnvalues"`
-	OldKeys      OldKeys       `json:"oldkeys"`
+	Kind         string   `json:"kind"`
+	Schema       string   `json:"schema"`
+	Table        string   `json:"table"`
+	ColumnNames  []string `json:"columnnames"`
+	ColumnTypes  []string `json:"columntypes"`
+	ColumnValues []any    `json:"columnvalues"`
+	OldKeys      OldKeys  `json:"oldkeys"`
 }
 
 // GetColumnValue finds the value of a column in a changed row, from the name
 // of this column.
-func (change Change) GetColumnValue(columnName string) interface{} {
+func (change Change) GetColumnValue(columnName string) any {
 	for i, name := range change.ColumnNames {
 		if name == columnName {
 			return change.ColumnValues[i]
@@ -101,13 +101,13 @@ var errJSONFieldMissing = errors.New("JSON field missing")
 
 var errNotAJSONNumber = errors.New("not a JSON number")
 
-func jsonNumberError(value interface{}) error {
+func jsonNumberError(value any) error {
 	return fmt.Errorf("%w: %v", errNotAJSONNumber, value)
 }
 
 var errNotAJSONString = errors.New("not a JSON string")
 
-func jsonStringError(value interface{}) error {
+func jsonStringError(value any) error {
 	return fmt.Errorf("%w: %v", errNotAJSONString, value)
 }
 
@@ -117,7 +117,7 @@ func timestampParseError(err error) error {
 
 // OldKeys defines the old values of a row before an update or delete operation.
 type OldKeys struct {
-	KeyNames  []string      `json:"keynames"`
-	KeyTypes  []string      `json:"keytypes"`
-	KeyValues []interface{} `json:"keyvalues"`
+	KeyNames  []string `json:"keynames"`
+	KeyTypes  []string `json:"keytypes"`
+	KeyValues []any    `json:"keyvalues"`
 }
