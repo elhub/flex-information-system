@@ -77,9 +77,9 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                                                                                   | Status |
-|-------------|----------------------------------------------------------------------------------------------------------|--------|
-| EVENT-SO001 | Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPS, SPPAC, SPPSC, SPG, SPGM, SPGGP, SPGGS, SPGPA. | DONE   |
+| Policy key  | Policy                                                                                                          | Status |
+|-------------|-----------------------------------------------------------------------------------------------------------------|--------|
+| EVENT-SO001 | Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPS, SPPAC, SPPSC, SPG, SPGM, SPGGP, SPGGS, SPGPA, SPGPS. | DONE   |
 
 #### Service Provider
 
@@ -98,6 +98,7 @@ No policies.
 | EVENT-SP011 | Read events related to SPPS when they are the SP.                                              | DONE   |
 | EVENT-SP012 | Read events related to comments on SPPS concerning themselves, when they can see the comments. | DONE   |
 | EVENT-SP013 | Read events related to SPG grid suspensions when they own the SPG.                             | DONE   |
+| EVENT-SP014 | Read events related to SPG product suspensions when they own the SPG.                          | DONE   |
 
 #### Third Party
 

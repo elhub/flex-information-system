@@ -318,3 +318,31 @@ WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
         OR spgpa.verified_at IS NOT null
         OR spgpa.prequalified_at IS NOT null
     );
+
+-- name: GetServiceProvidingGroupProductSuspensionNotificationRecipients :many
+-- SP
+SELECT spg.service_provider_id
+FROM service_providing_group_product_suspension_history AS spgpsh
+    INNER JOIN service_providing_group AS spg
+        ON spgpsh.service_providing_group_id = spg.id
+    -- SPG cannot be deleted + SP does not change
+WHERE spgpsh.service_providing_group_product_suspension_id = @resource_id
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+-- PSO
+UNION ALL
+SELECT spgpa.procuring_system_operator_id
+FROM service_providing_group_product_suspension_history AS spgpsh
+    -- SPGPA cannot be deleted + PSO does not change
+    -- we want to notify the PSOs currently having accepted product applications
+    -- we also want to notify possible new PSOs coming after the suspension
+    INNER JOIN service_providing_group_product_application AS spgpa
+        ON spgpsh.service_providing_group_id = spgpa.service_providing_group_id
+WHERE spgpsh.service_providing_group_product_suspension_id = @resource_id
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND (
+        spgpa.status IN ('verified', 'prequalified', 'temporary_qualified')
+        OR spgpa.verified_at IS NOT null
+        OR spgpa.prequalified_at IS NOT null
+    );
