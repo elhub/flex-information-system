@@ -2,6 +2,10 @@
 
 A group of controllable units to be used in a flexibility product on the market.
 
+For more information about the service providing group (SPG) concept and its
+role in the flexibility structure,
+see [What is a controllable unit?](../concepts/cu-spg.md#what-is-a-controllable-unit)
+
 ## Status transitions for service providing group
 
 The following diagram shows the status and its transitions for service providing
