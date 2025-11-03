@@ -21,7 +21,7 @@ continues to evolve.
 ### [Controllable Unit and Service Providing Group](cu-spg.md)
 
 Defines controllable units as individual controllable assets and service
-providing groups as collections of such units used to deliver flexibility.
+providing groups as collections of such units that are used to deliver flexibility.
 
 ### [End User](end-user.md)
 

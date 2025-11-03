@@ -3,16 +3,16 @@ title ""
 
 * SPG 
 ** CU1 - Charging Site A 
-*** EV Charger (Technical resource)
-*** EV Charger (Technical resource)
+*** Technical Resource - EV Charger
+*** Technical Resource - EV Charger
 *** ... 
 ** CU2 - Charging Site B 
-*** EV Charger (Technical resource)
-*** EV Charger (Technical resource)
+*** Technical Resource - EV Charger
+*** Technical Resource - EV Charger
 *** ... 
 ** CU3 - Charging Site C 
-*** EV Charger (Technical resource)
-*** EV Charger (Technical resource)
+*** Technical Resource - EV Charger
+*** Technical Resource - EV Charger
 *** ...
 ** ...
 @endwbs
