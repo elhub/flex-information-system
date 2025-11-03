@@ -18,7 +18,7 @@ from flex.models import (
     ControllableUnitSuspensionResponse,
     ControllableUnitSuspensionReason,
     ControllableUnitSuspensionUpdateRequest,
-    ServiceProvidingGroupGridSuspensionHistoryResponse,
+    ControllableUnitSuspensionHistoryResponse,
 )
 from flex.api.controllable_unit_suspension import (
     list_controllable_unit_suspension,
@@ -84,11 +84,11 @@ def data():
 # ---- ---- ---- ---- ----
 
 
-def check_history(client, spggs_id):
+def check_history(client, cus_id):
     # endpoint: GET /controllable_unit_suspension_history
     hist = list_controllable_unit_suspension_history.sync(
         client=client,
-        controllable_unit_suspension_id=f"eq.{spggs_id}",
+        controllable_unit_suspension_id=f"eq.{cus_id}",
     )
     assert isinstance(hist, list)
     assert len(hist) > 0
@@ -100,7 +100,7 @@ def check_history(client, spggs_id):
     )
     assert isinstance(
         hist_spggs,
-        ServiceProvidingGroupGridSuspensionHistoryResponse,
+        ControllableUnitSuspensionHistoryResponse,
     )
 
 
@@ -172,12 +172,12 @@ def test_cus_so(data):
     )
     assert isinstance(cus, ControllableUnitSuspensionResponse)
 
-    # endpoint: GET /service_providing_group_grid_suspension
+    # endpoint: GET /controllable_unit_suspension_suspension
     cuss = list_controllable_unit_suspension.sync(client=client_so)
     assert isinstance(cuss, list)
     assert len(cuss) > 0
 
-    # endpoint: GET /service_providing_group_grid_suspension/{id}
+    # endpoint: GET /controllable_unit_suspension_suspension/{id}
     s = read_controllable_unit_suspension.sync(
         client=client_so,
         id=cast(int, cuss[0].id),
@@ -187,7 +187,7 @@ def test_cus_so(data):
     # RLS: CUS-SO002
     check_history(client_so, s.id)
 
-    # endpoint: PATCH /service_providing_group_grid_suspension/{id}
+    # endpoint: PATCH /controllable_unit_suspension_suspension/{id}
     u = update_controllable_unit_suspension.sync(
         client=client_so,
         id=cast(int, s.id),
@@ -199,7 +199,7 @@ def test_cus_so(data):
 
     # RLS: CUS-SO003
 
-    # endpoint: GET /service_providing_group_grid_suspension/{id}
+    # endpoint: GET /controllable_unit_suspension_suspension/{id}
     r = read_controllable_unit_suspension.sync(
         client=client_so,
         id=cast(int, s.id),
@@ -217,12 +217,12 @@ def test_cus_sp(data):
     # RLS: CUS-SP001
     # SP can read suspensions for CUs they have a contract with
 
-    # endpoint: GET /service_providing_group_grid_suspension
+    # endpoint: GET /controllable_unit_suspension_suspension
     cus = list_controllable_unit_suspension.sync(client=client_sp)
     assert isinstance(cus, list)
 
     if len(cus) > 0:
-        # endpoint: GET /service_providing_group_grid_suspension/{id}
+        # endpoint: GET /controllable_unit_suspension_suspension/{id}
         s = read_controllable_unit_suspension.sync(
             client=client_sp,
             id=cast(int, cus[0].id),

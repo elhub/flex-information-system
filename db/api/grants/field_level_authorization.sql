@@ -2010,7 +2010,9 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_balance_responsible_party;
@@ -2020,7 +2022,9 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_energy_supplier;
@@ -2030,7 +2034,9 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_end_user;
@@ -2049,7 +2055,9 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_flexibility_information_system_operator;
@@ -2071,13 +2079,16 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_market_operator;
 
 -- changeset flex:api-grant-controllable-unit-suspension-so-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
+    controllable_unit_id,
     impacted_system_operator_id,
     reason
 ) ON TABLE
@@ -2089,7 +2100,9 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_system_operator;
@@ -2106,19 +2119,14 @@ GRANT DELETE ON TABLE
 api.controllable_unit_suspension
 TO flex_system_operator;
 
--- changeset flex:api-grant-controllable-unit-suspension-sp-insert endDelimiter:-- runAlways:true
-GRANT INSERT (
-    controllable_unit_id
-) ON TABLE
-api.controllable_unit_suspension
-TO flex_service_provider;
-
 -- changeset flex:api-grant-controllable-unit-suspension-sp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_service_provider;
@@ -2128,7 +2136,9 @@ GRANT SELECT (
     id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    recorded_by
 ) ON TABLE
 api.controllable_unit_suspension
 TO flex_third_party;
@@ -2144,7 +2154,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_balance_responsible_party;
@@ -2155,7 +2169,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_energy_supplier;
@@ -2166,7 +2184,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_end_user;
@@ -2177,7 +2199,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_flexibility_information_system_operator;
@@ -2188,7 +2214,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_market_operator;
@@ -2199,7 +2229,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_system_operator;
@@ -2210,7 +2244,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_service_provider;
@@ -2221,7 +2259,11 @@ GRANT SELECT (
     controllable_unit_suspension_id,
     controllable_unit_id,
     impacted_system_operator_id,
-    reason
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
 ) ON TABLE
 api.controllable_unit_suspension_history
 TO flex_third_party;

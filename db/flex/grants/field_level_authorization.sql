@@ -737,11 +737,6 @@ GRANT DELETE ON TABLE
 flex.controllable_unit_suspension
 TO flex_system_operator;
 
--- changeset flex:flex-grant-controllable-unit-suspension-sp-insert endDelimiter:-- runAlways:true
-GRANT INSERT ON TABLE
-flex.controllable_unit_suspension
-TO flex_service_provider;
-
 -- changeset flex:flex-grant-controllable-unit-suspension-sp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE
 flex.controllable_unit_suspension

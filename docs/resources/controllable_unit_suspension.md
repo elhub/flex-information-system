@@ -99,6 +99,8 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | FIELD                       | ANON | BRP | ES | EU | FISO | MO | SO  | SP | TP | ORG |
 |-----------------------------|------|-----|----|----|------|----|-----|----|----|-----|
 | id                          |      | R   | R  | R  | R    | R  | R   | R  | R  |     |
-| controllable_unit_id        |      | R   | R  | R  | RC   | R  | R   | RC | R  |     |
+| controllable_unit_id        |      | R   | R  | R  | RC   | R  | RC  | R  | R  |     |
 | impacted_system_operator_id |      | R   | R  | R  | RC   | R  | RC  | R  | R  |     |
 | reason                      |      | R   | R  | R  | RCU  | R  | RCU | R  | R  |     |
+| recorded_at                 |      | R   | R  | R  | R    | R  | R   | R  | R  |     |
+| recorded_by                 |      | R   | R  | R  | R    | R  | R   | R  | R  |     |
