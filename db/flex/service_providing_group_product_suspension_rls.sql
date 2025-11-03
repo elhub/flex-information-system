@@ -107,8 +107,10 @@ USING (
         = service_providing_group_product_suspension.service_providing_group_id -- noqa
             AND spgpa.procuring_system_operator_id
             = (SELECT flex.current_party())
-            AND spgpa.status
-            IN ('prequalified', 'verified', 'temporary_qualified')
+            AND (
+                spgpa.prequalified_at IS NOT null
+                OR spgpa.verified_at IS NOT null
+            )
             AND service_providing_group_product_suspension.product_type_ids -- noqa
             && spgpa.product_type_ids
     )
@@ -127,7 +129,8 @@ USING (
                 SELECT
                     spgpah.product_type_ids,
                     spgpah.record_time_range,
-                    spgpah.status
+                    spgpah.prequalified_at,
+                    spgpah.verified_at
                 FROM
                     flex.service_providing_group_product_application_history
                     AS spgpah -- noqa
@@ -139,7 +142,8 @@ USING (
                 SELECT
                     spgpa.product_type_ids,
                     spgpa.record_time_range,
-                    spgpa.status
+                    spgpa.prequalified_at,
+                    spgpa.verified_at
                 FROM flex.service_providing_group_product_application AS spgpa
                 WHERE spgpa.service_providing_group_id
                 = service_providing_group_product_suspension_history.service_providing_group_id -- noqa
@@ -151,8 +155,10 @@ USING (
         FROM spgpa_history
         WHERE spgpa_history.record_time_range
             && service_providing_group_product_suspension_history.record_time_range -- noqa
-            AND spgpa_history.status
-            IN ('prequalified', 'verified', 'temporary_qualified')
+            AND (
+                spgpa_history.prequalified_at IS NOT null
+                OR spgpa_history.verified_at IS NOT null
+            )
             AND service_providing_group_product_suspension_history.product_type_ids -- noqa
             && spgpa_history.product_type_ids
     )
