@@ -94,12 +94,12 @@ def check_history(client, cus_id):
     assert len(hist) > 0
 
     # endpoint: GET /controllable_unit_suspension_history/{id}
-    hist_spggs = read_controllable_unit_suspension_history.sync(
+    hist_cus = read_controllable_unit_suspension_history.sync(
         client=client,
         id=cast(int, hist[0].id),
     )
     assert isinstance(
-        hist_spggs,
+        hist_cus,
         ControllableUnitSuspensionHistoryResponse,
     )
 
