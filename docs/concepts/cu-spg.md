@@ -2,7 +2,7 @@
 
 !!! info "CU and SPG definitions in the Network Code on Demand Response (NC DR)"
 
-    The explanations below are based on the NC DR, where the following definitions apply:
+    The definitions below are based on the NC DR, where the following definitions apply:
 
     Article 2:
     (21) 'controllable unit' or 'CU' means a single power-generating module and/or demand unit pursuant to Article 2(5) of
