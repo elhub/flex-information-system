@@ -123,6 +123,9 @@ databaseChangeLog:
       file: ./controllable_unit.sql
       relativeToChangelogFile: true
   - include:
+      file: ./controllable_unit_suspension.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./controllable_unit_service_provider.sql
       relativeToChangelogFile: true
   - include:

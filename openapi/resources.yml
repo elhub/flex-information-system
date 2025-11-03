@@ -203,7 +203,7 @@ resources:
         example: 2
       impacted_system_operator_id:
         description: >-
-          Reference to the `party` that is the impacted system operator.
+          Reference to the impacted system operator suspending the controllable unit.
         format: bigint
         type: integer
         x-no-update: true

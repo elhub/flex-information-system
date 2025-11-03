@@ -18,6 +18,12 @@
         "grid_validation_notes": "Free text notes on the current grid validation status.",
         "validated_at": "When the controllable unit was last validated."
     },
+    "controllable_unit_suspension": {
+        "id": "Unique surrogate identifier.",
+        "controllable_unit_id": "Reference to the suspended controllable unit.",
+        "impacted_system_operator_id": "Reference to the impacted system operator suspending the controllable unit.",
+        "reason": "The reason for the suspension."
+    },
     "controllable_unit_service_provider": {
         "id": "Unique surrogate key.",
         "controllable_unit_id": "Reference to the controllable unit this relation links to a service provider.",
