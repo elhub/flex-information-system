@@ -13,6 +13,14 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
+GRANT SELECT ON accounting_point_history
+TO flex_internal_event_notification;
+CREATE POLICY "APH_INTERNAL_EVENT_NOTIFICATION"
+ON accounting_point_history
+FOR SELECT
+TO flex_internal_event_notification
+USING (true);
+
 -- RLS: AP-COM001
 GRANT SELECT ON accounting_point TO flex_common;
 CREATE POLICY "AP_COM001"
