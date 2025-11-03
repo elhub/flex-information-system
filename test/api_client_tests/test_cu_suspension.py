@@ -212,13 +212,16 @@ def test_cus_so(data):
 
 
 def test_cus_sp(data):
-    (_, _, _, client_sp, _) = data
+    (sts, _, _, client_sp, _) = data
 
     # RLS: CUS-SP001
     # SP can read suspensions for CUs they have a contract with
 
     # endpoint: GET /controllable_unit_suspension_suspension
     cus = list_controllable_unit_suspension.sync(client=client_sp)
+
+    sp2_client = sts.get_client(TestEntity.COMMON, "SP")
+
     assert isinstance(cus, list)
 
     if len(cus) > 0:
@@ -229,5 +232,14 @@ def test_cus_sp(data):
         )
         assert isinstance(s, ControllableUnitSuspensionResponse)
 
+        # endpoint: GET /controllable_unit_suspension_suspension/{id}
+        s2 = read_controllable_unit_suspension.sync(
+            client=sp2_client,
+            id=cast(int, cus[0].id),
+        )
+        assert isinstance(s2, ErrorMessage)
+
         # RLS: CUS-SP002
         check_history(client_sp, s.id)
+
+        assert isinstance(check_history(sp2_client, s.id), ErrorMessage)
