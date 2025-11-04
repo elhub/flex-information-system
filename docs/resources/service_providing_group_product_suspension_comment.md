@@ -1,6 +1,6 @@
 # Service Providing Group Product Suspension Comment
 
-Comment made by a party involved in a service providing group grid suspension.
+Comment made by a party involved in a service providing group product suspension.
 Several comments can be added to a given suspension.
 
 ## Relevant links
