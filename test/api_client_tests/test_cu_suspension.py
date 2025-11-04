@@ -12,7 +12,6 @@ from flex.models import (
     ErrorMessage,
     EmptyObject,
 )
-
 from flex.models import (
     ControllableUnitSuspensionCreateRequest,
     ControllableUnitSuspensionResponse,
@@ -78,7 +77,7 @@ def data():
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
-    yield (sts, cu.id, so_id, client_sp, sp_id)
+    yield (sts, cu.id, (client_so, so_id), (client_sp, sp_id))
 
 
 # ---- ---- ---- ---- ----
@@ -106,7 +105,7 @@ def check_history(client, cus_id):
 
 # RLS: CUS-FISO001
 def test_cus_fiso(data):
-    (sts, cu_id, so_id, _, _) = data
+    (sts, cu_id, (_, so_id), _) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -152,16 +151,15 @@ def test_cus_fiso(data):
     )
     assert not isinstance(d, ErrorMessage)
 
+    check_history(client_fiso, s.id)
+
 
 def test_cus_so(data):
-    (sts, cu_id, so_id, _, _) = data
+    (_, cu_id, (client_so, so_id), _) = data
 
     # RLS: CUS-SO001
     # SO can create a suspension for a CU that impacts them
 
-    client_so = sts.get_client(TestEntity.TEST, "SO")
-
-    # endpoint: POST /service_providing_group_grid_suspension
     cus = create_controllable_unit_suspension.sync(
         client=client_so,
         body=ControllableUnitSuspensionCreateRequest(
@@ -172,12 +170,10 @@ def test_cus_so(data):
     )
     assert isinstance(cus, ControllableUnitSuspensionResponse)
 
-    # endpoint: GET /controllable_unit_suspension_suspension
     cuss = list_controllable_unit_suspension.sync(client=client_so)
     assert isinstance(cuss, list)
     assert len(cuss) > 0
 
-    # endpoint: GET /controllable_unit_suspension_suspension/{id}
     s = read_controllable_unit_suspension.sync(
         client=client_so,
         id=cast(int, cuss[0].id),
@@ -187,7 +183,6 @@ def test_cus_so(data):
     # RLS: CUS-SO002
     check_history(client_so, s.id)
 
-    # endpoint: PATCH /controllable_unit_suspension_suspension/{id}
     u = update_controllable_unit_suspension.sync(
         client=client_so,
         id=cast(int, s.id),
@@ -198,8 +193,6 @@ def test_cus_so(data):
     assert not isinstance(u, ErrorMessage)
 
     # RLS: CUS-SO003
-
-    # endpoint: GET /controllable_unit_suspension_suspension/{id}
     r = read_controllable_unit_suspension.sync(
         client=client_so,
         id=cast(int, s.id),
@@ -212,7 +205,7 @@ def test_cus_so(data):
 
 
 def test_cus_sp(data):
-    (sts, _, _, client_sp, _) = data
+    (sts, _, _, (client_sp, _)) = data
 
     # RLS: CUS-SP001
     # SP can read suspensions for CUs they have a contract with
