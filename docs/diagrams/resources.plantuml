@@ -5,7 +5,7 @@ digraph flex {
     node [ shape=record; ]
     controllable_unit    [label="{controllable_unit}|{Controllable unit}|{🕰️}" shape=record style=solid]
     controllable_unit -> accounting_point     [label=accounting_point_id]
-    controllable_unit_suspension    [label="{controllable_unit_suspension}|{The relation allowing a\nsystem operator to\ntemporarily suspend a\ncontrollable unit.}|{🕰️}" shape=record style=solid]
+    controllable_unit_suspension    [label="{controllable_unit_suspension}|{The relation allowing an\nimpacted system operator to\ntemporarily suspend a\ncontrollable unit.}|{🕰️}" shape=record style=solid]
     controllable_unit_suspension -> controllable_unit     [label=controllable_unit_id]
     controllable_unit_suspension -> party     [label=impacted_system_operator_id]
     controllable_unit_service_provider    [label="{controllable_unit_service_provider}|{Relation between controllable unit\nand service provider}|{🕰️}" shape=record style=solid]

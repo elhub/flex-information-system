@@ -168,10 +168,13 @@ resources:
         type: string
         nullable: true
         example: 2022-08-08 12:00:00 CET
+
   - id: controllable_unit_suspension
     acronym: CUS
     summary: Controllable Unit Suspension
-    description: The relation allowing a system operator to temporarily suspend a controllable unit.
+    description: >-
+      The relation allowing an impacted system operator to temporarily suspend a
+      controllable unit.
     operations:
       - list
       - read
@@ -203,7 +206,8 @@ resources:
         example: 2
       impacted_system_operator_id:
         description: >-
-          Reference to the impacted system operator suspending the controllable unit.
+          Reference to the impacted system operator suspending the controllable
+          unit.
         format: bigint
         type: integer
         x-no-update: true

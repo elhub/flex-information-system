@@ -12,8 +12,8 @@ T = TypeVar("T", bound="ControllableUnitSuspensionCreateRequest")
 
 @_attrs_define
 class ControllableUnitSuspensionCreateRequest:
-    """Request schema for create operations - The relation allowing a system operator to temporarily suspend a controllable
-    unit.
+    """Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a
+    controllable unit.
 
         Attributes:
             reason (Union[Unset, ControllableUnitSuspensionReason]): The reason for the suspension. Example:

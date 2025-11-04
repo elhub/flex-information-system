@@ -1,7 +1,7 @@
 # Controllable Unit Suspension
 
 The relation allowing an impacted system operator to temporarily suspend a
-Controllable Unit from delivering services.
+controllable unit.
 
 ## Relevant links
 
@@ -28,7 +28,7 @@ No validation rules
 | Action                 | Recipient | Comment                                                                   |
 |------------------------|-----------|---------------------------------------------------------------------------|
 | create, update, delete | SP        | Service provider with current contract to the suspended controllable unit |
-| create, update, delete | SO        | All ISOs and all PSOs for which the CU is prequalified or verified        |
+| create, update, delete | SO        | All ISOs                                                                  |
 
 ## Authorization
 
@@ -61,8 +61,8 @@ No policies.
 
 | Policy key  | Policy                                   | Status |
 |-------------|------------------------------------------|--------|
-| CUS-FISO001 | Create, read, update and delete all CUS. | TODO   |
-| CUS-FISO002 | Read all CUS history.                    | TODO   |
+| CUS-FISO001 | Create, read, update and delete all CUS. | DONE   |
+| CUS-FISO002 | Read all CUS history.                    | DONE   |
 
 #### Market Operator
 
@@ -76,17 +76,17 @@ No policies.
 
 | Policy key | Policy                                            | Status |
 |------------|---------------------------------------------------|--------|
-| CUS-SO001  | Create, read, update and delete their own CUS.    | TODO   |
-| CUS-SO002  | Read history on their own CUS.                    | TODO   |
-| CUS-SO003  | Read CUS targeted at CUs they can see.            | TODO   |
-| CUS-SO004  | Read history on CUS targeted at CUs they can see. | TODO   |
+| CUS-SO001  | Create, read, update and delete their own CUS.    | DONE   |
+| CUS-SO002  | Read history on their own CUS.                    | DONE   |
+| CUS-SO003  | Read CUS targeted at CUs they can see.            | DONE   |
+| CUS-SO004  | Read history on CUS targeted at CUs they can see. | DONE   |
 
 #### Service Provider
 
 | Policy key | Policy                                                           | Status |
 |------------|------------------------------------------------------------------|--------|
-| CUS-SP001  | Read CU suspensions on periods where they own the CU.            | TODO   |
-| CUS-SP002  | Read history on CU suspensions on periods where they own the CU. | TODO   |
+| CUS-SP001  | Read CU suspensions on periods where they own the CU.            | DONE   |
+| CUS-SP002  | Read history on CU suspensions on periods where they own the CU. | DONE   |
 
 #### Third Party
 

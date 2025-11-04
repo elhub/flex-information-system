@@ -12,7 +12,7 @@ T = TypeVar("T", bound="ControllableUnitSuspension")
 
 @_attrs_define
 class ControllableUnitSuspension:
-    """Data schema - The relation allowing a system operator to temporarily suspend a controllable unit.
+    """Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
 
     Attributes:
         reason (Union[Unset, ControllableUnitSuspensionReason]): The reason for the suspension. Example:

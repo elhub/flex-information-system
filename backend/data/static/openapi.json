@@ -912,7 +912,7 @@
             },
             "controllable_unit_suspension_update_request": {
                 "summary": "Update - Controllable Unit Suspension",
-                "description": "Request schema for update operations - The relation allowing a system operator to temporarily suspend a controllable unit.",
+                "description": "Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "type": "object",
                 "properties": {
                     "reason": {
@@ -922,7 +922,7 @@
             },
             "controllable_unit_suspension_create_data": {
                 "summary": "Create data - Controllable Unit Suspension",
-                "description": "Data of the request schema for create operations - The relation allowing a system operator to temporarily suspend a controllable unit.",
+                "description": "Data of the request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension_update_request"
@@ -948,7 +948,7 @@
             },
             "controllable_unit_suspension_create_request": {
                 "summary": "Create - Controllable Unit Suspension",
-                "description": "Request schema for create operations - The relation allowing a system operator to temporarily suspend a controllable unit.",
+                "description": "Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension_create_data"
@@ -964,7 +964,7 @@
             },
             "controllable_unit_suspension": {
                 "summary": "Data - Controllable Unit Suspension",
-                "description": "Data schema - The relation allowing a system operator to temporarily suspend a controllable unit.",
+                "description": "Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension_create_data"
@@ -988,7 +988,7 @@
             },
             "controllable_unit_suspension_response": {
                 "summary": "Response - Controllable Unit Suspension",
-                "description": "Response schema for operations with return values - The relation allowing a system operator to temporarily suspend a controllable unit.",
+                "description": "Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension"
