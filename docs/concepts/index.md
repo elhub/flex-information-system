@@ -25,7 +25,7 @@ providing groups as collections of such units that are used to deliver flexibili
 
 ### [End Users](end-user.md)
 
-The owners of the controllable units.
+The owner of a controllable unit.
 
 ### [Grid Model](grid-model.md)
 
