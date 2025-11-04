@@ -79,7 +79,7 @@ No policies.
 
 | Policy key  | Policy                                                                                                          | Status |
 |-------------|-----------------------------------------------------------------------------------------------------------------|--------|
-| EVENT-SO001 | Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPS, SPPAC, SPPSC, SPG, SPGM, SPGGP, SPGGS, SPGGSC, SPGPA, SPGPS. | DONE   |
+| EVENT-SO001 | Read all events related to CU, CUSP, TR, SOPT, SPPA, SPPS, SPPAC, SPPSC, SPG, SPGM, SPGGP, SPGGS, SPGGSC, SPGPA, SPGPS, SPGPSC. | DONE   |
 
 #### Service Provider
 
@@ -100,6 +100,7 @@ No policies.
 | EVENT-SP013 | Read events related to SPG grid suspensions when they own the SPG.                             | DONE   |
 | EVENT-SP014 | Read events related to comments on SPG grid suspensions, when they can see the comments.       | DONE   |
 | EVENT-SP015 | Read events related to SPG product suspensions when they own the SPG.                          | DONE   |
+| EVENT-SP016 | Read events related to comments on SPG product suspensions, when they can see the comments.    | DONE   |
 
 #### Third Party
 

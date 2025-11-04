@@ -87,7 +87,8 @@ USING (
         'service_providing_group_grid_suspension',
         'service_providing_group_grid_suspension_comment',
         'service_providing_group_product_application',
-        'service_providing_group_product_suspension'
+        'service_providing_group_product_suspension',
+        'service_providing_group_product_suspension_comment'
     )
 );
 
@@ -345,18 +346,12 @@ TO flex_service_provider
 USING (
     source_resource = 'service_providing_group_grid_suspension_comment'
     AND EXISTS (
-        SELECT
-            spggsc.service_providing_group_grid_suspension_id,
-            spggsc.record_time_range
-        FROM
-            flex.service_providing_group_grid_suspension_comment
-                AS spggsc -- noqa
+        SELECT 1
+        FROM flex.service_providing_group_grid_suspension_comment AS spggsc
         WHERE spggsc.id = event.source_id -- noqa
             AND spggsc.record_time_range @> lower(event.record_time_range) -- noqa
         UNION ALL
-        SELECT
-            spggsch.service_providing_group_grid_suspension_id,
-            spggsch.record_time_range
+        SELECT 1
         FROM
             flex.service_providing_group_grid_suspension_comment_history
                 AS spggsch -- noqa
@@ -391,5 +386,26 @@ USING (
             WHERE spgpsh.id = event.source_id -- noqa
                 AND spg.service_provider_id = (SELECT flex.current_party())
         )
+    )
+);
+
+-- RLS: EVENT-SP016
+CREATE POLICY "EVENT_SP016" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'service_providing_group_product_suspension_comment'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_providing_group_product_suspension_comment AS spgpsc
+        WHERE spgpsc.id = event.source_id -- noqa
+            AND spgpsc.record_time_range @> lower(event.record_time_range) -- noqa
+        UNION ALL
+        SELECT 1
+        FROM
+            flex.service_providing_group_product_suspension_comment_history
+                AS spgpsch -- noqa
+        WHERE spgpsch.id = event.source_id -- noqa
+            AND spgpsch.record_time_range @> lower(event.record_time_range) -- noqa
     )
 );

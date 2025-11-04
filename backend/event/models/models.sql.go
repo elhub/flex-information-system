@@ -622,6 +622,49 @@ func (q *Queries) GetServiceProvidingGroupProductApplicationNotificationRecipien
 	return items, nil
 }
 
+const getServiceProvidingGroupProductSuspensionCommentNotificationRecipients = `-- name: GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[
+        spg.service_provider_id,
+        spgpsh.procuring_system_operator_id
+    ])::bigint
+FROM service_providing_group_product_suspension_comment_history AS spgpsch
+    INNER JOIN service_providing_group_product_suspension_history AS spgpsh
+        ON spgpsch.service_providing_group_product_suspension_id
+            = spgpsh.service_providing_group_product_suspension_id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN service_providing_group AS spg
+        ON spgpsh.service_providing_group_id = spg.id
+WHERE spgpsch.service_providing_group_product_suspension_comment_id = $1
+    AND tstzrange(spgpsch.recorded_at, spgpsch.replaced_at, '[]')
+        @> $2::timestamptz
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> $2::timestamptz
+    -- private comments do not lead to notifications
+    AND spgpsch.visibility = 'any_involved_party'
+`
+
+// using SPGPS(C) history because of visibility + possible deletion
+func (q *Queries) GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupProductSuspensionCommentNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProvidingGroupProductSuspensionNotificationRecipients = `-- name: GetServiceProvidingGroupProductSuspensionNotificationRecipients :many
 SELECT spg.service_provider_id
 FROM service_providing_group_product_suspension_history AS spgpsh

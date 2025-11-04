@@ -74,6 +74,9 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 		"no.elhub.flex.service_providing_group_product_suspension.update",
 		"no.elhub.flex.service_providing_group_product_suspension.delete":
 		return q.GetServiceProvidingGroupProductSuspensionNotificationRecipients(ctx, resourceID, recordedAt)
+	case "no.elhub.flex.service_providing_group_product_suspension_comment.create",
+		"no.elhub.flex.service_providing_group_product_suspension_comment.update":
+		return q.GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients(ctx, resourceID, recordedAt)
 	case "no.elhub.flex.technical_resource.create",
 		"no.elhub.flex.technical_resource.update",
 		"no.elhub.flex.technical_resource.delete":
