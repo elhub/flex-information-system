@@ -8,7 +8,7 @@ import {
   useGetOne,
   useRecordContext,
 } from "react-admin";
-import { Typography, Stack, CircularProgress } from "@mui/material";
+import { Typography, Stack, CircularProgress, Alert } from "@mui/material";
 import { FieldStack } from "../auth";
 import { DateField } from "../components/datetime";
 import { AcknowledgeButton } from "./AcknowledgeButton";
@@ -21,14 +21,24 @@ export const EventResourceButton = () => {
     data: event,
     isPending: eventPending,
     error: eventError,
-  } = useGetOne("event", { id: eventRecord.event_id });
+  } = useGetOne(
+    "event",
+    { id: eventRecord.event_id },
+    { retry: 1, refetchOnWindowFocus: false },
+  );
 
   if (eventPending) {
     return <CircularProgress size={25} thickness={2} />;
   }
 
-  if (eventError) {
-    return null;
+  if (eventError !== null) {
+    return (
+      <Alert severity="info">
+        The event that is connected to this notification could not be loaded.
+        This might be due to a network error or you have lost access to see the
+        event.
+      </Alert>
+    );
   }
 
   const operation = event?.type.split(".").slice(-1);

@@ -1,7 +1,7 @@
 import { Button, useGetOne } from "react-admin";
 import { Link } from "react-router-dom";
 import DataObjectIcon from "@mui/icons-material/DataObject";
-import { CircularProgress } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 
 // Helper to build UI paths to subresource pages based on `source` fields in
 // events and notices, i.e., `resource/id` formats.
@@ -76,7 +76,11 @@ export const ResourceButton = (props: any) => {
     data: resourceRecord,
     isPending: resourcePending,
     error: resourceError,
-  } = useGetOne(resource, { id: id });
+  } = useGetOne(
+    resource,
+    { id: id },
+    { retry: 1, refetchOnWindowFocus: false },
+  );
   const subResourceInfo = getSubResourceInformation(resource);
 
   if (resourcePending) {
@@ -84,7 +88,12 @@ export const ResourceButton = (props: any) => {
   }
 
   if (resourceError) {
-    return null;
+    return (
+      <Alert severity="info">
+        The resource related to the event could not be loaded. This might be due
+        to a network error or you have lost access to see the resource.
+      </Alert>
+    );
   }
 
   return (
