@@ -17,6 +17,7 @@ import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
+import { IdentityField } from "../../components/IdentityField";
 
 export const ServiceProvidingGroupGridSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -76,7 +77,7 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="reason" />
             <DateField source="recorded_at" showTime />
-            <DateField source="recorded_by" showTime />
+            <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
