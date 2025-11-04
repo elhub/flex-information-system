@@ -12,17 +12,19 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_suspension (
     product_type_ids bigint [] NOT NULL CHECK (
         product_type_ids_exists(product_type_ids)
     ),
-    reason text NOT NULL CHECK (
-        reason IN (
-            'failed_verification',
-            'other'
-        )
-    ),
+    reason text NOT NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
+    CONSTRAINT service_providing_group_product_suspension_reason_check
+    CHECK (
+        reason IN (
+            'failed_verification',
+            'other'
+        )
+    ),
     CONSTRAINT service_providing_group_product_suspension_system_operator_fkey
     FOREIGN KEY (
         procuring_system_operator_id, procuring_system_operator_party_type
@@ -52,7 +54,11 @@ BEGIN
             = NEW.service_providing_group_id
             AND spgpa.procuring_system_operator_id
             = NEW.procuring_system_operator_id
-            AND spgpa.status IN ('prequalified', 'verified', 'temporary_qualified')
+            AND (
+                spgpa.status = 'temporary_qualified'
+                OR spgpa.prequalified_at IS NOT null
+                OR spgpa.verified_at IS NOT null
+            )
             AND l_pt_id = ANY(spgpa.product_type_ids)
         ) THEN
             RAISE sqlstate 'PT400' using
