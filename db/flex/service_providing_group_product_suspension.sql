@@ -55,7 +55,8 @@ BEGIN
             AND spgpa.procuring_system_operator_id
             = NEW.procuring_system_operator_id
             AND (
-                spgpa.prequalified_at IS NOT null
+                spgpa.status = 'temporary_qualified'
+                OR spgpa.prequalified_at IS NOT null
                 OR spgpa.verified_at IS NOT null
             )
             AND l_pt_id = ANY(spgpa.product_type_ids)
