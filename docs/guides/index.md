@@ -29,9 +29,9 @@ you can deliver flexibility products.
 
 For background and reference information, see:
 
-* [Concepts](concepts/index.md) – understand the main ideas and terms used
+* [Concepts](../concepts/index.md) – understand the main ideas and terms used
 in FIS.
 * [Processes](../processes/index.md) – the business processes in the flexibility
 value chain.
 * [Resources](../resources/index.md) – API endpoints and data structures.
-* [Technical](../technical/index.md) – system architecture and integrations.
+* Technical – system architecture and integrations.
