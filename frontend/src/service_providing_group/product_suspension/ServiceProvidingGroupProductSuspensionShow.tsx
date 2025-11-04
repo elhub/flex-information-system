@@ -16,7 +16,7 @@ import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-// import { CommentList } from "../../components/comments";
+import { CommentList } from "../../components/comments";
 import { ProductTypeArrayField } from "../../product_type/components";
 
 export const ServiceProvidingGroupProductSuspensionShow = () => {
@@ -86,7 +86,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
           child="product_suspension"
           label="product suspension"
         />
-        {/* {!isHistory && (
+        {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>
               Comments
@@ -94,7 +94,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
             <NestedResourceHistoryButton child="comment" label="comments" />
             <CommentList />
           </>
-        )} */}
+        )}
       </SimpleShowLayout>
     </Show>
   );

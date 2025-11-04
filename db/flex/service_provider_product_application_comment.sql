@@ -16,14 +16,16 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT service_provider_product_application_comment_visibility_check
+    CONSTRAINT
+    service_provider_product_application_comment_visibility_check
     CHECK (
         visibility IN (
             'same_party',
             'any_involved_party'
         )
     ),
-    CONSTRAINT service_provider_product_application_comment_sppa_fkey
+    CONSTRAINT
+    service_provider_product_application_comment_sppa_fkey
     FOREIGN KEY (service_provider_product_application_id)
     REFERENCES service_provider_product_application (id)
 );

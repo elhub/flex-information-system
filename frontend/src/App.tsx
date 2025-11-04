@@ -1092,7 +1092,7 @@ export const App = () => (
             />
             {/* service providing group product suspension comments */}
             {/* list is part of SPG product suspension show page */}
-            {/* <Route
+            <Route
               path=":service_providing_group_id/product_suspension/:service_providing_group_product_suspension_id/comment/:id/show"
               element={
                 <ResourceContextProvider value="service_providing_group_product_suspension_comment">
@@ -1119,9 +1119,9 @@ export const App = () => (
                   </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
-            /> */}
+            />
             {/* service provider product suspension comment history */}
-            {/* <Route
+            <Route
               path=":service_providing_group_id/product_suspension/:service_providing_group_product_suspension_id/comment_history"
               element={<CommentHistoryList />}
             />
@@ -1132,7 +1132,7 @@ export const App = () => (
                   <CommentShow />
                 </ResourceContextProvider>
               }
-            /> */}
+            />
           </Resource>
         ) : null}
         {permissions.includes(
