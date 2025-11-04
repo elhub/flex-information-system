@@ -190,7 +190,7 @@ def data():
             client=client_so,
             id=cast(int, spgpa.id),
             body=ServiceProvidingGroupProductApplicationUpdateRequest(
-                status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
+                status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
                 prequalified_at="2024-01-01T00:00:00+1",
             ),
         )
