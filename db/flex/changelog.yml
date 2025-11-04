@@ -165,6 +165,9 @@ databaseChangeLog:
       file: ./service_providing_group_product_application.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_product_suspension.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_provider_product_application_comment.sql
       relativeToChangelogFile: true
   - include:

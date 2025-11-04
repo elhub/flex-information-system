@@ -142,6 +142,9 @@ import {
   CommentInput,
   CommentShow,
 } from "./components/comments";
+import { ServiceProvidingGroupProductSuspensionShow } from "./service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionShow";
+import { ServiceProvidingGroupProductSuspensionInput } from "./service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionInput";
+import { ServiceProvidingGroupProductSuspensionHistoryList } from "./service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionHistoryList";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -1044,6 +1047,92 @@ export const App = () => (
                 </ResourceContextProvider>
               }
             />
+            {/* service providing group product suspension */}
+            {/* list is also part of SPG show page */}
+            <Route
+              path=":service_providing_group_id/product_suspension/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension">
+                  <ServiceProvidingGroupProductSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/product_suspension/create"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension">
+                  <CreateRedirectPreviousPage>
+                    <ServiceProvidingGroupProductSuspensionInput />
+                  </CreateRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            {/* service providing group product suspension relation history */}
+            <Route
+              path=":service_providing_group_id/product_suspension_history"
+              element={<ServiceProvidingGroupProductSuspensionHistoryList />}
+            />
+            <Route
+              path=":service_providing_group_id/product_suspension_history/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension_history">
+                  <ServiceProvidingGroupProductSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/product_suspension/:id"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension">
+                  <EditRedirectPreviousPage>
+                    <ServiceProvidingGroupProductSuspensionInput />
+                  </EditRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            {/* service providing group product suspension comments */}
+            {/* list is part of SPG product suspension show page */}
+            {/* <Route
+              path=":service_providing_group_id/product_suspension/:service_providing_group_product_suspension_id/comment/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension_comment">
+                  <CommentShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/product_suspension/:service_providing_group_product_suspension_id/comment/create"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension_comment">
+                  <CreateRedirectPreviousPage>
+                    <CommentInput />
+                  </CreateRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":service_providing_group_id/product_suspension/:service_providing_group_product_suspension_id/comment/:id"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension_comment">
+                  <EditRedirectPreviousPage>
+                    <CommentInput />
+                  </EditRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            /> */}
+            {/* service provider product suspension comment history */}
+            {/* <Route
+              path=":service_providing_group_id/product_suspension/:service_providing_group_product_suspension_id/comment_history"
+              element={<CommentHistoryList />}
+            />
+            <Route
+              path=":service_providing_group_id/product_suspension/:service_providing_group_product_suspension_id/comment_history/:id/show"
+              element={
+                <ResourceContextProvider value="service_providing_group_product_suspension_comment_history">
+                  <CommentShow />
+                </ResourceContextProvider>
+              }
+            /> */}
           </Resource>
         ) : null}
         {permissions.includes(
