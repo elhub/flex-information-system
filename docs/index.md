@@ -20,7 +20,7 @@ in FIS.
 value chain.
 * [Resources](resources/index.md) – explore API endpoints and data structures.  
 * [Guides](guides/index.md) – how to use and test FIS.  
-* [Technical](technical/index.md) – read about system architecture and integrations.
+* Technical – read about system architecture and integrations.
 
 ## About the Flexibility Information System
 
