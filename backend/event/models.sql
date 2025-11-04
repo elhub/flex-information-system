@@ -287,31 +287,29 @@ WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
         @> @recorded_at::timestamptz
 -- ISO
 UNION ALL
-SELECT spggp.impacted_system_operator_id
+SELECT spggph.impacted_system_operator_id
 FROM service_providing_group_grid_suspension_history AS spggsh
-    INNER JOIN service_providing_group_grid_prequalification AS spggp
-        ON spggsh.service_providing_group_id = spggp.service_providing_group_id
-    -- SPGGP cannot be deleted + ISO does not change
-    -- we want to notify the ISOs currently having approved prequalifications
-    -- we also want to notify possible new ISOs coming after the suspension
+    INNER JOIN service_providing_group_grid_prequalification_history AS spggph
+        ON spggsh.service_providing_group_id = spggph.service_providing_group_id
 WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
     AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
         @> @recorded_at::timestamptz
+    AND tstzrange(spggph.recorded_at, spggph.replaced_at, '[]')
+        @> @recorded_at::timestamptz
     AND (
-        spggp.status IN ('approved', 'conditionally_approved')
-        OR spggp.prequalified_at IS NOT null
+        spggph.status IN ('approved', 'conditionally_approved')
+        OR spggph.prequalified_at IS NOT null
     )
 -- PSO
 UNION ALL
-SELECT spgpa.procuring_system_operator_id
+SELECT spgpah.procuring_system_operator_id
 FROM service_providing_group_grid_suspension_history AS spggsh
-    INNER JOIN service_providing_group_product_application AS spgpa
-        ON spggsh.service_providing_group_id = spgpa.service_providing_group_id
-    -- SPGPA cannot be deleted + PSO does not change
-    -- we want to notify the PSOs currently having accepted product applications
-    -- we also want to notify possible new PSOs coming after the suspension
+    INNER JOIN service_providing_group_product_application_history AS spgpah
+        ON spggsh.service_providing_group_id = spgpah.service_providing_group_id
 WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
     AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
         @> @recorded_at::timestamptz
     AND (
         spgpa.status IN ('verified', 'prequalified')
@@ -340,6 +338,33 @@ WHERE spggsch.service_providing_group_grid_suspension_comment_id = @resource_id
         @> @recorded_at::timestamptz
     -- private comments do not lead to notifications
     AND spggsch.visibility = 'any_involved_party';
+
+-- name: GetServiceProvidingGroupProductSuspensionNotificationRecipients :many
+-- SP
+SELECT spg.service_provider_id
+FROM service_providing_group_product_suspension_history AS spgpsh
+    INNER JOIN service_providing_group AS spg
+        ON spgpsh.service_providing_group_id = spg.id
+    -- SPG cannot be deleted + SP does not change
+WHERE spgpsh.service_providing_group_product_suspension_id = @resource_id
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+-- PSO
+UNION ALL
+SELECT spgpah.procuring_system_operator_id
+FROM service_providing_group_product_suspension_history AS spgpsh
+    INNER JOIN service_providing_group_product_application_history AS spgpah
+        ON spgpsh.service_providing_group_id = spgpah.service_providing_group_id
+WHERE spgpsh.service_providing_group_product_suspension_id = @resource_id
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND (
+        spgpa.status IN ('verified', 'prequalified', 'temporary_qualified')
+        OR spgpa.verified_at IS NOT null
+        OR spgpa.prequalified_at IS NOT null
+    );
 
 -- name: GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients :many
 SELECT DISTINCT
