@@ -52,7 +52,7 @@ USING (
         SELECT 1
         FROM flex.controllable_unit_service_provider AS cusp
         WHERE cusp.controllable_unit_id = controllable_unit_suspension.controllable_unit_id -- noqa
-            AND cusp.service_provider_id = (SELECT current_party())
+            AND cusp.service_provider_id = (SELECT flex.current_party())
             AND cusp.valid_time_range @> current_timestamp
     )
 );
@@ -67,11 +67,11 @@ TO flex_service_provider
 USING (
     EXISTS (
         SELECT 1
-        FROM controllable_unit_service_provider
-        WHERE controllable_unit_service_provider.controllable_unit_id = controllable_unit_suspension_history.controllable_unit_id -- noqa
-            AND controllable_unit_service_provider.service_provider_id
-            = (SELECT current_party())
-            AND controllable_unit_service_provider.valid_time_range
+        FROM flex.controllable_unit_service_provider AS cusp
+        WHERE cusp.controllable_unit_id
+        = controllable_unit_suspension_history.controllable_unit_id -- noqa
+            AND cusp.service_provider_id = (SELECT flex.current_party())
+            AND cusp.valid_time_range
             && controllable_unit_suspension_history.record_time_range -- noqa
     )
 );

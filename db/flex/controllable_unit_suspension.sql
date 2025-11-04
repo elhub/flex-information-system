@@ -30,3 +30,9 @@ CREATE TABLE IF NOT EXISTS controllable_unit_suspension (
     FOREIGN KEY (controllable_unit_id)
     REFERENCES controllable_unit (id)
 );
+
+-- changeset flex:controllable-unit-suspension-capture-event runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER controllable_unit_suspension_event
+AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_suspension
+FOR EACH ROW
+EXECUTE FUNCTION capture_event('controllable_unit_suspension');
