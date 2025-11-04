@@ -85,6 +85,7 @@ USING (
         'service_providing_group_membership',
         'service_providing_group_grid_prequalification',
         'service_providing_group_grid_suspension',
+        'service_providing_group_grid_suspension_comment',
         'service_providing_group_product_application',
         'service_providing_group_product_suspension'
     )
@@ -339,6 +340,33 @@ USING (
 
 -- RLS: EVENT-SP014
 CREATE POLICY "EVENT_SP014" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'service_providing_group_grid_suspension_comment'
+    AND EXISTS (
+        SELECT
+            spggsc.service_providing_group_grid_suspension_id,
+            spggsc.record_time_range
+        FROM
+            flex.service_providing_group_grid_suspension_comment
+                AS spggsc -- noqa
+        WHERE spggsc.id = event.source_id -- noqa
+            AND spggsc.record_time_range @> lower(event.record_time_range) -- noqa
+        UNION ALL
+        SELECT
+            spggsch.service_providing_group_grid_suspension_id,
+            spggsch.record_time_range
+        FROM
+            flex.service_providing_group_grid_suspension_comment_history
+                AS spggsch -- noqa
+        WHERE spggsch.id = event.source_id -- noqa
+            AND spggsch.record_time_range @> lower(event.record_time_range) -- noqa
+    )
+);
+
+-- RLS: EVENT-SP015
+CREATE POLICY "EVENT_SP015" ON event
 FOR SELECT
 TO flex_service_provider
 USING (

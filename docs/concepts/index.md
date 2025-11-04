@@ -18,9 +18,14 @@ continues to evolve.
 
 ## Current concepts
 
-### [End User](end-user.md)
+### [Controllable Unit and Service Providing Group](cu-spg.md)
 
-The owner of the controllable unit.
+Defines controllable units as individual controllable assets and service
+providing groups as collections of such units that are used to deliver flexibility.
+
+### [End Users](end-user.md)
+
+The owner of a controllable unit.
 
 ### [Grid Model](grid-model.md)
 
@@ -42,8 +47,8 @@ Overview of time-series in the context of a flexibility value chain.
 
 If you want to learn more about how FIS works in practice, continue with:
 
-- **[Processes](../processes/index.md)** – workflows and interactions.  
-- **[Resources](../resources/index.md)** – resources in the API.  
-- **[Guides](../guides/index.md)** – GUI and test environment instructions.  
-- **[Technical](../technical/index.md)** – architecture, integrations,
+- [Processes](../processes/index.md) – workflows and interactions.  
+- [Resources](../resources/index.md) – resources in the API.  
+- [Guides](../guides/index.md) – GUI and test environment instructions.  
+- Technical – architecture, integrations,
 and system design.

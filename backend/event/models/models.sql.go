@@ -434,6 +434,49 @@ func (q *Queries) GetServiceProvidingGroupGridPrequalificationNotificationRecipi
 	return items, nil
 }
 
+const getServiceProvidingGroupGridSuspensionCommentNotificationRecipients = `-- name: GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[
+        spg.service_provider_id,
+        spggsh.impacted_system_operator_id
+    ])::bigint
+FROM service_providing_group_grid_suspension_comment_history AS spggsch
+    INNER JOIN service_providing_group_grid_suspension_history AS spggsh
+        ON spggsch.service_providing_group_grid_suspension_id
+            = spggsh.service_providing_group_grid_suspension_id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN service_providing_group AS spg
+        ON spggsh.service_providing_group_id = spg.id
+WHERE spggsch.service_providing_group_grid_suspension_comment_id = $1
+    AND tstzrange(spggsch.recorded_at, spggsch.replaced_at, '[]')
+        @> $2::timestamptz
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> $2::timestamptz
+    -- private comments do not lead to notifications
+    AND spggsch.visibility = 'any_involved_party'
+`
+
+// using SPGGS(C) history because of visibility + possible deletion
+func (q *Queries) GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupGridSuspensionCommentNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProvidingGroupGridSuspensionNotificationRecipients = `-- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
 
 SELECT spg.service_provider_id
