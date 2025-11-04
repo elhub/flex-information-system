@@ -130,6 +130,7 @@ USING (
                 SELECT
                     spgpah.product_type_ids,
                     spgpah.record_time_range,
+                    spgpah.status,
                     spgpah.prequalified_at,
                     spgpah.verified_at
                 FROM
@@ -143,6 +144,7 @@ USING (
                 SELECT
                     spgpa.product_type_ids,
                     spgpa.record_time_range,
+                    spgpa.status,
                     spgpa.prequalified_at,
                     spgpa.verified_at
                 FROM flex.service_providing_group_product_application AS spgpa
