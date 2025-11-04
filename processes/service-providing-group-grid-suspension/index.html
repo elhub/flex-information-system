@@ -296,6 +296,8 @@
       
         
       
+        
+      
     
     
     
@@ -333,6 +335,28 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/cu-spg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Controllable Unit and Service Providing Group
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1997,15 +2021,10 @@
 
 <h1 id="spg-grid-suspension">SPG Grid Suspension</h1>
 <p>This process is used to <a href="../../concepts/suspension/">suspend</a> the service
-providing group (SPG) temporarily. The suspension is done by an impacted system
-operator and is registered in the flexibility information system (FIS) by
-creating a SPG grid suspension. By registering it in the FIS, both the service
-provider, relevant procuring and impacted system operators will be made aware of
-the suspension.</p>
+providing group (SPG) temporarily.</p>
 <p>The suspension is valid for the following combination:</p>
 <ul>
 <li><code>service providing group</code>- the SPG that is suspended.</li>
-<li><code>service provider</code> - the supplier of the SPG.</li>
 <li><code>impacted system operator</code>- the one that suspends.</li>
 </ul>
 <p>All procuring system operators will be affected by the suspension as the SPG
@@ -2015,11 +2034,7 @@ impacted system operators will receive notification of the suspension.</p>
 of a SPG. A SPG grid suspension will effectively prevent the SPG from delivering
 <em>any</em> services to <em>any</em> PSO. The ISO must consider using
 softer tools such as temporary limits.</p>
-<p>The impacted system operator must include the reason for suspension when
-suspending. The reason for suspension is a predefined list. There are two
-reasons for that. The first is that the ISO is only allowed to suspend for
-valid reasons. The other is that it allows for a greater degree of automation
-in the process.</p>
+<p>Reasons for suspension:</p>
 <table>
 <thead>
 <tr>
@@ -2042,23 +2057,11 @@ in the process.</p>
 </tr>
 </tbody>
 </table>
-<p>Depending on the reason for suspension, the system operator should warn the
-service provider in advance of the suspension. The reasons for suspension that
-require a warning in advance of the suspension - and how that warning is
-conveyed - must be specified in the national terms and conditions.</p>
 <p>The process also includes reinstatement of the service providing group grid prequalification,
 i.e. removing the suspension.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>The issue that triggers the suspension is temporary.</li>
-<li>Adding and lifting a suspension is instantaneous. There is no need to
-  communicate suspension or reinstatement ahead in time.</li>
-<li>End users should not be notified about or view the suspension in FIS. Service
-  providers will notify end users when necessary and dependent on the agreement
-  between them and the end user.</li>
-<li>The suspension of the SPG will impact the
-  <a href="https://elhub.github.io/flex-information-system/concepts/ready-for-market/">ready for market</a>
-  status for a SPG.</li>
 </ul>
 <h2 id="sequence">Sequence</h2>
 <p><a href="../../diagrams/service_providing_group_grid_suspension.png">Full Size</a> |

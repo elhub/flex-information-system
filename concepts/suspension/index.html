@@ -298,6 +298,8 @@
       
         
       
+        
+      
     
     
     
@@ -335,6 +337,28 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cu-spg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Controllable Unit and Service Providing Group
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -456,6 +480,24 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition-of-suspension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition of suspension
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suspension-in-the-flexibility-information-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suspension in the Flexibility Information System
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#who-can-suspend" class="md-nav__link">
@@ -1953,6 +1995,24 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#definition-of-suspension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition of suspension
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suspension-in-the-flexibility-information-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suspension in the Flexibility Information System
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#who-can-suspend" class="md-nav__link">
     <span class="md-ellipsis">
       Who can suspend?
@@ -1978,6 +2038,7 @@
 
 
 <h1 id="suspension">Suspension</h1>
+<h2 id="definition-of-suspension">Definition of suspension</h2>
 <p>ACERs recommendation for NC DR has two mentions of "suspension procedures".</p>
 <blockquote>
 <p>Article 27</p>
@@ -1998,7 +2059,8 @@ recommendation suggests that it is <em>temporary</em> - for a <em>period of time
 <p>Another aspect of suspension is that it is <em>sometimes</em> considered as a
 punishment because someone has done something wrong. We do <em>not</em> interpret
 suspension to signal or exclusively be about sanctioning, but rather just a way
-to enforce or convey temporary deactivation.</p>
+to enforce or convey temporary deactivation. Suspension thus works as either
+a sanctioning option or a safety valve when issues occur.</p>
 <p>A broad definition of suspension also implies that it can be done both by the
 party that is doing the activity (I am suspending my activity), but also by
 someone else (You must suspend your activity). We consider suspension in this
@@ -2011,51 +2073,61 @@ will follow a separate deactivation processes.</p>
 <p>Suspension: Temporary deactivation done by entitled parties to pause
 another party's activities.</p>
 </blockquote>
+<h2 id="suspension-in-the-flexibility-information-system">Suspension in the Flexibility Information System</h2>
+<p>Suspension is done by an entitled system operator and is registered in the
+flexibility information system (FIS) by creating a relevant suspension. By
+registering it in the FIS, the relevant service provider will be made aware of
+the suspension.</p>
+<p>We consider adding and lifting a suspension to be instantaneus. Meaning that there
+is no possibility to register suspension or reinstatement in FIS ahead in time.</p>
+<p>When suspending, the system operator must include the reason for suspension. The
+reasons for suspension is a predefined list. There are two reasons for that. The
+first is that the system operator is only allowed to suspend for valid reasons.
+The other is that it allows for a greater degree of automation in the processes.</p>
+<p>Depending on the reason for suspension, the system operator should warn the
+service provider in advance of the suspension. The reasons for suspension that
+require a warning in advance of the suspension - and how that warning is
+conveyed - must be specified in the national terms and conditions.</p>
+<p>End users should not be notified about or view the suspension in FIS. Service
+providers will notify end users when necessary and depending on the agreement
+between them and the end user.</p>
+<p>Suspension is a powerful tool as suspension will impact the <a href="https://elhub.github.io/flex-information-system/concepts/ready-for-market/">ready for market</a>
+status of either the SP, SPG or CU. The system operator should consider using
+other tools before suspending due to the significant impact of a suspension.</p>
 <h2 id="who-can-suspend">Who can suspend?</h2>
 <p>Suspension can happen on all levels. It can be on both regular resources and the
-one that represent relationships (like product applications).</p>
+one that represents relationships (like product qualification).</p>
 <table>
 <thead>
 <tr>
 <th>Level</th>
-<th>AKA</th>
 <th>Who</th>
-<th>Comment</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>CU Grid Validation</td>
-<td></td>
-<td>CSO</td>
-<td></td>
-</tr>
-<tr>
-<td>SPG Grid Prequalification</td>
-<td></td>
+<td><a href="../../processes/controllable-unit-suspension/">CU</a></td>
 <td>ISO</td>
-<td></td>
 </tr>
 <tr>
-<td>SPG Product Application</td>
-<td>Prequalification</td>
+<td><a href="../../processes/service-providing-group-grid-suspension/">SPG Grid</a></td>
+<td>ISO</td>
+</tr>
+<tr>
+<td><a href="../../processes/service-provider-product-suspension/">SP Product</a></td>
 <td>PSO</td>
-<td></td>
 </tr>
 <tr>
-<td>SP Product Application</td>
-<td>Qualification</td>
+<td><a href="../../processes/service-providing-group-product-suspension/">SPG Product</a></td>
 <td>PSO</td>
-<td></td>
 </tr>
 <tr>
-<td>SP</td>
-<td>Approval</td>
+<td>SP suspension</td>
 <td>RME</td>
-<td>Must techincally be done by FISO</td>
 </tr>
 </tbody>
 </table>
+<p>SP suspension must be technically done by FISO.</p>
 
 
 
