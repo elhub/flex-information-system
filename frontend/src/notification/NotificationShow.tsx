@@ -31,7 +31,7 @@ export const EventResourceButton = () => {
     return <CircularProgress size={25} thickness={2} />;
   }
 
-  if (eventError !== null) {
+  if (eventError) {
     return (
       <Alert severity="info">
         The event that is connected to this notification could not be loaded.
