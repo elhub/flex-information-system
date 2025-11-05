@@ -18,10 +18,11 @@ continues to evolve.
 
 ## Current concepts
 
-### [Controllable Unit and Service Providing Group](cu-spg.md)
+### [Conceptual Model and Terminology](simplified_model.md)
 
-Defines controllable units as individual controllable assets and service
-providing groups as collections of such units that are used to deliver flexibility.
+Introduces the core concepts, roles, and relationships in FIS and how they
+connect to each other. Provides the shared conceptual foundation for
+understanding all other parts of the documentation.
 
 ### [End User](end-user.md)
 
