@@ -12,7 +12,7 @@ presented elsewhere in the documentation.
 
 The simplified conceptual model below illustrates some of the most central
 concepts in the FIS and the relations between them. The model serves as an
-overview when we introduce concepts and abbriviations throughout the documentation.
+overview when we introduce concepts and abbreviations throughout the documentation.
 
 The conceptual model is based on terminology from the Network Code on Demand
 Response (NC DR) and in the concept pages we describe how we have chosen to interpret
