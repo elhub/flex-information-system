@@ -18,6 +18,7 @@ import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { ProductTypeArrayField } from "../../product_type/components";
+import { IdentityField } from "../../components/IdentityField";
 
 export const ServiceProvidingGroupProductSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -78,7 +79,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="reason" />
             <DateField source="recorded_at" showTime />
-            <DateField source="recorded_by" showTime />
+            <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
