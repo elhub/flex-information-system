@@ -94,7 +94,7 @@ while the SPG coordinates all sites to deliver a joint service to the power syst
     (26) 'service providing group' or 'SPG' means an aggregation of controllable units or service providing units connected
     to more than one connection agreement point within the same scheduling area. SPG is defined by the service provider
     to provide balancing or local services;
-   
+  
     The NC DR also includes a definition of a 'service providing unit' (SPU) as a single unit connected to one connection
     agreement point. In FIS, a SPU is treated as an SPG where all CUs are connected to the same connection point.
 
