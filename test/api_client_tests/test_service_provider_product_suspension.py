@@ -170,7 +170,7 @@ def test_spps_fiso(data):
         id=cast(int, spps.id),
         body=ServiceProviderProductSuspensionUpdateRequest(
             product_type_ids=product_type_ids,
-            reason=ServiceProviderProductSuspensionReason.FAILED_VERIFICATION,
+            reason=ServiceProviderProductSuspensionReason.BREACH_OF_CONDITIONS,
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -254,7 +254,7 @@ def test_spps_so(data):
         id=cast(int, spps.id),
         body=ServiceProviderProductSuspensionUpdateRequest(
             product_type_ids=product_type_ids,
-            reason=ServiceProviderProductSuspensionReason.FAILED_VERIFICATION,
+            reason=ServiceProviderProductSuspensionReason.BREACH_OF_CONDITIONS,
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -369,7 +369,7 @@ def test_spps_so_003_negative(data):
         client=client_so,
         id=cast(int, spps.id),
         body=ServiceProviderProductSuspensionUpdateRequest(
-            reason=ServiceProviderProductSuspensionReason.FAILED_VERIFICATION,
+            reason=ServiceProviderProductSuspensionReason.BREACH_OF_CONDITIONS,
         ),
     )
     assert not isinstance(u, ErrorMessage)

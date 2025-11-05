@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:service-provider-product-suspension-create runOnChange:false endDelimiter:--
+-- validCheckSum: 9:eb74e5fa7bb481c62713d08e4695c889
 CREATE TABLE IF NOT EXISTS service_provider_product_suspension (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     procuring_system_operator_id bigint NOT NULL DEFAULT (flex.current_party()),
@@ -15,21 +16,22 @@ CREATE TABLE IF NOT EXISTS service_provider_product_suspension (
     product_type_ids bigint [] NOT NULL CHECK (
         product_type_ids_exists(product_type_ids)
     ),
-    reason text NOT NULL CHECK (
-        reason IN (
-            'communication_issues',
-            'failing_heartbeat',
-            'system_issues',
-            'clearing_issues',
-            'failed_verification',
-            'other'
-        )
-    ),
+    reason text NOT NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
+    CONSTRAINT service_provider_product_suspension_reason_check CHECK (
+        reason IN (
+            'communication_issues',
+            'failing_heartbeat',
+            'system_issues',
+            'clearing_issues',
+            'breach_of_conditions',
+            'other'
+        )
+    ),
     CONSTRAINT service_provider_product_suspension_system_operator_fkey
     FOREIGN KEY (
         procuring_system_operator_id, procuring_system_operator_party_type

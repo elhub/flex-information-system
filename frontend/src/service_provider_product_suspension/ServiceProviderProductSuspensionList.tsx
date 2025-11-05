@@ -34,7 +34,7 @@ export const ServiceProviderProductSuspensionList = () => {
         "failing_heartbeat",
         "system_issues",
         "clearing_issues",
-        "failed_verification",
+        "breach_of_conditions",
         "other",
       ]}
       alwaysOn
