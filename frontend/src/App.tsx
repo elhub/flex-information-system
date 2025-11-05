@@ -475,9 +475,9 @@ export const App = () => (
             }
             edit={
               permissions.includes("entity.update") ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <EntityInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -514,14 +514,9 @@ export const App = () => (
               path=":entity_id/client/:id"
               element={
                 <ResourceContextProvider value="entity_client">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `entity/${record.entity_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <EntityClientInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -534,9 +529,9 @@ export const App = () => (
             show={PartyShow}
             edit={
               permissions.includes("party.update") ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <PartyInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -590,14 +585,9 @@ export const App = () => (
               path=":party_id/membership/:id"
               element={
                 <ResourceContextProvider value="party_membership">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `party/${record.party_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <PartyMembershipInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -624,9 +614,9 @@ export const App = () => (
             icon={BookmarkIcon}
             edit={
               permissions.includes("controllable_unit.update") ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ControllableUnitInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -694,14 +684,9 @@ export const App = () => (
               path=":controllable_unit_id/service_provider/:id"
               element={
                 <ResourceContextProvider value="controllable_unit_service_provider">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `controllable_unit/${record.controllable_unit_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <ControllableUnitServiceProviderInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -751,14 +736,9 @@ export const App = () => (
               path=":controllable_unit_id/technical_resource/:id"
               element={
                 <ResourceContextProvider value="technical_resource">
-                  <Edit
-                    mutationMode="pessimistic"
-                    redirect={(_: any, _id: any, record: any) =>
-                      `controllable_unit/${record.controllable_unit_id}/show`
-                    }
-                  >
+                  <EditRedirectPreviousPage>
                     <TechnicalResourceInput />
-                  </Edit>
+                  </EditRedirectPreviousPage>
                 </ResourceContextProvider>
               }
             />
@@ -801,9 +781,9 @@ export const App = () => (
             show={ServiceProvidingGroupShow}
             edit={
               permissions.includes("service_providing_group.update") ? (
-                <Edit mutationMode="pessimistic">
+                <EditRedirectPreviousPage>
                   <ServiceProvidingGroupInput />
-                </Edit>
+                </EditRedirectPreviousPage>
               ) : (
                 (null as any)
               )
@@ -1529,6 +1509,7 @@ const EditRedirectPreviousPage = (props: any) => {
 
   return (
     <Edit
+      actions={false} // disable potential Show button
       mutationMode="pessimistic"
       mutationOptions={{ onSuccess: () => navigate(-1) }}
     >
