@@ -312,9 +312,9 @@ WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
     AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
         @> @recorded_at::timestamptz
     AND (
-        spgpa.status IN ('verified', 'prequalified')
-        OR spgpa.verified_at IS NOT null
-        OR spgpa.prequalified_at IS NOT null
+        spgpah.status IN ('verified', 'prequalified', 'temporary_qualified')
+        OR spgpah.verified_at IS NOT null
+        OR spgpah.prequalified_at IS NOT null
     );
 
 -- name: GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients :many
@@ -361,9 +361,9 @@ WHERE spgpsh.service_providing_group_product_suspension_id = @resource_id
     AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
         @> @recorded_at::timestamptz
     AND (
-        spgpa.status IN ('verified', 'prequalified', 'temporary_qualified')
-        OR spgpa.verified_at IS NOT null
-        OR spgpa.prequalified_at IS NOT null
+        spgpah.status IN ('verified', 'prequalified', 'temporary_qualified')
+        OR spgpah.verified_at IS NOT null
+        OR spgpah.prequalified_at IS NOT null
     );
 
 -- name: GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients :many
