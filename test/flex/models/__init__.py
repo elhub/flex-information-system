@@ -125,6 +125,16 @@ from .list_service_providing_group_product_application_history_prefer import (
     ListServiceProvidingGroupProductApplicationHistoryPrefer,
 )
 from .list_service_providing_group_product_application_prefer import ListServiceProvidingGroupProductApplicationPrefer
+from .list_service_providing_group_product_suspension_comment_history_prefer import (
+    ListServiceProvidingGroupProductSuspensionCommentHistoryPrefer,
+)
+from .list_service_providing_group_product_suspension_comment_prefer import (
+    ListServiceProvidingGroupProductSuspensionCommentPrefer,
+)
+from .list_service_providing_group_product_suspension_history_prefer import (
+    ListServiceProvidingGroupProductSuspensionHistoryPrefer,
+)
+from .list_service_providing_group_product_suspension_prefer import ListServiceProvidingGroupProductSuspensionPrefer
 from .list_system_operator_product_type_history_prefer import ListSystemOperatorProductTypeHistoryPrefer
 from .list_system_operator_product_type_prefer import ListSystemOperatorProductTypePrefer
 from .list_technical_resource_history_prefer import ListTechnicalResourceHistoryPrefer
@@ -260,6 +270,38 @@ from .service_providing_group_product_application_status import ServiceProviding
 from .service_providing_group_product_application_update_request import (
     ServiceProvidingGroupProductApplicationUpdateRequest,
 )
+from .service_providing_group_product_suspension import ServiceProvidingGroupProductSuspension
+from .service_providing_group_product_suspension_comment import ServiceProvidingGroupProductSuspensionComment
+from .service_providing_group_product_suspension_comment_create_data import (
+    ServiceProvidingGroupProductSuspensionCommentCreateData,
+)
+from .service_providing_group_product_suspension_comment_create_request import (
+    ServiceProvidingGroupProductSuspensionCommentCreateRequest,
+)
+from .service_providing_group_product_suspension_comment_history_response import (
+    ServiceProvidingGroupProductSuspensionCommentHistoryResponse,
+)
+from .service_providing_group_product_suspension_comment_response import (
+    ServiceProvidingGroupProductSuspensionCommentResponse,
+)
+from .service_providing_group_product_suspension_comment_update_request import (
+    ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
+)
+from .service_providing_group_product_suspension_comment_visibility import (
+    ServiceProvidingGroupProductSuspensionCommentVisibility,
+)
+from .service_providing_group_product_suspension_create_data import ServiceProvidingGroupProductSuspensionCreateData
+from .service_providing_group_product_suspension_create_request import (
+    ServiceProvidingGroupProductSuspensionCreateRequest,
+)
+from .service_providing_group_product_suspension_history_response import (
+    ServiceProvidingGroupProductSuspensionHistoryResponse,
+)
+from .service_providing_group_product_suspension_reason import ServiceProvidingGroupProductSuspensionReason
+from .service_providing_group_product_suspension_response import ServiceProvidingGroupProductSuspensionResponse
+from .service_providing_group_product_suspension_update_request import (
+    ServiceProvidingGroupProductSuspensionUpdateRequest,
+)
 from .service_providing_group_response import ServiceProvidingGroupResponse
 from .service_providing_group_status import ServiceProvidingGroupStatus
 from .service_providing_group_update_request import ServiceProvidingGroupUpdateRequest
@@ -380,6 +422,10 @@ __all__ = (
     "ListServiceProvidingGroupPrefer",
     "ListServiceProvidingGroupProductApplicationHistoryPrefer",
     "ListServiceProvidingGroupProductApplicationPrefer",
+    "ListServiceProvidingGroupProductSuspensionCommentHistoryPrefer",
+    "ListServiceProvidingGroupProductSuspensionCommentPrefer",
+    "ListServiceProvidingGroupProductSuspensionHistoryPrefer",
+    "ListServiceProvidingGroupProductSuspensionPrefer",
     "ListSystemOperatorProductTypeHistoryPrefer",
     "ListSystemOperatorProductTypePrefer",
     "ListTechnicalResourceHistoryPrefer",
@@ -479,6 +525,20 @@ __all__ = (
     "ServiceProvidingGroupProductApplicationResponse",
     "ServiceProvidingGroupProductApplicationStatus",
     "ServiceProvidingGroupProductApplicationUpdateRequest",
+    "ServiceProvidingGroupProductSuspension",
+    "ServiceProvidingGroupProductSuspensionComment",
+    "ServiceProvidingGroupProductSuspensionCommentCreateData",
+    "ServiceProvidingGroupProductSuspensionCommentCreateRequest",
+    "ServiceProvidingGroupProductSuspensionCommentHistoryResponse",
+    "ServiceProvidingGroupProductSuspensionCommentResponse",
+    "ServiceProvidingGroupProductSuspensionCommentUpdateRequest",
+    "ServiceProvidingGroupProductSuspensionCommentVisibility",
+    "ServiceProvidingGroupProductSuspensionCreateData",
+    "ServiceProvidingGroupProductSuspensionCreateRequest",
+    "ServiceProvidingGroupProductSuspensionHistoryResponse",
+    "ServiceProvidingGroupProductSuspensionReason",
+    "ServiceProvidingGroupProductSuspensionResponse",
+    "ServiceProvidingGroupProductSuspensionUpdateRequest",
     "ServiceProvidingGroupResponse",
     "ServiceProvidingGroupStatus",
     "ServiceProvidingGroupUpdateRequest",

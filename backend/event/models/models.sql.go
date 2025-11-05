@@ -434,6 +434,49 @@ func (q *Queries) GetServiceProvidingGroupGridPrequalificationNotificationRecipi
 	return items, nil
 }
 
+const getServiceProvidingGroupGridSuspensionCommentNotificationRecipients = `-- name: GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[
+        spg.service_provider_id,
+        spggsh.impacted_system_operator_id
+    ])::bigint
+FROM service_providing_group_grid_suspension_comment_history AS spggsch
+    INNER JOIN service_providing_group_grid_suspension_history AS spggsh
+        ON spggsch.service_providing_group_grid_suspension_id
+            = spggsh.service_providing_group_grid_suspension_id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN service_providing_group AS spg
+        ON spggsh.service_providing_group_id = spg.id
+WHERE spggsch.service_providing_group_grid_suspension_comment_id = $1
+    AND tstzrange(spggsch.recorded_at, spggsch.replaced_at, '[]')
+        @> $2::timestamptz
+    AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
+        @> $2::timestamptz
+    -- private comments do not lead to notifications
+    AND spggsch.visibility = 'any_involved_party'
+`
+
+// using SPGGS(C) history because of visibility + possible deletion
+func (q *Queries) GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupGridSuspensionCommentNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProvidingGroupGridSuspensionNotificationRecipients = `-- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
 
 SELECT spg.service_provider_id
@@ -572,6 +615,98 @@ func (q *Queries) GetServiceProvidingGroupProductApplicationNotificationRecipien
 			return nil, err
 		}
 		items = append(items, procuring_system_operator_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getServiceProvidingGroupProductSuspensionCommentNotificationRecipients = `-- name: GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[
+        spg.service_provider_id,
+        spgpsh.procuring_system_operator_id
+    ])::bigint
+FROM service_providing_group_product_suspension_comment_history AS spgpsch
+    INNER JOIN service_providing_group_product_suspension_history AS spgpsh
+        ON spgpsch.service_providing_group_product_suspension_id
+            = spgpsh.service_providing_group_product_suspension_id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN service_providing_group AS spg
+        ON spgpsh.service_providing_group_id = spg.id
+WHERE spgpsch.service_providing_group_product_suspension_comment_id = $1
+    AND tstzrange(spgpsch.recorded_at, spgpsch.replaced_at, '[]')
+        @> $2::timestamptz
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> $2::timestamptz
+    -- private comments do not lead to notifications
+    AND spgpsch.visibility = 'any_involved_party'
+`
+
+// using SPGPS(C) history because of visibility + possible deletion
+func (q *Queries) GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupProductSuspensionCommentNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getServiceProvidingGroupProductSuspensionNotificationRecipients = `-- name: GetServiceProvidingGroupProductSuspensionNotificationRecipients :many
+SELECT spg.service_provider_id
+FROM service_providing_group_product_suspension_history AS spgpsh
+    INNER JOIN service_providing_group AS spg
+        ON spgpsh.service_providing_group_id = spg.id
+    -- SPG cannot be deleted + SP does not change
+WHERE spgpsh.service_providing_group_product_suspension_id = $1
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> $2::timestamptz
+UNION ALL
+SELECT spgpa.procuring_system_operator_id
+FROM service_providing_group_product_suspension_history AS spgpsh
+    -- SPGPA cannot be deleted + PSO does not change
+    -- we want to notify the PSOs currently having accepted product applications
+    -- we also want to notify possible new PSOs coming after the suspension
+    INNER JOIN service_providing_group_product_application AS spgpa
+        ON spgpsh.service_providing_group_id = spgpa.service_providing_group_id
+WHERE spgpsh.service_providing_group_product_suspension_id = $1
+    AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
+        @> $2::timestamptz
+    AND (
+        spgpa.status IN ('verified', 'prequalified', 'temporary_qualified')
+        OR spgpa.verified_at IS NOT null
+        OR spgpa.prequalified_at IS NOT null
+    )
+`
+
+// SP
+// PSO
+func (q *Queries) GetServiceProvidingGroupProductSuspensionNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupProductSuspensionNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var service_provider_id int
+		if err := rows.Scan(&service_provider_id); err != nil {
+			return nil, err
+		}
+		items = append(items, service_provider_id)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

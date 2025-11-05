@@ -3,7 +3,7 @@
 
 {%- set liquibase_resource = resource | replace("_", "-") %}
 {%- set base_resource_ops = data.operations | list %}
-{%- set base_resource_initials = resource.split('_') | map('first') | join  %}
+{%- set lower_acronym = data.acronym | lower %}
 
 -- changeset flex:{{ liquibase_resource }}-comment-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS {{ resource }}_comment (
@@ -20,14 +20,16 @@ CREATE TABLE IF NOT EXISTS {{ resource }}_comment (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT {{ resource }}_comment_visibility_check
+    CONSTRAINT
+    {{ resource }}_comment_visibility_check
     CHECK (
         visibility IN (
             'same_party',
             'any_involved_party'
         )
     ),
-    CONSTRAINT {{ resource }}_comment_{{ base_resource_initials }}_fkey
+    CONSTRAINT
+    {{ resource }}_comment_{{ lower_acronym }}_fkey
     FOREIGN KEY ({{ resource }}_id)
     REFERENCES {{ resource }} (id)
     {%- if "delete" in base_resource_ops %}

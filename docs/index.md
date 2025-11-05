@@ -5,19 +5,33 @@ that is being developed in the context of the
 [EuroFlex project](https://www.euroflex.no/) in Norway.
 [Elhub](https://elhub.no/) is leading the work as part of work package 4.
 
+## How to use the documentation
+
 !!! note "Work in progress"
 
     This documentation is a work in progress. Do not consider any of the details
     here as final or complete.
 
-A flexibility information system, or flexibility register, is a IT system that
-is used to keep track of (register) data about flexible assets such as demand
+Learn more about how FIS works and how to use it:
+
+* [Concepts](concepts/index.md) – understand the main ideas and terms used
+in FIS.  
+* [Processes](processes/index.md) – the business processes in the flexibility
+value chain.
+* [Resources](resources/index.md) – explore API endpoints and data structures.  
+* [Guides](guides/index.md) – how to use and test FIS.  
+* Technical – read about system architecture and integrations.
+
+## About the Flexibility Information System
+
+A flexibility information system, or flexibility register, is an IT system used
+to keep track of (register) data about flexible assets such as demand
 response resources, energy storage systems, and other controllable loads. The
 system will be a central part of a future flexibility value chain. We can think
-of it as a integration- and datahub in the value chain. The value proposal includes
+of it as an integration- and datahub in the value chain. The value proposal includes
 
 * lowering barriers for service providers
-* simplify use of flexible resurces in multiple markets
+* simplifying the use of flexible resurces in multiple markets
 * increasing transparency and trust
 * cost effectiveness through centralising common tasks
 
@@ -70,9 +84,9 @@ operated and maintained by an entity specified in national terms and conditions.
 
 We are piloting a centralised FIS. We believe that such a setup has many
 benefits, e.g. reduced technical complexity by avoiding having many systems
-appear as one. The decentralised option also fails to adress the challenge of
+appear as one. The decentralised option also fails to address the challenge of
 registering CUs _only once_. To achieve that every _connecting_ (not the
-_procuring_) system operator must operate a FIS. Becuase of this the common
+_procuring_) system operator must operate a FIS. Because of this the common
 access point approach also requires system operators - regardless of size and
 maturity - to operate a FIS. This is not a good fit for Norway where we have a
 wide variety of system operators.

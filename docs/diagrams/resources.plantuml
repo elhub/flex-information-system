@@ -73,6 +73,12 @@ digraph flex {
     service_providing_group_product_application -> service_providing_group     [label=service_providing_group_id]
     service_providing_group_product_application -> party     [label=procuring_system_operator_id]
     service_providing_group_product_application -> product_type     [label=product_type_ids]
+    service_providing_group_product_suspension    [label="{service_providing_group_product_suspension}|{The relation allowing a procuring system\noperator to temporarily suspend a service\nproviding group from delivering products\nof certain types.}|{🕰️}" shape=record style=solid]
+    service_providing_group_product_suspension -> party     [label=procuring_system_operator_id]
+    service_providing_group_product_suspension -> service_providing_group     [label=service_providing_group_id]
+    service_providing_group_product_suspension -> product_type     [label=product_type_ids]
+    service_providing_group_product_suspension_comment    [label="{service_providing_group_product_suspension_comment}|{Comment made by a party involved in a service\nproviding group product suspension.}|{🕰️}" shape=record style=solid]
+    service_providing_group_product_suspension_comment -> service_providing_group_product_suspension     [label=service_providing_group_product_suspension_id]
     notice    [label="{notice}|{Notice to users\nabout various issues\nor actions expected\nfrom them.}" shape=record style=solid]
     notice -> party     [label=party_id]
 }

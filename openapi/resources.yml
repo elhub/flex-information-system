@@ -1536,6 +1536,73 @@ resources:
         nullable: true
         example: 2021-08-08 10:00:00 CET
 
+  - id: service_providing_group_product_suspension
+    acronym: SPGPS
+    summary: Service Providing Group Product Suspension
+    description: >-
+      The relation allowing a procuring system operator to temporarily suspend a
+      service providing group from delivering products of certain types.
+    operations:
+      - list
+      - read
+      - create
+      - update
+      - delete
+    audit: true
+    generate_views: true
+    history:
+      - list
+      - read
+    comments: true
+    history_rls: false
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 12
+      procuring_system_operator_id:
+        description: >-
+          Reference to the procuring system operator suspending the service
+          providing group.
+        format: bigint
+        type: integer
+        x-no-update: true
+        required: false
+        x-details: Defaults to the system operator creating the resource.
+        x-foreign-key:
+          resource: party
+          field: id
+        example: 91
+      service_providing_group_id:
+        description: Reference to the service providing group being suspended.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-foreign-key:
+          resource: service_providing_group
+          field: id
+        example: 7
+      product_type_ids:
+        description: References to the suspended product types.
+        type: array
+        items:
+          format: bigint
+          type: integer
+        x-foreign-key:
+          resource: product_type
+          field: id
+        example: [3, 6]
+      reason:
+        description: The reason for the suspension.
+        format: text
+        type: string
+        enum:
+          - failed_verification
+          - other
+        example: failed_verification
+
   - id: notice
     acronym: NOTICE
     summary: Notice

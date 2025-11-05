@@ -68,17 +68,24 @@ const PartyBusinessIDTypeInput = (props: any) => {
     if (isEndUser) {
       formContext.setValue("business_id_type", "uuid");
     }
-  });
+  }, [formContext, isEndUser]);
 
-  const businessIDTypes = ["uuid", "eic_x", "gln"];
+  // Map for human-readable display names
+  const businessIDTypeLabels: Record<string, string> = {
+    uuid: "UUID (Universally Unique Identifier)",
+    eic_x: "EIC-X (Energy Identification Code for Parties)",
+    gln: "GLN (Global Location Number)",
+    org: "ORG (Organisation Number)",
+  };
+  const businessIDTypes = ["uuid", "eic_x", "gln", "org"];
 
   return (
     <SelectInput
-      choices={businessIDTypes.map((idType) => {
-        return { id: idType, name: idType.toUpperCase().replace("_", "-") };
-      })}
+      choices={businessIDTypes.map((idType) => ({
+        id: idType,
+        name: businessIDTypeLabels[idType] || idType,
+      }))}
       defaultValue="gln"
-      // no empty choice allowed
       validate={required()}
       readOnly={isEndUser}
       {...props}

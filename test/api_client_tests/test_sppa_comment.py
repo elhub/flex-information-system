@@ -79,6 +79,26 @@ def data():
 # ---- ---- ---- ---- ----
 
 
+def check_history(clt, sppsc_id):
+    # endpoint: GET /service_provider_product_application_comment_history
+    h = list_service_provider_product_application_comment_history.sync(
+        client=clt,
+        service_provider_product_application_comment_id=f"eq.{sppsc_id}",
+    )
+    if not isinstance(h, list) or len(h) == 0:
+        return False
+
+    # endpoint: GET /service_provider_product_application_comment_history/{id}
+    h1 = read_service_provider_product_application_comment_history.sync(
+        client=clt,
+        id=cast(int, h[0].id),
+    )
+    return isinstance(
+        h1,
+        ServiceProviderProductApplicationCommentHistoryResponse,
+    )
+
+
 # RLS: SPPAC-FISO001
 def test_sppac_fiso(data):
     (sts, client_so, _, sppa_id) = data
@@ -143,16 +163,20 @@ def test_sppac_fiso(data):
     )
     assert not isinstance(u, ErrorMessage)
 
+    # RLS: SPPAC-FISO002
+    check_history(client_fiso, sppac1.id)
 
-# RLS: SPPAC-SO001
-# RLS: SPPAC-SP001
+
+# RLS: SPPAC-SO002
+# RLS: SPPAC-SP002
 def test_sppac_so_sp(data):
     (sts, client_so, client_sp, sppa_id) = data
 
-    # RLS: SPPAC-COM002
+    # RLS: SPPAC-COM001
     #   is also tested here because parties update their comments (visibility)
 
-    # RLS: SPPAC-COM003
+    # RLS: SPPAC-SO001
+    # RLS: SPPAC-SP001
     #   is also tested here because both SO and SP create comments
 
     # SO and SP both create an open comment
@@ -209,6 +233,27 @@ def test_sppac_so_sp(data):
         id=cast(int, sppac_so.id),
     )
     assert isinstance(sppac_so_as_sp, ErrorMessage)
+
+    # RLS: SPPAC-SO003
+    # RLS: SPPAC-SP003
+
+    # SO can read history on SP's comment because it is public
+    assert check_history(client_so, sppac_sp.id)
+    # but SP cannot read history on SO's comment because it is now private
+    assert not check_history(client_sp, sppac_so.id)
+
+    # SO makes comment public again
+    u = update_service_provider_product_application_comment.sync(
+        client=client_so,
+        id=cast(int, sppac_so.id),
+        body=ServiceProviderProductApplicationCommentUpdateRequest(
+            visibility=ServiceProviderProductApplicationCommentVisibility.ANY_INVOLVED_PARTY,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # now SP can read history
+    assert check_history(client_sp, sppac_so.id)
 
 
 def test_sppa_common(data):

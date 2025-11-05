@@ -25,21 +25,6 @@ ALTER TABLE IF EXISTS
 flex.service_provider_product_application_comment_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:service-provider-product-application-comment-history-rls-com runAlways:true endDelimiter:--
--- RLS: SPPAC-COM001
-GRANT SELECT ON flex.service_provider_product_application_comment_history
-TO flex_common;
-
-CREATE POLICY "SPPAC_COM001"
-ON flex.service_provider_product_application_comment_history
-FOR SELECT
-TO flex_common
-USING (EXISTS (
-    SELECT 1
-    FROM service_provider_product_application_comment
-    WHERE service_provider_product_application_comment_history.id = service_provider_product_application_comment.id -- noqa
-));
-
 -- changeset flex:service-provider-product-application-comment-audit-current endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_comment_audit_current

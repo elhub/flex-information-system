@@ -134,6 +134,12 @@ if __name__ == "__main__":
                     f"{DB_DIR}/flex/{resource['id']}_comment.sql",
                 )
 
+                j2.template(
+                    resource,
+                    "comment_rls.j2.sql",
+                    f"{DB_DIR}/flex/{resource['id']}_comment_rls.sql",
+                )
+
                 resource = yaml.safe_load(
                     j2.template_str(resource, "comment_resource.j2.yml"),
                 )["data"]

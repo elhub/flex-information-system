@@ -44,9 +44,9 @@ No policies.
 
 #### Common
 
-| Policy key   | Policy                                        | Status |
-|--------------|-----------------------------------------------|--------|
-| SPPSC-COM001 | Update SPPSC that they created.               | DONE   |
+| Policy key   | Policy                          | Status |
+|--------------|---------------------------------|--------|
+| SPPSC-COM001 | Update SPPSC that they created. | DONE   |
 
 #### Balance Responsible Party
 
@@ -77,19 +77,19 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                            | Status |
-|-------------|---------------------------------------------------|--------|
-| SPPSC-SO001 | Create SPPSC on SPPS where they are PSO.          | DONE   |
-| SPPSC-SO002 | Read SPPSC that the visibility allows.            | DONE   |
-| SPPSC-SO003 | Read history on SPPSC that the visibility allows. | DONE   |
+| Policy key  | Policy                                                   | Status |
+|-------------|----------------------------------------------------------|--------|
+| SPPSC-SO001 | Create SPPSC on SPPS where they are PSO.                 | DONE   |
+| SPPSC-SO002 | Read SPPSC that the visibility allows.                   | DONE   |
+| SPPSC-SO003 | Read history on SPPSC that the latest visibility allows. | DONE   |
 
 #### Service Provider
 
-| Policy key  | Policy                                            | Status |
-|-------------|---------------------------------------------------|--------|
-| SPPSC-SP001 | Create SPPSC on SPPS where they are SP.           | DONE   |
-| SPPSC-SP002 | Read SPPSC that the visibility allows.            | DONE   |
-| SPPSC-SP003 | Read history on SPPSC that the visibility allows. | DONE   |
+| Policy key  | Policy                                                   | Status |
+|-------------|----------------------------------------------------------|--------|
+| SPPSC-SP001 | Create SPPSC on SPPS where they are SP.                  | DONE   |
+| SPPSC-SP002 | Read SPPSC that the visibility allows.                   | DONE   |
+| SPPSC-SP003 | Read history on SPPSC that the latest visibility allows. | DONE   |
 
 #### Third Party
 
