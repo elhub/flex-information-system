@@ -146,7 +146,7 @@ def data():
         body=ServiceProviderProductSuspensionCreateRequest(
             service_provider_id=sp2_id,
             product_type_ids=[6],
-            reason=ServiceProviderProductSuspensionReason.FAILED_VERIFICATION,
+            reason=ServiceProviderProductSuspensionReason.BREACH_OF_CONDITIONS,
         ),
     )
     assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
