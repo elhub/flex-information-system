@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,31 +17,31 @@ class ServiceProviderProductSuspensionComment:
     """Data schema - Comment made by a party involved in a service provider product suspension.
 
     Attributes:
-        visibility (ServiceProviderProductSuspensionCommentVisibility | Unset): The level of visibility of the comment.
-            Example: same_party.
-        content (str | Unset): Free text content of the comment. Example: Missing document..
-        service_provider_product_suspension_id (int | Unset): Reference to the service provider product suspension.
-            Example: 7.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
+        visibility (Union[Unset, ServiceProviderProductSuspensionCommentVisibility]): The level of visibility of the
+            comment. Example: same_party.
+        content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
+        service_provider_product_suspension_id (Union[Unset, int]): Reference to the service provider product
+            suspension. Example: 7.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 9.
-        created_by (int | Unset): Reference to the identity that created the comment. Example: 94.
-        created_at (str | Unset): When the comment was added to the SPPS. Example: 2022-08-08 12:00:00 CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
+        created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
+        created_at (Union[Unset, str]): When the comment was added to the SPPS. Example: 2022-08-08 12:00:00 CET.
     """
 
-    visibility: ServiceProviderProductSuspensionCommentVisibility | Unset = UNSET
-    content: str | Unset = UNSET
-    service_provider_product_suspension_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
-    created_by: int | Unset = UNSET
-    created_at: str | Unset = UNSET
+    visibility: Union[Unset, ServiceProviderProductSuspensionCommentVisibility] = UNSET
+    content: Union[Unset, str] = UNSET
+    service_provider_product_suspension_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
+    created_by: Union[Unset, int] = UNSET
+    created_at: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        visibility: str | Unset = UNSET
+        visibility: Union[Unset, str] = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
@@ -87,7 +85,7 @@ class ServiceProviderProductSuspensionComment:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _visibility = d.pop("visibility", UNSET)
-        visibility: ServiceProviderProductSuspensionCommentVisibility | Unset
+        visibility: Union[Unset, ServiceProviderProductSuspensionCommentVisibility]
         if isinstance(_visibility, Unset):
             visibility = UNSET
         else:

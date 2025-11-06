@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,33 +16,33 @@ class SystemOperatorProductTypeHistoryResponse:
 
     Attributes:
         system_operator_product_type_id (int): Reference to the resource that was updated. Example: 48.
-        status (SystemOperatorProductTypeStatus | Unset): The status of the relation. Example: active.
-        system_operator_id (int | Unset): Reference to the system operator. Example: 37.
-        product_type_id (int | Unset): Reference to the product type. Example: 8.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
+        status (Union[Unset, SystemOperatorProductTypeStatus]): The status of the relation. Example: active.
+        system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 37.
+        product_type_id (Union[Unset, int]): Reference to the product type. Example: 8.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 89.
-        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-            CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
+        replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
+            10:00:00 CET.
     """
 
     system_operator_product_type_id: int
-    status: SystemOperatorProductTypeStatus | Unset = UNSET
-    system_operator_id: int | Unset = UNSET
-    product_type_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
-    replaced_by: int | None | Unset = UNSET
-    replaced_at: None | str | Unset = UNSET
+    status: Union[Unset, SystemOperatorProductTypeStatus] = UNSET
+    system_operator_id: Union[Unset, int] = UNSET
+    product_type_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
+    replaced_by: Union[None, Unset, int] = UNSET
+    replaced_at: Union[None, Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         system_operator_product_type_id = self.system_operator_product_type_id
 
-        status: str | Unset = UNSET
+        status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -58,13 +56,13 @@ class SystemOperatorProductTypeHistoryResponse:
 
         id = self.id
 
-        replaced_by: int | None | Unset
+        replaced_by: Union[None, Unset, int]
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
         else:
             replaced_by = self.replaced_by
 
-        replaced_at: None | str | Unset
+        replaced_at: Union[None, Unset, str]
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
         else:
@@ -102,7 +100,7 @@ class SystemOperatorProductTypeHistoryResponse:
         system_operator_product_type_id = d.pop("system_operator_product_type_id")
 
         _status = d.pop("status", UNSET)
-        status: SystemOperatorProductTypeStatus | Unset
+        status: Union[Unset, SystemOperatorProductTypeStatus]
         if isinstance(_status, Unset):
             status = UNSET
         else:
@@ -118,21 +116,21 @@ class SystemOperatorProductTypeHistoryResponse:
 
         id = d.pop("id", UNSET)
 
-        def _parse_replaced_by(data: object) -> int | None | Unset:
+        def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(int | None | Unset, data)
+            return cast(Union[None, Unset, int], data)
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> None | str | Unset:
+        def _parse_replaced_at(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

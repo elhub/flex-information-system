@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,25 +17,26 @@ class AccountingPointBalanceResponsibleParty:
     """Data schema - Relation linking a balance responsible party to an accounting point.
 
     Attributes:
-        energy_direction (AccountingPointBalanceResponsiblePartyEnergyDirection | Unset): The direction of the effect on
-            the balance that the BRP takes responsibility for. Example: consumption.
-        accounting_point_id (int | Unset): The ID of the accounting point. Example: 245.
-        balance_responsible_party_id (int | Unset): The balance responsible party of the accounting point. Example: 37.
-        valid_from (str | Unset): The date from which the relation between the accounting point and the balance
+        energy_direction (Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]): The direction of the
+            effect on the balance that the BRP takes responsibility for. Example: consumption.
+        accounting_point_id (Union[Unset, int]): The ID of the accounting point. Example: 245.
+        balance_responsible_party_id (Union[Unset, int]): The balance responsible party of the accounting point.
+            Example: 37.
+        valid_from (Union[Unset, str]): The date from which the relation between the accounting point and the balance
             responsible party is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
-        valid_to (None | str | Unset): The date until which the relation between the accounting point and the balance
-            responsible party is valid. Midnight aligned on Norwegian timezone.
+        valid_to (Union[None, Unset, str]): The date until which the relation between the accounting point and the
+            balance responsible party is valid. Midnight aligned on Norwegian timezone.
     """
 
-    energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection | Unset = UNSET
-    accounting_point_id: int | Unset = UNSET
-    balance_responsible_party_id: int | Unset = UNSET
-    valid_from: str | Unset = UNSET
-    valid_to: None | str | Unset = UNSET
+    energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection] = UNSET
+    accounting_point_id: Union[Unset, int] = UNSET
+    balance_responsible_party_id: Union[Unset, int] = UNSET
+    valid_from: Union[Unset, str] = UNSET
+    valid_to: Union[None, Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        energy_direction: str | Unset = UNSET
+        energy_direction: Union[Unset, str] = UNSET
         if not isinstance(self.energy_direction, Unset):
             energy_direction = self.energy_direction.value
 
@@ -47,7 +46,7 @@ class AccountingPointBalanceResponsibleParty:
 
         valid_from = self.valid_from
 
-        valid_to: None | str | Unset
+        valid_to: Union[None, Unset, str]
         if isinstance(self.valid_to, Unset):
             valid_to = UNSET
         else:
@@ -73,7 +72,7 @@ class AccountingPointBalanceResponsibleParty:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _energy_direction = d.pop("energy_direction", UNSET)
-        energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection | Unset
+        energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]
         if isinstance(_energy_direction, Unset):
             energy_direction = UNSET
         else:
@@ -85,12 +84,12 @@ class AccountingPointBalanceResponsibleParty:
 
         valid_from = d.pop("valid_from", UNSET)
 
-        def _parse_valid_to(data: object) -> None | str | Unset:
+        def _parse_valid_to(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 

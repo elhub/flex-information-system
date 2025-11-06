@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,18 +14,18 @@ class Identity:
     """Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
 
     Attributes:
-        id (int | Unset): Unique surrogate identifier. Example: 44.
-        entity_id (int | Unset): Reference to the entity using the identity. Example: 3.
-        entity_name (str | Unset): Name of the entity using the identity. Example: Martin Andersen.
-        party_id (int | None | Unset): Reference to the party assumed by the entity. Example: 17.
-        party_name (None | str | Unset): Name of the party assumed by the entity. Example: Andersen SO.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
+        entity_id (Union[Unset, int]): Reference to the entity using the identity. Example: 3.
+        entity_name (Union[Unset, str]): Name of the entity using the identity. Example: Martin Andersen.
+        party_id (Union[None, Unset, int]): Reference to the party assumed by the entity. Example: 17.
+        party_name (Union[None, Unset, str]): Name of the party assumed by the entity. Example: Andersen SO.
     """
 
-    id: int | Unset = UNSET
-    entity_id: int | Unset = UNSET
-    entity_name: str | Unset = UNSET
-    party_id: int | None | Unset = UNSET
-    party_name: None | str | Unset = UNSET
+    id: Union[Unset, int] = UNSET
+    entity_id: Union[Unset, int] = UNSET
+    entity_name: Union[Unset, str] = UNSET
+    party_id: Union[None, Unset, int] = UNSET
+    party_name: Union[None, Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -37,13 +35,13 @@ class Identity:
 
         entity_name = self.entity_name
 
-        party_id: int | None | Unset
+        party_id: Union[None, Unset, int]
         if isinstance(self.party_id, Unset):
             party_id = UNSET
         else:
             party_id = self.party_id
 
-        party_name: None | str | Unset
+        party_name: Union[None, Unset, str]
         if isinstance(self.party_name, Unset):
             party_name = UNSET
         else:
@@ -74,21 +72,21 @@ class Identity:
 
         entity_name = d.pop("entity_name", UNSET)
 
-        def _parse_party_id(data: object) -> int | None | Unset:
+        def _parse_party_id(data: object) -> Union[None, Unset, int]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(int | None | Unset, data)
+            return cast(Union[None, Unset, int], data)
 
         party_id = _parse_party_id(d.pop("party_id", UNSET))
 
-        def _parse_party_name(data: object) -> None | str | Unset:
+        def _parse_party_name(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         party_name = _parse_party_name(d.pop("party_name", UNSET))
 

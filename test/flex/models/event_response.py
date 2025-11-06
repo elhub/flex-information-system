@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,20 +14,21 @@ class EventResponse:
     """Response schema for operations with return values - Event happening in the system.
 
     Attributes:
-        id (int | Unset): Unique surrogate identifier. Example: 89.
-        specversion (str | Unset): The version of the CloudEvents specification followed by the resource. Example: 1.0.
-        time (str | Unset): The time at which the event was generated. Example: 2022-08-08 12:00:00 CET.
-        type_ (str | Unset): The type of the event. Example: no.elhub.flex.service_providing_group.update.
-        source (str | Unset): The URI of the resource concerned by the event. Example: /service_providing_group/4.
-        data (None | str | Unset): The data of the event.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
+        specversion (Union[Unset, str]): The version of the CloudEvents specification followed by the resource. Example:
+            1.0.
+        time (Union[Unset, str]): The time at which the event was generated. Example: 2022-08-08 12:00:00 CET.
+        type_ (Union[Unset, str]): The type of the event. Example: no.elhub.flex.service_providing_group.update.
+        source (Union[Unset, str]): The URI of the resource concerned by the event. Example: /service_providing_group/4.
+        data (Union[None, Unset, str]): The data of the event.
     """
 
-    id: int | Unset = UNSET
-    specversion: str | Unset = UNSET
-    time: str | Unset = UNSET
-    type_: str | Unset = UNSET
-    source: str | Unset = UNSET
-    data: None | str | Unset = UNSET
+    id: Union[Unset, int] = UNSET
+    specversion: Union[Unset, str] = UNSET
+    time: Union[Unset, str] = UNSET
+    type_: Union[Unset, str] = UNSET
+    source: Union[Unset, str] = UNSET
+    data: Union[None, Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -43,7 +42,7 @@ class EventResponse:
 
         source = self.source
 
-        data: None | str | Unset
+        data: Union[None, Unset, str]
         if isinstance(self.data, Unset):
             data = UNSET
         else:
@@ -80,12 +79,12 @@ class EventResponse:
 
         source = d.pop("source", UNSET)
 
-        def _parse_data(data: object) -> None | str | Unset:
+        def _parse_data(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         data = _parse_data(d.pop("data", UNSET))
 

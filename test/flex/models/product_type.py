@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,18 +14,18 @@ class ProductType:
     """Data schema - Product type.
 
     Attributes:
-        id (int | Unset): Unique surrogate identifier. Example: 4.
-        business_id (str | Unset): The code for this product type. Example: manual_congestion.
-        name (str | Unset): The name of the product type. Example: Manual Congestion.
-        service (str | Unset): The service offered by the product type. Example: congestion management.
-        products (str | Unset): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 4.
+        business_id (Union[Unset, str]): The code for this product type. Example: manual_congestion.
+        name (Union[Unset, str]): The name of the product type. Example: Manual Congestion.
+        service (Union[Unset, str]): The service offered by the product type. Example: congestion management.
+        products (Union[Unset, str]): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
     """
 
-    id: int | Unset = UNSET
-    business_id: str | Unset = UNSET
-    name: str | Unset = UNSET
-    service: str | Unset = UNSET
-    products: str | Unset = UNSET
+    id: Union[Unset, int] = UNSET
+    business_id: Union[Unset, str] = UNSET
+    name: Union[Unset, str] = UNSET
+    service: Union[Unset, str] = UNSET
+    products: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

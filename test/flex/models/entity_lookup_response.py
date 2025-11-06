@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,10 +14,10 @@ class EntityLookupResponse:
     """Response schema for entity lookup operations
 
     Attributes:
-        entity_id (int | Unset): The surrogate key of the entity. Example: 11.
+        entity_id (Union[Unset, int]): The surrogate key of the entity. Example: 11.
     """
 
-    entity_id: int | Unset = UNSET
+    entity_id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

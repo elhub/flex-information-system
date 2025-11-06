@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -23,27 +21,27 @@ class EntityResponse:
     * Organisation
 
         Attributes:
-            name (str | Unset): Name of the entity. Maximum 128 characters. Example: John Smith.
-            business_id (str | Unset): The business identifier of the entity. Format depends on `business_id_type`. Example:
-                13370000000.
-            business_id_type (str | Unset): The type of the business identifier. Example: pid.
-            type_ (str | Unset): The type of the entity, e.g Person, Organisation Example: person.
-            recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
+            name (Union[Unset, str]): Name of the entity. Maximum 128 characters. Example: John Smith.
+            business_id (Union[Unset, str]): The business identifier of the entity. Format depends on `business_id_type`.
+                Example: 13370000000.
+            business_id_type (Union[Unset, str]): The type of the business identifier. Example: pid.
+            type_ (Union[Unset, str]): The type of the entity, e.g Person, Organisation Example: person.
+            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31 23:59:00 CET.
-            recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-            id (int | Unset): Unique surrogate identifier.
+            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+            id (Union[Unset, int]): Unique surrogate identifier.
 
                 Note:
                 This is a Primary Key. Example: 14.
     """
 
-    name: str | Unset = UNSET
-    business_id: str | Unset = UNSET
-    business_id_type: str | Unset = UNSET
-    type_: str | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
+    name: Union[Unset, str] = UNSET
+    business_id: Union[Unset, str] = UNSET
+    business_id_type: Union[Unset, str] = UNSET
+    type_: Union[Unset, str] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

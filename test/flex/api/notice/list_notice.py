@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any, Union, cast
 
 import httpx
 
@@ -14,14 +14,14 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    party_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListNoticePrefer | Unset = UNSET,
+    party_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListNoticePrefer] = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(range_, Unset):
@@ -58,8 +58,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse] | None:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"], list["NoticeResponse"]] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -91,14 +91,14 @@ def _parse_response(
 
     if response.status_code == 404:
 
-        def _parse_response_404(data: object) -> EmptyObject | ErrorMessage:
+        def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
                 response_404_type_0 = ErrorMessage.from_dict(data)
 
                 return response_404_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
+            except:  # noqa: E722
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
@@ -132,8 +132,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"], list["NoticeResponse"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -145,33 +145,33 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    party_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListNoticePrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]]:
+    party_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListNoticePrefer] = UNSET,
+) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"], list["NoticeResponse"]]]:
     """List Notice
 
     Args:
-        party_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListNoticePrefer | Unset):
+        party_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListNoticePrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['NoticeResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -195,33 +195,33 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    party_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListNoticePrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse] | None:
+    party_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListNoticePrefer] = UNSET,
+) -> Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"], list["NoticeResponse"]] | None:
     """List Notice
 
     Args:
-        party_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListNoticePrefer | Unset):
+        party_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListNoticePrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['NoticeResponse']]
     """
 
     return sync_detailed(
@@ -240,33 +240,33 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    party_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListNoticePrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]]:
+    party_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListNoticePrefer] = UNSET,
+) -> Response[Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"], list["NoticeResponse"]]]:
     """List Notice
 
     Args:
-        party_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListNoticePrefer | Unset):
+        party_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListNoticePrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['NoticeResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -288,33 +288,33 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    party_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListNoticePrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse] | None:
+    party_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListNoticePrefer] = UNSET,
+) -> Union[Any, ErrorMessage, Union["EmptyObject", "ErrorMessage"], list["NoticeResponse"]] | None:
     """List Notice
 
     Args:
-        party_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListNoticePrefer | Unset):
+        party_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListNoticePrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['NoticeResponse']]
     """
 
     return (

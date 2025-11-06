@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,38 +14,38 @@ class ControllableUnitServiceProviderCreateRequest:
     """Request schema for create operations - Relation between controllable unit and service provider
 
     Attributes:
-        contract_reference (str | Unset): The service providers internal reference to the contract with the end user.
-            Typically an internal identifier to a stored document or consent record. Example:
+        contract_reference (Union[Unset, str]): The service providers internal reference to the contract with the end
+            user. Typically an internal identifier to a stored document or consent record. Example:
             123e4567-e89b-12d3-a456-426614174000.
-        valid_from (None | str | Unset): The date from which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
-        valid_to (None | str | Unset): The date until which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10 00:00:00 CET.
-        controllable_unit_id (int | Unset): Reference to the controllable unit this relation links to a service
+        valid_from (Union[None, Unset, str]): The date from which the relation between the controllable unit and the
+            service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+        valid_to (Union[None, Unset, str]): The date until which the relation between the controllable unit and the
+            service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10 00:00:00 CET.
+        controllable_unit_id (Union[Unset, int]): Reference to the controllable unit this relation links to a service
             provider. Example: 2.
-        service_provider_id (int | Unset): Reference to the `party` (service provider) this relation links to a
+        service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) this relation links to a
             controllable unit. Example: 78.
-        end_user_id (int | Unset): Technical ID of the end user behind the accounting point.
+        end_user_id (Union[Unset, int]): Technical ID of the end user behind the accounting point.
     """
 
-    contract_reference: str | Unset = UNSET
-    valid_from: None | str | Unset = UNSET
-    valid_to: None | str | Unset = UNSET
-    controllable_unit_id: int | Unset = UNSET
-    service_provider_id: int | Unset = UNSET
-    end_user_id: int | Unset = UNSET
+    contract_reference: Union[Unset, str] = UNSET
+    valid_from: Union[None, Unset, str] = UNSET
+    valid_to: Union[None, Unset, str] = UNSET
+    controllable_unit_id: Union[Unset, int] = UNSET
+    service_provider_id: Union[Unset, int] = UNSET
+    end_user_id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         contract_reference = self.contract_reference
 
-        valid_from: None | str | Unset
+        valid_from: Union[None, Unset, str]
         if isinstance(self.valid_from, Unset):
             valid_from = UNSET
         else:
             valid_from = self.valid_from
 
-        valid_to: None | str | Unset
+        valid_to: Union[None, Unset, str]
         if isinstance(self.valid_to, Unset):
             valid_to = UNSET
         else:
@@ -82,21 +80,21 @@ class ControllableUnitServiceProviderCreateRequest:
         d = dict(src_dict)
         contract_reference = d.pop("contract_reference", UNSET)
 
-        def _parse_valid_from(data: object) -> None | str | Unset:
+        def _parse_valid_from(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         valid_from = _parse_valid_from(d.pop("valid_from", UNSET))
 
-        def _parse_valid_to(data: object) -> None | str | Unset:
+        def _parse_valid_to(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 

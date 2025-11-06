@@ -187,6 +187,7 @@ resources:
       - list
       - read
     history_rls: false
+    comments: true
     properties:
       id:
         description: Unique surrogate identifier.

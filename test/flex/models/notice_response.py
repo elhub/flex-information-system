@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -24,25 +22,25 @@ class NoticeResponse:
     them.
 
         Attributes:
-            party_id (int | Unset): Reference to the party targeted by the notice. Example: 18.
-            type_ (str | Unset): The type of the notice. Example:
+            party_id (Union[Unset, int]): Reference to the party targeted by the notice. Example: 18.
+            type_ (Union[Unset, str]): The type of the notice. Example:
                 no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
-            source (str | Unset): The URI of the resource concerned by the event. Example:
+            source (Union[Unset, str]): The URI of the resource concerned by the event. Example:
                 /service_providing_group_membership/4.
-            data (NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
-                NoticeDataValidTimeOutsideContract | Unset):
+            data (Union['NoticeDataPartyMissing', 'NoticeDataPartyOutdated', 'NoticeDataProductTypeNotQualified',
+                'NoticeDataValidTimeOutsideContract', Unset]):
     """
 
-    party_id: int | Unset = UNSET
-    type_: str | Unset = UNSET
-    source: str | Unset = UNSET
-    data: (
-        NoticeDataPartyMissing
-        | NoticeDataPartyOutdated
-        | NoticeDataProductTypeNotQualified
-        | NoticeDataValidTimeOutsideContract
-        | Unset
-    ) = UNSET
+    party_id: Union[Unset, int] = UNSET
+    type_: Union[Unset, str] = UNSET
+    source: Union[Unset, str] = UNSET
+    data: Union[
+        "NoticeDataPartyMissing",
+        "NoticeDataPartyOutdated",
+        "NoticeDataProductTypeNotQualified",
+        "NoticeDataValidTimeOutsideContract",
+        Unset,
+    ] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -56,7 +54,7 @@ class NoticeResponse:
 
         source = self.source
 
-        data: dict[str, Any] | Unset
+        data: Union[Unset, dict[str, Any]]
         if isinstance(self.data, Unset):
             data = UNSET
         elif isinstance(self.data, NoticeDataValidTimeOutsideContract):
@@ -98,13 +96,13 @@ class NoticeResponse:
 
         def _parse_data(
             data: object,
-        ) -> (
-            NoticeDataPartyMissing
-            | NoticeDataPartyOutdated
-            | NoticeDataProductTypeNotQualified
-            | NoticeDataValidTimeOutsideContract
-            | Unset
-        ):
+        ) -> Union[
+            "NoticeDataPartyMissing",
+            "NoticeDataPartyOutdated",
+            "NoticeDataProductTypeNotQualified",
+            "NoticeDataValidTimeOutsideContract",
+            Unset,
+        ]:
             if isinstance(data, Unset):
                 return data
             try:
@@ -113,7 +111,7 @@ class NoticeResponse:
                 componentsschemasnotice_data_type_0 = NoticeDataValidTimeOutsideContract.from_dict(data)
 
                 return componentsschemasnotice_data_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
+            except:  # noqa: E722
                 pass
             try:
                 if not isinstance(data, dict):
@@ -121,7 +119,7 @@ class NoticeResponse:
                 componentsschemasnotice_data_type_1 = NoticeDataPartyMissing.from_dict(data)
 
                 return componentsschemasnotice_data_type_1
-            except (TypeError, ValueError, AttributeError, KeyError):
+            except:  # noqa: E722
                 pass
             try:
                 if not isinstance(data, dict):
@@ -129,7 +127,7 @@ class NoticeResponse:
                 componentsschemasnotice_data_type_2 = NoticeDataPartyOutdated.from_dict(data)
 
                 return componentsschemasnotice_data_type_2
-            except (TypeError, ValueError, AttributeError, KeyError):
+            except:  # noqa: E722
                 pass
             if not isinstance(data, dict):
                 raise TypeError()

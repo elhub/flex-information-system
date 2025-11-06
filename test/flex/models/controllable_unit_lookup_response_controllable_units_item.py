@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
@@ -22,14 +20,14 @@ class ControllableUnitLookupResponseControllableUnitsItem:
         id (int): The surrogate key of the controllable unit. Example: 11.
         business_id (str): The business ID of the controllable unit. Example: 53919b79-876f-4dad-8bde-b29368367604.
         name (str): The name of the controllable unit. Example: Car Charger #54.
-        technical_resources (list[ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem]): The
+        technical_resources (list['ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem']): The
             technical resources belonging to the controllable unit.
     """
 
     id: int
     business_id: str
     name: str
-    technical_resources: list[ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem]
+    technical_resources: list["ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem"]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

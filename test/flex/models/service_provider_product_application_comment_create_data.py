@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -20,20 +18,20 @@ class ServiceProviderProductApplicationCommentCreateData:
     application.
 
         Attributes:
-            visibility (ServiceProviderProductApplicationCommentVisibility | Unset): The level of visibility of the comment.
-                Example: same_party.
-            content (str | Unset): Free text content of the comment. Example: Missing document..
-            service_provider_product_application_id (int | Unset): Reference to the service provider product application.
-                Example: 7.
+            visibility (Union[Unset, ServiceProviderProductApplicationCommentVisibility]): The level of visibility of the
+                comment. Example: same_party.
+            content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
+            service_provider_product_application_id (Union[Unset, int]): Reference to the service provider product
+                application. Example: 7.
     """
 
-    visibility: ServiceProviderProductApplicationCommentVisibility | Unset = UNSET
-    content: str | Unset = UNSET
-    service_provider_product_application_id: int | Unset = UNSET
+    visibility: Union[Unset, ServiceProviderProductApplicationCommentVisibility] = UNSET
+    content: Union[Unset, str] = UNSET
+    service_provider_product_application_id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        visibility: str | Unset = UNSET
+        visibility: Union[Unset, str] = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
@@ -57,7 +55,7 @@ class ServiceProviderProductApplicationCommentCreateData:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _visibility = d.pop("visibility", UNSET)
-        visibility: ServiceProviderProductApplicationCommentVisibility | Unset
+        visibility: Union[Unset, ServiceProviderProductApplicationCommentVisibility]
         if isinstance(_visibility, Unset):
             visibility = UNSET
         else:

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,20 +15,21 @@ class ServiceProvidingGroupCreateRequest:
     """Request schema for create operations - Group of controllable units
 
     Attributes:
-        name (str | Unset): Free text name of the service providing group. Example: Batteries #09.
-        status (ServiceProvidingGroupStatus | Unset): The status of the group. Example: active.
-        service_provider_id (int | Unset): Reference to the `party` (service provider) managing the group. Example: 17.
+        name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
+        status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
+        service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) managing the group.
+            Example: 17.
     """
 
-    name: str | Unset = UNSET
-    status: ServiceProvidingGroupStatus | Unset = UNSET
-    service_provider_id: int | Unset = UNSET
+    name: Union[Unset, str] = UNSET
+    status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
+    service_provider_id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        status: str | Unset = UNSET
+        status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -54,7 +53,7 @@ class ServiceProvidingGroupCreateRequest:
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
-        status: ServiceProvidingGroupStatus | Unset
+        status: Union[Unset, ServiceProvidingGroupStatus]
         if isinstance(_status, Unset):
             status = UNSET
         else:

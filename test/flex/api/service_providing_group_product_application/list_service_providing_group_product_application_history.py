@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any, Union, cast
 
 import httpx
 
@@ -18,18 +18,18 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    procuring_system_operator_id: str | Unset = UNSET,
-    product_type_ids: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    service_providing_group_product_application_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    procuring_system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    service_providing_group_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer] = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(range_, Unset):
@@ -74,13 +74,14 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> (
-    Any
-    | EmptyObject
-    | ErrorMessage
-    | ErrorMessage
-    | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupProductApplicationHistoryResponse"],
+    ]
     | None
 ):
     if response.status_code == 200:
@@ -114,14 +115,14 @@ def _parse_response(
 
     if response.status_code == 404:
 
-        def _parse_response_404(data: object) -> EmptyObject | ErrorMessage:
+        def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
                 response_404_type_0 = ErrorMessage.from_dict(data)
 
                 return response_404_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
+            except:  # noqa: E722
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
@@ -155,9 +156,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[
-    Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupProductApplicationHistoryResponse"],
+    ]
 ]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -170,43 +176,48 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    procuring_system_operator_id: str | Unset = UNSET,
-    product_type_ids: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    service_providing_group_product_application_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    procuring_system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    service_providing_group_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer] = UNSET,
 ) -> Response[
-    Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupProductApplicationHistoryResponse"],
+    ]
 ]:
     """List Service Providing Group Product Application - history
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        procuring_system_operator_id (str | Unset):
-        product_type_ids (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        service_providing_group_product_application_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        procuring_system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        service_providing_group_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationHistoryResponse]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupProductApplicationHistoryResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -234,48 +245,49 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    procuring_system_operator_id: str | Unset = UNSET,
-    product_type_ids: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    service_providing_group_product_application_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    procuring_system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    service_providing_group_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer] = UNSET,
 ) -> (
-    Any
-    | EmptyObject
-    | ErrorMessage
-    | ErrorMessage
-    | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupProductApplicationHistoryResponse"],
+    ]
     | None
 ):
     """List Service Providing Group Product Application - history
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        procuring_system_operator_id (str | Unset):
-        product_type_ids (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        service_providing_group_product_application_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        procuring_system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        service_providing_group_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupProductApplicationHistoryResponse']]
     """
 
     return sync_detailed(
@@ -298,43 +310,48 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    procuring_system_operator_id: str | Unset = UNSET,
-    product_type_ids: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    service_providing_group_product_application_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    procuring_system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    service_providing_group_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer] = UNSET,
 ) -> Response[
-    Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupProductApplicationHistoryResponse"],
+    ]
 ]:
     """List Service Providing Group Product Application - history
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        procuring_system_operator_id (str | Unset):
-        product_type_ids (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        service_providing_group_product_application_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        procuring_system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        service_providing_group_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationHistoryResponse]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupProductApplicationHistoryResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -360,48 +377,49 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    procuring_system_operator_id: str | Unset = UNSET,
-    product_type_ids: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    service_providing_group_product_application_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    procuring_system_operator_id: Union[Unset, str] = UNSET,
+    product_type_ids: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    service_providing_group_product_application_id: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer] = UNSET,
 ) -> (
-    Any
-    | EmptyObject
-    | ErrorMessage
-    | ErrorMessage
-    | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupProductApplicationHistoryResponse"],
+    ]
     | None
 ):
     """List Service Providing Group Product Application - history
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        procuring_system_operator_id (str | Unset):
-        product_type_ids (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        service_providing_group_product_application_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupProductApplicationHistoryPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        procuring_system_operator_id (Union[Unset, str]):
+        product_type_ids (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        service_providing_group_product_application_id (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupProductApplicationHistoryPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationHistoryResponse]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupProductApplicationHistoryResponse']]
     """
 
     return (

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,14 +15,14 @@ class SystemOperatorProductTypeUpdateRequest:
     """Request schema for update operations - Relation between a system operator and a product type they want to buy.
 
     Attributes:
-        status (SystemOperatorProductTypeStatus | Unset): The status of the relation. Example: active.
+        status (Union[Unset, SystemOperatorProductTypeStatus]): The status of the relation. Example: active.
     """
 
-    status: SystemOperatorProductTypeStatus | Unset = UNSET
+    status: Union[Unset, SystemOperatorProductTypeStatus] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        status: str | Unset = UNSET
+        status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -40,7 +38,7 @@ class SystemOperatorProductTypeUpdateRequest:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _status = d.pop("status", UNSET)
-        status: SystemOperatorProductTypeStatus | Unset
+        status: Union[Unset, SystemOperatorProductTypeStatus]
         if isinstance(_status, Unset):
             status = UNSET
         else:

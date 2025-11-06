@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,18 +14,18 @@ class AccountingPointEnergySupplierResponse:
     """Response schema for operations with return values - Relation linking an energy supplier to an accounting point.
 
     Attributes:
-        accounting_point_id (int | Unset): The ID of the accounting point. Example: 45.
-        energy_supplier_id (int | Unset): The energy supplier of the accounting point. Example: 7.
-        valid_from (str | Unset): The date from which the relation between the accounting point and the energy supplier
-            is valid. Midnight aligned on Norwegian timezone. Example: 2023-09-09 00:00:00 CET.
-        valid_to (None | str | Unset): The date until which the relation between the accounting point and the energy
-            supplier is valid. Midnight aligned on Norwegian timezone.
+        accounting_point_id (Union[Unset, int]): The ID of the accounting point. Example: 45.
+        energy_supplier_id (Union[Unset, int]): The energy supplier of the accounting point. Example: 7.
+        valid_from (Union[Unset, str]): The date from which the relation between the accounting point and the energy
+            supplier is valid. Midnight aligned on Norwegian timezone. Example: 2023-09-09 00:00:00 CET.
+        valid_to (Union[None, Unset, str]): The date until which the relation between the accounting point and the
+            energy supplier is valid. Midnight aligned on Norwegian timezone.
     """
 
-    accounting_point_id: int | Unset = UNSET
-    energy_supplier_id: int | Unset = UNSET
-    valid_from: str | Unset = UNSET
-    valid_to: None | str | Unset = UNSET
+    accounting_point_id: Union[Unset, int] = UNSET
+    energy_supplier_id: Union[Unset, int] = UNSET
+    valid_from: Union[Unset, str] = UNSET
+    valid_to: Union[None, Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -37,7 +35,7 @@ class AccountingPointEnergySupplierResponse:
 
         valid_from = self.valid_from
 
-        valid_to: None | str | Unset
+        valid_to: Union[None, Unset, str]
         if isinstance(self.valid_to, Unset):
             valid_to = UNSET
         else:
@@ -66,12 +64,12 @@ class AccountingPointEnergySupplierResponse:
 
         valid_from = d.pop("valid_from", UNSET)
 
-        def _parse_valid_to(data: object) -> None | str | Unset:
+        def _parse_valid_to(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 

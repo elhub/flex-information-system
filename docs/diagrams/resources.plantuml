@@ -8,6 +8,8 @@ digraph flex {
     controllable_unit_suspension    [label="{controllable_unit_suspension}|{The relation allowing an\nimpacted system operator to\ntemporarily suspend a\ncontrollable unit.}|{🕰️}" shape=record style=solid]
     controllable_unit_suspension -> controllable_unit     [label=controllable_unit_id]
     controllable_unit_suspension -> party     [label=impacted_system_operator_id]
+    controllable_unit_suspension_comment    [label="{controllable_unit_suspension_comment}|{Comment made by a party involved in\na controllable unit suspension.}|{🕰️}" shape=record style=solid]
+    controllable_unit_suspension_comment -> controllable_unit_suspension     [label=controllable_unit_suspension_id]
     controllable_unit_service_provider    [label="{controllable_unit_service_provider}|{Relation between controllable unit\nand service provider}|{🕰️}" shape=record style=solid]
     controllable_unit_service_provider -> controllable_unit     [label=controllable_unit_id]
     controllable_unit_service_provider -> party     [label=service_provider_id]

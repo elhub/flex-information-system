@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,20 +15,20 @@ class PartyMembershipCreateData:
     """Data of the request schema for create operations - The relation between a party and entity.
 
     Attributes:
-        scopes (list[AuthScope] | Unset): List of scopes granted to the entity when it acts as the party. Scopes are
-            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+        scopes (Union[Unset, list[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
+            are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
-        party_id (int | Unset): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (int | Unset): Reference to the entity that the party represents. Example: 30.
+        party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
+        entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
     """
 
-    scopes: list[AuthScope] | Unset = UNSET
-    party_id: int | Unset = UNSET
-    entity_id: int | Unset = UNSET
+    scopes: Union[Unset, list[AuthScope]] = UNSET
+    party_id: Union[Unset, int] = UNSET
+    entity_id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        scopes: list[str] | Unset = UNSET
+        scopes: Union[Unset, list[str]] = UNSET
         if not isinstance(self.scopes, Unset):
             scopes = []
             for scopes_item_data in self.scopes:
@@ -56,14 +54,12 @@ class PartyMembershipCreateData:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        scopes = []
         _scopes = d.pop("scopes", UNSET)
-        scopes: list[AuthScope] | Unset = UNSET
-        if _scopes is not UNSET:
-            scopes = []
-            for scopes_item_data in _scopes:
-                scopes_item = AuthScope(scopes_item_data)
+        for scopes_item_data in _scopes or []:
+            scopes_item = AuthScope(scopes_item_data)
 
-                scopes.append(scopes_item)
+            scopes.append(scopes_item)
 
         party_id = d.pop("party_id", UNSET)
 

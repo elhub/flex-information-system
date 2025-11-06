@@ -33,6 +33,10 @@
             "description": "Controllable Unit Suspension"
         },
         {
+            "name": "controllable_unit_suspension_comment",
+            "description": "Controllable Unit Suspension Comment"
+        },
+        {
             "name": "controllable_unit_service_provider",
             "description": "Relation between controllable unit and service provider"
         },
@@ -554,6 +558,17 @@
                 ],
                 "example": "compromises_safe_operation"
             },
+            "controllable_unit_suspension_comment_visibility": {
+                "description": "The level of visibility of the comment.",
+                "format": "text",
+                "type": "string",
+                "default": "same_party",
+                "enum": [
+                    "same_party",
+                    "any_involved_party"
+                ],
+                "example": "same_party"
+            },
             "service_providing_group_status": {
                 "description": "The status of the group.",
                 "format": "text",
@@ -1028,6 +1043,120 @@
                             "controllable_unit_id",
                             "impacted_system_operator_id",
                             "reason",
+                            "recorded_at",
+                            "recorded_by"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_suspension_comment_update_request": {
+                "summary": "Update - Controllable Unit Suspension Comment",
+                "description": "Request schema for update operations - Comment made by a party involved in a controllable unit suspension.",
+                "type": "object",
+                "properties": {
+                    "visibility": {
+                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_visibility"
+                    },
+                    "content": {
+                        "description": "Free text content of the comment.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 2048,
+                        "example": "Missing document."
+                    }
+                }
+            },
+            "controllable_unit_suspension_comment_create_data": {
+                "summary": "Create data - Controllable Unit Suspension Comment",
+                "description": "Data of the request schema for create operations - Comment made by a party involved in a controllable unit suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_update_request"
+                    },
+                    {
+                        "properties": {
+                            "controllable_unit_suspension_id": {
+                                "description": "Reference to the controllable unit suspension.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 7
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_suspension_comment_create_request": {
+                "summary": "Create - Controllable Unit Suspension Comment",
+                "description": "Request schema for create operations - Comment made by a party involved in a controllable unit suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_create_data"
+                    },
+                    {
+                        "required": [
+                            "controllable_unit_suspension_id",
+                            "visibility",
+                            "content"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_suspension_comment": {
+                "summary": "Data - Controllable Unit Suspension Comment",
+                "description": "Data schema - Comment made by a party involved in a controllable unit suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_create_data"
+                    },
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "Unique surrogate identifier.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 9
+                            },
+                            "created_by": {
+                                "description": "Reference to the identity that created the comment.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 94
+                            },
+                            "created_at": {
+                                "description": "When the comment was added to the CUS.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2022-08-08 12:00:00 CET"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/audit_fields"
+                    }
+                ],
+                "type": "object"
+            },
+            "controllable_unit_suspension_comment_response": {
+                "summary": "Response - Controllable Unit Suspension Comment",
+                "description": "Response schema for operations with return values - Comment made by a party involved in a controllable unit suspension.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_suspension_comment"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "controllable_unit_suspension_id",
+                            "created_by",
+                            "created_at",
+                            "visibility",
+                            "content",
                             "recorded_at",
                             "recorded_by"
                         ]
@@ -3900,6 +4029,42 @@
                     }
                 ]
             },
+            "controllable_unit_suspension_comment_history_response": {
+                "summary": "Controllable Unit Suspension Comment - history",
+                "description": "Controllable Unit Suspension Comment - history",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                    },
+                    {
+                        "properties": {
+                            "controllable_unit_suspension_comment_id": {
+                                "description": "Reference to the resource that was updated.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 48
+                            },
+                            "replaced_by": {
+                                "description": "The identity that updated the resource when it was replaced.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "nullable": true,
+                                "example": 90
+                            },
+                            "replaced_at": {
+                                "description": "When the resource was replaced in the system.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "nullable": true,
+                                "example": "2024-07-07 10:00:00 CET"
+                            }
+                        },
+                        "required": [
+                            "controllable_unit_suspension_comment_id"
+                        ]
+                    }
+                ]
+            },
             "controllable_unit_service_provider_history_response": {
                 "summary": "Relation between controllable unit and service provider - history",
                 "description": "Relation between controllable unit and service provider - history",
@@ -6615,6 +6780,880 @@
                     {
                         "bearerAuth": [
                             "read:data:controllable_unit_suspension_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/controllable_unit_suspension_comment": {
+            "summary": "Controllable Unit Suspension Comment",
+            "description": "",
+            "get": {
+                "operationId": "list_controllable_unit_suspension_comment",
+                "summary": "List Controllable Unit Suspension Comment",
+                "description": "",
+                "tags": [
+                    "controllable_unit_suspension_comment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the controllable unit suspension.",
+                        "name": "controllable_unit_suspension_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "default": "items",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_suspension_comment"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "post": {
+                "operationId": "create_controllable_unit_suspension_comment",
+                "summary": "Create Controllable Unit Suspension Comment",
+                "description": "",
+                "tags": [
+                    "controllable_unit_suspension_comment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/controllable_unit_suspension_comment_create_request"
+                            }
+                        }
+                    },
+                    "description": "controllable_unit_suspension_comment",
+                    "required": false
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                                }
+                            }
+                        },
+                        "description": "Created"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:controllable_unit_suspension_comment"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/controllable_unit_suspension_comment/{id}": {
+            "summary": "Controllable Unit Suspension Comment - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_controllable_unit_suspension_comment",
+                "summary": "Read Controllable Unit Suspension Comment",
+                "description": "",
+                "tags": [
+                    "controllable_unit_suspension_comment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "controllable_unit_suspension_id": {
+                                "operationId": "read_controllable_unit_suspension",
+                                "parameters": {
+                                    "path.id": "$response.body#/controllable_unit_suspension_id"
+                                },
+                                "description": "The `controllable_unit_suspension_id` value returned in the response can be used as the `id` parameter in `GET /controllable_unit_suspension/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_suspension_comment"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "patch": {
+                "operationId": "update_controllable_unit_suspension_comment",
+                "summary": "Update Controllable Unit Suspension Comment",
+                "description": "",
+                "tags": [
+                    "controllable_unit_suspension_comment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/controllable_unit_suspension_comment_update_request"
+                            }
+                        }
+                    },
+                    "description": "controllable_unit_suspension_comment",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "204": {
+                        "content": {},
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:controllable_unit_suspension_comment"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/controllable_unit_suspension_comment_history": {
+            "summary": "Controllable Unit Suspension Comment - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Controllable Unit Suspension Comment whose history we want to inspect.",
+                    "name": "controllable_unit_suspension_comment_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_controllable_unit_suspension_comment_history",
+                "summary": "List Controllable Unit Suspension Comment - history",
+                "description": "",
+                "tags": [
+                    "controllable_unit_suspension_comment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the controllable unit suspension.",
+                        "name": "controllable_unit_suspension_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "default": "items",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {},
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_suspension_comment_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/controllable_unit_suspension_comment_history/{id}": {
+            "summary": "Controllable Unit Suspension Comment - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_controllable_unit_suspension_comment_history",
+                "summary": "Read Controllable Unit Suspension Comment - history",
+                "description": "",
+                "tags": [
+                    "controllable_unit_suspension_comment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_suspension_comment_history"
                         ]
                     },
                     {}

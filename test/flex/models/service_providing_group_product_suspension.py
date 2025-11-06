@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,33 +16,34 @@ class ServiceProvidingGroupProductSuspension:
     from delivering products of certain types.
 
         Attributes:
-            product_type_ids (list[int] | Unset): References to the suspended product types. Example: [3, 6].
-            reason (ServiceProvidingGroupProductSuspensionReason | Unset): The reason for the suspension. Example:
+            product_type_ids (Union[Unset, list[int]]): References to the suspended product types. Example: [3, 6].
+            reason (Union[Unset, ServiceProvidingGroupProductSuspensionReason]): The reason for the suspension. Example:
                 failed_verification.
-            procuring_system_operator_id (int | Unset): Reference to the procuring system operator suspending the service
-                providing group. Example: 91.
-            service_providing_group_id (int | Unset): Reference to the service providing group being suspended. Example: 7.
-            recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
+            procuring_system_operator_id (Union[Unset, int]): Reference to the procuring system operator suspending the
+                service providing group. Example: 91.
+            service_providing_group_id (Union[Unset, int]): Reference to the service providing group being suspended.
+                Example: 7.
+            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31 23:59:00 CET.
-            recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-            id (int | Unset): Unique surrogate identifier. Example: 12.
+            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+            id (Union[Unset, int]): Unique surrogate identifier. Example: 12.
     """
 
-    product_type_ids: list[int] | Unset = UNSET
-    reason: ServiceProvidingGroupProductSuspensionReason | Unset = UNSET
-    procuring_system_operator_id: int | Unset = UNSET
-    service_providing_group_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
+    product_type_ids: Union[Unset, list[int]] = UNSET
+    reason: Union[Unset, ServiceProvidingGroupProductSuspensionReason] = UNSET
+    procuring_system_operator_id: Union[Unset, int] = UNSET
+    service_providing_group_id: Union[Unset, int] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        product_type_ids: list[int] | Unset = UNSET
+        product_type_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.product_type_ids, Unset):
             product_type_ids = self.product_type_ids
 
-        reason: str | Unset = UNSET
+        reason: Union[Unset, str] = UNSET
         if not isinstance(self.reason, Unset):
             reason = self.reason.value
 
@@ -84,7 +83,7 @@ class ServiceProvidingGroupProductSuspension:
         product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
 
         _reason = d.pop("reason", UNSET)
-        reason: ServiceProvidingGroupProductSuspensionReason | Unset
+        reason: Union[Unset, ServiceProvidingGroupProductSuspensionReason]
         if isinstance(_reason, Unset):
             reason = UNSET
         else:

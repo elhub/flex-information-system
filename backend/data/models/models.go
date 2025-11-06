@@ -114,6 +114,31 @@ type ControllableUnitSuspension struct {
 	RecordedAt               pgtype.Timestamptz
 }
 
+type ControllableUnitSuspensionComment struct {
+	ID                           int
+	ControllableUnitSuspensionID int
+	CreatedBy                    int
+	CreatedAt                    pgtype.Timestamptz
+	Visibility                   string
+	Content                      string
+	RecordedBy                   int
+	RecordedAt                   pgtype.Timestamptz
+}
+
+type ControllableUnitSuspensionCommentHistory struct {
+	ControllableUnitSuspensionCommentID int
+	ID                                  int
+	ControllableUnitSuspensionID        int
+	CreatedBy                           int
+	CreatedAt                           pgtype.Timestamptz
+	Visibility                          string
+	Content                             string
+	RecordedBy                          int
+	RecordedAt                          pgtype.Timestamptz
+	ReplacedBy                          *int
+	ReplacedAt                          pgtype.Timestamptz
+}
+
 type ControllableUnitSuspensionHistory struct {
 	ControllableUnitSuspensionID int
 	ID                           int

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,15 +17,15 @@ class AccountingPointBalanceResponsiblePartyUpdateRequest:
     """Request schema for update operations - Relation linking a balance responsible party to an accounting point.
 
     Attributes:
-        energy_direction (AccountingPointBalanceResponsiblePartyEnergyDirection | Unset): The direction of the effect on
-            the balance that the BRP takes responsibility for. Example: consumption.
+        energy_direction (Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]): The direction of the
+            effect on the balance that the BRP takes responsibility for. Example: consumption.
     """
 
-    energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection | Unset = UNSET
+    energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        energy_direction: str | Unset = UNSET
+        energy_direction: Union[Unset, str] = UNSET
         if not isinstance(self.energy_direction, Unset):
             energy_direction = self.energy_direction.value
 
@@ -43,7 +41,7 @@ class AccountingPointBalanceResponsiblePartyUpdateRequest:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _energy_direction = d.pop("energy_direction", UNSET)
-        energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection | Unset
+        energy_direction: Union[Unset, AccountingPointBalanceResponsiblePartyEnergyDirection]
         if isinstance(_energy_direction, Unset):
             energy_direction = UNSET
         else:

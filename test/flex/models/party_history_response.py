@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,49 +17,49 @@ class PartyHistoryResponse:
 
     Attributes:
         party_id (int): Reference to the resource that was updated. Example: 48.
-        business_id_type (PartyBusinessIdType | Unset): The type of the business identifier. Example: gln.
-        name (str | Unset): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
-        status (PartyStatus | Unset): The status of the party. Example: active.
-        business_id (str | Unset): The business identifier of the party. Format depends on `business_id_type`. Example:
-            1337099000000.
-        entity_id (int | Unset): Reference to the entity that is the parent of the party. Example: 30.
-        role (str | Unset): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
+        business_id_type (Union[Unset, PartyBusinessIdType]): The type of the business identifier. Example: gln.
+        name (Union[Unset, str]): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
+        status (Union[Unset, PartyStatus]): The status of the party. Example: active.
+        business_id (Union[Unset, str]): The business identifier of the party. Format depends on `business_id_type`.
+            Example: 1337099000000.
+        entity_id (Union[Unset, int]): Reference to the entity that is the parent of the party. Example: 30.
+        role (Union[Unset, str]): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
             service_provider. Example: flex_energy_supplier.
-        type_ (str | Unset): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
+        type_ (Union[Unset, str]): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
+        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 11.
-        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-            CET.
+        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
+        id (Union[Unset, int]): Unique surrogate identifier. Example: 11.
+        replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
+            10:00:00 CET.
     """
 
     party_id: int
-    business_id_type: PartyBusinessIdType | Unset = UNSET
-    name: str | Unset = UNSET
-    status: PartyStatus | Unset = UNSET
-    business_id: str | Unset = UNSET
-    entity_id: int | Unset = UNSET
-    role: str | Unset = UNSET
-    type_: str | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
-    replaced_by: int | None | Unset = UNSET
-    replaced_at: None | str | Unset = UNSET
+    business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
+    name: Union[Unset, str] = UNSET
+    status: Union[Unset, PartyStatus] = UNSET
+    business_id: Union[Unset, str] = UNSET
+    entity_id: Union[Unset, int] = UNSET
+    role: Union[Unset, str] = UNSET
+    type_: Union[Unset, str] = UNSET
+    recorded_at: Union[Unset, str] = UNSET
+    recorded_by: Union[Unset, int] = UNSET
+    id: Union[Unset, int] = UNSET
+    replaced_by: Union[None, Unset, int] = UNSET
+    replaced_at: Union[None, Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         party_id = self.party_id
 
-        business_id_type: str | Unset = UNSET
+        business_id_type: Union[Unset, str] = UNSET
         if not isinstance(self.business_id_type, Unset):
             business_id_type = self.business_id_type.value
 
         name = self.name
 
-        status: str | Unset = UNSET
+        status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -79,13 +77,13 @@ class PartyHistoryResponse:
 
         id = self.id
 
-        replaced_by: int | None | Unset
+        replaced_by: Union[None, Unset, int]
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
         else:
             replaced_by = self.replaced_by
 
-        replaced_at: None | str | Unset
+        replaced_at: Union[None, Unset, str]
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
         else:
@@ -131,7 +129,7 @@ class PartyHistoryResponse:
         party_id = d.pop("party_id")
 
         _business_id_type = d.pop("business_id_type", UNSET)
-        business_id_type: PartyBusinessIdType | Unset
+        business_id_type: Union[Unset, PartyBusinessIdType]
         if isinstance(_business_id_type, Unset):
             business_id_type = UNSET
         else:
@@ -140,7 +138,7 @@ class PartyHistoryResponse:
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
-        status: PartyStatus | Unset
+        status: Union[Unset, PartyStatus]
         if isinstance(_status, Unset):
             status = UNSET
         else:
@@ -160,21 +158,21 @@ class PartyHistoryResponse:
 
         id = d.pop("id", UNSET)
 
-        def _parse_replaced_by(data: object) -> int | None | Unset:
+        def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(int | None | Unset, data)
+            return cast(Union[None, Unset, int], data)
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> None | str | Unset:
+        def _parse_replaced_at(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            return cast(Union[None, Unset, str], data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -26,24 +24,24 @@ class PartyUpdateRequest:
     * End User
 
         Attributes:
-            business_id_type (PartyBusinessIdType | Unset): The type of the business identifier. Example: gln.
-            name (str | Unset): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
-            status (PartyStatus | Unset): The status of the party. Example: active.
+            business_id_type (Union[Unset, PartyBusinessIdType]): The type of the business identifier. Example: gln.
+            name (Union[Unset, str]): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
+            status (Union[Unset, PartyStatus]): The status of the party. Example: active.
     """
 
-    business_id_type: PartyBusinessIdType | Unset = UNSET
-    name: str | Unset = UNSET
-    status: PartyStatus | Unset = UNSET
+    business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
+    name: Union[Unset, str] = UNSET
+    status: Union[Unset, PartyStatus] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        business_id_type: str | Unset = UNSET
+        business_id_type: Union[Unset, str] = UNSET
         if not isinstance(self.business_id_type, Unset):
             business_id_type = self.business_id_type.value
 
         name = self.name
 
-        status: str | Unset = UNSET
+        status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -63,7 +61,7 @@ class PartyUpdateRequest:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _business_id_type = d.pop("business_id_type", UNSET)
-        business_id_type: PartyBusinessIdType | Unset
+        business_id_type: Union[Unset, PartyBusinessIdType]
         if isinstance(_business_id_type, Unset):
             business_id_type = UNSET
         else:
@@ -72,7 +70,7 @@ class PartyUpdateRequest:
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
-        status: PartyStatus | Unset
+        status: Union[Unset, PartyStatus]
         if isinstance(_status, Unset):
             status = UNSET
         else:

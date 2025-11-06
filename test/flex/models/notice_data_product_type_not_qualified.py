@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,14 +15,14 @@ class NoticeDataProductTypeNotQualified:
     no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
 
         Attributes:
-            product_type_ids (list[int] | Unset): List of product types that are not qualified.
+            product_type_ids (Union[Unset, list[int]]): List of product types that are not qualified.
     """
 
-    product_type_ids: list[int] | Unset = UNSET
+    product_type_ids: Union[Unset, list[int]] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        product_type_ids: list[int] | Unset = UNSET
+        product_type_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.product_type_ids, Unset):
             product_type_ids = self.product_type_ids
 

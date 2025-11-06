@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -20,17 +18,17 @@ class ServiceProvidingGroupProductSuspensionCommentUpdateRequest:
     suspension.
 
         Attributes:
-            visibility (ServiceProvidingGroupProductSuspensionCommentVisibility | Unset): The level of visibility of the
-                comment. Example: same_party.
-            content (str | Unset): Free text content of the comment. Example: Missing document..
+            visibility (Union[Unset, ServiceProvidingGroupProductSuspensionCommentVisibility]): The level of visibility of
+                the comment. Example: same_party.
+            content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
     """
 
-    visibility: ServiceProvidingGroupProductSuspensionCommentVisibility | Unset = UNSET
-    content: str | Unset = UNSET
+    visibility: Union[Unset, ServiceProvidingGroupProductSuspensionCommentVisibility] = UNSET
+    content: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        visibility: str | Unset = UNSET
+        visibility: Union[Unset, str] = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
@@ -50,7 +48,7 @@ class ServiceProvidingGroupProductSuspensionCommentUpdateRequest:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _visibility = d.pop("visibility", UNSET)
-        visibility: ServiceProvidingGroupProductSuspensionCommentVisibility | Unset
+        visibility: Union[Unset, ServiceProvidingGroupProductSuspensionCommentVisibility]
         if isinstance(_visibility, Unset):
             visibility = UNSET
         else:

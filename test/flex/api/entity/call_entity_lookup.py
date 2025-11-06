@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any
+from typing import Any, Union
 
 import httpx
 
@@ -31,8 +31,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EntityLookupResponse | ErrorMessage | None:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Union[EntityLookupResponse, ErrorMessage] | None:
     if response.status_code == 200:
         response_200 = EntityLookupResponse.from_dict(response.json())
 
@@ -65,8 +65,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EntityLookupResponse | ErrorMessage]:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[EntityLookupResponse, ErrorMessage]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -79,7 +79,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: EntityLookupRequest,
-) -> Response[EntityLookupResponse | ErrorMessage]:
+) -> Response[Union[EntityLookupResponse, ErrorMessage]]:
     """Call - Entity lookup
 
      Lookup an entity from its business ID. Creates the entity if missing.
@@ -92,7 +92,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EntityLookupResponse | ErrorMessage]
+        Response[Union[EntityLookupResponse, ErrorMessage]]
     """
 
     kwargs = _get_kwargs(
@@ -110,7 +110,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: EntityLookupRequest,
-) -> EntityLookupResponse | ErrorMessage | None:
+) -> Union[EntityLookupResponse, ErrorMessage] | None:
     """Call - Entity lookup
 
      Lookup an entity from its business ID. Creates the entity if missing.
@@ -123,7 +123,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EntityLookupResponse | ErrorMessage
+        Union[EntityLookupResponse, ErrorMessage]
     """
 
     return sync_detailed(
@@ -136,7 +136,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: EntityLookupRequest,
-) -> Response[EntityLookupResponse | ErrorMessage]:
+) -> Response[Union[EntityLookupResponse, ErrorMessage]]:
     """Call - Entity lookup
 
      Lookup an entity from its business ID. Creates the entity if missing.
@@ -149,7 +149,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EntityLookupResponse | ErrorMessage]
+        Response[Union[EntityLookupResponse, ErrorMessage]]
     """
 
     kwargs = _get_kwargs(
@@ -165,7 +165,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: EntityLookupRequest,
-) -> EntityLookupResponse | ErrorMessage | None:
+) -> Union[EntityLookupResponse, ErrorMessage] | None:
     """Call - Entity lookup
 
      Lookup an entity from its business ID. Creates the entity if missing.
@@ -178,7 +178,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EntityLookupResponse | ErrorMessage
+        Union[EntityLookupResponse, ErrorMessage]
     """
 
     return (

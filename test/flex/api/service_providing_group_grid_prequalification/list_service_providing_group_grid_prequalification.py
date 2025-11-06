@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any, Union, cast
 
 import httpx
 
@@ -18,16 +18,16 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    impacted_system_operator_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer] = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(range_, Unset):
@@ -68,8 +68,16 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse] | None:
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> (
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridPrequalificationResponse"],
+    ]
+    | None
+):
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -101,14 +109,14 @@ def _parse_response(
 
     if response.status_code == 404:
 
-        def _parse_response_404(data: object) -> EmptyObject | ErrorMessage:
+        def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
                 response_404_type_0 = ErrorMessage.from_dict(data)
 
                 return response_404_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
+            except:  # noqa: E722
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
@@ -142,9 +150,14 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
 ) -> Response[
-    Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridPrequalificationResponse"],
+    ]
 ]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -157,39 +170,44 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    impacted_system_operator_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer] = UNSET,
 ) -> Response[
-    Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridPrequalificationResponse"],
+    ]
 ]:
     """List Grid prequalification for service providing group
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        impacted_system_operator_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridPrequalificationResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -215,37 +233,45 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse] | None:
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    impacted_system_operator_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer] = UNSET,
+) -> (
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridPrequalificationResponse"],
+    ]
+    | None
+):
     """List Grid prequalification for service providing group
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        impacted_system_operator_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridPrequalificationResponse']]
     """
 
     return sync_detailed(
@@ -266,39 +292,44 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    impacted_system_operator_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer] = UNSET,
 ) -> Response[
-    Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridPrequalificationResponse"],
+    ]
 ]:
     """List Grid prequalification for service providing group
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        impacted_system_operator_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]]
+        Response[Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridPrequalificationResponse']]]
     """
 
     kwargs = _get_kwargs(
@@ -322,37 +353,45 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    id: str | Unset = UNSET,
-    service_providing_group_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
-    select: str | Unset = UNSET,
-    order: str | Unset = UNSET,
-    offset: str | Unset = UNSET,
-    limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse] | None:
+    id: Union[Unset, str] = UNSET,
+    service_providing_group_id: Union[Unset, str] = UNSET,
+    impacted_system_operator_id: Union[Unset, str] = UNSET,
+    select: Union[Unset, str] = UNSET,
+    order: Union[Unset, str] = UNSET,
+    offset: Union[Unset, str] = UNSET,
+    limit: Union[Unset, str] = UNSET,
+    range_: Union[Unset, str] = UNSET,
+    range_unit: Union[Unset, str] = UNSET,
+    prefer: Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer] = UNSET,
+) -> (
+    Union[
+        Any,
+        ErrorMessage,
+        Union["EmptyObject", "ErrorMessage"],
+        list["ServiceProvidingGroupGridPrequalificationResponse"],
+    ]
+    | None
+):
     """List Grid prequalification for service providing group
 
     Args:
-        id (str | Unset):
-        service_providing_group_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
-        select (str | Unset):
-        order (str | Unset):
-        offset (str | Unset):
-        limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
+        id (Union[Unset, str]):
+        service_providing_group_id (Union[Unset, str]):
+        impacted_system_operator_id (Union[Unset, str]):
+        select (Union[Unset, str]):
+        order (Union[Unset, str]):
+        offset (Union[Unset, str]):
+        limit (Union[Unset, str]):
+        range_ (Union[Unset, str]):
+        range_unit (Union[Unset, str]):
+        prefer (Union[Unset, ListServiceProvidingGroupGridPrequalificationPrefer]):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]
+        Union[Any, ErrorMessage, Union['EmptyObject', 'ErrorMessage'], list['ServiceProvidingGroupGridPrequalificationResponse']]
     """
 
     return (

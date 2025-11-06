@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,15 +15,15 @@ class ControllableUnitLookupRequest:
 
     Attributes:
         end_user (str): Birth number or organisation number of the end user. Example: 133700008.
-        controllable_unit (str | Unset): The business ID of the controllable unit to lookup. Example:
+        controllable_unit (Union[Unset, str]): The business ID of the controllable unit to lookup. Example:
             53919b79-876f-4dad-8bde-b29368367604.
-        accounting_point (str | Unset): The accounting point ID of the controllable unit(s) to lookup. `GSRN` metering
-            point id. Example: 709000000000000057.
+        accounting_point (Union[Unset, str]): The accounting point ID of the controllable unit(s) to lookup. `GSRN`
+            metering point id. Example: 709000000000000057.
     """
 
     end_user: str
-    controllable_unit: str | Unset = UNSET
-    accounting_point: str | Unset = UNSET
+    controllable_unit: Union[Unset, str] = UNSET
+    accounting_point: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

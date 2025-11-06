@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,14 +14,14 @@ class NotificationCreateData:
     """Data of the request schema for create operations - Notification about an event happening in the system.
 
     Attributes:
-        acknowledged (bool | Unset): Whether the notification was acknowledged by the target user.
-        event_id (int | Unset): Reference to the event notified by this resource. Example: 37.
-        party_id (int | Unset): Reference to the party concerned by this notification. Example: 37.
+        acknowledged (Union[Unset, bool]): Whether the notification was acknowledged by the target user.
+        event_id (Union[Unset, int]): Reference to the event notified by this resource. Example: 37.
+        party_id (Union[Unset, int]): Reference to the party concerned by this notification. Example: 37.
     """
 
-    acknowledged: bool | Unset = UNSET
-    event_id: int | Unset = UNSET
-    party_id: int | Unset = UNSET
+    acknowledged: Union[Unset, bool] = UNSET
+    event_id: Union[Unset, int] = UNSET
+    party_id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
