@@ -185,7 +185,7 @@ def test_token_exchange_ok_ent(sts):
         client=client_fiso,
         body=PartyCreateRequest(
             entity_id=ent_id,
-            type="end_user",
+            type_="end_user",
             role="flex_end_user",
             name="Auth Test EU",
         ),

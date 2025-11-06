@@ -80,7 +80,7 @@ def data(request):
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
             role="flex_system_operator",
-            type="system_operator",
+            type_="system_operator",
             entity_id=ent_id,
         ),
     )
@@ -94,7 +94,7 @@ def data(request):
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
             role="flex_system_operator",
-            type="system_operator",
+            type_="system_operator",
             entity_id=other_ent_id,
         ),
     )
