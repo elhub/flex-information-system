@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -14,21 +16,21 @@ class Notification:
     """Data schema - Notification about an event happening in the system.
 
     Attributes:
-        acknowledged (Union[Unset, bool]): Whether the notification was acknowledged by the target user.
-        event_id (Union[Unset, int]): Reference to the event notified by this resource. Example: 37.
-        party_id (Union[Unset, int]): Reference to the party concerned by this notification. Example: 37.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+        acknowledged (bool | Unset): Whether the notification was acknowledged by the target user.
+        event_id (int | Unset): Reference to the event notified by this resource. Example: 37.
+        party_id (int | Unset): Reference to the party concerned by this notification. Example: 37.
+        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
+        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+        id (int | Unset): Unique surrogate identifier. Example: 89.
     """
 
-    acknowledged: Union[Unset, bool] = UNSET
-    event_id: Union[Unset, int] = UNSET
-    party_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
+    acknowledged: bool | Unset = UNSET
+    event_id: int | Unset = UNSET
+    party_id: int | Unset = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

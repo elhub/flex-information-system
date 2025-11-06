@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Union, cast
+from typing import Any, cast
 
 import httpx
 
@@ -33,8 +33,8 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]] | None:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     if response.status_code == 200:
         response_200 = ServiceProviderProductApplicationResponse.from_dict(response.json())
 
@@ -61,14 +61,14 @@ def _parse_response(
 
     if response.status_code == 404:
 
-        def _parse_response_404(data: object) -> Union["EmptyObject", "ErrorMessage"]:
+        def _parse_response_404(data: object) -> EmptyObject | ErrorMessage:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
                 response_404_type_0 = ErrorMessage.from_dict(data)
 
                 return response_404_type_0
-            except:  # noqa: E722
+            except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
@@ -97,10 +97,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[
-    Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -114,9 +112,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductApplicationUpdateRequest,
-) -> Response[
-    Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Update Service Provider Product Application
 
     Args:
@@ -131,7 +127,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union['EmptyObject', 'ErrorMessage']]]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]
     """
 
     kwargs = _get_kwargs(
@@ -151,7 +147,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductApplicationUpdateRequest,
-) -> Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]] | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Update Service Provider Product Application
 
     Args:
@@ -166,7 +162,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union['EmptyObject', 'ErrorMessage']]
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse
     """
 
     return sync_detailed(
@@ -181,9 +177,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductApplicationUpdateRequest,
-) -> Response[
-    Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]]
-]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Update Service Provider Product Application
 
     Args:
@@ -198,7 +192,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union['EmptyObject', 'ErrorMessage']]]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]
     """
 
     kwargs = _get_kwargs(
@@ -216,7 +210,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductApplicationUpdateRequest,
-) -> Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union["EmptyObject", "ErrorMessage"]] | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Update Service Provider Product Application
 
     Args:
@@ -231,7 +225,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[Any, ErrorMessage, ServiceProviderProductApplicationResponse, Union['EmptyObject', 'ErrorMessage']]
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse
     """
 
     return (

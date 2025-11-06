@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -24,34 +26,34 @@ class PartyCreateData:
     * End User
 
         Attributes:
-            business_id_type (Union[Unset, PartyBusinessIdType]): The type of the business identifier. Example: gln.
-            name (Union[Unset, str]): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
-            status (Union[Unset, PartyStatus]): The status of the party. Example: active.
-            business_id (Union[Unset, str]): The business identifier of the party. Format depends on `business_id_type`.
-                Example: 1337099000000.
-            entity_id (Union[Unset, int]): Reference to the entity that is the parent of the party. Example: 30.
-            role (Union[Unset, str]): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
+            business_id_type (PartyBusinessIdType | Unset): The type of the business identifier. Example: gln.
+            name (str | Unset): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
+            status (PartyStatus | Unset): The status of the party. Example: active.
+            business_id (str | Unset): The business identifier of the party. Format depends on `business_id_type`. Example:
+                1337099000000.
+            entity_id (int | Unset): Reference to the entity that is the parent of the party. Example: 30.
+            role (str | Unset): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
                 service_provider. Example: flex_energy_supplier.
-            type_ (Union[Unset, str]): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
+            type_ (str | Unset): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
     """
 
-    business_id_type: Union[Unset, PartyBusinessIdType] = UNSET
-    name: Union[Unset, str] = UNSET
-    status: Union[Unset, PartyStatus] = UNSET
-    business_id: Union[Unset, str] = UNSET
-    entity_id: Union[Unset, int] = UNSET
-    role: Union[Unset, str] = UNSET
-    type_: Union[Unset, str] = UNSET
+    business_id_type: PartyBusinessIdType | Unset = UNSET
+    name: str | Unset = UNSET
+    status: PartyStatus | Unset = UNSET
+    business_id: str | Unset = UNSET
+    entity_id: int | Unset = UNSET
+    role: str | Unset = UNSET
+    type_: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        business_id_type: Union[Unset, str] = UNSET
+        business_id_type: str | Unset = UNSET
         if not isinstance(self.business_id_type, Unset):
             business_id_type = self.business_id_type.value
 
         name = self.name
 
-        status: Union[Unset, str] = UNSET
+        status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -87,7 +89,7 @@ class PartyCreateData:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _business_id_type = d.pop("business_id_type", UNSET)
-        business_id_type: Union[Unset, PartyBusinessIdType]
+        business_id_type: PartyBusinessIdType | Unset
         if isinstance(_business_id_type, Unset):
             business_id_type = UNSET
         else:
@@ -96,7 +98,7 @@ class PartyCreateData:
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
-        status: Union[Unset, PartyStatus]
+        status: PartyStatus | Unset
         if isinstance(_status, Unset):
             status = UNSET
         else:

@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,31 +19,31 @@ class ServiceProvidingGroupGridSuspensionComment:
     """Data schema - Comment made by a party involved in a service providing group grid suspension.
 
     Attributes:
-        visibility (Union[Unset, ServiceProvidingGroupGridSuspensionCommentVisibility]): The level of visibility of the
+        visibility (ServiceProvidingGroupGridSuspensionCommentVisibility | Unset): The level of visibility of the
             comment. Example: same_party.
-        content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
-        service_providing_group_grid_suspension_id (Union[Unset, int]): Reference to the service providing group grid
+        content (str | Unset): Free text content of the comment. Example: Missing document..
+        service_providing_group_grid_suspension_id (int | Unset): Reference to the service providing group grid
             suspension. Example: 7.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
-        created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
-        created_at (Union[Unset, str]): When the comment was added to the SPGGS. Example: 2022-08-08 12:00:00 CET.
+        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+        id (int | Unset): Unique surrogate identifier. Example: 9.
+        created_by (int | Unset): Reference to the identity that created the comment. Example: 94.
+        created_at (str | Unset): When the comment was added to the SPGGS. Example: 2022-08-08 12:00:00 CET.
     """
 
-    visibility: Union[Unset, ServiceProvidingGroupGridSuspensionCommentVisibility] = UNSET
-    content: Union[Unset, str] = UNSET
-    service_providing_group_grid_suspension_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
-    created_by: Union[Unset, int] = UNSET
-    created_at: Union[Unset, str] = UNSET
+    visibility: ServiceProvidingGroupGridSuspensionCommentVisibility | Unset = UNSET
+    content: str | Unset = UNSET
+    service_providing_group_grid_suspension_id: int | Unset = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
+    created_by: int | Unset = UNSET
+    created_at: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        visibility: Union[Unset, str] = UNSET
+        visibility: str | Unset = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
@@ -85,7 +87,7 @@ class ServiceProvidingGroupGridSuspensionComment:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _visibility = d.pop("visibility", UNSET)
-        visibility: Union[Unset, ServiceProvidingGroupGridSuspensionCommentVisibility]
+        visibility: ServiceProvidingGroupGridSuspensionCommentVisibility | Unset
         if isinstance(_visibility, Unset):
             visibility = UNSET
         else:

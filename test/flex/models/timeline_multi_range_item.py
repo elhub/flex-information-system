@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,21 +17,20 @@ T = TypeVar("T", bound="TimelineMultiRangeItem")
 class TimelineMultiRangeItem:
     """
     Attributes:
-        valid_from (Union[Unset, datetime.datetime]): The start time of the timeline section. Example:
-            2023-01-01T00:00:00Z.
-        valid_to (Union[Unset, datetime.datetime]): The end time of the timeline section. Example: 2023-01-02T00:00:00Z.
+        valid_from (datetime.datetime | Unset): The start time of the timeline section. Example: 2023-01-01T00:00:00Z.
+        valid_to (datetime.datetime | Unset): The end time of the timeline section. Example: 2023-01-02T00:00:00Z.
     """
 
-    valid_from: Union[Unset, datetime.datetime] = UNSET
-    valid_to: Union[Unset, datetime.datetime] = UNSET
+    valid_from: datetime.datetime | Unset = UNSET
+    valid_to: datetime.datetime | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        valid_from: Union[Unset, str] = UNSET
+        valid_from: str | Unset = UNSET
         if not isinstance(self.valid_from, Unset):
             valid_from = self.valid_from.isoformat()
 
-        valid_to: Union[Unset, str] = UNSET
+        valid_to: str | Unset = UNSET
         if not isinstance(self.valid_to, Unset):
             valid_to = self.valid_to.isoformat()
 
@@ -47,14 +48,14 @@ class TimelineMultiRangeItem:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _valid_from = d.pop("valid_from", UNSET)
-        valid_from: Union[Unset, datetime.datetime]
+        valid_from: datetime.datetime | Unset
         if isinstance(_valid_from, Unset):
             valid_from = UNSET
         else:
             valid_from = isoparse(_valid_from)
 
         _valid_to = d.pop("valid_to", UNSET)
-        valid_to: Union[Unset, datetime.datetime]
+        valid_to: datetime.datetime | Unset
         if isinstance(_valid_to, Unset):
             valid_to = UNSET
         else:
