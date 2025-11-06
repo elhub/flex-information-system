@@ -36,6 +36,21 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     UNIQUE (service_providing_group_id, impacted_system_operator_id)
 );
 
+-- changeset flex:service-providing-group-grid-prequalification-ready-for-market-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION
+service_providing_group_grid_prequalification_ready_for_market_check(
+    spggp service_providing_group_grid_prequalification
+)
+RETURNS boolean
+SECURITY INVOKER
+LANGUAGE sql
+AS
+$$
+SELECT
+    spggp.status IN ('approved', 'conditionally_approved')
+    OR spggp.prequalified_at IS NOT null
+$$;
+
 -- changeset flex:service-providing-group-grid-prequalification-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_insert
