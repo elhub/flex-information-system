@@ -32,7 +32,7 @@ export const ControllableUnitSuspensionHistoryList = () => {
   return (
     <List
       resource="controllable_unit_suspension_history"
-      title={`Controllable unit suspension history for ${data.name}`}
+      title={`Controllable unit suspension history for ${data?.name ?? ''}`}
       filter={filter}
       filters={ControllableUnitSuspensionHistoryListFilters}
       perPage={25}
