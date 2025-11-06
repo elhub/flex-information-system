@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,33 +21,33 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
     Attributes:
         service_providing_group_product_suspension_comment_id (int): Reference to the resource that was updated.
             Example: 48.
-        visibility (Union[Unset, ServiceProvidingGroupProductSuspensionCommentVisibility]): The level of visibility of
-            the comment. Example: same_party.
-        content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
-        service_providing_group_product_suspension_id (Union[Unset, int]): Reference to the service providing group
-            product suspension. Example: 7.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+        visibility (ServiceProvidingGroupProductSuspensionCommentVisibility | Unset): The level of visibility of the
+            comment. Example: same_party.
+        content (str | Unset): Free text content of the comment. Example: Missing document..
+        service_providing_group_product_suspension_id (int | Unset): Reference to the service providing group product
+            suspension. Example: 7.
+        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 9.
-        created_by (Union[Unset, int]): Reference to the identity that created the comment. Example: 94.
-        created_at (Union[Unset, str]): When the comment was added to the SPGPS. Example: 2022-08-08 12:00:00 CET.
-        replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
-            10:00:00 CET.
+        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+        id (int | Unset): Unique surrogate identifier. Example: 9.
+        created_by (int | Unset): Reference to the identity that created the comment. Example: 94.
+        created_at (str | Unset): When the comment was added to the SPGPS. Example: 2022-08-08 12:00:00 CET.
+        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
+            CET.
     """
 
     service_providing_group_product_suspension_comment_id: int
-    visibility: Union[Unset, ServiceProvidingGroupProductSuspensionCommentVisibility] = UNSET
-    content: Union[Unset, str] = UNSET
-    service_providing_group_product_suspension_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
-    created_by: Union[Unset, int] = UNSET
-    created_at: Union[Unset, str] = UNSET
-    replaced_by: Union[None, Unset, int] = UNSET
-    replaced_at: Union[None, Unset, str] = UNSET
+    visibility: ServiceProvidingGroupProductSuspensionCommentVisibility | Unset = UNSET
+    content: str | Unset = UNSET
+    service_providing_group_product_suspension_id: int | Unset = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
+    created_by: int | Unset = UNSET
+    created_at: str | Unset = UNSET
+    replaced_by: int | None | Unset = UNSET
+    replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -53,7 +55,7 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
             self.service_providing_group_product_suspension_comment_id
         )
 
-        visibility: Union[Unset, str] = UNSET
+        visibility: str | Unset = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
@@ -71,13 +73,13 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
 
         created_at = self.created_at
 
-        replaced_by: Union[None, Unset, int]
+        replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
         else:
             replaced_by = self.replaced_by
 
-        replaced_at: Union[None, Unset, str]
+        replaced_at: None | str | Unset
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
         else:
@@ -121,7 +123,7 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
         )
 
         _visibility = d.pop("visibility", UNSET)
-        visibility: Union[Unset, ServiceProvidingGroupProductSuspensionCommentVisibility]
+        visibility: ServiceProvidingGroupProductSuspensionCommentVisibility | Unset
         if isinstance(_visibility, Unset):
             visibility = UNSET
         else:
@@ -141,21 +143,21 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
 
         created_at = d.pop("created_at", UNSET)
 
-        def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
+        def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> Union[None, Unset, str]:
+        def _parse_replaced_at(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -19,7 +21,7 @@ class NoticeDataPartyOutdated:
     """Format of the data field in a notice of type no.elhub.flex.party.outdated
 
     Attributes:
-        entity (Union[Unset, Entity]): Data schema - Entity - Natural or legal person
+        entity (Entity | Unset): Data schema - Entity - Natural or legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information System.
 
@@ -27,7 +29,7 @@ class NoticeDataPartyOutdated:
 
             * Person
             * Organisation
-        party (Union[Unset, Party]): Data schema - The body that interacts with the Flexibility Information System
+        party (Party | Unset): Data schema - The body that interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
 
@@ -38,16 +40,16 @@ class NoticeDataPartyOutdated:
             * End User
     """
 
-    entity: Union[Unset, "Entity"] = UNSET
-    party: Union[Unset, "Party"] = UNSET
+    entity: Entity | Unset = UNSET
+    party: Party | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        entity: Union[Unset, dict[str, Any]] = UNSET
+        entity: dict[str, Any] | Unset = UNSET
         if not isinstance(self.entity, Unset):
             entity = self.entity.to_dict()
 
-        party: Union[Unset, dict[str, Any]] = UNSET
+        party: dict[str, Any] | Unset = UNSET
         if not isinstance(self.party, Unset):
             party = self.party.to_dict()
 
@@ -68,14 +70,14 @@ class NoticeDataPartyOutdated:
 
         d = dict(src_dict)
         _entity = d.pop("entity", UNSET)
-        entity: Union[Unset, Entity]
+        entity: Entity | Unset
         if isinstance(_entity, Unset):
             entity = UNSET
         else:
             entity = Entity.from_dict(_entity)
 
         _party = d.pop("party", UNSET)
-        party: Union[Unset, Party]
+        party: Party | Unset
         if isinstance(_party, Unset):
             party = UNSET
         else:

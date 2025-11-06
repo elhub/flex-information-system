@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,14 +18,14 @@ class ErrorMessage:
     Attributes:
         code (str): The error code. Example: PT418.
         message (str): The error message. Example: error.
-        details (Union[None, Unset, str]): Detailed information about the error.
-        hint (Union[None, Unset, str]): A hint to help resolve the error.
+        details (None | str | Unset): Detailed information about the error.
+        hint (None | str | Unset): A hint to help resolve the error.
     """
 
     code: str
     message: str
-    details: Union[None, Unset, str] = UNSET
-    hint: Union[None, Unset, str] = UNSET
+    details: None | str | Unset = UNSET
+    hint: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -31,13 +33,13 @@ class ErrorMessage:
 
         message = self.message
 
-        details: Union[None, Unset, str]
+        details: None | str | Unset
         if isinstance(self.details, Unset):
             details = UNSET
         else:
             details = self.details
 
-        hint: Union[None, Unset, str]
+        hint: None | str | Unset
         if isinstance(self.hint, Unset):
             hint = UNSET
         else:
@@ -65,21 +67,21 @@ class ErrorMessage:
 
         message = d.pop("message")
 
-        def _parse_details(data: object) -> Union[None, Unset, str]:
+        def _parse_details(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         details = _parse_details(d.pop("details", UNSET))
 
-        def _parse_hint(data: object) -> Union[None, Unset, str]:
+        def _parse_hint(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         hint = _parse_hint(d.pop("hint", UNSET))
 

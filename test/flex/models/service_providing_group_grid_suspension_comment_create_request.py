@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,20 +20,20 @@ class ServiceProvidingGroupGridSuspensionCommentCreateRequest:
     suspension.
 
         Attributes:
-            visibility (Union[Unset, ServiceProvidingGroupGridSuspensionCommentVisibility]): The level of visibility of the
+            visibility (ServiceProvidingGroupGridSuspensionCommentVisibility | Unset): The level of visibility of the
                 comment. Example: same_party.
-            content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
-            service_providing_group_grid_suspension_id (Union[Unset, int]): Reference to the service providing group grid
+            content (str | Unset): Free text content of the comment. Example: Missing document..
+            service_providing_group_grid_suspension_id (int | Unset): Reference to the service providing group grid
                 suspension. Example: 7.
     """
 
-    visibility: Union[Unset, ServiceProvidingGroupGridSuspensionCommentVisibility] = UNSET
-    content: Union[Unset, str] = UNSET
-    service_providing_group_grid_suspension_id: Union[Unset, int] = UNSET
+    visibility: ServiceProvidingGroupGridSuspensionCommentVisibility | Unset = UNSET
+    content: str | Unset = UNSET
+    service_providing_group_grid_suspension_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        visibility: Union[Unset, str] = UNSET
+        visibility: str | Unset = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
@@ -55,7 +57,7 @@ class ServiceProvidingGroupGridSuspensionCommentCreateRequest:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _visibility = d.pop("visibility", UNSET)
-        visibility: Union[Unset, ServiceProvidingGroupGridSuspensionCommentVisibility]
+        visibility: ServiceProvidingGroupGridSuspensionCommentVisibility | Unset
         if isinstance(_visibility, Unset):
             visibility = UNSET
         else:

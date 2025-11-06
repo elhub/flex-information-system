@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -21,17 +23,17 @@ class EntityCreateRequest:
     * Organisation
 
         Attributes:
-            name (Union[Unset, str]): Name of the entity. Maximum 128 characters. Example: John Smith.
-            business_id (Union[Unset, str]): The business identifier of the entity. Format depends on `business_id_type`.
-                Example: 13370000000.
-            business_id_type (Union[Unset, str]): The type of the business identifier. Example: pid.
-            type_ (Union[Unset, str]): The type of the entity, e.g Person, Organisation Example: person.
+            name (str | Unset): Name of the entity. Maximum 128 characters. Example: John Smith.
+            business_id (str | Unset): The business identifier of the entity. Format depends on `business_id_type`. Example:
+                13370000000.
+            business_id_type (str | Unset): The type of the business identifier. Example: pid.
+            type_ (str | Unset): The type of the entity, e.g Person, Organisation Example: person.
     """
 
-    name: Union[Unset, str] = UNSET
-    business_id: Union[Unset, str] = UNSET
-    business_id_type: Union[Unset, str] = UNSET
-    type_: Union[Unset, str] = UNSET
+    name: str | Unset = UNSET
+    business_id: str | Unset = UNSET
+    business_id_type: str | Unset = UNSET
+    type_: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

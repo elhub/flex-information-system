@@ -15,10 +15,6 @@ are consistent with the documented error cases in the OpenAPI specification.
 
 load_dotenv()
 
-# Bug tracking on the experimental 3.1 support
-# https://github.com/schemathesis/schemathesis/discussions/1822
-schemathesis.experimental.OPEN_API_3_1.enable()
-
 # login to get access to the OpenAPI file
 token = SecurityTokenService().get_client(TestEntity.TEST, "FISO").token
 
@@ -28,24 +24,12 @@ openapi_document = open("backend/data/static/openapi.json", "r").read()
 
 api_url = os.environ["FLEX_URL_BASE"] + "/api/v0"
 
-schema = schemathesis.from_file(
-    openapi_document,
-    base_url=api_url,
-    sanitize_output=False,
+schema = schemathesis.openapi.from_file(
+    openapi_document
 )
 
 
-@schema.parametrize(
-    endpoint=[
-        "^/api/v0/openapi.json$",
-        "^/api/v0/accounting_point",
-        "^/api/v0/controllable_unit",
-        "^/api/v0/entity",
-        "^/api/v0/party",
-        "^/api/v0/service_providing_group",
-        "^/api/v0/technical_resource",
-    ],
-)
+@schema.parametrize()
 def test_schemathesis(case):
     response = case.call(headers={"Authorization": f"Bearer {token}"})
 

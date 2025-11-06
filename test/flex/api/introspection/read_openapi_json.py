@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, Union
+from typing import Any
 
 import httpx
 
@@ -20,8 +20,8 @@ def _get_kwargs() -> dict[str, Any]:
 
 
 def _parse_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Union[ErrorMessage, ReadOpenapiJsonResponse200] | None:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> ErrorMessage | ReadOpenapiJsonResponse200 | None:
     if response.status_code == 200:
         response_200 = ReadOpenapiJsonResponse200.from_dict(response.json())
 
@@ -39,8 +39,8 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorMessage, ReadOpenapiJsonResponse200]]:
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[ErrorMessage | ReadOpenapiJsonResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -52,7 +52,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorMessage, ReadOpenapiJsonResponse200]]:
+) -> Response[ErrorMessage | ReadOpenapiJsonResponse200]:
     """Read OpenAPI JSON Document
 
      Introspection for the Flexibility Information System main API. The document is following the OpenAPI
@@ -63,7 +63,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorMessage, ReadOpenapiJsonResponse200]]
+        Response[ErrorMessage | ReadOpenapiJsonResponse200]
     """
 
     kwargs = _get_kwargs()
@@ -78,7 +78,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Union[ErrorMessage, ReadOpenapiJsonResponse200] | None:
+) -> ErrorMessage | ReadOpenapiJsonResponse200 | None:
     """Read OpenAPI JSON Document
 
      Introspection for the Flexibility Information System main API. The document is following the OpenAPI
@@ -89,7 +89,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorMessage, ReadOpenapiJsonResponse200]
+        ErrorMessage | ReadOpenapiJsonResponse200
     """
 
     return sync_detailed(
@@ -100,7 +100,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Union[ErrorMessage, ReadOpenapiJsonResponse200]]:
+) -> Response[ErrorMessage | ReadOpenapiJsonResponse200]:
     """Read OpenAPI JSON Document
 
      Introspection for the Flexibility Information System main API. The document is following the OpenAPI
@@ -111,7 +111,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorMessage, ReadOpenapiJsonResponse200]]
+        Response[ErrorMessage | ReadOpenapiJsonResponse200]
     """
 
     kwargs = _get_kwargs()
@@ -124,7 +124,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Union[ErrorMessage, ReadOpenapiJsonResponse200] | None:
+) -> ErrorMessage | ReadOpenapiJsonResponse200 | None:
     """Read OpenAPI JSON Document
 
      Introspection for the Flexibility Information System main API. The document is following the OpenAPI
@@ -135,7 +135,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorMessage, ReadOpenapiJsonResponse200]
+        ErrorMessage | ReadOpenapiJsonResponse200
     """
 
     return (

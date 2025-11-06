@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,28 +17,27 @@ class ServiceProvidingGroupResponse:
     """Response schema for operations with return values - Group of controllable units
 
     Attributes:
-        name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
-        status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
-        service_provider_id (Union[Unset, int]): Reference to the `party` (service provider) managing the group.
-            Example: 17.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+        name (str | Unset): Free text name of the service providing group. Example: Batteries #09.
+        status (ServiceProvidingGroupStatus | Unset): The status of the group. Example: active.
+        service_provider_id (int | Unset): Reference to the `party` (service provider) managing the group. Example: 17.
+        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        id (Union[Unset, int]): Unique surrogate key. Example: 4.
+        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+        id (int | Unset): Unique surrogate key. Example: 4.
     """
 
-    name: Union[Unset, str] = UNSET
-    status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
-    service_provider_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
+    name: str | Unset = UNSET
+    status: ServiceProvidingGroupStatus | Unset = UNSET
+    service_provider_id: int | Unset = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        status: Union[Unset, str] = UNSET
+        status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -72,7 +73,7 @@ class ServiceProvidingGroupResponse:
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
-        status: Union[Unset, ServiceProvidingGroupStatus]
+        status: ServiceProvidingGroupStatus | Unset
         if isinstance(_status, Unset):
             status = UNSET
         else:

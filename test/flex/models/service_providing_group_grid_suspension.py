@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,28 +18,27 @@ class ServiceProvidingGroupGridSuspension:
     from delivering services.
 
         Attributes:
-            reason (Union[Unset, ServiceProvidingGroupGridSuspensionReason]): The reason for the suspension. Example:
+            reason (ServiceProvidingGroupGridSuspensionReason | Unset): The reason for the suspension. Example:
                 significant_group_change.
-            impacted_system_operator_id (Union[Unset, int]): Reference to the impacted system operator suspending the
-                service providing group. Example: 7.
-            service_providing_group_id (Union[Unset, int]): Reference to the service providing group being suspended.
-                Example: 13.
-            recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+            impacted_system_operator_id (int | Unset): Reference to the impacted system operator suspending the service
+                providing group. Example: 7.
+            service_providing_group_id (int | Unset): Reference to the service providing group being suspended. Example: 13.
+            recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31 23:59:00 CET.
-            recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-            id (Union[Unset, int]): Unique surrogate identifier. Example: 49.
+            recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+            id (int | Unset): Unique surrogate identifier. Example: 49.
     """
 
-    reason: Union[Unset, ServiceProvidingGroupGridSuspensionReason] = UNSET
-    impacted_system_operator_id: Union[Unset, int] = UNSET
-    service_providing_group_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
+    reason: ServiceProvidingGroupGridSuspensionReason | Unset = UNSET
+    impacted_system_operator_id: int | Unset = UNSET
+    service_providing_group_id: int | Unset = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        reason: Union[Unset, str] = UNSET
+        reason: str | Unset = UNSET
         if not isinstance(self.reason, Unset):
             reason = self.reason.value
 
@@ -73,7 +74,7 @@ class ServiceProvidingGroupGridSuspension:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _reason = d.pop("reason", UNSET)
-        reason: Union[Unset, ServiceProvidingGroupGridSuspensionReason]
+        reason: ServiceProvidingGroupGridSuspensionReason | Unset
         if isinstance(_reason, Unset):
             reason = UNSET
         else:

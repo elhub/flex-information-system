@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,27 +17,27 @@ class PartyMembershipResponse:
     """Response schema for operations with return values - The relation between a party and entity.
 
     Attributes:
-        scopes (Union[Unset, list[AuthScope]]): List of scopes granted to the entity when it acts as the party. Scopes
-            are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+        scopes (list[AuthScope] | Unset): List of scopes granted to the entity when it acts as the party. Scopes are
+            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
-        party_id (Union[Unset, int]): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (Union[Unset, int]): Reference to the entity that the party represents. Example: 30.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+        party_id (int | Unset): Reference to the party that the membership links to an entity. Example: 379.
+        entity_id (int | Unset): Reference to the entity that the party represents. Example: 30.
+        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 44.
+        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+        id (int | Unset): Unique surrogate identifier. Example: 44.
     """
 
-    scopes: Union[Unset, list[AuthScope]] = UNSET
-    party_id: Union[Unset, int] = UNSET
-    entity_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
+    scopes: list[AuthScope] | Unset = UNSET
+    party_id: int | Unset = UNSET
+    entity_id: int | Unset = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        scopes: Union[Unset, list[str]] = UNSET
+        scopes: list[str] | Unset = UNSET
         if not isinstance(self.scopes, Unset):
             scopes = []
             for scopes_item_data in self.scopes:
@@ -73,12 +75,14 @@ class PartyMembershipResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        scopes = []
         _scopes = d.pop("scopes", UNSET)
-        for scopes_item_data in _scopes or []:
-            scopes_item = AuthScope(scopes_item_data)
+        scopes: list[AuthScope] | Unset = UNSET
+        if _scopes is not UNSET:
+            scopes = []
+            for scopes_item_data in _scopes:
+                scopes_item = AuthScope(scopes_item_data)
 
-            scopes.append(scopes_item)
+                scopes.append(scopes_item)
 
         party_id = d.pop("party_id", UNSET)
 
