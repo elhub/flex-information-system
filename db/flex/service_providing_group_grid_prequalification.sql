@@ -37,18 +37,32 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
 );
 
 -- changeset flex:service-providing-group-grid-prequalification-ready-for-market-function runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION
-service_providing_group_grid_prequalification_ready_for_market_check(
-    spggp service_providing_group_grid_prequalification
+-- type to accept both main table and history rows
+CREATE TYPE flex.spg_grid_prequalification AS (
+    status text,
+    prequalified_at timestamp with time zone
+);
+CREATE OR REPLACE FUNCTION spg_grid_prequalification_ready_for_market_check(
+    rec record
 )
 RETURNS boolean
 SECURITY INVOKER
-LANGUAGE sql
+LANGUAGE plpgsql
 AS
 $$
-SELECT
-    spggp.status IN ('approved', 'conditionally_approved')
-    OR spggp.prequalified_at IS NOT null
+DECLARE
+    -- we accept record but we ensure that we get a proper type error
+    -- if the input is not SPGGP / SPGGP history
+    -- (no silent null condition for instance)
+    spggp flex.spg_grid_prequalification := ROW(
+        rec.status, rec.prequalified_at
+    )::flex.spg_grid_prequalification;
+BEGIN
+    RETURN (
+        spggp.status IN ('approved', 'conditionally_approved')
+        OR spggp.prequalified_at IS NOT null
+    );
+END;
 $$;
 
 -- changeset flex:service-providing-group-grid-prequalification-status-insert-trigger runOnChange:true endDelimiter:--

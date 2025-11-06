@@ -339,7 +339,7 @@ CREATE VIEW notice AS (
                 = spggs.service_providing_group_id
                 AND spggp.impacted_system_operator_id
                 = spggs.impacted_system_operator_id
-                AND service_providing_group_grid_prequalification_ready_for_market_check(spggp) -- noqa
+                AND spg_grid_prequalification_ready_for_market_check(spggp) -- noqa
         )
 
     -- inactive suspension
