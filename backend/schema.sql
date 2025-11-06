@@ -45,6 +45,25 @@ CREATE TABLE controllable_unit_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE controllable_unit_suspension (
+    id bigint NOT NULL,
+    controllable_unit_id bigint NOT NULL,
+    impacted_system_operator_id bigint NOT NULL,
+    reason text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE controllable_unit_suspension_history (
+    controllable_unit_suspension_id bigint NOT NULL,
+    id bigint NOT NULL,
+    controllable_unit_id bigint NOT NULL,
+    impacted_system_operator_id bigint NOT NULL,
+    reason text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
 CREATE TABLE controllable_unit_service_provider (
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,

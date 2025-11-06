@@ -2005,6 +2005,274 @@ GRANT SELECT ON TABLE
 api.controllable_unit_service_provider_history
 TO flex_internal_event_notification;
 
+-- changeset flex:api-grant-controllable-unit-suspension-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-controllable-unit-suspension-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-controllable-unit-suspension-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_end_user;
+
+-- changeset flex:api-grant-controllable-unit-suspension-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    reason
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-fiso-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE
+api.controllable_unit_suspension
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_market_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-so-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-so-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    reason
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-so-delete endDelimiter:-- runAlways:true
+GRANT DELETE ON TABLE
+api.controllable_unit_suspension
+TO flex_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_service_provider;
+
+-- changeset flex:api-grant-controllable-unit-suspension-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.controllable_unit_suspension
+TO flex_third_party;
+
+-- changeset flex:api-grant-controllable-unit-suspension-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.controllable_unit_suspension
+TO flex_internal_event_notification;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_end_user;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_market_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_service_provider;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_id,
+    controllable_unit_id,
+    impacted_system_operator_id,
+    reason,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_history
+TO flex_third_party;
+
+-- changeset flex:api-grant-controllable-unit-suspension-history-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.controllable_unit_suspension_history
+TO flex_internal_event_notification;
+
 -- changeset flex:api-grant-service-providing-group-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,

@@ -40,6 +40,13 @@ from .controllable_unit_service_provider_history_response import ControllableUni
 from .controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
 from .controllable_unit_service_provider_update_request import ControllableUnitServiceProviderUpdateRequest
 from .controllable_unit_status import ControllableUnitStatus
+from .controllable_unit_suspension import ControllableUnitSuspension
+from .controllable_unit_suspension_create_data import ControllableUnitSuspensionCreateData
+from .controllable_unit_suspension_create_request import ControllableUnitSuspensionCreateRequest
+from .controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
+from .controllable_unit_suspension_reason import ControllableUnitSuspensionReason
+from .controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+from .controllable_unit_suspension_update_request import ControllableUnitSuspensionUpdateRequest
 from .controllable_unit_update_request import ControllableUnitUpdateRequest
 from .empty_object import EmptyObject
 from .entity import Entity
@@ -69,6 +76,8 @@ from .list_controllable_unit_history_prefer import ListControllableUnitHistoryPr
 from .list_controllable_unit_prefer import ListControllableUnitPrefer
 from .list_controllable_unit_service_provider_history_prefer import ListControllableUnitServiceProviderHistoryPrefer
 from .list_controllable_unit_service_provider_prefer import ListControllableUnitServiceProviderPrefer
+from .list_controllable_unit_suspension_history_prefer import ListControllableUnitSuspensionHistoryPrefer
+from .list_controllable_unit_suspension_prefer import ListControllableUnitSuspensionPrefer
 from .list_entity_client_prefer import ListEntityClientPrefer
 from .list_entity_prefer import ListEntityPrefer
 from .list_event_prefer import ListEventPrefer
@@ -344,6 +353,13 @@ __all__ = (
     "ControllableUnitServiceProviderResponse",
     "ControllableUnitServiceProviderUpdateRequest",
     "ControllableUnitStatus",
+    "ControllableUnitSuspension",
+    "ControllableUnitSuspensionCreateData",
+    "ControllableUnitSuspensionCreateRequest",
+    "ControllableUnitSuspensionHistoryResponse",
+    "ControllableUnitSuspensionReason",
+    "ControllableUnitSuspensionResponse",
+    "ControllableUnitSuspensionUpdateRequest",
     "ControllableUnitUpdateRequest",
     "EmptyObject",
     "Entity",
@@ -373,6 +389,8 @@ __all__ = (
     "ListControllableUnitPrefer",
     "ListControllableUnitServiceProviderHistoryPrefer",
     "ListControllableUnitServiceProviderPrefer",
+    "ListControllableUnitSuspensionHistoryPrefer",
+    "ListControllableUnitSuspensionPrefer",
     "ListEntityClientPrefer",
     "ListEntityPrefer",
     "ListEventPrefer",

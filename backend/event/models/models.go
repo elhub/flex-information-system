@@ -114,6 +114,27 @@ type ControllableUnitServiceProviderHistory struct {
 	ReplacedAt                        pgtype.Timestamptz
 }
 
+type ControllableUnitSuspension struct {
+	ID                       int
+	ControllableUnitID       int
+	ImpactedSystemOperatorID int
+	Reason                   string
+	RecordedBy               int
+	RecordedAt               pgtype.Timestamptz
+}
+
+type ControllableUnitSuspensionHistory struct {
+	ControllableUnitSuspensionID int
+	ID                           int
+	ControllableUnitID           int
+	ImpactedSystemOperatorID     int
+	Reason                       string
+	RecordedBy                   int
+	RecordedAt                   pgtype.Timestamptz
+	ReplacedBy                   *int
+	ReplacedAt                   pgtype.Timestamptz
+}
+
 type Entity struct {
 	ID             int
 	BusinessID     string
