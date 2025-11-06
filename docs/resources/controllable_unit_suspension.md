@@ -85,7 +85,7 @@ No policies.
 
 | Policy key | Policy                                                           | Status |
 |------------|------------------------------------------------------------------|--------|
-| CUS-SP001  | Read CU suspensions on periods where they own the CU.            | DONE   |
+| CUS-SP001  | Read CU suspensions overlapping with periods where they own the CU            | DONE   |
 | CUS-SP002  | Read history on CU suspensions on periods where they own the CU. | DONE   |
 
 #### Third Party

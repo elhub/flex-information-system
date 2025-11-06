@@ -374,34 +374,94 @@ def test_cus_so(data):
 
 
 def test_cus_sp(data):
-    (sts, _, _, (client_sp, _)) = data
+    (sts, _, _, (client_sp, sp_id)) = data
 
     # RLS: CUS-SP001
     # SP can read suspensions for CUs they have a contract with
 
-    # endpoint: GET /controllable_unit_suspension_suspension
-    cus = list_controllable_unit_suspension.sync(client=client_sp)
+    client_old_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    old_sp_id = sts.get_userinfo(client_old_sp)["party_id"]
 
-    sp2_client = sts.fresh_client(TestEntity.COMMON, "SP")
+    client_fiso = sts.fresh_client(TestEntity.TEST, "FISO")
+    client_so = sts.fresh_client(TestEntity.TEST, "SO")
 
-    assert isinstance(cus, list)
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
 
-    if len(cus) > 0:
-        # endpoint: GET /controllable_unit_suspension_suspension/{id}
-        s = read_controllable_unit_suspension.sync(
-            client=client_sp,
-            id=cast(int, cus[0].id),
-        )
-        assert isinstance(s, ControllableUnitSuspensionResponse)
+    cu = create_controllable_unit.sync(
+        client=client_fiso,
+        body=ControllableUnitCreateRequest(
+            name="CU-SUSP-1",
+            accounting_point_id=1002,
+            regulation_direction=ControllableUnitRegulationDirection.BOTH,
+            maximum_available_capacity=3.5,
+        ),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
 
-        # endpoint: GET /controllable_unit_suspension_suspension/{id}
-        s2 = read_controllable_unit_suspension.sync(
-            client=sp2_client,
-            id=cast(int, cus[0].id),
-        )
-        assert isinstance(s2, ErrorMessage)
+    old_cu_sp = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_provider_id=old_sp_id,
+            end_user_id=eu_id,
+            contract_reference="TEST-CONTRACT-SUSP-OLD-1",
+            valid_from="2024-05-01 Europe/Oslo",
+            valid_to="2024-06-01 Europe/Oslo",
+        ),
+    )
+    assert isinstance(old_cu_sp, ControllableUnitServiceProviderResponse)
 
-        # RLS: CUS-SP002
-        check_history(client_sp, s.id)
+    cus = create_controllable_unit_suspension.sync(
+        client=client_fiso,
+        body=ControllableUnitSuspensionCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            impacted_system_operator_id=sts.get_userinfo(client_so)["party_id"],
+            reason=ControllableUnitSuspensionReason.OTHER,
+        ),
+    )
+    assert isinstance(cus, ControllableUnitSuspensionResponse)
 
-        assert isinstance(check_history(sp2_client, s.id), ErrorMessage)
+    r = read_controllable_unit_suspension.sync(
+        client=client_old_sp,
+        id=cast(int, cus.id),
+    )
+    assert isinstance(r, ErrorMessage)
+
+    cu_sp = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_provider_id=sp_id,
+            end_user_id=eu_id,
+            contract_reference="TEST-CONTRACT-SUSP-OLD-1",
+            valid_from="2024-07-01 Europe/Oslo",
+        ),
+    )
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    cus = create_controllable_unit_suspension.sync(
+        client=client_fiso,
+        body=ControllableUnitSuspensionCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            impacted_system_operator_id=sts.get_userinfo(client_so)["party_id"],
+            reason=ControllableUnitSuspensionReason.OTHER,
+        ),
+    )
+    assert isinstance(cus, ControllableUnitSuspensionResponse)
+
+    r = read_controllable_unit_suspension.sync(
+        client=client_sp,
+        id=cast(int, cus.id),
+    )
+    assert isinstance(r, ControllableUnitSuspensionResponse)
+
+    d = delete_controllable_unit_suspension.sync(
+        client=client_sp,
+        id=cast(int, r.id),
+        body=EmptyObject(),
+    )
+    assert isinstance(d, ErrorMessage)
+
+    # RLS: CUS-SP002
+    check_history(client_sp, r.id)
