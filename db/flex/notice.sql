@@ -281,7 +281,7 @@ CREATE VIEW notice AS (
                         sppa.system_operator_id,
                         unnest(sppa.product_type_ids) AS product_type_id
                     FROM flex.service_provider_product_application AS sppa
-                    WHERE sppa.qualified_at IS NOT null
+                    WHERE sp_product_application_ready_for_market_check(sppa) -- noqa
                 ) AS sppa
                 GROUP BY sppa.service_provider_id, sppa.system_operator_id
             )
