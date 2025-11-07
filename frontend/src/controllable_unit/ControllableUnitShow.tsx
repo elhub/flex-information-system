@@ -22,6 +22,7 @@ import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
 import { ControllableUnitBalanceResponsiblePartyList } from "./balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 import { ControllableUnitEnergySupplierList } from "./energy_supplier/ControllableUnitEnergySupplierList";
+import { ControllableUnitSuspensionList } from "./suspension/ControllableUnitSuspensionList";
 
 export const ControllableUnitShow = () => {
   const resource = useResourceContext()!;
@@ -127,6 +128,14 @@ export const ControllableUnitShow = () => {
               Balance responsible parties
             </Typography>
             <ControllableUnitBalanceResponsiblePartyList />
+            <Typography variant="h6" gutterBottom>
+              CU suspension
+            </Typography>
+            <NestedResourceHistoryButton
+              child="suspension"
+              label="suspension resources"
+            />
+            <ControllableUnitSuspensionList />
             <Typography variant="h6" gutterBottom>
               Energy suppliers
             </Typography>
