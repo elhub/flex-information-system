@@ -71,16 +71,6 @@ export const ControllableUnitSuspensionList = () => {
               `/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
-            {!record?.id && (
-              <ReferenceField
-                source="controllable_unit_id"
-                reference="controllable_unit"
-                sortable={false}
-              >
-                <TextField source="name" />
-              </ReferenceField>
-            )}
             <ReferenceField
               source="impacted_system_operator_id"
               reference="party"

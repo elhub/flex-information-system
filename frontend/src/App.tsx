@@ -138,7 +138,6 @@ import { ServiceProviderProductSuspensionShow } from "./service_provider_product
 import { ServiceProviderProductSuspensionInput } from "./service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
 import { ControllableUnitSuspensionInput } from "./controllable_unit/suspension/ControllableUnitSuspensionInput";
-import { ControllableUnitSuspensionList } from "./controllable_unit/suspension/ControllableUnitSuspensionList";
 import { ControllableUnitSuspensionShow } from "./controllable_unit/suspension/ControllableUnitSuspensionShow";
 import { ControllableUnitSuspensionHistoryList } from "./controllable_unit/suspension/ControllableUnitSuspensionHistoryList";
 
@@ -348,10 +347,6 @@ const MainMenu = () => (
       <LabelledResourceMenuItem
         name="controllable_unit"
         label="CU registrations"
-      />
-      <LabelledResourceMenuItem
-        name="controllable_unit_suspension"
-        label="CU suspensions"
       />
       <LabelledResourceMenuItem
         name="service_providing_group"
@@ -695,10 +690,6 @@ export const App = () => (
               }
             />
             <Route
-              path=":controllable_unit_id/service_provider"
-              element={<Navigate to="../show" relative="path" replace={true} />}
-            />
-            <Route
               path=":controllable_unit_id/suspension/:id/show"
               element={
                 <ResourceContextProvider value="controllable_unit_suspension">
@@ -807,45 +798,6 @@ export const App = () => (
               element={
                 <ResourceContextProvider value="technical_resource_history">
                   <TechnicalResourceShow />
-                </ResourceContextProvider>
-              }
-            />
-          </Resource>
-        ) : null}
-        {permissions.includes("controllable_unit_suspension.read") ? (
-          <Resource
-            name="controllable_unit_suspension"
-            list={ControllableUnitSuspensionList}
-            show={ControllableUnitSuspensionShow}
-            edit={
-              permissions.includes("controllable_unit_suspension.update") ? (
-                <EditRedirectPreviousPage>
-                  <ControllableUnitSuspensionInput />
-                </EditRedirectPreviousPage>
-              ) : (
-                (null as any)
-              )
-            }
-            create={
-              permissions.includes("controllable_unit_suspension.create") ? (
-                <Create redirect={() => `controllable_unit`}>
-                  <ControllableUnitSuspensionInput />
-                </Create>
-              ) : (
-                (null as any)
-              )
-            }
-          >
-            {/* controllable unit suspension history */}
-            <Route
-              path=":controllable_unit_suspension_id/history"
-              element={<ControllableUnitSuspensionHistoryList />}
-            />
-            <Route
-              path=":controllable_unit_suspension_id/history/:id/show"
-              element={
-                <ResourceContextProvider value="controllable_unit_suspension_history">
-                  <ControllableUnitSuspensionShow />
                 </ResourceContextProvider>
               }
             />

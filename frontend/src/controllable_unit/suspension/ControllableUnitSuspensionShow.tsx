@@ -17,6 +17,7 @@ import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
+import { IdentityField } from "../../components/IdentityField";
 
 type EditButtonProps = {
   record: any;
@@ -81,6 +82,7 @@ export const ControllableUnitSuspensionShow = () => {
             <ReferenceField source="recorded_by" reference="user">
               <TextField source="name" />
             </ReferenceField>
+            <IdentityField source="recorded_by" showTime />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}

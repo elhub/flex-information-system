@@ -32,7 +32,7 @@ export const ControllableUnitSuspensionHistoryList = () => {
   return (
     <List
       resource="controllable_unit_suspension_history"
-      title={`Controllable unit suspension history for ${data?.name ?? ''}`}
+      title={`Controllable unit suspension history for ${data?.name ?? ""}`}
       filter={filter}
       filters={ControllableUnitSuspensionHistoryListFilters}
       perPage={25}
@@ -46,6 +46,13 @@ export const ControllableUnitSuspensionHistoryList = () => {
       >
         <TextField source="id" label="ID" />
         <TextField source="controllable_unit_id" />
+        <ReferenceField
+          source="controllable_unit_id"
+          reference="controllable_unit"
+          sortable={false}
+        >
+          <TextField source="name" label="Controllable Unit Name" />
+        </ReferenceField>
         <ReferenceField
           source="impacted_system_operator_id"
           reference="party"
