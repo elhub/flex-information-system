@@ -78,6 +78,7 @@ export const ControllableUnitSuspensionShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
+        <NestedResourceHistoryButton child="suspension" label="Suspensions" />
         {!isHistory && <EventButton />}
         {!isHistory && (
           <>

@@ -45,13 +45,12 @@ export const ControllableUnitSuspensionHistoryList = () => {
         }
       >
         <TextField source="id" label="ID" />
-        <TextField source="controllable_unit_id" />
         <ReferenceField
           source="controllable_unit_id"
           reference="controllable_unit"
           sortable={false}
         >
-          <TextField source="name" label="Controllable Unit Name" />
+          <TextField source="name" />
         </ReferenceField>
         <ReferenceField
           source="impacted_system_operator_id"
