@@ -20,7 +20,7 @@ The conceptual model is based on terminology from the [Network Code on Demand
 Response](../index.md#network-code-on-demand-response-nc-dr) (NC DR) and in the concept
 pages we describe how we have chosen to interpret these concepts so far.
 
-![Simplified model](../diagrams/conceptual_model.drawio.png)
+![Conceptual model](../diagrams/conceptual_model.drawio.png)
 
 ### Abbriviations
 
