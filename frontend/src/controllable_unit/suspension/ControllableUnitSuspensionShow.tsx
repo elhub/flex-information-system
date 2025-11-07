@@ -79,9 +79,6 @@ export const ControllableUnitSuspensionShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="reason" />
             <DateField source="recorded_at" showTime />
-            <ReferenceField source="recorded_by" reference="user">
-              <TextField source="name" />
-            </ReferenceField>
             <IdentityField source="recorded_by" showTime />
           </FieldStack>
         </Stack>
