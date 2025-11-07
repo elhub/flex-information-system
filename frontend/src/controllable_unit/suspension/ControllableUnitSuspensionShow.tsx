@@ -19,18 +19,17 @@ import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 
-type EditButtonProps = {
-  record: any;
+const EditButton = () => {
+  const record = useRecordContext()!;
+  return (
+    <Button
+      component={Link}
+      to={`/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
 };
-
-const EditButton = ({ record }: EditButtonProps) => (
-  <Button
-    component={Link}
-    to={`/controllable_unit/${record.controllable_unit_id}/controllable_unit_suspension/${record.id}`}
-    startIcon={<EditIcon />}
-    label="Edit"
-  />
-);
 
 export const ControllableUnitSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -38,16 +37,13 @@ export const ControllableUnitSuspensionShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
-  const record = useRecordContext();
-
   return (
     <Show
       actions={
         !isHistory &&
-        permissions.includes("controllable_unit_suspension.update") &&
-        record && (
+        permissions.includes("controllable_unit_suspension.update") && (
           <TopToolbar>
-            <EditButton record={record} />
+            <EditButton />
           </TopToolbar>
         )
       }
@@ -79,7 +75,7 @@ export const ControllableUnitSuspensionShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="reason" />
             <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" showTime />
+            <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
