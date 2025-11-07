@@ -18,9 +18,9 @@ continues to evolve.
 
 ## Current concepts
 
-### [Conceptual Model and Terminology](simplified_model.md)
+### [Conceptual Model and Terminology](conceptual-model.md)
 
-Introduces the core concepts, roles, and relationships in FIS and how they
+Introduces the core concepts and relationships in FIS and how they
 connect to each other. Provides the shared conceptual foundation for
 understanding all other parts of the documentation.
 

@@ -7,7 +7,7 @@ pre-qualification and simplify that evaluation if controllable units are
 identical. A controllable unit can contain several technical resources.
 
 For more information about the technical resource and its role in the
-flexibility structure, see [Controllable Unit and Service Providing Group](../concepts/cu-spg.md).
+flexibility structure, see [Conceptual Model and Terminology](../concepts/conceptual-model.md).
 
 ## Relevant links
 
