@@ -371,11 +371,7 @@ CREATE VIEW notice AS (
                     FROM
                         flex.service_providing_group_product_application
                             AS spgpa -- noqa
-                    WHERE (
-                        spgpa.status = 'temporary_qualified'
-                        OR spgpa.prequalified_at IS NOT null
-                        OR spgpa.verified_at IS NOT null
-                    )
+                    WHERE spg_product_application_ready_for_market_check(spgpa) -- noqa
                 ) AS spgpa
                 GROUP BY
                     spgpa.service_providing_group_id,
