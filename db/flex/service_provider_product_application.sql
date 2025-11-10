@@ -54,6 +54,24 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application (
     ) REFERENCES party (id, type)
 );
 
+-- changeset flex:service-provider-product-application-ready-for-market-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION sp_product_application_ready_for_market_check(
+    sppa record
+)
+RETURNS boolean
+SECURITY INVOKER
+IMMUTABLE
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    RETURN (
+        sppa.status = 'qualified'
+        OR sppa.qualified_at IS NOT null
+    );
+END;
+$$;
+
 -- changeset flex:service-provider-product-type-ids-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the inserted product types are active for the SO
 CREATE OR REPLACE FUNCTION
