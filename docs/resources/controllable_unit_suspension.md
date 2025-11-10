@@ -28,7 +28,7 @@ No validation rules
 | Action                 | Recipient | Comment                                                                   |
 |------------------------|-----------|---------------------------------------------------------------------------|
 | create, update, delete | SP        | Service provider with current contract to the suspended controllable unit |
-| create, update, delete | SO        | All ISOs                                                                  |
+| create, update, delete | SO        | All ISOs and PSOs                                                         |
 
 ## Authorization
 
