@@ -172,63 +172,6 @@ func (q *Queries) GetControllableUnitServiceProviderUpdateDeleteNotificationReci
 	return items, nil
 }
 
-const getControllableUnitSuspensionNotificationRecipients = `-- name: GetControllableUnitSuspensionNotificationRecipients :many
-SELECT cusp.service_provider_id
-FROM controllable_unit_suspension_history AS cush
-    INNER JOIN controllable_unit_service_provider AS cusp
-        ON cush.controllable_unit_id = cusp.controllable_unit_id
-WHERE cush.controllable_unit_suspension_id = $1
-    AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
-        @> $2::timestamptz
-    AND tstzrange(cusp.valid_from, cusp.valid_to, '[)')
-        @> $2::timestamptz
-UNION
-SELECT ap.system_operator_id
-FROM controllable_unit_suspension_history AS cush
-    INNER JOIN controllable_unit AS cu
-        ON cush.controllable_unit_id = cu.id
-    INNER JOIN accounting_point AS ap
-        ON cu.accounting_point_id = ap.id
-WHERE cush.controllable_unit_suspension_id = $1
-    AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
-        @> $2::timestamptz
-UNION
-SELECT spgpa.procuring_system_operator_id
-FROM controllable_unit_suspension_history AS cush
-    INNER JOIN service_providing_group_membership AS spgm
-        ON cush.controllable_unit_id = spgm.controllable_unit_id
-    INNER JOIN service_providing_group_product_application AS spgpa
-        ON spgm.service_providing_group_id = spgpa.service_providing_group_id
-WHERE cush.controllable_unit_suspension_id = $1
-    AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
-        @> $2::timestamptz
-    AND tstzrange(spgm.valid_from, spgm.valid_to, '[)')
-        @> $2::timestamptz
-`
-
-// SP
-// ISO (= CSO)
-// PSO
-func (q *Queries) GetControllableUnitSuspensionNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
-	rows, err := q.db.Query(ctx, getControllableUnitSuspensionNotificationRecipients, resourceID, recordedAt)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []int
-	for rows.Next() {
-		var service_provider_id int
-		if err := rows.Scan(&service_provider_id); err != nil {
-			return nil, err
-		}
-		items = append(items, service_provider_id)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
 const getControllableUnitUpdateNotificationRecipients = `-- name: GetControllableUnitUpdateNotificationRecipients :many
 
 SELECT ap.system_operator_id
