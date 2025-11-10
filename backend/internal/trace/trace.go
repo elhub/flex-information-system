@@ -35,12 +35,28 @@ var WithNewRoot = trace.WithNewRoot
 func Middleware() gin.HandlerFunc {
 	tracer := otel.Tracer("gin")
 
-	return func(c *gin.Context) {
-		ctx, span := tracer.Start(c.Request.Context(), "gin")
+	return func(ginCtx *gin.Context) {
+		ctx, span := tracer.Start(ginCtx.Request.Context(), "gin")
+		if sc := span.SpanContext(); sc.IsValid() {
+			// The `traceresponse` header is defined in W3C Trace Context
+			// https://w3c.github.io/trace-context/
+			// It is using the same format as the `traceparent` header.
+			//
+			// We are not trusting any incoming traceparent headers. We consider all calls to be untrusted third party calls.
+			// So we always restart a trace and return it to enable better support requests.
+			//
+			// The last part of the traceresponse are trace flags. There are two defined flags:
+			// "00000001" sets the `sampled` flag - but since we are not really sampling we are not setting it.
+			// "00000010" sets the `random-trace-id` flag - which is true we are generating a new random trace id.
+			// So we set the flags to "02" (hex).
+
+			traceresponse := "00-" + sc.TraceID().String() + "-" + sc.SpanID().String() + "-02"
+			ginCtx.Writer.Header().Set("traceresponse", traceresponse)
+		}
 		defer span.End()
 
-		c.Request = c.Request.WithContext(ctx)
-		c.Next()
+		ginCtx.Request = ginCtx.Request.WithContext(ctx)
+		ginCtx.Next()
 	}
 }
 

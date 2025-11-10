@@ -281,7 +281,7 @@ CREATE VIEW notice AS (
                         sppa.system_operator_id,
                         unnest(sppa.product_type_ids) AS product_type_id
                     FROM flex.service_provider_product_application AS sppa
-                    WHERE sppa.qualified_at IS NOT null
+                    WHERE sp_product_application_ready_for_market_check(sppa) -- noqa
                 ) AS sppa
                 GROUP BY sppa.service_provider_id, sppa.system_operator_id
             )
@@ -339,10 +339,7 @@ CREATE VIEW notice AS (
                 = spggs.service_providing_group_id
                 AND spggp.impacted_system_operator_id
                 = spggs.impacted_system_operator_id
-                AND (
-                    spggp.status IN ('approved', 'conditionally_approved')
-                    OR spggp.prequalified_at IS NOT null
-                )
+                AND spg_grid_prequalification_ready_for_market_check(spggp) -- noqa
         )
 
     -- inactive suspension
@@ -374,11 +371,7 @@ CREATE VIEW notice AS (
                     FROM
                         flex.service_providing_group_product_application
                             AS spgpa -- noqa
-                    WHERE (
-                        spgpa.status = 'temporary_qualified'
-                        OR spgpa.prequalified_at IS NOT null
-                        OR spgpa.verified_at IS NOT null
-                    )
+                    WHERE spg_product_application_ready_for_market_check(spgpa) -- noqa
                 ) AS spgpa
                 GROUP BY
                     spgpa.service_providing_group_id,

@@ -5,3 +5,7 @@ export * from "./ControllableUnitShow";
 export * from "./service_provider/ControllableUnitServiceProviderShow";
 export * from "./service_provider/ControllableUnitServiceProviderInput";
 export * from "./service_provider/ControllableUnitServiceProviderHistoryList";
+export * from "./suspension/ControllableUnitSuspensionList";
+export * from "./suspension/ControllableUnitSuspensionShow";
+export * from "./suspension/ControllableUnitSuspensionInput";
+export * from "./suspension/ControllableUnitSuspensionHistoryList";

@@ -107,11 +107,7 @@ USING (
         = service_providing_group_product_suspension.service_providing_group_id -- noqa
             AND spgpa.procuring_system_operator_id
             = (SELECT flex.current_party())
-            AND (
-                spgpa.status = 'temporary_qualified'
-                OR spgpa.prequalified_at IS NOT null
-                OR spgpa.verified_at IS NOT null
-            )
+            AND spg_product_application_ready_for_market_check(spgpa) -- noqa
             AND service_providing_group_product_suspension.product_type_ids -- noqa
             && spgpa.product_type_ids
     )
@@ -158,11 +154,7 @@ USING (
         FROM spgpa_history
         WHERE spgpa_history.record_time_range
             && service_providing_group_product_suspension_history.record_time_range -- noqa
-            AND (
-                spgpa_history.status = 'temporary_qualified'
-                OR spgpa_history.prequalified_at IS NOT null
-                OR spgpa_history.verified_at IS NOT null
-            )
+            AND spg_product_application_ready_for_market_check(spgpa_history) -- noqa
             AND service_providing_group_product_suspension_history.product_type_ids -- noqa
             && spgpa_history.product_type_ids
     )

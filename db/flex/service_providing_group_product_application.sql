@@ -43,6 +43,25 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     ) REFERENCES party (id, type)
 );
 
+-- changeset flex:service-providing-group-product-application-ready-for-market-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION spg_product_application_ready_for_market_check(
+    spgpa record
+)
+RETURNS boolean
+SECURITY INVOKER
+IMMUTABLE
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    RETURN (
+        spgpa.status IN ('prequalified', 'verified', 'temporary_qualified')
+        OR spgpa.prequalified_at IS NOT null
+        OR spgpa.verified_at IS NOT null
+    );
+END;
+$$;
+
 -- changeset flex:service-providing-group-product-application-insert-on-active-spg-function runOnChange:true endDelimiter:--
 -- trigger to check that the SPG is active before adding a product application
 CREATE OR REPLACE FUNCTION

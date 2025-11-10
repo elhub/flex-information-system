@@ -36,6 +36,24 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     UNIQUE (service_providing_group_id, impacted_system_operator_id)
 );
 
+-- changeset flex:service-providing-group-grid-prequalification-ready-for-market-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION spg_grid_prequalification_ready_for_market_check(
+    spggp record
+)
+RETURNS boolean
+SECURITY INVOKER
+IMMUTABLE
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    RETURN (
+        spggp.status IN ('approved', 'conditionally_approved')
+        OR spggp.prequalified_at IS NOT null
+    );
+END;
+$$;
+
 -- changeset flex:service-providing-group-grid-prequalification-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_prequalification_status_insert

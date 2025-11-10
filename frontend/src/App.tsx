@@ -137,6 +137,10 @@ import { ServiceProviderProductSuspensionList } from "./service_provider_product
 import { ServiceProviderProductSuspensionShow } from "./service_provider_product_suspension/ServiceProviderProductSuspensionShow";
 import { ServiceProviderProductSuspensionInput } from "./service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "./service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
+import { ControllableUnitSuspensionInput } from "./controllable_unit/suspension/ControllableUnitSuspensionInput";
+import { ControllableUnitSuspensionShow } from "./controllable_unit/suspension/ControllableUnitSuspensionShow";
+import { ControllableUnitSuspensionHistoryList } from "./controllable_unit/suspension/ControllableUnitSuspensionHistoryList";
+
 import {
   CommentHistoryList,
   CommentInput,
@@ -650,7 +654,49 @@ export const App = () => (
                   <ControllableUnitShow />
                 </ResourceContextProvider>
               }
-            ></Route>
+            />
+            {/* controllable unit suspension */}
+            {/* list is part of controllable unit show page */}
+            <Route
+              path=":controllable_unit_id/suspension/create"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension">
+                  <CreateRedirectPreviousPage>
+                    <ControllableUnitSuspensionInput />
+                  </CreateRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":controllable_unit_id/suspension_history"
+              element={<ControllableUnitSuspensionHistoryList />}
+            />
+            <Route
+              path=":controllable_unit_id/suspension_history/:id/show"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension_history">
+                  <ControllableUnitSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":controllable_unit_id/suspension/:id"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension">
+                  <EditRedirectPreviousPage>
+                    <ControllableUnitSuspensionInput />
+                  </EditRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":controllable_unit_id/suspension/:id/show"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension">
+                  <ControllableUnitSuspensionShow />
+                </ResourceContextProvider>
+              }
+            />
             {/* controllable unit service provider relation */}
             {/* list is part of controllable unit show page */}
             <Route

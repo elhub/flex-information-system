@@ -54,11 +54,7 @@ BEGIN
             = NEW.service_providing_group_id
             AND spgpa.procuring_system_operator_id
             = NEW.procuring_system_operator_id
-            AND (
-                spgpa.status = 'temporary_qualified'
-                OR spgpa.prequalified_at IS NOT null
-                OR spgpa.verified_at IS NOT null
-            )
+            AND spg_product_application_ready_for_market_check(spgpa) -- noqa
             AND l_pt_id = ANY(spgpa.product_type_ids)
         ) THEN
             RAISE sqlstate 'PT400' using
