@@ -1,7 +1,7 @@
 # Notification and notice
 
 Notifications and notices are sent to relevant parties when something is created,
-updated or deleted (or expired?). Notification and notice convey infomation to
+updated or deleted (or expired?). Notifications and notices convey infomation to
 parties about changes and required action in the Flexibility Information System
 (FIS). They are sent in FIS to the relevant parties.
 
@@ -13,7 +13,7 @@ The purpose of notifications is to convey information to enable parties to act a
 to the business processes.
 
 Notifications include the event type, event source and the time of the event that
-has occured. Notifications also include a direct link to the update that caused
+occured. Notifications also include a direct link to the update that caused
 the notification.
 
 The notification is cleared when the notification is aknowledged. Aknowledgement
@@ -27,8 +27,8 @@ they intend to procure, a notification is sent to all approved service providers
 The reason why service providers receive the notification is so that they receive
 information about a new market opportunity. The notification thus enables them to
 act according to the the business processes by registering a product application.
-Without the notification, the service providers would not have any information about
-the new product type.
+Without the notification, the service providers would not have received information
+about the new product type in FIS.
 
 ![Service provider product application and qualification](../diagrams/system_operator_product_registration.png)
 
@@ -41,29 +41,26 @@ information in the notification is optional.
 Notices are messages that are sent to relevant parties that require action
 from the recipitent. Notice works as a task list for the recipient. The
 purpose of notices is to inform parties about the actions that are required
-from them. 
+from them in order for the business processes to continue.
 
 The notices include which party the notice is for, which type of notice it is
 and the source of the notice. Notices also include a direct link to the update
-that lead to the notice.
+that led to the notice.
 
 The notice is cleared when the required task is completed.
 
 ### Example of notice
 
-EXAMPLE - SPG grid preq status requested - illustrate that SO gets a task they
-need to complete
+When a controllable unit (CU) is registered in FIS by a service provider, the connecting
+system operator needs to add the grid node to the CU and grid validate the CU. When
+a CU is registered and set to active in FIS, the connecting system operators receives
+two notices, one for the missing grid node and one for the missing grid validation
+status. By doing these tasks, the business processes can continue as the service
+provider will have a controllable unit that is validated.
 
-Diagram of a notice?
+The reason why the system operator receives a notice and not a notification
+is because the situation requires action from the system operator. Acting upon the
+received information is mandatory (?).
 
 Diagram with notification and notice at the same time to illustrate the
 difference?
-
-## Relevant parties
-
-Notifications and notices are sent to relevant parties when something is
-created, updated or deleted.
-
-What is it?
-Why do we have it?
-How does it end?
