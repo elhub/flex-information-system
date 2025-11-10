@@ -17,14 +17,14 @@ concepts in the FIS and the relations between them. The model serves as an
 overview when we introduce concepts and abbreviations throughout the documentation.
 
 The conceptual model is based on terminology from the [Network Code on Demand
-Response](../index.md#network-code-on-demand-response-nc-dr) (NC DR) and in the concept
-pages we describe how we have chosen to interpret these concepts so far.
+Response](../index.md#network-code-on-demand-response-nc-dr) (NC DR) and in the [concept
+pages](index.md) we describe how we have chosen to interpret these concepts so far.
 
 ![Conceptual model](../diagrams/conceptual_model.drawio.png)
 
-### Abbriviations
+<!-- ### Abbreviations
 
-| Abbriviation | Concept                                                                                             |
+| Abbreviation | Concept                                                                                             |
 |--------------|-----------------------------------------------------------------------------------------------------|
 | SPG          | [Service Providing Group](../resources/service_providing_group.md)                                  |
 | CU           | [Controllable Unit](../resources/controllable_unit.md)                                              |
@@ -37,28 +37,9 @@ pages we describe how we have chosen to interpret these concepts so far.
 | SO           | [System Operator](../technical/auth.md#system-operator)                                             |
 | PSO          | [Procuring System Operator](../technical/auth.md#system-operator)                                   |
 | CSO          | [Connecting System Operator](../technical/auth.md#system-operator)                                  |
-| CUSP         | [Controllable Unit Service Provider](../resources/controllable_unit_service_provider.md) (contract) |
-
-### Notation
-
-We are using the following notation:
-
-* `rectangles` - resource
-    * `rounded` - membership resource
-* `line` - resource link
-* `numbers near line ends` – cardinality, indicating how many instances can
-be related
-    * `1` – exactly one
-    * `1..*` – one or more
-* `blue ellipses` - party type
-* `blue arrows` - dependencies between processes
-    * `solid` - direct party relation to resource
-    * `dotted` - indirect party relation to resource
+| CUSP         | [Controllable Unit Service Provider](../resources/controllable_unit_service_provider.md) (contract) | -->
 
 ## What is a controllable unit?
-
-We start introducing the origin of flexibility in the
-controllable units that FIS seeks to coordinate across the system.
 
 NC DR defines a controllable unit like this:
 
@@ -83,12 +64,12 @@ such as an industrial boiler or an EV charger.
 * Energy storage system: a unit that can both *produce and consume* electricity,
   such as a battery that charges and discharges depending on system needs.
 
-### Controllable units and technical resources
+### Technical resources
 
 Each CU consists of one or more
 [*technical resources*](../resources/technical_resource.md) (TRs). A TR is a
 physical device that generates, consumes, or stores electricity. The CU
-represents the logical control and metering interface for these resources, which
+represents the logical control for these resources, which
 all relate to the same accounting point.
 
 ### Connection to an accounting point
@@ -100,9 +81,9 @@ party](../technical/auth.md#balance-responsible-party) (BRP) of the associated
 [energy supplier](../technical/auth.md#energy-supplier) (ES), which enables
 imbalance adjustment and settlement.
 
-The AP also provides the locational reference for the CU.
-[System operators](../technical/auth.md#system-operator) (SOs) use this
-reference to identify where flexibility can be activated in the grid.
+Knowing the AP where a CU is located also allows
+[system operators](../technical/auth.md#system-operator) (SOs) to know where in
+the grid it is. As a result they know where flexibility can be activated in the grid.
 
 ## A service providing group is a collection of controllable units
 
