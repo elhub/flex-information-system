@@ -2436,6 +2436,142 @@ GRANT SELECT (
 api.controllable_unit_suspension_comment
 TO flex_third_party;
 
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_end_user;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_market_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_system_operator;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_service_provider;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    controllable_unit_suspension_comment_id,
+    controllable_unit_id,
+    created_at,
+    created_by,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_third_party;
+
 -- changeset flex:api-grant-service-providing-group-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
