@@ -497,10 +497,7 @@ WHERE spggsh.service_providing_group_grid_suspension_id = $1
         @> $2::timestamptz
     AND tstzrange(spggph.recorded_at, spggph.replaced_at, '[]')
         @> $2::timestamptz
-    AND (
-        spggph.status IN ('approved', 'conditionally_approved')
-        OR spggph.prequalified_at IS NOT null
-    )
+    AND notification.spg_grid_prequalification_ready_for_market_check(spggph)
 UNION ALL
 SELECT spgpah.procuring_system_operator_id
 FROM service_providing_group_grid_suspension_history AS spggsh
@@ -511,11 +508,7 @@ WHERE spggsh.service_providing_group_grid_suspension_id = $1
         @> $2::timestamptz
     AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
         @> $2::timestamptz
-    AND (
-        spgpah.status IN ('verified', 'prequalified', 'temporary_qualified')
-        OR spgpah.verified_at IS NOT null
-        OR spgpah.prequalified_at IS NOT null
-    )
+    AND notification.spg_product_application_ready_for_market_check(spgpah)
 `
 
 // not using history on CU because AP ID is stable
@@ -682,11 +675,7 @@ WHERE spgpsh.service_providing_group_product_suspension_id = $1
         @> $2::timestamptz
     AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
         @> $2::timestamptz
-    AND (
-        spgpah.status IN ('verified', 'prequalified', 'temporary_qualified')
-        OR spgpah.verified_at IS NOT null
-        OR spgpah.prequalified_at IS NOT null
-    )
+    AND notification.spg_product_application_ready_for_market_check(spgpah)
 `
 
 // SP
