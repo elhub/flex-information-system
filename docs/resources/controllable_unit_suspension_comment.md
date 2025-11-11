@@ -87,8 +87,8 @@ No policies.
 | Policy key | Policy                                                   | Status |
 |------------|----------------------------------------------------------|--------|
 | CUSC-SP001  | Create CUSC where they own the CU                       | DONE   |
-| CUSC-SP001  | Read CUSC that the visibility allows                    | DONE   |
-| CUSC-SP002  | Read history on CUSC that the latest visibility allows. | DONE   |
+| CUSC-SP002  | Read CUSC that the visibility allows                    | DONE   |
+| CUSC-SP003  | Read history on CUSC that the latest visibility allows. | DONE   |
 
 #### Third Party
 

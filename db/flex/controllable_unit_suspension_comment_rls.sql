@@ -36,8 +36,9 @@ FOR UPDATE
 TO flex_common
 USING (created_by = (SELECT flex.current_identity()));
 
+-- RLS: CUSC-SO001
 -- RLS: CUSC-SP001
-CREATE POLICY "CUSC_SP001"
+CREATE POLICY "CUSC_SO001_SP001"
 ON controllable_unit_suspension_comment
 FOR INSERT
 TO flex_system_operator, flex_service_provider
@@ -50,8 +51,9 @@ WITH CHECK (
     )
 );
 
+-- RLS: CUSC-SO002
 -- RLS: CUSC-SP002
-CREATE POLICY "CUSC_SO002_same_party"
+CREATE POLICY "CUSC_SO002_SP002_same_party"
 ON controllable_unit_suspension_comment
 FOR SELECT
 TO flex_system_operator, flex_service_provider
