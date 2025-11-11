@@ -204,6 +204,7 @@ WHERE cush.controllable_unit_suspension_id = $1
         @> $2::timestamptz
     AND tstzrange(spgm.valid_from, spgm.valid_to, '[)')
         @> $2::timestamptz
+    AND notification.spg_product_application_ready_for_market_check(spgpa)
 `
 
 // SP

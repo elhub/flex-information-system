@@ -411,4 +411,5 @@ WHERE cush.controllable_unit_suspension_id = @resource_id
     AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
         @> @recorded_at::timestamptz
     AND tstzrange(spgm.valid_from, spgm.valid_to, '[)')
-        @> @recorded_at::timestamptz;
+        @> @recorded_at::timestamptz
+    AND notification.spg_product_application_ready_for_market_check(spgpa);
