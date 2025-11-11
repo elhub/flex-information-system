@@ -183,15 +183,14 @@ WHERE cush.controllable_unit_suspension_id = $1
     AND tstzrange(cusp.valid_from, cusp.valid_to, '[)')
         @> $2::timestamptz
 UNION
-SELECT ap.system_operator_id
+SELECT cuso.system_operator_id
 FROM controllable_unit_suspension_history AS cush
-    INNER JOIN controllable_unit AS cu
-        ON cush.controllable_unit_id = cu.id
-    INNER JOIN accounting_point AS ap
-        ON cu.accounting_point_id = ap.id
+    INNER JOIN controllable_unit_system_operator AS cuso
+        ON cush.controllable_unit_id = cuso.controllable_unit_id
 WHERE cush.controllable_unit_suspension_id = $1
     AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
         @> $2::timestamptz
+    AND cuso.valid_time_range @> $2::timestamptz
 UNION
 SELECT spgpa.procuring_system_operator_id
 FROM controllable_unit_suspension_history AS cush

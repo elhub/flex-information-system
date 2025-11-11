@@ -11,3 +11,9 @@ CREATE TABLE accounting_point_end_user (
     record_time_range tstzrange NOT NULL,
     recorded_by bigint NOT NULL
 );
+
+CREATE TABLE controllable_unit_system_operator (
+    controllable_unit_id bigint NOT NULL,
+    system_operator_id bigint NOT NULL,
+    valid_time_range tstzrange NOT NULL
+);
