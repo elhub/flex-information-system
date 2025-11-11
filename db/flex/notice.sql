@@ -413,4 +413,16 @@ CREATE VIEW notice AS (
     FROM flex.service_providing_group_product_suspension AS spgps
     WHERE lower(spgps.record_time_range)
         < current_timestamp - interval '2 weeks'
+
+    -- inactive suspension
+    UNION ALL
+    SELECT
+        cus.impacted_system_operator_id AS party_id,
+        'no.elhub.flex.controllable_unit_suspension.lingering'
+            AS type, -- noqa
+        '/controllable_unit_suspension/' || cus.id AS source,
+        null::jsonb AS data -- noqa
+    FROM flex.controllable_unit_suspension AS cus
+    WHERE lower(cus.record_time_range)
+        < current_timestamp - interval '2 weeks'
 );
