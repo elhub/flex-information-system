@@ -1,20 +1,27 @@
 # Notification and notice
 
-Notifications and notices are sent to relevant parties when something is created,
-updated or deleted (or expired?). Notifications and notices convey infomation to
-parties about changes and required action in the Flexibility Information System
-(FIS). They are sent in FIS to the relevant parties.
+Many of the processes in the Flexibility Information System (FIS) trigger
+notifications and notices. This section explains what they are and how
+they differ.
+
+While notifications are a required function in FIS and automatically inform
+parties when events occur in the system, notices are a supporting feature that
+helps users identify and complete the actions needed for those processes to
+continue. In short, notifications keep parties informed and notices help them act.
+
+The following sections describe each of them in more detail and explain how
+they are used in FIS.
 
 ## Notification
 
-Notifications are messages that inform parties when something is
-created, updated or deleted in FIS. The notifications are sent to parties, not individuals.
-The purpose of notifications is to convey information to enable parties to act according
+A notification is a resource that contains information about the event that has
+occured in the FIS. Notifications are created when somthing is created, updated or
+deleted in the system and can be retrieved by parties through the API. The purpose
+of notifications is to convey information to enable parties to act according
 to the business processes.
 
-Notifications include the event type, event source and the time of the event that
-occured. Notifications also include a direct link to the update that caused
-the notification.
+Each notification includes the event type, event source and the time of occurance.
+Notifications also include a direct link to the update that caused the notification.
 
 The notification is cleared when the notification is aknowledged. Aknowledgement
 lets FIS know that it has fulfilled its obligation to inform the party about the
@@ -23,44 +30,45 @@ change.
 ### Example of notification
 
 When a procuring system operator [registers a new product type](../processes/system-operator-product-registration.md)
-they intend to procure, a notification is sent to all approved service providers.
-The reason why service providers receive the notification is so that they receive
-information about a new market opportunity. The notification thus enables them to
+they intend to procure, a notification is made available by all approved service
+providers through the API. Service providers retrieve this notification to receive
+information about a new market opportunity. The notification enables them to
 act according to the the business processes by registering a product application.
-Without the notification, the service providers would not have received information
+Without the notification, service providers would not have received information
 about the new product type in FIS.
 
 ![Service provider product application and qualification](../diagrams/system_operator_product_registration.png)
 
-The reason why they receive a notification instead of a notice is because the
-information does not require action from the service provider. Acting upon the received
-information in the notification is optional.
+In this case, a notification is created, but no notice is needed since the
+information does not require action from the service provider as acting on it is
+optional.
 
 ## Notice
 
-Notices are messages that are sent to relevant parties that require action
-from the recipitent. Notice works as a task list for the recipient. The
-purpose of notices is to inform parties about the actions that are required
-from them in order for the business processes to continue.
+A notice is a resource that informs a party that action is required in order for
+a business process to continue. Notices complement notifications by highlighting
+situations where user input is needed. In this way, they function as a task list
+that helps parties complete steps required by the processes in FIS.
 
-The notices include which party the notice is for, which type of notice it is
-and the source of the notice. Notices also include a direct link to the update
-that led to the notice.
+Notices can be retrieved by parties through the API. Each notice includes information
+about which party in concerns, the type of notice, and the status that triggered
+it. Notices also include a direct link to the resource that led to the notice.
 
 The notice is cleared when the required task is completed.
 
 ### Example of notice
 
-When a controllable unit (CU) is registered in FIS by a service provider, the connecting
-system operator needs to add the grid node to the CU and grid validate the CU. When
-a CU is registered and set to active in FIS, the connecting system operators receives
-two notices, one for the missing grid node and one for the missing grid validation
-status. By doing these tasks, the business processes can continue as the service
-provider will have a controllable unit that is validated.
+When a [controllable unit (CU) is registered in FIS](../processes/controllable-unit-registration.md)
+by a service provider, the connecting system operator needs to add the grid node
+to the CU and grid validate the CU. During the registration the connecting system
+operator reads two notices, one for the missing grid node and one for the
+missing grid validation status. By completing these tasks,the registration process
+can be finalized, and the service provider will have a controllable unit that is
+validated.
 
-The reason why the system operator receives a notice and not a notification
-is because the situation requires action from the system operator. Acting upon the
-received information is mandatory (?).
+In this case, notices are created in addition to the notification about the CU
+registration, because the CU status requires action from the system operator.
+Acting on the information is therefore mandatory for the process to move forward.
 
 Diagram with notification and notice at the same time to illustrate the
-difference?
+difference? [notification/notice](..diagrams/notification_notice.drawio.png)
