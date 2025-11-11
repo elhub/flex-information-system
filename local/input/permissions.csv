@@ -80,7 +80,7 @@ controllable_unit_suspension;recorded_at;;R;R;R;R;R;R;R;R;;;
 controllable_unit_suspension;recorded_by;;R;R;R;R;R;R;R;R;;;
 controllable_unit_suspension_comment;;;;;;;;;;;;;
 controllable_unit_suspension_comment;id;;R;R;R;R;R;R;R;R;;;
-controllable_unit_suspension_comment;controllable_unit_id;;R;R;R;RC;R;RC;RC;R;;;
+controllable_unit_suspension_comment;controllable_unit_suspension_id;;R;R;R;RC;R;RC;RC;R;;;
 controllable_unit_suspension_comment;created_at;;R;R;R;R;R;R;R;R;;;
 controllable_unit_suspension_comment;created_by;;R;R;R;R;R;R;R;R;;;
 controllable_unit_suspension_comment;visibility;;R;R;R;RCU;R;RCU;RCU;R;;;

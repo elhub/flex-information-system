@@ -98,13 +98,13 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD                | ANON | BRP | ES | EU | FISO | MO | SO  | SP  | TP | ORG |
-|----------------------|------|-----|----|----|------|----|-----|-----|----|-----|
-| id                   |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| controllable_unit_id |      | R   | R  | R  | RC   | R  | RC  | RC  | R  |     |
-| created_at           |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| created_by           |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| visibility           |      | R   | R  | R  | RCU  | R  | RCU | RCU | R  |     |
-| content              |      | R   | R  | R  | RCU  | R  | RCU | RCU | R  |     |
-| recorded_at          |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| recorded_by          |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
+| FIELD                           | ANON | BRP | ES | EU | FISO | MO | SO  | SP  | TP | ORG |
+|---------------------------------|------|-----|----|----|------|----|-----|-----|----|-----|
+| id                              |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
+| controllable_unit_suspension_id |      | R   | R  | R  | RC   | R  | RC  | RC  | R  |     |
+| created_at                      |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
+| created_by                      |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
+| visibility                      |      | R   | R  | R  | RCU  | R  | RCU | RCU | R  |     |
+| content                         |      | R   | R  | R  | RCU  | R  | RCU | RCU | R  |     |
+| recorded_at                     |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
+| recorded_by                     |      | R   | R  | R  | R    | R  | R   | R   | R  |     |

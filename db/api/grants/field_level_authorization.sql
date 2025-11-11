@@ -2276,7 +2276,7 @@ TO flex_internal_event_notification;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2290,7 +2290,7 @@ TO flex_balance_responsible_party;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-es-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2304,7 +2304,7 @@ TO flex_energy_supplier;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-eu-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2317,7 +2317,7 @@ TO flex_end_user;
 
 -- changeset flex:api-grant-controllable-unit-suspension-comment-fiso-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     visibility,
     content
 ) ON TABLE
@@ -2327,7 +2327,7 @@ TO flex_flexibility_information_system_operator;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-fiso-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2349,7 +2349,7 @@ TO flex_flexibility_information_system_operator;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-mo-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2362,7 +2362,7 @@ TO flex_market_operator;
 
 -- changeset flex:api-grant-controllable-unit-suspension-comment-so-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     visibility,
     content
 ) ON TABLE
@@ -2372,7 +2372,7 @@ TO flex_system_operator;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-so-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2393,7 +2393,7 @@ TO flex_system_operator;
 
 -- changeset flex:api-grant-controllable-unit-suspension-comment-sp-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     visibility,
     content
 ) ON TABLE
@@ -2403,7 +2403,7 @@ TO flex_service_provider;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-sp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2425,7 +2425,7 @@ TO flex_service_provider;
 -- changeset flex:api-grant-controllable-unit-suspension-comment-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2440,7 +2440,7 @@ TO flex_third_party;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2457,7 +2457,7 @@ TO flex_balance_responsible_party;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2474,7 +2474,7 @@ TO flex_energy_supplier;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2491,7 +2491,7 @@ TO flex_end_user;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2508,7 +2508,7 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2525,7 +2525,7 @@ TO flex_market_operator;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2542,7 +2542,7 @@ TO flex_system_operator;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
@@ -2559,7 +2559,7 @@ TO flex_service_provider;
 GRANT SELECT (
     id,
     controllable_unit_suspension_comment_id,
-    controllable_unit_id,
+    controllable_unit_suspension_id,
     created_at,
     created_by,
     visibility,
