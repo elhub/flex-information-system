@@ -296,10 +296,7 @@ WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
         @> @recorded_at::timestamptz
     AND tstzrange(spggph.recorded_at, spggph.replaced_at, '[]')
         @> @recorded_at::timestamptz
-    AND (
-        spggph.status IN ('approved', 'conditionally_approved')
-        OR spggph.prequalified_at IS NOT null
-    )
+    AND notification.spg_grid_prequalification_ready_for_market_check(spggph)
 -- PSO
 UNION ALL
 SELECT spgpah.procuring_system_operator_id
@@ -311,11 +308,7 @@ WHERE spggsh.service_providing_group_grid_suspension_id = @resource_id
         @> @recorded_at::timestamptz
     AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
         @> @recorded_at::timestamptz
-    AND (
-        spgpah.status IN ('verified', 'prequalified', 'temporary_qualified')
-        OR spgpah.verified_at IS NOT null
-        OR spgpah.prequalified_at IS NOT null
-    );
+    AND notification.spg_product_application_ready_for_market_check(spgpah);
 
 -- name: GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients :many
 SELECT DISTINCT
@@ -360,11 +353,7 @@ WHERE spgpsh.service_providing_group_product_suspension_id = @resource_id
         @> @recorded_at::timestamptz
     AND tstzrange(spgpah.recorded_at, spgpah.replaced_at, '[]')
         @> @recorded_at::timestamptz
-    AND (
-        spgpah.status IN ('verified', 'prequalified', 'temporary_qualified')
-        OR spgpah.verified_at IS NOT null
-        OR spgpah.prequalified_at IS NOT null
-    );
+    AND notification.spg_product_application_ready_for_market_check(spgpah);
 
 -- name: GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients :many
 SELECT DISTINCT
