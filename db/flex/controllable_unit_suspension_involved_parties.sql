@@ -13,7 +13,7 @@ AS (
     FROM flex.controllable_unit_suspension AS cus
         LEFT JOIN flex.controllable_unit_service_provider AS cusp
             ON cus.controllable_unit_id = cusp.controllable_unit_id
-                AND upper(cusp.valid_time_range) IS null  -- optional: only current provider
+                AND cusp.valid_time_range @> current_timestamp
 
     UNION
 
@@ -27,4 +27,14 @@ AS (
     FROM flex.controllable_unit_suspension_history AS cush
         LEFT JOIN flex.controllable_unit_service_provider AS cusp
             ON cush.controllable_unit_id = cusp.controllable_unit_id
+                AND cusp.valid_time_range @> current_timestamp
 );
+
+-- changeset flex:controllable-unit-suspension-involved-parties-grants runAlways:true endDelimiter:;
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_involved_parties
+TO flex_common;
+
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_involved_parties
+TO flex_internal_event_notification;
