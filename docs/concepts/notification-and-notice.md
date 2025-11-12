@@ -4,19 +4,19 @@ Many of the processes in the Flexibility Information System (FIS) trigger
 notifications and notices. This section explains what they are and how
 they differ.
 
-While notifications are a required function in FIS and automatically inform
+While notifications are a required function in the FIS and automatically inform
 parties when events occur in the system, notices are a supporting feature that
 helps users identify and complete the actions needed for those processes to
 continue. In short, notifications keep parties informed and notices help them act.
 
 The following sections describe each of them in more detail and explain how
-they are used in FIS.
+they are used in the FIS.
 
 ## Notification
 
 A notification is a resource that contains information about the event that has
-occured in FIS. Notifications are created when something is created, updated or
-deleted in the system and can be retrieved by parties in FIS. The purpose
+occured in the FIS. Notifications are created when something is created, updated
+or deleted in the system and can be retrieved by parties in the FIS. The purpose
 of notifications is to convey information to enable parties to act according
 to the business processes.
 
@@ -27,6 +27,8 @@ The notification is cleared when the notification is aknowledged. Aknowledgement
 lets FIS know that it has fulfilled its obligation to inform the party about the
 change.
 
+For information about notification as a resource in the API see [notification](../resources/notification.md).
+
 ### Example of notification
 
 When a procuring system operator [registers a new product type](../processes/system-operator-product-registration.md)
@@ -35,7 +37,7 @@ providers through the API. Service providers retrieve this notification to recei
 information about a new market opportunity. The notification enables them to
 act according to the the business processes by registering a product application.
 Without the notification, service providers would not have received information
-about the new product type in FIS.
+about the new product type in the FIS.
 
 ![Service provider product application and qualification](../diagrams/system_operator_product_registration.png)
 
@@ -48,13 +50,15 @@ optional.
 A notice is a resource that informs a party that action is required in order for
 a business process to continue. Notices complement notifications by highlighting
 situations where user input is needed. In this way, notices function as a task list
-that helps parties complete steps required by the processes in FIS.
+that helps parties complete steps required by the processes in the FIS.
 
-Notices can be retrieved by parties in FIS. Each notice includes information
+Notices can be retrieved by parties in the FIS. Each notice includes information
 about which party it concerns, the type of notice, and the status that triggered
 it. Notices also include a direct link to the resource that led to the notice.
 
 The notice is cleared when the required task is completed.
+
+For information about notice as a resource in the API see [notice](../resources/notice.md).
 
 ### Example of notice
 

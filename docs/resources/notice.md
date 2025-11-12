@@ -2,6 +2,8 @@
 
 Notice to users about various issues or actions expected from them.
 
+For information about the concept, see [notification and notice](../concepts/notification-and-notice.md).
+
 ## Context
 
 The following is an overview of notices with description and actions required
