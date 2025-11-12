@@ -383,11 +383,14 @@ sqlc:
     set -euo pipefail
     cd backend
     for module in data event; do
-        cp sqlc.yaml $module
-        cat schema.sql $module/schema.sql 2>/dev/null > $module/tmp_schema.sql || true
+        mkdir -p $module/schemas
+        cp api.sql $module/schemas
         cd $module
+        cat ../sqlc.yaml | \
+            ../../.venv/bin/python3 ../../local/scripts/sqlc.py schemas/* \
+            > sqlc.yaml
         sqlc generate
-        rm sqlc.yaml tmp_schema.sql
+        rm sqlc.yaml
         cd ..
     done
 
