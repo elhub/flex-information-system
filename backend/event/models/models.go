@@ -135,6 +135,12 @@ type ControllableUnitSuspensionHistory struct {
 	ReplacedAt                   pgtype.Timestamptz
 }
 
+type ControllableUnitSystemOperator struct {
+	ControllableUnitID int
+	SystemOperatorID   int
+	ValidTimeRange     pgtype.Range[pgtype.Timestamptz]
+}
+
 type Entity struct {
 	ID             int
 	BusinessID     string

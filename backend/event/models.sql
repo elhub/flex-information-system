@@ -376,3 +376,39 @@ WHERE spgpsch.service_providing_group_product_suspension_comment_id = @resource_
         @> @recorded_at::timestamptz
     -- private comments do not lead to notifications
     AND spgpsch.visibility = 'any_involved_party';
+
+-- name: GetControllableUnitSuspensionNotificationRecipients :many
+-- SP
+SELECT cusp.service_provider_id
+FROM controllable_unit_suspension_history AS cush
+    INNER JOIN controllable_unit_service_provider AS cusp
+        ON cush.controllable_unit_id = cusp.controllable_unit_id
+WHERE cush.controllable_unit_suspension_id = @resource_id
+    AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND tstzrange(cusp.valid_from, cusp.valid_to, '[)')
+        @> @recorded_at::timestamptz
+-- ISO (= CSO)
+UNION
+SELECT cuso.system_operator_id
+FROM controllable_unit_suspension_history AS cush
+    INNER JOIN controllable_unit_system_operator AS cuso
+        ON cush.controllable_unit_id = cuso.controllable_unit_id
+WHERE cush.controllable_unit_suspension_id = @resource_id
+    AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND cuso.valid_time_range @> @recorded_at::timestamptz
+-- PSO
+UNION
+SELECT spgpa.procuring_system_operator_id
+FROM controllable_unit_suspension_history AS cush
+    INNER JOIN service_providing_group_membership AS spgm
+        ON cush.controllable_unit_id = spgm.controllable_unit_id
+    INNER JOIN service_providing_group_product_application AS spgpa
+        ON spgm.service_providing_group_id = spgpa.service_providing_group_id
+WHERE cush.controllable_unit_suspension_id = @resource_id
+    AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND tstzrange(spgm.valid_from, spgm.valid_to, '[)')
+        @> @recorded_at::timestamptz
+    AND notification.spg_product_application_ready_for_market_check(spgpa);

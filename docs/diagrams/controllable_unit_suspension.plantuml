@@ -30,7 +30,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS-->SP: Notify
 activate SP 
-loop All ISOs
+loop All ISOs and PSOs
     |||
     FIS --> SO: Notify
     deactivate FIS
@@ -68,7 +68,7 @@ FIS --> SO: Ok
 deactivate SO
 FIS --> SP: Notify
 
-loop All ISOs
+loop All ISOs and PSOs
     |||
     FIS --> SO: Notify
     deactivate FIS

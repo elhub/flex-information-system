@@ -74,6 +74,7 @@ TO flex_system_operator
 USING (
     source_resource IN (
         'controllable_unit',
+        'controllable_unit_suspension',
         'controllable_unit_service_provider',
         'technical_resource',
         'system_operator_product_type',
@@ -407,5 +408,34 @@ USING (
                 AS spgpsch -- noqa
         WHERE spgpsch.id = event.source_id -- noqa
             AND spgpsch.record_time_range @> lower(event.record_time_range) -- noqa
+    )
+);
+
+-- RLS: EVENT-SP017
+CREATE POLICY "EVENT_SP017" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'controllable_unit_suspension'
+    AND (
+        EXISTS (
+            SELECT 1
+            FROM flex.controllable_unit_suspension AS cus
+                INNER JOIN flex.controllable_unit_service_provider AS cusp
+                    ON cus.controllable_unit_id = cusp.controllable_unit_id
+            WHERE cus.id = event.source_id -- noqa
+                AND cusp.service_provider_id = (SELECT flex.current_party())
+                AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
+        )
+        -- checking history because the suspension may have been deleted since
+        OR EXISTS (
+            SELECT 1
+            FROM flex.controllable_unit_suspension_history AS cush
+                INNER JOIN flex.controllable_unit_service_provider AS cusp
+                    ON cush.controllable_unit_id = cusp.controllable_unit_id
+            WHERE cush.id = event.source_id -- noqa
+                AND cusp.service_provider_id = (SELECT flex.current_party())
+                AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
+        )
     )
 );
