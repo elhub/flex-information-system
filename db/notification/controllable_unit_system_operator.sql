@@ -3,14 +3,12 @@
 
 -- changeset flex:notification-controllable-unit-system-operator runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW notification.controllable_unit_system_operator
-WITH (security_invoker = false) AS (
+WITH (security_invoker = true) AS (
     SELECT
-        cu.id AS controllable_unit_id,
-        apso.system_operator_id,
-        apso.valid_time_range
-    FROM flex.controllable_unit AS cu
-        INNER JOIN flex.accounting_point_system_operator AS apso
-            ON cu.accounting_point_id = apso.accounting_point_id
+        controllable_unit_id,
+        system_operator_id,
+        valid_time_range
+    FROM flex.controllable_unit_system_operator
 );
 
 -- changeset flex:notification-controllable-unit-system-operator-user-grant endDelimiter:; runAlways:true
