@@ -17,10 +17,10 @@ SELECT unnest(
         array[ap.system_operator_id, apeu.end_user_id], null
     )
 )::bigint
-FROM controllable_unit AS cu
-INNER JOIN accounting_point AS ap
+FROM api.controllable_unit AS cu
+INNER JOIN api.accounting_point AS ap
 ON cu.accounting_point_id = ap.id
-LEFT JOIN accounting_point_end_user AS apeu
+LEFT JOIN notification.accounting_point_end_user AS apeu
 ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cu.id = $1
 AND apeu.valid_time_range @> current_timestamp
@@ -48,8 +48,8 @@ func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Co
 
 const getControllableUnitLookupNotificationRecipients = `-- name: GetControllableUnitLookupNotificationRecipients :many
 SELECT apeu.end_user_id::bigint
-FROM controllable_unit AS cu
-INNER JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
+FROM api.controllable_unit AS cu
+INNER JOIN notification.accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cu.id = $1
 AND apeu.valid_time_range @> $2::timestamptz
 `
@@ -86,10 +86,10 @@ SELECT unnest(
         null
     )
 )::bigint
-FROM controllable_unit_service_provider AS cusp
-INNER JOIN controllable_unit AS cu ON cu.id = cusp.controllable_unit_id
-INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
-LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
+FROM api.controllable_unit_service_provider AS cusp
+INNER JOIN api.controllable_unit AS cu ON cu.id = cusp.controllable_unit_id
+INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
+LEFT JOIN notification.accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE cusp.id = $1
 AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
 `
@@ -141,14 +141,14 @@ FROM (
     SELECT
         cusph.service_provider_id, cusph.controllable_unit_id,
         cusph.valid_from, cusph.valid_to
-    FROM controllable_unit_service_provider_history AS cusph
+    FROM api.controllable_unit_service_provider_history AS cusph
     WHERE cusph.controllable_unit_service_provider_id = $1
     AND cusph.recorded_at <= $2
     ORDER BY cusph.recorded_at DESC LIMIT 2
 ) AS cusph
-INNER JOIN controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
-INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
-LEFT JOIN accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
+INNER JOIN api.controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
+INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
+LEFT JOIN notification.accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
 WHERE apeu.valid_time_range @> cusph.valid_from
 `
 
@@ -174,8 +174,8 @@ func (q *Queries) GetControllableUnitServiceProviderUpdateDeleteNotificationReci
 
 const getControllableUnitSuspensionNotificationRecipients = `-- name: GetControllableUnitSuspensionNotificationRecipients :many
 SELECT cusp.service_provider_id
-FROM controllable_unit_suspension_history AS cush
-    INNER JOIN controllable_unit_service_provider AS cusp
+FROM api.controllable_unit_suspension_history AS cush
+    INNER JOIN api.controllable_unit_service_provider AS cusp
         ON cush.controllable_unit_id = cusp.controllable_unit_id
 WHERE cush.controllable_unit_suspension_id = $1
     AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
@@ -184,8 +184,8 @@ WHERE cush.controllable_unit_suspension_id = $1
         @> $2::timestamptz
 UNION
 SELECT cuso.system_operator_id
-FROM controllable_unit_suspension_history AS cush
-    INNER JOIN controllable_unit_system_operator AS cuso
+FROM api.controllable_unit_suspension_history AS cush
+    INNER JOIN notification.controllable_unit_system_operator AS cuso
         ON cush.controllable_unit_id = cuso.controllable_unit_id
 WHERE cush.controllable_unit_suspension_id = $1
     AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
@@ -193,10 +193,10 @@ WHERE cush.controllable_unit_suspension_id = $1
     AND cuso.valid_time_range @> $2::timestamptz
 UNION
 SELECT spgpa.procuring_system_operator_id
-FROM controllable_unit_suspension_history AS cush
-    INNER JOIN service_providing_group_membership AS spgm
+FROM api.controllable_unit_suspension_history AS cush
+    INNER JOIN api.service_providing_group_membership AS spgm
         ON cush.controllable_unit_id = spgm.controllable_unit_id
-    INNER JOIN service_providing_group_product_application AS spgpa
+    INNER JOIN api.service_providing_group_product_application AS spgpa
         ON spgm.service_providing_group_id = spgpa.service_providing_group_id
 WHERE cush.controllable_unit_suspension_id = $1
     AND tstzrange(cush.recorded_at, cush.replaced_at, '[]')
@@ -232,14 +232,14 @@ func (q *Queries) GetControllableUnitSuspensionNotificationRecipients(ctx contex
 const getControllableUnitUpdateNotificationRecipients = `-- name: GetControllableUnitUpdateNotificationRecipients :many
 
 SELECT ap.system_operator_id
-FROM controllable_unit AS cu
-INNER JOIN accounting_point AS ap
+FROM api.controllable_unit AS cu
+INNER JOIN api.accounting_point AS ap
 ON cu.accounting_point_id = ap.id
 WHERE cu.id = $1
 AND cu.status != 'new'
 UNION
 SELECT service_provider_id
-FROM controllable_unit_service_provider_history cusph
+FROM api.controllable_unit_service_provider_history cusph
 WHERE cusph.controllable_unit_id = $1
 AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> $2::timestamptz
 AND cusph.valid_from IS NOT NULL
@@ -277,9 +277,9 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 const getServiceProviderProductApplicationCommentNotificationRecipients = `-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
 SELECT DISTINCT
     unnest(ARRAY[sppa.service_provider_id, sppa.system_operator_id])::bigint
-FROM service_provider_product_application_comment_history AS sppach
+FROM api.service_provider_product_application_comment_history AS sppach
     -- not using SPPA history because the resource cannot be deleted
-    INNER JOIN service_provider_product_application AS sppa
+    INNER JOIN api.service_provider_product_application AS sppa
         ON sppach.service_provider_product_application_id = sppa.id
 WHERE sppach.service_provider_product_application_comment_id = $1
     AND tstzrange(sppach.recorded_at, sppach.replaced_at, '[]')
@@ -312,7 +312,7 @@ func (q *Queries) GetServiceProviderProductApplicationCommentNotificationRecipie
 const getServiceProviderProductApplicationNotificationRecipients = `-- name: GetServiceProviderProductApplicationNotificationRecipients :many
 
 SELECT unnest(array[system_operator_id, service_provider_id])::bigint
-FROM service_provider_product_application_history
+FROM api.service_provider_product_application_history
 WHERE service_provider_product_application_id = $1
 AND tstzrange(recorded_at, replaced_at, '[)') @> $2::timestamptz
 `
@@ -354,9 +354,9 @@ SELECT DISTINCT
     unnest(
         ARRAY[sppsh.service_provider_id, sppsh.procuring_system_operator_id]
     )::bigint
-FROM service_provider_product_suspension_comment_history AS sppsch
+FROM api.service_provider_product_suspension_comment_history AS sppsch
     -- using history because suspensions can be deleted
-    INNER JOIN service_provider_product_suspension_history AS sppsh
+    INNER JOIN api.service_provider_product_suspension_history AS sppsh
         ON sppsch.service_provider_product_suspension_id
             = sppsh.service_provider_product_suspension_id
             AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]')
@@ -395,13 +395,13 @@ func (q *Queries) GetServiceProviderProductSuspensionCommentNotificationRecipien
 
 const getServiceProviderProductSuspensionNotificationRecipients = `-- name: GetServiceProviderProductSuspensionNotificationRecipients :many
 SELECT DISTINCT sppsh.service_provider_id::bigint
-FROM service_provider_product_suspension_history AS sppsh
+FROM api.service_provider_product_suspension_history AS sppsh
 WHERE sppsh.service_provider_product_suspension_id = $1
     AND tstzrange(sppsh.recorded_at, sppsh.replaced_at, '[]') @> $2::timestamptz
 UNION ALL
 SELECT DISTINCT sppah.system_operator_id::bigint
-FROM service_provider_product_suspension_history AS sppsh
-    INNER JOIN service_provider_product_application_history AS sppah
+FROM api.service_provider_product_suspension_history AS sppsh
+    INNER JOIN api.service_provider_product_application_history AS sppah
         ON sppsh.service_provider_id = sppah.service_provider_id
             AND sppsh.product_type_ids && sppah.product_type_ids
             AND tstzrange(sppah.recorded_at, sppah.replaced_at, '[)')
@@ -433,7 +433,7 @@ func (q *Queries) GetServiceProviderProductSuspensionNotificationRecipients(ctx 
 
 const getServiceProvidingGroupCreateNotificationRecipients = `-- name: GetServiceProvidingGroupCreateNotificationRecipients :many
 SELECT service_provider_id
-FROM service_providing_group spg
+FROM api.service_providing_group spg
 WHERE spg.id = $1
 `
 
@@ -459,14 +459,14 @@ func (q *Queries) GetServiceProvidingGroupCreateNotificationRecipients(ctx conte
 
 const getServiceProvidingGroupGridPrequalificationNotificationRecipients = `-- name: GetServiceProvidingGroupGridPrequalificationNotificationRecipients :many
 SELECT impacted_system_operator_id
-FROM service_providing_group_grid_prequalification spggp
+FROM api.service_providing_group_grid_prequalification spggp
 WHERE spggp.id = $1
 UNION
 SELECT service_provider_id
-FROM service_providing_group spg
+FROM api.service_providing_group spg
 WHERE spg.id = (
     SELECT service_providing_group_id
-    FROM service_providing_group_grid_prequalification spggp
+    FROM api.service_providing_group_grid_prequalification spggp
     WHERE spggp.id = $1
 )
 `
@@ -497,12 +497,12 @@ SELECT DISTINCT
         spg.service_provider_id,
         spggsh.impacted_system_operator_id
     ])::bigint
-FROM service_providing_group_grid_suspension_comment_history AS spggsch
-    INNER JOIN service_providing_group_grid_suspension_history AS spggsh
+FROM api.service_providing_group_grid_suspension_comment_history AS spggsch
+    INNER JOIN api.service_providing_group_grid_suspension_history AS spggsh
         ON spggsch.service_providing_group_grid_suspension_id
             = spggsh.service_providing_group_grid_suspension_id
     -- SPG cannot be deleted + SP does not change
-    INNER JOIN service_providing_group AS spg
+    INNER JOIN api.service_providing_group AS spg
         ON spggsh.service_providing_group_id = spg.id
 WHERE spggsch.service_providing_group_grid_suspension_comment_id = $1
     AND tstzrange(spggsch.recorded_at, spggsch.replaced_at, '[]')
@@ -537,8 +537,8 @@ func (q *Queries) GetServiceProvidingGroupGridSuspensionCommentNotificationRecip
 const getServiceProvidingGroupGridSuspensionNotificationRecipients = `-- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
 
 SELECT spg.service_provider_id
-FROM service_providing_group_grid_suspension_history AS spggsh
-    INNER JOIN service_providing_group AS spg
+FROM api.service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN api.service_providing_group AS spg
         ON spggsh.service_providing_group_id = spg.id
     -- SPG cannot be deleted + SP does not change
 WHERE spggsh.service_providing_group_grid_suspension_id = $1
@@ -546,8 +546,8 @@ WHERE spggsh.service_providing_group_grid_suspension_id = $1
         @> $2::timestamptz
 UNION ALL
 SELECT spggph.impacted_system_operator_id
-FROM service_providing_group_grid_suspension_history AS spggsh
-    INNER JOIN service_providing_group_grid_prequalification_history AS spggph
+FROM api.service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN api.service_providing_group_grid_prequalification_history AS spggph
         ON spggsh.service_providing_group_id = spggph.service_providing_group_id
 WHERE spggsh.service_providing_group_grid_suspension_id = $1
     AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
@@ -557,8 +557,8 @@ WHERE spggsh.service_providing_group_grid_suspension_id = $1
     AND notification.spg_grid_prequalification_ready_for_market_check(spggph)
 UNION ALL
 SELECT spgpah.procuring_system_operator_id
-FROM service_providing_group_grid_suspension_history AS spggsh
-    INNER JOIN service_providing_group_product_application_history AS spgpah
+FROM api.service_providing_group_grid_suspension_history AS spggsh
+    INNER JOIN api.service_providing_group_product_application_history AS spgpah
         ON spggsh.service_providing_group_id = spgpah.service_providing_group_id
 WHERE spggsh.service_providing_group_grid_suspension_id = $1
     AND tstzrange(spggsh.recorded_at, spggsh.replaced_at, '[]')
@@ -598,19 +598,19 @@ func (q *Queries) GetServiceProvidingGroupGridSuspensionNotificationRecipients(c
 
 const getServiceProvidingGroupMembershipNotificationRecipients = `-- name: GetServiceProvidingGroupMembershipNotificationRecipients :many
 SELECT service_provider_id
-FROM service_providing_group spg
+FROM api.service_providing_group spg
 WHERE spg.id = (
     SELECT distinct service_providing_group_id
-    FROM service_providing_group_membership_history spgmh
+    FROM api.service_providing_group_membership_history spgmh
     WHERE spgmh.service_providing_group_membership_id = $1
     AND tstzrange(spgmh.recorded_at, spgmh.replaced_at, '[]') @> $2::timestamptz
 )
 UNION
 SELECT impacted_system_operator_id
-FROM service_providing_group_grid_prequalification spggp
+FROM api.service_providing_group_grid_prequalification spggp
 WHERE spggp.service_providing_group_id = (
     SELECT distinct service_providing_group_id
-    FROM service_providing_group_membership_history spgmh
+    FROM api.service_providing_group_membership_history spgmh
     WHERE spgmh.service_providing_group_membership_id = $1
     AND tstzrange(spgmh.recorded_at, spgmh.replaced_at, '[]') @> $2::timestamptz
 )
@@ -638,14 +638,14 @@ func (q *Queries) GetServiceProvidingGroupMembershipNotificationRecipients(ctx c
 
 const getServiceProvidingGroupProductApplicationNotificationRecipients = `-- name: GetServiceProvidingGroupProductApplicationNotificationRecipients :many
 SELECT spgpa.procuring_system_operator_id
-FROM service_providing_group_product_application spgpa
+FROM api.service_providing_group_product_application spgpa
 WHERE spgpa.id = $1
 UNION
 SELECT spg.service_provider_id
-FROM service_providing_group spg
+FROM api.service_providing_group spg
 WHERE spg.id = (
     SELECT service_providing_group_id
-    FROM service_providing_group_product_application spgpa
+    FROM api.service_providing_group_product_application spgpa
     WHERE spgpa.id = $1
 )
 `
@@ -676,12 +676,12 @@ SELECT DISTINCT
         spg.service_provider_id,
         spgpsh.procuring_system_operator_id
     ])::bigint
-FROM service_providing_group_product_suspension_comment_history AS spgpsch
-    INNER JOIN service_providing_group_product_suspension_history AS spgpsh
+FROM api.service_providing_group_product_suspension_comment_history AS spgpsch
+    INNER JOIN api.service_providing_group_product_suspension_history AS spgpsh
         ON spgpsch.service_providing_group_product_suspension_id
             = spgpsh.service_providing_group_product_suspension_id
     -- SPG cannot be deleted + SP does not change
-    INNER JOIN service_providing_group AS spg
+    INNER JOIN api.service_providing_group AS spg
         ON spgpsh.service_providing_group_id = spg.id
 WHERE spgpsch.service_providing_group_product_suspension_comment_id = $1
     AND tstzrange(spgpsch.recorded_at, spgpsch.replaced_at, '[]')
@@ -715,8 +715,8 @@ func (q *Queries) GetServiceProvidingGroupProductSuspensionCommentNotificationRe
 
 const getServiceProvidingGroupProductSuspensionNotificationRecipients = `-- name: GetServiceProvidingGroupProductSuspensionNotificationRecipients :many
 SELECT spg.service_provider_id
-FROM service_providing_group_product_suspension_history AS spgpsh
-    INNER JOIN service_providing_group AS spg
+FROM api.service_providing_group_product_suspension_history AS spgpsh
+    INNER JOIN api.service_providing_group AS spg
         ON spgpsh.service_providing_group_id = spg.id
     -- SPG cannot be deleted + SP does not change
 WHERE spgpsh.service_providing_group_product_suspension_id = $1
@@ -724,8 +724,8 @@ WHERE spgpsh.service_providing_group_product_suspension_id = $1
         @> $2::timestamptz
 UNION ALL
 SELECT spgpah.procuring_system_operator_id
-FROM service_providing_group_product_suspension_history AS spgpsh
-    INNER JOIN service_providing_group_product_application_history AS spgpah
+FROM api.service_providing_group_product_suspension_history AS spgpsh
+    INNER JOIN api.service_providing_group_product_application_history AS spgpah
         ON spgpsh.service_providing_group_id = spgpah.service_providing_group_id
 WHERE spgpsh.service_providing_group_product_suspension_id = $1
     AND tstzrange(spgpsh.recorded_at, spgpsh.replaced_at, '[]')
@@ -759,16 +759,16 @@ func (q *Queries) GetServiceProvidingGroupProductSuspensionNotificationRecipient
 
 const getServiceProvidingGroupUpdateNotificationRecipients = `-- name: GetServiceProvidingGroupUpdateNotificationRecipients :many
 SELECT service_provider_id
-FROM service_providing_group spg
+FROM api.service_providing_group spg
 WHERE spg.id = $1
 UNION
 SELECT ap.system_operator_id
-FROM controllable_unit AS cu
-INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
+FROM api.controllable_unit AS cu
+INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
 WHERE cu.id in (
     SELECT controllable_unit_id
-    FROM service_providing_group_membership_history spgmh
-    INNER JOIN service_providing_group_history spgh ON spgh.service_providing_group_id = spgmh.service_providing_group_id
+    FROM api.service_providing_group_membership_history spgmh
+    INNER JOIN api.service_providing_group_history spgh ON spgh.service_providing_group_id = spgmh.service_providing_group_id
     WHERE spgh.service_providing_group_id = $1
     AND spgh.status != 'new'
     AND tstzrange(spgh.recorded_at, spgh.replaced_at, '[)') @>  $2::timestamptz
@@ -798,10 +798,10 @@ func (q *Queries) GetServiceProvidingGroupUpdateNotificationRecipients(ctx conte
 
 const getSystemOperatorProductTypeCreateNotificationRecipients = `-- name: GetSystemOperatorProductTypeCreateNotificationRecipients :many
 SELECT system_operator_id
-FROM system_operator_product_type sopt
+FROM api.system_operator_product_type sopt
 WHERE sopt.id = $1
 UNION
-SELECT party_id FROM party_history
+SELECT party_id FROM api.party_history
 WHERE type = 'service_provider'
 AND status = 'active'
 AND tstzrange(recorded_at, replaced_at, '[)') @> $2::timestamptz
@@ -829,7 +829,7 @@ func (q *Queries) GetSystemOperatorProductTypeCreateNotificationRecipients(ctx c
 
 const getSystemOperatorProductTypeUpdateDeleteNotificationRecipients = `-- name: GetSystemOperatorProductTypeUpdateDeleteNotificationRecipients :many
 SELECT system_operator_id
-FROM system_operator_product_type sopt
+FROM api.system_operator_product_type sopt
 WHERE sopt.id = $1
 `
 
@@ -855,10 +855,10 @@ func (q *Queries) GetSystemOperatorProductTypeUpdateDeleteNotificationRecipients
 
 const getTechnicalResourceNotificationRecipients = `-- name: GetTechnicalResourceNotificationRecipients :many
 SELECT service_provider_id
-FROM controllable_unit_service_provider_history cusph
+FROM api.controllable_unit_service_provider_history cusph
 WHERE cusph.controllable_unit_id = (
     SELECT controllable_unit_id
-    FROM technical_resource_history trh
+    FROM api.technical_resource_history trh
     WHERE trh.technical_resource_id = $1
     LIMIT 1
 )
@@ -867,11 +867,11 @@ AND cusph.valid_from IS NOT NULL
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> $2::timestamptz
 UNION
 SELECT ap.system_operator_id
-FROM controllable_unit AS cu
-INNER JOIN accounting_point AS ap ON cu.accounting_point_id = ap.id
+FROM api.controllable_unit AS cu
+INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
 WHERE cu.id = (
     SELECT controllable_unit_id
-    FROM technical_resource_history trh
+    FROM api.technical_resource_history trh
     WHERE trh.technical_resource_id = $1
     LIMIT 1
 )
@@ -899,7 +899,7 @@ func (q *Queries) GetTechnicalResourceNotificationRecipients(ctx context.Context
 }
 
 const notify = `-- name: Notify :exec
-INSERT INTO notification (event_id, party_id)
+INSERT INTO api.notification (event_id, party_id)
 VALUES ($1, $2)
 ON CONFLICT DO NOTHING
 `
