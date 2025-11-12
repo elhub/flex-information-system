@@ -69,6 +69,3 @@ validated.
 In this case, notices are created in addition to the notification about the CU
 registration because the CU status requires action from the system operator.
 Acting on the information is therefore mandatory for the process to move forward.
-
-Diagram with notification and notice at the same time to illustrate the
-difference? [notification/notice](..diagrams/notification_notice.drawio.png)
