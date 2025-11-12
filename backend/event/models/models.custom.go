@@ -15,7 +15,7 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 ) ([]int, error) {
 	switch eventType {
 	case "no.elhub.flex.controllable_unit.create":
-		return q.GetControllableUnitCreateNotificationRecipients(ctx, resourceID)
+		return q.GetControllableUnitCreateNotificationRecipients(ctx, recordedAt, resourceID)
 	case "no.elhub.flex.controllable_unit.update":
 		return q.GetControllableUnitUpdateNotificationRecipients(ctx, resourceID, recordedAt)
 	case "no.elhub.flex.controllable_unit.lookup":
@@ -25,7 +25,9 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 		"no.elhub.flex.controllable_unit_suspension.delete":
 		return q.GetControllableUnitSuspensionNotificationRecipients(ctx, resourceID, recordedAt)
 	case "no.elhub.flex.controllable_unit_service_provider.create":
-		return q.GetControllableUnitServiceProviderCreateNotificationRecipients(ctx, resourceID)
+		return q.GetControllableUnitServiceProviderCreateNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.controllable_unit_service_provider.update",
 		"no.elhub.flex.controllable_unit_service_provider.delete":
 		return q.GetControllableUnitServiceProviderUpdateDeleteNotificationRecipients(

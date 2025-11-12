@@ -29,22 +29,15 @@ WHERE spg.id = (
 -- name: GetControllableUnitCreateNotificationRecipients :many
 SELECT unnest(
     array_remove(
-        array[ap.system_operator_id, apeu.end_user_id], null
+        array[cuso.system_operator_id, cueu.end_user_id], null
     )
 )::bigint
-FROM api.controllable_unit AS cu
-INNER JOIN api.accounting_point AS ap
-ON cu.accounting_point_id = ap.id
-LEFT JOIN notification.accounting_point_end_user AS apeu
-ON apeu.accounting_point_id = cu.accounting_point_id
-WHERE cu.id = @resource_id
-AND apeu.valid_time_range @> current_timestamp;
--- not using history on CU because AP ID is stable
--- using the latest SO because AP.SO is not time-dependent
--- not using history on APEU because we take the latest knowledge we have to
---   identify who to notify
--- current timestamp because we take the relevant end user at the moment the
--- event is processed
+FROM notification.controllable_unit_system_operator AS cuso
+    LEFT JOIN notification.controllable_unit_end_user AS cueu
+        ON cuso.controllable_unit_id = cueu.controllable_unit_id
+            AND cueu.valid_time_range @> @recorded_at::timestamptz
+WHERE cuso.controllable_unit_id = @resource_id
+    AND cuso.valid_time_range @> @recorded_at::timestamptz;
 
 -- name: GetControllableUnitUpdateNotificationRecipients :many
 SELECT ap.system_operator_id
@@ -66,8 +59,8 @@ SELECT DISTINCT unnest(
     array_remove(
         array[
             cusph.service_provider_id,
-            ap.system_operator_id,
-            apeu.end_user_id
+            cuso.system_operator_id,
+            cueu.end_user_id
         ],
         null
     )
@@ -81,15 +74,15 @@ FROM (
     AND cusph.recorded_at <= @recorded_at
     ORDER BY cusph.recorded_at DESC LIMIT 2
 ) AS cusph
-INNER JOIN api.controllable_unit AS cu ON cu.id = cusph.controllable_unit_id
-INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
-LEFT JOIN notification.accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
-WHERE apeu.valid_time_range @> cusph.valid_from;
+    INNER JOIN notification.controllable_unit_system_operator AS cuso
+        ON cusph.controllable_unit_id = cuso.controllable_unit_id
+            AND cuso.valid_time_range @> cusph.valid_from
+    LEFT JOIN notification.controllable_unit_end_user AS cueu
+        ON cusph.controllable_unit_id = cueu.controllable_unit_id
+            AND cueu.valid_time_range @> cusph.valid_from;
 -- using history on CU-SP because EU depends on valid time
 --   the subquery allows us to get only the 2 latest versions of CU-SP at the
 --   time of the event (i.e., both versions before and after the update)
--- not using history on CU because AP ID is stable
--- using the latest SO because AP.SO is not time-dependent
 -- just checking the start of the CU-SP valid time because functionally
 --   speaking, this valid time should actually be aligned with the end user
 --   valid time, so it is a way to avoid notifying people that are not really
@@ -100,24 +93,25 @@ SELECT unnest(
     array_remove(
         array[
             cusp.service_provider_id,
-            ap.system_operator_id,
-            apeu.end_user_id
+            cuso.system_operator_id,
+            cueu.end_user_id
         ],
         null
     )
 )::bigint
 FROM api.controllable_unit_service_provider AS cusp
-INNER JOIN api.controllable_unit AS cu ON cu.id = cusp.controllable_unit_id
-INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
-LEFT JOIN notification.accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
+    INNER JOIN notification.controllable_unit_system_operator AS cuso
+        ON cusp.controllable_unit_id = cuso.controllable_unit_id
+            AND cuso.valid_time_range
+            && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
+    LEFT JOIN notification.controllable_unit_end_user AS cueu
+        ON cusp.controllable_unit_id = cueu.controllable_unit_id
+            AND cueu.valid_time_range
+            && tstzrange(cusp.valid_from, cusp.valid_to, '[)')
 WHERE cusp.id = @resource_id
-AND apeu.valid_time_range && tstzrange(cusp.valid_from, cusp.valid_to, '[)');
+    AND tstzrange(cusp.valid_from, cusp.valid_to, '[)')
+    @> @recorded_at::timestamptz;
 -- not using history on CU-SP for CU ID and SP ID because they are stable
--- not using history on CU because AP ID is stable
--- using the latest SO because AP.SO is not time-dependent
--- not using history on APEU or CU-SP for end user ID because we take the
---   latest knowledge we have to identify who to notify and if it still
---   makes sense
 -- valid time check : notifying all end users that (up to the latest knowledge)
 --   are in charge of the AP during at least a part of the CU-SP validity period
 
@@ -177,18 +171,22 @@ SELECT service_provider_id
 FROM api.service_providing_group spg
 WHERE spg.id = @resource_id
 UNION
-SELECT ap.system_operator_id
-FROM api.controllable_unit AS cu
-INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
-WHERE cu.id in (
-    SELECT controllable_unit_id
-    FROM api.service_providing_group_membership_history spgmh
-    INNER JOIN api.service_providing_group_history spgh ON spgh.service_providing_group_id = spgmh.service_providing_group_id
-    WHERE spgh.service_providing_group_id = @resource_id
-    AND spgh.status != 'new'
-    AND tstzrange(spgh.recorded_at, spgh.replaced_at, '[)') @>  @recorded_at::timestamptz
-    AND tstzrange(spgmh.recorded_at, spgmh.replaced_at, '[)') @>  @recorded_at::timestamptz
-);
+SELECT cuso.system_operator_id
+FROM notification.controllable_unit_system_operator AS cuso
+WHERE cuso.controllable_unit_id IN (
+        SELECT controllable_unit_id
+        FROM api.service_providing_group_membership_history spgmh
+            INNER JOIN api.service_providing_group_history spgh
+                ON spgh.service_providing_group_id
+                    = spgmh.service_providing_group_id
+        WHERE spgh.service_providing_group_id = @resource_id
+            AND spgh.status != 'new'
+            AND tstzrange(spgh.recorded_at, spgh.replaced_at, '[)')
+                @> @recorded_at::timestamptz
+            AND tstzrange(spgmh.recorded_at, spgmh.replaced_at, '[)')
+                @> @recorded_at::timestamptz
+    )
+    AND cuso.valid_time_range @> @recorded_at::timestamptz;
 
 -- name: GetServiceProvidingGroupMembershipNotificationRecipients :many
 SELECT service_provider_id
@@ -235,16 +233,18 @@ AND tstzrange(cusph.recorded_at, cusph.replaced_at, '[)') @> @recorded_at::times
 AND cusph.valid_from IS NOT NULL
 AND tstzrange(cusph.valid_from, cusph.valid_to, '[)') @> @recorded_at::timestamptz
 UNION
-SELECT ap.system_operator_id
+SELECT cuso.system_operator_id
 FROM api.controllable_unit AS cu
-INNER JOIN api.accounting_point AS ap ON cu.accounting_point_id = ap.id
+    INNER JOIN notification.controllable_unit_system_operator AS cuso
+        ON cu.id = cuso.controllable_unit_id
 WHERE cu.id = (
-    SELECT controllable_unit_id
-    FROM api.technical_resource_history trh
-    WHERE trh.technical_resource_id = @resource_id
-    LIMIT 1
-)
-AND cu.status != 'new';
+        SELECT controllable_unit_id
+        FROM api.technical_resource_history trh
+        WHERE trh.technical_resource_id = @resource_id
+        LIMIT 1
+    )
+    AND cu.status != 'new'
+    AND cuso.valid_time_range @> @recorded_at::timestamptz;
 
 -- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
 SELECT DISTINCT
@@ -266,14 +266,10 @@ VALUES (@event_id, @party_id)
 ON CONFLICT DO NOTHING;
 
 -- name: GetControllableUnitLookupNotificationRecipients :many
-SELECT apeu.end_user_id::bigint
-FROM api.controllable_unit AS cu
-INNER JOIN notification.accounting_point_end_user AS apeu ON apeu.accounting_point_id = cu.accounting_point_id
-WHERE cu.id = @resource_id
-AND apeu.valid_time_range @> @recorded_at::timestamptz;
--- not using history on CU because AP ID is stable
--- not using history on APEU because we take the latest knowledge we have to
---   identify who to notify
+SELECT cueu.end_user_id
+FROM notification.controllable_unit_end_user AS cueu
+WHERE cueu.controllable_unit_id = @resource_id
+    AND cueu.valid_time_range @> @recorded_at::timestamptz;
 
 -- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
 -- SP
