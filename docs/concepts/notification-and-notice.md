@@ -1,8 +1,8 @@
 # Notification and notice
 
 Many of the processes in the Flexibility Information System (FIS) trigger
-notifications and notices. This section explains what they are and how
-they differ.
+notifications and notices. This section explains what they are, why we need them
+and how they differ.
 
 While notifications are a required function in the FIS and automatically inform
 parties when events occur in the system, notices are a supporting feature that
@@ -14,22 +14,60 @@ they are used in the FIS.
 
 ## Notification
 
-A notification is a resource that contains information about the event that has
-occured in the FIS. Notifications are created when something is created, updated
-or deleted in the system and can be retrieved by parties in the FIS. The purpose
-of notifications is to convey information to enable parties to act according
-to the business processes.
+A notification is a resource that is used to inform a specific party that an
+_event_ occured in the FIS. The purpose is to convey information to enable
+parties to act according to the business processes.
 
-Each notification includes the event type, event source and the time of occurance.
-Notifications also include a direct link to the update that caused the notification.
+An event is typically registered when a resource is created, updated or deleted
+in the system. For each event, FIS will pick out specific recipents and create a
+notification for them. Recipients are selected based on the rules in the
+"Notifications" section of each resource.
 
-The notification is cleared when the notification is aknowledged. Aknowledgement
-lets FIS know that it has fulfilled its obligation to inform the party about the
-change.
+A notification is little more than a pointer to the event and the recipient. A
+example notification look like this:
+
+```json
+{
+    "id":1314,
+    "acknowledged":false,
+    "event_id":955,
+    "party_id":125,
+    "recorded_by":0,
+    "recorded_at":"2025-11-07T08:58:31.484929+00:00"
+}
+```
+
+As you can see, it points to an event (event_id) and a party (party_id). We can
+think of it as an envelope that contains information about the event and is
+addressed to the party.
+
+The acknowledged field indicates whether the party has seen the notification or
+not. The party must acknowledge the notification to let FIS know that it has
+been informed about the event. This is done by updating the specific
+notification.
+
+You might wonder what an event looks like. An event constains more details about
+what happened, but does not contain the actual data that triggered the event.
+For instance, you get to know that controllable unit X was updated, but not what
+the update contained. This is also known as _thin events_. Consider this example.
+
+```json
+{
+    "id":955,
+    "specversion":"1.0",
+    "type":"no.elhub.flex.service_providing_group_grid_suspension.delete",
+    "data":null,
+    "source":"/service_providing_group_grid_suspension/14",
+    "time":"2025-11-07T08:58:31.480365+00:00"
+}
+```
+
+As you can see, this event points to a specific resource that was deleted
+(source) and the type of event that occured (type).
 
 For information about notification as a resource in the API see [notification](../resources/notification.md).
 
-### Example of notification
+### Example use of notification
 
 When a procuring system operator [registers a new product type](../processes/system-operator-product-registration.md)
 they intend to procure, a notification is made available for all approved service
