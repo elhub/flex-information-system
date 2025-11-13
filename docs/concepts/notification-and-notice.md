@@ -6,7 +6,7 @@ and how they differ.
 
 While notifications are a required function in the FIS and automatically inform
 parties when events occur in the system, notices are a supporting feature that
-helps users identify and complete the actions needed for those processes to
+help users identify and complete the actions needed for those processes to
 continue. In short, notifications keep parties informed and notices help them act.
 
 The following sections describe each of them in more detail and explain how
@@ -15,16 +15,16 @@ they are used in the FIS.
 ## Notification
 
 A notification is a resource that is used to inform a specific party that an
-_event_ occured in the FIS. The purpose is to convey information to enable
-parties to act according to the business processes.
+_event_ occured in the FIS. The purpose of the notification is to convey
+information to enable parties to act according to the business processes.
 
 An event is typically registered when a resource is created, updated or deleted
 in the system. For each event, FIS will pick out specific recipents and create a
 notification for them. Recipients are selected based on the rules in the
 "Notifications" section of each resource.
 
-A notification is little more than a pointer to the event and the recipient. A
-example notification look like this:
+A notification is a little more than a pointer to the event and the recipient.
+An example notification looks like this:
 
 ```json
 {
@@ -46,6 +46,10 @@ not. The party must acknowledge the notification to let FIS know that it has
 been informed about the event. This is done by updating the specific
 notification.
 
+For information about notification as a resource in the API see [notification](../resources/notification.md).
+
+### Event
+
 You might wonder what an event looks like. An event constains more details about
 what happened, but does not contain the actual data that triggered the event.
 For instance, you get to know that controllable unit X was updated, but not what
@@ -65,7 +69,7 @@ the update contained. This is also known as _thin events_. Consider this example
 As you can see, this event points to a specific resource that was deleted
 (source) and the type of event that occured (type).
 
-For information about notification as a resource in the API see [notification](../resources/notification.md).
+For information about events as a resource in the API see [event](../resources/event.md)
 
 ### Example use of notification
 
@@ -86,17 +90,22 @@ optional.
 ## Notice
 
 A notice is a resource that informs a party that action is required in order for
-a business process to continue. Notices complement notifications by highlighting
-situations where user input is needed. In this way, notices function as a task list
-that helps parties complete steps required by the processes in the FIS.
+a business process to continue. Notices highlight inconsistensies or invalid
+states in ongoing processes. The purpose of notices is to show each user what
+actions in the system that are expected from them. This ensures strong consistency
+between the resources in the system.
 
-Notices can be retrieved by parties in the FIS. Each notice includes information
-about which party it concerns, the type of notice, and the status that triggered
+Notices complement notifications by highlighting situations where user input is
+needed. In this way, notices function as a task list that helps parties complete
+steps required by the processes in the FIS.
+
+Notices can be retrieved by parties in the FIS. Each notice includes a reference
+to the party targeted by the notice, the type of notice, and the status that triggered
 it. Notices also include a direct link to the resource that led to the notice.
 
 The notice is cleared when the required task is completed.
 
-For information about notice as a resource in the API see [notice](../resources/notice.md).
+The actions required for each type of notice is defined in the [resource documentation for notice](../resources/notice.md)
 
 ### Example of notice
 
