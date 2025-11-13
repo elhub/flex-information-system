@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,18 +17,18 @@ class ServiceProvidingGroupUpdateRequest:
     """Request schema for update operations - Group of controllable units
 
     Attributes:
-        name (Union[Unset, str]): Free text name of the service providing group. Example: Batteries #09.
-        status (Union[Unset, ServiceProvidingGroupStatus]): The status of the group. Example: active.
+        name (str | Unset): Free text name of the service providing group. Example: Batteries #09.
+        status (ServiceProvidingGroupStatus | Unset): The status of the group. Example: active.
     """
 
-    name: Union[Unset, str] = UNSET
-    status: Union[Unset, ServiceProvidingGroupStatus] = UNSET
+    name: str | Unset = UNSET
+    status: ServiceProvidingGroupStatus | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        status: Union[Unset, str] = UNSET
+        status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -46,7 +48,7 @@ class ServiceProvidingGroupUpdateRequest:
         name = d.pop("name", UNSET)
 
         _status = d.pop("status", UNSET)
-        status: Union[Unset, ServiceProvidingGroupStatus]
+        status: ServiceProvidingGroupStatus | Unset
         if isinstance(_status, Unset):
             status = UNSET
         else:

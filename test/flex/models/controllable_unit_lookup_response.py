@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar
 
@@ -26,13 +28,13 @@ class ControllableUnitLookupResponse:
             controllable units are located.
         end_user (ControllableUnitLookupResponseEndUser): The end user on the accounting point where the controllable
             units are located.
-        controllable_units (list['ControllableUnitLookupResponseControllableUnitsItem']): The controllable units that
-            were found for the given end user or accounting point.
+        controllable_units (list[ControllableUnitLookupResponseControllableUnitsItem]): The controllable units that were
+            found for the given end user or accounting point.
     """
 
-    accounting_point: "ControllableUnitLookupResponseAccountingPoint"
-    end_user: "ControllableUnitLookupResponseEndUser"
-    controllable_units: list["ControllableUnitLookupResponseControllableUnitsItem"]
+    accounting_point: ControllableUnitLookupResponseAccountingPoint
+    end_user: ControllableUnitLookupResponseEndUser
+    controllable_units: list[ControllableUnitLookupResponseControllableUnitsItem]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

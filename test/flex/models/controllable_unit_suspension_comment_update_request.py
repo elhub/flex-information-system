@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,17 +17,17 @@ class ControllableUnitSuspensionCommentUpdateRequest:
     """Request schema for update operations - Comment made by a party involved in a controllable unit suspension.
 
     Attributes:
-        visibility (Union[Unset, ControllableUnitSuspensionCommentVisibility]): The level of visibility of the comment.
+        visibility (ControllableUnitSuspensionCommentVisibility | Unset): The level of visibility of the comment.
             Example: same_party.
-        content (Union[Unset, str]): Free text content of the comment. Example: Missing document..
+        content (str | Unset): Free text content of the comment. Example: Missing document..
     """
 
-    visibility: Union[Unset, ControllableUnitSuspensionCommentVisibility] = UNSET
-    content: Union[Unset, str] = UNSET
+    visibility: ControllableUnitSuspensionCommentVisibility | Unset = UNSET
+    content: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        visibility: Union[Unset, str] = UNSET
+        visibility: str | Unset = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
@@ -45,7 +47,7 @@ class ControllableUnitSuspensionCommentUpdateRequest:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _visibility = d.pop("visibility", UNSET)
-        visibility: Union[Unset, ControllableUnitSuspensionCommentVisibility]
+        visibility: ControllableUnitSuspensionCommentVisibility | Unset
         if isinstance(_visibility, Unset):
             visibility = UNSET
         else:

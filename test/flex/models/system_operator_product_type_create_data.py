@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,18 +18,18 @@ class SystemOperatorProductTypeCreateData:
     to buy.
 
         Attributes:
-            status (Union[Unset, SystemOperatorProductTypeStatus]): The status of the relation. Example: active.
-            system_operator_id (Union[Unset, int]): Reference to the system operator. Example: 37.
-            product_type_id (Union[Unset, int]): Reference to the product type. Example: 8.
+            status (SystemOperatorProductTypeStatus | Unset): The status of the relation. Example: active.
+            system_operator_id (int | Unset): Reference to the system operator. Example: 37.
+            product_type_id (int | Unset): Reference to the product type. Example: 8.
     """
 
-    status: Union[Unset, SystemOperatorProductTypeStatus] = UNSET
-    system_operator_id: Union[Unset, int] = UNSET
-    product_type_id: Union[Unset, int] = UNSET
+    status: SystemOperatorProductTypeStatus | Unset = UNSET
+    system_operator_id: int | Unset = UNSET
+    product_type_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        status: Union[Unset, str] = UNSET
+        status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
@@ -51,7 +53,7 @@ class SystemOperatorProductTypeCreateData:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _status = d.pop("status", UNSET)
-        status: Union[Unset, SystemOperatorProductTypeStatus]
+        status: SystemOperatorProductTypeStatus | Unset
         if isinstance(_status, Unset):
             status = UNSET
         else:

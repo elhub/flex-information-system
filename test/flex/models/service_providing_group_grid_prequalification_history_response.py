@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -18,51 +20,51 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
     Attributes:
         service_providing_group_grid_prequalification_id (int): Reference to the resource that was updated. Example: 48.
-        status (Union[Unset, ServiceProvidingGroupGridPrequalificationStatus]): The status of the grid prequalification
-            for this service providing group. Example: in_progress.
-        notes (Union[None, Unset, str]): Free text notes on the current prequalification status.
-        prequalified_at (Union[None, Unset, str]): When the current grid prequalification was last approved. Example:
+        status (ServiceProvidingGroupGridPrequalificationStatus | Unset): The status of the grid prequalification for
+            this service providing group. Example: in_progress.
+        notes (None | str | Unset): Free text notes on the current prequalification status.
+        prequalified_at (None | str | Unset): When the current grid prequalification was last approved. Example:
             2023-01-08 10:00:00 CET.
-        service_providing_group_id (Union[Unset, int]): Reference to the service providing group whose grid
-            prequalification is tracked by the current resource. Example: 55.
-        impacted_system_operator_id (Union[Unset, int]): Reference to the `party` that is the impacted system operator.
+        service_providing_group_id (int | Unset): Reference to the service providing group whose grid prequalification
+            is tracked by the current resource. Example: 55.
+        impacted_system_operator_id (int | Unset): Reference to the `party` that is the impacted system operator.
             Example: 7.
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        id (Union[Unset, int]): Unique surrogate key. Example: 27.
-        replaced_by (Union[None, Unset, int]): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (Union[None, Unset, str]): When the resource was replaced in the system. Example: 2024-07-07
-            10:00:00 CET.
+        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+        id (int | Unset): Unique surrogate key. Example: 27.
+        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
+            CET.
     """
 
     service_providing_group_grid_prequalification_id: int
-    status: Union[Unset, ServiceProvidingGroupGridPrequalificationStatus] = UNSET
-    notes: Union[None, Unset, str] = UNSET
-    prequalified_at: Union[None, Unset, str] = UNSET
-    service_providing_group_id: Union[Unset, int] = UNSET
-    impacted_system_operator_id: Union[Unset, int] = UNSET
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
-    replaced_by: Union[None, Unset, int] = UNSET
-    replaced_at: Union[None, Unset, str] = UNSET
+    status: ServiceProvidingGroupGridPrequalificationStatus | Unset = UNSET
+    notes: None | str | Unset = UNSET
+    prequalified_at: None | str | Unset = UNSET
+    service_providing_group_id: int | Unset = UNSET
+    impacted_system_operator_id: int | Unset = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
+    replaced_by: int | None | Unset = UNSET
+    replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         service_providing_group_grid_prequalification_id = self.service_providing_group_grid_prequalification_id
 
-        status: Union[Unset, str] = UNSET
+        status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        notes: Union[None, Unset, str]
+        notes: None | str | Unset
         if isinstance(self.notes, Unset):
             notes = UNSET
         else:
             notes = self.notes
 
-        prequalified_at: Union[None, Unset, str]
+        prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
             prequalified_at = UNSET
         else:
@@ -78,13 +80,13 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         id = self.id
 
-        replaced_by: Union[None, Unset, int]
+        replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
         else:
             replaced_by = self.replaced_by
 
-        replaced_at: Union[None, Unset, str]
+        replaced_at: None | str | Unset
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
         else:
@@ -126,27 +128,27 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
         service_providing_group_grid_prequalification_id = d.pop("service_providing_group_grid_prequalification_id")
 
         _status = d.pop("status", UNSET)
-        status: Union[Unset, ServiceProvidingGroupGridPrequalificationStatus]
+        status: ServiceProvidingGroupGridPrequalificationStatus | Unset
         if isinstance(_status, Unset):
             status = UNSET
         else:
             status = ServiceProvidingGroupGridPrequalificationStatus(_status)
 
-        def _parse_notes(data: object) -> Union[None, Unset, str]:
+        def _parse_notes(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         notes = _parse_notes(d.pop("notes", UNSET))
 
-        def _parse_prequalified_at(data: object) -> Union[None, Unset, str]:
+        def _parse_prequalified_at(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 
@@ -160,21 +162,21 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         id = d.pop("id", UNSET)
 
-        def _parse_replaced_by(data: object) -> Union[None, Unset, int]:
+        def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, int], data)
+            return cast(int | None | Unset, data)
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> Union[None, Unset, str]:
+        def _parse_replaced_at(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, str], data)
+            return cast(None | str | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

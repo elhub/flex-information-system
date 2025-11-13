@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,21 +18,20 @@ class ServiceProvidingGroupGridSuspensionCreateData:
     suspend a service providing group from delivering services.
 
         Attributes:
-            reason (Union[Unset, ServiceProvidingGroupGridSuspensionReason]): The reason for the suspension. Example:
+            reason (ServiceProvidingGroupGridSuspensionReason | Unset): The reason for the suspension. Example:
                 significant_group_change.
-            impacted_system_operator_id (Union[Unset, int]): Reference to the impacted system operator suspending the
-                service providing group. Example: 7.
-            service_providing_group_id (Union[Unset, int]): Reference to the service providing group being suspended.
-                Example: 13.
+            impacted_system_operator_id (int | Unset): Reference to the impacted system operator suspending the service
+                providing group. Example: 7.
+            service_providing_group_id (int | Unset): Reference to the service providing group being suspended. Example: 13.
     """
 
-    reason: Union[Unset, ServiceProvidingGroupGridSuspensionReason] = UNSET
-    impacted_system_operator_id: Union[Unset, int] = UNSET
-    service_providing_group_id: Union[Unset, int] = UNSET
+    reason: ServiceProvidingGroupGridSuspensionReason | Unset = UNSET
+    impacted_system_operator_id: int | Unset = UNSET
+    service_providing_group_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        reason: Union[Unset, str] = UNSET
+        reason: str | Unset = UNSET
         if not isinstance(self.reason, Unset):
             reason = self.reason.value
 
@@ -54,7 +55,7 @@ class ServiceProvidingGroupGridSuspensionCreateData:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _reason = d.pop("reason", UNSET)
-        reason: Union[Unset, ServiceProvidingGroupGridSuspensionReason]
+        reason: ServiceProvidingGroupGridSuspensionReason | Unset
         if isinstance(_reason, Unset):
             reason = UNSET
         else:

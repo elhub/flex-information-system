@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -15,12 +17,12 @@ class ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem:
     Attributes:
         id (int): The surrogate key of the technical resource. Example: 17.
         name (str): The name of the technical resource. Example: Battery Unit A.
-        details (Union[Unset, str]): Additional details about the technical resource. Example: 16A.
+        details (str | Unset): Additional details about the technical resource. Example: 16A.
     """
 
     id: int
     name: str
-    details: Union[Unset, str] = UNSET
+    details: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

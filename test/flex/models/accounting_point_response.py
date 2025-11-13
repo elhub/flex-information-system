@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -14,20 +16,19 @@ class AccountingPointResponse:
     """Response schema for operations with return values - Accounting point for a controllable unit.
 
     Attributes:
-        recorded_at (Union[Unset, str]): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31 23:59:00 CET.
-        recorded_by (Union[Unset, int]): The identity that recorded the resource. Example: 145.
-        id (Union[Unset, int]): Unique surrogate identifier. Example: 89.
-        business_id (Union[Unset, str]): The GSRN metering point id of the accounting point. Example:
-            709000000000000057.
-        system_operator_id (Union[Unset, int]): The system operator of the accounting point.
+        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
+        id (int | Unset): Unique surrogate identifier. Example: 89.
+        business_id (str | Unset): The GSRN metering point id of the accounting point. Example: 709000000000000057.
+        system_operator_id (int | Unset): The system operator of the accounting point.
     """
 
-    recorded_at: Union[Unset, str] = UNSET
-    recorded_by: Union[Unset, int] = UNSET
-    id: Union[Unset, int] = UNSET
-    business_id: Union[Unset, str] = UNSET
-    system_operator_id: Union[Unset, int] = UNSET
+    recorded_at: str | Unset = UNSET
+    recorded_by: int | Unset = UNSET
+    id: int | Unset = UNSET
+    business_id: str | Unset = UNSET
+    system_operator_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
