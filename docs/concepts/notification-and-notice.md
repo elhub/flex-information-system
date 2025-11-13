@@ -90,10 +90,10 @@ optional.
 ## Notice
 
 A notice is a resource that informs a party that action is required in order for
-a business process to continue. Notices highlight inconsistensies or invalid
-states in ongoing processes. The purpose of notices is to show each user what
-actions in the system that are expected from them. This ensures strong consistency
-between the resources in the system.
+a business process to continue due to an event that has occured in FIS. Notices
+highlight inconsistensies or invalid states in ongoing processes. The purpose of
+notices is to show each user what actions in the system that are expected from them.
+This ensures strong consistency between the resources in the system.
 
 Notices complement notifications by highlighting situations where user input is
 needed. In this way, notices function as a task list that helps parties complete
