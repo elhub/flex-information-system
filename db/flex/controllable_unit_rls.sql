@@ -12,7 +12,7 @@ TO flex_internal_event_notification
 USING (true);
 
 GRANT SELECT ON controllable_unit_history TO flex_internal_event_notification;
-CREATE POLICY "CUH_INTERNAL_EVENT_NOTIFICATION" ON controllable_unit
+CREATE POLICY "CUH_INTERNAL_EVENT_NOTIFICATION" ON controllable_unit_history
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);

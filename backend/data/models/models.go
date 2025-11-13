@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type AccountingPoint struct {
+type ApiAccountingPoint struct {
 	ID               int
 	BusinessID       string
 	SystemOperatorID int
@@ -16,7 +16,7 @@ type AccountingPoint struct {
 	RecordedAt       pgtype.Timestamptz
 }
 
-type AccountingPointBalanceResponsibleParty struct {
+type ApiAccountingPointBalanceResponsibleParty struct {
 	AccountingPointID         int
 	BalanceResponsiblePartyID int
 	EnergyDirection           string
@@ -24,14 +24,14 @@ type AccountingPointBalanceResponsibleParty struct {
 	ValidTo                   pgtype.Timestamptz
 }
 
-type AccountingPointEnergySupplier struct {
+type ApiAccountingPointEnergySupplier struct {
 	AccountingPointID int
 	EnergySupplierID  int
 	ValidFrom         pgtype.Timestamptz
 	ValidTo           pgtype.Timestamptz
 }
 
-type ControllableUnit struct {
+type ApiControllableUnit struct {
 	ID                       int
 	BusinessID               string
 	Name                     string
@@ -53,7 +53,7 @@ type ControllableUnit struct {
 	RecordedAt               pgtype.Timestamptz
 }
 
-type ControllableUnitHistory struct {
+type ApiControllableUnitHistory struct {
 	ControllableUnitID       int
 	ID                       int
 	BusinessID               string
@@ -78,7 +78,7 @@ type ControllableUnitHistory struct {
 	ReplacedAt               pgtype.Timestamptz
 }
 
-type ControllableUnitServiceProvider struct {
+type ApiControllableUnitServiceProvider struct {
 	ID                 int
 	ControllableUnitID int
 	ServiceProviderID  int
@@ -90,7 +90,7 @@ type ControllableUnitServiceProvider struct {
 	RecordedAt         pgtype.Timestamptz
 }
 
-type ControllableUnitServiceProviderHistory struct {
+type ApiControllableUnitServiceProviderHistory struct {
 	ControllableUnitServiceProviderID int
 	ID                                int
 	ControllableUnitID                int
@@ -105,7 +105,7 @@ type ControllableUnitServiceProviderHistory struct {
 	ReplacedAt                        pgtype.Timestamptz
 }
 
-type ControllableUnitSuspension struct {
+type ApiControllableUnitSuspension struct {
 	ID                       int
 	ControllableUnitID       int
 	ImpactedSystemOperatorID int
@@ -151,7 +151,7 @@ type ControllableUnitSuspensionHistory struct {
 	ReplacedAt                   pgtype.Timestamptz
 }
 
-type Entity struct {
+type ApiEntity struct {
 	ID             int
 	BusinessID     string
 	BusinessIDType string
@@ -161,7 +161,7 @@ type Entity struct {
 	RecordedAt     pgtype.Timestamptz
 }
 
-type EntityClient struct {
+type ApiEntityClient struct {
 	ID           int
 	EntityID     int
 	Name         *string
@@ -174,7 +174,7 @@ type EntityClient struct {
 	RecordedAt   pgtype.Timestamptz
 }
 
-type Event struct {
+type ApiEvent struct {
 	ID          int
 	Specversion string
 	Time        pgtype.Timestamptz
@@ -183,7 +183,7 @@ type Event struct {
 	Data        *string
 }
 
-type Identity struct {
+type ApiIdentity struct {
 	ID         int
 	EntityID   int
 	EntityName string
@@ -191,14 +191,14 @@ type Identity struct {
 	PartyName  *string
 }
 
-type Notice struct {
+type ApiNotice struct {
 	PartyID int
 	Type    string
 	Source  string
 	Data    []byte
 }
 
-type Notification struct {
+type ApiNotification struct {
 	ID           int
 	Acknowledged bool
 	EventID      int
@@ -207,7 +207,7 @@ type Notification struct {
 	RecordedAt   pgtype.Timestamptz
 }
 
-type Party struct {
+type ApiParty struct {
 	ID             int
 	BusinessID     string
 	BusinessIDType string
@@ -220,7 +220,7 @@ type Party struct {
 	RecordedAt     pgtype.Timestamptz
 }
 
-type PartyHistory struct {
+type ApiPartyHistory struct {
 	PartyID        int
 	ID             int
 	BusinessID     string
@@ -236,7 +236,7 @@ type PartyHistory struct {
 	ReplacedAt     pgtype.Timestamptz
 }
 
-type PartyMembership struct {
+type ApiPartyMembership struct {
 	ID         int
 	PartyID    int
 	EntityID   int
@@ -245,7 +245,7 @@ type PartyMembership struct {
 	RecordedAt pgtype.Timestamptz
 }
 
-type PartyMembershipHistory struct {
+type ApiPartyMembershipHistory struct {
 	PartyMembershipID int
 	ID                int
 	PartyID           int
@@ -257,7 +257,7 @@ type PartyMembershipHistory struct {
 	ReplacedAt        pgtype.Timestamptz
 }
 
-type ProductType struct {
+type ApiProductType struct {
 	ID         int
 	BusinessID string
 	Name       string
@@ -265,7 +265,7 @@ type ProductType struct {
 	Products   string
 }
 
-type ServiceProviderProductApplication struct {
+type ApiServiceProviderProductApplication struct {
 	ID                int
 	ServiceProviderID int
 	SystemOperatorID  int
@@ -277,7 +277,7 @@ type ServiceProviderProductApplication struct {
 	RecordedAt        pgtype.Timestamptz
 }
 
-type ServiceProviderProductApplicationComment struct {
+type ApiServiceProviderProductApplicationComment struct {
 	ID                                  int
 	ServiceProviderProductApplicationID int
 	CreatedBy                           int
@@ -288,7 +288,7 @@ type ServiceProviderProductApplicationComment struct {
 	RecordedAt                          pgtype.Timestamptz
 }
 
-type ServiceProviderProductApplicationCommentHistory struct {
+type ApiServiceProviderProductApplicationCommentHistory struct {
 	ServiceProviderProductApplicationCommentID int
 	ID                                         int
 	ServiceProviderProductApplicationID        int
@@ -302,7 +302,7 @@ type ServiceProviderProductApplicationCommentHistory struct {
 	ReplacedAt                                 pgtype.Timestamptz
 }
 
-type ServiceProviderProductApplicationHistory struct {
+type ApiServiceProviderProductApplicationHistory struct {
 	ServiceProviderProductApplicationID int
 	ID                                  int
 	ServiceProviderID                   int
@@ -317,7 +317,7 @@ type ServiceProviderProductApplicationHistory struct {
 	ReplacedAt                          pgtype.Timestamptz
 }
 
-type ServiceProviderProductSuspension struct {
+type ApiServiceProviderProductSuspension struct {
 	ID                        int
 	ProcuringSystemOperatorID int
 	ServiceProviderID         int
@@ -327,7 +327,7 @@ type ServiceProviderProductSuspension struct {
 	RecordedAt                pgtype.Timestamptz
 }
 
-type ServiceProviderProductSuspensionComment struct {
+type ApiServiceProviderProductSuspensionComment struct {
 	ID                                 int
 	ServiceProviderProductSuspensionID int
 	CreatedBy                          int
@@ -338,7 +338,7 @@ type ServiceProviderProductSuspensionComment struct {
 	RecordedAt                         pgtype.Timestamptz
 }
 
-type ServiceProviderProductSuspensionCommentHistory struct {
+type ApiServiceProviderProductSuspensionCommentHistory struct {
 	ServiceProviderProductSuspensionCommentID int
 	ID                                        int
 	ServiceProviderProductSuspensionID        int
@@ -352,7 +352,7 @@ type ServiceProviderProductSuspensionCommentHistory struct {
 	ReplacedAt                                pgtype.Timestamptz
 }
 
-type ServiceProviderProductSuspensionHistory struct {
+type ApiServiceProviderProductSuspensionHistory struct {
 	ServiceProviderProductSuspensionID int
 	ID                                 int
 	ProcuringSystemOperatorID          int
@@ -365,7 +365,7 @@ type ServiceProviderProductSuspensionHistory struct {
 	ReplacedAt                         pgtype.Timestamptz
 }
 
-type ServiceProvidingGroup struct {
+type ApiServiceProvidingGroup struct {
 	ID                int
 	Name              string
 	ServiceProviderID int
@@ -374,7 +374,7 @@ type ServiceProvidingGroup struct {
 	RecordedAt        pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupGridPrequalification struct {
+type ApiServiceProvidingGroupGridPrequalification struct {
 	ID                       int
 	ServiceProvidingGroupID  int
 	ImpactedSystemOperatorID int
@@ -385,7 +385,7 @@ type ServiceProvidingGroupGridPrequalification struct {
 	RecordedAt               pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupGridPrequalificationHistory struct {
+type ApiServiceProvidingGroupGridPrequalificationHistory struct {
 	ServiceProvidingGroupGridPrequalificationID int
 	ID                                          int
 	ServiceProvidingGroupID                     int
@@ -399,7 +399,7 @@ type ServiceProvidingGroupGridPrequalificationHistory struct {
 	ReplacedAt                                  pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupGridSuspension struct {
+type ApiServiceProvidingGroupGridSuspension struct {
 	ID                       int
 	ImpactedSystemOperatorID int
 	ServiceProvidingGroupID  int
@@ -408,7 +408,7 @@ type ServiceProvidingGroupGridSuspension struct {
 	RecordedAt               pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupGridSuspensionComment struct {
+type ApiServiceProvidingGroupGridSuspensionComment struct {
 	ID                                    int
 	ServiceProvidingGroupGridSuspensionID int
 	CreatedBy                             int
@@ -419,7 +419,7 @@ type ServiceProvidingGroupGridSuspensionComment struct {
 	RecordedAt                            pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupGridSuspensionCommentHistory struct {
+type ApiServiceProvidingGroupGridSuspensionCommentHistory struct {
 	ServiceProvidingGroupGridSuspensionCommentID int
 	ID                                           int
 	ServiceProvidingGroupGridSuspensionID        int
@@ -433,7 +433,7 @@ type ServiceProvidingGroupGridSuspensionCommentHistory struct {
 	ReplacedAt                                   pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupGridSuspensionHistory struct {
+type ApiServiceProvidingGroupGridSuspensionHistory struct {
 	ServiceProvidingGroupGridSuspensionID int
 	ID                                    int
 	ImpactedSystemOperatorID              int
@@ -445,7 +445,7 @@ type ServiceProvidingGroupGridSuspensionHistory struct {
 	ReplacedAt                            pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupHistory struct {
+type ApiServiceProvidingGroupHistory struct {
 	ServiceProvidingGroupID int
 	ID                      int
 	Name                    string
@@ -457,7 +457,7 @@ type ServiceProvidingGroupHistory struct {
 	ReplacedAt              pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupMembership struct {
+type ApiServiceProvidingGroupMembership struct {
 	ID                      int
 	ControllableUnitID      int
 	ServiceProvidingGroupID int
@@ -467,7 +467,7 @@ type ServiceProvidingGroupMembership struct {
 	RecordedAt              pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupMembershipHistory struct {
+type ApiServiceProvidingGroupMembershipHistory struct {
 	ServiceProvidingGroupMembershipID int
 	ID                                int
 	ControllableUnitID                int
@@ -480,7 +480,7 @@ type ServiceProvidingGroupMembershipHistory struct {
 	ReplacedAt                        pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupProductApplication struct {
+type ApiServiceProvidingGroupProductApplication struct {
 	ID                        int
 	ServiceProvidingGroupID   int
 	ProcuringSystemOperatorID int
@@ -493,7 +493,7 @@ type ServiceProvidingGroupProductApplication struct {
 	RecordedAt                pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupProductApplicationHistory struct {
+type ApiServiceProvidingGroupProductApplicationHistory struct {
 	ServiceProvidingGroupProductApplicationID int
 	ID                                        int
 	ServiceProvidingGroupID                   int
@@ -509,7 +509,7 @@ type ServiceProvidingGroupProductApplicationHistory struct {
 	ReplacedAt                                pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupProductSuspension struct {
+type ApiServiceProvidingGroupProductSuspension struct {
 	ID                        int
 	ProcuringSystemOperatorID int
 	ServiceProvidingGroupID   int
@@ -519,7 +519,7 @@ type ServiceProvidingGroupProductSuspension struct {
 	RecordedAt                pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupProductSuspensionComment struct {
+type ApiServiceProvidingGroupProductSuspensionComment struct {
 	ID                                       int
 	ServiceProvidingGroupProductSuspensionID int
 	CreatedBy                                int
@@ -530,7 +530,7 @@ type ServiceProvidingGroupProductSuspensionComment struct {
 	RecordedAt                               pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupProductSuspensionCommentHistory struct {
+type ApiServiceProvidingGroupProductSuspensionCommentHistory struct {
 	ServiceProvidingGroupProductSuspensionCommentID int
 	ID                                              int
 	ServiceProvidingGroupProductSuspensionID        int
@@ -544,7 +544,7 @@ type ServiceProvidingGroupProductSuspensionCommentHistory struct {
 	ReplacedAt                                      pgtype.Timestamptz
 }
 
-type ServiceProvidingGroupProductSuspensionHistory struct {
+type ApiServiceProvidingGroupProductSuspensionHistory struct {
 	ServiceProvidingGroupProductSuspensionID int
 	ID                                       int
 	ProcuringSystemOperatorID                int
@@ -557,7 +557,7 @@ type ServiceProvidingGroupProductSuspensionHistory struct {
 	ReplacedAt                               pgtype.Timestamptz
 }
 
-type SystemOperatorProductType struct {
+type ApiSystemOperatorProductType struct {
 	ID               int
 	SystemOperatorID int
 	ProductTypeID    int
@@ -566,7 +566,7 @@ type SystemOperatorProductType struct {
 	RecordedAt       pgtype.Timestamptz
 }
 
-type SystemOperatorProductTypeHistory struct {
+type ApiSystemOperatorProductTypeHistory struct {
 	SystemOperatorProductTypeID int
 	ID                          int
 	SystemOperatorID            int
@@ -578,7 +578,7 @@ type SystemOperatorProductTypeHistory struct {
 	ReplacedAt                  pgtype.Timestamptz
 }
 
-type TechnicalResource struct {
+type ApiTechnicalResource struct {
 	ID                 int
 	Name               string
 	ControllableUnitID int
@@ -587,7 +587,7 @@ type TechnicalResource struct {
 	RecordedAt         pgtype.Timestamptz
 }
 
-type TechnicalResourceHistory struct {
+type ApiTechnicalResourceHistory struct {
 	TechnicalResourceID int
 	ID                  int
 	Name                string

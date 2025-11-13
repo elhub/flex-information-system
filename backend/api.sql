@@ -1,6 +1,8 @@
 -- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
 
-CREATE TABLE controllable_unit (
+CREATE SCHEMA api;
+
+CREATE TABLE api.controllable_unit (
     id bigint NOT NULL,
     business_id text NOT NULL,
     name text NOT NULL,
@@ -21,7 +23,7 @@ CREATE TABLE controllable_unit (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE controllable_unit_history (
+CREATE TABLE api.controllable_unit_history (
     controllable_unit_id bigint NOT NULL,
     id bigint NOT NULL,
     business_id text NOT NULL,
@@ -45,7 +47,7 @@ CREATE TABLE controllable_unit_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE controllable_unit_suspension (
+CREATE TABLE api.controllable_unit_suspension (
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
@@ -53,7 +55,18 @@ CREATE TABLE controllable_unit_suspension (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE controllable_unit_suspension_history (
+CREATE TABLE api.controllable_unit_suspension_comment (
+    id bigint NOT NULL,
+    controllable_unit_suspension_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+
+CREATE TABLE api.controllable_unit_suspension_history (
     controllable_unit_suspension_id bigint NOT NULL,
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
@@ -64,30 +77,7 @@ CREATE TABLE controllable_unit_suspension_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE controllable_unit_suspension_comment (
-    id bigint NOT NULL,
-    controllable_unit_suspension_id bigint NOT NULL,
-    created_by bigint NOT NULL,
-    created_at timestamp with time zone NOT NULL,
-    visibility text NOT NULL,
-    content text NOT NULL,
-    recorded_by bigint NOT NULL,
-    recorded_at timestamp with time zone NOT NULL
-);
-CREATE TABLE controllable_unit_suspension_comment_history (
-    controllable_unit_suspension_comment_id bigint NOT NULL,
-    id bigint NOT NULL,
-    controllable_unit_suspension_id bigint NOT NULL,
-    created_by bigint NOT NULL,
-    created_at timestamp with time zone NOT NULL,
-    visibility text NOT NULL,
-    content text NOT NULL,
-    recorded_by bigint NOT NULL,
-    recorded_at timestamp with time zone NOT NULL,
-    replaced_by bigint NULL,
-    replaced_at timestamp with time zone NULL
-);
-CREATE TABLE controllable_unit_service_provider (
+CREATE TABLE api.controllable_unit_service_provider (
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
     service_provider_id bigint NOT NULL,
@@ -98,7 +88,7 @@ CREATE TABLE controllable_unit_service_provider (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE controllable_unit_service_provider_history (
+CREATE TABLE api.controllable_unit_service_provider_history (
     controllable_unit_service_provider_id bigint NOT NULL,
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
@@ -112,7 +102,7 @@ CREATE TABLE controllable_unit_service_provider_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group (
+CREATE TABLE api.service_providing_group (
     id bigint NOT NULL,
     name text NOT NULL,
     service_provider_id bigint NOT NULL,
@@ -120,7 +110,7 @@ CREATE TABLE service_providing_group (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_history (
+CREATE TABLE api.service_providing_group_history (
     service_providing_group_id bigint NOT NULL,
     id bigint NOT NULL,
     name text NOT NULL,
@@ -131,7 +121,7 @@ CREATE TABLE service_providing_group_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group_membership (
+CREATE TABLE api.service_providing_group_membership (
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
@@ -140,7 +130,7 @@ CREATE TABLE service_providing_group_membership (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_membership_history (
+CREATE TABLE api.service_providing_group_membership_history (
     service_providing_group_membership_id bigint NOT NULL,
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
@@ -152,7 +142,7 @@ CREATE TABLE service_providing_group_membership_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group_grid_prequalification (
+CREATE TABLE api.service_providing_group_grid_prequalification (
     id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
@@ -162,7 +152,7 @@ CREATE TABLE service_providing_group_grid_prequalification (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_grid_prequalification_history (
+CREATE TABLE api.service_providing_group_grid_prequalification_history (
     service_providing_group_grid_prequalification_id bigint NOT NULL,
     id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
@@ -175,7 +165,7 @@ CREATE TABLE service_providing_group_grid_prequalification_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group_grid_suspension (
+CREATE TABLE api.service_providing_group_grid_suspension (
     id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
@@ -183,7 +173,7 @@ CREATE TABLE service_providing_group_grid_suspension (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_grid_suspension_history (
+CREATE TABLE api.service_providing_group_grid_suspension_history (
     service_providing_group_grid_suspension_id bigint NOT NULL,
     id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
@@ -194,7 +184,7 @@ CREATE TABLE service_providing_group_grid_suspension_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group_grid_suspension_comment (
+CREATE TABLE api.service_providing_group_grid_suspension_comment (
     id bigint NOT NULL,
     service_providing_group_grid_suspension_id bigint NOT NULL,
     created_by bigint NOT NULL,
@@ -204,7 +194,7 @@ CREATE TABLE service_providing_group_grid_suspension_comment (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_grid_suspension_comment_history (
+CREATE TABLE api.service_providing_group_grid_suspension_comment_history (
     service_providing_group_grid_suspension_comment_id bigint NOT NULL,
     id bigint NOT NULL,
     service_providing_group_grid_suspension_id bigint NOT NULL,
@@ -217,7 +207,7 @@ CREATE TABLE service_providing_group_grid_suspension_comment_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE entity (
+CREATE TABLE api.entity (
     id bigint NOT NULL,
     business_id text NOT NULL,
     business_id_type text NOT NULL,
@@ -226,7 +216,7 @@ CREATE TABLE entity (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE entity_client (
+CREATE TABLE api.entity_client (
     id bigint NOT NULL,
     entity_id bigint NOT NULL,
     name text NULL,
@@ -238,7 +228,7 @@ CREATE TABLE entity_client (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE party (
+CREATE TABLE api.party (
     id bigint NOT NULL,
     business_id text NOT NULL,
     business_id_type text NOT NULL,
@@ -250,7 +240,7 @@ CREATE TABLE party (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE party_history (
+CREATE TABLE api.party_history (
     party_id bigint NOT NULL,
     id bigint NOT NULL,
     business_id text NOT NULL,
@@ -265,7 +255,7 @@ CREATE TABLE party_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE party_membership (
+CREATE TABLE api.party_membership (
     id bigint NOT NULL,
     party_id bigint NOT NULL,
     entity_id bigint NOT NULL,
@@ -273,7 +263,7 @@ CREATE TABLE party_membership (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE party_membership_history (
+CREATE TABLE api.party_membership_history (
     party_membership_id bigint NOT NULL,
     id bigint NOT NULL,
     party_id bigint NOT NULL,
@@ -284,14 +274,14 @@ CREATE TABLE party_membership_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE identity (
+CREATE TABLE api.identity (
     id bigint NOT NULL,
     entity_id bigint NOT NULL,
     entity_name text NOT NULL,
     party_id bigint NULL,
     party_name text NULL
 );
-CREATE TABLE technical_resource (
+CREATE TABLE api.technical_resource (
     id bigint NOT NULL,
     name text NOT NULL,
     controllable_unit_id bigint NOT NULL,
@@ -299,7 +289,7 @@ CREATE TABLE technical_resource (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE technical_resource_history (
+CREATE TABLE api.technical_resource_history (
     technical_resource_id bigint NOT NULL,
     id bigint NOT NULL,
     name text NOT NULL,
@@ -310,7 +300,7 @@ CREATE TABLE technical_resource_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE event (
+CREATE TABLE api.event (
     id bigint NOT NULL,
     specversion text NOT NULL,
     time timestamp with time zone NOT NULL,
@@ -318,7 +308,7 @@ CREATE TABLE event (
     source text NOT NULL,
     data text NULL
 );
-CREATE TABLE notification (
+CREATE TABLE api.notification (
     id bigint NOT NULL,
     acknowledged boolean NOT NULL,
     event_id bigint NOT NULL,
@@ -326,34 +316,34 @@ CREATE TABLE notification (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE accounting_point (
+CREATE TABLE api.accounting_point (
     id bigint NOT NULL,
     business_id text NOT NULL,
     system_operator_id bigint NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE accounting_point_balance_responsible_party (
+CREATE TABLE api.accounting_point_balance_responsible_party (
     accounting_point_id bigint NOT NULL,
     balance_responsible_party_id bigint NOT NULL,
     energy_direction text NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL
 );
-CREATE TABLE accounting_point_energy_supplier (
+CREATE TABLE api.accounting_point_energy_supplier (
     accounting_point_id bigint NOT NULL,
     energy_supplier_id bigint NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL
 );
-CREATE TABLE product_type (
+CREATE TABLE api.product_type (
     id bigint NOT NULL,
     business_id text NOT NULL,
     name text NOT NULL,
     service text NOT NULL,
     products text NOT NULL
 );
-CREATE TABLE system_operator_product_type (
+CREATE TABLE api.system_operator_product_type (
     id bigint NOT NULL,
     system_operator_id bigint NOT NULL,
     product_type_id bigint NOT NULL,
@@ -361,7 +351,7 @@ CREATE TABLE system_operator_product_type (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE system_operator_product_type_history (
+CREATE TABLE api.system_operator_product_type_history (
     system_operator_product_type_id bigint NOT NULL,
     id bigint NOT NULL,
     system_operator_id bigint NOT NULL,
@@ -372,7 +362,7 @@ CREATE TABLE system_operator_product_type_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_provider_product_application (
+CREATE TABLE api.service_provider_product_application (
     id bigint NOT NULL,
     service_provider_id bigint NOT NULL,
     system_operator_id bigint NOT NULL,
@@ -383,7 +373,7 @@ CREATE TABLE service_provider_product_application (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_provider_product_application_history (
+CREATE TABLE api.service_provider_product_application_history (
     service_provider_product_application_id bigint NOT NULL,
     id bigint NOT NULL,
     service_provider_id bigint NOT NULL,
@@ -397,7 +387,7 @@ CREATE TABLE service_provider_product_application_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_provider_product_application_comment (
+CREATE TABLE api.service_provider_product_application_comment (
     id bigint NOT NULL,
     service_provider_product_application_id bigint NOT NULL,
     created_by bigint NOT NULL,
@@ -407,7 +397,7 @@ CREATE TABLE service_provider_product_application_comment (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_provider_product_application_comment_history (
+CREATE TABLE api.service_provider_product_application_comment_history (
     service_provider_product_application_comment_id bigint NOT NULL,
     id bigint NOT NULL,
     service_provider_product_application_id bigint NOT NULL,
@@ -420,7 +410,7 @@ CREATE TABLE service_provider_product_application_comment_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_provider_product_suspension (
+CREATE TABLE api.service_provider_product_suspension (
     id bigint NOT NULL,
     procuring_system_operator_id bigint NOT NULL,
     service_provider_id bigint NOT NULL,
@@ -429,7 +419,7 @@ CREATE TABLE service_provider_product_suspension (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_provider_product_suspension_history (
+CREATE TABLE api.service_provider_product_suspension_history (
     service_provider_product_suspension_id bigint NOT NULL,
     id bigint NOT NULL,
     procuring_system_operator_id bigint NOT NULL,
@@ -441,7 +431,7 @@ CREATE TABLE service_provider_product_suspension_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_provider_product_suspension_comment (
+CREATE TABLE api.service_provider_product_suspension_comment (
     id bigint NOT NULL,
     service_provider_product_suspension_id bigint NOT NULL,
     created_by bigint NOT NULL,
@@ -451,7 +441,7 @@ CREATE TABLE service_provider_product_suspension_comment (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_provider_product_suspension_comment_history (
+CREATE TABLE api.service_provider_product_suspension_comment_history (
     service_provider_product_suspension_comment_id bigint NOT NULL,
     id bigint NOT NULL,
     service_provider_product_suspension_id bigint NOT NULL,
@@ -464,7 +454,7 @@ CREATE TABLE service_provider_product_suspension_comment_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group_product_application (
+CREATE TABLE api.service_providing_group_product_application (
     id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
     procuring_system_operator_id bigint NOT NULL,
@@ -476,7 +466,7 @@ CREATE TABLE service_providing_group_product_application (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_product_application_history (
+CREATE TABLE api.service_providing_group_product_application_history (
     service_providing_group_product_application_id bigint NOT NULL,
     id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
@@ -491,7 +481,7 @@ CREATE TABLE service_providing_group_product_application_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group_product_suspension (
+CREATE TABLE api.service_providing_group_product_suspension (
     id bigint NOT NULL,
     procuring_system_operator_id bigint NOT NULL,
     service_providing_group_id bigint NOT NULL,
@@ -500,7 +490,7 @@ CREATE TABLE service_providing_group_product_suspension (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_product_suspension_history (
+CREATE TABLE api.service_providing_group_product_suspension_history (
     service_providing_group_product_suspension_id bigint NOT NULL,
     id bigint NOT NULL,
     procuring_system_operator_id bigint NOT NULL,
@@ -512,7 +502,7 @@ CREATE TABLE service_providing_group_product_suspension_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE service_providing_group_product_suspension_comment (
+CREATE TABLE api.service_providing_group_product_suspension_comment (
     id bigint NOT NULL,
     service_providing_group_product_suspension_id bigint NOT NULL,
     created_by bigint NOT NULL,
@@ -522,7 +512,7 @@ CREATE TABLE service_providing_group_product_suspension_comment (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-CREATE TABLE service_providing_group_product_suspension_comment_history (
+CREATE TABLE api.service_providing_group_product_suspension_comment_history (
     service_providing_group_product_suspension_comment_id bigint NOT NULL,
     id bigint NOT NULL,
     service_providing_group_product_suspension_id bigint NOT NULL,
@@ -535,7 +525,7 @@ CREATE TABLE service_providing_group_product_suspension_comment_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
-CREATE TABLE notice (
+CREATE TABLE api.notice (
     party_id bigint NOT NULL,
     type text NOT NULL,
     source text NOT NULL,

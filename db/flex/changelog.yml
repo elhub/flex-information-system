@@ -214,6 +214,9 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_as_of.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_system_operator.sql
+      relativeToChangelogFile: true
 
   # history
   - includeAll:

@@ -11,10 +11,10 @@ risk of making a copy-paste mistake.
 """
 
 DB_DIR = "./db"
-output_file_backend_schema = "backend/schema.sql"
+output_file_backend_schema = "backend/api.sql"
 # ------------------------------------------------------------------------------
 
-# this part generates the schema.sql input file for sqlc in the backend
+# this part generates the api.sql input file for sqlc in the backend
 
 # it must contain fake tables that are there only to inform sqlc about the types
 # of the various fields in the views we are interacting with, as well as which
@@ -50,7 +50,7 @@ def formatted_fields(properties):
 def fake_table_create_statement(resource, properties, has_audit):
     return (
         f"""\
-CREATE TABLE {resource} (
+CREATE TABLE api.{resource} (
     {formatted_fields(properties)}\
 """
         + (
@@ -69,7 +69,7 @@ CREATE TABLE {resource} (
 
 def fake_history_table_create_statement(resource, properties):
     return f"""\
-CREATE TABLE {resource}_history (
+CREATE TABLE api.{resource}_history (
     {resource}_id bigint NOT NULL,
     {formatted_fields(properties)},
     recorded_by bigint NOT NULL,
@@ -88,6 +88,10 @@ if __name__ == "__main__":
     with open(output_file_backend_schema, "w") as backend_schema_f:
         print(
             "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
+            file=backend_schema_f,
+        )
+        print(
+            "CREATE SCHEMA api;\n",
             file=backend_schema_f,
         )
 
