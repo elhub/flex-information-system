@@ -391,6 +391,7 @@ sqlc:
             > sqlc.yaml
         sqlc generate
         rm sqlc.yaml
+        rm schemas/api.sql
         cd ..
     done
 
