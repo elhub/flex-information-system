@@ -1,4 +1,4 @@
-# Controllable Unit Suspension
+# Controllable Unit Suspension comment
 
 The relation allowing an impacted system operator to temporarily suspend a
 controllable unit.
@@ -30,7 +30,7 @@ No validation rules
 | Action                 | Recipient | Comment                                                                   |
 |------------------------|-----------|---------------------------------------------------------------------------|
 | create, update, delete | SP        | Service provider with current contract to the suspended controllable unit |
-| create, update, delete | SO        | Impacted SO                                                                  |
+| create, update, delete | SO        | Impacted SO                                                               |
 
 ## Authorization
 
@@ -64,7 +64,7 @@ No policies.
 | Policy key  | Policy                          | Status |
 |-------------|---------------------------------|--------|
 | CUSC-FISO001 | Create, read, update all CUSC. | DONE   |
-| CUSC-FISO002 | Read all CUSC histor           | DONE   |
+| CUSC-FISO002 | Read all CUSC history          | DONE   |
 
 #### Market Operator
 

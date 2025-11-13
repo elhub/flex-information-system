@@ -168,11 +168,10 @@ def test_cus_fiso(data):
     # RLS: CUS-FISO002
     check_history(client_fiso, cus.id)
 
-    # RLS: CUSC-SO002
-    # RLS: CUSC-SP002
 
-
-def test_cus_so(data):
+# RLS: CUSC-SO002
+# RLS: CUSC-SP002
+def test_cus_so_sp(data):
     (sts, cu_id, (client_so, so_id), (client_sp, sp_id)) = data
 
     # RLS: CUSC-COM001
