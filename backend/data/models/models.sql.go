@@ -12,7 +12,7 @@ import (
 const controllableUnitLookup = `-- name: ControllableUnitLookup :one
 SELECT
     controllable_units::jsonb
-FROM controllable_unit_lookup(
+FROM api.controllable_unit_lookup(
   -- empty strings considered as missing values
   nullif($1::text, ''),
   nullif($2::text, '')
@@ -28,7 +28,7 @@ func (q *Queries) ControllableUnitLookup(ctx context.Context, controllableUnitBu
 
 const controllableUnitLookupCheckEndUserMatchesAccountingPoint = `-- name: ControllableUnitLookupCheckEndUserMatchesAccountingPoint :one
 SELECT end_user_id::bigint
-FROM controllable_unit_lookup_check_end_user_matches_accounting_point(
+FROM api.controllable_unit_lookup_check_end_user_matches_accounting_point(
     $1::text,
     $2::text
 )
@@ -44,7 +44,7 @@ func (q *Queries) ControllableUnitLookupCheckEndUserMatchesAccountingPoint(ctx c
 const controllableUnitLookupSyncAccountingPoint = `-- name: ControllableUnitLookupSyncAccountingPoint :one
 SELECT
     accounting_point_id::bigint
-FROM controllable_unit_lookup_sync_accounting_point(
+FROM api.controllable_unit_lookup_sync_accounting_point(
     $1::text,
     $2::text,
     $3::text
@@ -62,7 +62,7 @@ const entityLookup = `-- name: EntityLookup :one
 SELECT
     entity_id::bigint,
     entity_found::boolean
-FROM entity_lookup(
+FROM api.entity_lookup(
   $1::text,
   $2::text,
   $3::text
@@ -83,7 +83,7 @@ func (q *Queries) EntityLookup(ctx context.Context, entityBusinessID string, ent
 
 const getAccountingPointIDFromBusinessID = `-- name: GetAccountingPointIDFromBusinessID :one
 SELECT ap.id
-FROM accounting_point AS ap
+FROM api.accounting_point AS ap
 WHERE ap.business_id = $1
 `
 
@@ -99,7 +99,7 @@ const getCurrentControllableUnitAccountingPoint = `-- name: GetCurrentControllab
 SELECT
     accounting_point_id::bigint,
     accounting_point_business_id::text
-FROM current_controllable_unit_accounting_point(
+FROM api.current_controllable_unit_accounting_point(
     $1::text
 )
 `
