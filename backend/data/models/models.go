@@ -114,7 +114,7 @@ type ApiControllableUnitSuspension struct {
 	RecordedAt               pgtype.Timestamptz
 }
 
-type ControllableUnitSuspensionComment struct {
+type ApiControllableUnitSuspensionComment struct {
 	ID                           int
 	ControllableUnitSuspensionID int
 	CreatedBy                    int
@@ -125,7 +125,7 @@ type ControllableUnitSuspensionComment struct {
 	RecordedAt                   pgtype.Timestamptz
 }
 
-type ControllableUnitSuspensionCommentHistory struct {
+type ApiControllableUnitSuspensionCommentHistory struct {
 	ControllableUnitSuspensionCommentID int
 	ID                                  int
 	ControllableUnitSuspensionID        int
@@ -139,7 +139,7 @@ type ControllableUnitSuspensionCommentHistory struct {
 	ReplacedAt                          pgtype.Timestamptz
 }
 
-type ControllableUnitSuspensionHistory struct {
+type ApiControllableUnitSuspensionHistory struct {
 	ControllableUnitSuspensionID int
 	ID                           int
 	ControllableUnitID           int
