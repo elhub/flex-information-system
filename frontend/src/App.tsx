@@ -697,6 +697,49 @@ export const App = () => (
                 </ResourceContextProvider>
               }
             />
+            {/* controllable unit suspension comments */}
+            {/* list is part of CU suspension show page */}
+            <Route
+              path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment/:id/show"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension_comment">
+                  <CommentShow />
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment/create"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension_comment">
+                  <CreateRedirectPreviousPage>
+                    <CommentInput />
+                  </CreateRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            <Route
+              path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment/:id"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension_comment">
+                  <EditRedirectPreviousPage>
+                    <CommentInput />
+                  </EditRedirectPreviousPage>
+                </ResourceContextProvider>
+              }
+            />
+            {/* controllable unit suspension comment history */}
+            <Route
+              path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment_history"
+              element={<CommentHistoryList />}
+            />
+            <Route
+              path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment_history/:id/show"
+              element={
+                <ResourceContextProvider value="controllable_unit_suspension_comment_history">
+                  <CommentShow />
+                </ResourceContextProvider>
+              }
+            />
             {/* controllable unit service provider relation */}
             {/* list is part of controllable unit show page */}
             <Route
