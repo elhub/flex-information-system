@@ -32,6 +32,15 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_suspension (
     REFERENCES service_providing_group (id)
 );
 
+-- changeset flex:service-providing-group-grid-suspension-spg-iso-uk runOnChange:true endDelimiter:--
+-- only one active suspension per ISO per SPG
+CREATE UNIQUE INDEX IF NOT EXISTS
+uk_service_providing_group_grid_suspension_iso_spg
+ON service_providing_group_grid_suspension (
+    impacted_system_operator_id,
+    service_providing_group_id
+);
+
 -- changeset flex:service-providing-group-grid-suspension-upsert-function runOnChange:true endDelimiter:--
 -- trigger to check that the suspending SO has qualified the SPG
 CREATE OR REPLACE FUNCTION service_providing_group_grid_suspension_upsert()

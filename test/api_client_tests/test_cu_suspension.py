@@ -295,6 +295,18 @@ def test_cus_so(data):
     )
     assert isinstance(cus, ControllableUnitSuspensionResponse)
 
+    # Validation: CUS-VAL002
+    # Only one active suspension per CU per SO
+    cus_duplicate = create_controllable_unit_suspension.sync(
+        client=client_so,
+        body=ControllableUnitSuspensionCreateRequest(
+            impacted_system_operator_id=so_id,
+            controllable_unit_id=cast(int, cu.id),
+            reason=ControllableUnitSuspensionReason.OTHER,
+        ),
+    )
+    assert isinstance(cus_duplicate, ErrorMessage)
+
     # SO cannot read the SPG yet (cf SPG RLS below)
     err = read_service_providing_group.sync(
         client=client_so2,
@@ -482,16 +494,6 @@ def test_cus_sp(data):
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
-
-    cus = create_controllable_unit_suspension.sync(
-        client=client_fiso,
-        body=ControllableUnitSuspensionCreateRequest(
-            controllable_unit_id=cast(int, cu.id),
-            impacted_system_operator_id=sts.get_userinfo(client_so)["party_id"],
-            reason=ControllableUnitSuspensionReason.OTHER,
-        ),
-    )
-    assert isinstance(cus, ControllableUnitSuspensionResponse)
 
     r = read_controllable_unit_suspension.sync(
         client=client_sp,
