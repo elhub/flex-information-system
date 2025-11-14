@@ -176,6 +176,50 @@ func (q *Queries) GetControllableUnitServiceProviderUpdateDeleteNotificationReci
 	return items, nil
 }
 
+const getControllableUnitSuspensionCommentNotificationRecipients = `-- name: GetControllableUnitSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[
+        cusp.service_provider_id,
+        cush.impacted_system_operator_id
+    ])::bigint
+FROM api.controllable_unit_suspension_comment_history AS cusch
+    INNER JOIN api.controllable_unit_suspension_history AS cush
+        ON cusch.controllable_unit_suspension_id
+            = cush.controllable_unit_suspension_id
+    INNER JOIN api.controllable_unit_service_provider AS cusp
+        ON cush.controllable_unit_id = cusp.controllable_unit_id
+WHERE cusch.controllable_unit_suspension_comment_id = $1
+    AND tstzrange(cusch.recorded_at, cusch.replaced_at, '[]')
+        @> $2::timestamptz
+    AND tstzrange(cush.recorded_at, cush.replaced_at, '[)')
+        @> $2::timestamptz
+    AND tstzrange(cusp.valid_from, cusp.valid_to, '[)')
+        @> $2::timestamptz
+    -- private comments do not lead to notifications
+    AND cusch.visibility = 'any_involved_party'
+`
+
+// using CUS(C) history because of visibility + possible deletion
+func (q *Queries) GetControllableUnitSuspensionCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitSuspensionCommentNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getControllableUnitSuspensionNotificationRecipients = `-- name: GetControllableUnitSuspensionNotificationRecipients :many
 SELECT cusp.service_provider_id
 FROM api.controllable_unit_suspension_history AS cush

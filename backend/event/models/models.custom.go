@@ -24,6 +24,9 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 		"no.elhub.flex.controllable_unit_suspension.update",
 		"no.elhub.flex.controllable_unit_suspension.delete":
 		return q.GetControllableUnitSuspensionNotificationRecipients(ctx, resourceID, recordedAt)
+	case "no.elhub.flex.controllable_unit_suspension_comment.create",
+		"no.elhub.flex.controllable_unit_suspension_comment.update":
+		return q.GetControllableUnitSuspensionCommentNotificationRecipients(ctx, resourceID, recordedAt)
 	case "no.elhub.flex.controllable_unit_service_provider.create":
 		return q.GetControllableUnitServiceProviderCreateNotificationRecipients(
 			ctx, resourceID, recordedAt,

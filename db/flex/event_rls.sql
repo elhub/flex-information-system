@@ -75,6 +75,7 @@ USING (
     source_resource IN (
         'controllable_unit',
         'controllable_unit_suspension',
+        'controllable_unit_suspension_comment',
         'controllable_unit_service_provider',
         'technical_resource',
         'system_operator_product_type',
@@ -437,5 +438,24 @@ USING (
                 AND cusp.service_provider_id = (SELECT flex.current_party())
                 AND cusp.valid_time_range @> lower(event.record_time_range) -- noqa
         )
+    )
+);
+
+-- RLS: EVENT-SP018
+CREATE POLICY "EVENT_SP018" ON event
+FOR SELECT
+TO flex_service_provider
+USING (
+    source_resource = 'controllable_unit_suspension_comment'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit_suspension_comment AS cusc
+        WHERE cusc.id = event.source_id -- noqa
+            AND cusc.record_time_range @> lower(event.record_time_range) -- noqa
+        UNION ALL
+        SELECT 1
+        FROM flex.controllable_unit_suspension_comment_history AS cusch
+        WHERE cusch.id = event.source_id -- noqa
+            AND cusch.record_time_range @> lower(event.record_time_range) -- noqa
     )
 );

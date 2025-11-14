@@ -27,10 +27,10 @@ No validation rules
 
 ## Notifications
 
-| Action                 | Recipient | Comment                                                                                                 |
-|------------------------|-----------|---------------------------------------------------------------------------------------------------------|
-| create, update, delete | SP        | Service provider with current contract to the suspended controllable unit when they can see the comment |
-| create, update, delete | SO        | Impacted SO of CUS when they can see the comment                                                        |
+| Action         | Recipient | Comment                                                                                                 |
+|----------------|-----------|---------------------------------------------------------------------------------------------------------|
+| create, update | SP        | Service provider with current contract to the suspended controllable unit when they can see the comment |
+| create, update | SO        | Impacted SO of CUS when they can see the comment                                                        |
 
 ## Authorization
 

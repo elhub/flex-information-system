@@ -55,6 +55,17 @@ CREATE TABLE api.controllable_unit_suspension (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
+CREATE TABLE api.controllable_unit_suspension_history (
+    controllable_unit_suspension_id bigint NOT NULL,
+    id bigint NOT NULL,
+    controllable_unit_id bigint NOT NULL,
+    impacted_system_operator_id bigint NOT NULL,
+    reason text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
 CREATE TABLE api.controllable_unit_suspension_comment (
     id bigint NOT NULL,
     controllable_unit_suspension_id bigint NOT NULL,
@@ -65,13 +76,14 @@ CREATE TABLE api.controllable_unit_suspension_comment (
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
-
-CREATE TABLE api.controllable_unit_suspension_history (
-    controllable_unit_suspension_id bigint NOT NULL,
+CREATE TABLE api.controllable_unit_suspension_comment_history (
+    controllable_unit_suspension_comment_id bigint NOT NULL,
     id bigint NOT NULL,
-    controllable_unit_id bigint NOT NULL,
-    impacted_system_operator_id bigint NOT NULL,
-    reason text NOT NULL,
+    controllable_unit_suspension_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

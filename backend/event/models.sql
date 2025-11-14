@@ -408,3 +408,26 @@ WHERE cush.controllable_unit_suspension_id = @resource_id
     AND tstzrange(spgm.valid_from, spgm.valid_to, '[)')
         @> @recorded_at::timestamptz
     AND notification.spg_product_application_ready_for_market_check(spgpa);
+
+-- name: GetControllableUnitSuspensionCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[
+        cusp.service_provider_id,
+        cush.impacted_system_operator_id
+    ])::bigint
+-- using CUS(C) history because of visibility + possible deletion
+FROM api.controllable_unit_suspension_comment_history AS cusch
+    INNER JOIN api.controllable_unit_suspension_history AS cush
+        ON cusch.controllable_unit_suspension_id
+            = cush.controllable_unit_suspension_id
+    INNER JOIN api.controllable_unit_service_provider AS cusp
+        ON cush.controllable_unit_id = cusp.controllable_unit_id
+WHERE cusch.controllable_unit_suspension_comment_id = @resource_id
+    AND tstzrange(cusch.recorded_at, cusch.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    AND tstzrange(cush.recorded_at, cush.replaced_at, '[)')
+        @> @recorded_at::timestamptz
+    AND tstzrange(cusp.valid_from, cusp.valid_to, '[)')
+        @> @recorded_at::timestamptz
+    -- private comments do not lead to notifications
+    AND cusch.visibility = 'any_involved_party';

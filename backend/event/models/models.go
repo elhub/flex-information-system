@@ -114,6 +114,31 @@ type ApiControllableUnitSuspension struct {
 	RecordedAt               pgtype.Timestamptz
 }
 
+type ApiControllableUnitSuspensionComment struct {
+	ID                           int
+	ControllableUnitSuspensionID int
+	CreatedBy                    int
+	CreatedAt                    pgtype.Timestamptz
+	Visibility                   string
+	Content                      string
+	RecordedBy                   int
+	RecordedAt                   pgtype.Timestamptz
+}
+
+type ApiControllableUnitSuspensionCommentHistory struct {
+	ControllableUnitSuspensionCommentID int
+	ID                                  int
+	ControllableUnitSuspensionID        int
+	CreatedBy                           int
+	CreatedAt                           pgtype.Timestamptz
+	Visibility                          string
+	Content                             string
+	RecordedBy                          int
+	RecordedAt                          pgtype.Timestamptz
+	ReplacedBy                          *int
+	ReplacedAt                          pgtype.Timestamptz
+}
+
 type ApiControllableUnitSuspensionHistory struct {
 	ControllableUnitSuspensionID int
 	ID                           int
