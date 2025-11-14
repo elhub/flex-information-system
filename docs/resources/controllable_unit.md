@@ -8,7 +8,7 @@ connection to the balance responsible party (BRP) and determining its location
 in the grid.
 
 For more information about the CU concept and its role in the flexibility structure,
-see [Controllable Unit and Service Providing Group](../concepts/cu-spg.md#what-is-a-controllable-unit).
+see [Conceptual Model and Terminology](../concepts/conceptual-model.md).
 
 ## Business Identifiers
 
