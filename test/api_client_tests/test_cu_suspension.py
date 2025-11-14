@@ -496,16 +496,6 @@ def test_cus_sp(data):
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
-    cus = create_controllable_unit_suspension.sync(
-        client=client_fiso,
-        body=ControllableUnitSuspensionCreateRequest(
-            controllable_unit_id=cast(int, cu.id),
-            impacted_system_operator_id=sts.get_userinfo(client_so)["party_id"],
-            reason=ControllableUnitSuspensionReason.OTHER,
-        ),
-    )
-    assert isinstance(cus, ControllableUnitSuspensionResponse)
-
     r = read_controllable_unit_suspension.sync(
         client=client_sp,
         id=cast(int, cus.id),

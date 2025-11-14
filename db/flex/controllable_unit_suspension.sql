@@ -57,6 +57,15 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:controllable-unit-suspension-cu-iso-uk runOnChange:true endDelimiter:--
+-- only one end_user party per entity
+CREATE UNIQUE INDEX IF NOT EXISTS
+uk_controllable_unit_suspension_iso_cu
+ON controllable_unit_suspension (
+    impacted_system_operator_id,
+    controllable_unit_id
+);
+
 -- changeset flex:controllable-unit-suspension-cu-status-insert-trigger runOnChange:true endDelimiter:--
 -- CUS-VAL001
 CREATE OR REPLACE TRIGGER
