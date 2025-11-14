@@ -58,7 +58,7 @@ END;
 $$;
 
 -- changeset flex:controllable-unit-suspension-cu-iso-uk runOnChange:true endDelimiter:--
--- only one end_user party per entity
+-- ensure only one active suspension per ISO per CU
 CREATE UNIQUE INDEX IF NOT EXISTS
 uk_controllable_unit_suspension_iso_cu
 ON controllable_unit_suspension (
