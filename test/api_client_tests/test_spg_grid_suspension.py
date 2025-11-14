@@ -293,6 +293,17 @@ def test_spggs_so(data):
     )
     assert isinstance(s, ServiceProvidingGroupGridSuspensionResponse)
 
+    # Validation: SPGGS-VAL002
+    # Only one active suspension per SPG per SO
+    s_duplicate = create_service_providing_group_grid_suspension.sync(
+        client=client_so,
+        body=ServiceProvidingGroupGridSuspensionCreateRequest(
+            service_providing_group_id=spg_id,
+            reason=ServiceProvidingGroupGridSuspensionReason.OTHER,
+        ),
+    )
+    assert isinstance(s_duplicate, ErrorMessage)
+
     spggss = list_service_providing_group_grid_suspension.sync(client=client_so)
     assert isinstance(spggss, list)
     assert len(spggss) > 0
