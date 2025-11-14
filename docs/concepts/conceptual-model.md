@@ -24,9 +24,10 @@ section we describe how we have chosen to interpret these concepts so far.
 
 > [!NOTE]
 >
-> Throughout this section, the names of the resources (such as CU, TR, AP or SPG)
+> Throughout this section, the names of resources (such as CU, TR, AP or SPG)
 > are linked to their corresponding [API resources](../resources/index.md) descriptions.
-> These links provide the fields and validation rules associated with each resource.
+> These links provide the fields, validation rules, and other technical details
+> for each resource.
 >
 > Likewise, the names of parties (such as SP, SO, ES, BRP and EU) are linked to the
 > party type definitions in the [Auth section](../technical/auth.md), which describe
@@ -69,6 +70,18 @@ Each CU consists of one or more
 physical device that generates, consumes, or stores electricity. The CU
 represents the logical control for these resources, which
 all relate to the same accounting point.
+
+> [!NOTE]
+>
+> The NC DR does not define a concept equivalent to a 'technical resource'
+> (TR), but several requirements motivate including TRs in FIS:
+>
+> * SPs must describe the type of technical assets used to deliver
+> services (Art. 17(1)(d)), and system operators (SOs) must receive structural and
+> technical data about CUs and service providing groups (Art. 52-54).
+>
+> * Prequalification should be simplified when CUs are technically identical
+> (Art. 20(3), 21).
 
 ### Connection to an accounting point
 
