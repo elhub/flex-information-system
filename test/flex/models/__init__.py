@@ -41,6 +41,13 @@ from .controllable_unit_service_provider_response import ControllableUnitService
 from .controllable_unit_service_provider_update_request import ControllableUnitServiceProviderUpdateRequest
 from .controllable_unit_status import ControllableUnitStatus
 from .controllable_unit_suspension import ControllableUnitSuspension
+from .controllable_unit_suspension_comment import ControllableUnitSuspensionComment
+from .controllable_unit_suspension_comment_create_data import ControllableUnitSuspensionCommentCreateData
+from .controllable_unit_suspension_comment_create_request import ControllableUnitSuspensionCommentCreateRequest
+from .controllable_unit_suspension_comment_history_response import ControllableUnitSuspensionCommentHistoryResponse
+from .controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
+from .controllable_unit_suspension_comment_update_request import ControllableUnitSuspensionCommentUpdateRequest
+from .controllable_unit_suspension_comment_visibility import ControllableUnitSuspensionCommentVisibility
 from .controllable_unit_suspension_create_data import ControllableUnitSuspensionCreateData
 from .controllable_unit_suspension_create_request import ControllableUnitSuspensionCreateRequest
 from .controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
@@ -76,6 +83,8 @@ from .list_controllable_unit_history_prefer import ListControllableUnitHistoryPr
 from .list_controllable_unit_prefer import ListControllableUnitPrefer
 from .list_controllable_unit_service_provider_history_prefer import ListControllableUnitServiceProviderHistoryPrefer
 from .list_controllable_unit_service_provider_prefer import ListControllableUnitServiceProviderPrefer
+from .list_controllable_unit_suspension_comment_history_prefer import ListControllableUnitSuspensionCommentHistoryPrefer
+from .list_controllable_unit_suspension_comment_prefer import ListControllableUnitSuspensionCommentPrefer
 from .list_controllable_unit_suspension_history_prefer import ListControllableUnitSuspensionHistoryPrefer
 from .list_controllable_unit_suspension_prefer import ListControllableUnitSuspensionPrefer
 from .list_entity_client_prefer import ListEntityClientPrefer
@@ -354,6 +363,13 @@ __all__ = (
     "ControllableUnitServiceProviderUpdateRequest",
     "ControllableUnitStatus",
     "ControllableUnitSuspension",
+    "ControllableUnitSuspensionComment",
+    "ControllableUnitSuspensionCommentCreateData",
+    "ControllableUnitSuspensionCommentCreateRequest",
+    "ControllableUnitSuspensionCommentHistoryResponse",
+    "ControllableUnitSuspensionCommentResponse",
+    "ControllableUnitSuspensionCommentUpdateRequest",
+    "ControllableUnitSuspensionCommentVisibility",
     "ControllableUnitSuspensionCreateData",
     "ControllableUnitSuspensionCreateRequest",
     "ControllableUnitSuspensionHistoryResponse",
@@ -389,6 +405,8 @@ __all__ = (
     "ListControllableUnitPrefer",
     "ListControllableUnitServiceProviderHistoryPrefer",
     "ListControllableUnitServiceProviderPrefer",
+    "ListControllableUnitSuspensionCommentHistoryPrefer",
+    "ListControllableUnitSuspensionCommentPrefer",
     "ListControllableUnitSuspensionHistoryPrefer",
     "ListControllableUnitSuspensionPrefer",
     "ListEntityClientPrefer",

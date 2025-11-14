@@ -350,7 +350,6 @@ def test_cus_so(data):
         ),
     )
 
-    # gir feilen message='product type automatic_fast_frequency is not active for system operator'
     assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(

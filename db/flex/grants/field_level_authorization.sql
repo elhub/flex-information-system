@@ -797,6 +797,116 @@ GRANT SELECT ON TABLE
 flex.controllable_unit_suspension_history
 TO flex_internal_event_notification;
 
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_end_user;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-so-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-so-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-sp-insert endDelimiter:-- runAlways:true
+GRANT INSERT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-sp-update endDelimiter:-- runAlways:true
+GRANT UPDATE ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment
+TO flex_third_party;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_end_user;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-controllable-unit-suspension-comment-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.controllable_unit_suspension_comment_history
+TO flex_third_party;
+
 -- changeset flex:flex-grant-service-providing-group-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE
 flex.service_providing_group

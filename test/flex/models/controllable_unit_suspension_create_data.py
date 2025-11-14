@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -16,20 +18,20 @@ class ControllableUnitSuspensionCreateData:
     suspend a controllable unit.
 
         Attributes:
-            reason (Union[Unset, ControllableUnitSuspensionReason]): The reason for the suspension. Example:
+            reason (ControllableUnitSuspensionReason | Unset): The reason for the suspension. Example:
                 compromises_safe_operation.
-            controllable_unit_id (Union[Unset, int]): Reference to the suspended controllable unit. Example: 2.
-            impacted_system_operator_id (Union[Unset, int]): Reference to the impacted system operator suspending the
-                controllable unit. Example: 7.
+            controllable_unit_id (int | Unset): Reference to the suspended controllable unit. Example: 2.
+            impacted_system_operator_id (int | Unset): Reference to the impacted system operator suspending the controllable
+                unit. Example: 7.
     """
 
-    reason: Union[Unset, ControllableUnitSuspensionReason] = UNSET
-    controllable_unit_id: Union[Unset, int] = UNSET
-    impacted_system_operator_id: Union[Unset, int] = UNSET
+    reason: ControllableUnitSuspensionReason | Unset = UNSET
+    controllable_unit_id: int | Unset = UNSET
+    impacted_system_operator_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        reason: Union[Unset, str] = UNSET
+        reason: str | Unset = UNSET
         if not isinstance(self.reason, Unset):
             reason = self.reason.value
 
@@ -53,7 +55,7 @@ class ControllableUnitSuspensionCreateData:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         _reason = d.pop("reason", UNSET)
-        reason: Union[Unset, ControllableUnitSuspensionReason]
+        reason: ControllableUnitSuspensionReason | Unset
         if isinstance(_reason, Unset):
             reason = UNSET
         else:

@@ -126,6 +126,14 @@ func NewAPIHandler(
 	mux.Handle("GET /controllable_unit_suspension_history", dataListPostgRESTHandler)
 	mux.Handle("GET /controllable_unit_suspension_history/{id}", dataPostgRESTHandler)
 
+	mux.Handle("GET /controllable_unit_suspension_comment", dataListPostgRESTHandler)
+	mux.Handle("POST /controllable_unit_suspension_comment", dataPostgRESTHandler)
+	mux.Handle("GET /controllable_unit_suspension_comment/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /controllable_unit_suspension_comment/{id}", dataPostgRESTHandler)
+
+	mux.Handle("GET /controllable_unit_suspension_comment_history", dataListPostgRESTHandler)
+	mux.Handle("GET /controllable_unit_suspension_comment_history/{id}", dataPostgRESTHandler)
+
 	mux.Handle("GET /controllable_unit_service_provider", dataListPostgRESTHandler)
 	mux.Handle("POST /controllable_unit_service_provider", dataPostgRESTHandler)
 	mux.Handle("GET /controllable_unit_service_provider/{id}", dataPostgRESTHandler)

@@ -126,6 +126,9 @@ databaseChangeLog:
       file: ./controllable_unit_suspension.sql
       relativeToChangelogFile: true
   - include:
+      file: ./controllable_unit_suspension_comment.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./controllable_unit_service_provider.sql
       relativeToChangelogFile: true
   - include:
@@ -255,6 +258,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_product_suspension_involved_parties.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_suspension_involved_parties.sql
       relativeToChangelogFile: true
 
   # RLS, grants

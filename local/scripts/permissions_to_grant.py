@@ -26,6 +26,7 @@ party_type_abbr = {
 history_enabled = [
     "controllable_unit",
     "controllable_unit_suspension",
+    "controllable_unit_suspension_comment",
     "controllable_unit_service_provider",
     "service_providing_group",
     "service_providing_group_membership",

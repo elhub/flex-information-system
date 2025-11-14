@@ -1,11 +1,12 @@
 from http import HTTPStatus
-from typing import Any
+from typing import Any, cast
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.controllable_unit_suspension_history_response import ControllableUnitSuspensionHistoryResponse
+from ...models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
+from ...models.controllable_unit_suspension_comment_update_request import ControllableUnitSuspensionCommentUpdateRequest
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...types import Response
@@ -13,22 +14,35 @@ from ...types import Response
 
 def _get_kwargs(
     id: int,
+    *,
+    body: ControllableUnitSuspensionCommentUpdateRequest,
 ) -> dict[str, Any]:
+    headers: dict[str, Any] = {}
+
     _kwargs: dict[str, Any] = {
-        "method": "get",
-        "url": f"/controllable_unit_suspension_history/{id}",
+        "method": "patch",
+        "url": f"/controllable_unit_suspension_comment/{id}",
     }
 
+    _kwargs["json"] = body.to_dict()
+
+    headers["Content-Type"] = "application/json"
+
+    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     if response.status_code == 200:
-        response_200 = ControllableUnitSuspensionHistoryResponse.from_dict(response.json())
+        response_200 = ControllableUnitSuspensionCommentResponse.from_dict(response.json())
 
         return response_200
+
+    if response.status_code == 204:
+        response_204 = cast(Any, None)
+        return response_204
 
     if response.status_code == 400:
         response_400 = ErrorMessage.from_dict(response.json())
@@ -71,10 +85,10 @@ def _parse_response(
 
         return response_406
 
-    if response.status_code == 500:
-        response_500 = ErrorMessage.from_dict(response.json())
+    if response.status_code == 409:
+        response_409 = ErrorMessage.from_dict(response.json())
 
-        return response_500
+        return response_409
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -84,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,22 +111,26 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
-    """Read Controllable Unit Suspension - history
+    body: ControllableUnitSuspensionCommentUpdateRequest,
+) -> Response[Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+    """Update Controllable Unit Suspension Comment
 
     Args:
         id (int):
+        body (ControllableUnitSuspensionCommentUpdateRequest): Request schema for update
+            operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
         id=id,
+        body=body,
     )
 
     response = client.get_httpx_client().request(
@@ -126,23 +144,27 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
-    """Read Controllable Unit Suspension - history
+    body: ControllableUnitSuspensionCommentUpdateRequest,
+) -> Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+    """Update Controllable Unit Suspension Comment
 
     Args:
         id (int):
+        body (ControllableUnitSuspensionCommentUpdateRequest): Request schema for update
+            operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage
+        Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return sync_detailed(
         id=id,
         client=client,
+        body=body,
     ).parsed
 
 
@@ -150,22 +172,26 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
-    """Read Controllable Unit Suspension - history
+    body: ControllableUnitSuspensionCommentUpdateRequest,
+) -> Response[Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+    """Update Controllable Unit Suspension Comment
 
     Args:
         id (int):
+        body (ControllableUnitSuspensionCommentUpdateRequest): Request schema for update
+            operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
         id=id,
+        body=body,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -177,23 +203,27 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
-    """Read Controllable Unit Suspension - history
+    body: ControllableUnitSuspensionCommentUpdateRequest,
+) -> Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+    """Update Controllable Unit Suspension Comment
 
     Args:
         id (int):
+        body (ControllableUnitSuspensionCommentUpdateRequest): Request schema for update
+            operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage
+        Any | ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return (
         await asyncio_detailed(
             id=id,
             client=client,
+            body=body,
         )
     ).parsed

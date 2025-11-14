@@ -5,25 +5,24 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+from ...models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.list_controllable_unit_suspension_prefer import ListControllableUnitSuspensionPrefer
+from ...models.list_controllable_unit_suspension_comment_prefer import ListControllableUnitSuspensionCommentPrefer
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     id: str | Unset = UNSET,
-    controllable_unit_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
+    controllable_unit_suspension_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitSuspensionPrefer | Unset = UNSET,
+    prefer: ListControllableUnitSuspensionCommentPrefer | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(range_, Unset):
@@ -39,9 +38,7 @@ def _get_kwargs(
 
     params["id"] = id
 
-    params["controllable_unit_id"] = controllable_unit_id
-
-    params["impacted_system_operator_id"] = impacted_system_operator_id
+    params["controllable_unit_suspension_id"] = controllable_unit_suspension_id
 
     params["select"] = select
 
@@ -55,7 +52,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/controllable_unit_suspension",
+        "url": "/controllable_unit_suspension_comment",
         "params": params,
     }
 
@@ -65,12 +62,12 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse] | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ControllableUnitSuspensionResponse.from_dict(response_200_item_data)
+            response_200_item = ControllableUnitSuspensionCommentResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -139,7 +136,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse]]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -152,42 +149,39 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    controllable_unit_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
+    controllable_unit_suspension_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitSuspensionPrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse]]:
-    """List Controllable Unit Suspension
+    prefer: ListControllableUnitSuspensionCommentPrefer | Unset = UNSET,
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]]:
+    """List Controllable Unit Suspension Comment
 
     Args:
         id (str | Unset):
-        controllable_unit_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
+        controllable_unit_suspension_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
         range_ (str | Unset):
         range_unit (str | Unset):
-        prefer (ListControllableUnitSuspensionPrefer | Unset):
+        prefer (ListControllableUnitSuspensionCommentPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse]]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]]
     """
 
     kwargs = _get_kwargs(
         id=id,
-        controllable_unit_id=controllable_unit_id,
-        impacted_system_operator_id=impacted_system_operator_id,
+        controllable_unit_suspension_id=controllable_unit_suspension_id,
         select=select,
         order=order,
         offset=offset,
@@ -208,43 +202,40 @@ def sync(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    controllable_unit_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
+    controllable_unit_suspension_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitSuspensionPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse] | None:
-    """List Controllable Unit Suspension
+    prefer: ListControllableUnitSuspensionCommentPrefer | Unset = UNSET,
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse] | None:
+    """List Controllable Unit Suspension Comment
 
     Args:
         id (str | Unset):
-        controllable_unit_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
+        controllable_unit_suspension_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
         range_ (str | Unset):
         range_unit (str | Unset):
-        prefer (ListControllableUnitSuspensionPrefer | Unset):
+        prefer (ListControllableUnitSuspensionCommentPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse]
+        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]
     """
 
     return sync_detailed(
         client=client,
         id=id,
-        controllable_unit_id=controllable_unit_id,
-        impacted_system_operator_id=impacted_system_operator_id,
+        controllable_unit_suspension_id=controllable_unit_suspension_id,
         select=select,
         order=order,
         offset=offset,
@@ -259,42 +250,39 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    controllable_unit_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
+    controllable_unit_suspension_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitSuspensionPrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse]]:
-    """List Controllable Unit Suspension
+    prefer: ListControllableUnitSuspensionCommentPrefer | Unset = UNSET,
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]]:
+    """List Controllable Unit Suspension Comment
 
     Args:
         id (str | Unset):
-        controllable_unit_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
+        controllable_unit_suspension_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
         range_ (str | Unset):
         range_unit (str | Unset):
-        prefer (ListControllableUnitSuspensionPrefer | Unset):
+        prefer (ListControllableUnitSuspensionCommentPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse]]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]]
     """
 
     kwargs = _get_kwargs(
         id=id,
-        controllable_unit_id=controllable_unit_id,
-        impacted_system_operator_id=impacted_system_operator_id,
+        controllable_unit_suspension_id=controllable_unit_suspension_id,
         select=select,
         order=order,
         offset=offset,
@@ -313,44 +301,41 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    controllable_unit_id: str | Unset = UNSET,
-    impacted_system_operator_id: str | Unset = UNSET,
+    controllable_unit_suspension_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitSuspensionPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse] | None:
-    """List Controllable Unit Suspension
+    prefer: ListControllableUnitSuspensionCommentPrefer | Unset = UNSET,
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse] | None:
+    """List Controllable Unit Suspension Comment
 
     Args:
         id (str | Unset):
-        controllable_unit_id (str | Unset):
-        impacted_system_operator_id (str | Unset):
+        controllable_unit_suspension_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
         range_ (str | Unset):
         range_unit (str | Unset):
-        prefer (ListControllableUnitSuspensionPrefer | Unset):
+        prefer (ListControllableUnitSuspensionCommentPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionResponse]
+        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]
     """
 
     return (
         await asyncio_detailed(
             client=client,
             id=id,
-            controllable_unit_id=controllable_unit_id,
-            impacted_system_operator_id=impacted_system_operator_id,
+            controllable_unit_suspension_id=controllable_unit_suspension_id,
             select=select,
             order=order,
             offset=offset,
