@@ -27,10 +27,10 @@ No validation rules
 
 ## Notifications
 
-| Action                 | Recipient | Comment                                                                   |
-|------------------------|-----------|---------------------------------------------------------------------------|
-| create, update, delete | SP        | Service provider with current contract to the suspended controllable unit |
-| create, update, delete | SO        | Impacted SO                                                               |
+| Action                 | Recipient | Comment                                                                                                 |
+|------------------------|-----------|---------------------------------------------------------------------------------------------------------|
+| create, update, delete | SP        | Service provider with current contract to the suspended controllable unit when they can see the comment |
+| create, update, delete | SO        | Impacted SO of CUS when they can see the comment                                                        |
 
 ## Authorization
 
@@ -61,8 +61,8 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key  | Policy                          | Status |
-|-------------|---------------------------------|--------|
+| Policy key   | Policy                         | Status |
+|--------------|--------------------------------|--------|
 | CUSC-FISO001 | Create, read, update all CUSC. | DONE   |
 | CUSC-FISO002 | Read all CUSC history          | DONE   |
 
@@ -76,19 +76,19 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                                   | Status |
-|------------|----------------------------------------------------------|--------|
-| CUSC-SO001  | Create CUSC on CUS where they are impacted SO.          | DONE   |
-| CUSC-SO002  | Read CUSC that the visibility allows.                   | DONE   |
-| CUSC-SO003  | Read history on CUSC that the latest visibility allows. | DONE   |
+| Policy key | Policy                                                  | Status |
+|------------|---------------------------------------------------------|--------|
+| CUSC-SO001 | Create CUSC on CUS where they are impacted SO.          | DONE   |
+| CUSC-SO002 | Read CUSC that the visibility allows.                   | DONE   |
+| CUSC-SO003 | Read history on CUSC that the latest visibility allows. | DONE   |
 
 #### Service Provider
 
-| Policy key | Policy                                                   | Status |
-|------------|----------------------------------------------------------|--------|
-| CUSC-SP001  | Create CUSC where they own the CU                       | DONE   |
-| CUSC-SP002  | Read CUSC that the visibility allows                    | DONE   |
-| CUSC-SP003  | Read history on CUSC that the latest visibility allows. | DONE   |
+| Policy key | Policy                                                  | Status |
+|------------|---------------------------------------------------------|--------|
+| CUSC-SP001 | Create CUSC where they own the CU                       | DONE   |
+| CUSC-SP002 | Read CUSC that the visibility allows                    | DONE   |
+| CUSC-SP003 | Read history on CUSC that the latest visibility allows. | DONE   |
 
 #### Third Party
 
