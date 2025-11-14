@@ -74,7 +74,7 @@ The `data` field is `null` because this is a delete event. For some events, such
 as updates, this field contains more information about what changed, for
 instance what fields were updated, but _not_ their previous and new values.
 
-For information about events as a resource in the API see [event](../resources/event.md)
+For information about events as a resource in the API see [event](../resources/event.md).
 
 ### Example use of notification
 
