@@ -31,6 +31,41 @@ CREATE TABLE IF NOT EXISTS controllable_unit_suspension (
     REFERENCES controllable_unit (id)
 );
 
+-- changeset flex:controllable-unit-suspension-cu-status-insert-function runOnChange:true endDelimiter:--
+-- trigger to check that the CU is active
+CREATE OR REPLACE FUNCTION
+controllable_unit_suspension_cu_status_insert()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit AS cu
+        WHERE
+            cu.id = NEW.controllable_unit_id
+            AND cu.status = 'active'
+    ) THEN
+        RAISE sqlstate 'PT400' using
+            message = 'controllable unit is not active';
+        RETURN null;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:controllable-unit-suspension-cu-status-insert-trigger runOnChange:true endDelimiter:--
+-- CUS-VAL001
+CREATE OR REPLACE TRIGGER
+controllable_unit_suspension_cu_status_insert
+BEFORE INSERT OR UPDATE ON controllable_unit_suspension
+FOR EACH ROW
+EXECUTE FUNCTION
+controllable_unit_suspension_cu_status_insert();
+
 -- changeset flex:controllable-unit-suspension-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_suspension_event
 AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_suspension
