@@ -6,7 +6,7 @@ flexibility information system (FIS).
 
 The processes describe the sequence of activities that are done to achieve a
 goal. They are *business processes* and not technical processes *in* the FIS,
-but does provide quite a lot of details about how interaction will be done with
+but do provide quite a lot of details about how interaction will be done with
 the FIS API. All interactions with the FIS is done via syncronous calls to the
 [Resource-oriented JSON-over-HTTP(s) Data API](../technical/api-design.md).
 The FIS API will be implemented to *support* the processes and enforce certain
@@ -40,6 +40,9 @@ more detailed.
 The following sub-sections describe some of the *common* elements of the process
 documentation. Other sections and elements will be added to the individual
 process pages as needed.
+
+The processes include notifications. For more information about notifications see
+[notification and notice](../concepts/notification-and-notice.md).
 
 ### High level description
 

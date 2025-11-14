@@ -2,6 +2,8 @@
 
 A notification of an event happening in the system.
 
+For information about the concept, see [notification and notice](../concepts/notification-and-notice.md).
+
 ## Relevant links
 
 * [API Documentation](../api/v0/index.html#/operations/list_notification)

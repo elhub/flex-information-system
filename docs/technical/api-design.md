@@ -134,6 +134,9 @@ making mistakes but also detecting and fixing them in a decent time, ensuring
 *eventually strong* consistency between the resources in the system in a
 flexible way.
 
+For information about notifications and notices as a concept see
+[Notification and notice](../concepts/notification-and-notice.md).
+
 ## Time dependent resources and fields
 
 Some resources or fields are [time dependent](time.md). We model timelines as a
