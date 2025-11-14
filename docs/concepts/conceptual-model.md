@@ -17,27 +17,20 @@ concepts in the FIS and the relations between them. The model serves as an
 overview when we introduce concepts and abbreviations throughout the documentation.
 
 The conceptual model is based on terminology from the [Network Code on Demand
-Response](../index.md#network-code-on-demand-response-nc-dr) (NC DR) and in the [concept
-pages](index.md) we describe how we have chosen to interpret these concepts so far.
+Response](../index.md#network-code-on-demand-response-nc-dr) (NC DR) and in this
+section we describe how we have chosen to interpret these concepts so far.
 
 ![Conceptual model](../diagrams/conceptual_model.drawio.png)
 
-<!-- ### Abbreviations
-
-| Abbreviation | Concept                                                                                             |
-|--------------|-----------------------------------------------------------------------------------------------------|
-| SPG          | [Service Providing Group](../resources/service_providing_group.md)                                  |
-| CU           | [Controllable Unit](../resources/controllable_unit.md)                                              |
-| TR           | [Technical Resource](../resources/technical_resource.md)                                            |
-| AP           | [Accounting Point](../resources/accounting_point.md)                                                |
-| EU           | [End User](end-user.md)                                                                             |
-| ES           | [Energy Supplier](../technical/auth.md#energy-supplier)                                             |
-| SP           | [Service Provider](../technical/auth.md#service-provider)                                           |
-| BRP          | [Balance Responsible Party](../technical/auth.md#balance-responsible-party)                         |
-| SO           | [System Operator](../technical/auth.md#system-operator)                                             |
-| PSO          | [Procuring System Operator](../technical/auth.md#system-operator)                                   |
-| CSO          | [Connecting System Operator](../technical/auth.md#system-operator)                                  |
-| CUSP         | [Controllable Unit Service Provider](../resources/controllable_unit_service_provider.md) (contract) | -->
+> [!NOTE]
+>
+> Throughout this section, the names of the resources (such as CU, TR, AP or SPG)
+> are linked to their corresponding [API resources](../resources/index.md) descriptions.
+> These links provide the fields and validation rules associated with each resource.
+>
+> Likewise, the names of parties (such as SP, SO, ES, BRP and EU) are linked to the
+> party type definitions in the [Auth section](../technical/auth.md), which describe
+> their authentication model and authorization rules.
 
 ## What is a controllable unit?
 
@@ -49,7 +42,7 @@ NC DR defines a controllable unit like this:
 > demand unit pursuant to Article 2(5) of [RfG NC 2.0] and Article 2(4) of
 > [DC NC 2.0];
 
-A [*controllable unit*](../resources/controllable_unit.md) (CU) is a unit in the
+A [controllable unit](../resources/controllable_unit.md) (CU) is a unit in the
 power system that can be actively controlled to produce, consume, or store
 electricity, and is therefore a source of flexibility in the system.
 
@@ -64,10 +57,15 @@ such as an industrial boiler or an EV charger.
 * Energy storage system: a unit that can both *produce and consume* electricity,
   such as a battery that charges and discharges depending on system needs.
 
+A [service provider](../technical/auth.md#service-provider) (SP) offers flexibility
+from the controllable unit on behalf of the [end user](end-user.md) (EU) based on
+their [controllable unit service provider](../resources/controllable_unit_service_provider.md)
+(CUSP) agreement, which authorises the SP to manage the CU for flexibility services.
+
 ### Technical resources
 
 Each CU consists of one or more
-[*technical resources*](../resources/technical_resource.md) (TRs). A TR is a
+[technical resources](../resources/technical_resource.md) (TRs). A TR is a
 physical device that generates, consumes, or stores electricity. The CU
 represents the logical control for these resources, which
 all relate to the same accounting point.
@@ -96,10 +94,11 @@ NC DR defines a service providing group like this:
 > agreement point within the same scheduling area. SPG is defined by the service
 > provider to provide balancing or local services;
 
-A [*service providing group*](../resources/service_providing_group.md) (SPG) is
+A [service providing group](../resources/service_providing_group.md) (SPG) is
 a collection of CUs. The CUs are grouped together within a scheduling area by a
-[service provider](../technical/auth.md#service-provider) (SP) to deliver
-certain services (like balancing or congestion management).
+SP to deliver certain services (like balancing or congestion management). In
+Norway the scheduling areas are the same as the bidding zones or price areas
+NO1 - NO5.
 
 > [!NOTE]
 >
