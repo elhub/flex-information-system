@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_suspension (
 );
 
 -- changeset flex:service-providing-group-grid-suspension-spg-iso-uk runOnChange:true endDelimiter:--
--- only one end_user party per entity
+-- only one active suspension per ISO per SPG
 CREATE UNIQUE INDEX IF NOT EXISTS
 uk_service_providing_group_grid_suspension_iso_spg
 ON service_providing_group_grid_suspension (
