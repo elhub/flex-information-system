@@ -2436,6 +2436,11 @@ GRANT SELECT (
 api.controllable_unit_suspension_comment
 TO flex_third_party;
 
+-- changeset flex:api-grant-controllable-unit-suspension-comment-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.controllable_unit_suspension_comment
+TO flex_internal_event_notification;
+
 -- changeset flex:api-grant-controllable-unit-suspension-comment-history-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,
@@ -2571,6 +2576,11 @@ GRANT SELECT (
 ) ON TABLE
 api.controllable_unit_suspension_comment_history
 TO flex_third_party;
+
+-- changeset flex:api-grant-controllable-unit-suspension-comment-history-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.controllable_unit_suspension_comment_history
+TO flex_internal_event_notification;
 
 -- changeset flex:api-grant-service-providing-group-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
