@@ -24,6 +24,7 @@ controllable unit.
 | Validation rule key | Validation rule                                                         | Status |
 |---------------------|-------------------------------------------------------------------------|--------|
 | CUS-VAL001          | Controllable units can only be suspended when their status is `active`. | DONE   |
+| CUS-VAL002          | ISO can only have one active suspension per controllable unit.          | DONE   |
 
 ## Notifications
 
