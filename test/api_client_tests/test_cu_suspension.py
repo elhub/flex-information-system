@@ -5,6 +5,8 @@ from security_token_service import (
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -70,6 +72,7 @@ from flex.api.service_providing_group import (
 
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -115,6 +118,16 @@ def data():
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    # activate cu
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     yield (sts, cu.id, (client_so, so_id), (client_sp, sp_id))
 
@@ -253,6 +266,15 @@ def test_cus_so(data):
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     spg = create_service_providing_group.sync(
         client=client_fiso,
@@ -411,6 +433,28 @@ def test_cus_sp(data):
         ),
     )
     assert isinstance(old_cu_sp, ControllableUnitServiceProviderResponse)
+
+    # Validation: CUS-VAL001
+    cus = create_controllable_unit_suspension.sync(
+        client=client_fiso,
+        body=ControllableUnitSuspensionCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            impacted_system_operator_id=sts.get_userinfo(client_so)["party_id"],
+            reason=ControllableUnitSuspensionReason.OTHER,
+        ),
+    )
+    # Should fail since CU is not active
+    assert isinstance(cus, ErrorMessage)
+
+    # Set CU as active and try again
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     cus = create_controllable_unit_suspension.sync(
         client=client_fiso,
