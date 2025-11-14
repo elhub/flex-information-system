@@ -1,7 +1,7 @@
 # Controllable Unit Suspension comment
 
-The relation allowing an impacted system operator to temporarily suspend a
-controllable unit.
+Comment made by a party involved in a controllable unit suspension.
+Several comments can be added to a given suspension.
 
 ## Relevant links
 
