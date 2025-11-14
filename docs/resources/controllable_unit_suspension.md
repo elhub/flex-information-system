@@ -21,7 +21,9 @@ controllable unit.
 
 ## Validation Rules
 
-No validation rules
+| Validation rule key | Validation rule                                                         | Status |
+|---------------------|-------------------------------------------------------------------------|--------|
+| CUS-VAL001          | Controllable units can only be suspended when their status is `active`. | TODO   |
 
 ## Notifications
 
