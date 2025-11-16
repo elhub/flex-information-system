@@ -1,4 +1,4 @@
-FROM postgres:15.14-bookworm
+FROM postgres:15.15-bookworm
 
 LABEL maintainer="Team Flex"
 
