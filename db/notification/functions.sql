@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
--- changeset flex:notification-service-provider-product-application-ready-for-market-function runOnChange:true endDelimiter:--
+-- changeset flex:notification-service-provider-product-application-ready-for-market-function runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 notification.sp_product_application_ready_for_market_check(sppa record)
 RETURNS boolean
@@ -14,7 +14,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:notification-service-providing-group-grid-prequalification-ready-for-market-function runOnChange:true endDelimiter:--
+-- changeset flex:notification-service-providing-group-grid-prequalification-ready-for-market-function runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 notification.spg_grid_prequalification_ready_for_market_check(spggp record)
 RETURNS boolean
@@ -28,7 +28,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:notification-service-providing-group-product-application-ready-for-market-function runOnChange:true endDelimiter:--
+-- changeset flex:notification-service-providing-group-product-application-ready-for-market-function runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 notification.spg_product_application_ready_for_market_check(spgpa record)
 RETURNS boolean
