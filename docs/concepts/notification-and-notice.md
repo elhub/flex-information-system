@@ -81,9 +81,9 @@ For information about events as a resource in the API see [event](../resources/e
 When a procuring system operator
 [registers a new product type](../processes/system-operator-product-registration.md)
 they intend to procure, a notification is made available for all approved
-service providers. When the service providers retrieve the notification they are
+service providers (SP). When the SPs retrieve the notification they are
 made aware of a new market opportunity and can decide whether or not to act on
-it. Without the notification, service providers would not know that the
+it. Without the notification, SPs would not know that the
 system operator intends to procure a new product type.
 
 ![Service provider product application and qualification](../diagrams/system_operator_product_registration.png)
@@ -92,7 +92,7 @@ system operator intends to procure a new product type.
 
 A notice is a resource that alerts a party about a certain state in the system
 that requires them to take action. For instance, a system operator will get a
-notice if they have a pending application from a service provider. Notices are
+notice if they have a pending application from a SP. Notices are
 also used to highlight inconsistencies or invalid states in the system.
 
 The purpose of notices is to enable the parties to easily see what actions that
@@ -127,7 +127,7 @@ cleared when the required task is completed.
 
 When a
 [controllable unit (CU) is registered in FIS](../processes/controllable-unit-registration.md)
-by a service provider, the connecting system operator needs to specify the grid
+by a SP, the connecting system operator needs to specify the grid
 node for the CU. When the CU is first registered, the connecting system operator
 will get a notification that the CU was created. This _implicitly_ informs them
 that they need to set the grid node for the CU. It is expected that they act
@@ -146,13 +146,13 @@ created.
 
 ### Example of data inconsistency notice
 
-Imagine that a service provider (SP) has a current contract with an end user on a
+Imagine that a SP has a current contract with an end user on a
 controllable unit (CU). This contract will be stored in FIS as a controllable
 unit service provider (CUSP) resource with valid time start time but no end
 time. This unbounded valid time indicates that the contract is currently valid
 with no planned end.
 
-If the end user then moves, then the end users relationship with the accounting
+If the end user then moves, the end user's relationship with the accounting
 point (and thus the CU) will be ended. FIS will recive information about this
 from Elhub. In such cases, FIS will _not_ automatically end the CUSP resource,
 but it will create a notice for the SP to fix the inconsistency. The SP must
