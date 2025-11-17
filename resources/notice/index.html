@@ -351,12 +351,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/cu-spg/" class="md-nav__link">
+      <a href="../../concepts/conceptual-model/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Controllable Unit and Service Providing Group
+    Conceptual Model and Terminology
     
   </span>
   
@@ -1107,6 +1107,8 @@
       
         
       
+        
+      
     
     
     
@@ -1275,6 +1277,29 @@
   
   <span class="md-ellipsis">
     Controllable Unit Suspension
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../controllable_unit_suspension_comment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Controllable Unit Suspension comment
     
   </span>
   
@@ -2549,6 +2574,12 @@ from the responsible party.</p>
 <td>Inconsistency: CUSP valid while end user is not valid on the AP</td>
 <td>SP</td>
 <td>Update CUSP to match the updated end user data from Elhub</td>
+</tr>
+<tr>
+<td>no.elhub.flex.controllable_unit_suspension.not_active</td>
+<td>Inconsistency: suspending a CU that is no longer active</td>
+<td>ISO</td>
+<td>Delete the suspension because it is useless</td>
 </tr>
 <tr>
 <td>no.elhub.flex.controllable_unit_suspension.lingering</td>
