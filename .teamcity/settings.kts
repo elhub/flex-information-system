@@ -47,7 +47,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 gitOps {
                     buildNameSuffix = "Backend"
                     clusters = setOf(KubeCluster.TEST9)
-                    gitOpsRepository = gitOpsRepo
+                    gitOpsRepository = "fis-backend"
                 }.triggerOnVcsChange { triggerRules = """
                             -:*
                             +:backend/**
@@ -80,7 +80,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 gitOps {
                     buildNameSuffix = "Frontend"
                     clusters = setOf(KubeCluster.TEST9)
-                    gitOpsRepository = gitOpsRepo
+                    gitOpsRepository = "fis-frontend"
                 }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
             }
         }
