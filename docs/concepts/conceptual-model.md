@@ -82,6 +82,9 @@ all relate to the same accounting point.
 >
 > * Prequalification should be simplified when CUs are technically identical
 > (Art. 20(3), 21).
+>
+> * When doing [CU lookup](../processes/controllable-unit-lookup.md), the SP can
+> use the TR information to identify the CU more easily.
 
 ### Connection to an accounting point
 
