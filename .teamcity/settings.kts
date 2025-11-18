@@ -35,6 +35,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     contextDirectory = "backend"
                     dockerBuildNameSuffix = "Backend"
                     dockerfileName = "./backend/Dockerfile"
+                    shouldPublishGitTag = false
                 }
 
                 liquiBuild {
@@ -76,6 +77,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     contextDirectory = "frontend"
                     dockerBuildNameSuffix = "Frontend"
                     dockerfileName = "./frontend/Dockerfile"
+                    shouldPublishGitTag = false
                 }
 
                 gitOps {
