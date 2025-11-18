@@ -36,6 +36,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     dockerBuildNameSuffix = "Backend"
                     dockerfileName = "./backend/Dockerfile"
                     shouldPublishGitTag = false
+                    source = Source.CommitSha
                 }
 
                 liquiBuild {
@@ -78,6 +79,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     dockerBuildNameSuffix = "Frontend"
                     dockerfileName = "./frontend/Dockerfile"
                     shouldPublishGitTag = false
+                    source = Source.CommitSha
                 }
 
                 gitOps {
