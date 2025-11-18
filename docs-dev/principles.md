@@ -34,7 +34,7 @@ non-technical people together.
 
 ## Keep it simple
 
-We always look for ways to make things simpler avoid incidental
+We always look for ways to make things simpler and avoid incidental
 complexity. Our goal is to make the system as simple as possible, but no
 simpler. Our system means:
 
@@ -45,7 +45,7 @@ simpler. Our system means:
 * requirements
 
 We acknowledge that `Simple != Easy` and that it takes effort.
-But we should take our time seek simplification.
+But we should take our time to seek simplification.
 [Experiment, Simplify, Ship](https://go.dev/blog/experiment)
 
 > The definition of genius is taking the complex and making it simple.

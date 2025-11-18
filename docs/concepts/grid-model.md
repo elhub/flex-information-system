@@ -40,7 +40,7 @@ complex model than what we would like to have.
 In the diagrams we are trying to show some example challenges related to the
 grid model. Nodes in the grid are either drawn as circles or points. Nodes can
 be grid stations, junction points or similar. Edges are connections like power
-lines or cables, and are drawn as lines with arrows. The the arrows on the edge
+lines or cables, and are drawn as lines with arrows. The arrows on the edge
 indicate the direction of flow. The color of the edge indicate if the edge
 and/direction direction is active (green) or not (red)
 
@@ -180,7 +180,7 @@ and how different types are connected.
 
 The balance settlement grid model allows us to understand how the operation of
 the grid is split between different system operators. This can be interesting to
-look at since controllalbe units connected to a distribution grid can be/is used
+look at since controllable units connected to a distribution grid can be/are used
 to deliver services in regional or central grids. In NCDR-speak, we can use it
 to consider who will be *connecting*, *procuring* and *impacted* system
 operators of a given asset.
@@ -332,7 +332,7 @@ The following is a list of issues that we must tackle.
 2. The grid is not static, but dynamic. That is problematic for aggregation and
    buying from groups. How do we model the grid in a way that allows for changes
    in the grid? We believe that system operators will do more topological
-   manouvers in the future as the load on the grid increases.
+   maneuvers in the future as the load on the grid increases.
       * One strategy used in NODES is to define nodes on a low level/below
         possible switches.
       * This can also be challenging for long term contracts. What if the grid

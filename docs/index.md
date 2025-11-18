@@ -31,7 +31,7 @@ system will be a central part of a future flexibility value chain. We can think
 of it as an integration- and datahub in the value chain. The value proposal includes
 
 * lowering barriers for service providers
-* simplifying the use of flexible resurces in multiple markets
+* simplifying the use of flexible resources in multiple markets
 * increasing transparency and trust
 * cost effectiveness through centralising common tasks
 
@@ -44,7 +44,7 @@ discussion and one way to visualise the concept we are developing.
 
 ## What does a Flexibility Information System do?
 
-The heart of a flexibility information system to facilitate communication and
+The heart of a flexibility information system is to facilitate communication and
 data exchange between parties and systems in the value chain for flexibility
 services. The main parties are
 

@@ -246,9 +246,9 @@ There some main strategies to do this that can be used on their own or in combin
 - **Trusted party** - calculated by a trusted (third-)party with no vested
   interest in the outcome
 - **Validate over time** - calculated and communicated ahead-of-time and
-  validated continiously/over time by comparing it to actual metered values when
+  validated continuously/over time by comparing it to actual metered values when
   no trade is going on. This requires that the baseline is calculated
-  continously.
+  continuously.
 
 Each of these strategies allows different methods of calculating baselines as
 well as put different requirements on the systems and the service provider.
@@ -261,7 +261,7 @@ discussions.
 
 #### Black box
 
-The baseline is calculated using a unspecified method that is concidered a "black
+The baseline is calculated using an unspecified method that is considered a "black
 box" by the value chain. This is typically done by the service provider (SP), potentially
 based on confidential input, using a proprietary algorithm.
 
@@ -312,7 +312,7 @@ and can sometime be one and the same - but does have different purposes.
 
 ### Quantification
 
-Quantification is the continious activity of calculating the delivered volume
+Quantification is the continuous activity of calculating the delivered volume
 after *each and every* activation. The purpose of quantification is to be able
 to do settlement. Quantification is about establishing the quantity of energy
 that was delivered, using a method that gives "good" and "fair" enough result
@@ -381,7 +381,7 @@ products.
 
 Verification is targeted on the SPG level, where service is delivered.
 
-It might be callenging to properly verify that a service was delivered. Some
+It might be challenging to properly verify that a service was delivered. Some
 challenges are
 
 - access to data of high enough quality and granularity

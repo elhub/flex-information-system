@@ -51,7 +51,7 @@ will be updated to in_progress.
 |-------------|-----------------------------------|-------------------|
 | in_progress | 01.01.2025 10:00                  | Yes               |
 
-If approval is withdrawn, SO updates status and remove the timestsamp.
+If approval is withdrawn, SO updates status and removes the timestamp.
 
 | Status   | Prequalified / verified timestamp | Ready for market? |
 |----------|-----------------------------------|-------------------|

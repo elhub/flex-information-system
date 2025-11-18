@@ -6,7 +6,7 @@ Please read the general
 
 The service offered on this domain does use cookies and other storage mechanisms
 in your browser to store user preferences and session information. These are
-neccessary for the site to function properly. We do **not** use this information
+necessary for the site to function properly. We do **not** use this information
 to track you as a user. The following is a list of information that is stored on
 your device.
 
@@ -59,7 +59,7 @@ your device.
             in localStorage with the prefix RaStoreFlex. This includes
             information like if the menu is open/closed,
             current pagination information and similar.
-            This is neccessary to provide a good user experience.
+            This is necessary to provide a good user experience.
         </td>
     </tr>
 </table>

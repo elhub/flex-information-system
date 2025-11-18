@@ -12,7 +12,7 @@ is hosted.
 
 ![Login page](../assets/auth-login.png)
 
-When you click on the `SIGN IN` button, you will be redirected to and external
+When you click on the `SIGN IN` button, you will be redirected to an external
 identity provider at Oracle Cloud Identity and Access Management (IAM) to
 authenticate.
 
