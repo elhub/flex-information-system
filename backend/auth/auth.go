@@ -392,7 +392,7 @@ type loginCookie struct {
 }
 
 // GetLoginHandler starts the authorization code flow with the external identity provider.
-// It pushes and authorization request to the external identity provider before
+// It pushes an authorization request to the external identity provider before
 // redirecting the user to the external identity provider.
 func (auth *API) GetLoginHandler(ctx *gin.Context) {
 	url, authDetails, err := auth.oidcProvider.AuthURL(ctx)
