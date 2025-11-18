@@ -23,7 +23,10 @@
 !.dockerignore
 *.dot
 !.air.toml
-!.teamcity/
+
+# TeamCity config
+!.teamcity/pom.xml
+!.teamcity/settings.kts
 
 # draw.io
 *:PG$Secure
