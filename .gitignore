@@ -23,6 +23,7 @@
 !.dockerignore
 *.dot
 !.air.toml
+!.teamcity/
 
 # draw.io
 *:PG$Secure
