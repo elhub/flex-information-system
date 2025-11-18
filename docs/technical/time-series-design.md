@@ -104,8 +104,8 @@ We model the timeseries as three resources.
       duplication of time series in the system
 * `timeseries_type` - a finite set of types of time series data. To avoid
   duplication information in the `timeseries` table. The fields are the
-  "attributes" of the time series, *not* their "usage". Meaningthat we will e.g.
-  record the unit, but not wether it is a schedule or metered value.
+  "attributes" of the time series, *not* their "usage". Meaning that we will e.g.
+  record the unit, but not whether it is a schedule or metered value.
 * `timeseries_value` - the values of the time series
 
 ### API

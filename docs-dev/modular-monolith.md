@@ -43,7 +43,7 @@ These are the general rules we follow:
   database should be carried out through methods of a `models` package local to
   the module. Some of these local packages are generated with automated tools
   like [sqlc](https://sqlc.dev/).
-* Modules can _read_ from the schema of another module to faciliate efficient
+* Modules can _read_ from the schema of another module to facilitate efficient
   data retrieval/joins. We consider the views and functions as part of the
   public API of the module.
 * Modules can _write_ to the schema of another module only through the public

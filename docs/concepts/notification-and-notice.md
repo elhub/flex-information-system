@@ -15,11 +15,11 @@ they are used in the FIS.
 ## Notification
 
 A notification is a resource that is used to inform a specific party that an
-_event_ occured in the FIS. The purpose of the notification is to convey
+_event_ occurred in the FIS. The purpose of the notification is to convey
 information to enable parties to act according to the business processes.
 
 An event is typically registered when a resource is created, updated or deleted
-in the system. For each event, FIS will pick out specific recipents and create a
+in the system. For each event, FIS will pick out specific recipients and create a
 notification for them. Recipients are selected based on the rules in the
 "Notifications" section of each resource.
 
@@ -50,7 +50,7 @@ For information about notification as a resource in the API see [notification](.
 
 ### Event
 
-You might wonder what an event looks like. An event constains information about
+You might wonder what an event looks like. An event contains information about
 something that has happened, but does not contain the actual data that triggered
 the event. For instance, you get to know that controllable unit X was updated,
 but not what the update contained. This is also known as _thin events_. Consider
@@ -153,7 +153,7 @@ time. This unbounded valid time indicates that the contract is currently valid
 with no planned end.
 
 If the end user then moves, the end user's relationship with the accounting
-point (and thus the CU) will be ended. FIS will recive information about this
+point (and thus the CU) will be ended. FIS will receive information about this
 from Elhub. In such cases, FIS will _not_ automatically end the CUSP resource,
 but it will create a notice for the SP to fix the inconsistency. The SP must
 then update the CUSP resource to end the contract.

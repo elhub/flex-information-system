@@ -24,7 +24,7 @@ We are following the pattern known as
 [Backend For Frontend](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-backend-for-frontend-bff)
 (BFF). To avoid having to deal with "sticky sessions", we are implementing using
 "client-side sessions" as described. The cookie setting following the cookie
-security recommendations, inlcuding the
+security recommendations, including the
 [`__Host-` prefix.](https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-19#name-the-__host-prefix).
 
 We are using the OpenID Connect Authorization Code Flow with Proof Key for Code
@@ -99,7 +99,7 @@ stored in other claims in the other two solutions:
 
 ### Logout endpoints
 
-The logout endpoints are also a bit different. The biggest differece is that
+The logout endpoints are also a bit different. The biggest difference is that
 Authelia actually does not fully support the OIDC logout flow yet, but it has
 enough functionality to "make it work".
 
@@ -119,7 +119,7 @@ enough functionality to "make it work".
 ## OpenID Connect Go libraries
 
 We are building the flow in our Go backend. There are a few OIDC libraries
-available for Go. The most noticable ones are:
+available for Go. The most notable ones are:
 
 * https://github.com/zitadel/oidc
 * https://github.com/coreos/go-oidc

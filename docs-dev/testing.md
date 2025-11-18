@@ -37,7 +37,7 @@ and to use new data when possible, instead of interacting with existing data,
 which reduces the need for a teardown phase.
 The new data could be cleaned after each test, but it does not influence the
 other tests, and in some cases it could be a challenge, because some operations
-are impossible to revert from the outside of the API, such as deletions on
+are impossible to revert from outside the API, such as deletions on
 history tables.
 Therefore, in the current state, tests do not include a teardown phase.
 

@@ -1591,7 +1591,7 @@ export const App = () => (
 
 // helper components to redirect to previous page after edit/create
 
-// Wrapper on Edit to redirect to previous page on submit
+// Wrapper for Edit to redirect to previous page on submit
 // (the redirect property of Edit does not have access to hooks)
 const EditRedirectPreviousPage = (props: any) => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@
 
 This document describes the authentication and authorization model, principles
 and concepts we are following in the Flexibility Information System. It is a
-quite comprehensive document and contains alot of nitty-gritty details - even
+quite comprehensive document and contains a lot of nitty-gritty details - even
 about implementation. We are using it both as a design document and
 documentation. You can use it as a reference and for understanding how we are
 doing things.

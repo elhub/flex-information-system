@@ -93,7 +93,7 @@ Common Information Model (CIM) promotes the use of UUIDs as identifiers for the
 ### Universally Unique Lexicographically Sortable Identifier (ULID)
 
 [ULID](https://github.com/ulid/spec) are kind of like UUIDs but they are
-shorter, case-insensitive, URL safe and and sortable.
+shorter, case-insensitive, URL safe and sortable.
 
 Example: `01ARZ3NDEKTSV4RRFFQ69G5FAV`
 

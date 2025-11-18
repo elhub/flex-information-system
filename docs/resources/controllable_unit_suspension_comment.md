@@ -1,4 +1,4 @@
-# Controllable Unit Suspension comment
+# Controllable Unit Suspension Comment
 
 Comment made by a party involved in a controllable unit suspension.
 Several comments can be added to a given suspension.

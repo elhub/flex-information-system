@@ -38,7 +38,7 @@ An interesting company in the "PostgreSQL for everything" space is
 > of Firebase using enterprise-grade open source tools.
 
 While we are not suggesting going all in on Supabase, we are looking at
-the open-source building blocks that Supabase is making use of, e.g. for REST
+the open-source building blocks that Supabase is making use of, e.g., for REST
 API, authn/z, etc.
 
 ### Backend - PostgREST + Go
@@ -88,7 +88,7 @@ We use NGINX as web server. It is used to:
 * serve static assets such as the frontend, API docs and API spec
 * reverse proxy to our APIs
 
-NGINX also allows us do a few things that out-of-the-box PostgREST does not do
+NGINX also allows us to do a few things that out-of-the-box PostgREST does not do
 (like hierarchies). The choice of NGINX (over,
 say, httpd or caddy) is because:
 
@@ -170,7 +170,7 @@ the documentation that you are reading right now.
 
 We use [React Admin](https://marmelab.com/react-admin/) as the frontend
 framework. This gives us a lot of functionality/plumbing out of the box and
-allows us to spend litte time on the front-end. If there is ever an investment
+allows us to spend little time on the front-end. If there is ever an investment
 decision to make an actual information system, we assume that the frontend will
 be rewritten to facilitate better UX and design.
 

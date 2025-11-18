@@ -49,7 +49,7 @@ flexibility information system (FIS) by creating a relevant suspension. By
 registering it in the FIS, the relevant service provider will be made aware of
 the suspension.
 
-We consider adding and lifting a suspension to be instantaneus. Meaning that there
+We consider adding and lifting a suspension to be instantaneous. Meaning that there
 is no possibility to register suspension or reinstatement in FIS ahead in time.
 
 When suspending, the system operator must include the reason for suspension. The

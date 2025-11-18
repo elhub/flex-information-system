@@ -110,7 +110,7 @@ notification policy for the resource. The notification policy is documented on
 the resource. It is important that there is no assumption about who did the
 change when defining and implementing the policy. The recipients should be
 picked, independent of who did the change. The system will then filter the
-recipient list and not send the notification to the one who did the change.
+the recipient list and not send the notification to the one who did the change.
 Reasoning:
 
 > ![INFO] Reasoning
@@ -121,8 +121,8 @@ Reasoning:
 > resource.
 
 To pick the recipients, we must use the `_history` version of the resource and
-pick the recipents based on the state of the resource at the time of the event.
-There is no garantuee that the resource is still in the same state when the
+pick the recipients based on the state of the resource at the time of the event.
+There is no guarantee that the resource is still in the same state when the
 event is processed and notification is sent, and also deleted resources will not
 be present in the regular resource view.
 
