@@ -8,6 +8,7 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.gitOps
 import no.elhub.devxp.build.configuration.pipeline.jobs.liquiBuild
 import no.elhub.devxp.build.configuration.pipeline.jobs.makeVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
+import no.elhub.devxp.build.configuration.pipeline.jobs.common.Source
 
 elhubProject(Group.FLEX, "flex-information-system") {
 
