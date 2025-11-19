@@ -224,7 +224,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 		replURIDatabase, exists := lookupenv("FLEX_DB_REPLICATION_URI_DATABASE")
 		if !exists {
-			return fmt.Errorf("%w: FLEX_DB_URI_DATABASE", errMissingEnv)
+			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_DATABASE", errMissingEnv)
 		}
 
 		replURIUser, exists := lookupenv("FLEX_DB_REPLICATION_URI_USER")
