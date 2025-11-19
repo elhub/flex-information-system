@@ -332,7 +332,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 						ctx,
 						replURI,
 						eventSlotName,
-						[]string{"flex.event"},
 						"event-worker-replication",
 					)
 					if err != nil {

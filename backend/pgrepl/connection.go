@@ -2,11 +2,10 @@ package pgrepl
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
+	"flex/pgrepl/pgoutput"
 	"fmt"
 	"log/slog"
-	"strings"
 	"time"
 
 	"github.com/jackc/pglogrepl"
@@ -24,6 +23,10 @@ type Connection struct {
 	conn      *pgconn.PgConn
 	logPrefix string
 	lsn       pglogrepl.LSN
+	// transactionLSN is used to keep track of the last LSN of a transaction.
+	// We need it since we process begin and commit messages separately from the
+	// data modification messages.
+	transactionLSN pglogrepl.LSN
 }
 
 // NewConnection creates a replication connection waiting for message listening
@@ -32,7 +35,6 @@ func NewConnection(
 	ctx context.Context,
 	connURI string,
 	slotName string,
-	addTables []string,
 	logPrefix string,
 ) (*Connection, error) {
 	var pgxConn *pgx.Conn
@@ -44,20 +46,12 @@ func NewConnection(
 
 	conn := pgxConn.PgConn()
 
-	// We are using the wal2json plugin
+	// We are using the pgoutput plugin
 	// Parameters are documented here:
-	// https://github.com/eulerto/wal2json?tab=readme-ov-file#parameters
+	// https://www.postgresql.org/docs/16/protocol-logical-replication.html
 	pluginArguments := []string{
-		//  * include-lsn: add nextlsn to each changeset
-		"\"include-lsn\" 'true'",
-	}
-
-	// * add-tables: include only rows from the specified tables.
-	//               Default is all tables from all schemas.
-	if len(addTables) > 0 {
-		pluginArguments = append(pluginArguments,
-			fmt.Sprintf("\"add-tables\" '%s'", strings.Join(addTables, ",")),
-		)
+		"\"proto_version\" '1'",
+		"publication_names" + " 'event_insert'",
 	}
 
 	// StartReplication sends the START_REPLICATION command to the server
@@ -81,9 +75,10 @@ func NewConnection(
 	}
 
 	return &Connection{
-		conn:      conn,
-		logPrefix: logPrefix,
-		lsn:       pglogrepl.LSN(0),
+		conn:           conn,
+		logPrefix:      logPrefix,
+		lsn:            pglogrepl.LSN(0),
+		transactionLSN: pglogrepl.LSN(0),
 	}, nil
 }
 
@@ -91,10 +86,10 @@ func NewConnection(
 // be parsed into a Message, silently looping and handling the other possible
 // types of messages that can be sent in the replication protocol.
 //
-//nolint:cyclop
+//nolint:cyclop,gocognit,funlen
 func (replConn *Connection) ReceiveMessage(
 	ctx context.Context,
-) (*Message, error) {
+) (*pgoutput.InsertMessage, error) {
 	for {
 		messageCtx, cancel := context.WithTimeout(ctx, messageTimeout)
 		defer cancel()
@@ -116,25 +111,58 @@ func (replConn *Connection) ReceiveMessage(
 					return nil, parseXLogDataError(err)
 				}
 
-				var jsonWALMessage Message
+				messageType := xld.WALData[0]
+				switch messageType {
+				case pgoutput.MessageTypeBegin:
+					var beginMessage pgoutput.BeginMessage
 
-				err = json.Unmarshal(xld.WALData, &jsonWALMessage)
-				if err != nil {
-					return nil, unmarshalWALDataError(err)
-				}
-				// thanks to the `include-lsn` option given to the START_REPLICATION command,
-				// we can get the next LSN directly from the message itself
-				nextLSN, err := pglogrepl.ParseLSN(jsonWALMessage.NextLSN)
-				if err != nil {
-					return nil, lsnParseError(err)
+					err = beginMessage.UnmarshalBinary(xld.WALData)
+					if err != nil {
+						return nil, fmt.Errorf("failed to unmarshal pgoutput begin message: %w", err)
+					}
+					slog.DebugContext(ctx, "pgoutput begin message received",
+						"finalLSN", beginMessage.FinalLSN,
+						"waldata", xld.WALData,
+					)
+					replConn.transactionLSN = pglogrepl.LSN(beginMessage.FinalLSN)
+				case pgoutput.MessageTypeInsert:
+					if replConn.lsn > replConn.transactionLSN {
+						slog.InfoContext(ctx, "replication skipping outdated message", "lsn", replConn.transactionLSN)
+						continue
+					}
+					var insertMessage pgoutput.InsertMessage
+
+					err = insertMessage.UnmarshalBinary(xld.WALData)
+					if err != nil {
+						return nil, fmt.Errorf("failed to unmarshal pgoutput insert message: %w", err)
+					}
+					slog.DebugContext(ctx, "pgoutput insert message received",
+						"oid", insertMessage.Oid,
+						"columns", insertMessage.TupleData.Columns,
+						"waldata", xld.WALData,
+					)
+					return &insertMessage, nil
+				case pgoutput.MessageTypeCommit:
+					var commitMessage pgoutput.CommitMessage
+
+					err = commitMessage.UnmarshalBinary(xld.WALData)
+					if err != nil {
+						return nil, fmt.Errorf("failed to unmarshal pgoutput commit message: %w", err)
+					}
+					slog.DebugContext(ctx, "pgoutput commit message received",
+						"commitLSN", commitMessage.CommitLSN,
+						"transactionLSN", commitMessage.EndLSN,
+						"waldata", xld.WALData,
+					)
+
+					// if the client made it to a commit message, we can assume that it handled all the previous
+					// messages in the transaction, so we can update the replication connection's LSN to the
+					// end of the transaction.
+					replConn.lsn = pglogrepl.LSN(commitMessage.EndLSN)
+				default:
+					slog.DebugContext(ctx, "pgoutput message received", "messageType", string(xld.WALData[0]))
 				}
 
-				if replConn.lsn > nextLSN {
-					slog.InfoContext(ctx, "replication skipping outdated message", "lsn", nextLSN)
-					continue
-				}
-
-				return &jsonWALMessage, nil
 			case pglogrepl.PrimaryKeepaliveMessageByteID:
 				err := replConn.handlePrimaryKeepaliveMessage(ctx, msg.Data[1:])
 				if err != nil {
@@ -239,10 +267,6 @@ func unexpectedCopyDataError(id byte) error {
 
 func parseXLogDataError(err error) error {
 	return fmt.Errorf("failed to parse XLogData: %w", err)
-}
-
-func unmarshalWALDataError(err error) error {
-	return fmt.Errorf("failed to unmarshal JSON WALData: %w", err)
 }
 
 func lsnParseError(err error) error {
