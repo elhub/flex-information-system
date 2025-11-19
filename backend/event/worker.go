@@ -8,6 +8,7 @@ import (
 	"flex/internal/trace"
 	"flex/pgpool"
 	"flex/pgrepl"
+	"flex/pgrepl/pgoutput"
 	"fmt"
 	"log/slog"
 )
@@ -67,14 +68,6 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 				slog.ErrorContext(ctx, "could not handle message in worker", "error", err)
 				return err
 			}
-			// the handler succeeded, so we can acknowledge the message
-			if err = eventWorker.replConn.Acknowledge(msg); err != nil {
-				slog.ErrorContext(ctx,
-					"could not acknowledge message on replication connection", "error", err,
-				)
-
-				return err //nolint:wrapcheck
-			}
 		}
 	}
 }
@@ -93,10 +86,10 @@ func (eventWorker *Worker) Stop(ctx context.Context) error {
 // from a replication connection dedicated to event processing. It has access
 // to a transaction to perform operations on the database.
 //
-//nolint:cyclop,funlen
+
 func (eventWorker *Worker) handleMessage(
 	ctx context.Context,
-	message *pgrepl.Message,
+	message *pgoutput.InsertMessage,
 ) error {
 	conn, err := eventWorker.pool.Acquire(ctx)
 	if err != nil {
@@ -111,54 +104,45 @@ func (eventWorker *Worker) handleMessage(
 
 	queries := models.New(tx)
 
-	for _, change := range message.Change {
-		if change.Table != "event" {
-			// This is enforced by the replication connection,
-			// but we check it here just in case.
-			slog.WarnContext(ctx, "event worker got a change for a table that is not 'event'")
+	event, err := fromTupleData(&message.TupleData)
+	if err != nil {
+		return fmt.Errorf("could not parse event from change: %w", err)
+	}
+
+	slog.DebugContext(ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID)
+
+	// TODO (improvement): go through the auth API instead of the models
+	eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
+	if err != nil {
+		return fmt.Errorf("could not get party of identity: %w", err)
+	}
+
+	// determine who should be notified
+	notificationRecipients, err := queries.GetNotificationRecipients(
+		ctx,
+		event.Type,
+		event.ResourceID,
+		event.RecordedAt,
+	)
+	if err != nil {
+		return fmt.Errorf("could not get notification recipients: %w", err)
+	}
+
+	slog.DebugContext(ctx, "notification recipients", "recipients", notificationRecipients)
+
+	// notify
+	for _, recipient := range notificationRecipients {
+		if recipient == eventPartyID {
+			// never notify the party causing the event (useless)
 			continue
 		}
 
-		event, err := fromChange(&change)
+		err := queries.Notify(ctx, event.ID, recipient)
 		if err != nil {
-			return fmt.Errorf("could not parse event from change: %w", err)
+			return fmt.Errorf("could not insert notification: %w", err)
 		}
 
-		slog.DebugContext(ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID)
-
-		// TODO (improvement): go through the auth API instead of the models
-		eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
-		if err != nil {
-			return fmt.Errorf("could not get party of identity: %w", err)
-		}
-
-		// determine who should be notified
-		notificationRecipients, err := queries.GetNotificationRecipients(
-			ctx,
-			event.Type,
-			event.ResourceID,
-			event.RecordedAt,
-		)
-		if err != nil {
-			return fmt.Errorf("could not get notification recipients: %w", err)
-		}
-
-		slog.DebugContext(ctx, "notification recipients", "recipients", notificationRecipients)
-
-		// notify
-		for _, recipient := range notificationRecipients {
-			if recipient == eventPartyID {
-				// never notify the party causing the event (useless)
-				continue
-			}
-
-			err := queries.Notify(ctx, event.ID, recipient)
-			if err != nil {
-				return fmt.Errorf("could not insert notification: %w", err)
-			}
-
-			slog.InfoContext(ctx, fmt.Sprintf("notified party #%d of event #%d", recipient, event.ID))
-		}
+		slog.InfoContext(ctx, fmt.Sprintf("notified party #%d of event #%d", recipient, event.ID))
 	}
 
 	if err = tx.Commit(ctx); err != nil {
