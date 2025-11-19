@@ -54,7 +54,7 @@ type InsertMessage struct {
 // UnmarshalBinary decodes binary data into an InsertMessage.
 func (mi *InsertMessage) UnmarshalBinary(data []byte) error {
 	if len(data) < 6 { //nolint:mnd
-		return fmt.Errorf("%w to unmarshal MessageInsert", ErrDataTooShort)
+		return fmt.Errorf("failed to unmarshal MessageInsert: %w", ErrDataTooShort)
 	}
 
 	// The first byte is the message type, so we start reading after it
@@ -77,7 +77,7 @@ type TupleData struct {
 // UnmarshalBinary decodes binary data into TupleData.
 func (td *TupleData) UnmarshalBinary(data []byte) error {
 	if len(data) < 2 { //nolint:mnd
-		return fmt.Errorf("%w to unmarshal TupleData", ErrDataTooShort)
+		return fmt.Errorf("failed to unmarshal TupleData: %w", ErrDataTooShort)
 	}
 
 	buf := bytes.NewBuffer(data)
@@ -94,11 +94,11 @@ func (td *TupleData) UnmarshalBinary(data []byte) error {
 			td.Columns[idx] = nil // we don't handle this case very well
 		case 't': // text formatted value
 			if buf.Len() < 4 { //nolint:mnd
-				return fmt.Errorf("%w to read column length", ErrDataTooShort)
+				return fmt.Errorf("failed to read column length: %w", ErrDataTooShort)
 			}
 			colLen := binary.BigEndian.Uint32(buf.Next(4)) //nolint:mnd
 			if buf.Len() < int(colLen) {
-				return fmt.Errorf("%w to read column value", ErrDataTooShort)
+				return fmt.Errorf("failed to read column value: %w", ErrDataTooShort)
 			}
 			colValue := buf.Next(int(colLen))
 			td.Columns[idx] = colValue
@@ -123,7 +123,7 @@ type CommitMessage struct {
 // UnmarshalBinary decodes binary data into a CommitMessage.
 func (cm *CommitMessage) UnmarshalBinary(data []byte) error {
 	if len(data) < 18 { //nolint:mnd
-		return fmt.Errorf("%w to unmarshal CommitMessage", ErrDataTooShort)
+		return fmt.Errorf("failed to unmarshal CommitMessage: %w", ErrDataTooShort)
 	}
 
 	buf := bytes.NewBuffer(data[1:]) // Skip message type byte
@@ -147,7 +147,7 @@ type BeginMessage struct {
 // UnmarshalBinary decodes binary data into a BeginMessage.
 func (bm *BeginMessage) UnmarshalBinary(data []byte) error {
 	if len(data) < 21 { //nolint:mnd
-		return fmt.Errorf("%w to unmarshal BeginMessage", ErrDataTooShort)
+		return fmt.Errorf("failed to unmarshal BeginMessage: %w", ErrDataTooShort)
 	}
 
 	buf := bytes.NewBuffer(data[1:])                        // Skip message type byte

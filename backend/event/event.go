@@ -1,6 +1,7 @@
 package event
 
 import (
+	"errors"
 	"flex/pgrepl"
 	"flex/pgrepl/pgoutput"
 	"fmt"
@@ -8,6 +9,9 @@ import (
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
+
+// ErrDataTooShort indicates parsing failed because the data provided was too short.
+var ErrDataTooShort = errors.New("data too short")
 
 type event struct {
 	ID         int
@@ -42,6 +46,9 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 	// trimming the interval notation, e.g. :
 	// ["2007-11-28 10:54:12.694595+00",)
 	//   2007-11-28 10:54:12.694595+00
+	if len(td.Columns[5]) < 5 { //nolint:mnd
+		return event, fmt.Errorf("failed to parse RecordedAt: %w", ErrDataTooShort)
+	}
 	recordedAtStr := string(td.Columns[5])[2 : len(td.Columns[5])-3]
 
 	recordedAt := new(pgtype.Timestamptz)
@@ -53,9 +60,6 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 
 	event.RecordedAt = *recordedAt
 
-	if err != nil {
-		return event, fmt.Errorf("could not parse RecordedAt: %w", err)
-	}
 	event.RecordedBy, err = strconv.Atoi(string(td.Columns[6]))
 	if err != nil {
 		return event, fmt.Errorf("could not parse RecordedBy: %w", err)
