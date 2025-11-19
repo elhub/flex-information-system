@@ -16,6 +16,7 @@ import (
 	"flex/pgrepl"
 	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -160,13 +161,89 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	}
 
 	dbURI, exists := lookupenv("FLEX_DB_URI")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_DB_URI", errMissingEnv)
+	if !exists { //nolint:nestif
+		slog.InfoContext(
+			ctx, "FLEX_DB_URI environment variable is not set, checking parameter variables",
+		)
+
+		dbURIHost, exists := lookupenv("FLEX_DB_URI_HOST")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_URI_HOST", errMissingEnv)
+		}
+
+		dbURIPort, exists := lookupenv("FLEX_DB_URI_PORT")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_URI_PORT", errMissingEnv)
+		}
+
+		dbURIDatabase, exists := lookupenv("FLEX_DB_URI_DATABASE")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_URI_DATABASE", errMissingEnv)
+		}
+
+		dbURISearchPath, exists := lookupenv("FLEX_DB_URI_SEARCH_PATH")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_URI_SEARCH_PATH", errMissingEnv)
+		}
+
+		dbURIUser, exists := lookupenv("FLEX_DB_URI_USER")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_URI_USER", errMissingEnv)
+		}
+
+		dbURIPassword, exists := lookupenv("FLEX_DB_URI_PASSWORD")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_URI_PASSWORD", errMissingEnv)
+		}
+
+		dbURI = fmt.Sprintf(
+			"postgres://%s:%s@%s/%s?search_path=%s",
+			dbURIUser,
+			dbURIPassword,
+			net.JoinHostPort(dbURIHost, dbURIPort),
+			dbURIDatabase,
+			dbURISearchPath,
+		)
 	}
 
 	replURI, exists := lookupenv("FLEX_DB_REPLICATION_URI")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI", errMissingEnv)
+	if !exists { //nolint:nestif
+		slog.InfoContext(
+			ctx, "FLEX_DB_REPLICATION_URI environment variable is not set, checking parameter variables",
+		)
+
+		replURIHost, exists := lookupenv("FLEX_DB_REPLICATION_URI_HOST")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_HOST", errMissingEnv)
+		}
+
+		replURIPort, exists := lookupenv("FLEX_DB_REPLICATION_URI_PORT")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_PORT", errMissingEnv)
+		}
+
+		replURIDatabase, exists := lookupenv("FLEX_DB_REPLICATION_URI_DATABASE")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_URI_DATABASE", errMissingEnv)
+		}
+
+		replURIUser, exists := lookupenv("FLEX_DB_REPLICATION_URI_USER")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_USER", errMissingEnv)
+		}
+
+		replURIPassword, exists := lookupenv("FLEX_DB_REPLICATION_URI_PASSWORD")
+		if !exists {
+			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_PASSWORD", errMissingEnv)
+		}
+
+		replURI = fmt.Sprintf(
+			"postgres://%s:%s@%s/%s",
+			replURIUser,
+			replURIPassword,
+			net.JoinHostPort(replURIHost, replURIPort),
+			replURIDatabase,
+		)
 	}
 
 	port, exists := lookupenv("FLEX_PORT")
