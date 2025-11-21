@@ -4,7 +4,7 @@ Many of the business processes in the flexibility value chain require parties to
 share information, clarify context, and coordinate actions around the resources
 they manage. Most of this information is structured and stored directly in
 resource fields in the Flexibility Information System (FIS). However, some collaboration
-relies on unstructured communication. Such communication can be needed both whithin
+relies on unstructured communication. Such communication can be needed both within
 one party or across several parties.
 
 This section describes the comments function that supports communication and coordination
