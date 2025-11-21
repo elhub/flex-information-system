@@ -99,3 +99,4 @@ export const EntityInput = () => {
     </SimpleForm>
   );
 };
+export default EntityInput;

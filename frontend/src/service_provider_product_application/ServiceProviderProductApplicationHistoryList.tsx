@@ -42,3 +42,4 @@ export const ServiceProviderProductApplicationHistoryList = () => {
     </List>
   );
 };
+export default ServiceProviderProductApplicationHistoryList;

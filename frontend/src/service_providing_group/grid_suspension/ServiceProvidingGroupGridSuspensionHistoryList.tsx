@@ -69,3 +69,4 @@ export const ServiceProvidingGroupGridSuspensionHistoryList = () => {
     </List>
   );
 };
+export default ServiceProvidingGroupGridSuspensionHistoryList;

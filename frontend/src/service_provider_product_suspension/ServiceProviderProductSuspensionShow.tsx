@@ -72,3 +72,4 @@ export const ServiceProviderProductSuspensionShow = () => {
     </Show>
   );
 };
+export default ServiceProviderProductSuspensionShow;

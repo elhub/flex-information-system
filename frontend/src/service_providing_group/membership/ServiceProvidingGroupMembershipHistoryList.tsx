@@ -70,3 +70,4 @@ export const ServiceProvidingGroupMembershipHistoryList = () => {
     </List>
   );
 };
+export default ServiceProvidingGroupMembershipHistoryList;

@@ -69,3 +69,4 @@ export const PartyShow = () => {
     </Show>
   );
 };
+export default PartyShow;

@@ -87,3 +87,4 @@ export const ServiceProviderProductApplicationShow = () => {
     </Show>
   );
 };
+export default ServiceProviderProductApplicationShow;

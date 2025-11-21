@@ -61,3 +61,4 @@ export const PartyMembershipHistoryList = () => {
     </List>
   );
 };
+export default PartyMembershipHistoryList;

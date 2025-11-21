@@ -66,3 +66,4 @@ export const SystemOperatorProductTypeInput = () => {
     </SimpleForm>
   );
 };
+export default SystemOperatorProductTypeInput;

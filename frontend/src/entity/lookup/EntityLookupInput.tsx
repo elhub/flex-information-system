@@ -114,3 +114,4 @@ export const EntityLookupInput = () => (
     </Stack>
   </SimpleForm>
 );
+export default EntityLookupInput;

@@ -46,7 +46,7 @@ export const ServiceProvidingGroupMembershipInput = () => {
           <AutocompleteReferenceInput
             source="service_providing_group_id"
             reference="service_providing_group"
-            readOnly={!!overrideRecord?.service_providing_group_id}
+            readOnly={!!record?.service_providing_group_id}
           />
           <AutocompleteReferenceInput
             source="controllable_unit_id"
@@ -69,3 +69,4 @@ export const ServiceProvidingGroupMembershipInput = () => {
     </SimpleForm>
   );
 };
+export default ServiceProvidingGroupMembershipInput;

@@ -98,3 +98,4 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
     )
   );
 };
+export default ServiceProvidingGroupGridPrequalificationList;

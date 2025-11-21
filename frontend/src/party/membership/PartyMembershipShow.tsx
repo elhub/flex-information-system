@@ -81,3 +81,4 @@ export const PartyMembershipShow = () => {
     </Show>
   );
 };
+export default PartyMembershipShow;

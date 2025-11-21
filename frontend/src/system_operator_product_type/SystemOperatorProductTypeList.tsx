@@ -52,3 +52,4 @@ export const SystemOperatorProductTypeList = () => {
     </List>
   );
 };
+export default SystemOperatorProductTypeList;

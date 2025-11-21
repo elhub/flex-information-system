@@ -20,3 +20,4 @@ export const ProductTypeShow = () => (
     </SimpleShowLayout>
   </Show>
 );
+export default ProductTypeShow;

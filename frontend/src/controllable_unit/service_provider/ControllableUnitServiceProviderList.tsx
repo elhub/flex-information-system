@@ -105,3 +105,4 @@ export const ControllableUnitServiceProviderList = () => {
     </ResourceContextProvider>
   );
 };
+export default ControllableUnitServiceProviderList;

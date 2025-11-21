@@ -47,3 +47,4 @@ export const TechnicalResourceInput = () => {
     </SimpleForm>
   );
 };
+export default TechnicalResourceInput;

@@ -63,3 +63,4 @@ export const ServiceProviderProductApplicationList = () => {
     </List>
   );
 };
+export default ServiceProviderProductApplicationList;

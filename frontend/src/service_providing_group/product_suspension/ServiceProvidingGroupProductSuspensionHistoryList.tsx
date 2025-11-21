@@ -69,3 +69,4 @@ export const ServiceProvidingGroupProductSuspensionHistoryList = () => {
     </List>
   );
 };
+export default ServiceProvidingGroupProductSuspensionHistoryList;

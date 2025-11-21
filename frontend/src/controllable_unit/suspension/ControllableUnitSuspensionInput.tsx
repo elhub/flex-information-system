@@ -78,3 +78,4 @@ export const ControllableUnitSuspensionInput = () => {
     </SimpleForm>
   );
 };
+export default ControllableUnitSuspensionInput;

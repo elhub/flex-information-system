@@ -66,3 +66,4 @@ export const ControllableUnitSuspensionHistoryList = () => {
     </List>
   );
 };
+export default ControllableUnitSuspensionHistoryList;

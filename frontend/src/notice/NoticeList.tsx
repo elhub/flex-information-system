@@ -24,3 +24,4 @@ export const NoticeList = () => (
     </Datagrid>
   </List>
 );
+export default NoticeList;

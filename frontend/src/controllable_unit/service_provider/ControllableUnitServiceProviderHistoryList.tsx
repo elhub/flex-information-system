@@ -64,3 +64,4 @@ export const ControllableUnitServiceProviderHistoryList = () => {
     </List>
   );
 };
+export default ControllableUnitServiceProviderHistoryList;

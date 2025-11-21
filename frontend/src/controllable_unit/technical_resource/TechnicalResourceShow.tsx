@@ -84,3 +84,4 @@ export const TechnicalResourceShow = () => {
     </Show>
   );
 };
+export default TechnicalResourceShow;

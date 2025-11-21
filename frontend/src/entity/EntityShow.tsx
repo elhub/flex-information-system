@@ -25,3 +25,4 @@ export const EntityShow = () => (
     </SimpleShowLayout>
   </Show>
 );
+export default EntityShow;

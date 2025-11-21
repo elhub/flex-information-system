@@ -36,3 +36,4 @@ export const EntityList = () => {
     </List>
   );
 };
+export default EntityList;

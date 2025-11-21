@@ -70,3 +70,4 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
     </List>
   );
 };
+export default ServiceProvidingGroupProductApplicationHistoryList;

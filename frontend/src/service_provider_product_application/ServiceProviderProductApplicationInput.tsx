@@ -140,3 +140,4 @@ export const ServiceProviderProductApplicationInput = () => {
     </SimpleForm>
   );
 };
+export default ServiceProviderProductApplicationInput;

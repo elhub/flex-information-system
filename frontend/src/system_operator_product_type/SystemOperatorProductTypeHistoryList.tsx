@@ -38,3 +38,4 @@ export const SystemOperatorProductTypeHistoryList = () => {
     </List>
   );
 };
+export default SystemOperatorProductTypeHistoryList;

@@ -41,3 +41,4 @@ export const ServiceProviderProductSuspensionHistoryList = () => {
     </List>
   );
 };
+export default ServiceProviderProductSuspensionHistoryList;

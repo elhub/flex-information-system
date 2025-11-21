@@ -90,3 +90,4 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
     </Show>
   );
 };
+export default ServiceProvidingGroupGridPrequalificationShow;

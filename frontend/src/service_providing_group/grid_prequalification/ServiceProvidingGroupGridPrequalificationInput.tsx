@@ -88,3 +88,4 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
     </SimpleForm>
   );
 };
+export default ServiceProvidingGroupGridPrequalificationInput;

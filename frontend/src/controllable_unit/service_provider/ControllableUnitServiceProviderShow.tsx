@@ -101,3 +101,4 @@ export const ControllableUnitServiceProviderShow = () => {
     </Show>
   );
 };
+export default ControllableUnitServiceProviderShow;
