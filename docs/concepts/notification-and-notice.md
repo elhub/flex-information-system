@@ -1,4 +1,4 @@
-# Notification and notice
+# Notification and Notice
 
 Many of the interactions with the Flexibility Information System (FIS) trigger
 notifications and notices. This section explains what they are, why we need them

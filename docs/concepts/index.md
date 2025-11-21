@@ -18,6 +18,11 @@ continues to evolve.
 
 ## Current concepts
 
+### [Communication and Coordination](communication-and-coordination.md)
+
+Describes how unstructured information is shared within and
+across parties in FIS, that support collaboration and alignment around resources.
+
 ### [Conceptual Model and Terminology](conceptual-model.md)
 
 Introduces the core concepts and relationships in FIS and how they
@@ -31,6 +36,11 @@ The owner of a controllable unit.
 ### [Grid Model](grid-model.md)
 
 A simplified representation of the physical grid.
+
+### [Notification and Notice](notification-and-notice.md)
+
+Explains how FIS uses notifications and notices to inform parties about events
+and highlight situations where action is required.
 
 ### [Ready for Market](ready-for-market.md)
 
