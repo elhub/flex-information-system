@@ -52,7 +52,7 @@ This supports _internal collaboration_.
 * `any_involved_party` - all parties involved in the referenced resource.
 This supports _cross-party communication_.
 
-#### Current comment resources
+### Current comment resources
 
 * [CU suspension comment](../resources/controllable_unit_suspension_comment.md)
 
