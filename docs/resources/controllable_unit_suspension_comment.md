@@ -3,7 +3,7 @@
 Comment made by a party involved in a controllable unit suspension.
 Several comments can be added to a given suspension.
 
-For information about comments as a concept see [Communication and Coordination](../concepts/communication-and-coordination.md). 
+For information about comments as a concept see [Communication and Coordination](../concepts/communication-and-coordination.md).
 
 ## Relevant links
 
