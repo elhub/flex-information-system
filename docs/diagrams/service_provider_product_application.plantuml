@@ -117,8 +117,10 @@ loop When status changes
         - qualified
         - not_qualified
 
-        The PSO should add notes and update
-        last qualified time when relevant.
+        The PSO should update last qualified time when relevant.
+        Comments can be used by both parties to share additional
+        context and coordinate around the application. Other
+        external channels may be used if needed.
     end note
     activate FIS
     FIS --> SO: OK

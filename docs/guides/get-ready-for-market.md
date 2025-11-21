@@ -1,4 +1,4 @@
-# Get ready for market
+# Get Ready for Market
 
 Before a service provider can participate in the market, several registration and
 qualification steps must be completed. The process starts with an empty

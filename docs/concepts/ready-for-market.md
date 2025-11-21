@@ -1,4 +1,4 @@
-# Ready for market
+# Ready for Market
 
 Before a service provider can use a service providing group (SPG) in the market,
 the SPG must be ready. We can check if an SPG is ready to deliver a specific
