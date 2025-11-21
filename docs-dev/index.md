@@ -57,7 +57,7 @@ addition we are also using the root certificate (at `~/.ca/root/ca.cert.pem`
 * `<domain>.key.pem` - The private key
 
 Then we need to make sure that these domains resolve. Add the following to your
-(Windows) hosts file:
+(Windows) hosts file and restart wsl:
 
 ```text
 127.0.0.1          dev.flex.internal
@@ -75,7 +75,7 @@ the scripts, with the following commands:
 ```bash
 just permissions
 just openapi
-just test-accounts
+just init
 ```
 
 Now, you just have to run:
