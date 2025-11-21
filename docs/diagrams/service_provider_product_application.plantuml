@@ -117,8 +117,10 @@ loop When status changes
         - qualified
         - not_qualified
 
-        The PSO should add notes and update
+        The PSO should add comments and update
         last qualified time when relevant.
+        SP can also communicate with PSO
+        through comments if needed.
     end note
     activate FIS
     FIS --> SO: OK
