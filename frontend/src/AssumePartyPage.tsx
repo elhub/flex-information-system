@@ -151,6 +151,7 @@ export const AssumePartyPage = () => {
               source="party_id"
               reference="party"
               sortable={false}
+              link={false}
             >
               <TextField source="name" />
             </ReferenceField>
