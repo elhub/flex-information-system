@@ -35,7 +35,9 @@ export const ControllableUnitServiceProviderInput = () => {
 
   const isServiceProvider = identity?.role == "flex_service_provider";
 
-  const finalRecord = { ...record, service_provider_id: identity?.partyID };
+  const finalRecord = isServiceProvider
+    ? { ...record, service_provider_id: identity?.partyID }
+    : record;
 
   if (identityLoading) return <>Loading...</>;
 
