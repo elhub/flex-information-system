@@ -28,6 +28,24 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separate MUI components into their own chunk (icons tree-shake separately)
+          'mui-core': ['@mui/material'],
+          // Separate React Admin into its own chunk
+          'react-admin': ['react-admin', 'ra-core'],
+          // Separate data provider
+          'data-provider': ['@raphiniert/ra-data-postgrest'],
+          // Separate query devtools (only for dev)
+          'react-query-devtools': ['@tanstack/react-query-devtools'],
+        },
+      },
+    },
+    // Increase chunk size warning limit since we're code splitting
+    chunkSizeWarningLimit: 600,
+  },
   server: {
     host: "dev.flex.internal",
     port: 5443,

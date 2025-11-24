@@ -216,3 +216,4 @@ export const AssumePartyPage = () => {
     </>
   );
 };
+export default AssumePartyPage;

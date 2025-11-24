@@ -12,6 +12,7 @@
         "type-check": "tsc --noEmit"
     },
     "dependencies": {
+        "@fontsource/roboto": "^5.2.9",
         "@raphiniert/ra-data-postgrest": "^2.5.1",
         "@tanstack/react-query-devtools": "^5.90.2",
         "ra-input-rich-text": "^5.12.0",

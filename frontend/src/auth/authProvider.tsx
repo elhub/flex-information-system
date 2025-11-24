@@ -27,6 +27,19 @@ const toDataURL = (url: string) =>
         }),
     );
 
+// Cache for converted avatar data URLs
+const avatarCache = new Map<string, Promise<any>>();
+
+const getCachedAvatar = (role: string) => {
+  const avatarUrl = roleAvatars[role];
+  if (!avatarUrl) return Promise.resolve(undefined);
+
+  if (!avatarCache.has(role)) {
+    avatarCache.set(role, toDataURL(avatarUrl));
+  }
+  return avatarCache.get(role);
+};
+
 const roleAvatars: any = {
   flex_anonymous: anonymous_avatar,
   flex_balance_responsible_party: balance_responsible_party_avatar,
@@ -55,7 +68,7 @@ export function authProvider(): AuthProvider {
     const entity_name = sessionInfo["entity_name"];
     const party_name = sessionInfo["party_name"];
 
-    const avatar = await toDataURL(roleAvatars[role]);
+    const avatar = await getCachedAvatar(role);
 
     return Promise.resolve<any>({
       id: sessionInfo["sub"],
