@@ -2,11 +2,8 @@ import {
   AutocompleteInput,
   List,
   ReferenceField,
-  SelectInput,
   TextField,
-  useGetIdentity,
   useGetList,
-  useList,
   useRecordContext,
 } from "react-admin";
 import { Datagrid } from "../auth";
