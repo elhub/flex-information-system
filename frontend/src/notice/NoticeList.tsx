@@ -22,17 +22,13 @@ const NoticeResourceButton = () => {
 };
 
 export const NoticeList = () => {
-  const { data: identity, isPending: isPendingIdentity } = useGetIdentity();
   const { data: parties } = useGetList("party");
-
-  if (isPendingIdentity) return <p>Loading...</p>;
 
   const filters = [
     <AutocompleteInput
       choices={parties?.map((p) => ({ id: p.id, name: p.name })) || []}
       source="party_id"
       label="Party"
-      defaultValue={identity?.party_id}
     ></AutocompleteInput>,
     <AutocompleteInput
       source="type"
