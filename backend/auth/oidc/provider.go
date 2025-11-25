@@ -62,6 +62,9 @@ type Provider struct {
 	oauth2Config oauth2.Config
 }
 
+// oidcTimeoutSeconds is the timeout for requests to the OIDC provider.
+const oidcTimeoutSeconds = 10
+
 // NewProvider creates a new OIDC provider.
 func NewProvider( //nolint: funlen
 	ctx context.Context,
@@ -72,7 +75,10 @@ func NewProvider( //nolint: funlen
 
 	slog.DebugContext(ctx, "Fetching OIDC provider details from "+wellKnown)
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, wellKnown, nil)
+	configCtx, cancel := context.WithTimeout(ctx, oidcTimeoutSeconds*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(configCtx, http.MethodGet, wellKnown, nil)
 	if err != nil {
 		return nil, fmt.Errorf("could not create OIDC provider request: %w", err)
 	}
@@ -101,7 +107,7 @@ func NewProvider( //nolint: funlen
 
 	slog.DebugContext(ctx, "Registering URI in JWK cache: "+oc.JWKSURI)
 
-	cacheRegisterCtx, cancel := context.WithTimeout(ctx, 10*time.Second) //nolint:mnd
+	cacheRegisterCtx, cancel := context.WithTimeout(ctx, oidcTimeoutSeconds*time.Second)
 	defer cancel()
 
 	err = jwksCache.Register(cacheRegisterCtx, oc.JWKSURI)
@@ -312,8 +318,13 @@ func (p *Provider) parRequest(ctx context.Context, state, nonce, codeChallenge s
 		"code_challenge_method": []string{"S256"},
 	}
 
+	parCtx, cancel := context.WithTimeout(ctx, oidcTimeoutSeconds*time.Second)
+	defer cancel()
+
 	client := new(http.Client)
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, p.parEndpoint, strings.NewReader(data.Encode()))
+	req, _ := http.NewRequestWithContext(
+		parCtx, http.MethodPost, p.parEndpoint, strings.NewReader(data.Encode()),
+	)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	p.addBasicAuth(req)
 

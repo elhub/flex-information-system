@@ -19,11 +19,9 @@ type UserDetails interface {
 
 // UserDetailsFromContext returns the UserDetails value stored in ctx.
 // Errors if no UserDetails is found.
-//
-//nolint:ireturn
-func UserDetailsFromContext(ctx context.Context, key string) (UserDetails, error) {
+func UserDetailsFromContext(ctx context.Context, key string) (UserDetails, error) { //nolint:ireturn
 	value := ctx.Value(key)
-	if value == nil {
+	if value == nil { //nolint:ireturn
 		return nil, fmt.Errorf("%w: context value for %s is empty", errMissingUserDetails, key)
 	}
 
