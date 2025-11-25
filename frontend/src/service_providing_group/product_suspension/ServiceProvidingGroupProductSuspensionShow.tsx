@@ -100,4 +100,3 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
     </Show>
   );
 };
-export default ServiceProvidingGroupProductSuspensionShow;

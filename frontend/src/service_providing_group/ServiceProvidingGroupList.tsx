@@ -58,5 +58,3 @@ export const ServiceProvidingGroupList = () => (
     </Datagrid>
   </List>
 );
-
-export default ServiceProvidingGroupList;

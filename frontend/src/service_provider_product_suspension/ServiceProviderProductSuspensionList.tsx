@@ -78,4 +78,3 @@ export const ServiceProviderProductSuspensionList = () => {
     </List>
   );
 };
-export default ServiceProviderProductSuspensionList;

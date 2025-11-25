@@ -43,7 +43,7 @@ export default defineConfig({
         },
       },
     },
-    // Increase chunk size warning limit since we're code splitting
+    // Increase chunk size warning limit since react-admin is quite large
     chunkSizeWarningLimit: 600,
   },
   server: {

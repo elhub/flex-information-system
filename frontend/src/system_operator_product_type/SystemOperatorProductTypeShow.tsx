@@ -48,4 +48,3 @@ export const SystemOperatorProductTypeShow = () => {
     </Show>
   );
 };
-export default SystemOperatorProductTypeShow;

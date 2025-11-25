@@ -33,5 +33,3 @@ export const ServiceProvidingGroupHistoryList = () => {
     </List>
   );
 };
-
-export default ServiceProvidingGroupHistoryList;

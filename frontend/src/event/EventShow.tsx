@@ -26,4 +26,3 @@ export const EventShow = () => (
     </SimpleShowLayout>
   </Show>
 );
-export default EventShow;

@@ -93,4 +93,3 @@ export const ControllableUnitSuspensionShow = () => {
     </Show>
   );
 };
-export default ControllableUnitSuspensionShow;

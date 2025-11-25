@@ -90,4 +90,3 @@ export const LoginPage = () => {
     </Form>
   );
 };
-export default LoginPage;

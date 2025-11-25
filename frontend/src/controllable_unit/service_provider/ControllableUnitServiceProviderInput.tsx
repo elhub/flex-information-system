@@ -91,4 +91,3 @@ export const ControllableUnitServiceProviderInput = () => {
     </SimpleForm>
   );
 };
-export default ControllableUnitServiceProviderInput;

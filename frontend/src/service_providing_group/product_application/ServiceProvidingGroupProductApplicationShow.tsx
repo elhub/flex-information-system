@@ -104,4 +104,3 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
     </Show>
   );
 };
-export default ServiceProvidingGroupProductApplicationShow;

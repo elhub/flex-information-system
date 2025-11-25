@@ -73,4 +73,3 @@ export const PartyList = () => {
     </List>
   );
 };
-export default PartyList;

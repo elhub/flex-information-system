@@ -82,4 +82,3 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
     </SimpleForm>
   );
 };
-export default ServiceProvidingGroupGridSuspensionInput;

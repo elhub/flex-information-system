@@ -69,4 +69,3 @@ export const ServiceProvidingGroupMembershipInput = () => {
     </SimpleForm>
   );
 };
-export default ServiceProvidingGroupMembershipInput;

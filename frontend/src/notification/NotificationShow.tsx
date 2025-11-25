@@ -116,4 +116,3 @@ export const NotificationShow = () => (
     </SimpleShowLayout>
   </Show>
 );
-export default NotificationShow;

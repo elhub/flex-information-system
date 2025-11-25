@@ -98,5 +98,3 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
     )
   );
 };
-
-export default ServiceProvidingGroupGridSuspensionList;

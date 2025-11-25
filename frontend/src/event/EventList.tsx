@@ -12,4 +12,3 @@ export const EventList = () => (
     </Datagrid>
   </List>
 );
-export default EventList;

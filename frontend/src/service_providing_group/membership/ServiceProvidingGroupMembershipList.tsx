@@ -100,4 +100,3 @@ export const ServiceProvidingGroupMembershipList = () => {
     )
   );
 };
-export default ServiceProvidingGroupMembershipList;

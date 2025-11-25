@@ -93,4 +93,3 @@ export const ServiceProvidingGroupMembershipShow = () => {
     </Show>
   );
 };
-export default ServiceProvidingGroupMembershipShow;

@@ -160,4 +160,3 @@ export const PartyInput = () => {
     </SimpleForm>
   );
 };
-export default PartyInput;

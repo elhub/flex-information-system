@@ -65,4 +65,3 @@ export const TechnicalResourceHistoryList = () => {
     </List>
   );
 };
-export default TechnicalResourceHistoryList;

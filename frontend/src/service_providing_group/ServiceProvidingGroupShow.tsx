@@ -100,4 +100,3 @@ export const ServiceProvidingGroupShow = () => {
     </Show>
   );
 };
-export default ServiceProvidingGroupShow;

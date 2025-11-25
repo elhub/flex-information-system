@@ -103,4 +103,3 @@ export const ServiceProvidingGroupProductApplicationList = () => {
     </ResourceContextProvider>
   );
 };
-export default ServiceProvidingGroupProductApplicationList;

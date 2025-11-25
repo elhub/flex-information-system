@@ -79,4 +79,3 @@ export const EntityClientShow = () => {
     </Show>
   );
 };
-export default EntityClientShow;

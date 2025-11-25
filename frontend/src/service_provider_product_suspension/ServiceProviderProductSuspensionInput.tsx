@@ -50,4 +50,3 @@ export const ServiceProviderProductSuspensionInput = () => {
     </SimpleForm>
   );
 };
-export default ServiceProviderProductSuspensionInput;

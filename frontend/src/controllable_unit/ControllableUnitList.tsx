@@ -91,4 +91,3 @@ export const ControllableUnitList = () => {
     </List>
   );
 };
-export default ControllableUnitList;

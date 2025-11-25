@@ -46,4 +46,3 @@ export const ServiceProvidingGroupInput = () => {
     </SimpleForm>
   );
 };
-export default ServiceProvidingGroupInput;

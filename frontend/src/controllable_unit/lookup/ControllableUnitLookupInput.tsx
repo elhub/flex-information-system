@@ -135,4 +135,3 @@ export const ControllableUnitLookupInput = () => {
     </SimpleForm>
   );
 };
-export default ControllableUnitLookupInput;

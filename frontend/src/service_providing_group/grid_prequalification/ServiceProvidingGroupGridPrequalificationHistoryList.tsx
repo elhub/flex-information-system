@@ -69,4 +69,3 @@ export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
     </List>
   );
 };
-export default ServiceProvidingGroupGridPrequalificationHistoryList;

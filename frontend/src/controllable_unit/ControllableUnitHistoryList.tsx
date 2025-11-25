@@ -39,4 +39,3 @@ export const ControllableUnitHistoryList = () => {
     </List>
   );
 };
-export default ControllableUnitHistoryList;

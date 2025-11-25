@@ -75,4 +75,3 @@ export const NotificationList = () => {
     </List>
   );
 };
-export default NotificationList;

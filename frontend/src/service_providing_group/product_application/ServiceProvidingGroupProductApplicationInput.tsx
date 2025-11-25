@@ -101,4 +101,3 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
     </SimpleForm>
   );
 };
-export default ServiceProvidingGroupProductApplicationInput;

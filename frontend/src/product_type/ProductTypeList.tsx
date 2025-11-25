@@ -12,4 +12,3 @@ export const ProductTypeList = () => (
     </Datagrid>
   </List>
 );
-export default ProductTypeList;

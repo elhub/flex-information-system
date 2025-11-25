@@ -147,4 +147,3 @@ export const ControllableUnitShow = () => {
     </Show>
   );
 };
-export default ControllableUnitShow;

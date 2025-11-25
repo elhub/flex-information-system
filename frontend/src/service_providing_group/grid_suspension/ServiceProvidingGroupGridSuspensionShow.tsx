@@ -98,4 +98,3 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
     </Show>
   );
 };
-export default ServiceProvidingGroupGridSuspensionShow;

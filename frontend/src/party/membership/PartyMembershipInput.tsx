@@ -47,4 +47,3 @@ export const PartyMembershipInput = () => {
     </SimpleForm>
   );
 };
-export default PartyMembershipInput;

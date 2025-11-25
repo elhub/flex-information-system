@@ -42,4 +42,3 @@ export const EntityClientInput = () => {
     </SimpleForm>
   );
 };
-export default EntityClientInput;
