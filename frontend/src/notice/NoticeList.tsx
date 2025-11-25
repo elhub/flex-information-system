@@ -36,6 +36,11 @@ export const NoticeList = () => {
     ></AutocompleteInput>,
     <AutocompleteInput
       source="type"
+      TextFieldProps={{
+        style: {
+          width: "600px",
+        },
+      }}
       slotProps={{
         popper: {
           style: {
