@@ -16,6 +16,24 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
+import { useMemo } from "react";
+
+// keep only the fields that map to the UI
+const filterRecord = ({
+  controllable_unit_id,
+  service_provider_id,
+  end_user_id,
+  contract_reference,
+  valid_from,
+  valid_to,
+}: any) => ({
+  controllable_unit_id,
+  service_provider_id,
+  end_user_id,
+  contract_reference,
+  valid_from,
+  valid_to,
+});
 
 // common layout to create and edit pages
 export const ControllableUnitServiceProviderInput = () => {
@@ -24,7 +42,10 @@ export const ControllableUnitServiceProviderInput = () => {
 
   // priority to the restored values if they exist, otherwise normal edit mode
   // Memoize the combined record to avoid re-renders causing errors
-  const record = { ...actualRecord, ...overrideRecord };
+  const record = useMemo(
+    () => filterRecord({ ...actualRecord, ...overrideRecord }),
+    [actualRecord, overrideRecord],
+  );
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
 
@@ -35,9 +56,13 @@ export const ControllableUnitServiceProviderInput = () => {
 
   const isServiceProvider = identity?.role == "flex_service_provider";
 
-  const finalRecord = isServiceProvider
-    ? { ...record, service_provider_id: identity?.partyID }
-    : record;
+  const finalRecord = useMemo(() => {
+    const baseRecord = { ...record };
+    if (isServiceProvider) {
+      baseRecord.service_provider_id = identity?.partyID;
+    }
+    return baseRecord;
+  }, [record, isServiceProvider, identity?.partyID]);
 
   if (identityLoading) return <>Loading...</>;
 
