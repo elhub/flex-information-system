@@ -23,11 +23,13 @@ export const NoticeList = () => {
 
   const filters = [
     <AutocompleteInput
+      key="party_id"
       choices={parties?.map((p) => ({ id: p.id, name: p.name })) || []}
       source="party_id"
       label="Party"
     ></AutocompleteInput>,
     <AutocompleteInput
+      key="notice_type"
       source="type"
       TextFieldProps={{
         style: {
