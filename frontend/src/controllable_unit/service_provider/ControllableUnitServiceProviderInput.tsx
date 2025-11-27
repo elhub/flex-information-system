@@ -22,12 +22,14 @@ import { useMemo } from "react";
 const filterRecord = ({
   controllable_unit_id,
   service_provider_id,
+  end_user_id,
   contract_reference,
   valid_from,
   valid_to,
 }: any) => ({
   controllable_unit_id,
   service_provider_id,
+  end_user_id,
   contract_reference,
   valid_from,
   valid_to,

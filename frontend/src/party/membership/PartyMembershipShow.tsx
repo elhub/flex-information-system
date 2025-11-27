@@ -19,23 +19,23 @@ import { ScopesField } from "../../components/scopes";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 
+const EditButton = () => {
+  const record = useRecordContext()!;
+  return (
+    <Button
+      component={Link}
+      to={`/party/${record.party_id}/membership/${record.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
+};
+
 export const PartyMembershipShow = () => {
   const resource = useResourceContext()!;
   const { permissions } = usePermissions();
 
   const isHistory = resource.endsWith("_history");
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/party/${record.party_id}/membership/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show
