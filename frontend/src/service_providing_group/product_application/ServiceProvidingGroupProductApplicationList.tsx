@@ -22,9 +22,18 @@ export const ServiceProvidingGroupProductApplicationList = () => {
 
   if (isLoading) return null; // or a loading spinner
 
-  if (
-    !permissions.includes("service_providing_group_product_application.read")
-  ) {
+  // Permission checks
+  const canRead = permissions.includes(
+    "service_providing_group_product_application.read",
+  );
+  const canCreate = permissions.includes(
+    "service_providing_group_product_application.create",
+  );
+  const canDelete = permissions.includes(
+    "service_providing_group_product_application.delete",
+  );
+
+  if (!canRead) {
     return null; // or <NotAllowed /> component
   }
 
@@ -43,14 +52,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
   );
 
   const ListActions = () => {
-    const { permissions } = usePermissions();
-    return (
-      <TopToolbar>
-        {permissions.includes(
-          "service_providing_group_product_application.create",
-        ) && <CreateButton />}
-      </TopToolbar>
-    );
+    return <TopToolbar>{canCreate && <CreateButton />}</TopToolbar>;
   };
 
   return (
@@ -95,9 +97,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             sortable={false}
           />
           <TextField source="status" />
-          {permissions.includes(
-            "service_providing_group_product_application.delete",
-          ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
+          {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
         </Datagrid>
       </List>
     </ResourceContextProvider>

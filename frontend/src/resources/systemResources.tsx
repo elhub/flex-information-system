@@ -13,13 +13,18 @@ import { NoticeList } from "../notice/NoticeList";
 export const createSystemResources = (permissions: string[]) => {
   const resources: JSX.Element[] = [];
 
-  if (permissions.includes("event.read")) {
+  // Permission checks
+  const canReadEvent = permissions.includes("event.read");
+  const canReadNotification = permissions.includes("notification.read");
+  const canReadNotice = permissions.includes("notice.read");
+
+  if (canReadEvent) {
     resources.push(
       <Resource key="event" name="event" list={EventList} show={EventShow} />,
     );
   }
 
-  if (permissions.includes("notification.read")) {
+  if (canReadNotification) {
     resources.push(
       <Resource
         key="notification"
@@ -30,7 +35,7 @@ export const createSystemResources = (permissions: string[]) => {
     );
   }
 
-  if (permissions.includes("notice.read")) {
+  if (canReadNotice) {
     resources.push(<Resource key="notice" name="notice" list={NoticeList} />);
   }
 

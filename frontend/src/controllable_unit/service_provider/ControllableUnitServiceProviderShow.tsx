@@ -27,6 +27,11 @@ export const ControllableUnitServiceProviderShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes(
+    "controllable_unit_service_provider.update",
+  );
+
   const EditButton = () => {
     const record = useRecordContext()!;
     return (
@@ -43,7 +48,7 @@ export const ControllableUnitServiceProviderShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes("controllable_unit_service_provider.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

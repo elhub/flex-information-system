@@ -37,11 +37,14 @@ export const PartyMembershipShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes("party_membership.update");
+
   return (
     <Show
       actions={
         !isHistory &&
-        permissions.includes("party_membership.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

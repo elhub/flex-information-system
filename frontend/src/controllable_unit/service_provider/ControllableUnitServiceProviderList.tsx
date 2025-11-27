@@ -43,22 +43,33 @@ const ListActions = ({
   permissions: string[];
   id: any;
   business_id: string;
-}) => (
-  <TopToolbar>
-    {permissions.includes("controllable_unit.lookup") && (
-      <CULookupButton business_id={business_id} />
-    )}
-    {permissions.includes("controllable_unit_service_provider.create") && (
-      <CreateButton id={id} />
-    )}
-  </TopToolbar>
-);
+}) => {
+  const canLookup = permissions.includes("controllable_unit.lookup");
+  const canCreate = permissions.includes(
+    "controllable_unit_service_provider.create",
+  );
+
+  return (
+    <TopToolbar>
+      {canLookup && <CULookupButton business_id={business_id} />}
+      {canCreate && <CreateButton id={id} />}
+    </TopToolbar>
+  );
+};
 
 export const ControllableUnitServiceProviderList = () => {
   const { id, business_id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
-  if (!permissions.includes("controllable_unit_service_provider.read")) {
+  // Permission checks
+  const canRead = permissions.includes(
+    "controllable_unit_service_provider.read",
+  );
+  const canDelete = permissions.includes(
+    "controllable_unit_service_provider.delete",
+  );
+
+  if (!canRead) {
     return null; // or a fallback UI
   }
 
@@ -97,9 +108,7 @@ export const ControllableUnitServiceProviderList = () => {
           <TextField source="contract_reference" />
           <DateField source="valid_from" showTime />
           <DateField source="valid_to" showTime />
-          {permissions.includes(
-            "controllable_unit_service_provider.delete",
-          ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
+          {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
         </Datagrid>
       </List>
     </ResourceContextProvider>

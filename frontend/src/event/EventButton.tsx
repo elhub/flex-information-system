@@ -13,11 +13,14 @@ export const EventButton = (props: any) => {
 
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes("event.read");
+
   const filter =
     "?filter=" +
     encodeURIComponent(`{ "source@like": "/${resource}/${record.id}" }`);
 
-  return permissions.includes("event.read") ? (
+  return canRead ? (
     <Button
       component={Link}
       to={`/event${filter}`}

@@ -24,6 +24,11 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes(
+    "service_providing_group_grid_prequalification.update",
+  );
+
   const EditButton = () => {
     const record = useRecordContext()!;
     return (
@@ -40,9 +45,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes(
-          "service_providing_group_grid_prequalification.update",
-        ) && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

@@ -14,8 +14,11 @@ export const ControllableUnitEnergySupplierList = () => {
   const { accounting_point_id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes("accounting_point_energy_supplier.read");
+
   return (
-    permissions.includes("accounting_point_energy_supplier.read") && (
+    canRead && (
       <ResourceContextProvider value="accounting_point_energy_supplier">
         <List
           title={false}

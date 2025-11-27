@@ -24,6 +24,11 @@ export const ServiceProvidingGroupMembershipShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes(
+    "service_providing_group_membership.update",
+  );
+
   const EditButton = () => {
     const record = useRecordContext()!;
     return (
@@ -40,7 +45,7 @@ export const ServiceProvidingGroupMembershipShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes("service_providing_group_membership.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

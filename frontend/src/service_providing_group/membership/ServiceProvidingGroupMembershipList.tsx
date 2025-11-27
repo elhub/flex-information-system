@@ -35,13 +35,13 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes("service_providing_group_membership.create") && (
-      <CreateButton id={id} />
-    )}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes(
+    "service_providing_group_membership.create",
+  );
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+};
 
 export const ServiceProvidingGroupMembershipList = () => {
   // id of the SPG
@@ -49,8 +49,16 @@ export const ServiceProvidingGroupMembershipList = () => {
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes(
+    "service_providing_group_membership.read",
+  );
+  const canDelete = permissions.includes(
+    "service_providing_group_membership.delete",
+  );
+
   return (
-    permissions.includes("service_providing_group_membership.read") && (
+    canRead && (
       <ResourceContextProvider value="service_providing_group_membership">
         <List
           title={false}
@@ -91,9 +99,9 @@ export const ServiceProvidingGroupMembershipList = () => {
             </ReferenceField>
             <DateField source="valid_from" showTime />
             <DateField source="valid_to" showTime />
-            {permissions.includes(
-              "service_providing_group_membership.delete",
-            ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
+            {canDelete && (
+              <DeleteButton mutationMode="pessimistic" redirect="" />
+            )}
           </Datagrid>
         </List>
       </ResourceContextProvider>

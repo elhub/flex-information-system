@@ -13,7 +13,17 @@ import { SystemOperatorProductTypeHistoryList } from "../system_operator_product
 export const createProductResources = (permissions: string[]) => {
   const resources: JSX.Element[] = [];
 
-  if (permissions.includes("product_type.read")) {
+  // Permission checks
+  const canReadProductType = permissions.includes("product_type.read");
+  const canReadSOPT = permissions.includes("system_operator_product_type.read");
+  const canCreateSOPT = permissions.includes(
+    "system_operator_product_type.create",
+  );
+  const canUpdateSOPT = permissions.includes(
+    "system_operator_product_type.update",
+  );
+
+  if (canReadProductType) {
     resources.push(
       <Resource
         key="product_type"
@@ -25,7 +35,7 @@ export const createProductResources = (permissions: string[]) => {
     );
   }
 
-  if (permissions.includes("system_operator_product_type.read")) {
+  if (canReadSOPT) {
     resources.push(
       <Resource
         key="system_operator_product_type"
@@ -33,7 +43,7 @@ export const createProductResources = (permissions: string[]) => {
         list={SystemOperatorProductTypeList}
         show={SystemOperatorProductTypeShow}
         edit={
-          permissions.includes("system_operator_product_type.update") ? (
+          canUpdateSOPT ? (
             <EditRedirectPreviousPage>
               <SystemOperatorProductTypeInput />
             </EditRedirectPreviousPage>
@@ -42,7 +52,7 @@ export const createProductResources = (permissions: string[]) => {
           )
         }
         create={
-          permissions.includes("system_operator_product_type.create") ? (
+          canCreateSOPT ? (
             <CreateRedirectPreviousPage>
               <SystemOperatorProductTypeInput />
             </CreateRedirectPreviousPage>

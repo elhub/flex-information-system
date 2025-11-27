@@ -33,13 +33,9 @@ const ListActions = ({
   permissions: string[];
   id: any;
 }) => {
-  return (
-    <TopToolbar>
-      {permissions.includes("technical_resource.create") && (
-        <CreateButton id={id} />
-      )}
-    </TopToolbar>
-  );
+  const canCreate = permissions.includes("technical_resource.create");
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
 };
 
 export const TechnicalResourceList = () => {
@@ -47,8 +43,12 @@ export const TechnicalResourceList = () => {
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes("technical_resource.read");
+  const canDelete = permissions.includes("technical_resource.delete");
+
   return (
-    permissions.includes("technical_resource.read") && (
+    canRead && (
       <ResourceContextProvider value="technical_resource">
         <List
           title={false}
@@ -69,7 +69,7 @@ export const TechnicalResourceList = () => {
             <TextField source="id" label="ID" />
             <TextField source="name" />
             <TextField source="details" />
-            {permissions.includes("technical_resource.delete") && (
+            {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}
           </Datagrid>

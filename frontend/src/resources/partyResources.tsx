@@ -10,7 +10,12 @@ import { PartyMembershipInput } from "../party/membership/PartyMembershipInput";
 import { PartyMembershipHistoryList } from "../party/membership/PartyMembershipHistoryList";
 
 export const createPartyResources = (permissions: string[]) => {
-  if (!permissions.includes("party.read")) return null;
+  // Permission checks
+  const canRead = permissions.includes("party.read");
+  const canCreate = permissions.includes("party.create");
+  const canUpdate = permissions.includes("party.update");
+
+  if (!canRead) return null;
 
   return (
     <Resource
@@ -18,14 +23,14 @@ export const createPartyResources = (permissions: string[]) => {
       list={PartyList}
       show={PartyShow}
       edit={
-        permissions.includes("party.update") ? (
+        canUpdate ? (
           <EditRedirectPreviousPage>
             <PartyInput />
           </EditRedirectPreviousPage>
         ) : undefined
       }
       create={
-        permissions.includes("party.create") ? (
+        canCreate ? (
           <Create redirect="list">
             <PartyInput />
           </Create>

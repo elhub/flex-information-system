@@ -39,13 +39,18 @@ const CULookupButton = () => (
 const ListActions = () => {
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canLookup = permissions.includes("controllable_unit.lookup");
+  const canCreateCUSP = permissions.includes(
+    "controllable_unit_service_provider.create",
+  );
+  const canCreate = permissions.includes("controllable_unit.create");
+
   return (
     <TopToolbar>
-      {permissions.includes("controllable_unit.lookup") && <CULookupButton />}
-      {permissions.includes("controllable_unit_service_provider.create") && (
-        <CreateCUSPButton />
-      )}
-      {permissions.includes("controllable_unit.create") && <CreateButton />}
+      {canLookup && <CULookupButton />}
+      {canCreateCUSP && <CreateCUSPButton />}
+      {canCreate && <CreateButton />}
       <ExportButton />
     </TopToolbar>
   );

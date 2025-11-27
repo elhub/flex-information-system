@@ -33,13 +33,11 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes("controllable_unit_suspension.create") && (
-      <CreateButton id={id} />
-    )}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes("controllable_unit_suspension.create");
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+};
 
 export const ControllableUnitSuspensionList = () => {
   // id of the CU (present only when this page is a subresource of CU)
@@ -47,8 +45,12 @@ export const ControllableUnitSuspensionList = () => {
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes("controllable_unit_suspension.read");
+  const canDelete = permissions.includes("controllable_unit_suspension.delete");
+
   return (
-    permissions.includes("controllable_unit_suspension.read") && (
+    canRead && (
       <ResourceContextProvider value="controllable_unit_suspension">
         <List
           title={false}
@@ -79,7 +81,7 @@ export const ControllableUnitSuspensionList = () => {
               <TextField source="name" />
             </ReferenceField>
             <TextField source="reason" />
-            {permissions.includes("controllable_unit_suspension.delete") && (
+            {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}
           </Datagrid>

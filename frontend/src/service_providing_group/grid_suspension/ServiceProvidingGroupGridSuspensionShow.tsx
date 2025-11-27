@@ -25,6 +25,11 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes(
+    "service_providing_group_grid_suspension.update",
+  );
+
   const EditButton = () => {
     const record = useRecordContext()!;
     return (
@@ -41,9 +46,7 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes(
-          "service_providing_group_grid_suspension.update",
-        ) && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

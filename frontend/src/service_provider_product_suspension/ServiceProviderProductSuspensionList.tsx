@@ -14,6 +14,11 @@ import { IdentityField } from "../components/IdentityField";
 export const ServiceProviderProductSuspensionList = () => {
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canDelete = permissions.includes(
+    "service_provider_product_suspension.delete",
+  );
+
   const ServiceProviderProductSuspensionListFilters = [
     <PartyReferenceInput
       key="procuring_system_operator_id"
@@ -71,9 +76,7 @@ export const ServiceProviderProductSuspensionList = () => {
         <TextField source="reason" />
         <DateField source="recorded_at" showTime />
         <IdentityField source="recorded_by" />
-        {permissions.includes("service_provider_product_suspension.delete") && (
-          <DeleteButton mutationMode="pessimistic" redirect="" />
-        )}
+        {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
       </Datagrid>
     </List>
   );

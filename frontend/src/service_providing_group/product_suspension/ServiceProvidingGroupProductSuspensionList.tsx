@@ -34,21 +34,29 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes(
-      "service_providing_group_product_suspension.create",
-    ) && <CreateButton id={id} />}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes(
+    "service_providing_group_product_suspension.create",
+  );
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+};
 
 export const ServiceProvidingGroupProductSuspensionList = () => {
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes(
+    "service_providing_group_product_suspension.read",
+  );
+  const canDelete = permissions.includes(
+    "service_providing_group_product_suspension.delete",
+  );
+
   return (
-    permissions.includes("service_providing_group_product_suspension.read") && (
+    canRead && (
       <ResourceContextProvider value="service_providing_group_product_suspension">
         <List
           title={false}
@@ -86,9 +94,9 @@ export const ServiceProvidingGroupProductSuspensionList = () => {
             </ReferenceField>
             <ProductTypeArrayField label="Product types" />
             <TextField source="reason" />
-            {permissions.includes(
-              "service_providing_group_product_suspension.delete",
-            ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
+            {canDelete && (
+              <DeleteButton mutationMode="pessimistic" redirect="" />
+            )}
           </Datagrid>
         </List>
       </ResourceContextProvider>

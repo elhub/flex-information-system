@@ -26,6 +26,11 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes(
+    "service_providing_group_product_suspension.update",
+  );
+
   const EditButton = () => {
     const record = useRecordContext()!;
     return (
@@ -42,9 +47,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes(
-          "service_providing_group_product_suspension.update",
-        ) && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

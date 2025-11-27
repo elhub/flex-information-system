@@ -34,13 +34,13 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes(
-      "service_providing_group_grid_prequalification.create",
-    ) && <CreateButton id={id} />}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes(
+    "service_providing_group_grid_prequalification.create",
+  );
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+};
 
 export const ServiceProvidingGroupGridPrequalificationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
@@ -48,10 +48,16 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes(
+    "service_providing_group_grid_prequalification.read",
+  );
+  const canDelete = permissions.includes(
+    "service_providing_group_grid_prequalification.delete",
+  );
+
   return (
-    permissions.includes(
-      "service_providing_group_grid_prequalification.read",
-    ) && (
+    canRead && (
       <ResourceContextProvider value="service_providing_group_grid_prequalification">
         <List
           title={false}
@@ -89,9 +95,9 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             </ReferenceField>
             <TextField source="status" />
             <DateField source="prequalified_at" showTime />
-            {permissions.includes(
-              "service_providing_group_grid_prequalification.delete",
-            ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
+            {canDelete && (
+              <DeleteButton mutationMode="pessimistic" redirect="" />
+            )}
           </Datagrid>
         </List>
       </ResourceContextProvider>

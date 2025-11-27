@@ -19,7 +19,18 @@ import {
 export const createServiceProviderResources = (permissions: string[]) => {
   const resources: JSX.Element[] = [];
 
-  if (permissions.includes("service_provider_product_application.read")) {
+  // Permission checks
+  const canReadApplication = permissions.includes(
+    "service_provider_product_application.read",
+  );
+  const canCreateApplication = permissions.includes(
+    "service_provider_product_application.create",
+  );
+  const canUpdateApplication = permissions.includes(
+    "service_provider_product_application.update",
+  );
+
+  if (canReadApplication) {
     resources.push(
       <Resource
         key="service_provider_product_application"
@@ -27,9 +38,7 @@ export const createServiceProviderResources = (permissions: string[]) => {
         list={ServiceProviderProductApplicationList}
         show={ServiceProviderProductApplicationShow}
         edit={
-          permissions.includes(
-            "service_provider_product_application.update",
-          ) ? (
+          canUpdateApplication ? (
             <EditRedirectPreviousPage>
               <ServiceProviderProductApplicationInput />
             </EditRedirectPreviousPage>
@@ -38,9 +47,7 @@ export const createServiceProviderResources = (permissions: string[]) => {
           )
         }
         create={
-          permissions.includes(
-            "service_provider_product_application.create",
-          ) ? (
+          canCreateApplication ? (
             <CreateRedirectPreviousPage>
               <ServiceProviderProductApplicationInput />
             </CreateRedirectPreviousPage>
@@ -112,7 +119,18 @@ export const createServiceProviderResources = (permissions: string[]) => {
     );
   }
 
-  if (permissions.includes("service_provider_product_suspension.read")) {
+  // Permission checks for service provider product suspension
+  const canReadSuspension = permissions.includes(
+    "service_provider_product_suspension.read",
+  );
+  const canCreateSuspension = permissions.includes(
+    "service_provider_product_suspension.create",
+  );
+  const canUpdateSuspension = permissions.includes(
+    "service_provider_product_suspension.update",
+  );
+
+  if (canReadSuspension) {
     resources.push(
       <Resource
         key="service_provider_product_suspension"
@@ -120,7 +138,7 @@ export const createServiceProviderResources = (permissions: string[]) => {
         list={ServiceProviderProductSuspensionList}
         show={ServiceProviderProductSuspensionShow}
         edit={
-          permissions.includes("service_provider_product_suspension.update") ? (
+          canUpdateSuspension ? (
             <EditRedirectPreviousPage>
               <ServiceProviderProductSuspensionInput />
             </EditRedirectPreviousPage>
@@ -129,7 +147,7 @@ export const createServiceProviderResources = (permissions: string[]) => {
           )
         }
         create={
-          permissions.includes("service_provider_product_suspension.create") ? (
+          canCreateSuspension ? (
             <CreateRedirectPreviousPage>
               <ServiceProviderProductSuspensionInput />
             </CreateRedirectPreviousPage>

@@ -9,7 +9,12 @@ import { EntityClientShow } from "../entity/client/EntityClientShow";
 import { EntityClientInput } from "../entity/client/EntityClientInput";
 
 export const createEntityResources = (permissions: string[]) => {
-  if (!permissions.includes("entity.read")) return null;
+  // Permission checks
+  const canRead = permissions.includes("entity.read");
+  const canCreate = permissions.includes("entity.create");
+  const canUpdate = permissions.includes("entity.update");
+
+  if (!canRead) return null;
 
   return (
     <Resource
@@ -17,7 +22,7 @@ export const createEntityResources = (permissions: string[]) => {
       list={EntityList}
       show={EntityShow}
       create={
-        permissions.includes("entity.create") ? (
+        canCreate ? (
           <Create redirect="list">
             <EntityInput />
           </Create>
@@ -26,7 +31,7 @@ export const createEntityResources = (permissions: string[]) => {
         )
       }
       edit={
-        permissions.includes("entity.update") ? (
+        canUpdate ? (
           <EditRedirectPreviousPage>
             <EntityInput />
           </EditRedirectPreviousPage>

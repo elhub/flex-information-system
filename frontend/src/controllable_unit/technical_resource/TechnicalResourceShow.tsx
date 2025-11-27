@@ -24,6 +24,9 @@ export const TechnicalResourceShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes("technical_resource.update");
+
   const EditButton = () => {
     const record = useRecordContext()!;
     return (
@@ -40,7 +43,7 @@ export const TechnicalResourceShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes("technical_resource.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

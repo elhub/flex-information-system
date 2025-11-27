@@ -37,11 +37,14 @@ export const ControllableUnitSuspensionShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes("controllable_unit_suspension.update");
+
   return (
     <Show
       actions={
         !isHistory &&
-        permissions.includes("controllable_unit_suspension.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>
