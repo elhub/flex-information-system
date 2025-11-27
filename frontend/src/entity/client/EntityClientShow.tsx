@@ -20,6 +20,9 @@ import { ScopesField } from "../../components/scopes";
 export const EntityClientShow = () => {
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canUpdate = permissions.includes("entity_client.update");
+
   const EditButton = () => {
     const record = useRecordContext()!;
     return (
@@ -35,7 +38,7 @@ export const EntityClientShow = () => {
   return (
     <Show
       actions={
-        permissions.includes("entity_client.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>
