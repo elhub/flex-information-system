@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
+import { CommentList } from "../../components/comments";
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const resource = useResourceContext()!;
@@ -82,6 +83,15 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
+        {!isHistory && (
+          <>
+            <Typography variant="h6" gutterBottom>
+              Comments
+            </Typography>
+            <NestedResourceHistoryButton child="comment" label="comments" />
+            <CommentList />
+          </>
+        )}
         <NestedResourceHistoryButton
           child="grid_prequalification"
           label="grid prequalification resources"

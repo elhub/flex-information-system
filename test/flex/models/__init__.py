@@ -110,6 +110,12 @@ from .list_service_provider_product_suspension_comment_history_prefer import (
 from .list_service_provider_product_suspension_comment_prefer import ListServiceProviderProductSuspensionCommentPrefer
 from .list_service_provider_product_suspension_history_prefer import ListServiceProviderProductSuspensionHistoryPrefer
 from .list_service_provider_product_suspension_prefer import ListServiceProviderProductSuspensionPrefer
+from .list_service_providing_group_grid_prequalification_comment_history_prefer import (
+    ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer,
+)
+from .list_service_providing_group_grid_prequalification_comment_prefer import (
+    ListServiceProvidingGroupGridPrequalificationCommentPrefer,
+)
 from .list_service_providing_group_grid_prequalification_history_prefer import (
     ListServiceProvidingGroupGridPrequalificationHistoryPrefer,
 )
@@ -221,6 +227,25 @@ from .service_providing_group import ServiceProvidingGroup
 from .service_providing_group_create_data import ServiceProvidingGroupCreateData
 from .service_providing_group_create_request import ServiceProvidingGroupCreateRequest
 from .service_providing_group_grid_prequalification import ServiceProvidingGroupGridPrequalification
+from .service_providing_group_grid_prequalification_comment import ServiceProvidingGroupGridPrequalificationComment
+from .service_providing_group_grid_prequalification_comment_create_data import (
+    ServiceProvidingGroupGridPrequalificationCommentCreateData,
+)
+from .service_providing_group_grid_prequalification_comment_create_request import (
+    ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+)
+from .service_providing_group_grid_prequalification_comment_history_response import (
+    ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
+)
+from .service_providing_group_grid_prequalification_comment_response import (
+    ServiceProvidingGroupGridPrequalificationCommentResponse,
+)
+from .service_providing_group_grid_prequalification_comment_update_request import (
+    ServiceProvidingGroupGridPrequalificationCommentUpdateRequest,
+)
+from .service_providing_group_grid_prequalification_comment_visibility import (
+    ServiceProvidingGroupGridPrequalificationCommentVisibility,
+)
 from .service_providing_group_grid_prequalification_create_data import (
     ServiceProvidingGroupGridPrequalificationCreateData,
 )
@@ -428,6 +453,8 @@ __all__ = (
     "ListServiceProviderProductSuspensionCommentPrefer",
     "ListServiceProviderProductSuspensionHistoryPrefer",
     "ListServiceProviderProductSuspensionPrefer",
+    "ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer",
+    "ListServiceProvidingGroupGridPrequalificationCommentPrefer",
     "ListServiceProvidingGroupGridPrequalificationHistoryPrefer",
     "ListServiceProvidingGroupGridPrequalificationPrefer",
     "ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer",
@@ -509,6 +536,13 @@ __all__ = (
     "ServiceProvidingGroupCreateData",
     "ServiceProvidingGroupCreateRequest",
     "ServiceProvidingGroupGridPrequalification",
+    "ServiceProvidingGroupGridPrequalificationComment",
+    "ServiceProvidingGroupGridPrequalificationCommentCreateData",
+    "ServiceProvidingGroupGridPrequalificationCommentCreateRequest",
+    "ServiceProvidingGroupGridPrequalificationCommentHistoryResponse",
+    "ServiceProvidingGroupGridPrequalificationCommentResponse",
+    "ServiceProvidingGroupGridPrequalificationCommentUpdateRequest",
+    "ServiceProvidingGroupGridPrequalificationCommentVisibility",
     "ServiceProvidingGroupGridPrequalificationCreateData",
     "ServiceProvidingGroupGridPrequalificationCreateRequest",
     "ServiceProvidingGroupGridPrequalificationHistoryResponse",

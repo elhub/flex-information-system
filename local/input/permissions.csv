@@ -111,6 +111,15 @@ service_providing_group_grid_prequalification;notes;;R;R;R;R;R;RU;R;R;;;
 service_providing_group_grid_prequalification;prequalified_at;;R;R;R;RU;R;RU;R;R;;;
 service_providing_group_grid_prequalification;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_prequalification;recorded_by;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;;;;;;;;;;;;;R
+service_providing_group_grid_prequalification_comment;id;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;service_providing_group_grid_prequalification_id;;R;R;R;RC;R;RC;RC;R;;;
+service_providing_group_grid_prequalification_comment;created_by;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;created_at;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;visibility;;R;R;R;RCU;R;RCU;RCU;R;;;
+service_providing_group_grid_prequalification_comment;content;;R;R;R;RCU;R;RCU;RCU;R;;;
+service_providing_group_grid_prequalification_comment;recorded_at;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;recorded_by;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_suspension;;;;;;D;;D;;;;;R
 service_providing_group_grid_suspension;id;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_suspension;impacted_system_operator_id;;R;R;R;RC;R;RC;R;R;;;
