@@ -111,10 +111,28 @@ NC DR defines a service providing group like this:
 > provider to provide balancing or local services;
 
 A [service providing group](../resources/service_providing_group.md) (SPG) is
-a collection of CUs. The CUs are grouped together within a scheduling area by a
-SP to deliver certain services (like balancing or congestion management). In
-Norway the scheduling areas are the same as the bidding zones or price areas
-NO1 - NO5.
+a collection of CUs. We call the CUs *members* of the SPG.
+
+The topological location of the CUs limits the use of the SPG. If SPG members
+are close together and all connected to the same part of the grid, the SPG can
+offer local services such as congestion management. If the members are spread
+out over a larger area, the SPG can offer balancing services.
+
+Each SPG is resticted to a specific area by the service provider specifying when
+creating the SPG. We use the term `bidding zone`, rather than `scheduling area`
+used in NC DR. [SOGL](https://eur-lex.europa.eu/eli/reg/2017/1485/oj/eng) tells
+us that the geographical scope of the scheduling area is equal to the bidding
+zone. The norwegian word for bidding zone is `budområde`, and in common language
+also refrerred to as `prisområde`. We have chosen to use this term because:
+
+* The term 'bidding zone' is already widely used.
+* It is easier to understand for market participants, i.e. service providers.
+* We can strech the definition a bit to cover both local and
+  balancing services/markets.
+
+The CUs are grouped together within a scheduling area by a SP
+to deliver certain services (like balancing or congestion management). In Norway
+the scheduling areas are the same as the bidding zones or price areas NO1 - NO5.
 
 > [!NOTE]
 >
