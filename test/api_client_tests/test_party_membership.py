@@ -283,6 +283,24 @@ def test_ptym_org(sts):
     )
     assert isinstance(e, ErrorMessage)
 
+    # cleanup
+
+    d = delete_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, pm.id),
+        body=EmptyObject(),
+    )
+    assert not (isinstance(d, ErrorMessage))
+
+    u = update_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, org_pm.id),
+        body=PartyMembershipUpdateRequest(
+            scopes=[AuthScope.MANAGEAUTH, AuthScope.MANAGEDATA],
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
 
 def test_ptym_common(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
