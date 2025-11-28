@@ -1,7 +1,6 @@
 import {
   List,
   Button,
-  DeleteButton,
   ReferenceField,
   ResourceContextProvider,
   TextField,

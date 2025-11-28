@@ -14,6 +14,24 @@ import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { permissionRefs } from "../../auth/permissions";
 
+const CreateButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={
+      id
+        ? `/service_providing_group/${id}/product_application/create`
+        : "/service_providing_group_product_application/create"
+    }
+    startIcon={<AddIcon />}
+    state={{ service_providing_group_id: id }}
+    label="Create"
+  />
+);
+
+const ListActions = ({ canCreate, id }: { canCreate: boolean; id: any }) => (
+  <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>
+);
+
 export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
   const id = record?.id;
@@ -34,30 +52,12 @@ export const ServiceProvidingGroupProductApplicationList = () => {
     return null; // or <NotAllowed /> component
   }
 
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={
-        id
-          ? `/service_providing_group/${id}/product_application/create`
-          : "/service_providing_group_product_application/create"
-      }
-      startIcon={<AddIcon />}
-      state={{ service_providing_group_id: id }}
-      label="Create"
-    />
-  );
-
-  const ListActions = () => {
-    return <TopToolbar>{canCreate && <CreateButton />}</TopToolbar>;
-  };
-
   return (
     <ResourceContextProvider value="service_providing_group_product_application">
       <List
         title={false}
         perPage={10}
-        actions={<ListActions />}
+        actions={<ListActions canCreate={canCreate} id={id} />}
         exporter={false}
         empty={false}
         filter={id ? { service_providing_group_id: id } : undefined}
