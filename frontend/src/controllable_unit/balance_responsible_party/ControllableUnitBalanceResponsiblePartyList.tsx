@@ -8,6 +8,7 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { DateField } from "../../components/datetime";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
   // accounting point id of the controllable unit whose BRPs we want to get
@@ -16,7 +17,7 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
 
   // Permission checks
   const canRead = permissions.includes(
-    "accounting_point_balance_responsible_party.read",
+    permissionRefs.accounting_point_balance_responsible_party.read,
   );
 
   return (
