@@ -2,6 +2,7 @@ import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
+import { permissionRefs } from "../auth/permissions";
 import { ServiceProviderProductApplicationList } from "../service_provider_product_application/ServiceProviderProductApplicationList";
 import { ServiceProviderProductApplicationShow } from "../service_provider_product_application/ServiceProviderProductApplicationShow";
 import { ServiceProviderProductApplicationInput } from "../service_provider_product_application/ServiceProviderProductApplicationInput";
@@ -21,13 +22,13 @@ export const createServiceProviderResources = (permissions: string[]) => {
 
   // Permission checks
   const canReadApplication = permissions.includes(
-    "service_provider_product_application.read",
+    permissionRefs.service_provider_product_application.read,
   );
   const canCreateApplication = permissions.includes(
-    "service_provider_product_application.create",
+    permissionRefs.service_provider_product_application.create,
   );
   const canUpdateApplication = permissions.includes(
-    "service_provider_product_application.update",
+    permissionRefs.service_provider_product_application.update,
   );
 
   if (canReadApplication) {
@@ -121,13 +122,13 @@ export const createServiceProviderResources = (permissions: string[]) => {
 
   // Permission checks for service provider product suspension
   const canReadSuspension = permissions.includes(
-    "service_provider_product_suspension.read",
+    permissionRefs.service_provider_product_suspension.read,
   );
   const canCreateSuspension = permissions.includes(
-    "service_provider_product_suspension.create",
+    permissionRefs.service_provider_product_suspension.create,
   );
   const canUpdateSuspension = permissions.includes(
-    "service_provider_product_suspension.update",
+    permissionRefs.service_provider_product_suspension.update,
   );
 
   if (canReadSuspension) {

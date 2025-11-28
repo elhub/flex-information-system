@@ -16,12 +16,13 @@ import { IdentityField } from "../../components/IdentityField";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { ScopesField } from "../../components/scopes";
+import { permissionRefs } from "../../auth/permissions";
 
 export const EntityClientShow = () => {
   const { permissions } = usePermissions();
 
   // Permission checks
-  const canUpdate = permissions.includes("entity_client.update");
+  const canUpdate = permissions.includes(permissionRefs.entity_client.update);
 
   const EditButton = () => {
     const record = useRecordContext()!;

@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -44,8 +45,10 @@ const ListActions = ({
   permissions: string[];
   id: any;
 }) => {
-  const canCreate = permissions.includes("party_membership.create");
-  const canLookup = permissions.includes("entity.lookup");
+  const canCreate = permissions.includes(
+    permissionRefs.party_membership.create,
+  );
+  const canLookup = permissions.includes(permissionRefs.entity.lookup);
 
   return (
     <TopToolbar>
@@ -61,8 +64,10 @@ export const PartyMembershipList = () => {
   const { permissions } = usePermissions();
 
   // Permission checks
-  const canRead = permissions.includes("party_membership.read");
-  const canDelete = permissions.includes("party_membership.delete");
+  const canRead = permissions.includes(permissionRefs.party_membership.read);
+  const canDelete = permissions.includes(
+    permissionRefs.party_membership.delete,
+  );
 
   return (
     canRead && (

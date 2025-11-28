@@ -11,6 +11,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { permissionRefs } from "../../auth/permissions";
 
 // automatically fill the controllable_unit_id field with the ID of the
 // show page the create button is displayed on
@@ -33,7 +34,9 @@ const ListActions = ({
   permissions: string[];
   id: any;
 }) => {
-  const canCreate = permissions.includes("technical_resource.create");
+  const canCreate = permissions.includes(
+    permissionRefs.technical_resource.create,
+  );
 
   return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
 };
@@ -44,8 +47,10 @@ export const TechnicalResourceList = () => {
   const { permissions } = usePermissions();
 
   // Permission checks
-  const canRead = permissions.includes("technical_resource.read");
-  const canDelete = permissions.includes("technical_resource.delete");
+  const canRead = permissions.includes(permissionRefs.technical_resource.read);
+  const canDelete = permissions.includes(
+    permissionRefs.technical_resource.delete,
+  );
 
   return (
     canRead && (

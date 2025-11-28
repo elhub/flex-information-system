@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -33,7 +34,7 @@ const ListActions = ({
   permissions: string[];
   id: any;
 }) => {
-  const canCreate = permissions.includes("entity_client.create");
+  const canCreate = permissions.includes(permissionRefs.entity_client.create);
 
   return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
 };
@@ -44,8 +45,8 @@ export const EntityClientList = () => {
   const { permissions } = usePermissions();
 
   // Permission checks
-  const canRead = permissions.includes("entity_client.read");
-  const canDelete = permissions.includes("entity_client.delete");
+  const canRead = permissions.includes(permissionRefs.entity_client.read);
+  const canDelete = permissions.includes(permissionRefs.entity_client.delete);
 
   return (
     canRead && (

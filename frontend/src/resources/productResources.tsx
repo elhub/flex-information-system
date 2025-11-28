@@ -2,6 +2,7 @@ import { Resource, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
+import { permissionRefs } from "../auth/permissions";
 import { displayProductType } from "../product_type/components";
 import { ProductTypeList } from "../product_type/ProductTypeList";
 import { ProductTypeShow } from "../product_type/ProductTypeShow";
@@ -14,13 +15,17 @@ export const createProductResources = (permissions: string[]) => {
   const resources: JSX.Element[] = [];
 
   // Permission checks
-  const canReadProductType = permissions.includes("product_type.read");
-  const canReadSOPT = permissions.includes("system_operator_product_type.read");
+  const canReadProductType = permissions.includes(
+    permissionRefs.product_type.read,
+  );
+  const canReadSOPT = permissions.includes(
+    permissionRefs.system_operator_product_type.read,
+  );
   const canCreateSOPT = permissions.includes(
-    "system_operator_product_type.create",
+    permissionRefs.system_operator_product_type.create,
   );
   const canUpdateSOPT = permissions.includes(
-    "system_operator_product_type.update",
+    permissionRefs.system_operator_product_type.update,
   );
 
   if (canReadProductType) {

@@ -4,6 +4,7 @@
 
 import { JSX } from "react";
 import { Resource } from "react-admin";
+import { permissionRefs } from "../auth/permissions";
 import { EventList } from "../event/EventList";
 import { EventShow } from "../event/EventShow";
 import { NotificationList } from "../notification/NotificationList";
@@ -14,9 +15,11 @@ export const createSystemResources = (permissions: string[]) => {
   const resources: JSX.Element[] = [];
 
   // Permission checks
-  const canReadEvent = permissions.includes("event.read");
-  const canReadNotification = permissions.includes("notification.read");
-  const canReadNotice = permissions.includes("notice.read");
+  const canReadEvent = permissions.includes(permissionRefs.event.read);
+  const canReadNotification = permissions.includes(
+    permissionRefs.notification.read,
+  );
+  const canReadNotice = permissions.includes(permissionRefs.notice.read);
 
   if (canReadEvent) {
     resources.push(

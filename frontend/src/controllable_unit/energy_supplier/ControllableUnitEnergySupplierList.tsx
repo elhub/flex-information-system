@@ -8,6 +8,7 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { DateField } from "../../components/datetime";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ControllableUnitEnergySupplierList = () => {
   // accounting point id of the controllable unit whose ESs we want to get
@@ -15,7 +16,9 @@ export const ControllableUnitEnergySupplierList = () => {
   const { permissions } = usePermissions();
 
   // Permission checks
-  const canRead = permissions.includes("accounting_point_energy_supplier.read");
+  const canRead = permissions.includes(
+    permissionRefs.accounting_point_energy_supplier.read,
+  );
 
   return (
     canRead && (

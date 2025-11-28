@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const TechnicalResourceShow = () => {
   const resource = useResourceContext()!;
@@ -25,7 +26,9 @@ export const TechnicalResourceShow = () => {
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
-  const canUpdate = permissions.includes("technical_resource.update");
+  const canUpdate = permissions.includes(
+    permissionRefs.technical_resource.update,
+  );
 
   const EditButton = () => {
     const record = useRecordContext()!;

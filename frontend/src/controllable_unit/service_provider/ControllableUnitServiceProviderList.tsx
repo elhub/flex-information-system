@@ -14,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: number }) => (
   <Button
@@ -44,9 +45,11 @@ const ListActions = ({
   id: any;
   business_id: string;
 }) => {
-  const canLookup = permissions.includes("controllable_unit.lookup");
+  const canLookup = permissions.includes(
+    permissionRefs.controllable_unit.lookup,
+  );
   const canCreate = permissions.includes(
-    "controllable_unit_service_provider.create",
+    permissionRefs.controllable_unit_service_provider.create,
   );
 
   return (
@@ -63,10 +66,10 @@ export const ControllableUnitServiceProviderList = () => {
 
   // Permission checks
   const canRead = permissions.includes(
-    "controllable_unit_service_provider.read",
+    permissionRefs.controllable_unit_service_provider.read,
   );
   const canDelete = permissions.includes(
-    "controllable_unit_service_provider.delete",
+    permissionRefs.controllable_unit_service_provider.delete,
   );
 
   if (!canRead) {

@@ -1,6 +1,7 @@
 import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { EditRedirectPreviousPage } from "./shared";
+import { permissionRefs } from "../auth/permissions";
 import { PartyList } from "../party/PartyList";
 import { PartyShow } from "../party/PartyShow";
 import { PartyInput } from "../party/PartyInput";
@@ -11,9 +12,9 @@ import { PartyMembershipHistoryList } from "../party/membership/PartyMembershipH
 
 export const createPartyResources = (permissions: string[]) => {
   // Permission checks
-  const canRead = permissions.includes("party.read");
-  const canCreate = permissions.includes("party.create");
-  const canUpdate = permissions.includes("party.update");
+  const canRead = permissions.includes(permissionRefs.party.read);
+  const canCreate = permissions.includes(permissionRefs.party.create);
+  const canUpdate = permissions.includes(permissionRefs.party.update);
 
   if (!canRead) return null;
 

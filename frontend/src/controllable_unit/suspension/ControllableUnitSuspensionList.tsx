@@ -12,6 +12,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -34,7 +35,9 @@ const ListActions = ({
   permissions: string[];
   id: any;
 }) => {
-  const canCreate = permissions.includes("controllable_unit_suspension.create");
+  const canCreate = permissions.includes(
+    permissionRefs.controllable_unit_suspension.create,
+  );
 
   return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
 };
@@ -46,8 +49,12 @@ export const ControllableUnitSuspensionList = () => {
   const { permissions } = usePermissions();
 
   // Permission checks
-  const canRead = permissions.includes("controllable_unit_suspension.read");
-  const canDelete = permissions.includes("controllable_unit_suspension.delete");
+  const canRead = permissions.includes(
+    permissionRefs.controllable_unit_suspension.read,
+  );
+  const canDelete = permissions.includes(
+    permissionRefs.controllable_unit_suspension.delete,
+  );
 
   return (
     canRead && (

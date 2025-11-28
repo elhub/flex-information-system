@@ -6,6 +6,7 @@ import {
 } from "react-admin";
 import { Link } from "react-router-dom";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import { permissionRefs } from "../auth/permissions";
 
 export const EventButton = (props: any) => {
   const resource = useResourceContext();
@@ -14,7 +15,7 @@ export const EventButton = (props: any) => {
   const { permissions } = usePermissions();
 
   // Permission checks
-  const canRead = permissions.includes("event.read");
+  const canRead = permissions.includes(permissionRefs.event.read);
 
   const filter =
     "?filter=" +

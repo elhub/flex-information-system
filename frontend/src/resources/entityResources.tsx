@@ -1,6 +1,7 @@
 import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { EditRedirectPreviousPage } from "./shared";
+import { permissionRefs } from "../auth/permissions";
 import { EntityList } from "../entity/EntityList";
 import { EntityShow } from "../entity/EntityShow";
 import { EntityInput } from "../entity/EntityInput";
@@ -10,9 +11,9 @@ import { EntityClientInput } from "../entity/client/EntityClientInput";
 
 export const createEntityResources = (permissions: string[]) => {
   // Permission checks
-  const canRead = permissions.includes("entity.read");
-  const canCreate = permissions.includes("entity.create");
-  const canUpdate = permissions.includes("entity.update");
+  const canRead = permissions.includes(permissionRefs.entity.read);
+  const canCreate = permissions.includes(permissionRefs.entity.create);
+  const canUpdate = permissions.includes(permissionRefs.entity.update);
 
   if (!canRead) return null;
 
