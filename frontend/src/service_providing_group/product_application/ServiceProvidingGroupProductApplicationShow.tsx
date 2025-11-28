@@ -18,6 +18,7 @@ import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
 import { ProductTypeArrayField } from "../../product_type/components";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -27,7 +28,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   // Permission checks
   const canUpdate = permissions.includes(
-    "service_providing_group_product_application.update",
+    permissionRefs.service_providing_group_product_application.update,
   );
 
   const EditButton = () => {

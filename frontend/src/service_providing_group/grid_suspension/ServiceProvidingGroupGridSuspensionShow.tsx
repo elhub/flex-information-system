@@ -18,6 +18,7 @@ import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupGridSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -27,7 +28,7 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
 
   // Permission checks
   const canUpdate = permissions.includes(
-    "service_providing_group_grid_suspension.update",
+    permissionRefs.service_providing_group_grid_suspension.update,
   );
 
   const EditButton = () => {

@@ -19,6 +19,7 @@ import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupProductSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -28,7 +29,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
 
   // Permission checks
   const canUpdate = permissions.includes(
-    "service_providing_group_product_suspension.update",
+    permissionRefs.service_providing_group_product_suspension.update,
   );
 
   const EditButton = () => {

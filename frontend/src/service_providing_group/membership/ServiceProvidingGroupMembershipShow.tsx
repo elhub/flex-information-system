@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupMembershipShow = () => {
   const resource = useResourceContext()!;
@@ -26,7 +27,7 @@ export const ServiceProvidingGroupMembershipShow = () => {
 
   // Permission checks
   const canUpdate = permissions.includes(
-    "service_providing_group_membership.update",
+    permissionRefs.service_providing_group_membership.update,
   );
 
   const EditButton = () => {

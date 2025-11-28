@@ -1,7 +1,6 @@
 import {
   List,
   Button,
-  DeleteButton,
   ReferenceField,
   ResourceContextProvider,
   TextField,
@@ -13,6 +12,7 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
@@ -24,13 +24,10 @@ export const ServiceProvidingGroupProductApplicationList = () => {
 
   // Permission checks
   const canRead = permissions.includes(
-    "service_providing_group_product_application.read",
+    permissionRefs.service_providing_group_product_application.read,
   );
   const canCreate = permissions.includes(
-    "service_providing_group_product_application.create",
-  );
-  const canDelete = permissions.includes(
-    "service_providing_group_product_application.delete",
+    permissionRefs.service_providing_group_product_application.create,
   );
 
   if (!canRead) {
@@ -97,7 +94,6 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             sortable={false}
           />
           <TextField source="status" />
-          {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
         </Datagrid>
       </List>
     </ResourceContextProvider>

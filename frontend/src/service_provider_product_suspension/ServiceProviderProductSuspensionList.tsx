@@ -10,13 +10,14 @@ import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
 import { IdentityField } from "../components/IdentityField";
+import { permissionRefs } from "../auth/permissions";
 
 export const ServiceProviderProductSuspensionList = () => {
   const { permissions } = usePermissions();
 
   // Permission checks
   const canDelete = permissions.includes(
-    "service_provider_product_suspension.delete",
+    permissionRefs.service_provider_product_suspension.delete,
   );
 
   const ServiceProviderProductSuspensionListFilters = [

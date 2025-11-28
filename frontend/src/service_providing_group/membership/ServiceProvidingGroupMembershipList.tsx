@@ -13,6 +13,7 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => {
   let createUrl = "/service_providing_group_membership/create";
@@ -37,7 +38,7 @@ const ListActions = ({
   id: any;
 }) => {
   const canCreate = permissions.includes(
-    "service_providing_group_membership.create",
+    permissionRefs.service_providing_group_membership.create,
   );
 
   return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
@@ -51,10 +52,10 @@ export const ServiceProvidingGroupMembershipList = () => {
 
   // Permission checks
   const canRead = permissions.includes(
-    "service_providing_group_membership.read",
+    permissionRefs.service_providing_group_membership.read,
   );
   const canDelete = permissions.includes(
-    "service_providing_group_membership.delete",
+    permissionRefs.service_providing_group_membership.delete,
   );
 
   return (

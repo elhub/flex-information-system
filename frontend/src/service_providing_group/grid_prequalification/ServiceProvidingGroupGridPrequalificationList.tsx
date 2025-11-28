@@ -13,6 +13,7 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -36,7 +37,7 @@ const ListActions = ({
   id: any;
 }) => {
   const canCreate = permissions.includes(
-    "service_providing_group_grid_prequalification.create",
+    permissionRefs.service_providing_group_grid_prequalification.create,
   );
 
   return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
@@ -50,10 +51,7 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
 
   // Permission checks
   const canRead = permissions.includes(
-    "service_providing_group_grid_prequalification.read",
-  );
-  const canDelete = permissions.includes(
-    "service_providing_group_grid_prequalification.delete",
+    permissionRefs.service_providing_group_grid_prequalification.read,
   );
 
   return (
@@ -95,9 +93,6 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             </ReferenceField>
             <TextField source="status" />
             <DateField source="prequalified_at" showTime />
-            {canDelete && (
-              <DeleteButton mutationMode="pessimistic" redirect="" />
-            )}
           </Datagrid>
         </List>
       </ResourceContextProvider>

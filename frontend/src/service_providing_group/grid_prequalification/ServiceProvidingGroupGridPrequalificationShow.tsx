@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const resource = useResourceContext()!;
@@ -26,7 +27,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
 
   // Permission checks
   const canUpdate = permissions.includes(
-    "service_providing_group_grid_prequalification.update",
+    permissionRefs.service_providing_group_grid_prequalification.update,
   );
 
   const EditButton = () => {
