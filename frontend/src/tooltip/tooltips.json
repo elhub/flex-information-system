@@ -62,6 +62,14 @@
         "notes": "Free text notes on the current prequalification status.",
         "prequalified_at": "When the current grid prequalification was last approved."
     },
+    "service_providing_group_grid_prequalification_comment": {
+        "id": "Unique surrogate identifier.",
+        "service_providing_group_grid_prequalification_id": "Reference to the service providing group grid prequalification.",
+        "created_by": "Reference to the identity that created the comment.",
+        "created_at": "When the comment was added to the SPGGP.",
+        "visibility": "The level of visibility of the comment.",
+        "content": "Free text content of the comment."
+    },
     "service_providing_group_grid_suspension": {
         "id": "Unique surrogate identifier.",
         "impacted_system_operator_id": "Reference to the impacted system operator suspending the service providing group.",
