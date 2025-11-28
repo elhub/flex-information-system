@@ -12,7 +12,8 @@ export type RoleName =
   | "flex_organisation"
   | "flex_service_provider"
   | "flex_system_operator"
-  | "flex_third_party";
+  | "flex_third_party"
+;
 
 export type Permission =
   | "accounting_point.business_id.read"
@@ -469,6 +470,22 @@ export type Permission =
   | "service_providing_group_grid_prequalification.status.read"
   | "service_providing_group_grid_prequalification.status.update"
   | "service_providing_group_grid_prequalification.update"
+  | "service_providing_group_grid_prequalification_comment.content.create"
+  | "service_providing_group_grid_prequalification_comment.content.read"
+  | "service_providing_group_grid_prequalification_comment.content.update"
+  | "service_providing_group_grid_prequalification_comment.create"
+  | "service_providing_group_grid_prequalification_comment.created_at.read"
+  | "service_providing_group_grid_prequalification_comment.created_by.read"
+  | "service_providing_group_grid_prequalification_comment.id.read"
+  | "service_providing_group_grid_prequalification_comment.read"
+  | "service_providing_group_grid_prequalification_comment.recorded_at.read"
+  | "service_providing_group_grid_prequalification_comment.recorded_by.read"
+  | "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create"
+  | "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read"
+  | "service_providing_group_grid_prequalification_comment.update"
+  | "service_providing_group_grid_prequalification_comment.visibility.create"
+  | "service_providing_group_grid_prequalification_comment.visibility.read"
+  | "service_providing_group_grid_prequalification_comment.visibility.update"
   | "service_providing_group_grid_prequalification_history.id.read"
   | "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read"
   | "service_providing_group_grid_prequalification_history.notes.read"
@@ -707,7 +724,8 @@ export type Permission =
   | "technical_resource_history.recorded_by.read"
   | "technical_resource_history.replaced_at.read"
   | "technical_resource_history.replaced_by.read"
-  | "technical_resource_history.technical_resource_id.read";
+  | "technical_resource_history.technical_resource_id.read"
+;
 
 export const permissionRefs = {
   accounting_point: {
@@ -1038,8 +1056,7 @@ export const permissionRefs = {
       update: "controllable_unit_suspension_comment.content.update",
     },
     controllable_unit_suspension_id: {
-      create:
-        "controllable_unit_suspension_comment.controllable_unit_suspension_id.create",
+      create: "controllable_unit_suspension_comment.controllable_unit_suspension_id.create",
       read: "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
     },
     created_at: {
@@ -1510,8 +1527,7 @@ export const permissionRefs = {
       read: "service_provider_product_application_comment.recorded_by.read",
     },
     service_provider_product_application_id: {
-      create:
-        "service_provider_product_application_comment.service_provider_product_application_id.create",
+      create: "service_provider_product_application_comment.service_provider_product_application_id.create",
       read: "service_provider_product_application_comment.service_provider_product_application_id.read",
     },
     visibility: {
@@ -1604,8 +1620,7 @@ export const permissionRefs = {
       read: "service_provider_product_suspension.id.read",
     },
     procuring_system_operator_id: {
-      create:
-        "service_provider_product_suspension.procuring_system_operator_id.create",
+      create: "service_provider_product_suspension.procuring_system_operator_id.create",
       read: "service_provider_product_suspension.procuring_system_operator_id.read",
     },
     product_type_ids: {
@@ -1654,8 +1669,7 @@ export const permissionRefs = {
       read: "service_provider_product_suspension_comment.recorded_by.read",
     },
     service_provider_product_suspension_id: {
-      create:
-        "service_provider_product_suspension_comment.service_provider_product_suspension_id.create",
+      create: "service_provider_product_suspension_comment.service_provider_product_suspension_id.create",
       read: "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
     },
     visibility: {
@@ -1768,8 +1782,7 @@ export const permissionRefs = {
       read: "service_providing_group_grid_prequalification.id.read",
     },
     impacted_system_operator_id: {
-      create:
-        "service_providing_group_grid_prequalification.impacted_system_operator_id.create",
+      create: "service_providing_group_grid_prequalification.impacted_system_operator_id.create",
       read: "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
     },
     notes: {
@@ -1778,8 +1791,7 @@ export const permissionRefs = {
     },
     prequalified_at: {
       read: "service_providing_group_grid_prequalification.prequalified_at.read",
-      update:
-        "service_providing_group_grid_prequalification.prequalified_at.update",
+      update: "service_providing_group_grid_prequalification.prequalified_at.update",
     },
     recorded_at: {
       read: "service_providing_group_grid_prequalification.recorded_at.read",
@@ -1788,13 +1800,46 @@ export const permissionRefs = {
       read: "service_providing_group_grid_prequalification.recorded_by.read",
     },
     service_providing_group_id: {
-      create:
-        "service_providing_group_grid_prequalification.service_providing_group_id.create",
+      create: "service_providing_group_grid_prequalification.service_providing_group_id.create",
       read: "service_providing_group_grid_prequalification.service_providing_group_id.read",
     },
     status: {
       read: "service_providing_group_grid_prequalification.status.read",
       update: "service_providing_group_grid_prequalification.status.update",
+    },
+  },
+  service_providing_group_grid_prequalification_comment: {
+    create: "service_providing_group_grid_prequalification_comment.create",
+    read: "service_providing_group_grid_prequalification_comment.read",
+    update: "service_providing_group_grid_prequalification_comment.update",
+    content: {
+      create: "service_providing_group_grid_prequalification_comment.content.create",
+      read: "service_providing_group_grid_prequalification_comment.content.read",
+      update: "service_providing_group_grid_prequalification_comment.content.update",
+    },
+    created_at: {
+      read: "service_providing_group_grid_prequalification_comment.created_at.read",
+    },
+    created_by: {
+      read: "service_providing_group_grid_prequalification_comment.created_by.read",
+    },
+    id: {
+      read: "service_providing_group_grid_prequalification_comment.id.read",
+    },
+    recorded_at: {
+      read: "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    },
+    recorded_by: {
+      read: "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    },
+    service_providing_group_grid_prequalification_id: {
+      create: "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+      read: "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    },
+    visibility: {
+      create: "service_providing_group_grid_prequalification_comment.visibility.create",
+      read: "service_providing_group_grid_prequalification_comment.visibility.read",
+      update: "service_providing_group_grid_prequalification_comment.visibility.update",
     },
   },
   service_providing_group_grid_prequalification_history: {
@@ -1842,8 +1887,7 @@ export const permissionRefs = {
       read: "service_providing_group_grid_suspension.id.read",
     },
     impacted_system_operator_id: {
-      create:
-        "service_providing_group_grid_suspension.impacted_system_operator_id.create",
+      create: "service_providing_group_grid_suspension.impacted_system_operator_id.create",
       read: "service_providing_group_grid_suspension.impacted_system_operator_id.read",
     },
     reason: {
@@ -1858,8 +1902,7 @@ export const permissionRefs = {
       read: "service_providing_group_grid_suspension.recorded_by.read",
     },
     service_providing_group_id: {
-      create:
-        "service_providing_group_grid_suspension.service_providing_group_id.create",
+      create: "service_providing_group_grid_suspension.service_providing_group_id.create",
       read: "service_providing_group_grid_suspension.service_providing_group_id.read",
     },
   },
@@ -1888,16 +1931,13 @@ export const permissionRefs = {
       read: "service_providing_group_grid_suspension_comment.recorded_by.read",
     },
     service_providing_group_grid_suspension_id: {
-      create:
-        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.create",
+      create: "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.create",
       read: "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
     },
     visibility: {
-      create:
-        "service_providing_group_grid_suspension_comment.visibility.create",
+      create: "service_providing_group_grid_suspension_comment.visibility.create",
       read: "service_providing_group_grid_suspension_comment.visibility.read",
-      update:
-        "service_providing_group_grid_suspension_comment.visibility.update",
+      update: "service_providing_group_grid_suspension_comment.visibility.update",
     },
   },
   service_providing_group_grid_suspension_comment_history: {
@@ -2015,8 +2055,7 @@ export const permissionRefs = {
       read: "service_providing_group_membership.recorded_by.read",
     },
     service_providing_group_id: {
-      create:
-        "service_providing_group_membership.service_providing_group_id.create",
+      create: "service_providing_group_membership.service_providing_group_id.create",
       read: "service_providing_group_membership.service_providing_group_id.read",
     },
     valid_from: {
@@ -2076,20 +2115,16 @@ export const permissionRefs = {
     },
     prequalified_at: {
       read: "service_providing_group_product_application.prequalified_at.read",
-      update:
-        "service_providing_group_product_application.prequalified_at.update",
+      update: "service_providing_group_product_application.prequalified_at.update",
     },
     procuring_system_operator_id: {
-      create:
-        "service_providing_group_product_application.procuring_system_operator_id.create",
+      create: "service_providing_group_product_application.procuring_system_operator_id.create",
       read: "service_providing_group_product_application.procuring_system_operator_id.read",
     },
     product_type_ids: {
-      create:
-        "service_providing_group_product_application.product_type_ids.create",
+      create: "service_providing_group_product_application.product_type_ids.create",
       read: "service_providing_group_product_application.product_type_ids.read",
-      update:
-        "service_providing_group_product_application.product_type_ids.update",
+      update: "service_providing_group_product_application.product_type_ids.update",
     },
     recorded_at: {
       read: "service_providing_group_product_application.recorded_at.read",
@@ -2098,8 +2133,7 @@ export const permissionRefs = {
       read: "service_providing_group_product_application.recorded_by.read",
     },
     service_providing_group_id: {
-      create:
-        "service_providing_group_product_application.service_providing_group_id.create",
+      create: "service_providing_group_product_application.service_providing_group_id.create",
       read: "service_providing_group_product_application.service_providing_group_id.read",
     },
     status: {
@@ -2162,13 +2196,11 @@ export const permissionRefs = {
       read: "service_providing_group_product_suspension.id.read",
     },
     procuring_system_operator_id: {
-      create:
-        "service_providing_group_product_suspension.procuring_system_operator_id.create",
+      create: "service_providing_group_product_suspension.procuring_system_operator_id.create",
       read: "service_providing_group_product_suspension.procuring_system_operator_id.read",
     },
     product_type_ids: {
-      create:
-        "service_providing_group_product_suspension.product_type_ids.create",
+      create: "service_providing_group_product_suspension.product_type_ids.create",
       read: "service_providing_group_product_suspension.product_type_ids.read",
     },
     reason: {
@@ -2183,8 +2215,7 @@ export const permissionRefs = {
       read: "service_providing_group_product_suspension.recorded_by.read",
     },
     service_providing_group_id: {
-      create:
-        "service_providing_group_product_suspension.service_providing_group_id.create",
+      create: "service_providing_group_product_suspension.service_providing_group_id.create",
       read: "service_providing_group_product_suspension.service_providing_group_id.read",
     },
   },
@@ -2193,11 +2224,9 @@ export const permissionRefs = {
     read: "service_providing_group_product_suspension_comment.read",
     update: "service_providing_group_product_suspension_comment.update",
     content: {
-      create:
-        "service_providing_group_product_suspension_comment.content.create",
+      create: "service_providing_group_product_suspension_comment.content.create",
       read: "service_providing_group_product_suspension_comment.content.read",
-      update:
-        "service_providing_group_product_suspension_comment.content.update",
+      update: "service_providing_group_product_suspension_comment.content.update",
     },
     created_at: {
       read: "service_providing_group_product_suspension_comment.created_at.read",
@@ -2215,16 +2244,13 @@ export const permissionRefs = {
       read: "service_providing_group_product_suspension_comment.recorded_by.read",
     },
     service_providing_group_product_suspension_id: {
-      create:
-        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.create",
+      create: "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.create",
       read: "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
     },
     visibility: {
-      create:
-        "service_providing_group_product_suspension_comment.visibility.create",
+      create: "service_providing_group_product_suspension_comment.visibility.create",
       read: "service_providing_group_product_suspension_comment.visibility.read",
-      update:
-        "service_providing_group_product_suspension_comment.visibility.update",
+      update: "service_providing_group_product_suspension_comment.visibility.update",
     },
   },
   service_providing_group_product_suspension_comment_history: {
@@ -2416,8 +2442,9 @@ export const permissionRefs = {
 export type Permissions = Record<RoleName, Permission[]>;
 
 const permissions: Permissions = {
-  flex_anonymous: [],
-  flex_balance_responsible_party: [
+  "flex_anonymous": [
+  ],
+  "flex_balance_responsible_party": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -2733,6 +2760,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -2912,7 +2948,7 @@ const permissions: Permissions = {
     "technical_resource_history.replaced_by.read",
     "technical_resource_history.technical_resource_id.read",
   ],
-  flex_end_user: [
+  "flex_end_user": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -3228,6 +3264,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -3407,7 +3452,7 @@ const permissions: Permissions = {
     "technical_resource_history.replaced_by.read",
     "technical_resource_history.technical_resource_id.read",
   ],
-  flex_energy_supplier: [
+  "flex_energy_supplier": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -3723,6 +3768,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -3902,7 +3956,7 @@ const permissions: Permissions = {
     "technical_resource_history.replaced_by.read",
     "technical_resource_history.technical_resource_id.read",
   ],
-  flex_entity: [
+  "flex_entity": [
     "entity.business_id.read",
     "entity.business_id_type.read",
     "entity.id.read",
@@ -3985,7 +4039,7 @@ const permissions: Permissions = {
     "party_membership_history.replaced_by.read",
     "party_membership_history.scopes.read",
   ],
-  flex_flexibility_information_system_operator: [
+  "flex_flexibility_information_system_operator": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -4421,6 +4475,22 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.status.read",
     "service_providing_group_grid_prequalification.status.update",
     "service_providing_group_grid_prequalification.update",
+    "service_providing_group_grid_prequalification_comment.content.create",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.content.update",
+    "service_providing_group_grid_prequalification_comment.create",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.update",
+    "service_providing_group_grid_prequalification_comment.visibility.create",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
+    "service_providing_group_grid_prequalification_comment.visibility.update",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -4657,7 +4727,7 @@ const permissions: Permissions = {
     "technical_resource_history.replaced_by.read",
     "technical_resource_history.technical_resource_id.read",
   ],
-  flex_market_operator: [
+  "flex_market_operator": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -4973,6 +5043,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -5152,7 +5231,7 @@ const permissions: Permissions = {
     "technical_resource_history.replaced_by.read",
     "technical_resource_history.technical_resource_id.read",
   ],
-  flex_organisation: [
+  "flex_organisation": [
     "entity.business_id.read",
     "entity.business_id_type.read",
     "entity.id.read",
@@ -5243,7 +5322,7 @@ const permissions: Permissions = {
     "party_membership_history.replaced_by.read",
     "party_membership_history.scopes.read",
   ],
-  flex_service_provider: [
+  "flex_service_provider": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -5625,6 +5704,22 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.create",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.content.update",
+    "service_providing_group_grid_prequalification_comment.create",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.update",
+    "service_providing_group_grid_prequalification_comment.visibility.create",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
+    "service_providing_group_grid_prequalification_comment.visibility.update",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -5842,7 +5937,7 @@ const permissions: Permissions = {
     "technical_resource_history.replaced_by.read",
     "technical_resource_history.technical_resource_id.read",
   ],
-  flex_system_operator: [
+  "flex_system_operator": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -6208,6 +6303,22 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.status.read",
     "service_providing_group_grid_prequalification.status.update",
     "service_providing_group_grid_prequalification.update",
+    "service_providing_group_grid_prequalification_comment.content.create",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.content.update",
+    "service_providing_group_grid_prequalification_comment.create",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.update",
+    "service_providing_group_grid_prequalification_comment.visibility.create",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
+    "service_providing_group_grid_prequalification_comment.visibility.update",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -6427,7 +6538,7 @@ const permissions: Permissions = {
     "technical_resource_history.replaced_by.read",
     "technical_resource_history.technical_resource_id.read",
   ],
-  flex_third_party: [
+  "flex_third_party": [
     "accounting_point.business_id.read",
     "accounting_point.id.read",
     "accounting_point.read",
@@ -6743,6 +6854,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",

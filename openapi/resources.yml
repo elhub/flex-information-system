@@ -445,6 +445,7 @@ resources:
       - list
       - read
     history_rls: true
+    comments: true
     audit: true
     generate_views: true
     properties:
