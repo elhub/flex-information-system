@@ -31,6 +31,7 @@ from test_party import (
 )
 from flex.api.party_membership import (
     create_party_membership,
+    delete_party_membership,
 )
 import pytest
 from typing import cast
@@ -201,6 +202,13 @@ def test_entity_client_fiso(sts):
     d = delete_entity_client.sync(
         client=client_ent,
         id=cast(int, clt.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
+    d = delete_party_membership.sync(
+        client=client_fiso,
+        id=cast(int, pm.id),
         body=EmptyObject(),
     )
     assert not isinstance(d, ErrorMessage)
