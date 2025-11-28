@@ -18,12 +18,18 @@ import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupGridSuspensionShow = () => {
   const resource = useResourceContext()!;
   const { permissions } = usePermissions();
 
   const isHistory = resource.endsWith("_history");
+
+  // Permission checks
+  const canUpdate = permissions.includes(
+    permissionRefs.service_providing_group_grid_suspension.update,
+  );
 
   const EditButton = () => {
     const record = useRecordContext()!;
@@ -41,9 +47,7 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes(
-          "service_providing_group_grid_suspension.update",
-        ) && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

@@ -18,6 +18,7 @@ import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import { permissionRefs } from "../../auth/permissions";
 
 const EditButton = () => {
   const record = useRecordContext()!;
@@ -37,11 +38,16 @@ export const PartyMembershipShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes(
+    permissionRefs.party_membership.update,
+  );
+
   return (
     <Show
       actions={
         !isHistory &&
-        permissions.includes("party_membership.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

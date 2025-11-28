@@ -17,12 +17,18 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupMembershipShow = () => {
   const resource = useResourceContext()!;
   const { permissions } = usePermissions();
 
   const isHistory = resource.endsWith("_history");
+
+  // Permission checks
+  const canUpdate = permissions.includes(
+    permissionRefs.service_providing_group_membership.update,
+  );
 
   const EditButton = () => {
     const record = useRecordContext()!;
@@ -40,7 +46,7 @@ export const ServiceProvidingGroupMembershipShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes("service_providing_group_membership.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

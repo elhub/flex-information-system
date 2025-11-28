@@ -12,6 +12,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -33,13 +34,13 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes("service_providing_group_grid_suspension.create") && (
-      <CreateButton id={id} />
-    )}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes(
+    permissionRefs.service_providing_group_grid_suspension.create,
+  );
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+};
 
 export const ServiceProvidingGroupGridSuspensionList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
@@ -47,8 +48,16 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes(
+    permissionRefs.service_providing_group_grid_suspension.read,
+  );
+  const canDelete = permissions.includes(
+    permissionRefs.service_providing_group_grid_suspension.delete,
+  );
+
   return (
-    permissions.includes("service_providing_group_grid_suspension.read") && (
+    canRead && (
       <ResourceContextProvider value="service_providing_group_grid_suspension">
         <List
           title={false}
@@ -89,9 +98,9 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
               <TextField source="name" />
             </ReferenceField>
             <TextField source="reason" />
-            {permissions.includes(
-              "service_providing_group_grid_suspension.delete",
-            ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
+            {canDelete && (
+              <DeleteButton mutationMode="pessimistic" redirect="" />
+            )}
           </Datagrid>
         </List>
       </ResourceContextProvider>

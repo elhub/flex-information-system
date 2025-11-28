@@ -1,7 +1,6 @@
 import {
   List,
   Button,
-  DeleteButton,
   ReferenceField,
   ResourceContextProvider,
   TextField,
@@ -13,6 +12,25 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
+import { permissionRefs } from "../../auth/permissions";
+
+const CreateButton = ({ id }: { id: any }) => (
+  <Button
+    component={Link}
+    to={
+      id
+        ? `/service_providing_group/${id}/product_application/create`
+        : "/service_providing_group_product_application/create"
+    }
+    startIcon={<AddIcon />}
+    state={{ service_providing_group_id: id }}
+    label="Create"
+  />
+);
+
+const ListActions = ({ canCreate, id }: { canCreate: boolean; id: any }) => (
+  <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>
+);
 
 export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
@@ -22,43 +40,24 @@ export const ServiceProvidingGroupProductApplicationList = () => {
 
   if (isLoading) return null; // or a loading spinner
 
-  if (
-    !permissions.includes("service_providing_group_product_application.read")
-  ) {
-    return null; // or <NotAllowed /> component
-  }
-
-  const CreateButton = () => (
-    <Button
-      component={Link}
-      to={
-        id
-          ? `/service_providing_group/${id}/product_application/create`
-          : "/service_providing_group_product_application/create"
-      }
-      startIcon={<AddIcon />}
-      state={{ service_providing_group_id: id }}
-      label="Create"
-    />
+  // Permission checks
+  const canRead = permissions.includes(
+    permissionRefs.service_providing_group_product_application.read,
+  );
+  const canCreate = permissions.includes(
+    permissionRefs.service_providing_group_product_application.create,
   );
 
-  const ListActions = () => {
-    const { permissions } = usePermissions();
-    return (
-      <TopToolbar>
-        {permissions.includes(
-          "service_providing_group_product_application.create",
-        ) && <CreateButton />}
-      </TopToolbar>
-    );
-  };
+  if (!canRead) {
+    return null; // or <NotAllowed /> component
+  }
 
   return (
     <ResourceContextProvider value="service_providing_group_product_application">
       <List
         title={false}
         perPage={10}
-        actions={<ListActions />}
+        actions={<ListActions canCreate={canCreate} id={id} />}
         exporter={false}
         empty={false}
         filter={id ? { service_providing_group_id: id } : undefined}
@@ -95,9 +94,6 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             sortable={false}
           />
           <TextField source="status" />
-          {permissions.includes(
-            "service_providing_group_product_application.delete",
-          ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
         </Datagrid>
       </List>
     </ResourceContextProvider>

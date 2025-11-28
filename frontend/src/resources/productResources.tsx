@@ -2,6 +2,7 @@ import { Resource, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
+import { permissionRefs } from "../auth/permissions";
 import { displayProductType } from "../product_type/components";
 import { ProductTypeList } from "../product_type/ProductTypeList";
 import { ProductTypeShow } from "../product_type/ProductTypeShow";
@@ -13,7 +14,21 @@ import { SystemOperatorProductTypeHistoryList } from "../system_operator_product
 export const createProductResources = (permissions: string[]) => {
   const resources: JSX.Element[] = [];
 
-  if (permissions.includes("product_type.read")) {
+  // Permission checks
+  const canReadProductType = permissions.includes(
+    permissionRefs.product_type.read,
+  );
+  const canReadSOPT = permissions.includes(
+    permissionRefs.system_operator_product_type.read,
+  );
+  const canCreateSOPT = permissions.includes(
+    permissionRefs.system_operator_product_type.create,
+  );
+  const canUpdateSOPT = permissions.includes(
+    permissionRefs.system_operator_product_type.update,
+  );
+
+  if (canReadProductType) {
     resources.push(
       <Resource
         key="product_type"
@@ -25,7 +40,7 @@ export const createProductResources = (permissions: string[]) => {
     );
   }
 
-  if (permissions.includes("system_operator_product_type.read")) {
+  if (canReadSOPT) {
     resources.push(
       <Resource
         key="system_operator_product_type"
@@ -33,7 +48,7 @@ export const createProductResources = (permissions: string[]) => {
         list={SystemOperatorProductTypeList}
         show={SystemOperatorProductTypeShow}
         edit={
-          permissions.includes("system_operator_product_type.update") ? (
+          canUpdateSOPT ? (
             <EditRedirectPreviousPage>
               <SystemOperatorProductTypeInput />
             </EditRedirectPreviousPage>
@@ -42,7 +57,7 @@ export const createProductResources = (permissions: string[]) => {
           )
         }
         create={
-          permissions.includes("system_operator_product_type.create") ? (
+          canCreateSOPT ? (
             <CreateRedirectPreviousPage>
               <SystemOperatorProductTypeInput />
             </CreateRedirectPreviousPage>

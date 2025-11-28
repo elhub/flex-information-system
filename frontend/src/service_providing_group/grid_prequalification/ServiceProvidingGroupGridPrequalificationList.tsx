@@ -1,7 +1,6 @@
 import {
   List,
   Button,
-  DeleteButton,
   ReferenceField,
   ResourceContextProvider,
   TextField,
@@ -13,6 +12,7 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -34,13 +34,13 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes(
-      "service_providing_group_grid_prequalification.create",
-    ) && <CreateButton id={id} />}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes(
+    permissionRefs.service_providing_group_grid_prequalification.create,
+  );
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+};
 
 export const ServiceProvidingGroupGridPrequalificationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
@@ -48,10 +48,13 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
   const id = record?.id;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes(
+    permissionRefs.service_providing_group_grid_prequalification.read,
+  );
+
   return (
-    permissions.includes(
-      "service_providing_group_grid_prequalification.read",
-    ) && (
+    canRead && (
       <ResourceContextProvider value="service_providing_group_grid_prequalification">
         <List
           title={false}
@@ -89,9 +92,6 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             </ReferenceField>
             <TextField source="status" />
             <DateField source="prequalified_at" showTime />
-            {permissions.includes(
-              "service_providing_group_grid_prequalification.delete",
-            ) && <DeleteButton mutationMode="pessimistic" redirect="" />}
           </Datagrid>
         </List>
       </ResourceContextProvider>

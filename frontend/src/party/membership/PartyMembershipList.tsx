@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -43,25 +44,33 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes("party_membership.create") && (
-      <CreateButton id={id} />
-    )}
-    {permissions.includes("party_membership.create") &&
-      permissions.includes("entity.lookup") && (
-        <CreateViaLookupButton id={id} />
-      )}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes(
+    permissionRefs.party_membership.create,
+  );
+  const canLookup = permissions.includes(permissionRefs.entity.lookup);
+
+  return (
+    <TopToolbar>
+      {canCreate && <CreateButton id={id} />}
+      {canCreate && canLookup && <CreateViaLookupButton id={id} />}
+    </TopToolbar>
+  );
+};
 
 export const PartyMembershipList = () => {
   // id of the SPG
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes(permissionRefs.party_membership.read);
+  const canDelete = permissions.includes(
+    permissionRefs.party_membership.delete,
+  );
+
   return (
-    permissions.includes("party_membership.read") && (
+    canRead && (
       <ResourceContextProvider value="party_membership">
         <List
           perPage={10}
@@ -88,7 +97,7 @@ export const PartyMembershipList = () => {
             <ScopesField source="scopes" />
             <DateField source="recorded_at" showTime />
             <IdentityField source="recorded_by" />
-            {permissions.includes("party_membership.delete") && (
+            {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}
           </Datagrid>

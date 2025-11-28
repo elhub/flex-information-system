@@ -1,5 +1,5 @@
 import { AuthProvider, fetchUtils, getStorage } from "react-admin";
-import permissions from "./permissions.json";
+import permissions from "./permissions";
 import { authURL } from "../httpConfig";
 
 import anonymous_avatar from "./avatars/ANO.png";

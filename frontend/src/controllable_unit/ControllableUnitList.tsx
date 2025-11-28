@@ -15,6 +15,7 @@ import { DateField } from "../components/datetime";
 import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import { permissionRefs } from "../auth/permissions";
 
 const CreateCUSPButton = () => (
   <Button
@@ -39,13 +40,22 @@ const CULookupButton = () => (
 const ListActions = () => {
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canLookup = permissions.includes(
+    permissionRefs.controllable_unit.lookup,
+  );
+  const canCreateCUSP = permissions.includes(
+    permissionRefs.controllable_unit_service_provider.create,
+  );
+  const canCreate = permissions.includes(
+    permissionRefs.controllable_unit.create,
+  );
+
   return (
     <TopToolbar>
-      {permissions.includes("controllable_unit.lookup") && <CULookupButton />}
-      {permissions.includes("controllable_unit_service_provider.create") && (
-        <CreateCUSPButton />
-      )}
-      {permissions.includes("controllable_unit.create") && <CreateButton />}
+      {canLookup && <CULookupButton />}
+      {canCreateCUSP && <CreateCUSPButton />}
+      {canCreate && <CreateButton />}
       <ExportButton />
     </TopToolbar>
   );

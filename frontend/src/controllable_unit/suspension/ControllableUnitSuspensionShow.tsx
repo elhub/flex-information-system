@@ -18,6 +18,7 @@ import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 const EditButton = () => {
   const record = useRecordContext()!;
@@ -37,11 +38,16 @@ export const ControllableUnitSuspensionShow = () => {
 
   const isHistory = resource.endsWith("_history");
 
+  // Permission checks
+  const canUpdate = permissions.includes(
+    permissionRefs.controllable_unit_suspension.update,
+  );
+
   return (
     <Show
       actions={
         !isHistory &&
-        permissions.includes("controllable_unit_suspension.update") && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>
