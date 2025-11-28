@@ -99,13 +99,13 @@ def data():
     client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
     other_sp_id = sts.get_userinfo(client_other_sp)["party_id"]
 
-    unrelated_spggs_id = create_spggp(
+    unrelated_spggp_id = create_spggp(
         client_fiso,
         (client_other_sp, other_sp_id),
         (client_common_so, common_so_id),
     )
 
-    yield (sts, client_so, client_sp, spggp_id, unrelated_spggs_id)
+    yield (sts, client_so, client_sp, spggp_id, unrelated_spggp_id)
 
 
 # ---- ---- ---- ---- ----
@@ -212,7 +212,7 @@ def test_spggp_comment_so_sp(data):
 
     # SO and SP both create an open comment
 
-    spggpc_so = create_service_providing_group_grid_prequalification_comment.sync(
+    spggp_comment_so = create_service_providing_group_grid_prequalification_comment.sync(
         client=client_so,
         body=ServiceProvidingGroupGridPrequalificationCommentCreateRequest(
             service_providing_group_grid_prequalification_id=spggp_id,
@@ -221,10 +221,10 @@ def test_spggp_comment_so_sp(data):
         ),
     )
     assert isinstance(
-        spggpc_so, ServiceProvidingGroupGridPrequalificationCommentResponse
+        spggp_comment_so, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
-    spggpc_sp = create_service_providing_group_grid_prequalification_comment.sync(
+    spggp_comment_sp = create_service_providing_group_grid_prequalification_comment.sync(
         client=client_sp,
         body=ServiceProvidingGroupGridPrequalificationCommentCreateRequest(
             service_providing_group_grid_prequalification_id=spggp_id,
@@ -233,79 +233,88 @@ def test_spggp_comment_so_sp(data):
         ),
     )
     assert isinstance(
-        spggpc_sp, ServiceProvidingGroupGridPrequalificationCommentResponse
+        spggp_comment_sp, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
     # both can read each other's comments
 
-    spggpc_so_as_sp = read_service_providing_group_grid_prequalification_comment.sync(
-        client=client_sp,
-        id=cast(int, spggpc_so.id),
+    spggp_comment_so_as_sp = (
+        read_service_providing_group_grid_prequalification_comment.sync(
+            client=client_sp,
+            id=cast(int, spggp_comment_so.id),
+        )
     )
     assert isinstance(
-        spggpc_so_as_sp, ServiceProvidingGroupGridPrequalificationCommentResponse
+        spggp_comment_so_as_sp, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
-    spggpc_sp_as_so = read_service_providing_group_grid_prequalification_comment.sync(
-        client=client_so,
-        id=cast(int, spggpc_sp.id),
+    spggp_comment_sp_as_so = (
+        read_service_providing_group_grid_prequalification_comment.sync(
+            client=client_so,
+            id=cast(int, spggp_comment_sp.id),
+        )
     )
     assert isinstance(
-        spggpc_sp_as_so, ServiceProvidingGroupGridPrequalificationCommentResponse
+        spggp_comment_sp_as_so, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
     # SO's comment becomes open to this SO only
 
-    u = update_service_providing_group_grid_prequalification_comment.sync(
+    updated_sppgc_comment_so = update_service_providing_group_grid_prequalification_comment.sync(
         client=client_so,
-        id=cast(int, spggpc_so.id),
+        id=cast(int, spggp_comment_so.id),
         body=ServiceProvidingGroupGridPrequalificationCommentUpdateRequest(
             visibility=ServiceProvidingGroupGridPrequalificationCommentVisibility.SAME_PARTY,
         ),
     )
-    assert not isinstance(u, ErrorMessage)
+    assert not isinstance(updated_sppgc_comment_so, ErrorMessage)
 
     # SP should not be able to read it
 
-    spggpc_so_as_sp = read_service_providing_group_grid_prequalification_comment.sync(
-        client=client_sp,
-        id=cast(int, spggpc_so.id),
+    spggp_comment_so_as_sp = (
+        read_service_providing_group_grid_prequalification_comment.sync(
+            client=client_sp,
+            id=cast(int, spggp_comment_so.id),
+        )
     )
-    assert isinstance(spggpc_so_as_sp, ErrorMessage)
-
+    assert isinstance(spggp_comment_so_as_sp, ErrorMessage)
     # check they cannot read anything from the unrelated SPGGP
 
-    uspggpcs_as_so = list_service_providing_group_grid_prequalification_comment.sync(
-        client=client_so,
-        service_providing_group_grid_prequalification_id=f"eq.{unrelated_spggp_id}",
+    unrelated_spggp_comment_as_so = (
+        list_service_providing_group_grid_prequalification_comment.sync(
+            client=client_so,
+            service_providing_group_grid_prequalification_id=f"eq.{unrelated_spggp_id}",
+        )
     )
-    assert isinstance(uspggpcs_as_so, list)
-    assert len(uspggpcs_as_so) == 0
+    assert isinstance(unrelated_spggp_comment_as_so, list)
+    assert len(unrelated_spggp_comment_as_so) == 0
 
-    uspggpcs_as_sp = list_service_providing_group_grid_prequalification_comment.sync(
-        client=client_sp,
-        service_providing_group_grid_prequalification_id=f"eq.{unrelated_spggp_id}",
+    unrelated_spggp_comment_as_sp = (
+        list_service_providing_group_grid_prequalification_comment.sync(
+            client=client_sp,
+            service_providing_group_grid_prequalification_id=f"eq.{unrelated_spggp_id}",
+        )
     )
-    assert isinstance(uspggpcs_as_sp, list)
-    assert len(uspggpcs_as_sp) == 0
+    assert isinstance(unrelated_spggp_comment_as_sp, list)
+    assert len(unrelated_spggp_comment_as_sp) == 0
 
     # RLS: SPGGPC-SO003
     # RLS: SPGGPC-SP003
 
     # SO can read history on SP's comment because it is public
-    assert check_history(client_so, spggpc_sp.id)
+    assert check_history(client_so, spggp_comment_sp.id)
     # but SP cannot read history on SO's comment because it is now private
-    assert not check_history(client_sp, spggpc_so.id)
+    assert not check_history(client_sp, spggp_comment_so.id)
 
     # SO makes comment public again
-    u = update_service_providing_group_grid_prequalification_comment.sync(
+    updated_sppgc_comment_so = update_service_providing_group_grid_prequalification_comment.sync(
         client=client_so,
-        id=cast(int, spggpc_so.id),
+        id=cast(int, spggp_comment_so.id),
         body=ServiceProvidingGroupGridPrequalificationCommentUpdateRequest(
             visibility=ServiceProvidingGroupGridPrequalificationCommentVisibility.ANY_INVOLVED_PARTY,
         ),
     )
-    assert not isinstance(u, ErrorMessage)
+    assert not isinstance(updated_sppgc_comment_so, ErrorMessage)
 
     # now SP can read history
-    assert check_history(client_sp, spggpc_so.id)
+    assert check_history(client_sp, spggp_comment_so.id)
