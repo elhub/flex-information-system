@@ -350,6 +350,19 @@ resources:
           resource: party
           field: id
         example: 17
+      price_area:
+        description: >-
+          The price area where the service providing group is located.
+          Also known as scheduling area.
+        format: text
+        type: string
+        enum:
+          - NO1
+          - NO2
+          - NO3
+          - NO4
+          - NO5
+        example: NO3
       status:
         description: The status of the group.
         x-details: >-
