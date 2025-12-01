@@ -35,9 +35,23 @@ const filterRecord = ({
   valid_to,
 });
 
+// count number of non-null/undefined fields in an object
+function nOverrides(obj: any) {
+  if (!obj) return 0;
+  const values = Object.values(obj);
+  return values.reduce((acc: number, val) => {
+    if (val !== null && val !== undefined) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+}
+
 // common layout to create and edit pages
 export const ControllableUnitServiceProviderInput = () => {
-  const { state: overrideRecord } = useLocation();
+  const { state: locationRecord } = useLocation();
+  const overrideRecord = filterRecord({ ...locationRecord });
+  const hasOverride = nOverrides(overrideRecord) > 1;
   const actualRecord = useRecordContext();
 
   // priority to the restored values if they exist, otherwise normal edit mode
@@ -52,7 +66,7 @@ export const ControllableUnitServiceProviderInput = () => {
   // if we came to this page as a user who cannot see the CU, we want to input a
   // CU ID, instead of using the autocomplete component that works from the list
   // of readable CUs
-  const cuIDAsNumber: boolean = !!overrideRecord?.cuIDAsNumber;
+  const cuIDAsNumber: boolean = !!locationRecord?.cuIDAsNumber;
 
   const isServiceProvider = identity?.role == "flex_service_provider";
 
@@ -76,7 +90,7 @@ export const ControllableUnitServiceProviderInput = () => {
          we will apply are already brought into the fields by the state passed
          into the restore button. So the save button is disabled, but we still
          want to be able to hit it right away after clicking restore. */
-      toolbar={<Toolbar />}
+      toolbar={<Toolbar saveAlwaysEnabled={hasOverride} />}
     >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>

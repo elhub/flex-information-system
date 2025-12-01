@@ -20,6 +20,7 @@ const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
 // common layout to create and edit pages
 export const PartyMembershipInput = () => {
   const { state: overrideRecord } = useLocation();
+
   const actualRecord = useRecordContext();
   // priority to the restored values if they exist, otherwise normal edit mode
   // Memoize the combined record to avoid re-renders causing errors
