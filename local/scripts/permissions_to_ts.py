@@ -126,104 +126,66 @@ for perms in permissions.values():
     all_permissions.update(perms)
 all_permissions = sorted(list(all_permissions))
 
-# Build nested structure for permissionRefs object
-# Permissions can be: resource.action or resource.field.action
-# Structure: { resource: { action: "resource.action", field: { action: "resource.field.action" } } }
-# Note: There's no conflict because actions and fields are at different levels
-
-nested_permissions = {}
-
-for perm_str in all_permissions:
-    parts = perm_str.split(".")
-    current = nested_permissions
-
-    # Navigate/create nested structure for all parts except the last
-    for part in parts[:-1]:
-        if part not in current:
-            current[part] = {}
-        elif not isinstance(current[part], dict):
-            # Conflict: this part was already a leaf (string), convert to object
-            # This shouldn't happen with the permission format, but handle it
-            existing_value = current[part]
-            current[part] = {"_value": existing_value}
-        current = current[part] if isinstance(current[part], dict) else {}
-
-    # Last part is the action - store the full permission string
-    action = parts[-1]
-    if isinstance(current, dict):
-        current[action] = perm_str
-
 # Generate TypeScript output
 print("// AUTO-GENERATED FILE - DO NOT EDIT")
-print("// Generated from local/input/permissions.csv")
+print(
+    "// Generated from local/input/permissions.csv by local/scripts/permissions_to_ts.py"
+)
 print("")
 
-# Generate role type
-role_names = sorted(permissions.keys())
-print("export type RoleName =")
-for role in role_names:
-    print(f'  | "{role}"')
+# type for all possible roles
+roles = sorted(permissions.keys())
+print("export type Role =", end="")
+for role in roles:
+    print(f'\n  | "{role}"', end="")
 print(";")
 print("")
 
-# Generate Permission union type (all possible permission strings)
-print("export type Permission =")
-for perm in all_permissions:
-    print(f'  | "{perm}"')
+# type for all possible resources and fields the permissions refer to (permission targets)
+targets = {p.rsplit(".", 1)[0] for p in all_permissions}
+print("export type PermissionTarget =", end="")
+for t in targets:
+    print(f'\n  | "{t}"', end="")
 print(";")
 print("")
 
-
-# Helper function to generate nested TypeScript object
-def generate_nested_object(obj, indent=0):
-    """Recursively generate nested TypeScript object structure."""
-    lines = []
-    indent_str = "  " * indent
-
-    if isinstance(obj, dict):
-        # Separate string values (actions) from nested objects (resources/fields)
-        string_keys = [k for k in obj.keys() if isinstance(obj[k], str)]
-        nested_keys = [k for k in obj.keys() if isinstance(obj[k], dict)]
-
-        # Output actions first (sorted)
-        for key in sorted(string_keys):
-            lines.append(f'{indent_str}{key}: "{obj[key]}",')
-
-        # Output nested resources/fields (sorted)
-        for key in sorted(nested_keys):
-            lines.append(f"{indent_str}{key}: {{")
-            lines.extend(generate_nested_object(obj[key], indent + 1))
-            lines.append(f"{indent_str}}},")
-
-        # Handle _value (conflict resolution - shouldn't normally happen)
-        if "_value" in obj:
-            lines.append(f'{indent_str}_value: "{obj["_value"]}",')
-    else:
-        # Should not happen
-        lines.append(f'{indent_str}"{obj}",')
-
-    return lines
-
-
-# Generate the permissionRefs nested constant object
-print("export const permissionRefs = {")
-for line in generate_nested_object(nested_permissions, indent=1):
-    print(line)
-print("} as const;")
+# type for all possible operations the permissions allow
+operations = {p.split(".")[-1] for p in all_permissions}
+print("export type PermissionOperation =", end="")
+for op in operations:
+    print(f'\n  | "{op}"', end="")
+print(";")
 print("")
 
-# Generate the permissions type
-print("export type Permissions = Record<RoleName, Permission[]>;")
-print("")
+print("""\
+export type Permissions = {
+  allow: (target: PermissionTarget, operation: PermissionOperation) => boolean;
+};
+""")
 
-# Generate the actual permissions object
-print("const permissions: Permissions = {")
-for role in role_names:
-    perms = permissions[role]
-    print(f'  "{role}": [')
-    for perm in perms:
-        print(f'    "{perm}",')
+print("""\
+const rawPermissions: Record<
+  Role,
+  {target: PermissionTarget, operation: PermissionOperation}[]
+> = {""")
+for role, perms in permissions.items():
+    print(f"  {role}: [")
+    for p in perms:
+        print(f"""\
+    {{
+      target: "{p.rsplit(".", 1)[0]}",
+      operation: "{p.split(".")[-1]}",
+    }},""")
     print("  ],")
 print("};")
 print("")
-print("export default permissions;")
+
+print("""\
+const permissions = (role: Role): Permissions => {
+  const perms = rawPermissions[role];
+  return {
+    allow: (target: PermissionTarget, operation: PermissionOperation): boolean =>
+      perms.includes({target, operation}),
+  };
+};
+export default permissions;""")

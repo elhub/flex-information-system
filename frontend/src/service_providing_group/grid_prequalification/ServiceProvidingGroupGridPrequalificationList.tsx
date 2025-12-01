@@ -12,7 +12,7 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -32,11 +32,12 @@ const ListActions = ({
   permissions,
   id,
 }: {
-  permissions: string[];
+  permissions: Permissions | undefined;
   id: any;
 }) => {
-  const canCreate = permissions.includes(
-    permissionRefs.service_providing_group_grid_prequalification.create,
+  const canCreate = permissions?.allow(
+    "service_providing_group_grid_prequalification",
+    "create",
   );
 
   return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
@@ -46,11 +47,12 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext()!;
   const id = record?.id;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
-  const canRead = permissions.includes(
-    permissionRefs.service_providing_group_grid_prequalification.read,
+  const canRead = permissions?.allow(
+    "service_providing_group_grid_prequalification",
+    "read",
   );
 
   return (

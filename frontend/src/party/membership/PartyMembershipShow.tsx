@@ -18,7 +18,7 @@ import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 const EditButton = () => {
   const record = useRecordContext()!;
@@ -34,14 +34,12 @@ const EditButton = () => {
 
 export const PartyMembershipShow = () => {
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
-  const canUpdate = permissions.includes(
-    permissionRefs.party_membership.update,
-  );
+  const canUpdate = permissions?.allow("party_membership", "update");
 
   return (
     <Show

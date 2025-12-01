@@ -1,5 +1,6 @@
 import { Children } from "react";
 import { useResourceContext, usePermissions, Labeled } from "react-admin";
+import { Permissions, PermissionTarget } from "./permissions";
 import { Divider, Stack as MUIStack } from "@mui/material";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 
@@ -13,7 +14,7 @@ export const FieldStack = (props: any) => {
     hideTooltips: hideTooltipsProp,
     ...rest
   } = props;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   const allowAll = allowAllProp ?? false;
   const hideTooltips = hideTooltipsProp ?? false;
@@ -21,7 +22,10 @@ export const FieldStack = (props: any) => {
 
   const addPermissionToField = (field: any) =>
     (allowAll ||
-      permissions.includes(`${resource}.${field.props.source}.read`)) && (
+      permissions?.allow(
+        `${resource}.${field.props.source}` as PermissionTarget,
+        "read",
+      )) && (
       <>
         <Labeled>{field}</Labeled>
         {!hideTooltips && (

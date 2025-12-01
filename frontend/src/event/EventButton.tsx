@@ -4,18 +4,18 @@ import {
   useRecordContext,
   useResourceContext,
 } from "react-admin";
+import { Permissions } from "../auth/permissions";
 import { Link } from "react-router-dom";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
-import { permissionRefs } from "../auth/permissions";
 
 export const EventButton = (props: any) => {
   const resource = useResourceContext();
   const record = useRecordContext()!;
 
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
-  const canRead = permissions.includes(permissionRefs.event.read);
+  const canRead = permissions?.allow("event", "read");
 
   const filter =
     "?filter=" +

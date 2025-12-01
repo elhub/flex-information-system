@@ -1,7 +1,7 @@
 // AUTO-GENERATED FILE - DO NOT EDIT
-// Generated from local/input/permissions.csv
+// Generated from local/input/permissions.csv by local/scripts/permissions_to_ts.py
 
-export type RoleName =
+export type Role =
   | "flex_anonymous"
   | "flex_balance_responsible_party"
   | "flex_end_user"
@@ -14,6914 +14,19106 @@ export type RoleName =
   | "flex_system_operator"
   | "flex_third_party";
 
-export type Permission =
-  | "accounting_point.business_id.read"
-  | "accounting_point.id.read"
-  | "accounting_point.read"
-  | "accounting_point.recorded_at.read"
-  | "accounting_point.recorded_by.read"
-  | "accounting_point.system_operator_id.read"
-  | "accounting_point_balance_responsible_party.accounting_point_id.read"
-  | "accounting_point_balance_responsible_party.balance_responsible_party_id.read"
-  | "accounting_point_balance_responsible_party.energy_direction.read"
-  | "accounting_point_balance_responsible_party.read"
-  | "accounting_point_balance_responsible_party.valid_from.read"
-  | "accounting_point_balance_responsible_party.valid_to.read"
-  | "accounting_point_energy_supplier.accounting_point_id.read"
-  | "accounting_point_energy_supplier.energy_supplier_id.read"
-  | "accounting_point_energy_supplier.read"
-  | "accounting_point_energy_supplier.valid_from.read"
-  | "accounting_point_energy_supplier.valid_to.read"
-  | "controllable_unit.accounting_point_id.create"
-  | "controllable_unit.accounting_point_id.read"
-  | "controllable_unit.business_id.read"
-  | "controllable_unit.create"
-  | "controllable_unit.grid_node_id.create"
-  | "controllable_unit.grid_node_id.read"
-  | "controllable_unit.grid_node_id.update"
-  | "controllable_unit.grid_validation_notes.create"
-  | "controllable_unit.grid_validation_notes.read"
-  | "controllable_unit.grid_validation_notes.update"
-  | "controllable_unit.grid_validation_status.create"
-  | "controllable_unit.grid_validation_status.read"
-  | "controllable_unit.grid_validation_status.update"
-  | "controllable_unit.id.read"
-  | "controllable_unit.is_small.read"
-  | "controllable_unit.lookup"
-  | "controllable_unit.maximum_available_capacity.create"
-  | "controllable_unit.maximum_available_capacity.read"
-  | "controllable_unit.maximum_available_capacity.update"
-  | "controllable_unit.maximum_duration.create"
-  | "controllable_unit.maximum_duration.read"
-  | "controllable_unit.maximum_duration.update"
-  | "controllable_unit.minimum_duration.create"
-  | "controllable_unit.minimum_duration.read"
-  | "controllable_unit.minimum_duration.update"
-  | "controllable_unit.name.create"
-  | "controllable_unit.name.read"
-  | "controllable_unit.name.update"
-  | "controllable_unit.ramp_rate.create"
-  | "controllable_unit.ramp_rate.read"
-  | "controllable_unit.ramp_rate.update"
-  | "controllable_unit.read"
-  | "controllable_unit.recorded_at.read"
-  | "controllable_unit.recorded_by.read"
-  | "controllable_unit.recovery_duration.create"
-  | "controllable_unit.recovery_duration.read"
-  | "controllable_unit.recovery_duration.update"
-  | "controllable_unit.regulation_direction.create"
-  | "controllable_unit.regulation_direction.read"
-  | "controllable_unit.regulation_direction.update"
-  | "controllable_unit.start_date.create"
-  | "controllable_unit.start_date.read"
-  | "controllable_unit.start_date.update"
-  | "controllable_unit.status.read"
-  | "controllable_unit.status.update"
-  | "controllable_unit.update"
-  | "controllable_unit.validated_at.create"
-  | "controllable_unit.validated_at.read"
-  | "controllable_unit.validated_at.update"
-  | "controllable_unit_history.accounting_point_id.read"
-  | "controllable_unit_history.business_id.read"
-  | "controllable_unit_history.controllable_unit_id.read"
-  | "controllable_unit_history.grid_node_id.read"
-  | "controllable_unit_history.grid_validation_notes.read"
-  | "controllable_unit_history.grid_validation_status.read"
-  | "controllable_unit_history.id.read"
-  | "controllable_unit_history.is_small.read"
-  | "controllable_unit_history.maximum_available_capacity.read"
-  | "controllable_unit_history.maximum_duration.read"
-  | "controllable_unit_history.minimum_duration.read"
-  | "controllable_unit_history.name.read"
-  | "controllable_unit_history.ramp_rate.read"
-  | "controllable_unit_history.read"
-  | "controllable_unit_history.recorded_at.read"
-  | "controllable_unit_history.recorded_by.read"
-  | "controllable_unit_history.recovery_duration.read"
-  | "controllable_unit_history.regulation_direction.read"
-  | "controllable_unit_history.replaced_at.read"
-  | "controllable_unit_history.replaced_by.read"
-  | "controllable_unit_history.start_date.read"
-  | "controllable_unit_history.status.read"
-  | "controllable_unit_history.validated_at.read"
-  | "controllable_unit_service_provider.contract_reference.create"
-  | "controllable_unit_service_provider.contract_reference.read"
-  | "controllable_unit_service_provider.contract_reference.update"
-  | "controllable_unit_service_provider.controllable_unit_id.create"
-  | "controllable_unit_service_provider.controllable_unit_id.read"
-  | "controllable_unit_service_provider.create"
-  | "controllable_unit_service_provider.delete"
-  | "controllable_unit_service_provider.end_user_id.create"
-  | "controllable_unit_service_provider.end_user_id.read"
-  | "controllable_unit_service_provider.id.read"
-  | "controllable_unit_service_provider.read"
-  | "controllable_unit_service_provider.recorded_at.read"
-  | "controllable_unit_service_provider.recorded_by.read"
-  | "controllable_unit_service_provider.service_provider_id.create"
-  | "controllable_unit_service_provider.service_provider_id.read"
-  | "controllable_unit_service_provider.update"
-  | "controllable_unit_service_provider.valid_from.create"
-  | "controllable_unit_service_provider.valid_from.read"
-  | "controllable_unit_service_provider.valid_from.update"
-  | "controllable_unit_service_provider.valid_to.create"
-  | "controllable_unit_service_provider.valid_to.read"
-  | "controllable_unit_service_provider.valid_to.update"
-  | "controllable_unit_service_provider_history.contract_reference.read"
-  | "controllable_unit_service_provider_history.controllable_unit_id.read"
-  | "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read"
-  | "controllable_unit_service_provider_history.end_user_id.read"
-  | "controllable_unit_service_provider_history.id.read"
-  | "controllable_unit_service_provider_history.read"
-  | "controllable_unit_service_provider_history.recorded_at.read"
-  | "controllable_unit_service_provider_history.recorded_by.read"
-  | "controllable_unit_service_provider_history.replaced_at.read"
-  | "controllable_unit_service_provider_history.replaced_by.read"
-  | "controllable_unit_service_provider_history.service_provider_id.read"
-  | "controllable_unit_service_provider_history.valid_from.read"
-  | "controllable_unit_service_provider_history.valid_to.read"
-  | "controllable_unit_suspension.controllable_unit_id.create"
-  | "controllable_unit_suspension.controllable_unit_id.read"
-  | "controllable_unit_suspension.create"
-  | "controllable_unit_suspension.delete"
-  | "controllable_unit_suspension.id.read"
-  | "controllable_unit_suspension.impacted_system_operator_id.create"
-  | "controllable_unit_suspension.impacted_system_operator_id.read"
-  | "controllable_unit_suspension.read"
-  | "controllable_unit_suspension.reason.create"
-  | "controllable_unit_suspension.reason.read"
-  | "controllable_unit_suspension.reason.update"
-  | "controllable_unit_suspension.recorded_at.read"
-  | "controllable_unit_suspension.recorded_by.read"
-  | "controllable_unit_suspension.update"
-  | "controllable_unit_suspension_comment.content.create"
-  | "controllable_unit_suspension_comment.content.read"
-  | "controllable_unit_suspension_comment.content.update"
-  | "controllable_unit_suspension_comment.controllable_unit_suspension_id.create"
-  | "controllable_unit_suspension_comment.controllable_unit_suspension_id.read"
-  | "controllable_unit_suspension_comment.create"
-  | "controllable_unit_suspension_comment.created_at.read"
-  | "controllable_unit_suspension_comment.created_by.read"
-  | "controllable_unit_suspension_comment.id.read"
-  | "controllable_unit_suspension_comment.read"
-  | "controllable_unit_suspension_comment.recorded_at.read"
-  | "controllable_unit_suspension_comment.recorded_by.read"
-  | "controllable_unit_suspension_comment.update"
-  | "controllable_unit_suspension_comment.visibility.create"
-  | "controllable_unit_suspension_comment.visibility.read"
-  | "controllable_unit_suspension_comment.visibility.update"
-  | "controllable_unit_suspension_comment_history.content.read"
-  | "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read"
-  | "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read"
-  | "controllable_unit_suspension_comment_history.created_at.read"
-  | "controllable_unit_suspension_comment_history.created_by.read"
-  | "controllable_unit_suspension_comment_history.id.read"
-  | "controllable_unit_suspension_comment_history.read"
-  | "controllable_unit_suspension_comment_history.recorded_at.read"
-  | "controllable_unit_suspension_comment_history.recorded_by.read"
-  | "controllable_unit_suspension_comment_history.replaced_at.read"
-  | "controllable_unit_suspension_comment_history.replaced_by.read"
-  | "controllable_unit_suspension_comment_history.visibility.read"
-  | "controllable_unit_suspension_history.controllable_unit_id.read"
-  | "controllable_unit_suspension_history.controllable_unit_suspension_id.read"
-  | "controllable_unit_suspension_history.id.read"
-  | "controllable_unit_suspension_history.impacted_system_operator_id.read"
-  | "controllable_unit_suspension_history.read"
-  | "controllable_unit_suspension_history.reason.read"
-  | "controllable_unit_suspension_history.recorded_at.read"
-  | "controllable_unit_suspension_history.recorded_by.read"
-  | "controllable_unit_suspension_history.replaced_at.read"
-  | "controllable_unit_suspension_history.replaced_by.read"
-  | "entity.business_id.create"
-  | "entity.business_id.read"
-  | "entity.business_id_type.create"
-  | "entity.business_id_type.read"
-  | "entity.create"
-  | "entity.id.read"
-  | "entity.lookup"
-  | "entity.name.create"
-  | "entity.name.read"
-  | "entity.name.update"
-  | "entity.read"
-  | "entity.recorded_at.read"
-  | "entity.recorded_by.read"
-  | "entity.type.create"
-  | "entity.type.read"
-  | "entity.update"
-  | "entity_client.client_id.read"
-  | "entity_client.client_secret.create"
-  | "entity_client.client_secret.read"
-  | "entity_client.client_secret.update"
-  | "entity_client.create"
-  | "entity_client.delete"
-  | "entity_client.entity_id.create"
-  | "entity_client.entity_id.read"
-  | "entity_client.id.read"
-  | "entity_client.name.create"
-  | "entity_client.name.read"
-  | "entity_client.name.update"
-  | "entity_client.party_id.create"
-  | "entity_client.party_id.read"
-  | "entity_client.party_id.update"
-  | "entity_client.public_key.create"
-  | "entity_client.public_key.read"
-  | "entity_client.public_key.update"
-  | "entity_client.read"
-  | "entity_client.recorded_at.read"
-  | "entity_client.recorded_by.read"
-  | "entity_client.scopes.create"
-  | "entity_client.scopes.read"
-  | "entity_client.scopes.update"
-  | "entity_client.update"
-  | "event.data.read"
-  | "event.id.read"
-  | "event.read"
-  | "event.source.read"
-  | "event.specversion.read"
-  | "event.time.read"
-  | "event.type.read"
-  | "identity.entity_id.read"
-  | "identity.entity_name.read"
-  | "identity.id.read"
-  | "identity.party_id.read"
-  | "identity.party_name.read"
-  | "identity.read"
-  | "notice.data.read"
-  | "notice.party_id.read"
-  | "notice.read"
-  | "notice.source.read"
-  | "notice.type.read"
-  | "notification.acknowledged.read"
-  | "notification.acknowledged.update"
-  | "notification.event_id.read"
-  | "notification.id.read"
-  | "notification.party_id.read"
-  | "notification.read"
-  | "notification.recorded_at.read"
-  | "notification.recorded_by.read"
-  | "notification.update"
-  | "party.business_id.create"
-  | "party.business_id.read"
-  | "party.business_id_type.create"
-  | "party.business_id_type.read"
-  | "party.create"
-  | "party.entity_id.create"
-  | "party.entity_id.read"
-  | "party.id.read"
-  | "party.name.create"
-  | "party.name.read"
-  | "party.name.update"
-  | "party.read"
-  | "party.recorded_at.read"
-  | "party.recorded_by.read"
-  | "party.role.create"
-  | "party.role.read"
-  | "party.status.read"
-  | "party.status.update"
-  | "party.type.create"
-  | "party.type.read"
-  | "party.update"
-  | "party_history.business_id.read"
-  | "party_history.business_id_type.read"
-  | "party_history.entity_id.read"
-  | "party_history.id.read"
-  | "party_history.name.read"
-  | "party_history.party_id.read"
-  | "party_history.read"
-  | "party_history.recorded_at.read"
-  | "party_history.recorded_by.read"
-  | "party_history.replaced_at.read"
-  | "party_history.replaced_by.read"
-  | "party_history.role.read"
-  | "party_history.status.read"
-  | "party_history.type.read"
-  | "party_membership.create"
-  | "party_membership.delete"
-  | "party_membership.entity_id.create"
-  | "party_membership.entity_id.read"
-  | "party_membership.id.read"
-  | "party_membership.party_id.create"
-  | "party_membership.party_id.read"
-  | "party_membership.read"
-  | "party_membership.recorded_at.read"
-  | "party_membership.recorded_by.read"
-  | "party_membership.scopes.create"
-  | "party_membership.scopes.read"
-  | "party_membership.scopes.update"
-  | "party_membership.update"
-  | "party_membership_history.entity_id.read"
-  | "party_membership_history.id.read"
-  | "party_membership_history.party_id.read"
-  | "party_membership_history.party_membership_id.read"
-  | "party_membership_history.read"
-  | "party_membership_history.recorded_at.read"
-  | "party_membership_history.recorded_by.read"
-  | "party_membership_history.replaced_at.read"
-  | "party_membership_history.replaced_by.read"
-  | "party_membership_history.scopes.read"
-  | "product_type.business_id.read"
-  | "product_type.id.read"
-  | "product_type.name.read"
-  | "product_type.products.read"
-  | "product_type.read"
-  | "product_type.service.read"
-  | "service_provider_product_application.create"
-  | "service_provider_product_application.id.read"
-  | "service_provider_product_application.notes.read"
-  | "service_provider_product_application.notes.update"
-  | "service_provider_product_application.product_type_ids.create"
-  | "service_provider_product_application.product_type_ids.read"
-  | "service_provider_product_application.product_type_ids.update"
-  | "service_provider_product_application.qualified_at.read"
-  | "service_provider_product_application.qualified_at.update"
-  | "service_provider_product_application.read"
-  | "service_provider_product_application.recorded_at.read"
-  | "service_provider_product_application.recorded_by.read"
-  | "service_provider_product_application.service_provider_id.create"
-  | "service_provider_product_application.service_provider_id.read"
-  | "service_provider_product_application.status.read"
-  | "service_provider_product_application.status.update"
-  | "service_provider_product_application.system_operator_id.create"
-  | "service_provider_product_application.system_operator_id.read"
-  | "service_provider_product_application.update"
-  | "service_provider_product_application_comment.content.create"
-  | "service_provider_product_application_comment.content.read"
-  | "service_provider_product_application_comment.content.update"
-  | "service_provider_product_application_comment.create"
-  | "service_provider_product_application_comment.created_at.read"
-  | "service_provider_product_application_comment.created_by.read"
-  | "service_provider_product_application_comment.id.read"
-  | "service_provider_product_application_comment.read"
-  | "service_provider_product_application_comment.recorded_at.read"
-  | "service_provider_product_application_comment.recorded_by.read"
-  | "service_provider_product_application_comment.service_provider_product_application_id.create"
-  | "service_provider_product_application_comment.service_provider_product_application_id.read"
-  | "service_provider_product_application_comment.update"
-  | "service_provider_product_application_comment.visibility.create"
-  | "service_provider_product_application_comment.visibility.read"
-  | "service_provider_product_application_comment.visibility.update"
-  | "service_provider_product_application_comment_history.content.read"
-  | "service_provider_product_application_comment_history.created_at.read"
-  | "service_provider_product_application_comment_history.created_by.read"
-  | "service_provider_product_application_comment_history.id.read"
-  | "service_provider_product_application_comment_history.read"
-  | "service_provider_product_application_comment_history.recorded_at.read"
-  | "service_provider_product_application_comment_history.recorded_by.read"
-  | "service_provider_product_application_comment_history.replaced_at.read"
-  | "service_provider_product_application_comment_history.replaced_by.read"
-  | "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read"
-  | "service_provider_product_application_comment_history.service_provider_product_application_id.read"
-  | "service_provider_product_application_comment_history.visibility.read"
-  | "service_provider_product_application_history.id.read"
-  | "service_provider_product_application_history.notes.read"
-  | "service_provider_product_application_history.product_type_ids.read"
-  | "service_provider_product_application_history.qualified_at.read"
-  | "service_provider_product_application_history.read"
-  | "service_provider_product_application_history.recorded_at.read"
-  | "service_provider_product_application_history.recorded_by.read"
-  | "service_provider_product_application_history.replaced_at.read"
-  | "service_provider_product_application_history.replaced_by.read"
-  | "service_provider_product_application_history.service_provider_id.read"
-  | "service_provider_product_application_history.service_provider_product_application_id.read"
-  | "service_provider_product_application_history.status.read"
-  | "service_provider_product_application_history.system_operator_id.read"
-  | "service_provider_product_suspension.create"
-  | "service_provider_product_suspension.delete"
-  | "service_provider_product_suspension.id.read"
-  | "service_provider_product_suspension.procuring_system_operator_id.create"
-  | "service_provider_product_suspension.procuring_system_operator_id.read"
-  | "service_provider_product_suspension.product_type_ids.create"
-  | "service_provider_product_suspension.product_type_ids.read"
-  | "service_provider_product_suspension.product_type_ids.update"
-  | "service_provider_product_suspension.read"
-  | "service_provider_product_suspension.reason.create"
-  | "service_provider_product_suspension.reason.read"
-  | "service_provider_product_suspension.reason.update"
-  | "service_provider_product_suspension.recorded_at.read"
-  | "service_provider_product_suspension.recorded_by.read"
-  | "service_provider_product_suspension.service_provider_id.create"
-  | "service_provider_product_suspension.service_provider_id.read"
-  | "service_provider_product_suspension.update"
-  | "service_provider_product_suspension_comment.content.create"
-  | "service_provider_product_suspension_comment.content.read"
-  | "service_provider_product_suspension_comment.content.update"
-  | "service_provider_product_suspension_comment.create"
-  | "service_provider_product_suspension_comment.created_at.read"
-  | "service_provider_product_suspension_comment.created_by.read"
-  | "service_provider_product_suspension_comment.id.read"
-  | "service_provider_product_suspension_comment.read"
-  | "service_provider_product_suspension_comment.recorded_at.read"
-  | "service_provider_product_suspension_comment.recorded_by.read"
-  | "service_provider_product_suspension_comment.service_provider_product_suspension_id.create"
-  | "service_provider_product_suspension_comment.service_provider_product_suspension_id.read"
-  | "service_provider_product_suspension_comment.update"
-  | "service_provider_product_suspension_comment.visibility.create"
-  | "service_provider_product_suspension_comment.visibility.read"
-  | "service_provider_product_suspension_comment.visibility.update"
-  | "service_provider_product_suspension_comment_history.content.read"
-  | "service_provider_product_suspension_comment_history.created_at.read"
-  | "service_provider_product_suspension_comment_history.created_by.read"
-  | "service_provider_product_suspension_comment_history.id.read"
-  | "service_provider_product_suspension_comment_history.read"
-  | "service_provider_product_suspension_comment_history.recorded_at.read"
-  | "service_provider_product_suspension_comment_history.recorded_by.read"
-  | "service_provider_product_suspension_comment_history.replaced_at.read"
-  | "service_provider_product_suspension_comment_history.replaced_by.read"
-  | "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read"
-  | "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read"
-  | "service_provider_product_suspension_comment_history.visibility.read"
-  | "service_provider_product_suspension_history.id.read"
-  | "service_provider_product_suspension_history.procuring_system_operator_id.read"
-  | "service_provider_product_suspension_history.product_type_ids.read"
-  | "service_provider_product_suspension_history.read"
-  | "service_provider_product_suspension_history.reason.read"
-  | "service_provider_product_suspension_history.recorded_at.read"
-  | "service_provider_product_suspension_history.recorded_by.read"
-  | "service_provider_product_suspension_history.replaced_at.read"
-  | "service_provider_product_suspension_history.replaced_by.read"
-  | "service_provider_product_suspension_history.service_provider_id.read"
-  | "service_provider_product_suspension_history.service_provider_product_suspension_id.read"
-  | "service_providing_group.create"
-  | "service_providing_group.id.read"
-  | "service_providing_group.name.create"
-  | "service_providing_group.name.read"
-  | "service_providing_group.name.update"
-  | "service_providing_group.read"
-  | "service_providing_group.recorded_at.read"
-  | "service_providing_group.recorded_by.read"
-  | "service_providing_group.service_provider_id.create"
-  | "service_providing_group.service_provider_id.read"
-  | "service_providing_group.status.read"
-  | "service_providing_group.status.update"
-  | "service_providing_group.update"
-  | "service_providing_group_grid_prequalification.create"
-  | "service_providing_group_grid_prequalification.id.read"
-  | "service_providing_group_grid_prequalification.impacted_system_operator_id.create"
-  | "service_providing_group_grid_prequalification.impacted_system_operator_id.read"
-  | "service_providing_group_grid_prequalification.notes.read"
-  | "service_providing_group_grid_prequalification.notes.update"
-  | "service_providing_group_grid_prequalification.prequalified_at.read"
-  | "service_providing_group_grid_prequalification.prequalified_at.update"
-  | "service_providing_group_grid_prequalification.read"
-  | "service_providing_group_grid_prequalification.recorded_at.read"
-  | "service_providing_group_grid_prequalification.recorded_by.read"
-  | "service_providing_group_grid_prequalification.service_providing_group_id.create"
-  | "service_providing_group_grid_prequalification.service_providing_group_id.read"
-  | "service_providing_group_grid_prequalification.status.read"
-  | "service_providing_group_grid_prequalification.status.update"
-  | "service_providing_group_grid_prequalification.update"
-  | "service_providing_group_grid_prequalification_history.id.read"
-  | "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read"
-  | "service_providing_group_grid_prequalification_history.notes.read"
-  | "service_providing_group_grid_prequalification_history.prequalified_at.read"
-  | "service_providing_group_grid_prequalification_history.read"
-  | "service_providing_group_grid_prequalification_history.recorded_at.read"
-  | "service_providing_group_grid_prequalification_history.recorded_by.read"
-  | "service_providing_group_grid_prequalification_history.replaced_at.read"
-  | "service_providing_group_grid_prequalification_history.replaced_by.read"
-  | "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read"
-  | "service_providing_group_grid_prequalification_history.service_providing_group_id.read"
-  | "service_providing_group_grid_prequalification_history.status.read"
-  | "service_providing_group_grid_suspension.create"
-  | "service_providing_group_grid_suspension.delete"
-  | "service_providing_group_grid_suspension.id.read"
-  | "service_providing_group_grid_suspension.impacted_system_operator_id.create"
-  | "service_providing_group_grid_suspension.impacted_system_operator_id.read"
-  | "service_providing_group_grid_suspension.read"
-  | "service_providing_group_grid_suspension.reason.create"
-  | "service_providing_group_grid_suspension.reason.read"
-  | "service_providing_group_grid_suspension.reason.update"
-  | "service_providing_group_grid_suspension.recorded_at.read"
-  | "service_providing_group_grid_suspension.recorded_by.read"
-  | "service_providing_group_grid_suspension.service_providing_group_id.create"
-  | "service_providing_group_grid_suspension.service_providing_group_id.read"
-  | "service_providing_group_grid_suspension.update"
-  | "service_providing_group_grid_suspension_comment.content.create"
-  | "service_providing_group_grid_suspension_comment.content.read"
-  | "service_providing_group_grid_suspension_comment.content.update"
-  | "service_providing_group_grid_suspension_comment.create"
-  | "service_providing_group_grid_suspension_comment.created_at.read"
-  | "service_providing_group_grid_suspension_comment.created_by.read"
-  | "service_providing_group_grid_suspension_comment.id.read"
-  | "service_providing_group_grid_suspension_comment.read"
-  | "service_providing_group_grid_suspension_comment.recorded_at.read"
-  | "service_providing_group_grid_suspension_comment.recorded_by.read"
-  | "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.create"
-  | "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read"
-  | "service_providing_group_grid_suspension_comment.update"
-  | "service_providing_group_grid_suspension_comment.visibility.create"
-  | "service_providing_group_grid_suspension_comment.visibility.read"
-  | "service_providing_group_grid_suspension_comment.visibility.update"
-  | "service_providing_group_grid_suspension_comment_history.content.read"
-  | "service_providing_group_grid_suspension_comment_history.created_at.read"
-  | "service_providing_group_grid_suspension_comment_history.created_by.read"
-  | "service_providing_group_grid_suspension_comment_history.id.read"
-  | "service_providing_group_grid_suspension_comment_history.read"
-  | "service_providing_group_grid_suspension_comment_history.recorded_at.read"
-  | "service_providing_group_grid_suspension_comment_history.recorded_by.read"
-  | "service_providing_group_grid_suspension_comment_history.replaced_at.read"
-  | "service_providing_group_grid_suspension_comment_history.replaced_by.read"
-  | "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read"
-  | "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read"
-  | "service_providing_group_grid_suspension_comment_history.visibility.read"
-  | "service_providing_group_grid_suspension_history.id.read"
-  | "service_providing_group_grid_suspension_history.impacted_system_operator_id.read"
-  | "service_providing_group_grid_suspension_history.read"
-  | "service_providing_group_grid_suspension_history.reason.read"
-  | "service_providing_group_grid_suspension_history.recorded_at.read"
-  | "service_providing_group_grid_suspension_history.recorded_by.read"
-  | "service_providing_group_grid_suspension_history.replaced_at.read"
-  | "service_providing_group_grid_suspension_history.replaced_by.read"
-  | "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read"
-  | "service_providing_group_grid_suspension_history.service_providing_group_id.read"
-  | "service_providing_group_history.id.read"
-  | "service_providing_group_history.name.read"
-  | "service_providing_group_history.read"
-  | "service_providing_group_history.recorded_at.read"
-  | "service_providing_group_history.recorded_by.read"
-  | "service_providing_group_history.replaced_at.read"
-  | "service_providing_group_history.replaced_by.read"
-  | "service_providing_group_history.service_provider_id.read"
-  | "service_providing_group_history.service_providing_group_id.read"
-  | "service_providing_group_history.status.read"
-  | "service_providing_group_membership.controllable_unit_id.create"
-  | "service_providing_group_membership.controllable_unit_id.read"
-  | "service_providing_group_membership.create"
-  | "service_providing_group_membership.delete"
-  | "service_providing_group_membership.id.read"
-  | "service_providing_group_membership.read"
-  | "service_providing_group_membership.recorded_at.read"
-  | "service_providing_group_membership.recorded_by.read"
-  | "service_providing_group_membership.service_providing_group_id.create"
-  | "service_providing_group_membership.service_providing_group_id.read"
-  | "service_providing_group_membership.update"
-  | "service_providing_group_membership.valid_from.create"
-  | "service_providing_group_membership.valid_from.read"
-  | "service_providing_group_membership.valid_from.update"
-  | "service_providing_group_membership.valid_to.create"
-  | "service_providing_group_membership.valid_to.read"
-  | "service_providing_group_membership.valid_to.update"
-  | "service_providing_group_membership_history.controllable_unit_id.read"
-  | "service_providing_group_membership_history.id.read"
-  | "service_providing_group_membership_history.read"
-  | "service_providing_group_membership_history.recorded_at.read"
-  | "service_providing_group_membership_history.recorded_by.read"
-  | "service_providing_group_membership_history.replaced_at.read"
-  | "service_providing_group_membership_history.replaced_by.read"
-  | "service_providing_group_membership_history.service_providing_group_id.read"
-  | "service_providing_group_membership_history.service_providing_group_membership_id.read"
-  | "service_providing_group_membership_history.valid_from.read"
-  | "service_providing_group_membership_history.valid_to.read"
-  | "service_providing_group_product_application.create"
-  | "service_providing_group_product_application.id.read"
-  | "service_providing_group_product_application.notes.read"
-  | "service_providing_group_product_application.notes.update"
-  | "service_providing_group_product_application.prequalified_at.read"
-  | "service_providing_group_product_application.prequalified_at.update"
-  | "service_providing_group_product_application.procuring_system_operator_id.create"
-  | "service_providing_group_product_application.procuring_system_operator_id.read"
-  | "service_providing_group_product_application.product_type_ids.create"
-  | "service_providing_group_product_application.product_type_ids.read"
-  | "service_providing_group_product_application.product_type_ids.update"
-  | "service_providing_group_product_application.read"
-  | "service_providing_group_product_application.recorded_at.read"
-  | "service_providing_group_product_application.recorded_by.read"
-  | "service_providing_group_product_application.service_providing_group_id.create"
-  | "service_providing_group_product_application.service_providing_group_id.read"
-  | "service_providing_group_product_application.status.read"
-  | "service_providing_group_product_application.status.update"
-  | "service_providing_group_product_application.update"
-  | "service_providing_group_product_application.verified_at.read"
-  | "service_providing_group_product_application.verified_at.update"
-  | "service_providing_group_product_application_history.id.read"
-  | "service_providing_group_product_application_history.notes.read"
-  | "service_providing_group_product_application_history.prequalified_at.read"
-  | "service_providing_group_product_application_history.procuring_system_operator_id.read"
-  | "service_providing_group_product_application_history.product_type_ids.read"
-  | "service_providing_group_product_application_history.read"
-  | "service_providing_group_product_application_history.recorded_at.read"
-  | "service_providing_group_product_application_history.recorded_by.read"
-  | "service_providing_group_product_application_history.replaced_at.read"
-  | "service_providing_group_product_application_history.replaced_by.read"
-  | "service_providing_group_product_application_history.service_providing_group_id.read"
-  | "service_providing_group_product_application_history.service_providing_group_product_application_id.read"
-  | "service_providing_group_product_application_history.status.read"
-  | "service_providing_group_product_application_history.verified_at.read"
-  | "service_providing_group_product_suspension.create"
-  | "service_providing_group_product_suspension.delete"
-  | "service_providing_group_product_suspension.id.read"
-  | "service_providing_group_product_suspension.procuring_system_operator_id.create"
-  | "service_providing_group_product_suspension.procuring_system_operator_id.read"
-  | "service_providing_group_product_suspension.product_type_ids.create"
-  | "service_providing_group_product_suspension.product_type_ids.read"
-  | "service_providing_group_product_suspension.read"
-  | "service_providing_group_product_suspension.reason.create"
-  | "service_providing_group_product_suspension.reason.read"
-  | "service_providing_group_product_suspension.reason.update"
-  | "service_providing_group_product_suspension.recorded_at.read"
-  | "service_providing_group_product_suspension.recorded_by.read"
-  | "service_providing_group_product_suspension.service_providing_group_id.create"
-  | "service_providing_group_product_suspension.service_providing_group_id.read"
-  | "service_providing_group_product_suspension.update"
-  | "service_providing_group_product_suspension_comment.content.create"
-  | "service_providing_group_product_suspension_comment.content.read"
-  | "service_providing_group_product_suspension_comment.content.update"
-  | "service_providing_group_product_suspension_comment.create"
-  | "service_providing_group_product_suspension_comment.created_at.read"
-  | "service_providing_group_product_suspension_comment.created_by.read"
-  | "service_providing_group_product_suspension_comment.id.read"
-  | "service_providing_group_product_suspension_comment.read"
-  | "service_providing_group_product_suspension_comment.recorded_at.read"
-  | "service_providing_group_product_suspension_comment.recorded_by.read"
-  | "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.create"
-  | "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read"
-  | "service_providing_group_product_suspension_comment.update"
-  | "service_providing_group_product_suspension_comment.visibility.create"
-  | "service_providing_group_product_suspension_comment.visibility.read"
-  | "service_providing_group_product_suspension_comment.visibility.update"
-  | "service_providing_group_product_suspension_comment_history.content.read"
-  | "service_providing_group_product_suspension_comment_history.created_at.read"
-  | "service_providing_group_product_suspension_comment_history.created_by.read"
-  | "service_providing_group_product_suspension_comment_history.id.read"
-  | "service_providing_group_product_suspension_comment_history.read"
-  | "service_providing_group_product_suspension_comment_history.recorded_at.read"
-  | "service_providing_group_product_suspension_comment_history.recorded_by.read"
-  | "service_providing_group_product_suspension_comment_history.replaced_at.read"
-  | "service_providing_group_product_suspension_comment_history.replaced_by.read"
-  | "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read"
-  | "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read"
-  | "service_providing_group_product_suspension_comment_history.visibility.read"
-  | "service_providing_group_product_suspension_history.id.read"
-  | "service_providing_group_product_suspension_history.procuring_system_operator_id.read"
-  | "service_providing_group_product_suspension_history.product_type_ids.read"
-  | "service_providing_group_product_suspension_history.read"
-  | "service_providing_group_product_suspension_history.reason.read"
-  | "service_providing_group_product_suspension_history.recorded_at.read"
-  | "service_providing_group_product_suspension_history.recorded_by.read"
-  | "service_providing_group_product_suspension_history.replaced_at.read"
-  | "service_providing_group_product_suspension_history.replaced_by.read"
-  | "service_providing_group_product_suspension_history.service_providing_group_id.read"
-  | "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read"
-  | "system_operator_product_type.create"
-  | "system_operator_product_type.id.read"
-  | "system_operator_product_type.product_type_id.create"
-  | "system_operator_product_type.product_type_id.read"
-  | "system_operator_product_type.read"
-  | "system_operator_product_type.recorded_at.read"
-  | "system_operator_product_type.recorded_by.read"
-  | "system_operator_product_type.status.read"
-  | "system_operator_product_type.status.update"
-  | "system_operator_product_type.system_operator_id.create"
-  | "system_operator_product_type.system_operator_id.read"
-  | "system_operator_product_type.update"
-  | "system_operator_product_type_history.id.read"
-  | "system_operator_product_type_history.product_type_id.read"
-  | "system_operator_product_type_history.read"
-  | "system_operator_product_type_history.recorded_at.read"
-  | "system_operator_product_type_history.recorded_by.read"
-  | "system_operator_product_type_history.replaced_at.read"
-  | "system_operator_product_type_history.replaced_by.read"
-  | "system_operator_product_type_history.status.read"
-  | "system_operator_product_type_history.system_operator_id.read"
-  | "system_operator_product_type_history.system_operator_product_type_id.read"
-  | "technical_resource.controllable_unit_id.create"
-  | "technical_resource.controllable_unit_id.read"
-  | "technical_resource.create"
-  | "technical_resource.delete"
-  | "technical_resource.details.create"
-  | "technical_resource.details.read"
-  | "technical_resource.details.update"
-  | "technical_resource.id.read"
-  | "technical_resource.name.create"
-  | "technical_resource.name.read"
-  | "technical_resource.name.update"
-  | "technical_resource.read"
-  | "technical_resource.recorded_at.read"
-  | "technical_resource.recorded_by.read"
-  | "technical_resource.update"
-  | "technical_resource_history.controllable_unit_id.read"
-  | "technical_resource_history.details.read"
-  | "technical_resource_history.id.read"
-  | "technical_resource_history.name.read"
-  | "technical_resource_history.read"
-  | "technical_resource_history.recorded_at.read"
-  | "technical_resource_history.recorded_by.read"
-  | "technical_resource_history.replaced_at.read"
-  | "technical_resource_history.replaced_by.read"
-  | "technical_resource_history.technical_resource_id.read";
+export type PermissionTarget =
+  | "party_history.business_id_type"
+  | "service_providing_group_history.replaced_at"
+  | "entity_client.client_secret"
+  | "service_providing_group_membership"
+  | "notification.recorded_by"
+  | "service_providing_group_product_suspension_comment"
+  | "service_provider_product_suspension_comment"
+  | "service_providing_group_membership_history.recorded_at"
+  | "service_providing_group_product_suspension.reason"
+  | "service_provider_product_suspension_comment_history.created_by"
+  | "service_providing_group_grid_suspension_history"
+  | "system_operator_product_type.recorded_at"
+  | "service_providing_group.name"
+  | "service_providing_group.status"
+  | "controllable_unit_suspension_history.reason"
+  | "entity_client.entity_id"
+  | "service_providing_group_grid_prequalification.prequalified_at"
+  | "service_providing_group_grid_prequalification.recorded_at"
+  | "service_providing_group_product_application_history.notes"
+  | "party_history.role"
+  | "service_providing_group_grid_prequalification_history.impacted_system_operator_id"
+  | "controllable_unit_suspension_comment"
+  | "product_type.business_id"
+  | "entity_client.name"
+  | "party_membership_history.recorded_by"
+  | "entity"
+  | "service_providing_group_grid_suspension_comment.created_at"
+  | "party_membership.party_id"
+  | "accounting_point_energy_supplier.valid_to"
+  | "party_membership_history.id"
+  | "event.time"
+  | "controllable_unit_suspension_comment_history.controllable_unit_suspension_id"
+  | "service_providing_group_product_application_history.service_providing_group_id"
+  | "system_operator_product_type_history"
+  | "service_providing_group_product_suspension_comment_history.visibility"
+  | "entity_client.client_id"
+  | "system_operator_product_type.product_type_id"
+  | "party_history"
+  | "controllable_unit_suspension_comment_history.recorded_at"
+  | "service_provider_product_application_comment_history.content"
+  | "controllable_unit.name"
+  | "service_providing_group_grid_prequalification.impacted_system_operator_id"
+  | "controllable_unit_service_provider.service_provider_id"
+  | "controllable_unit_history.replaced_by"
+  | "controllable_unit.grid_node_id"
+  | "controllable_unit"
+  | "service_providing_group_product_suspension_history.recorded_by"
+  | "service_provider_product_suspension_history.recorded_at"
+  | "controllable_unit_history.accounting_point_id"
+  | "system_operator_product_type.status"
+  | "technical_resource.name"
+  | "service_providing_group.recorded_at"
+  | "service_providing_group_grid_suspension_comment.content"
+  | "service_providing_group_membership.service_providing_group_id"
+  | "service_providing_group_product_suspension.recorded_at"
+  | "entity.type"
+  | "controllable_unit.recovery_duration"
+  | "service_provider_product_application.product_type_ids"
+  | "service_providing_group_membership.valid_from"
+  | "controllable_unit.recorded_at"
+  | "service_providing_group_product_suspension_comment_history.recorded_by"
+  | "party.entity_id"
+  | "service_provider_product_suspension_history.recorded_by"
+  | "controllable_unit_service_provider_history.controllable_unit_id"
+  | "service_providing_group_membership_history.service_providing_group_membership_id"
+  | "controllable_unit.maximum_available_capacity"
+  | "controllable_unit_service_provider"
+  | "service_providing_group_grid_suspension_comment_history.id"
+  | "service_provider_product_suspension.recorded_at"
+  | "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id"
+  | "service_providing_group"
+  | "controllable_unit_suspension.impacted_system_operator_id"
+  | "service_providing_group_product_application_history.product_type_ids"
+  | "party_membership.id"
+  | "service_providing_group_grid_suspension_comment.visibility"
+  | "technical_resource_history.name"
+  | "controllable_unit_suspension_history.replaced_at"
+  | "entity.business_id_type"
+  | "party_membership_history.entity_id"
+  | "service_providing_group_history.recorded_at"
+  | "party_history.replaced_at"
+  | "service_provider_product_suspension_history.product_type_ids"
+  | "controllable_unit_service_provider.recorded_by"
+  | "service_provider_product_application_history.service_provider_id"
+  | "identity.entity_name"
+  | "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id"
+  | "controllable_unit_suspension_history.replaced_by"
+  | "controllable_unit_history.maximum_available_capacity"
+  | "controllable_unit_suspension_comment.recorded_at"
+  | "party_membership_history.replaced_at"
+  | "technical_resource_history.controllable_unit_id"
+  | "service_provider_product_application_comment.content"
+  | "party_membership"
+  | "service_providing_group_product_application_history.procuring_system_operator_id"
+  | "controllable_unit_suspension_comment_history.id"
+  | "service_providing_group_grid_prequalification.service_providing_group_id"
+  | "controllable_unit_history.maximum_duration"
+  | "service_provider_product_application_comment_history.created_by"
+  | "service_providing_group_grid_prequalification.notes"
+  | "notification.acknowledged"
+  | "controllable_unit_history.name"
+  | "party_history.replaced_by"
+  | "service_provider_product_application_comment_history.recorded_at"
+  | "service_provider_product_suspension_history.service_provider_id"
+  | "party_membership_history.recorded_at"
+  | "system_operator_product_type_history.system_operator_id"
+  | "identity.entity_id"
+  | "party.business_id"
+  | "service_providing_group_grid_suspension_comment.recorded_by"
+  | "controllable_unit_history.status"
+  | "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id"
+  | "controllable_unit_service_provider.valid_to"
+  | "controllable_unit_suspension.reason"
+  | "controllable_unit_history.recovery_duration"
+  | "service_provider_product_application.status"
+  | "service_provider_product_application_history.replaced_by"
+  | "technical_resource"
+  | "service_providing_group_product_suspension"
+  | "event"
+  | "system_operator_product_type.recorded_by"
+  | "service_provider_product_suspension_history"
+  | "controllable_unit_service_provider_history.controllable_unit_service_provider_id"
+  | "entity_client.recorded_by"
+  | "controllable_unit_suspension_comment.created_at"
+  | "service_provider_product_application_history.status"
+  | "service_providing_group_product_suspension_comment_history.content"
+  | "system_operator_product_type_history.replaced_at"
+  | "party_membership_history.replaced_by"
+  | "service_provider_product_suspension.reason"
+  | "service_providing_group_product_application.notes"
+  | "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id"
+  | "party_membership.entity_id"
+  | "service_provider_product_application_history.notes"
+  | "service_provider_product_application.system_operator_id"
+  | "controllable_unit_history.grid_validation_notes"
+  | "notification.party_id"
+  | "notice.party_id"
+  | "product_type.products"
+  | "service_providing_group_history.recorded_by"
+  | "controllable_unit_service_provider_history"
+  | "controllable_unit_history.replaced_at"
+  | "service_providing_group_grid_suspension_comment.id"
+  | "service_providing_group_product_suspension_history.replaced_at"
+  | "service_provider_product_suspension_history.reason"
+  | "service_provider_product_suspension_comment.recorded_at"
+  | "controllable_unit_history.grid_node_id"
+  | "accounting_point_balance_responsible_party.valid_to"
+  | "service_providing_group_product_suspension.product_type_ids"
+  | "system_operator_product_type_history.replaced_by"
+  | "controllable_unit_service_provider_history.recorded_at"
+  | "service_provider_product_application_comment_history.visibility"
+  | "service_providing_group_product_application.status"
+  | "service_providing_group_product_suspension.procuring_system_operator_id"
+  | "service_provider_product_application_history.system_operator_id"
+  | "controllable_unit.regulation_direction"
+  | "controllable_unit_service_provider.recorded_at"
+  | "service_providing_group_grid_suspension.impacted_system_operator_id"
+  | "service_providing_group_membership.controllable_unit_id"
+  | "accounting_point_energy_supplier"
+  | "service_provider_product_suspension_comment.recorded_by"
+  | "service_provider_product_suspension_comment_history.recorded_by"
+  | "controllable_unit_history.is_small"
+  | "service_provider_product_application_comment.recorded_by"
+  | "controllable_unit_suspension_history.controllable_unit_id"
+  | "service_provider_product_suspension_comment.service_provider_product_suspension_id"
+  | "controllable_unit_suspension_history.recorded_at"
+  | "system_operator_product_type"
+  | "accounting_point_balance_responsible_party.valid_from"
+  | "service_provider_product_application_history.replaced_at"
+  | "service_provider_product_application_history.product_type_ids"
+  | "service_provider_product_application_comment_history.service_provider_product_application_id"
+  | "service_providing_group_grid_prequalification_history.status"
+  | "service_provider_product_application_history.qualified_at"
+  | "notification.event_id"
+  | "system_operator_product_type_history.id"
+  | "service_providing_group_grid_suspension.recorded_by"
+  | "service_providing_group_membership_history.replaced_at"
+  | "service_providing_group_product_suspension_history.recorded_at"
+  | "service_providing_group_product_application_history.recorded_by"
+  | "accounting_point.recorded_at"
+  | "service_providing_group_grid_suspension.reason"
+  | "entity.id"
+  | "accounting_point_balance_responsible_party.energy_direction"
+  | "party.status"
+  | "service_provider_product_suspension_history.id"
+  | "controllable_unit_service_provider_history.recorded_by"
+  | "accounting_point.id"
+  | "service_providing_group_product_application.recorded_at"
+  | "service_providing_group_product_application_history.replaced_at"
+  | "service_providing_group_product_application.recorded_by"
+  | "notification.recorded_at"
+  | "controllable_unit_history.id"
+  | "controllable_unit_suspension_comment.controllable_unit_suspension_id"
+  | "service_providing_group_product_suspension_comment.created_at"
+  | "system_operator_product_type_history.system_operator_product_type_id"
+  | "service_providing_group_grid_suspension_comment_history.recorded_at"
+  | "event.source"
+  | "controllable_unit_suspension"
+  | "technical_resource_history.technical_resource_id"
+  | "service_provider_product_application_comment_history.service_provider_product_application_comment_id"
+  | "service_providing_group_grid_prequalification_history.recorded_at"
+  | "accounting_point_balance_responsible_party"
+  | "service_providing_group_history.status"
+  | "service_provider_product_suspension.service_provider_id"
+  | "service_providing_group_grid_prequalification_history.service_providing_group_id"
+  | "service_provider_product_application"
+  | "controllable_unit_suspension_comment_history.recorded_by"
+  | "service_providing_group_grid_suspension_comment_history.created_by"
+  | "service_provider_product_suspension"
+  | "service_provider_product_suspension_history.replaced_at"
+  | "party_history.recorded_by"
+  | "notice.type"
+  | "party_history.status"
+  | "service_providing_group_grid_suspension_history.recorded_by"
+  | "service_provider_product_application.qualified_at"
+  | "service_providing_group_grid_suspension_history.reason"
+  | "controllable_unit_suspension_comment.recorded_by"
+  | "system_operator_product_type.id"
+  | "controllable_unit_history"
+  | "service_providing_group_membership_history.id"
+  | "service_providing_group_grid_prequalification_history.replaced_at"
+  | "technical_resource.id"
+  | "service_provider_product_application.notes"
+  | "controllable_unit_suspension.recorded_by"
+  | "service_providing_group_membership.valid_to"
+  | "service_providing_group_product_suspension_history.product_type_ids"
+  | "service_providing_group_membership_history.controllable_unit_id"
+  | "party_history.business_id"
+  | "service_provider_product_suspension_comment.created_by"
+  | "controllable_unit_history.regulation_direction"
+  | "party_membership_history.scopes"
+  | "service_providing_group_membership_history.service_providing_group_id"
+  | "controllable_unit_service_provider_history.valid_from"
+  | "service_providing_group_product_suspension_history.id"
+  | "service_providing_group_product_suspension_comment.visibility"
+  | "service_providing_group_product_suspension_comment.content"
+  | "accounting_point_balance_responsible_party.accounting_point_id"
+  | "entity.business_id"
+  | "party_membership_history.party_membership_id"
+  | "controllable_unit_suspension_comment.visibility"
+  | "service_providing_group_product_application_history.prequalified_at"
+  | "party.business_id_type"
+  | "party"
+  | "service_providing_group_product_application.prequalified_at"
+  | "service_providing_group_product_suspension_comment.created_by"
+  | "technical_resource_history.recorded_by"
+  | "controllable_unit_suspension_comment_history"
+  | "service_providing_group_membership_history.valid_from"
+  | "service_provider_product_suspension_comment.id"
+  | "service_providing_group_product_suspension_comment.recorded_by"
+  | "controllable_unit_service_provider_history.valid_to"
+  | "service_providing_group_product_application.service_providing_group_id"
+  | "service_providing_group_membership_history.valid_to"
+  | "service_providing_group_grid_suspension_history.replaced_by"
+  | "service_providing_group_history.name"
+  | "controllable_unit_suspension_comment_history.content"
+  | "service_providing_group_grid_prequalification_history.prequalified_at"
+  | "controllable_unit_service_provider_history.end_user_id"
+  | "technical_resource_history.replaced_at"
+  | "accounting_point_balance_responsible_party.balance_responsible_party_id"
+  | "service_provider_product_application_history.recorded_at"
+  | "service_providing_group_grid_suspension.service_providing_group_id"
+  | "event.id"
+  | "controllable_unit.business_id"
+  | "service_providing_group_product_application"
+  | "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
+  | "entity_client.id"
+  | "service_providing_group_grid_suspension_comment_history.content"
+  | "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id"
+  | "service_providing_group_product_suspension_comment_history.created_at"
+  | "service_providing_group.recorded_by"
+  | "service_provider_product_application_comment.service_provider_product_application_id"
+  | "accounting_point_energy_supplier.energy_supplier_id"
+  | "technical_resource.details"
+  | "controllable_unit_suspension_history.recorded_by"
+  | "notice"
+  | "accounting_point_energy_supplier.valid_from"
+  | "service_providing_group_history.service_providing_group_id"
+  | "service_provider_product_application_history.recorded_by"
+  | "controllable_unit.id"
+  | "service_provider_product_suspension_comment.content"
+  | "controllable_unit_service_provider.controllable_unit_id"
+  | "service_provider_product_suspension_comment_history.created_at"
+  | "service_provider_product_application_comment.id"
+  | "service_provider_product_suspension_comment_history.recorded_at"
+  | "system_operator_product_type_history.recorded_at"
+  | "controllable_unit.recorded_by"
+  | "identity"
+  | "service_provider_product_suspension.procuring_system_operator_id"
+  | "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id"
+  | "system_operator_product_type_history.status"
+  | "service_providing_group_grid_prequalification_history.notes"
+  | "service_providing_group_grid_suspension_history.id"
+  | "controllable_unit_service_provider_history.contract_reference"
+  | "controllable_unit_history.minimum_duration"
+  | "service_provider_product_application_history.service_provider_product_application_id"
+  | "event.specversion"
+  | "service_provider_product_suspension.id"
+  | "service_providing_group_membership.recorded_at"
+  | "technical_resource_history.id"
+  | "identity.id"
+  | "service_providing_group_membership.recorded_by"
+  | "party_history.entity_id"
+  | "controllable_unit_history.ramp_rate"
+  | "notice.data"
+  | "service_providing_group_product_application.product_type_ids"
+  | "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id"
+  | "technical_resource_history.replaced_by"
+  | "service_providing_group_grid_suspension_history.impacted_system_operator_id"
+  | "service_providing_group_grid_suspension.recorded_at"
+  | "accounting_point.business_id"
+  | "service_provider_product_application.id"
+  | "technical_resource_history.details"
+  | "controllable_unit_history.controllable_unit_id"
+  | "service_provider_product_application_comment.created_at"
+  | "service_providing_group_grid_prequalification_history.replaced_by"
+  | "controllable_unit_suspension_comment_history.visibility"
+  | "accounting_point.recorded_by"
+  | "controllable_unit_suspension_history.impacted_system_operator_id"
+  | "controllable_unit.ramp_rate"
+  | "service_provider_product_application_comment_history.recorded_by"
+  | "party_history.id"
+  | "controllable_unit_history.start_date"
+  | "service_providing_group_membership.id"
+  | "party.type"
+  | "controllable_unit_suspension_history.id"
+  | "technical_resource_history.recorded_at"
+  | "product_type.service"
+  | "event.data"
+  | "service_providing_group_membership_history.replaced_by"
+  | "controllable_unit.accounting_point_id"
+  | "controllable_unit_suspension_history"
+  | "service_providing_group_product_application.procuring_system_operator_id"
+  | "service_providing_group_product_suspension_comment_history.replaced_at"
+  | "service_providing_group_product_suspension_comment_history.id"
+  | "service_provider_product_application_history.id"
+  | "service_provider_product_suspension_comment_history.content"
+  | "accounting_point_energy_supplier.accounting_point_id"
+  | "technical_resource.recorded_at"
+  | "controllable_unit.minimum_duration"
+  | "service_providing_group_product_suspension_history.procuring_system_operator_id"
+  | "service_provider_product_application_comment_history.created_at"
+  | "service_providing_group_product_suspension_comment.id"
+  | "service_providing_group_product_application_history.status"
+  | "service_providing_group_product_suspension_comment_history.created_by"
+  | "controllable_unit_service_provider_history.service_provider_id"
+  | "service_provider_product_application_history"
+  | "party_history.type"
+  | "service_provider_product_application_comment.visibility"
+  | "service_provider_product_application_comment"
+  | "service_providing_group_product_suspension.id"
+  | "controllable_unit_service_provider_history.id"
+  | "service_provider_product_application_comment.created_by"
+  | "identity.party_name"
+  | "service_providing_group_grid_suspension_history.service_providing_group_id"
+  | "service_providing_group_product_application_history.replaced_by"
+  | "service_providing_group_grid_suspension_comment_history.replaced_at"
+  | "party.recorded_at"
+  | "service_providing_group_grid_prequalification.status"
+  | "service_providing_group_product_suspension_history.service_providing_group_id"
+  | "controllable_unit_suspension_comment_history.created_by"
+  | "service_providing_group_product_suspension_history.replaced_by"
+  | "party.role"
+  | "service_providing_group_history.replaced_by"
+  | "service_providing_group_grid_prequalification_history.id"
+  | "service_provider_product_suspension.recorded_by"
+  | "service_providing_group_grid_prequalification.recorded_by"
+  | "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id"
+  | "service_providing_group_grid_suspension_comment.created_by"
+  | "controllable_unit_suspension_comment.id"
+  | "service_providing_group_grid_prequalification"
+  | "system_operator_product_type.system_operator_id"
+  | "accounting_point.system_operator_id"
+  | "accounting_point"
+  | "service_provider_product_suspension_history.service_provider_product_suspension_id"
+  | "product_type"
+  | "service_provider_product_suspension_comment_history.visibility"
+  | "service_providing_group_grid_suspension"
+  | "service_provider_product_application_comment.recorded_at"
+  | "service_provider_product_suspension.product_type_ids"
+  | "party_membership.recorded_by"
+  | "service_provider_product_application_comment_history.id"
+  | "service_providing_group_product_suspension_comment_history"
+  | "party.recorded_by"
+  | "service_provider_product_application_comment_history.replaced_at"
+  | "service_providing_group_history.service_provider_id"
+  | "party_history.party_id"
+  | "controllable_unit_suspension.id"
+  | "service_provider_product_suspension_comment_history"
+  | "party_history.recorded_at"
+  | "controllable_unit.maximum_duration"
+  | "identity.party_id"
+  | "service_providing_group_grid_suspension.id"
+  | "service_provider_product_suspension_comment_history.id"
+  | "entity_client.party_id"
+  | "party.id"
+  | "entity.recorded_at"
+  | "service_providing_group_grid_suspension_comment_history.created_at"
+  | "service_providing_group_membership_history.recorded_by"
+  | "service_providing_group_grid_suspension_comment_history.visibility"
+  | "service_providing_group_grid_suspension_comment_history.recorded_by"
+  | "controllable_unit_suspension_history.controllable_unit_suspension_id"
+  | "party_history.name"
+  | "controllable_unit_history.recorded_by"
+  | "service_provider_product_application_comment_history"
+  | "controllable_unit_service_provider.end_user_id"
+  | "service_providing_group_membership_history"
+  | "party_membership_history.party_id"
+  | "controllable_unit.status"
+  | "technical_resource.recorded_by"
+  | "service_providing_group_product_suspension_comment_history.replaced_by"
+  | "controllable_unit_history.recorded_at"
+  | "controllable_unit.grid_validation_notes"
+  | "service_providing_group_product_application_history.recorded_at"
+  | "event.type"
+  | "service_provider_product_suspension_comment_history.replaced_at"
+  | "service_providing_group_grid_prequalification.id"
+  | "service_providing_group.service_provider_id"
+  | "service_providing_group_product_application_history.service_providing_group_product_application_id"
+  | "controllable_unit_history.validated_at"
+  | "technical_resource.controllable_unit_id"
+  | "notice.source"
+  | "controllable_unit.is_small"
+  | "controllable_unit_service_provider_history.replaced_by"
+  | "service_providing_group_product_suspension_history.reason"
+  | "service_providing_group_grid_suspension_comment"
+  | "service_providing_group_grid_suspension_history.recorded_at"
+  | "controllable_unit_service_provider.valid_from"
+  | "service_providing_group_grid_prequalification_history.recorded_by"
+  | "notification.id"
+  | "entity_client.public_key"
+  | "party_membership.recorded_at"
+  | "product_type.name"
+  | "controllable_unit_suspension_comment_history.replaced_by"
+  | "controllable_unit_service_provider.contract_reference"
+  | "service_provider_product_application.recorded_by"
+  | "controllable_unit.start_date"
+  | "party_membership.scopes"
+  | "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id"
+  | "service_providing_group_product_application_history"
+  | "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id"
+  | "controllable_unit.validated_at"
+  | "notification"
+  | "service_providing_group_product_suspension.recorded_by"
+  | "entity_client"
+  | "service_providing_group_product_suspension_history"
+  | "service_providing_group_grid_suspension_history.replaced_at"
+  | "product_type.id"
+  | "system_operator_product_type_history.recorded_by"
+  | "controllable_unit_history.grid_validation_status"
+  | "service_providing_group_grid_suspension_comment_history.replaced_by"
+  | "entity.name"
+  | "controllable_unit.grid_validation_status"
+  | "service_provider_product_application.service_provider_id"
+  | "controllable_unit_history.business_id"
+  | "service_providing_group_product_application_history.id"
+  | "controllable_unit_suspension.recorded_at"
+  | "service_provider_product_suspension_comment_history.replaced_by"
+  | "service_provider_product_suspension_history.replaced_by"
+  | "service_providing_group_grid_suspension_comment.recorded_at"
+  | "service_providing_group_history"
+  | "service_providing_group_product_suspension.service_providing_group_id"
+  | "controllable_unit_suspension.controllable_unit_id"
+  | "service_providing_group_product_application.id"
+  | "technical_resource_history"
+  | "service_providing_group_product_suspension_comment_history.recorded_at"
+  | "service_provider_product_application.recorded_at"
+  | "entity.recorded_by"
+  | "controllable_unit_suspension_comment.created_by"
+  | "service_providing_group_history.id"
+  | "service_provider_product_suspension_comment.created_at"
+  | "party.name"
+  | "service_providing_group_grid_suspension_comment_history"
+  | "service_provider_product_suspension_history.procuring_system_operator_id"
+  | "service_provider_product_application_comment_history.replaced_by"
+  | "controllable_unit_service_provider.id"
+  | "service_providing_group_product_suspension_comment.recorded_at"
+  | "party_membership_history"
+  | "service_provider_product_suspension_comment.visibility"
+  | "service_providing_group.id"
+  | "controllable_unit_service_provider_history.replaced_at"
+  | "entity_client.scopes"
+  | "controllable_unit_suspension_comment_history.replaced_at"
+  | "entity_client.recorded_at"
+  | "service_providing_group_grid_prequalification_history"
+  | "controllable_unit_suspension_comment_history.created_at"
+  | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_history.verified_at"
+  | "controllable_unit_suspension_comment.content"
+  | "service_provider_product_suspension_comment_history.service_provider_product_suspension_id"
+  | "system_operator_product_type_history.product_type_id";
 
-export const permissionRefs = {
-  accounting_point: {
-    read: "accounting_point.read",
-    business_id: {
-      read: "accounting_point.business_id.read",
-    },
-    id: {
-      read: "accounting_point.id.read",
-    },
-    recorded_at: {
-      read: "accounting_point.recorded_at.read",
-    },
-    recorded_by: {
-      read: "accounting_point.recorded_by.read",
-    },
-    system_operator_id: {
-      read: "accounting_point.system_operator_id.read",
-    },
-  },
-  accounting_point_balance_responsible_party: {
-    read: "accounting_point_balance_responsible_party.read",
-    accounting_point_id: {
-      read: "accounting_point_balance_responsible_party.accounting_point_id.read",
-    },
-    balance_responsible_party_id: {
-      read: "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    },
-    energy_direction: {
-      read: "accounting_point_balance_responsible_party.energy_direction.read",
-    },
-    valid_from: {
-      read: "accounting_point_balance_responsible_party.valid_from.read",
-    },
-    valid_to: {
-      read: "accounting_point_balance_responsible_party.valid_to.read",
-    },
-  },
-  accounting_point_energy_supplier: {
-    read: "accounting_point_energy_supplier.read",
-    accounting_point_id: {
-      read: "accounting_point_energy_supplier.accounting_point_id.read",
-    },
-    energy_supplier_id: {
-      read: "accounting_point_energy_supplier.energy_supplier_id.read",
-    },
-    valid_from: {
-      read: "accounting_point_energy_supplier.valid_from.read",
-    },
-    valid_to: {
-      read: "accounting_point_energy_supplier.valid_to.read",
-    },
-  },
-  controllable_unit: {
-    create: "controllable_unit.create",
-    lookup: "controllable_unit.lookup",
-    read: "controllable_unit.read",
-    update: "controllable_unit.update",
-    accounting_point_id: {
-      create: "controllable_unit.accounting_point_id.create",
-      read: "controllable_unit.accounting_point_id.read",
-    },
-    business_id: {
-      read: "controllable_unit.business_id.read",
-    },
-    grid_node_id: {
-      create: "controllable_unit.grid_node_id.create",
-      read: "controllable_unit.grid_node_id.read",
-      update: "controllable_unit.grid_node_id.update",
-    },
-    grid_validation_notes: {
-      create: "controllable_unit.grid_validation_notes.create",
-      read: "controllable_unit.grid_validation_notes.read",
-      update: "controllable_unit.grid_validation_notes.update",
-    },
-    grid_validation_status: {
-      create: "controllable_unit.grid_validation_status.create",
-      read: "controllable_unit.grid_validation_status.read",
-      update: "controllable_unit.grid_validation_status.update",
-    },
-    id: {
-      read: "controllable_unit.id.read",
-    },
-    is_small: {
-      read: "controllable_unit.is_small.read",
-    },
-    maximum_available_capacity: {
-      create: "controllable_unit.maximum_available_capacity.create",
-      read: "controllable_unit.maximum_available_capacity.read",
-      update: "controllable_unit.maximum_available_capacity.update",
-    },
-    maximum_duration: {
-      create: "controllable_unit.maximum_duration.create",
-      read: "controllable_unit.maximum_duration.read",
-      update: "controllable_unit.maximum_duration.update",
-    },
-    minimum_duration: {
-      create: "controllable_unit.minimum_duration.create",
-      read: "controllable_unit.minimum_duration.read",
-      update: "controllable_unit.minimum_duration.update",
-    },
-    name: {
-      create: "controllable_unit.name.create",
-      read: "controllable_unit.name.read",
-      update: "controllable_unit.name.update",
-    },
-    ramp_rate: {
-      create: "controllable_unit.ramp_rate.create",
-      read: "controllable_unit.ramp_rate.read",
-      update: "controllable_unit.ramp_rate.update",
-    },
-    recorded_at: {
-      read: "controllable_unit.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit.recorded_by.read",
-    },
-    recovery_duration: {
-      create: "controllable_unit.recovery_duration.create",
-      read: "controllable_unit.recovery_duration.read",
-      update: "controllable_unit.recovery_duration.update",
-    },
-    regulation_direction: {
-      create: "controllable_unit.regulation_direction.create",
-      read: "controllable_unit.regulation_direction.read",
-      update: "controllable_unit.regulation_direction.update",
-    },
-    start_date: {
-      create: "controllable_unit.start_date.create",
-      read: "controllable_unit.start_date.read",
-      update: "controllable_unit.start_date.update",
-    },
-    status: {
-      read: "controllable_unit.status.read",
-      update: "controllable_unit.status.update",
-    },
-    validated_at: {
-      create: "controllable_unit.validated_at.create",
-      read: "controllable_unit.validated_at.read",
-      update: "controllable_unit.validated_at.update",
-    },
-  },
-  controllable_unit_history: {
-    read: "controllable_unit_history.read",
-    accounting_point_id: {
-      read: "controllable_unit_history.accounting_point_id.read",
-    },
-    business_id: {
-      read: "controllable_unit_history.business_id.read",
-    },
-    controllable_unit_id: {
-      read: "controllable_unit_history.controllable_unit_id.read",
-    },
-    grid_node_id: {
-      read: "controllable_unit_history.grid_node_id.read",
-    },
-    grid_validation_notes: {
-      read: "controllable_unit_history.grid_validation_notes.read",
-    },
-    grid_validation_status: {
-      read: "controllable_unit_history.grid_validation_status.read",
-    },
-    id: {
-      read: "controllable_unit_history.id.read",
-    },
-    is_small: {
-      read: "controllable_unit_history.is_small.read",
-    },
-    maximum_available_capacity: {
-      read: "controllable_unit_history.maximum_available_capacity.read",
-    },
-    maximum_duration: {
-      read: "controllable_unit_history.maximum_duration.read",
-    },
-    minimum_duration: {
-      read: "controllable_unit_history.minimum_duration.read",
-    },
-    name: {
-      read: "controllable_unit_history.name.read",
-    },
-    ramp_rate: {
-      read: "controllable_unit_history.ramp_rate.read",
-    },
-    recorded_at: {
-      read: "controllable_unit_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit_history.recorded_by.read",
-    },
-    recovery_duration: {
-      read: "controllable_unit_history.recovery_duration.read",
-    },
-    regulation_direction: {
-      read: "controllable_unit_history.regulation_direction.read",
-    },
-    replaced_at: {
-      read: "controllable_unit_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "controllable_unit_history.replaced_by.read",
-    },
-    start_date: {
-      read: "controllable_unit_history.start_date.read",
-    },
-    status: {
-      read: "controllable_unit_history.status.read",
-    },
-    validated_at: {
-      read: "controllable_unit_history.validated_at.read",
-    },
-  },
-  controllable_unit_service_provider: {
-    create: "controllable_unit_service_provider.create",
-    delete: "controllable_unit_service_provider.delete",
-    read: "controllable_unit_service_provider.read",
-    update: "controllable_unit_service_provider.update",
-    contract_reference: {
-      create: "controllable_unit_service_provider.contract_reference.create",
-      read: "controllable_unit_service_provider.contract_reference.read",
-      update: "controllable_unit_service_provider.contract_reference.update",
-    },
-    controllable_unit_id: {
-      create: "controllable_unit_service_provider.controllable_unit_id.create",
-      read: "controllable_unit_service_provider.controllable_unit_id.read",
-    },
-    end_user_id: {
-      create: "controllable_unit_service_provider.end_user_id.create",
-      read: "controllable_unit_service_provider.end_user_id.read",
-    },
-    id: {
-      read: "controllable_unit_service_provider.id.read",
-    },
-    recorded_at: {
-      read: "controllable_unit_service_provider.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit_service_provider.recorded_by.read",
-    },
-    service_provider_id: {
-      create: "controllable_unit_service_provider.service_provider_id.create",
-      read: "controllable_unit_service_provider.service_provider_id.read",
-    },
-    valid_from: {
-      create: "controllable_unit_service_provider.valid_from.create",
-      read: "controllable_unit_service_provider.valid_from.read",
-      update: "controllable_unit_service_provider.valid_from.update",
-    },
-    valid_to: {
-      create: "controllable_unit_service_provider.valid_to.create",
-      read: "controllable_unit_service_provider.valid_to.read",
-      update: "controllable_unit_service_provider.valid_to.update",
-    },
-  },
-  controllable_unit_service_provider_history: {
-    read: "controllable_unit_service_provider_history.read",
-    contract_reference: {
-      read: "controllable_unit_service_provider_history.contract_reference.read",
-    },
-    controllable_unit_id: {
-      read: "controllable_unit_service_provider_history.controllable_unit_id.read",
-    },
-    controllable_unit_service_provider_id: {
-      read: "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    },
-    end_user_id: {
-      read: "controllable_unit_service_provider_history.end_user_id.read",
-    },
-    id: {
-      read: "controllable_unit_service_provider_history.id.read",
-    },
-    recorded_at: {
-      read: "controllable_unit_service_provider_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit_service_provider_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "controllable_unit_service_provider_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "controllable_unit_service_provider_history.replaced_by.read",
-    },
-    service_provider_id: {
-      read: "controllable_unit_service_provider_history.service_provider_id.read",
-    },
-    valid_from: {
-      read: "controllable_unit_service_provider_history.valid_from.read",
-    },
-    valid_to: {
-      read: "controllable_unit_service_provider_history.valid_to.read",
-    },
-  },
-  controllable_unit_suspension: {
-    create: "controllable_unit_suspension.create",
-    delete: "controllable_unit_suspension.delete",
-    read: "controllable_unit_suspension.read",
-    update: "controllable_unit_suspension.update",
-    controllable_unit_id: {
-      create: "controllable_unit_suspension.controllable_unit_id.create",
-      read: "controllable_unit_suspension.controllable_unit_id.read",
-    },
-    id: {
-      read: "controllable_unit_suspension.id.read",
-    },
-    impacted_system_operator_id: {
-      create: "controllable_unit_suspension.impacted_system_operator_id.create",
-      read: "controllable_unit_suspension.impacted_system_operator_id.read",
-    },
-    reason: {
-      create: "controllable_unit_suspension.reason.create",
-      read: "controllable_unit_suspension.reason.read",
-      update: "controllable_unit_suspension.reason.update",
-    },
-    recorded_at: {
-      read: "controllable_unit_suspension.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit_suspension.recorded_by.read",
-    },
-  },
-  controllable_unit_suspension_comment: {
-    create: "controllable_unit_suspension_comment.create",
-    read: "controllable_unit_suspension_comment.read",
-    update: "controllable_unit_suspension_comment.update",
-    content: {
-      create: "controllable_unit_suspension_comment.content.create",
-      read: "controllable_unit_suspension_comment.content.read",
-      update: "controllable_unit_suspension_comment.content.update",
-    },
-    controllable_unit_suspension_id: {
-      create:
-        "controllable_unit_suspension_comment.controllable_unit_suspension_id.create",
-      read: "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    },
-    created_at: {
-      read: "controllable_unit_suspension_comment.created_at.read",
-    },
-    created_by: {
-      read: "controllable_unit_suspension_comment.created_by.read",
-    },
-    id: {
-      read: "controllable_unit_suspension_comment.id.read",
-    },
-    recorded_at: {
-      read: "controllable_unit_suspension_comment.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit_suspension_comment.recorded_by.read",
-    },
-    visibility: {
-      create: "controllable_unit_suspension_comment.visibility.create",
-      read: "controllable_unit_suspension_comment.visibility.read",
-      update: "controllable_unit_suspension_comment.visibility.update",
-    },
-  },
-  controllable_unit_suspension_comment_history: {
-    read: "controllable_unit_suspension_comment_history.read",
-    content: {
-      read: "controllable_unit_suspension_comment_history.content.read",
-    },
-    controllable_unit_suspension_comment_id: {
-      read: "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    },
-    controllable_unit_suspension_id: {
-      read: "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    },
-    created_at: {
-      read: "controllable_unit_suspension_comment_history.created_at.read",
-    },
-    created_by: {
-      read: "controllable_unit_suspension_comment_history.created_by.read",
-    },
-    id: {
-      read: "controllable_unit_suspension_comment_history.id.read",
-    },
-    recorded_at: {
-      read: "controllable_unit_suspension_comment_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit_suspension_comment_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "controllable_unit_suspension_comment_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "controllable_unit_suspension_comment_history.replaced_by.read",
-    },
-    visibility: {
-      read: "controllable_unit_suspension_comment_history.visibility.read",
-    },
-  },
-  controllable_unit_suspension_history: {
-    read: "controllable_unit_suspension_history.read",
-    controllable_unit_id: {
-      read: "controllable_unit_suspension_history.controllable_unit_id.read",
-    },
-    controllable_unit_suspension_id: {
-      read: "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    },
-    id: {
-      read: "controllable_unit_suspension_history.id.read",
-    },
-    impacted_system_operator_id: {
-      read: "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    },
-    reason: {
-      read: "controllable_unit_suspension_history.reason.read",
-    },
-    recorded_at: {
-      read: "controllable_unit_suspension_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "controllable_unit_suspension_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "controllable_unit_suspension_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "controllable_unit_suspension_history.replaced_by.read",
-    },
-  },
-  entity: {
-    create: "entity.create",
-    lookup: "entity.lookup",
-    read: "entity.read",
-    update: "entity.update",
-    business_id: {
-      create: "entity.business_id.create",
-      read: "entity.business_id.read",
-    },
-    business_id_type: {
-      create: "entity.business_id_type.create",
-      read: "entity.business_id_type.read",
-    },
-    id: {
-      read: "entity.id.read",
-    },
-    name: {
-      create: "entity.name.create",
-      read: "entity.name.read",
-      update: "entity.name.update",
-    },
-    recorded_at: {
-      read: "entity.recorded_at.read",
-    },
-    recorded_by: {
-      read: "entity.recorded_by.read",
-    },
-    type: {
-      create: "entity.type.create",
-      read: "entity.type.read",
-    },
-  },
-  entity_client: {
-    create: "entity_client.create",
-    delete: "entity_client.delete",
-    read: "entity_client.read",
-    update: "entity_client.update",
-    client_id: {
-      read: "entity_client.client_id.read",
-    },
-    client_secret: {
-      create: "entity_client.client_secret.create",
-      read: "entity_client.client_secret.read",
-      update: "entity_client.client_secret.update",
-    },
-    entity_id: {
-      create: "entity_client.entity_id.create",
-      read: "entity_client.entity_id.read",
-    },
-    id: {
-      read: "entity_client.id.read",
-    },
-    name: {
-      create: "entity_client.name.create",
-      read: "entity_client.name.read",
-      update: "entity_client.name.update",
-    },
-    party_id: {
-      create: "entity_client.party_id.create",
-      read: "entity_client.party_id.read",
-      update: "entity_client.party_id.update",
-    },
-    public_key: {
-      create: "entity_client.public_key.create",
-      read: "entity_client.public_key.read",
-      update: "entity_client.public_key.update",
-    },
-    recorded_at: {
-      read: "entity_client.recorded_at.read",
-    },
-    recorded_by: {
-      read: "entity_client.recorded_by.read",
-    },
-    scopes: {
-      create: "entity_client.scopes.create",
-      read: "entity_client.scopes.read",
-      update: "entity_client.scopes.update",
-    },
-  },
-  event: {
-    read: "event.read",
-    data: {
-      read: "event.data.read",
-    },
-    id: {
-      read: "event.id.read",
-    },
-    source: {
-      read: "event.source.read",
-    },
-    specversion: {
-      read: "event.specversion.read",
-    },
-    time: {
-      read: "event.time.read",
-    },
-    type: {
-      read: "event.type.read",
-    },
-  },
-  identity: {
-    read: "identity.read",
-    entity_id: {
-      read: "identity.entity_id.read",
-    },
-    entity_name: {
-      read: "identity.entity_name.read",
-    },
-    id: {
-      read: "identity.id.read",
-    },
-    party_id: {
-      read: "identity.party_id.read",
-    },
-    party_name: {
-      read: "identity.party_name.read",
-    },
-  },
-  notice: {
-    read: "notice.read",
-    data: {
-      read: "notice.data.read",
-    },
-    party_id: {
-      read: "notice.party_id.read",
-    },
-    source: {
-      read: "notice.source.read",
-    },
-    type: {
-      read: "notice.type.read",
-    },
-  },
-  notification: {
-    read: "notification.read",
-    update: "notification.update",
-    acknowledged: {
-      read: "notification.acknowledged.read",
-      update: "notification.acknowledged.update",
-    },
-    event_id: {
-      read: "notification.event_id.read",
-    },
-    id: {
-      read: "notification.id.read",
-    },
-    party_id: {
-      read: "notification.party_id.read",
-    },
-    recorded_at: {
-      read: "notification.recorded_at.read",
-    },
-    recorded_by: {
-      read: "notification.recorded_by.read",
-    },
-  },
-  party: {
-    create: "party.create",
-    read: "party.read",
-    update: "party.update",
-    business_id: {
-      create: "party.business_id.create",
-      read: "party.business_id.read",
-    },
-    business_id_type: {
-      create: "party.business_id_type.create",
-      read: "party.business_id_type.read",
-    },
-    entity_id: {
-      create: "party.entity_id.create",
-      read: "party.entity_id.read",
-    },
-    id: {
-      read: "party.id.read",
-    },
-    name: {
-      create: "party.name.create",
-      read: "party.name.read",
-      update: "party.name.update",
-    },
-    recorded_at: {
-      read: "party.recorded_at.read",
-    },
-    recorded_by: {
-      read: "party.recorded_by.read",
-    },
-    role: {
-      create: "party.role.create",
-      read: "party.role.read",
-    },
-    status: {
-      read: "party.status.read",
-      update: "party.status.update",
-    },
-    type: {
-      create: "party.type.create",
-      read: "party.type.read",
-    },
-  },
-  party_history: {
-    read: "party_history.read",
-    business_id: {
-      read: "party_history.business_id.read",
-    },
-    business_id_type: {
-      read: "party_history.business_id_type.read",
-    },
-    entity_id: {
-      read: "party_history.entity_id.read",
-    },
-    id: {
-      read: "party_history.id.read",
-    },
-    name: {
-      read: "party_history.name.read",
-    },
-    party_id: {
-      read: "party_history.party_id.read",
-    },
-    recorded_at: {
-      read: "party_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "party_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "party_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "party_history.replaced_by.read",
-    },
-    role: {
-      read: "party_history.role.read",
-    },
-    status: {
-      read: "party_history.status.read",
-    },
-    type: {
-      read: "party_history.type.read",
-    },
-  },
-  party_membership: {
-    create: "party_membership.create",
-    delete: "party_membership.delete",
-    read: "party_membership.read",
-    update: "party_membership.update",
-    entity_id: {
-      create: "party_membership.entity_id.create",
-      read: "party_membership.entity_id.read",
-    },
-    id: {
-      read: "party_membership.id.read",
-    },
-    party_id: {
-      create: "party_membership.party_id.create",
-      read: "party_membership.party_id.read",
-    },
-    recorded_at: {
-      read: "party_membership.recorded_at.read",
-    },
-    recorded_by: {
-      read: "party_membership.recorded_by.read",
-    },
-    scopes: {
-      create: "party_membership.scopes.create",
-      read: "party_membership.scopes.read",
-      update: "party_membership.scopes.update",
-    },
-  },
-  party_membership_history: {
-    read: "party_membership_history.read",
-    entity_id: {
-      read: "party_membership_history.entity_id.read",
-    },
-    id: {
-      read: "party_membership_history.id.read",
-    },
-    party_id: {
-      read: "party_membership_history.party_id.read",
-    },
-    party_membership_id: {
-      read: "party_membership_history.party_membership_id.read",
-    },
-    recorded_at: {
-      read: "party_membership_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "party_membership_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "party_membership_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "party_membership_history.replaced_by.read",
-    },
-    scopes: {
-      read: "party_membership_history.scopes.read",
-    },
-  },
-  product_type: {
-    read: "product_type.read",
-    business_id: {
-      read: "product_type.business_id.read",
-    },
-    id: {
-      read: "product_type.id.read",
-    },
-    name: {
-      read: "product_type.name.read",
-    },
-    products: {
-      read: "product_type.products.read",
-    },
-    service: {
-      read: "product_type.service.read",
-    },
-  },
-  service_provider_product_application: {
-    create: "service_provider_product_application.create",
-    read: "service_provider_product_application.read",
-    update: "service_provider_product_application.update",
-    id: {
-      read: "service_provider_product_application.id.read",
-    },
-    notes: {
-      read: "service_provider_product_application.notes.read",
-      update: "service_provider_product_application.notes.update",
-    },
-    product_type_ids: {
-      create: "service_provider_product_application.product_type_ids.create",
-      read: "service_provider_product_application.product_type_ids.read",
-      update: "service_provider_product_application.product_type_ids.update",
-    },
-    qualified_at: {
-      read: "service_provider_product_application.qualified_at.read",
-      update: "service_provider_product_application.qualified_at.update",
-    },
-    recorded_at: {
-      read: "service_provider_product_application.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_application.recorded_by.read",
-    },
-    service_provider_id: {
-      create: "service_provider_product_application.service_provider_id.create",
-      read: "service_provider_product_application.service_provider_id.read",
-    },
-    status: {
-      read: "service_provider_product_application.status.read",
-      update: "service_provider_product_application.status.update",
-    },
-    system_operator_id: {
-      create: "service_provider_product_application.system_operator_id.create",
-      read: "service_provider_product_application.system_operator_id.read",
-    },
-  },
-  service_provider_product_application_comment: {
-    create: "service_provider_product_application_comment.create",
-    read: "service_provider_product_application_comment.read",
-    update: "service_provider_product_application_comment.update",
-    content: {
-      create: "service_provider_product_application_comment.content.create",
-      read: "service_provider_product_application_comment.content.read",
-      update: "service_provider_product_application_comment.content.update",
-    },
-    created_at: {
-      read: "service_provider_product_application_comment.created_at.read",
-    },
-    created_by: {
-      read: "service_provider_product_application_comment.created_by.read",
-    },
-    id: {
-      read: "service_provider_product_application_comment.id.read",
-    },
-    recorded_at: {
-      read: "service_provider_product_application_comment.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_application_comment.recorded_by.read",
-    },
-    service_provider_product_application_id: {
-      create:
-        "service_provider_product_application_comment.service_provider_product_application_id.create",
-      read: "service_provider_product_application_comment.service_provider_product_application_id.read",
-    },
-    visibility: {
-      create: "service_provider_product_application_comment.visibility.create",
-      read: "service_provider_product_application_comment.visibility.read",
-      update: "service_provider_product_application_comment.visibility.update",
-    },
-  },
-  service_provider_product_application_comment_history: {
-    read: "service_provider_product_application_comment_history.read",
-    content: {
-      read: "service_provider_product_application_comment_history.content.read",
-    },
-    created_at: {
-      read: "service_provider_product_application_comment_history.created_at.read",
-    },
-    created_by: {
-      read: "service_provider_product_application_comment_history.created_by.read",
-    },
-    id: {
-      read: "service_provider_product_application_comment_history.id.read",
-    },
-    recorded_at: {
-      read: "service_provider_product_application_comment_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_application_comment_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_provider_product_application_comment_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_provider_product_application_comment_history.replaced_by.read",
-    },
-    service_provider_product_application_comment_id: {
-      read: "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    },
-    service_provider_product_application_id: {
-      read: "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    },
-    visibility: {
-      read: "service_provider_product_application_comment_history.visibility.read",
-    },
-  },
-  service_provider_product_application_history: {
-    read: "service_provider_product_application_history.read",
-    id: {
-      read: "service_provider_product_application_history.id.read",
-    },
-    notes: {
-      read: "service_provider_product_application_history.notes.read",
-    },
-    product_type_ids: {
-      read: "service_provider_product_application_history.product_type_ids.read",
-    },
-    qualified_at: {
-      read: "service_provider_product_application_history.qualified_at.read",
-    },
-    recorded_at: {
-      read: "service_provider_product_application_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_application_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_provider_product_application_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_provider_product_application_history.replaced_by.read",
-    },
-    service_provider_id: {
-      read: "service_provider_product_application_history.service_provider_id.read",
-    },
-    service_provider_product_application_id: {
-      read: "service_provider_product_application_history.service_provider_product_application_id.read",
-    },
-    status: {
-      read: "service_provider_product_application_history.status.read",
-    },
-    system_operator_id: {
-      read: "service_provider_product_application_history.system_operator_id.read",
-    },
-  },
-  service_provider_product_suspension: {
-    create: "service_provider_product_suspension.create",
-    delete: "service_provider_product_suspension.delete",
-    read: "service_provider_product_suspension.read",
-    update: "service_provider_product_suspension.update",
-    id: {
-      read: "service_provider_product_suspension.id.read",
-    },
-    procuring_system_operator_id: {
-      create:
-        "service_provider_product_suspension.procuring_system_operator_id.create",
-      read: "service_provider_product_suspension.procuring_system_operator_id.read",
-    },
-    product_type_ids: {
-      create: "service_provider_product_suspension.product_type_ids.create",
-      read: "service_provider_product_suspension.product_type_ids.read",
-      update: "service_provider_product_suspension.product_type_ids.update",
-    },
-    reason: {
-      create: "service_provider_product_suspension.reason.create",
-      read: "service_provider_product_suspension.reason.read",
-      update: "service_provider_product_suspension.reason.update",
-    },
-    recorded_at: {
-      read: "service_provider_product_suspension.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_suspension.recorded_by.read",
-    },
-    service_provider_id: {
-      create: "service_provider_product_suspension.service_provider_id.create",
-      read: "service_provider_product_suspension.service_provider_id.read",
-    },
-  },
-  service_provider_product_suspension_comment: {
-    create: "service_provider_product_suspension_comment.create",
-    read: "service_provider_product_suspension_comment.read",
-    update: "service_provider_product_suspension_comment.update",
-    content: {
-      create: "service_provider_product_suspension_comment.content.create",
-      read: "service_provider_product_suspension_comment.content.read",
-      update: "service_provider_product_suspension_comment.content.update",
-    },
-    created_at: {
-      read: "service_provider_product_suspension_comment.created_at.read",
-    },
-    created_by: {
-      read: "service_provider_product_suspension_comment.created_by.read",
-    },
-    id: {
-      read: "service_provider_product_suspension_comment.id.read",
-    },
-    recorded_at: {
-      read: "service_provider_product_suspension_comment.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_suspension_comment.recorded_by.read",
-    },
-    service_provider_product_suspension_id: {
-      create:
-        "service_provider_product_suspension_comment.service_provider_product_suspension_id.create",
-      read: "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    },
-    visibility: {
-      create: "service_provider_product_suspension_comment.visibility.create",
-      read: "service_provider_product_suspension_comment.visibility.read",
-      update: "service_provider_product_suspension_comment.visibility.update",
-    },
-  },
-  service_provider_product_suspension_comment_history: {
-    read: "service_provider_product_suspension_comment_history.read",
-    content: {
-      read: "service_provider_product_suspension_comment_history.content.read",
-    },
-    created_at: {
-      read: "service_provider_product_suspension_comment_history.created_at.read",
-    },
-    created_by: {
-      read: "service_provider_product_suspension_comment_history.created_by.read",
-    },
-    id: {
-      read: "service_provider_product_suspension_comment_history.id.read",
-    },
-    recorded_at: {
-      read: "service_provider_product_suspension_comment_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_suspension_comment_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_provider_product_suspension_comment_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_provider_product_suspension_comment_history.replaced_by.read",
-    },
-    service_provider_product_suspension_comment_id: {
-      read: "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    },
-    service_provider_product_suspension_id: {
-      read: "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    },
-    visibility: {
-      read: "service_provider_product_suspension_comment_history.visibility.read",
-    },
-  },
-  service_provider_product_suspension_history: {
-    read: "service_provider_product_suspension_history.read",
-    id: {
-      read: "service_provider_product_suspension_history.id.read",
-    },
-    procuring_system_operator_id: {
-      read: "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    },
-    product_type_ids: {
-      read: "service_provider_product_suspension_history.product_type_ids.read",
-    },
-    reason: {
-      read: "service_provider_product_suspension_history.reason.read",
-    },
-    recorded_at: {
-      read: "service_provider_product_suspension_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_provider_product_suspension_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_provider_product_suspension_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_provider_product_suspension_history.replaced_by.read",
-    },
-    service_provider_id: {
-      read: "service_provider_product_suspension_history.service_provider_id.read",
-    },
-    service_provider_product_suspension_id: {
-      read: "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    },
-  },
-  service_providing_group: {
-    create: "service_providing_group.create",
-    read: "service_providing_group.read",
-    update: "service_providing_group.update",
-    id: {
-      read: "service_providing_group.id.read",
-    },
-    name: {
-      create: "service_providing_group.name.create",
-      read: "service_providing_group.name.read",
-      update: "service_providing_group.name.update",
-    },
-    recorded_at: {
-      read: "service_providing_group.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group.recorded_by.read",
-    },
-    service_provider_id: {
-      create: "service_providing_group.service_provider_id.create",
-      read: "service_providing_group.service_provider_id.read",
-    },
-    status: {
-      read: "service_providing_group.status.read",
-      update: "service_providing_group.status.update",
-    },
-  },
-  service_providing_group_grid_prequalification: {
-    create: "service_providing_group_grid_prequalification.create",
-    read: "service_providing_group_grid_prequalification.read",
-    update: "service_providing_group_grid_prequalification.update",
-    id: {
-      read: "service_providing_group_grid_prequalification.id.read",
-    },
-    impacted_system_operator_id: {
-      create:
-        "service_providing_group_grid_prequalification.impacted_system_operator_id.create",
-      read: "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    },
-    notes: {
-      read: "service_providing_group_grid_prequalification.notes.read",
-      update: "service_providing_group_grid_prequalification.notes.update",
-    },
-    prequalified_at: {
-      read: "service_providing_group_grid_prequalification.prequalified_at.read",
-      update:
-        "service_providing_group_grid_prequalification.prequalified_at.update",
-    },
-    recorded_at: {
-      read: "service_providing_group_grid_prequalification.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_grid_prequalification.recorded_by.read",
-    },
-    service_providing_group_id: {
-      create:
-        "service_providing_group_grid_prequalification.service_providing_group_id.create",
-      read: "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    },
-    status: {
-      read: "service_providing_group_grid_prequalification.status.read",
-      update: "service_providing_group_grid_prequalification.status.update",
-    },
-  },
-  service_providing_group_grid_prequalification_history: {
-    read: "service_providing_group_grid_prequalification_history.read",
-    id: {
-      read: "service_providing_group_grid_prequalification_history.id.read",
-    },
-    impacted_system_operator_id: {
-      read: "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    },
-    notes: {
-      read: "service_providing_group_grid_prequalification_history.notes.read",
-    },
-    prequalified_at: {
-      read: "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_grid_prequalification_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_grid_prequalification_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_grid_prequalification_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_grid_prequalification_history.replaced_by.read",
-    },
-    service_providing_group_grid_prequalification_id: {
-      read: "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    },
-    service_providing_group_id: {
-      read: "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    },
-    status: {
-      read: "service_providing_group_grid_prequalification_history.status.read",
-    },
-  },
-  service_providing_group_grid_suspension: {
-    create: "service_providing_group_grid_suspension.create",
-    delete: "service_providing_group_grid_suspension.delete",
-    read: "service_providing_group_grid_suspension.read",
-    update: "service_providing_group_grid_suspension.update",
-    id: {
-      read: "service_providing_group_grid_suspension.id.read",
-    },
-    impacted_system_operator_id: {
-      create:
-        "service_providing_group_grid_suspension.impacted_system_operator_id.create",
-      read: "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    },
-    reason: {
-      create: "service_providing_group_grid_suspension.reason.create",
-      read: "service_providing_group_grid_suspension.reason.read",
-      update: "service_providing_group_grid_suspension.reason.update",
-    },
-    recorded_at: {
-      read: "service_providing_group_grid_suspension.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_grid_suspension.recorded_by.read",
-    },
-    service_providing_group_id: {
-      create:
-        "service_providing_group_grid_suspension.service_providing_group_id.create",
-      read: "service_providing_group_grid_suspension.service_providing_group_id.read",
-    },
-  },
-  service_providing_group_grid_suspension_comment: {
-    create: "service_providing_group_grid_suspension_comment.create",
-    read: "service_providing_group_grid_suspension_comment.read",
-    update: "service_providing_group_grid_suspension_comment.update",
-    content: {
-      create: "service_providing_group_grid_suspension_comment.content.create",
-      read: "service_providing_group_grid_suspension_comment.content.read",
-      update: "service_providing_group_grid_suspension_comment.content.update",
-    },
-    created_at: {
-      read: "service_providing_group_grid_suspension_comment.created_at.read",
-    },
-    created_by: {
-      read: "service_providing_group_grid_suspension_comment.created_by.read",
-    },
-    id: {
-      read: "service_providing_group_grid_suspension_comment.id.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_grid_suspension_comment.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_grid_suspension_comment.recorded_by.read",
-    },
-    service_providing_group_grid_suspension_id: {
-      create:
-        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.create",
-      read: "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    },
-    visibility: {
-      create:
-        "service_providing_group_grid_suspension_comment.visibility.create",
-      read: "service_providing_group_grid_suspension_comment.visibility.read",
-      update:
-        "service_providing_group_grid_suspension_comment.visibility.update",
-    },
-  },
-  service_providing_group_grid_suspension_comment_history: {
-    read: "service_providing_group_grid_suspension_comment_history.read",
-    content: {
-      read: "service_providing_group_grid_suspension_comment_history.content.read",
-    },
-    created_at: {
-      read: "service_providing_group_grid_suspension_comment_history.created_at.read",
-    },
-    created_by: {
-      read: "service_providing_group_grid_suspension_comment_history.created_by.read",
-    },
-    id: {
-      read: "service_providing_group_grid_suspension_comment_history.id.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    },
-    service_providing_group_grid_suspension_comment_id: {
-      read: "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    },
-    service_providing_group_grid_suspension_id: {
-      read: "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    },
-    visibility: {
-      read: "service_providing_group_grid_suspension_comment_history.visibility.read",
-    },
-  },
-  service_providing_group_grid_suspension_history: {
-    read: "service_providing_group_grid_suspension_history.read",
-    id: {
-      read: "service_providing_group_grid_suspension_history.id.read",
-    },
-    impacted_system_operator_id: {
-      read: "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    },
-    reason: {
-      read: "service_providing_group_grid_suspension_history.reason.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_grid_suspension_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_grid_suspension_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_grid_suspension_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_grid_suspension_history.replaced_by.read",
-    },
-    service_providing_group_grid_suspension_id: {
-      read: "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    },
-    service_providing_group_id: {
-      read: "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    },
-  },
-  service_providing_group_history: {
-    read: "service_providing_group_history.read",
-    id: {
-      read: "service_providing_group_history.id.read",
-    },
-    name: {
-      read: "service_providing_group_history.name.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_history.replaced_by.read",
-    },
-    service_provider_id: {
-      read: "service_providing_group_history.service_provider_id.read",
-    },
-    service_providing_group_id: {
-      read: "service_providing_group_history.service_providing_group_id.read",
-    },
-    status: {
-      read: "service_providing_group_history.status.read",
-    },
-  },
-  service_providing_group_membership: {
-    create: "service_providing_group_membership.create",
-    delete: "service_providing_group_membership.delete",
-    read: "service_providing_group_membership.read",
-    update: "service_providing_group_membership.update",
-    controllable_unit_id: {
-      create: "service_providing_group_membership.controllable_unit_id.create",
-      read: "service_providing_group_membership.controllable_unit_id.read",
-    },
-    id: {
-      read: "service_providing_group_membership.id.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_membership.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_membership.recorded_by.read",
-    },
-    service_providing_group_id: {
-      create:
-        "service_providing_group_membership.service_providing_group_id.create",
-      read: "service_providing_group_membership.service_providing_group_id.read",
-    },
-    valid_from: {
-      create: "service_providing_group_membership.valid_from.create",
-      read: "service_providing_group_membership.valid_from.read",
-      update: "service_providing_group_membership.valid_from.update",
-    },
-    valid_to: {
-      create: "service_providing_group_membership.valid_to.create",
-      read: "service_providing_group_membership.valid_to.read",
-      update: "service_providing_group_membership.valid_to.update",
-    },
-  },
-  service_providing_group_membership_history: {
-    read: "service_providing_group_membership_history.read",
-    controllable_unit_id: {
-      read: "service_providing_group_membership_history.controllable_unit_id.read",
-    },
-    id: {
-      read: "service_providing_group_membership_history.id.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_membership_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_membership_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_membership_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_membership_history.replaced_by.read",
-    },
-    service_providing_group_id: {
-      read: "service_providing_group_membership_history.service_providing_group_id.read",
-    },
-    service_providing_group_membership_id: {
-      read: "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    },
-    valid_from: {
-      read: "service_providing_group_membership_history.valid_from.read",
-    },
-    valid_to: {
-      read: "service_providing_group_membership_history.valid_to.read",
-    },
-  },
-  service_providing_group_product_application: {
-    create: "service_providing_group_product_application.create",
-    read: "service_providing_group_product_application.read",
-    update: "service_providing_group_product_application.update",
-    id: {
-      read: "service_providing_group_product_application.id.read",
-    },
-    notes: {
-      read: "service_providing_group_product_application.notes.read",
-      update: "service_providing_group_product_application.notes.update",
-    },
-    prequalified_at: {
-      read: "service_providing_group_product_application.prequalified_at.read",
-      update:
-        "service_providing_group_product_application.prequalified_at.update",
-    },
-    procuring_system_operator_id: {
-      create:
-        "service_providing_group_product_application.procuring_system_operator_id.create",
-      read: "service_providing_group_product_application.procuring_system_operator_id.read",
-    },
-    product_type_ids: {
-      create:
-        "service_providing_group_product_application.product_type_ids.create",
-      read: "service_providing_group_product_application.product_type_ids.read",
-      update:
-        "service_providing_group_product_application.product_type_ids.update",
-    },
-    recorded_at: {
-      read: "service_providing_group_product_application.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_product_application.recorded_by.read",
-    },
-    service_providing_group_id: {
-      create:
-        "service_providing_group_product_application.service_providing_group_id.create",
-      read: "service_providing_group_product_application.service_providing_group_id.read",
-    },
-    status: {
-      read: "service_providing_group_product_application.status.read",
-      update: "service_providing_group_product_application.status.update",
-    },
-    verified_at: {
-      read: "service_providing_group_product_application.verified_at.read",
-      update: "service_providing_group_product_application.verified_at.update",
-    },
-  },
-  service_providing_group_product_application_history: {
-    read: "service_providing_group_product_application_history.read",
-    id: {
-      read: "service_providing_group_product_application_history.id.read",
-    },
-    notes: {
-      read: "service_providing_group_product_application_history.notes.read",
-    },
-    prequalified_at: {
-      read: "service_providing_group_product_application_history.prequalified_at.read",
-    },
-    procuring_system_operator_id: {
-      read: "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    },
-    product_type_ids: {
-      read: "service_providing_group_product_application_history.product_type_ids.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_product_application_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_product_application_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_product_application_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_product_application_history.replaced_by.read",
-    },
-    service_providing_group_id: {
-      read: "service_providing_group_product_application_history.service_providing_group_id.read",
-    },
-    service_providing_group_product_application_id: {
-      read: "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    },
-    status: {
-      read: "service_providing_group_product_application_history.status.read",
-    },
-    verified_at: {
-      read: "service_providing_group_product_application_history.verified_at.read",
-    },
-  },
-  service_providing_group_product_suspension: {
-    create: "service_providing_group_product_suspension.create",
-    delete: "service_providing_group_product_suspension.delete",
-    read: "service_providing_group_product_suspension.read",
-    update: "service_providing_group_product_suspension.update",
-    id: {
-      read: "service_providing_group_product_suspension.id.read",
-    },
-    procuring_system_operator_id: {
-      create:
-        "service_providing_group_product_suspension.procuring_system_operator_id.create",
-      read: "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    },
-    product_type_ids: {
-      create:
-        "service_providing_group_product_suspension.product_type_ids.create",
-      read: "service_providing_group_product_suspension.product_type_ids.read",
-    },
-    reason: {
-      create: "service_providing_group_product_suspension.reason.create",
-      read: "service_providing_group_product_suspension.reason.read",
-      update: "service_providing_group_product_suspension.reason.update",
-    },
-    recorded_at: {
-      read: "service_providing_group_product_suspension.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_product_suspension.recorded_by.read",
-    },
-    service_providing_group_id: {
-      create:
-        "service_providing_group_product_suspension.service_providing_group_id.create",
-      read: "service_providing_group_product_suspension.service_providing_group_id.read",
-    },
-  },
-  service_providing_group_product_suspension_comment: {
-    create: "service_providing_group_product_suspension_comment.create",
-    read: "service_providing_group_product_suspension_comment.read",
-    update: "service_providing_group_product_suspension_comment.update",
-    content: {
-      create:
-        "service_providing_group_product_suspension_comment.content.create",
-      read: "service_providing_group_product_suspension_comment.content.read",
-      update:
-        "service_providing_group_product_suspension_comment.content.update",
-    },
-    created_at: {
-      read: "service_providing_group_product_suspension_comment.created_at.read",
-    },
-    created_by: {
-      read: "service_providing_group_product_suspension_comment.created_by.read",
-    },
-    id: {
-      read: "service_providing_group_product_suspension_comment.id.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_product_suspension_comment.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_product_suspension_comment.recorded_by.read",
-    },
-    service_providing_group_product_suspension_id: {
-      create:
-        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.create",
-      read: "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    },
-    visibility: {
-      create:
-        "service_providing_group_product_suspension_comment.visibility.create",
-      read: "service_providing_group_product_suspension_comment.visibility.read",
-      update:
-        "service_providing_group_product_suspension_comment.visibility.update",
-    },
-  },
-  service_providing_group_product_suspension_comment_history: {
-    read: "service_providing_group_product_suspension_comment_history.read",
-    content: {
-      read: "service_providing_group_product_suspension_comment_history.content.read",
-    },
-    created_at: {
-      read: "service_providing_group_product_suspension_comment_history.created_at.read",
-    },
-    created_by: {
-      read: "service_providing_group_product_suspension_comment_history.created_by.read",
-    },
-    id: {
-      read: "service_providing_group_product_suspension_comment_history.id.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    },
-    service_providing_group_product_suspension_comment_id: {
-      read: "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    },
-    service_providing_group_product_suspension_id: {
-      read: "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    },
-    visibility: {
-      read: "service_providing_group_product_suspension_comment_history.visibility.read",
-    },
-  },
-  service_providing_group_product_suspension_history: {
-    read: "service_providing_group_product_suspension_history.read",
-    id: {
-      read: "service_providing_group_product_suspension_history.id.read",
-    },
-    procuring_system_operator_id: {
-      read: "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    },
-    product_type_ids: {
-      read: "service_providing_group_product_suspension_history.product_type_ids.read",
-    },
-    reason: {
-      read: "service_providing_group_product_suspension_history.reason.read",
-    },
-    recorded_at: {
-      read: "service_providing_group_product_suspension_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "service_providing_group_product_suspension_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "service_providing_group_product_suspension_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "service_providing_group_product_suspension_history.replaced_by.read",
-    },
-    service_providing_group_id: {
-      read: "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    },
-    service_providing_group_product_suspension_id: {
-      read: "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    },
-  },
-  system_operator_product_type: {
-    create: "system_operator_product_type.create",
-    read: "system_operator_product_type.read",
-    update: "system_operator_product_type.update",
-    id: {
-      read: "system_operator_product_type.id.read",
-    },
-    product_type_id: {
-      create: "system_operator_product_type.product_type_id.create",
-      read: "system_operator_product_type.product_type_id.read",
-    },
-    recorded_at: {
-      read: "system_operator_product_type.recorded_at.read",
-    },
-    recorded_by: {
-      read: "system_operator_product_type.recorded_by.read",
-    },
-    status: {
-      read: "system_operator_product_type.status.read",
-      update: "system_operator_product_type.status.update",
-    },
-    system_operator_id: {
-      create: "system_operator_product_type.system_operator_id.create",
-      read: "system_operator_product_type.system_operator_id.read",
-    },
-  },
-  system_operator_product_type_history: {
-    read: "system_operator_product_type_history.read",
-    id: {
-      read: "system_operator_product_type_history.id.read",
-    },
-    product_type_id: {
-      read: "system_operator_product_type_history.product_type_id.read",
-    },
-    recorded_at: {
-      read: "system_operator_product_type_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "system_operator_product_type_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "system_operator_product_type_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "system_operator_product_type_history.replaced_by.read",
-    },
-    status: {
-      read: "system_operator_product_type_history.status.read",
-    },
-    system_operator_id: {
-      read: "system_operator_product_type_history.system_operator_id.read",
-    },
-    system_operator_product_type_id: {
-      read: "system_operator_product_type_history.system_operator_product_type_id.read",
-    },
-  },
-  technical_resource: {
-    create: "technical_resource.create",
-    delete: "technical_resource.delete",
-    read: "technical_resource.read",
-    update: "technical_resource.update",
-    controllable_unit_id: {
-      create: "technical_resource.controllable_unit_id.create",
-      read: "technical_resource.controllable_unit_id.read",
-    },
-    details: {
-      create: "technical_resource.details.create",
-      read: "technical_resource.details.read",
-      update: "technical_resource.details.update",
-    },
-    id: {
-      read: "technical_resource.id.read",
-    },
-    name: {
-      create: "technical_resource.name.create",
-      read: "technical_resource.name.read",
-      update: "technical_resource.name.update",
-    },
-    recorded_at: {
-      read: "technical_resource.recorded_at.read",
-    },
-    recorded_by: {
-      read: "technical_resource.recorded_by.read",
-    },
-  },
-  technical_resource_history: {
-    read: "technical_resource_history.read",
-    controllable_unit_id: {
-      read: "technical_resource_history.controllable_unit_id.read",
-    },
-    details: {
-      read: "technical_resource_history.details.read",
-    },
-    id: {
-      read: "technical_resource_history.id.read",
-    },
-    name: {
-      read: "technical_resource_history.name.read",
-    },
-    recorded_at: {
-      read: "technical_resource_history.recorded_at.read",
-    },
-    recorded_by: {
-      read: "technical_resource_history.recorded_by.read",
-    },
-    replaced_at: {
-      read: "technical_resource_history.replaced_at.read",
-    },
-    replaced_by: {
-      read: "technical_resource_history.replaced_by.read",
-    },
-    technical_resource_id: {
-      read: "technical_resource_history.technical_resource_id.read",
-    },
-  },
-} as const;
+export type PermissionOperation =
+  | "update"
+  | "read"
+  | "delete"
+  | "create"
+  | "lookup";
 
-export type Permissions = Record<RoleName, Permission[]>;
+export type Permissions = {
+  allow: (target: PermissionTarget, operation: PermissionOperation) => boolean;
+};
 
-const permissions: Permissions = {
+const rawPermissions: Record<
+  Role,
+  { target: PermissionTarget; operation: PermissionOperation }[]
+> = {
   flex_anonymous: [],
   flex_balance_responsible_party: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.name.read",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.start_date.read",
-    "controllable_unit.status.read",
-    "controllable_unit.validated_at.read",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.id.read",
-    "service_providing_group.name.read",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.details.read",
-    "technical_resource.id.read",
-    "technical_resource.name.read",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
-  ],
-  flex_end_user: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.name.read",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.start_date.read",
-    "controllable_unit.status.read",
-    "controllable_unit.validated_at.read",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.id.read",
-    "service_providing_group.name.read",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.details.read",
-    "technical_resource.id.read",
-    "technical_resource.name.read",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
   ],
   flex_energy_supplier: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.name.read",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.start_date.read",
-    "controllable_unit.status.read",
-    "controllable_unit.validated_at.read",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.id.read",
-    "service_providing_group.name.read",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.details.read",
-    "technical_resource.id.read",
-    "technical_resource.name.read",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
   ],
-  flex_entity: [
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.create",
-    "entity_client.client_secret.read",
-    "entity_client.client_secret.update",
-    "entity_client.create",
-    "entity_client.delete",
-    "entity_client.entity_id.create",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.create",
-    "entity_client.name.read",
-    "entity_client.name.update",
-    "entity_client.party_id.create",
-    "entity_client.party_id.read",
-    "entity_client.party_id.update",
-    "entity_client.public_key.create",
-    "entity_client.public_key.read",
-    "entity_client.public_key.update",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.create",
-    "entity_client.scopes.read",
-    "entity_client.scopes.update",
-    "entity_client.update",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
+  flex_end_user: [
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
   ],
   flex_flexibility_information_system_operator: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.create",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.create",
-    "controllable_unit.grid_node_id.create",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_node_id.update",
-    "controllable_unit.grid_validation_notes.create",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_notes.update",
-    "controllable_unit.grid_validation_status.create",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.grid_validation_status.update",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.lookup",
-    "controllable_unit.maximum_available_capacity.create",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_available_capacity.update",
-    "controllable_unit.maximum_duration.create",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.maximum_duration.update",
-    "controllable_unit.minimum_duration.create",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.minimum_duration.update",
-    "controllable_unit.name.create",
-    "controllable_unit.name.read",
-    "controllable_unit.name.update",
-    "controllable_unit.ramp_rate.create",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.ramp_rate.update",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.create",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.recovery_duration.update",
-    "controllable_unit.regulation_direction.create",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.regulation_direction.update",
-    "controllable_unit.start_date.create",
-    "controllable_unit.start_date.read",
-    "controllable_unit.start_date.update",
-    "controllable_unit.status.read",
-    "controllable_unit.status.update",
-    "controllable_unit.update",
-    "controllable_unit.validated_at.create",
-    "controllable_unit.validated_at.read",
-    "controllable_unit.validated_at.update",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.create",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.contract_reference.update",
-    "controllable_unit_service_provider.controllable_unit_id.create",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.create",
-    "controllable_unit_service_provider.delete",
-    "controllable_unit_service_provider.end_user_id.create",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.create",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.update",
-    "controllable_unit_service_provider.valid_from.create",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_from.update",
-    "controllable_unit_service_provider.valid_to.create",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider.valid_to.update",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.create",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.create",
-    "controllable_unit_suspension.delete",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.create",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.create",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.reason.update",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension.update",
-    "controllable_unit_suspension_comment.content.create",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.content.update",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.create",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.create",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.update",
-    "controllable_unit_suspension_comment.visibility.create",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment.visibility.update",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.create",
-    "entity.business_id.read",
-    "entity.business_id_type.create",
-    "entity.business_id_type.read",
-    "entity.create",
-    "entity.id.read",
-    "entity.lookup",
-    "entity.name.create",
-    "entity.name.read",
-    "entity.name.update",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.create",
-    "entity.type.read",
-    "entity.update",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.create",
-    "party.business_id.read",
-    "party.business_id_type.create",
-    "party.business_id_type.read",
-    "party.create",
-    "party.entity_id.create",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.create",
-    "party.name.read",
-    "party.name.update",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.create",
-    "party.role.read",
-    "party.status.read",
-    "party.status.update",
-    "party.type.create",
-    "party.type.read",
-    "party.update",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.create",
-    "party_membership.delete",
-    "party_membership.entity_id.create",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.create",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.create",
-    "party_membership.scopes.read",
-    "party_membership.scopes.update",
-    "party_membership.update",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.notes.update",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.product_type_ids.update",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.qualified_at.update",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.status.update",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application.update",
-    "service_provider_product_application_comment.content.create",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.content.update",
-    "service_provider_product_application_comment.create",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.create",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.update",
-    "service_provider_product_application_comment.visibility.create",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment.visibility.update",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.create",
-    "service_provider_product_suspension.delete",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.create",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.create",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.product_type_ids.update",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.create",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.reason.update",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.create",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension.update",
-    "service_provider_product_suspension_comment.content.create",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.content.update",
-    "service_provider_product_suspension_comment.create",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.create",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.update",
-    "service_provider_product_suspension_comment.visibility.create",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment.visibility.update",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.create",
-    "service_providing_group.id.read",
-    "service_providing_group.name.create",
-    "service_providing_group.name.read",
-    "service_providing_group.name.update",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.create",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group.status.update",
-    "service_providing_group.update",
-    "service_providing_group_grid_prequalification.create",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.create",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.prequalified_at.update",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.create",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification.status.update",
-    "service_providing_group_grid_prequalification.update",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.create",
-    "service_providing_group_grid_suspension.delete",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.create",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.create",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.reason.update",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.create",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension.update",
-    "service_providing_group_grid_suspension_comment.content.create",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.content.update",
-    "service_providing_group_grid_suspension_comment.create",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.create",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.update",
-    "service_providing_group_grid_suspension_comment.visibility.create",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment.visibility.update",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.create",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.create",
-    "service_providing_group_membership.delete",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.create",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.update",
-    "service_providing_group_membership.valid_from.create",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_from.update",
-    "service_providing_group_membership.valid_to.create",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership.valid_to.update",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.notes.update",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.prequalified_at.update",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.product_type_ids.update",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.status.update",
-    "service_providing_group_product_application.update",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application.verified_at.update",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.create",
-    "service_providing_group_product_suspension.delete",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.create",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.create",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.create",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.reason.update",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.create",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension.update",
-    "service_providing_group_product_suspension_comment.content.create",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.content.update",
-    "service_providing_group_product_suspension_comment.create",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.create",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.update",
-    "service_providing_group_product_suspension_comment.visibility.create",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment.visibility.update",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.create",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.create",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.status.update",
-    "system_operator_product_type.system_operator_id.create",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type.update",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.create",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.create",
-    "technical_resource.delete",
-    "technical_resource.details.create",
-    "technical_resource.details.read",
-    "technical_resource.details.update",
-    "technical_resource.id.read",
-    "technical_resource.name.create",
-    "technical_resource.name.read",
-    "technical_resource.name.update",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource.update",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "lookup",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "delete",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "delete",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "create",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "create",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "create",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "lookup",
+    },
+    {
+      target: "entity.name",
+      operation: "create",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "update",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "create",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "update",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "create",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "create",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "create",
+    },
+    {
+      target: "party.entity_id",
+      operation: "create",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "create",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "update",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "create",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "update",
+    },
+    {
+      target: "party.type",
+      operation: "create",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "update",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "create",
+    },
+    {
+      target: "party_membership",
+      operation: "delete",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "create",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "create",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "create",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "update",
+    },
+    {
+      target: "party_membership",
+      operation: "update",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "delete",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "create",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "create",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "update",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "create",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "update",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "create",
+    },
+    {
+      target: "technical_resource",
+      operation: "delete",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "update",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "update",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
   ],
   flex_market_operator: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.name.read",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.start_date.read",
-    "controllable_unit.status.read",
-    "controllable_unit.validated_at.read",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.id.read",
-    "service_providing_group.name.read",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.details.read",
-    "technical_resource.id.read",
-    "technical_resource.name.read",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
-  ],
-  flex_organisation: [
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.lookup",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.create",
-    "entity_client.client_secret.read",
-    "entity_client.client_secret.update",
-    "entity_client.create",
-    "entity_client.delete",
-    "entity_client.entity_id.create",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.create",
-    "entity_client.name.read",
-    "entity_client.name.update",
-    "entity_client.party_id.create",
-    "entity_client.party_id.read",
-    "entity_client.party_id.update",
-    "entity_client.public_key.create",
-    "entity_client.public_key.read",
-    "entity_client.public_key.update",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.create",
-    "entity_client.scopes.read",
-    "entity_client.scopes.update",
-    "entity_client.update",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.create",
-    "party_membership.delete",
-    "party_membership.entity_id.create",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.create",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.create",
-    "party_membership.scopes.read",
-    "party_membership.scopes.update",
-    "party_membership.update",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-  ],
-  flex_service_provider: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.create",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.create",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.lookup",
-    "controllable_unit.maximum_available_capacity.create",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_available_capacity.update",
-    "controllable_unit.maximum_duration.create",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.maximum_duration.update",
-    "controllable_unit.minimum_duration.create",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.minimum_duration.update",
-    "controllable_unit.name.create",
-    "controllable_unit.name.read",
-    "controllable_unit.name.update",
-    "controllable_unit.ramp_rate.create",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.ramp_rate.update",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.create",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.recovery_duration.update",
-    "controllable_unit.regulation_direction.create",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.regulation_direction.update",
-    "controllable_unit.start_date.create",
-    "controllable_unit.start_date.read",
-    "controllable_unit.start_date.update",
-    "controllable_unit.status.read",
-    "controllable_unit.status.update",
-    "controllable_unit.update",
-    "controllable_unit.validated_at.read",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.create",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.contract_reference.update",
-    "controllable_unit_service_provider.controllable_unit_id.create",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.create",
-    "controllable_unit_service_provider.delete",
-    "controllable_unit_service_provider.end_user_id.create",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.create",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.update",
-    "controllable_unit_service_provider.valid_from.create",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_from.update",
-    "controllable_unit_service_provider.valid_to.create",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider.valid_to.update",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension_comment.content.create",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.content.update",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.create",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.create",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.update",
-    "controllable_unit_suspension_comment.visibility.create",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment.visibility.update",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.create",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.product_type_ids.create",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.product_type_ids.update",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.create",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.system_operator_id.create",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application.update",
-    "service_provider_product_application_comment.content.create",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.content.update",
-    "service_provider_product_application_comment.create",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.create",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.update",
-    "service_provider_product_application_comment.visibility.create",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment.visibility.update",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension_comment.content.create",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.content.update",
-    "service_provider_product_suspension_comment.create",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.create",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.update",
-    "service_provider_product_suspension_comment.visibility.create",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment.visibility.update",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.create",
-    "service_providing_group.id.read",
-    "service_providing_group.name.create",
-    "service_providing_group.name.read",
-    "service_providing_group.name.update",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.create",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group.status.update",
-    "service_providing_group.update",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension_comment.content.create",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.content.update",
-    "service_providing_group_grid_suspension_comment.create",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.create",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.update",
-    "service_providing_group_grid_suspension_comment.visibility.create",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment.visibility.update",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.create",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.create",
-    "service_providing_group_membership.delete",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.create",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.update",
-    "service_providing_group_membership.valid_from.create",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_from.update",
-    "service_providing_group_membership.valid_to.create",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership.valid_to.update",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.create",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.procuring_system_operator_id.create",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.create",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.product_type_ids.update",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.create",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.status.update",
-    "service_providing_group_product_application.update",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension_comment.content.create",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.content.update",
-    "service_providing_group_product_suspension_comment.create",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.create",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.update",
-    "service_providing_group_product_suspension_comment.visibility.create",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment.visibility.update",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.create",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.create",
-    "technical_resource.delete",
-    "technical_resource.details.create",
-    "technical_resource.details.read",
-    "technical_resource.details.update",
-    "technical_resource.id.read",
-    "technical_resource.name.create",
-    "technical_resource.name.read",
-    "technical_resource.name.update",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource.update",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
   ],
   flex_system_operator: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_node_id.update",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_notes.update",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.grid_validation_status.update",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.name.read",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.start_date.read",
-    "controllable_unit.status.read",
-    "controllable_unit.update",
-    "controllable_unit.validated_at.read",
-    "controllable_unit.validated_at.update",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.create",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.create",
-    "controllable_unit_suspension.delete",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.create",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.create",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.reason.update",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension.update",
-    "controllable_unit_suspension_comment.content.create",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.content.update",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.create",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.create",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.update",
-    "controllable_unit_suspension_comment.visibility.create",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment.visibility.update",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.notes.update",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.qualified_at.update",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.status.update",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application.update",
-    "service_provider_product_application_comment.content.create",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.content.update",
-    "service_provider_product_application_comment.create",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.create",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.update",
-    "service_provider_product_application_comment.visibility.create",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment.visibility.update",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.create",
-    "service_provider_product_suspension.delete",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.create",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.create",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.product_type_ids.update",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.create",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.reason.update",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.create",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension.update",
-    "service_provider_product_suspension_comment.content.create",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.content.update",
-    "service_provider_product_suspension_comment.create",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.create",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.update",
-    "service_provider_product_suspension_comment.visibility.create",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment.visibility.update",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.id.read",
-    "service_providing_group.name.read",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.notes.update",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.prequalified_at.update",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification.status.update",
-    "service_providing_group_grid_prequalification.update",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.create",
-    "service_providing_group_grid_suspension.delete",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.create",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.create",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.reason.update",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.create",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension.update",
-    "service_providing_group_grid_suspension_comment.content.create",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.content.update",
-    "service_providing_group_grid_suspension_comment.create",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.create",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.update",
-    "service_providing_group_grid_suspension_comment.visibility.create",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment.visibility.update",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.notes.update",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.prequalified_at.update",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.product_type_ids.update",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.status.update",
-    "service_providing_group_product_application.update",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application.verified_at.update",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.create",
-    "service_providing_group_product_suspension.delete",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.create",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.create",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.create",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.reason.update",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.create",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension.update",
-    "service_providing_group_product_suspension_comment.content.create",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.content.update",
-    "service_providing_group_product_suspension_comment.create",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.create",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.update",
-    "service_providing_group_product_suspension_comment.visibility.create",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment.visibility.update",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.create",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.create",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.status.update",
-    "system_operator_product_type.system_operator_id.create",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type.update",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.details.read",
-    "technical_resource.id.read",
-    "technical_resource.name.read",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "delete",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "delete",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "create",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "create",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "update",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "create",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "update",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+  ],
+  flex_service_provider: [
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "lookup",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "delete",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "create",
+    },
+    {
+      target: "technical_resource",
+      operation: "delete",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "update",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "update",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
   ],
   flex_third_party: [
-    "accounting_point.business_id.read",
-    "accounting_point.id.read",
-    "accounting_point.read",
-    "accounting_point.recorded_at.read",
-    "accounting_point.recorded_by.read",
-    "accounting_point.system_operator_id.read",
-    "accounting_point_balance_responsible_party.accounting_point_id.read",
-    "accounting_point_balance_responsible_party.balance_responsible_party_id.read",
-    "accounting_point_balance_responsible_party.energy_direction.read",
-    "accounting_point_balance_responsible_party.read",
-    "accounting_point_balance_responsible_party.valid_from.read",
-    "accounting_point_balance_responsible_party.valid_to.read",
-    "accounting_point_energy_supplier.accounting_point_id.read",
-    "accounting_point_energy_supplier.energy_supplier_id.read",
-    "accounting_point_energy_supplier.read",
-    "accounting_point_energy_supplier.valid_from.read",
-    "accounting_point_energy_supplier.valid_to.read",
-    "controllable_unit.accounting_point_id.read",
-    "controllable_unit.business_id.read",
-    "controllable_unit.grid_node_id.read",
-    "controllable_unit.grid_validation_notes.read",
-    "controllable_unit.grid_validation_status.read",
-    "controllable_unit.id.read",
-    "controllable_unit.is_small.read",
-    "controllable_unit.maximum_available_capacity.read",
-    "controllable_unit.maximum_duration.read",
-    "controllable_unit.minimum_duration.read",
-    "controllable_unit.name.read",
-    "controllable_unit.ramp_rate.read",
-    "controllable_unit.read",
-    "controllable_unit.recorded_at.read",
-    "controllable_unit.recorded_by.read",
-    "controllable_unit.recovery_duration.read",
-    "controllable_unit.regulation_direction.read",
-    "controllable_unit.start_date.read",
-    "controllable_unit.status.read",
-    "controllable_unit.validated_at.read",
-    "controllable_unit_history.accounting_point_id.read",
-    "controllable_unit_history.business_id.read",
-    "controllable_unit_history.controllable_unit_id.read",
-    "controllable_unit_history.grid_node_id.read",
-    "controllable_unit_history.grid_validation_notes.read",
-    "controllable_unit_history.grid_validation_status.read",
-    "controllable_unit_history.id.read",
-    "controllable_unit_history.is_small.read",
-    "controllable_unit_history.maximum_available_capacity.read",
-    "controllable_unit_history.maximum_duration.read",
-    "controllable_unit_history.minimum_duration.read",
-    "controllable_unit_history.name.read",
-    "controllable_unit_history.ramp_rate.read",
-    "controllable_unit_history.read",
-    "controllable_unit_history.recorded_at.read",
-    "controllable_unit_history.recorded_by.read",
-    "controllable_unit_history.recovery_duration.read",
-    "controllable_unit_history.regulation_direction.read",
-    "controllable_unit_history.replaced_at.read",
-    "controllable_unit_history.replaced_by.read",
-    "controllable_unit_history.start_date.read",
-    "controllable_unit_history.status.read",
-    "controllable_unit_history.validated_at.read",
-    "controllable_unit_service_provider.contract_reference.read",
-    "controllable_unit_service_provider.controllable_unit_id.read",
-    "controllable_unit_service_provider.end_user_id.read",
-    "controllable_unit_service_provider.id.read",
-    "controllable_unit_service_provider.read",
-    "controllable_unit_service_provider.recorded_at.read",
-    "controllable_unit_service_provider.recorded_by.read",
-    "controllable_unit_service_provider.service_provider_id.read",
-    "controllable_unit_service_provider.valid_from.read",
-    "controllable_unit_service_provider.valid_to.read",
-    "controllable_unit_service_provider_history.contract_reference.read",
-    "controllable_unit_service_provider_history.controllable_unit_id.read",
-    "controllable_unit_service_provider_history.controllable_unit_service_provider_id.read",
-    "controllable_unit_service_provider_history.end_user_id.read",
-    "controllable_unit_service_provider_history.id.read",
-    "controllable_unit_service_provider_history.read",
-    "controllable_unit_service_provider_history.recorded_at.read",
-    "controllable_unit_service_provider_history.recorded_by.read",
-    "controllable_unit_service_provider_history.replaced_at.read",
-    "controllable_unit_service_provider_history.replaced_by.read",
-    "controllable_unit_service_provider_history.service_provider_id.read",
-    "controllable_unit_service_provider_history.valid_from.read",
-    "controllable_unit_service_provider_history.valid_to.read",
-    "controllable_unit_suspension.controllable_unit_id.read",
-    "controllable_unit_suspension.id.read",
-    "controllable_unit_suspension.impacted_system_operator_id.read",
-    "controllable_unit_suspension.read",
-    "controllable_unit_suspension.reason.read",
-    "controllable_unit_suspension.recorded_at.read",
-    "controllable_unit_suspension.recorded_by.read",
-    "controllable_unit_suspension_comment.content.read",
-    "controllable_unit_suspension_comment.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment.created_at.read",
-    "controllable_unit_suspension_comment.created_by.read",
-    "controllable_unit_suspension_comment.id.read",
-    "controllable_unit_suspension_comment.read",
-    "controllable_unit_suspension_comment.recorded_at.read",
-    "controllable_unit_suspension_comment.recorded_by.read",
-    "controllable_unit_suspension_comment.visibility.read",
-    "controllable_unit_suspension_comment_history.content.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id.read",
-    "controllable_unit_suspension_comment_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_comment_history.created_at.read",
-    "controllable_unit_suspension_comment_history.created_by.read",
-    "controllable_unit_suspension_comment_history.id.read",
-    "controllable_unit_suspension_comment_history.read",
-    "controllable_unit_suspension_comment_history.recorded_at.read",
-    "controllable_unit_suspension_comment_history.recorded_by.read",
-    "controllable_unit_suspension_comment_history.replaced_at.read",
-    "controllable_unit_suspension_comment_history.replaced_by.read",
-    "controllable_unit_suspension_comment_history.visibility.read",
-    "controllable_unit_suspension_history.controllable_unit_id.read",
-    "controllable_unit_suspension_history.controllable_unit_suspension_id.read",
-    "controllable_unit_suspension_history.id.read",
-    "controllable_unit_suspension_history.impacted_system_operator_id.read",
-    "controllable_unit_suspension_history.read",
-    "controllable_unit_suspension_history.reason.read",
-    "controllable_unit_suspension_history.recorded_at.read",
-    "controllable_unit_suspension_history.recorded_by.read",
-    "controllable_unit_suspension_history.replaced_at.read",
-    "controllable_unit_suspension_history.replaced_by.read",
-    "entity.business_id.read",
-    "entity.business_id_type.read",
-    "entity.id.read",
-    "entity.name.read",
-    "entity.read",
-    "entity.recorded_at.read",
-    "entity.recorded_by.read",
-    "entity.type.read",
-    "entity_client.client_id.read",
-    "entity_client.client_secret.read",
-    "entity_client.entity_id.read",
-    "entity_client.id.read",
-    "entity_client.name.read",
-    "entity_client.party_id.read",
-    "entity_client.public_key.read",
-    "entity_client.read",
-    "entity_client.recorded_at.read",
-    "entity_client.recorded_by.read",
-    "entity_client.scopes.read",
-    "event.data.read",
-    "event.id.read",
-    "event.read",
-    "event.source.read",
-    "event.specversion.read",
-    "event.time.read",
-    "event.type.read",
-    "identity.entity_id.read",
-    "identity.entity_name.read",
-    "identity.id.read",
-    "identity.party_id.read",
-    "identity.party_name.read",
-    "identity.read",
-    "notice.data.read",
-    "notice.party_id.read",
-    "notice.read",
-    "notice.source.read",
-    "notice.type.read",
-    "notification.acknowledged.read",
-    "notification.acknowledged.update",
-    "notification.event_id.read",
-    "notification.id.read",
-    "notification.party_id.read",
-    "notification.read",
-    "notification.recorded_at.read",
-    "notification.recorded_by.read",
-    "notification.update",
-    "party.business_id.read",
-    "party.business_id_type.read",
-    "party.entity_id.read",
-    "party.id.read",
-    "party.name.read",
-    "party.read",
-    "party.recorded_at.read",
-    "party.recorded_by.read",
-    "party.role.read",
-    "party.status.read",
-    "party.type.read",
-    "party_history.business_id.read",
-    "party_history.business_id_type.read",
-    "party_history.entity_id.read",
-    "party_history.id.read",
-    "party_history.name.read",
-    "party_history.party_id.read",
-    "party_history.read",
-    "party_history.recorded_at.read",
-    "party_history.recorded_by.read",
-    "party_history.replaced_at.read",
-    "party_history.replaced_by.read",
-    "party_history.role.read",
-    "party_history.status.read",
-    "party_history.type.read",
-    "party_membership.entity_id.read",
-    "party_membership.id.read",
-    "party_membership.party_id.read",
-    "party_membership.read",
-    "party_membership.recorded_at.read",
-    "party_membership.recorded_by.read",
-    "party_membership.scopes.read",
-    "party_membership_history.entity_id.read",
-    "party_membership_history.id.read",
-    "party_membership_history.party_id.read",
-    "party_membership_history.party_membership_id.read",
-    "party_membership_history.read",
-    "party_membership_history.recorded_at.read",
-    "party_membership_history.recorded_by.read",
-    "party_membership_history.replaced_at.read",
-    "party_membership_history.replaced_by.read",
-    "party_membership_history.scopes.read",
-    "product_type.business_id.read",
-    "product_type.id.read",
-    "product_type.name.read",
-    "product_type.products.read",
-    "product_type.read",
-    "product_type.service.read",
-    "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.product_type_ids.read",
-    "service_provider_product_application.qualified_at.read",
-    "service_provider_product_application.read",
-    "service_provider_product_application.recorded_at.read",
-    "service_provider_product_application.recorded_by.read",
-    "service_provider_product_application.service_provider_id.read",
-    "service_provider_product_application.status.read",
-    "service_provider_product_application.system_operator_id.read",
-    "service_provider_product_application_comment.content.read",
-    "service_provider_product_application_comment.created_at.read",
-    "service_provider_product_application_comment.created_by.read",
-    "service_provider_product_application_comment.id.read",
-    "service_provider_product_application_comment.read",
-    "service_provider_product_application_comment.recorded_at.read",
-    "service_provider_product_application_comment.recorded_by.read",
-    "service_provider_product_application_comment.service_provider_product_application_id.read",
-    "service_provider_product_application_comment.visibility.read",
-    "service_provider_product_application_comment_history.content.read",
-    "service_provider_product_application_comment_history.created_at.read",
-    "service_provider_product_application_comment_history.created_by.read",
-    "service_provider_product_application_comment_history.id.read",
-    "service_provider_product_application_comment_history.read",
-    "service_provider_product_application_comment_history.recorded_at.read",
-    "service_provider_product_application_comment_history.recorded_by.read",
-    "service_provider_product_application_comment_history.replaced_at.read",
-    "service_provider_product_application_comment_history.replaced_by.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_comment_id.read",
-    "service_provider_product_application_comment_history.service_provider_product_application_id.read",
-    "service_provider_product_application_comment_history.visibility.read",
-    "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
-    "service_provider_product_application_history.product_type_ids.read",
-    "service_provider_product_application_history.qualified_at.read",
-    "service_provider_product_application_history.read",
-    "service_provider_product_application_history.recorded_at.read",
-    "service_provider_product_application_history.recorded_by.read",
-    "service_provider_product_application_history.replaced_at.read",
-    "service_provider_product_application_history.replaced_by.read",
-    "service_provider_product_application_history.service_provider_id.read",
-    "service_provider_product_application_history.service_provider_product_application_id.read",
-    "service_provider_product_application_history.status.read",
-    "service_provider_product_application_history.system_operator_id.read",
-    "service_provider_product_suspension.id.read",
-    "service_provider_product_suspension.procuring_system_operator_id.read",
-    "service_provider_product_suspension.product_type_ids.read",
-    "service_provider_product_suspension.read",
-    "service_provider_product_suspension.reason.read",
-    "service_provider_product_suspension.recorded_at.read",
-    "service_provider_product_suspension.recorded_by.read",
-    "service_provider_product_suspension.service_provider_id.read",
-    "service_provider_product_suspension_comment.content.read",
-    "service_provider_product_suspension_comment.created_at.read",
-    "service_provider_product_suspension_comment.created_by.read",
-    "service_provider_product_suspension_comment.id.read",
-    "service_provider_product_suspension_comment.read",
-    "service_provider_product_suspension_comment.recorded_at.read",
-    "service_provider_product_suspension_comment.recorded_by.read",
-    "service_provider_product_suspension_comment.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment.visibility.read",
-    "service_provider_product_suspension_comment_history.content.read",
-    "service_provider_product_suspension_comment_history.created_at.read",
-    "service_provider_product_suspension_comment_history.created_by.read",
-    "service_provider_product_suspension_comment_history.id.read",
-    "service_provider_product_suspension_comment_history.read",
-    "service_provider_product_suspension_comment_history.recorded_at.read",
-    "service_provider_product_suspension_comment_history.recorded_by.read",
-    "service_provider_product_suspension_comment_history.replaced_at.read",
-    "service_provider_product_suspension_comment_history.replaced_by.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id.read",
-    "service_provider_product_suspension_comment_history.service_provider_product_suspension_id.read",
-    "service_provider_product_suspension_comment_history.visibility.read",
-    "service_provider_product_suspension_history.id.read",
-    "service_provider_product_suspension_history.procuring_system_operator_id.read",
-    "service_provider_product_suspension_history.product_type_ids.read",
-    "service_provider_product_suspension_history.read",
-    "service_provider_product_suspension_history.reason.read",
-    "service_provider_product_suspension_history.recorded_at.read",
-    "service_provider_product_suspension_history.recorded_by.read",
-    "service_provider_product_suspension_history.replaced_at.read",
-    "service_provider_product_suspension_history.replaced_by.read",
-    "service_provider_product_suspension_history.service_provider_id.read",
-    "service_provider_product_suspension_history.service_provider_product_suspension_id.read",
-    "service_providing_group.id.read",
-    "service_providing_group.name.read",
-    "service_providing_group.read",
-    "service_providing_group.recorded_at.read",
-    "service_providing_group.recorded_by.read",
-    "service_providing_group.service_provider_id.read",
-    "service_providing_group.status.read",
-    "service_providing_group_grid_prequalification.id.read",
-    "service_providing_group_grid_prequalification.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification.notes.read",
-    "service_providing_group_grid_prequalification.prequalified_at.read",
-    "service_providing_group_grid_prequalification.read",
-    "service_providing_group_grid_prequalification.recorded_at.read",
-    "service_providing_group_grid_prequalification.recorded_by.read",
-    "service_providing_group_grid_prequalification.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification.status.read",
-    "service_providing_group_grid_prequalification_history.id.read",
-    "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_prequalification_history.notes.read",
-    "service_providing_group_grid_prequalification_history.prequalified_at.read",
-    "service_providing_group_grid_prequalification_history.read",
-    "service_providing_group_grid_prequalification_history.recorded_at.read",
-    "service_providing_group_grid_prequalification_history.recorded_by.read",
-    "service_providing_group_grid_prequalification_history.replaced_at.read",
-    "service_providing_group_grid_prequalification_history.replaced_by.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id.read",
-    "service_providing_group_grid_prequalification_history.service_providing_group_id.read",
-    "service_providing_group_grid_prequalification_history.status.read",
-    "service_providing_group_grid_suspension.id.read",
-    "service_providing_group_grid_suspension.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension.read",
-    "service_providing_group_grid_suspension.reason.read",
-    "service_providing_group_grid_suspension.recorded_at.read",
-    "service_providing_group_grid_suspension.recorded_by.read",
-    "service_providing_group_grid_suspension.service_providing_group_id.read",
-    "service_providing_group_grid_suspension_comment.content.read",
-    "service_providing_group_grid_suspension_comment.created_at.read",
-    "service_providing_group_grid_suspension_comment.created_by.read",
-    "service_providing_group_grid_suspension_comment.id.read",
-    "service_providing_group_grid_suspension_comment.read",
-    "service_providing_group_grid_suspension_comment.recorded_at.read",
-    "service_providing_group_grid_suspension_comment.recorded_by.read",
-    "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment.visibility.read",
-    "service_providing_group_grid_suspension_comment_history.content.read",
-    "service_providing_group_grid_suspension_comment_history.created_at.read",
-    "service_providing_group_grid_suspension_comment_history.created_by.read",
-    "service_providing_group_grid_suspension_comment_history.id.read",
-    "service_providing_group_grid_suspension_comment_history.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_at.read",
-    "service_providing_group_grid_suspension_comment_history.recorded_by.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_at.read",
-    "service_providing_group_grid_suspension_comment_history.replaced_by.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id.read",
-    "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_comment_history.visibility.read",
-    "service_providing_group_grid_suspension_history.id.read",
-    "service_providing_group_grid_suspension_history.impacted_system_operator_id.read",
-    "service_providing_group_grid_suspension_history.read",
-    "service_providing_group_grid_suspension_history.reason.read",
-    "service_providing_group_grid_suspension_history.recorded_at.read",
-    "service_providing_group_grid_suspension_history.recorded_by.read",
-    "service_providing_group_grid_suspension_history.replaced_at.read",
-    "service_providing_group_grid_suspension_history.replaced_by.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id.read",
-    "service_providing_group_grid_suspension_history.service_providing_group_id.read",
-    "service_providing_group_history.id.read",
-    "service_providing_group_history.name.read",
-    "service_providing_group_history.read",
-    "service_providing_group_history.recorded_at.read",
-    "service_providing_group_history.recorded_by.read",
-    "service_providing_group_history.replaced_at.read",
-    "service_providing_group_history.replaced_by.read",
-    "service_providing_group_history.service_provider_id.read",
-    "service_providing_group_history.service_providing_group_id.read",
-    "service_providing_group_history.status.read",
-    "service_providing_group_membership.controllable_unit_id.read",
-    "service_providing_group_membership.id.read",
-    "service_providing_group_membership.read",
-    "service_providing_group_membership.recorded_at.read",
-    "service_providing_group_membership.recorded_by.read",
-    "service_providing_group_membership.service_providing_group_id.read",
-    "service_providing_group_membership.valid_from.read",
-    "service_providing_group_membership.valid_to.read",
-    "service_providing_group_membership_history.controllable_unit_id.read",
-    "service_providing_group_membership_history.id.read",
-    "service_providing_group_membership_history.read",
-    "service_providing_group_membership_history.recorded_at.read",
-    "service_providing_group_membership_history.recorded_by.read",
-    "service_providing_group_membership_history.replaced_at.read",
-    "service_providing_group_membership_history.replaced_by.read",
-    "service_providing_group_membership_history.service_providing_group_id.read",
-    "service_providing_group_membership_history.service_providing_group_membership_id.read",
-    "service_providing_group_membership_history.valid_from.read",
-    "service_providing_group_membership_history.valid_to.read",
-    "service_providing_group_product_application.id.read",
-    "service_providing_group_product_application.notes.read",
-    "service_providing_group_product_application.prequalified_at.read",
-    "service_providing_group_product_application.procuring_system_operator_id.read",
-    "service_providing_group_product_application.product_type_ids.read",
-    "service_providing_group_product_application.read",
-    "service_providing_group_product_application.recorded_at.read",
-    "service_providing_group_product_application.recorded_by.read",
-    "service_providing_group_product_application.service_providing_group_id.read",
-    "service_providing_group_product_application.status.read",
-    "service_providing_group_product_application.verified_at.read",
-    "service_providing_group_product_application_history.id.read",
-    "service_providing_group_product_application_history.notes.read",
-    "service_providing_group_product_application_history.prequalified_at.read",
-    "service_providing_group_product_application_history.procuring_system_operator_id.read",
-    "service_providing_group_product_application_history.product_type_ids.read",
-    "service_providing_group_product_application_history.read",
-    "service_providing_group_product_application_history.recorded_at.read",
-    "service_providing_group_product_application_history.recorded_by.read",
-    "service_providing_group_product_application_history.replaced_at.read",
-    "service_providing_group_product_application_history.replaced_by.read",
-    "service_providing_group_product_application_history.service_providing_group_id.read",
-    "service_providing_group_product_application_history.service_providing_group_product_application_id.read",
-    "service_providing_group_product_application_history.status.read",
-    "service_providing_group_product_application_history.verified_at.read",
-    "service_providing_group_product_suspension.id.read",
-    "service_providing_group_product_suspension.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension.product_type_ids.read",
-    "service_providing_group_product_suspension.read",
-    "service_providing_group_product_suspension.reason.read",
-    "service_providing_group_product_suspension.recorded_at.read",
-    "service_providing_group_product_suspension.recorded_by.read",
-    "service_providing_group_product_suspension.service_providing_group_id.read",
-    "service_providing_group_product_suspension_comment.content.read",
-    "service_providing_group_product_suspension_comment.created_at.read",
-    "service_providing_group_product_suspension_comment.created_by.read",
-    "service_providing_group_product_suspension_comment.id.read",
-    "service_providing_group_product_suspension_comment.read",
-    "service_providing_group_product_suspension_comment.recorded_at.read",
-    "service_providing_group_product_suspension_comment.recorded_by.read",
-    "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment.visibility.read",
-    "service_providing_group_product_suspension_comment_history.content.read",
-    "service_providing_group_product_suspension_comment_history.created_at.read",
-    "service_providing_group_product_suspension_comment_history.created_by.read",
-    "service_providing_group_product_suspension_comment_history.id.read",
-    "service_providing_group_product_suspension_comment_history.read",
-    "service_providing_group_product_suspension_comment_history.recorded_at.read",
-    "service_providing_group_product_suspension_comment_history.recorded_by.read",
-    "service_providing_group_product_suspension_comment_history.replaced_at.read",
-    "service_providing_group_product_suspension_comment_history.replaced_by.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id.read",
-    "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id.read",
-    "service_providing_group_product_suspension_comment_history.visibility.read",
-    "service_providing_group_product_suspension_history.id.read",
-    "service_providing_group_product_suspension_history.procuring_system_operator_id.read",
-    "service_providing_group_product_suspension_history.product_type_ids.read",
-    "service_providing_group_product_suspension_history.read",
-    "service_providing_group_product_suspension_history.reason.read",
-    "service_providing_group_product_suspension_history.recorded_at.read",
-    "service_providing_group_product_suspension_history.recorded_by.read",
-    "service_providing_group_product_suspension_history.replaced_at.read",
-    "service_providing_group_product_suspension_history.replaced_by.read",
-    "service_providing_group_product_suspension_history.service_providing_group_id.read",
-    "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id.read",
-    "system_operator_product_type.id.read",
-    "system_operator_product_type.product_type_id.read",
-    "system_operator_product_type.read",
-    "system_operator_product_type.recorded_at.read",
-    "system_operator_product_type.recorded_by.read",
-    "system_operator_product_type.status.read",
-    "system_operator_product_type.system_operator_id.read",
-    "system_operator_product_type_history.id.read",
-    "system_operator_product_type_history.product_type_id.read",
-    "system_operator_product_type_history.read",
-    "system_operator_product_type_history.recorded_at.read",
-    "system_operator_product_type_history.recorded_by.read",
-    "system_operator_product_type_history.replaced_at.read",
-    "system_operator_product_type_history.replaced_by.read",
-    "system_operator_product_type_history.status.read",
-    "system_operator_product_type_history.system_operator_id.read",
-    "system_operator_product_type_history.system_operator_product_type_id.read",
-    "technical_resource.controllable_unit_id.read",
-    "technical_resource.details.read",
-    "technical_resource.id.read",
-    "technical_resource.name.read",
-    "technical_resource.read",
-    "technical_resource.recorded_at.read",
-    "technical_resource.recorded_by.read",
-    "technical_resource_history.controllable_unit_id.read",
-    "technical_resource_history.details.read",
-    "technical_resource_history.id.read",
-    "technical_resource_history.name.read",
-    "technical_resource_history.read",
-    "technical_resource_history.recorded_at.read",
-    "technical_resource_history.recorded_by.read",
-    "technical_resource_history.replaced_at.read",
-    "technical_resource_history.replaced_by.read",
-    "technical_resource_history.technical_resource_id.read",
+    {
+      target: "accounting_point.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target:
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.energy_direction",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_balance_responsible_party.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.energy_supplier_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_node_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_notes",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.grid_validation_status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.is_small",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_available_capacity",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.maximum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.minimum_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.name",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.ramp_rate",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.recovery_duration",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.regulation_direction",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.start_date",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.status",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.validated_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.contract_reference",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_service_provider_history.controllable_unit_service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_comment_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.controllable_unit_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "controllable_unit_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "event.data",
+      operation: "read",
+    },
+    {
+      target: "event.id",
+      operation: "read",
+    },
+    {
+      target: "event",
+      operation: "read",
+    },
+    {
+      target: "event.source",
+      operation: "read",
+    },
+    {
+      target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.time",
+      operation: "read",
+    },
+    {
+      target: "event.type",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.party_id",
+      operation: "read",
+    },
+    {
+      target: "notice",
+      operation: "read",
+    },
+    {
+      target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.type",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "read",
+    },
+    {
+      target: "notification.acknowledged",
+      operation: "update",
+    },
+    {
+      target: "notification.event_id",
+      operation: "read",
+    },
+    {
+      target: "notification.id",
+      operation: "read",
+    },
+    {
+      target: "notification.party_id",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notification.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "notification",
+      operation: "update",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+    {
+      target: "product_type.business_id",
+      operation: "read",
+    },
+    {
+      target: "product_type.id",
+      operation: "read",
+    },
+    {
+      target: "product_type.name",
+      operation: "read",
+    },
+    {
+      target: "product_type.products",
+      operation: "read",
+    },
+    {
+      target: "product_type",
+      operation: "read",
+    },
+    {
+      target: "product_type.service",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_comment_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.qualified_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_application_history.service_provider_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_application_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_comment_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_provider_product_suspension_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_provider_product_suspension_history.service_provider_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.impacted_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.name",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_provider_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_membership_history.service_providing_group_membership_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_from",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.notes",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.notes",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.prequalified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.status",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_history.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.procuring_system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.product_type_ids",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.reason",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_suspension_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.product_type_id",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.status",
+      operation: "read",
+    },
+    {
+      target: "system_operator_product_type_history.system_operator_id",
+      operation: "read",
+    },
+    {
+      target:
+        "system_operator_product_type_history.system_operator_product_type_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.details",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.name",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+  ],
+  flex_organisation: [
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "lookup",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "create",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "update",
+    },
+    {
+      target: "entity_client",
+      operation: "create",
+    },
+    {
+      target: "entity_client",
+      operation: "delete",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "create",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "create",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "update",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "create",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "update",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "create",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "update",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "create",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "update",
+    },
+    {
+      target: "entity_client",
+      operation: "update",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "create",
+    },
+    {
+      target: "party_membership",
+      operation: "delete",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "create",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "create",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "create",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "update",
+    },
+    {
+      target: "party_membership",
+      operation: "update",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
+  ],
+  flex_entity: [
+    {
+      target: "entity.business_id",
+      operation: "read",
+    },
+    {
+      target: "entity.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "entity.id",
+      operation: "read",
+    },
+    {
+      target: "entity.name",
+      operation: "read",
+    },
+    {
+      target: "entity",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity.type",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "create",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "read",
+    },
+    {
+      target: "entity_client.client_secret",
+      operation: "update",
+    },
+    {
+      target: "entity_client",
+      operation: "create",
+    },
+    {
+      target: "entity_client",
+      operation: "delete",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "create",
+    },
+    {
+      target: "entity_client.entity_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "create",
+    },
+    {
+      target: "entity_client.name",
+      operation: "read",
+    },
+    {
+      target: "entity_client.name",
+      operation: "update",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "create",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "read",
+    },
+    {
+      target: "entity_client.party_id",
+      operation: "update",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "create",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "read",
+    },
+    {
+      target: "entity_client.public_key",
+      operation: "update",
+    },
+    {
+      target: "entity_client",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "entity_client.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "create",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "read",
+    },
+    {
+      target: "entity_client.scopes",
+      operation: "update",
+    },
+    {
+      target: "entity_client",
+      operation: "update",
+    },
+    {
+      target: "identity.entity_id",
+      operation: "read",
+    },
+    {
+      target: "identity.entity_name",
+      operation: "read",
+    },
+    {
+      target: "identity.id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_id",
+      operation: "read",
+    },
+    {
+      target: "identity.party_name",
+      operation: "read",
+    },
+    {
+      target: "identity",
+      operation: "read",
+    },
+    {
+      target: "party.business_id",
+      operation: "read",
+    },
+    {
+      target: "party.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party.id",
+      operation: "read",
+    },
+    {
+      target: "party.name",
+      operation: "read",
+    },
+    {
+      target: "party",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party.role",
+      operation: "read",
+    },
+    {
+      target: "party.status",
+      operation: "read",
+    },
+    {
+      target: "party.type",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "party_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_history.name",
+      operation: "read",
+    },
+    {
+      target: "party_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_history",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_history.role",
+      operation: "read",
+    },
+    {
+      target: "party_history.status",
+      operation: "read",
+    },
+    {
+      target: "party_history.type",
+      operation: "read",
+    },
+    {
+      target: "party_membership.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership.scopes",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.entity_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.party_membership_id",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target: "party_membership_history.scopes",
+      operation: "read",
+    },
   ],
 };
 
+const permissions = (role: Role): Permissions => {
+  const perms = rawPermissions[role];
+  return {
+    allow: (
+      target: PermissionTarget,
+      operation: PermissionOperation,
+    ): boolean =>
+      perms.some((p) => p.target == target && p.operation == operation),
+  };
+};
 export default permissions;

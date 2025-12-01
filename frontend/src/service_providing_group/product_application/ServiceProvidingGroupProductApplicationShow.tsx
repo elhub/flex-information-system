@@ -18,17 +18,18 @@ import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
 import { ProductTypeArrayField } from "../../product_type/components";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
-  const canUpdate = permissions.includes(
-    permissionRefs.service_providing_group_product_application.update,
+  const canUpdate = permissions?.allow(
+    "service_providing_group_product_application",
+    "update",
   );
 
   const EditButton = () => {

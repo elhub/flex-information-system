@@ -60,6 +60,7 @@ import postgrestRestProvider, {
 } from "@raphiniert/ra-data-postgrest";
 
 import { roleNames } from "./roles";
+import { Permissions as AuthPermissions } from "./auth/permissions";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -371,7 +372,9 @@ export const App = () => (
     store={localStorageStore(undefined, "Flex")}
     theme={elhubTheme}
   >
-    {(permissions = []) => <>{createAllResources(permissions)}</>}
+    {(permissions) =>
+      permissions.allow ? <>{createAllResources(permissions)}</> : null
+    }
     <CustomRoutes>
       <Route
         path="/login/assumeParty"

@@ -5,7 +5,7 @@ import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
-import { permissionRefs } from "../auth/permissions";
+import { Permissions } from "../auth/permissions";
 import { ServiceProvidingGroupList } from "../service_providing_group/ServiceProvidingGroupList";
 import { ServiceProvidingGroupShow } from "../service_providing_group/ServiceProvidingGroupShow";
 import { ServiceProvidingGroupInput } from "../service_providing_group/ServiceProvidingGroupInput";
@@ -35,19 +35,15 @@ import {
   CommentHistoryList,
 } from "../components/comments";
 
-export const createServiceProvidingGroupResources = (permissions: string[]) => {
+export const createServiceProvidingGroupResources = (
+  permissions: Permissions,
+) => {
   const resources: JSX.Element[] = [];
 
   // Permission checks
-  const canRead = permissions.includes(
-    permissionRefs.service_providing_group.read,
-  );
-  const canCreate = permissions.includes(
-    permissionRefs.service_providing_group.create,
-  );
-  const canUpdate = permissions.includes(
-    permissionRefs.service_providing_group.update,
-  );
+  const canRead = permissions.allow("service_providing_group", "read");
+  const canCreate = permissions.allow("service_providing_group", "create");
+  const canUpdate = permissions.allow("service_providing_group", "update");
 
   if (canRead) {
     resources.push(
@@ -384,14 +380,17 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
   }
 
   // Additional SPG-related resources permission checks
-  const canReadGridPrequalification = permissions.includes(
-    permissionRefs.service_providing_group_grid_prequalification.read,
+  const canReadGridPrequalification = permissions.allow(
+    "service_providing_group_grid_prequalification",
+    "read",
   );
-  const canCreateGridPrequalification = permissions.includes(
-    permissionRefs.service_providing_group_grid_prequalification.create,
+  const canCreateGridPrequalification = permissions.allow(
+    "service_providing_group_grid_prequalification",
+    "create",
   );
-  const canUpdateGridPrequalification = permissions.includes(
-    permissionRefs.service_providing_group_grid_prequalification.update,
+  const canUpdateGridPrequalification = permissions.allow(
+    "service_providing_group_grid_prequalification",
+    "update",
   );
 
   if (canReadGridPrequalification) {
@@ -424,14 +423,17 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
     );
   }
 
-  const canReadMembership = permissions.includes(
-    permissionRefs.service_providing_group_membership.read,
+  const canReadMembership = permissions.allow(
+    "service_providing_group_membership",
+    "read",
   );
-  const canCreateMembership = permissions.includes(
-    permissionRefs.service_providing_group_membership.create,
+  const canCreateMembership = permissions.allow(
+    "service_providing_group_membership",
+    "create",
   );
-  const canUpdateMembership = permissions.includes(
-    permissionRefs.service_providing_group_membership.update,
+  const canUpdateMembership = permissions.allow(
+    "service_providing_group_membership",
+    "update",
   );
 
   if (canReadMembership) {

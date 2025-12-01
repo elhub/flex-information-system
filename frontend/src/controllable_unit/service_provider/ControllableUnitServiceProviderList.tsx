@@ -14,7 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: number }) => (
   <Button
@@ -41,15 +41,14 @@ const ListActions = ({
   id,
   business_id,
 }: {
-  permissions: string[];
+  permissions: Permissions | undefined;
   id: any;
   business_id: string;
 }) => {
-  const canLookup = permissions.includes(
-    permissionRefs.controllable_unit.lookup,
-  );
-  const canCreate = permissions.includes(
-    permissionRefs.controllable_unit_service_provider.create,
+  const canLookup = permissions?.allow("controllable_unit", "lookup");
+  const canCreate = permissions?.allow(
+    "controllable_unit_service_provider",
+    "create",
   );
 
   return (
@@ -62,14 +61,16 @@ const ListActions = ({
 
 export const ControllableUnitServiceProviderList = () => {
   const { id, business_id } = useRecordContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
-  const canRead = permissions.includes(
-    permissionRefs.controllable_unit_service_provider.read,
+  const canRead = permissions?.allow(
+    "controllable_unit_service_provider",
+    "read",
   );
-  const canDelete = permissions.includes(
-    permissionRefs.controllable_unit_service_provider.delete,
+  const canDelete = permissions?.allow(
+    "controllable_unit_service_provider",
+    "delete",
   );
 
   if (!canRead) {

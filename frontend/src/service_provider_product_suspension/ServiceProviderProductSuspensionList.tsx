@@ -6,18 +6,19 @@ import {
   TextField,
   usePermissions,
 } from "react-admin";
+import { Permissions } from "../auth/permissions";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
 import { IdentityField } from "../components/IdentityField";
-import { permissionRefs } from "../auth/permissions";
 
 export const ServiceProviderProductSuspensionList = () => {
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
-  const canDelete = permissions.includes(
-    permissionRefs.service_provider_product_suspension.delete,
+  const canDelete = permissions?.allow(
+    "service_provider_product_suspension",
+    "delete",
   );
 
   const ServiceProviderProductSuspensionListFilters = [

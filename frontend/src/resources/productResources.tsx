@@ -2,7 +2,7 @@ import { Resource, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
-import { permissionRefs } from "../auth/permissions";
+import { Permissions } from "../auth/permissions";
 import { displayProductType } from "../product_type/components";
 import { ProductTypeList } from "../product_type/ProductTypeList";
 import { ProductTypeShow } from "../product_type/ProductTypeShow";
@@ -11,21 +11,19 @@ import { SystemOperatorProductTypeShow } from "../system_operator_product_type/S
 import { SystemOperatorProductTypeInput } from "../system_operator_product_type/SystemOperatorProductTypeInput";
 import { SystemOperatorProductTypeHistoryList } from "../system_operator_product_type/SystemOperatorProductTypeHistoryList";
 
-export const createProductResources = (permissions: string[]) => {
+export const createProductResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
 
   // Permission checks
-  const canReadProductType = permissions.includes(
-    permissionRefs.product_type.read,
+  const canReadProductType = permissions.allow("product_type", "read");
+  const canReadSOPT = permissions.allow("system_operator_product_type", "read");
+  const canCreateSOPT = permissions.allow(
+    "system_operator_product_type",
+    "create",
   );
-  const canReadSOPT = permissions.includes(
-    permissionRefs.system_operator_product_type.read,
-  );
-  const canCreateSOPT = permissions.includes(
-    permissionRefs.system_operator_product_type.create,
-  );
-  const canUpdateSOPT = permissions.includes(
-    permissionRefs.system_operator_product_type.update,
+  const canUpdateSOPT = permissions.allow(
+    "system_operator_product_type",
+    "update",
   );
 
   if (canReadProductType) {

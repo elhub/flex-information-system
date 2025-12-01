@@ -6,6 +6,7 @@ import {
   useRecordContext,
   useResourceContext,
 } from "react-admin";
+import { Permissions, PermissionTarget } from "../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { Link, useLocation } from "react-router-dom";
 import RestorePageIcon from "@mui/icons-material/RestorePage";
@@ -25,13 +26,13 @@ export const historyRowClick = (
 export const ResourceHistoryButton = () => {
   const record = useRecordContext()!;
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   /* this allows reuse on both the main and history resource */
   const actualResource = resource.replace(/_history$/, "");
-  const historyResource = `${actualResource}_history`;
+  const historyResource = `${actualResource}_history` as PermissionTarget;
 
-  if (permissions.includes(`${historyResource}.read`)) {
+  if (permissions?.allow(historyResource, "read")) {
     const actualId = resource.endsWith("_history")
       ? record[actualResource + "_id"]
       : record.id;
@@ -69,7 +70,7 @@ export type NestedResourceHistoryButtonProps = {
 export const NestedResourceHistoryButton = (
   props: NestedResourceHistoryButtonProps,
 ) => {
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
   const location = useLocation();
 
   // URL looks like /r1/:id1/.../rN/:idN[/show]
@@ -113,7 +114,12 @@ export const NestedResourceHistoryButton = (
 
   return (
     <Button
-      disabled={!permissions.includes(`${childAPIResource}_history.read`)}
+      disabled={
+        !permissions?.allow(
+          `${childAPIResource}_history` as PermissionTarget,
+          "read",
+        )
+      }
       component={Link}
       to={`${parentPathS}/${props.child}_history${filter}`}
       startIcon={<HistoryIcon />}

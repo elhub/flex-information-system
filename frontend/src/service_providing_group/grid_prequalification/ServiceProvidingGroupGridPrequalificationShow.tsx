@@ -17,17 +17,18 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
-  const canUpdate = permissions.includes(
-    permissionRefs.service_providing_group_grid_prequalification.update,
+  const canUpdate = permissions?.allow(
+    "service_providing_group_grid_prequalification",
+    "update",
   );
 
   const EditButton = () => {
