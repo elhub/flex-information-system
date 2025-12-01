@@ -3,10 +3,9 @@ import {
   List,
   ReferenceField,
   TextField,
-  useGetList,
   useRecordContext,
 } from "react-admin";
-import { Datagrid } from "../auth";
+import { Datagrid, PartyReferenceInput } from "../auth";
 import { ResourceButton } from "../components/ResourceButton";
 import { NoticeShow } from "./NoticeShow";
 import noticeTypes from "./noticeTypes";
@@ -19,15 +18,13 @@ const NoticeResourceButton = () => {
 };
 
 export const NoticeList = () => {
-  const { data: parties } = useGetList("party");
-
   const filters = [
-    <AutocompleteInput
-      key="party_id"
-      choices={parties?.map((p) => ({ id: p.id, name: p.name })) || []}
+    <PartyReferenceInput
       source="party_id"
       label="Party"
-    ></AutocompleteInput>,
+      noTypeFilter
+      key="party"
+    />,
     <AutocompleteInput
       key="notice_type"
       source="type"
@@ -45,7 +42,7 @@ export const NoticeList = () => {
       }}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
       label="Notice type"
-    ></AutocompleteInput>,
+    />,
   ];
 
   // a defined sort parameter is required there because notice has no ID field
