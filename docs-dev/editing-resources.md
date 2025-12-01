@@ -186,7 +186,7 @@ to the Schemathesis test file (`test/other_tests/test_schemathesis.py`).
 Independently from the tests, but still after handling authorisation, the UI
 pages can be updated.
 
-The UI uses a `permissions.json` file for Field Level Authorization that is also
+The UI uses a `permissions.ts` file for Field Level Authorization that is also
 automatically generated.
 
 > There is no such thing as frontend security. All security checks must be done

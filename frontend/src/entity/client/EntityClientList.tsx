@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
+import { permissionRefs } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -32,19 +33,23 @@ const ListActions = ({
 }: {
   permissions: string[];
   id: any;
-}) => (
-  <TopToolbar>
-    {permissions.includes("entity_client.create") && <CreateButton id={id} />}
-  </TopToolbar>
-);
+}) => {
+  const canCreate = permissions.includes(permissionRefs.entity_client.create);
+
+  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+};
 
 export const EntityClientList = () => {
   // id of the entity
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions();
 
+  // Permission checks
+  const canRead = permissions.includes(permissionRefs.entity_client.read);
+  const canDelete = permissions.includes(permissionRefs.entity_client.delete);
+
   return (
-    permissions.includes("entity_client.read") && (
+    canRead && (
       <ResourceContextProvider value="entity_client">
         <List
           perPage={10}
@@ -74,7 +79,7 @@ export const EntityClientList = () => {
             <ScopesField source="scopes" />
             <DateField source="recorded_at" showTime />
             <IdentityField source="recorded_by" />
-            {permissions.includes("entity_client.delete") && (
+            {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}
           </Datagrid>

@@ -5,6 +5,7 @@ import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
+import { permissionRefs } from "../auth/permissions";
 import { ServiceProvidingGroupList } from "../service_providing_group/ServiceProvidingGroupList";
 import { ServiceProvidingGroupShow } from "../service_providing_group/ServiceProvidingGroupShow";
 import { ServiceProvidingGroupInput } from "../service_providing_group/ServiceProvidingGroupInput";
@@ -37,7 +38,18 @@ import {
 export const createServiceProvidingGroupResources = (permissions: string[]) => {
   const resources: JSX.Element[] = [];
 
-  if (permissions.includes("service_providing_group.read")) {
+  // Permission checks
+  const canRead = permissions.includes(
+    permissionRefs.service_providing_group.read,
+  );
+  const canCreate = permissions.includes(
+    permissionRefs.service_providing_group.create,
+  );
+  const canUpdate = permissions.includes(
+    permissionRefs.service_providing_group.update,
+  );
+
+  if (canRead) {
     resources.push(
       <Resource
         key="service_providing_group"
@@ -46,7 +58,7 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
         list={ServiceProvidingGroupList}
         show={ServiceProvidingGroupShow}
         edit={
-          permissions.includes("service_providing_group.update") ? (
+          canUpdate ? (
             <EditRedirectPreviousPage>
               <ServiceProvidingGroupInput />
             </EditRedirectPreviousPage>
@@ -55,7 +67,7 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
           )
         }
         create={
-          permissions.includes("service_providing_group.create") ? (
+          canCreate ? (
             <Create redirect="list">
               <ServiceProvidingGroupInput />
             </Create>
@@ -371,10 +383,18 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
     );
   }
 
-  // Additional SPG-related resources
-  if (
-    permissions.includes("service_providing_group_grid_prequalification.read")
-  ) {
+  // Additional SPG-related resources permission checks
+  const canReadGridPrequalification = permissions.includes(
+    permissionRefs.service_providing_group_grid_prequalification.read,
+  );
+  const canCreateGridPrequalification = permissions.includes(
+    permissionRefs.service_providing_group_grid_prequalification.create,
+  );
+  const canUpdateGridPrequalification = permissions.includes(
+    permissionRefs.service_providing_group_grid_prequalification.update,
+  );
+
+  if (canReadGridPrequalification) {
     resources.push(
       <Resource
         key="service_providing_group_grid_prequalification"
@@ -383,9 +403,7 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
         list={ServiceProvidingGroupGridPrequalificationList}
         show={ServiceProvidingGroupGridPrequalificationShow}
         edit={
-          permissions.includes(
-            "service_providing_group_grid_prequalification.update",
-          ) ? (
+          canUpdateGridPrequalification ? (
             <EditRedirectPreviousPage>
               <ServiceProvidingGroupGridPrequalificationInput />
             </EditRedirectPreviousPage>
@@ -394,9 +412,7 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
           )
         }
         create={
-          permissions.includes(
-            "service_providing_group_grid_prequalification.create",
-          ) ? (
+          canCreateGridPrequalification ? (
             <CreateRedirectPreviousPage>
               <ServiceProvidingGroupGridPrequalificationInput />
             </CreateRedirectPreviousPage>
@@ -408,7 +424,17 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
     );
   }
 
-  if (permissions.includes("service_providing_group_membership.read")) {
+  const canReadMembership = permissions.includes(
+    permissionRefs.service_providing_group_membership.read,
+  );
+  const canCreateMembership = permissions.includes(
+    permissionRefs.service_providing_group_membership.create,
+  );
+  const canUpdateMembership = permissions.includes(
+    permissionRefs.service_providing_group_membership.update,
+  );
+
+  if (canReadMembership) {
     resources.push(
       <Resource
         key="service_providing_group_membership"
@@ -417,7 +443,7 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
         list={ServiceProvidingGroupMembershipList}
         show={ServiceProvidingGroupMembershipShow}
         edit={
-          permissions.includes("service_providing_group_membership.update") ? (
+          canUpdateMembership ? (
             <EditRedirectPreviousPage>
               <ServiceProvidingGroupMembershipInput />
             </EditRedirectPreviousPage>
@@ -426,7 +452,7 @@ export const createServiceProvidingGroupResources = (permissions: string[]) => {
           )
         }
         create={
-          permissions.includes("service_providing_group_membership.create") ? (
+          canCreateMembership ? (
             <CreateRedirectPreviousPage>
               <ServiceProvidingGroupMembershipInput />
             </CreateRedirectPreviousPage>

@@ -1,6 +1,7 @@
 import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { EditRedirectPreviousPage } from "./shared";
+import { permissionRefs } from "../auth/permissions";
 import { PartyList } from "../party/PartyList";
 import { PartyShow } from "../party/PartyShow";
 import { PartyInput } from "../party/PartyInput";
@@ -10,7 +11,12 @@ import { PartyMembershipInput } from "../party/membership/PartyMembershipInput";
 import { PartyMembershipHistoryList } from "../party/membership/PartyMembershipHistoryList";
 
 export const createPartyResources = (permissions: string[]) => {
-  if (!permissions.includes("party.read")) return null;
+  // Permission checks
+  const canRead = permissions.includes(permissionRefs.party.read);
+  const canCreate = permissions.includes(permissionRefs.party.create);
+  const canUpdate = permissions.includes(permissionRefs.party.update);
+
+  if (!canRead) return null;
 
   return (
     <Resource
@@ -18,14 +24,14 @@ export const createPartyResources = (permissions: string[]) => {
       list={PartyList}
       show={PartyShow}
       edit={
-        permissions.includes("party.update") ? (
+        canUpdate ? (
           <EditRedirectPreviousPage>
             <PartyInput />
           </EditRedirectPreviousPage>
         ) : undefined
       }
       create={
-        permissions.includes("party.create") ? (
+        canCreate ? (
           <Create redirect="list">
             <PartyInput />
           </Create>

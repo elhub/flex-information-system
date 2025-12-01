@@ -10,9 +10,15 @@ import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
 import { IdentityField } from "../components/IdentityField";
+import { permissionRefs } from "../auth/permissions";
 
 export const ServiceProviderProductSuspensionList = () => {
   const { permissions } = usePermissions();
+
+  // Permission checks
+  const canDelete = permissions.includes(
+    permissionRefs.service_provider_product_suspension.delete,
+  );
 
   const ServiceProviderProductSuspensionListFilters = [
     <PartyReferenceInput
@@ -71,9 +77,7 @@ export const ServiceProviderProductSuspensionList = () => {
         <TextField source="reason" />
         <DateField source="recorded_at" showTime />
         <IdentityField source="recorded_by" />
-        {permissions.includes("service_provider_product_suspension.delete") && (
-          <DeleteButton mutationMode="pessimistic" redirect="" />
-        )}
+        {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
       </Datagrid>
     </List>
   );
