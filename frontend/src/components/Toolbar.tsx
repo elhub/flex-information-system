@@ -4,12 +4,12 @@ import { Button, Box } from "@mui/material";
 import UndoIcon from "@mui/icons-material/Undo";
 
 export const Toolbar = (props: any) => {
-  const { saveAlwaysEnabled, saveLabel, ...rest } = props;
+  const { saveLabel, ...rest } = props;
   const navigate = useNavigate();
 
   return (
     <RAToolbar {...rest}>
-      <SaveButton alwaysEnable={saveAlwaysEnabled} label={saveLabel} />
+      <SaveButton label={saveLabel} />
       <Box width="1em" />
       <Button
         color="inherit"

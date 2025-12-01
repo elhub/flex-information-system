@@ -24,11 +24,7 @@ export const ServiceProvidingGroupInput = () => {
     : {};
 
   return (
-    <SimpleForm
-      defaultValues={record}
-      maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled />}
-    >
+    <SimpleForm defaultValues={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <PartyReferenceInput
           source="service_provider_id"

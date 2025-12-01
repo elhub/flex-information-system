@@ -76,7 +76,7 @@ export const ControllableUnitServiceProviderInput = () => {
          we will apply are already brought into the fields by the state passed
          into the restore button. So the save button is disabled, but we still
          want to be able to hit it right away after clicking restore. */
-      toolbar={<Toolbar saveAlwaysEnabled />}
+      toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
