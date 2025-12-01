@@ -512,7 +512,7 @@ permissions-to-frontend:
         | .venv/bin/python3 ./local/scripts/permissions_to_ts.py \
         > frontend/src/auth/permissions.ts
 
-    npm run prettier --write frontend/src/auth/permissions.ts
+    ./frontend/node_modules/.bin/prettier --write frontend/src/auth/permissions.ts
 
 avatar:
     #!/usr/bin/env bash
