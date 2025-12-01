@@ -1,6 +1,9 @@
 import {
   AutocompleteInput,
+  AutocompleteInputProps,
   ReferenceInput,
+  ReferenceInputBaseProps,
+  ReferenceInputProps,
   useRecordContext,
 } from "react-admin";
 
@@ -10,7 +13,15 @@ import {
 // also features automated filling of the source field in edit mode
 // and passing the "disabled" boolean to the child input
 
-export const AutocompleteReferenceInput = (props: any) => {
+type AutocompleteReferenceInputProps = ReferenceInputBaseProps & {
+  disabled?: boolean;
+  readOnly?: boolean;
+  validate?: ReferenceInputProps["validate"];
+}
+
+export const AutocompleteReferenceInput = (
+  props: AutocompleteReferenceInputProps,
+) => {
   const { field, disabled, readOnly, source, label, ...rest } = props;
 
   const record = useRecordContext();
@@ -34,13 +45,19 @@ export const AutocompleteReferenceInput = (props: any) => {
         readOnly={readOnly}
         filterToQuery={filterToQuery}
         label={label}
+        field={field}
       />
     </ReferenceInput>
   );
 };
 
+type PartyReferenceInputProps = Omit<AutocompleteReferenceInputProps, "reference"> & {
+  noTypeFilter?: boolean;
+};
+
+
 // version specialised to fields referencing party (optional type filtering)
-export const PartyReferenceInput = (props: any) => {
+export const PartyReferenceInput = (props: PartyReferenceInputProps) => {
   const { source, noTypeFilter, filter, ...rest } = props;
 
   const choiceFilter =
