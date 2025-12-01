@@ -1,5 +1,5 @@
 import { AuthProvider, fetchUtils, getStorage } from "react-admin";
-import permissions from "./permissions.json";
+import permissions from "./permissions";
 import { authURL } from "../httpConfig";
 
 import anonymous_avatar from "./avatars/ANO.png";
@@ -181,7 +181,7 @@ export function authProvider(): AuthProvider {
     },
     getPermissions: () => {
       const sessionInfoString = getStorage().getItem(sessionInfoKey);
-      if (!sessionInfoString) return Promise.reject();
+      if (!sessionInfoString) return Promise.resolve([]); // no session, no permissions
       const sessionInfo = JSON.parse(sessionInfoString);
       const role = sessionInfo["role"];
       const perms = permissions as any;

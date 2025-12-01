@@ -19,12 +19,18 @@ import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { IdentityField } from "../../components/IdentityField";
+import { permissionRefs } from "../../auth/permissions";
 
 export const ServiceProvidingGroupProductSuspensionShow = () => {
   const resource = useResourceContext()!;
   const { permissions } = usePermissions();
 
   const isHistory = resource.endsWith("_history");
+
+  // Permission checks
+  const canUpdate = permissions.includes(
+    permissionRefs.service_providing_group_product_suspension.update,
+  );
 
   const EditButton = () => {
     const record = useRecordContext()!;
@@ -42,9 +48,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes(
-          "service_providing_group_product_suspension.update",
-        ) && (
+        canUpdate && (
           <TopToolbar>
             <EditButton />
           </TopToolbar>

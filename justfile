@@ -509,9 +509,10 @@ permissions-to-md:
 
 permissions-to-frontend:
     cat local/input/permissions.csv \
-        | .venv/bin/python3 ./local/scripts/permissions_to_json.py \
-        | jq --indent 4 \
-        > frontend/src/auth/permissions.json
+        | .venv/bin/python3 ./local/scripts/permissions_to_ts.py \
+        > frontend/src/auth/permissions.ts
+
+    ./frontend/node_modules/.bin/prettier --write frontend/src/auth/permissions.ts
 
 avatar:
     #!/usr/bin/env bash

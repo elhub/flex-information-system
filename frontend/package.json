@@ -12,6 +12,7 @@
         "type-check": "tsc --noEmit"
     },
     "dependencies": {
+        "@fontsource/roboto": "^5.2.9",
         "@raphiniert/ra-data-postgrest": "^2.5.1",
         "@tanstack/react-query-devtools": "^5.90.2",
         "ra-input-rich-text": "^5.12.0",
@@ -25,10 +26,10 @@
         "@eslint/eslintrc": "3.3.1",
         "@eslint/js": "9.39.1",
         "@types/node": "24.10.1",
-        "@types/react": "19.2.4",
+        "@types/react": "19.2.6",
         "@types/react-dom": "19.2.3",
-        "@typescript-eslint/eslint-plugin": "8.46.4",
-        "@typescript-eslint/parser": "8.46.4",
+        "@typescript-eslint/eslint-plugin": "8.47.0",
+        "@typescript-eslint/parser": "8.47.0",
         "@vitejs/plugin-react": "5.1.1",
         "eslint": "9.39.1",
         "eslint-config-prettier": "10.1.8",
@@ -38,6 +39,6 @@
         "owasp-dependency-check": "1.0.0",
         "prettier": "3.6.2",
         "typescript": "5.9.3",
-        "vite": "7.2.2"
+        "vite": "7.2.4"
     }
 }
