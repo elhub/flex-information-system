@@ -50,7 +50,7 @@ var _ http.Handler = &api{} //nolint:exhaustruct
 
 // NewAPIHandler returns a handler for all the data API endpoints.
 //
-//nolint:funlen
+//nolint:funlen,maintidx
 func NewAPIHandler(
 	baseURL string,
 	postgRESTUpstream string,
@@ -234,6 +234,14 @@ func NewAPIHandler(
 
 	mux.Handle("GET /service_providing_group_grid_prequalification_history", dataListPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_grid_prequalification_history/{id}", dataPostgRESTHandler)
+
+	mux.Handle("GET /service_providing_group_grid_prequalification_comment", dataListPostgRESTHandler)
+	mux.Handle("POST /service_providing_group_grid_prequalification_comment", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_prequalification_comment/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group_grid_prequalification_comment/{id}", dataPostgRESTHandler)
+
+	mux.Handle("GET /service_providing_group_grid_prequalification_comment_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_grid_prequalification_comment_history/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /service_providing_group_grid_suspension", dataListPostgRESTHandler)
 	mux.Handle("POST /service_providing_group_grid_suspension", dataPostgRESTHandler)

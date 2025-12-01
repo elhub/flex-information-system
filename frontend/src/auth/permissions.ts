@@ -469,6 +469,22 @@ export type Permission =
   | "service_providing_group_grid_prequalification.status.read"
   | "service_providing_group_grid_prequalification.status.update"
   | "service_providing_group_grid_prequalification.update"
+  | "service_providing_group_grid_prequalification_comment.content.create"
+  | "service_providing_group_grid_prequalification_comment.content.read"
+  | "service_providing_group_grid_prequalification_comment.content.update"
+  | "service_providing_group_grid_prequalification_comment.create"
+  | "service_providing_group_grid_prequalification_comment.created_at.read"
+  | "service_providing_group_grid_prequalification_comment.created_by.read"
+  | "service_providing_group_grid_prequalification_comment.id.read"
+  | "service_providing_group_grid_prequalification_comment.read"
+  | "service_providing_group_grid_prequalification_comment.recorded_at.read"
+  | "service_providing_group_grid_prequalification_comment.recorded_by.read"
+  | "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create"
+  | "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read"
+  | "service_providing_group_grid_prequalification_comment.update"
+  | "service_providing_group_grid_prequalification_comment.visibility.create"
+  | "service_providing_group_grid_prequalification_comment.visibility.read"
+  | "service_providing_group_grid_prequalification_comment.visibility.update"
   | "service_providing_group_grid_prequalification_history.id.read"
   | "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read"
   | "service_providing_group_grid_prequalification_history.notes.read"
@@ -1797,6 +1813,45 @@ export const permissionRefs = {
       update: "service_providing_group_grid_prequalification.status.update",
     },
   },
+  service_providing_group_grid_prequalification_comment: {
+    create: "service_providing_group_grid_prequalification_comment.create",
+    read: "service_providing_group_grid_prequalification_comment.read",
+    update: "service_providing_group_grid_prequalification_comment.update",
+    content: {
+      create:
+        "service_providing_group_grid_prequalification_comment.content.create",
+      read: "service_providing_group_grid_prequalification_comment.content.read",
+      update:
+        "service_providing_group_grid_prequalification_comment.content.update",
+    },
+    created_at: {
+      read: "service_providing_group_grid_prequalification_comment.created_at.read",
+    },
+    created_by: {
+      read: "service_providing_group_grid_prequalification_comment.created_by.read",
+    },
+    id: {
+      read: "service_providing_group_grid_prequalification_comment.id.read",
+    },
+    recorded_at: {
+      read: "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    },
+    recorded_by: {
+      read: "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    },
+    service_providing_group_grid_prequalification_id: {
+      create:
+        "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+      read: "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    },
+    visibility: {
+      create:
+        "service_providing_group_grid_prequalification_comment.visibility.create",
+      read: "service_providing_group_grid_prequalification_comment.visibility.read",
+      update:
+        "service_providing_group_grid_prequalification_comment.visibility.update",
+    },
+  },
   service_providing_group_grid_prequalification_history: {
     read: "service_providing_group_grid_prequalification_history.read",
     id: {
@@ -2733,6 +2788,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -3228,6 +3292,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -3723,6 +3796,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -4421,6 +4503,22 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.status.read",
     "service_providing_group_grid_prequalification.status.update",
     "service_providing_group_grid_prequalification.update",
+    "service_providing_group_grid_prequalification_comment.content.create",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.content.update",
+    "service_providing_group_grid_prequalification_comment.create",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.update",
+    "service_providing_group_grid_prequalification_comment.visibility.create",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
+    "service_providing_group_grid_prequalification_comment.visibility.update",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -4973,6 +5071,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -5625,6 +5732,22 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.create",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.content.update",
+    "service_providing_group_grid_prequalification_comment.create",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.update",
+    "service_providing_group_grid_prequalification_comment.visibility.create",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
+    "service_providing_group_grid_prequalification_comment.visibility.update",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -6208,6 +6331,22 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.status.read",
     "service_providing_group_grid_prequalification.status.update",
     "service_providing_group_grid_prequalification.update",
+    "service_providing_group_grid_prequalification_comment.content.create",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.content.update",
+    "service_providing_group_grid_prequalification_comment.create",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.create",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.update",
+    "service_providing_group_grid_prequalification_comment.visibility.create",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
+    "service_providing_group_grid_prequalification_comment.visibility.update",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
@@ -6743,6 +6882,15 @@ const permissions: Permissions = {
     "service_providing_group_grid_prequalification.recorded_by.read",
     "service_providing_group_grid_prequalification.service_providing_group_id.read",
     "service_providing_group_grid_prequalification.status.read",
+    "service_providing_group_grid_prequalification_comment.content.read",
+    "service_providing_group_grid_prequalification_comment.created_at.read",
+    "service_providing_group_grid_prequalification_comment.created_by.read",
+    "service_providing_group_grid_prequalification_comment.id.read",
+    "service_providing_group_grid_prequalification_comment.read",
+    "service_providing_group_grid_prequalification_comment.recorded_at.read",
+    "service_providing_group_grid_prequalification_comment.recorded_by.read",
+    "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id.read",
+    "service_providing_group_grid_prequalification_comment.visibility.read",
     "service_providing_group_grid_prequalification_history.id.read",
     "service_providing_group_grid_prequalification_history.impacted_system_operator_id.read",
     "service_providing_group_grid_prequalification_history.notes.read",
