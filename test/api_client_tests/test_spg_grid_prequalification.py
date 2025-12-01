@@ -355,7 +355,7 @@ def test_spggp_sp(data):
 
 
 def test_spggp_so(data):
-    (sts, spg_id, _, _, spgm_id) = data
+    (sts, spg_id, so_id, _, spgm_id) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
@@ -422,6 +422,14 @@ def test_spggp_so(data):
 
     # RLS: SPGGP-SO001
     # SO can update SPGGP where they are impacted
+
+    spggps_so = list_service_providing_group_grid_prequalification.sync(
+        client=client_so,
+        impacted_system_operator_id=f"eq.{so_id}",
+    )
+    assert isinstance(spggps_so, list)
+    assert len(spggps_so) > 0, "No SPGGP records returned for impacted_system_operator_id"
+    so_spggp = spggps_so[0]
 
     u = update_service_providing_group_grid_prequalification.sync(
         client=client_so,
