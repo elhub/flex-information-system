@@ -379,18 +379,18 @@ quality.
 
 Possible types of verification are:
 
-- **Delivery quality** - check if the quality of the delivered service is in complicance
-with the product requirements.
+- **Product verification** - check if the quality of the delivered service is in
+accordance with the product requirements.
 
 - **Baseline quality** - check if the baseline is of sufficient quality based on
 the actual measurements.
 
-- **Consistency checks** - check if the quantified volume equal to the activated
+- **Consistency checks** - check if the quantified volume is equal to the activated
 volume.
 
-- **Bid volume verification** - check if the amount of flexibility offered actually
-matches the capacity that can be delivered when activated. Can be done both during
-and after prequalification.
+- **Bid volume verification** - check during prequalification if the flexibility
+offered matches the capacity that can be delivered when activated in accordance
+to the product requirements.
 
 Verification is targeted on the SPG level, where service is delivered.
 
