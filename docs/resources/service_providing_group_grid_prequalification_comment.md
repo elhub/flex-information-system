@@ -1,7 +1,7 @@
 # Service Providing Group Grid Prequalification Comment
 
 Comment made by a party involved in a service providing group prequalification
-Several comments can be added to a given suspension.
+Several comments can be added to a given prequalification.
 
 For information about comments as a concept see [Communication and Coordination](../concepts/communication-and-coordination.md).
 
