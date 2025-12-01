@@ -428,7 +428,6 @@ def test_spggp_so(data):
         id=cast(int, so_spggp.id),
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
             status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
-            notes="Edited by SO",
             prequalified_at="2024-01-01T08:00:00",
         ),
     )
@@ -440,7 +439,6 @@ def test_spggp_so(data):
         id=cast(int, other_spggp.id),
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
             status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
-            notes="Edited by SO",
             prequalified_at="2024-01-01T08:00:00",
         ),
     )

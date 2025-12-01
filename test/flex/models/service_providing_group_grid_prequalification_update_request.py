@@ -21,13 +21,11 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
     Attributes:
         status (ServiceProvidingGroupGridPrequalificationStatus | Unset): The status of the grid prequalification for
             this service providing group. Example: in_progress.
-        notes (None | str | Unset): Free text notes on the current prequalification status.
         prequalified_at (None | str | Unset): When the current grid prequalification was last approved. Example:
             2023-01-08 10:00:00 CET.
     """
 
     status: ServiceProvidingGroupGridPrequalificationStatus | Unset = UNSET
-    notes: None | str | Unset = UNSET
     prequalified_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -35,12 +33,6 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
-        notes: None | str | Unset
-        if isinstance(self.notes, Unset):
-            notes = UNSET
-        else:
-            notes = self.notes
 
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
@@ -53,8 +45,6 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
         field_dict.update({})
         if status is not UNSET:
             field_dict["status"] = status
-        if notes is not UNSET:
-            field_dict["notes"] = notes
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
 
@@ -70,15 +60,6 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
         else:
             status = ServiceProvidingGroupGridPrequalificationStatus(_status)
 
-        def _parse_notes(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        notes = _parse_notes(d.pop("notes", UNSET))
-
         def _parse_prequalified_at(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -90,7 +71,6 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
 
         service_providing_group_grid_prequalification_update_request = cls(
             status=status,
-            notes=notes,
             prequalified_at=prequalified_at,
         )
 

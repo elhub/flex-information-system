@@ -1,5 +1,6 @@
 [sqlfluff]
 dialect = postgres
+max_line_length = 88
 
 # don't check file size
 large_file_skip_byte_limit = 0

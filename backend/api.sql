@@ -159,7 +159,6 @@ CREATE TABLE api.service_providing_group_grid_prequalification (
     service_providing_group_id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     prequalified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
@@ -170,7 +169,6 @@ CREATE TABLE api.service_providing_group_grid_prequalification_history (
     service_providing_group_id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     prequalified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
