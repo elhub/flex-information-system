@@ -10,7 +10,7 @@ export const InputStack = (props: any) => {
   const resourceFromContext = useResourceContext();
   const { children, ...rest } = props;
   const { permissions } = usePermissions<Permissions>();
-  const createOrUpdate = useCreateOrUpdate()!;
+  const createOrUpdate = useCreateOrUpdate();
 
   const allowAll = props.allowAll ?? false;
   const resource = props.resource ?? resourceFromContext;
@@ -21,6 +21,7 @@ export const InputStack = (props: any) => {
       disabled:
         input.props.disabled ||
         (!allowAll &&
+          createOrUpdate != null &&
           !permissions?.allow(
             `${resource}.${input.props.source}` as PermissionTarget,
             createOrUpdate,
