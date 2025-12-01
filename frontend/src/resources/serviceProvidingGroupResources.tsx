@@ -167,6 +167,49 @@ export const createServiceProvidingGroupResources = (
             </ResourceContextProvider>
           }
         />
+        {/* service providing group grid prequalification comments */}
+        {/* list is part of SPG grid prequalification show page */}
+        <Route
+          path=":service_providing_group_id/grid_prequalification/:service_providing_group_grid_prequalification_id/comment/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_prequalification_comment">
+              <CommentShow />
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":service_providing_group_id/grid_prequalification/:service_providing_group_grid_prequalification_id/comment/create"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_prequalification_comment">
+              <CreateRedirectPreviousPage>
+                <CommentInput />
+              </CreateRedirectPreviousPage>
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":service_providing_group_id/grid_prequalification/:service_providing_group_grid_prequalification_id/comment/:id"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_prequalification_comment">
+              <EditRedirectPreviousPage>
+                <CommentInput />
+              </EditRedirectPreviousPage>
+            </ResourceContextProvider>
+          }
+        />
+        {/* service providing group grid prequalification comment history */}
+        <Route
+          path=":service_providing_group_id/grid_prequalification/:service_providing_group_grid_prequalification_id/comment_history"
+          element={<CommentHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_id/grid_prequalification/:service_providing_group_grid_prequalification_id/comment_history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_prequalification_comment_history">
+              <CommentShow />
+            </ResourceContextProvider>
+          }
+        />
         {/* Product Application routes */}
         <Route
           path=":service_providing_group_id/product_application/:id/show"

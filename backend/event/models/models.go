@@ -385,6 +385,31 @@ type ApiServiceProvidingGroupGridPrequalification struct {
 	RecordedAt               pgtype.Timestamptz
 }
 
+type ApiServiceProvidingGroupGridPrequalificationComment struct {
+	ID                                          int
+	ServiceProvidingGroupGridPrequalificationID int
+	CreatedBy                                   int
+	CreatedAt                                   pgtype.Timestamptz
+	Visibility                                  string
+	Content                                     string
+	RecordedBy                                  int
+	RecordedAt                                  pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupGridPrequalificationCommentHistory struct {
+	ServiceProvidingGroupGridPrequalificationCommentID int
+	ID                                                 int
+	ServiceProvidingGroupGridPrequalificationID        int
+	CreatedBy                                          int
+	CreatedAt                                          pgtype.Timestamptz
+	Visibility                                         string
+	Content                                            string
+	RecordedBy                                         int
+	RecordedAt                                         pgtype.Timestamptz
+	ReplacedBy                                         *int
+	ReplacedAt                                         pgtype.Timestamptz
+}
+
 type ApiServiceProvidingGroupGridPrequalificationHistory struct {
 	ServiceProvidingGroupGridPrequalificationID int
 	ID                                          int
