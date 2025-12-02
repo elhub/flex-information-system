@@ -17,6 +17,7 @@ import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
 import { useMemo } from "react";
+import { countDefinedValues } from "../../util";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -35,23 +36,11 @@ const filterRecord = ({
   valid_to,
 });
 
-// count number of non-null/undefined fields in an object
-function nOverrides(obj: any) {
-  if (!obj) return 0;
-  const values = Object.values(obj);
-  return values.reduce((acc: number, val) => {
-    if (val !== null && val !== undefined) {
-      return acc + 1;
-    }
-    return acc;
-  }, 0);
-}
-
 // common layout to create and edit pages
 export const ControllableUnitServiceProviderInput = () => {
-  const { state: locationRecord } = useLocation();
-  const overrideRecord = filterRecord({ ...locationRecord });
-  const hasOverride = nOverrides(overrideRecord) > 1;
+  const { state: overrideRecord } = useLocation();
+  const hasOverride =
+    countDefinedValues(filterRecord({ ...overrideRecord })) > 0;
   const actualRecord = useRecordContext();
 
   // priority to the restored values if they exist, otherwise normal edit mode
@@ -66,7 +55,7 @@ export const ControllableUnitServiceProviderInput = () => {
   // if we came to this page as a user who cannot see the CU, we want to input a
   // CU ID, instead of using the autocomplete component that works from the list
   // of readable CUs
-  const cuIDAsNumber: boolean = !!locationRecord?.cuIDAsNumber;
+  const cuIDAsNumber: boolean = !!overrideRecord?.cuIDAsNumber;
 
   const isServiceProvider = identity?.role == "flex_service_provider";
 
