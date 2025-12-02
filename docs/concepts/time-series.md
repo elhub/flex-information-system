@@ -388,10 +388,6 @@ the actual measurements.
 - **Consistency checks** - check if the quantified volume is equal to the activated
 volume.
 
-- **Bid volume verification** - check during prequalification if the flexibility
-offered matches the capacity that can be delivered when activated in accordance
-to the product requirements.
-
 Verification is targeted on the SPG level, where service is delivered.
 
 It might be challenging to properly verify that a service was delivered. Some
