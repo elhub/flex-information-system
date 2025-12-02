@@ -522,10 +522,8 @@ export type PermissionOperation =
   | "update";
 
 export type Permissions = {
-  allow: (
-    _target: PermissionTarget,
-    _operation: PermissionOperation,
-  ) => boolean;
+  // eslint-disable-next-line no-unused-vars
+  allow: (target: PermissionTarget, operation: PermissionOperation) => boolean;
 };
 
 const rawPermissions: Record<
@@ -19483,7 +19481,8 @@ const permissions = (role: Role): Permissions => {
     allow: (
       target: PermissionTarget,
       operation: PermissionOperation,
-    ): boolean => perms.includes({ target, operation }),
+    ): boolean =>
+      perms.some((p) => p.target == target && p.operation == operation),
   };
 };
 export default permissions;

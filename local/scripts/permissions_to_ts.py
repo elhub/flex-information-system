@@ -159,10 +159,8 @@ print("")
 
 print("""\
 export type Permissions = {
-  allow: (
-    _target: PermissionTarget,
-    _operation: PermissionOperation,
-  ) => boolean;
+  // eslint-disable-next-line no-unused-vars
+  allow: (target: PermissionTarget, operation: PermissionOperation) => boolean;
 };
 """)
 
@@ -187,8 +185,11 @@ print("""\
 const permissions = (role: Role): Permissions => {
   const perms = rawPermissions[role];
   return {
-    allow: (target: PermissionTarget, operation: PermissionOperation): boolean =>
-      perms.includes({target, operation}),
+    allow: (
+      target: PermissionTarget,
+      operation: PermissionOperation,
+    ): boolean =>
+      perms.some((p) => p.target == target && p.operation == operation),
   };
 };
 export default permissions;""")
