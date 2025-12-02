@@ -6,13 +6,17 @@ import {
   usePermissions,
   BulkDeleteButton,
 } from "react-admin";
+import { PermissionTarget, Permissions } from "./permissions";
 
 export const Datagrid = (props: DatagridProps) => {
   const resource = useResourceContext();
   const { children, ...rest } = props;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
-  const bulkActionButtons = permissions.includes(`${resource}.delete`) ? (
+  const bulkActionButtons = permissions?.allow(
+    resource as PermissionTarget,
+    "delete",
+  ) ? (
     <BulkDeleteButton />
   ) : (
     false
@@ -23,9 +27,10 @@ export const Datagrid = (props: DatagridProps) => {
       {Children.map(
         children,
         (child: any) =>
-          (!(child?.props as any)?.source ||
-            permissions.includes(
-              `${resource}.${(child?.props as any)?.source}.read`,
+          (!child?.props?.source ||
+            permissions?.allow(
+              `${resource}.${child?.props?.source}` as PermissionTarget,
+              "read",
             )) &&
           child,
       )}

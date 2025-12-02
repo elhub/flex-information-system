@@ -12,7 +12,7 @@ import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -36,16 +36,18 @@ export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
   const id = record?.id;
 
-  const { permissions, isLoading } = usePermissions();
+  const { permissions, isLoading } = usePermissions<Permissions>();
 
   if (isLoading) return null; // or a loading spinner
 
   // Permission checks
-  const canRead = permissions.includes(
-    permissionRefs.service_providing_group_product_application.read,
+  const canRead = permissions?.allow(
+    "service_providing_group_product_application",
+    "read",
   );
-  const canCreate = permissions.includes(
-    permissionRefs.service_providing_group_product_application.create,
+  const canCreate = !!permissions?.allow(
+    "service_providing_group_product_application",
+    "create",
   );
 
   if (!canRead) {

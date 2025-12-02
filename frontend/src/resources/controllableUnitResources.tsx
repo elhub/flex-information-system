@@ -3,7 +3,7 @@ import { Route, Navigate } from "react-router-dom";
 import { JSX } from "react";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
-import { permissionRefs } from "../auth/permissions";
+import { Permissions } from "../auth/permissions";
 import { ControllableUnitList } from "../controllable_unit/ControllableUnitList";
 import { ControllableUnitShow } from "../controllable_unit/ControllableUnitShow";
 import { ControllableUnitInput } from "../controllable_unit/ControllableUnitInput";
@@ -25,17 +25,13 @@ import {
   CommentHistoryList,
 } from "../components/comments";
 
-export const createControllableUnitResources = (permissions: string[]) => {
+export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
 
   // Permission checks
-  const canRead = permissions.includes(permissionRefs.controllable_unit.read);
-  const canCreate = permissions.includes(
-    permissionRefs.controllable_unit.create,
-  );
-  const canUpdate = permissions.includes(
-    permissionRefs.controllable_unit.update,
-  );
+  const canRead = permissions.allow("controllable_unit", "read");
+  const canCreate = permissions.allow("controllable_unit", "create");
+  const canUpdate = permissions.allow("controllable_unit", "update");
 
   if (canRead) {
     resources.push(
@@ -269,11 +265,13 @@ export const createControllableUnitResources = (permissions: string[]) => {
   }
 
   // Permission checks for controllable unit service provider
-  const canReadCUSP = permissions.includes(
-    permissionRefs.controllable_unit_service_provider.read,
+  const canReadCUSP = permissions.allow(
+    "controllable_unit_service_provider",
+    "read",
   );
-  const canCreateCUSP = permissions.includes(
-    permissionRefs.controllable_unit_service_provider.create,
+  const canCreateCUSP = permissions.allow(
+    "controllable_unit_service_provider",
+    "create",
   );
 
   if (canReadCUSP) {

@@ -2,7 +2,7 @@ import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
-import { permissionRefs } from "../auth/permissions";
+import { Permissions } from "../auth/permissions";
 import { ServiceProviderProductApplicationList } from "../service_provider_product_application/ServiceProviderProductApplicationList";
 import { ServiceProviderProductApplicationShow } from "../service_provider_product_application/ServiceProviderProductApplicationShow";
 import { ServiceProviderProductApplicationInput } from "../service_provider_product_application/ServiceProviderProductApplicationInput";
@@ -17,18 +17,21 @@ import {
   CommentHistoryList,
 } from "../components/comments";
 
-export const createServiceProviderResources = (permissions: string[]) => {
+export const createServiceProviderResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
 
   // Permission checks
-  const canReadApplication = permissions.includes(
-    permissionRefs.service_provider_product_application.read,
+  const canReadApplication = permissions.allow(
+    "service_provider_product_application",
+    "read",
   );
-  const canCreateApplication = permissions.includes(
-    permissionRefs.service_provider_product_application.create,
+  const canCreateApplication = permissions.allow(
+    "service_provider_product_application",
+    "create",
   );
-  const canUpdateApplication = permissions.includes(
-    permissionRefs.service_provider_product_application.update,
+  const canUpdateApplication = permissions.allow(
+    "service_provider_product_application",
+    "update",
   );
 
   if (canReadApplication) {
@@ -121,14 +124,17 @@ export const createServiceProviderResources = (permissions: string[]) => {
   }
 
   // Permission checks for service provider product suspension
-  const canReadSuspension = permissions.includes(
-    permissionRefs.service_provider_product_suspension.read,
+  const canReadSuspension = permissions.allow(
+    "service_provider_product_suspension",
+    "read",
   );
-  const canCreateSuspension = permissions.includes(
-    permissionRefs.service_provider_product_suspension.create,
+  const canCreateSuspension = permissions.allow(
+    "service_provider_product_suspension",
+    "create",
   );
-  const canUpdateSuspension = permissions.includes(
-    permissionRefs.service_provider_product_suspension.update,
+  const canUpdateSuspension = permissions.allow(
+    "service_provider_product_suspension",
+    "update",
   );
 
   if (canReadSuspension) {

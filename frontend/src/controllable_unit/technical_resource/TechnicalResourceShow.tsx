@@ -17,18 +17,16 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 export const TechnicalResourceShow = () => {
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
-  const canUpdate = permissions.includes(
-    permissionRefs.technical_resource.update,
-  );
+  const canUpdate = permissions?.allow("technical_resource", "update");
 
   const EditButton = () => {
     const record = useRecordContext()!;

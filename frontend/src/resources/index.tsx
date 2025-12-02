@@ -12,11 +12,12 @@ import { createServiceProvidingGroupResources } from "./serviceProvidingGroupRes
 import { createServiceProviderResources } from "./serviceProviderResources";
 import { createProductResources } from "./productResources";
 import { createSystemResources } from "./systemResources";
+import { Permissions } from "../auth/permissions";
 
 /**
  * Creates all resources based on user permissions
  */
-export const createAllResources = (permissions: string[]) => {
+export const createAllResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
 
   resources.push(

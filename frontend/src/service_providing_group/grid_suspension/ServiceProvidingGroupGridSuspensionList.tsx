@@ -12,7 +12,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -32,11 +32,12 @@ const ListActions = ({
   permissions,
   id,
 }: {
-  permissions: string[];
+  permissions: Permissions | undefined;
   id: any;
 }) => {
-  const canCreate = permissions.includes(
-    permissionRefs.service_providing_group_grid_suspension.create,
+  const canCreate = permissions?.allow(
+    "service_providing_group_grid_suspension",
+    "create",
   );
 
   return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
@@ -46,14 +47,16 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
   // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext();
   const id = record?.id;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
-  const canRead = permissions.includes(
-    permissionRefs.service_providing_group_grid_suspension.read,
+  const canRead = permissions?.allow(
+    "service_providing_group_grid_suspension",
+    "read",
   );
-  const canDelete = permissions.includes(
-    permissionRefs.service_providing_group_grid_suspension.delete,
+  const canDelete = permissions?.allow(
+    "service_providing_group_grid_suspension",
+    "delete",
   );
 
   return (

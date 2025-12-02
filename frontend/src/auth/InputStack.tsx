@@ -1,5 +1,6 @@
 import { Children, cloneElement } from "react";
 import { useResourceContext, usePermissions } from "react-admin";
+import { Permissions, PermissionTarget } from "./permissions";
 import { Stack as MUIStack, InputAdornment } from "@mui/material";
 import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
@@ -8,7 +9,7 @@ import { FieldTooltip } from "../tooltip/FieldTooltip";
 export const InputStack = (props: any) => {
   const resourceFromContext = useResourceContext();
   const { children, ...rest } = props;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
   const createOrUpdate = useCreateOrUpdate();
 
   const allowAll = props.allowAll ?? false;
@@ -20,8 +21,10 @@ export const InputStack = (props: any) => {
       disabled:
         input.props.disabled ||
         (!allowAll &&
-          !permissions.includes(
-            `${resource}.${input.props.source}.${createOrUpdate}`,
+          createOrUpdate != null &&
+          !permissions?.allow(
+            `${resource}.${input.props.source}` as PermissionTarget,
+            createOrUpdate,
           )),
       slotProps: {
         input: {

@@ -20,17 +20,18 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 export const ControllableUnitServiceProviderShow = () => {
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
-  const canUpdate = permissions.includes(
-    permissionRefs.controllable_unit_service_provider.update,
+  const canUpdate = permissions?.allow(
+    "controllable_unit_service_provider",
+    "update",
   );
 
   const EditButton = () => {

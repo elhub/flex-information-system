@@ -184,8 +184,9 @@ export function authProvider(): AuthProvider {
       if (!sessionInfoString) return Promise.resolve([]); // no session, no permissions
       const sessionInfo = JSON.parse(sessionInfoString);
       const role = sessionInfo["role"];
-      const perms = permissions as any;
-      return Promise.resolve(role ? perms[role] : perms["flex_entity"]);
+      return Promise.resolve(
+        role ? permissions(role) : permissions("flex_entity"),
+      );
     },
   };
 }
