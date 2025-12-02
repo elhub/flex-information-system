@@ -2,7 +2,6 @@ import {
   required,
   SelectInput,
   SimpleForm,
-  TextInput,
   useGetIdentity,
   useGetList,
   useRecordContext,
