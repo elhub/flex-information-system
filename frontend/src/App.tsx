@@ -60,7 +60,6 @@ import postgrestRestProvider, {
 } from "@raphiniert/ra-data-postgrest";
 
 import { roleNames } from "./roles";
-import { Permissions as AuthPermissions } from "./auth/permissions";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,

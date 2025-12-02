@@ -142,7 +142,7 @@ print(";")
 print("")
 
 # type for all possible resources and fields the permissions refer to (permission targets)
-targets = {p.rsplit(".", 1)[0] for p in all_permissions}
+targets = sorted({p.rsplit(".", 1)[0] for p in all_permissions})
 print("export type PermissionTarget =", end="")
 for t in targets:
     print(f'\n  | "{t}"', end="")
@@ -150,7 +150,7 @@ print(";")
 print("")
 
 # type for all possible operations the permissions allow
-operations = {p.split(".")[-1] for p in all_permissions}
+operations = sorted({p.split(".")[-1] for p in all_permissions})
 print("export type PermissionOperation =", end="")
 for op in operations:
     print(f'\n  | "{op}"', end="")
@@ -159,7 +159,10 @@ print("")
 
 print("""\
 export type Permissions = {
-  allow: (target: PermissionTarget, operation: PermissionOperation) => boolean;
+  allow: (
+    _target: PermissionTarget,
+    _operation: PermissionOperation,
+  ) => boolean;
 };
 """)
 
