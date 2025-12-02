@@ -16,11 +16,7 @@ export const EntityClientInput = () => {
   const record = { ...actualRecord, ...overrideRecord };
 
   return (
-    <SimpleForm
-      record={record}
-      maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled />}
-    >
+    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
       <InputStack>
         <AutocompleteReferenceInput
           source="entity_id"

@@ -17,6 +17,7 @@ import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
 import { useMemo } from "react";
+import { countDefinedValues } from "../../util";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -38,6 +39,8 @@ const filterRecord = ({
 // common layout to create and edit pages
 export const ControllableUnitServiceProviderInput = () => {
   const { state: overrideRecord } = useLocation();
+  const hasOverride =
+    countDefinedValues(filterRecord({ ...overrideRecord })) > 0;
   const actualRecord = useRecordContext();
 
   // priority to the restored values if they exist, otherwise normal edit mode
@@ -76,7 +79,7 @@ export const ControllableUnitServiceProviderInput = () => {
          we will apply are already brought into the fields by the state passed
          into the restore button. So the save button is disabled, but we still
          want to be able to hit it right away after clicking restore. */
-      toolbar={<Toolbar saveAlwaysEnabled />}
+      toolbar={<Toolbar saveAlwaysEnabled={hasOverride} />}
     >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
