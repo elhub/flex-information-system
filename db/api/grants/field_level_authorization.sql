@@ -5428,7 +5428,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5443,7 +5442,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5458,7 +5456,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5473,7 +5470,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5485,7 +5481,6 @@ TO flex_flexibility_information_system_operator;
 GRANT UPDATE (
     product_type_ids,
     status,
-    notes,
     qualified_at
 ) ON TABLE
 api.service_provider_product_application
@@ -5498,7 +5493,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5513,7 +5507,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5524,7 +5517,6 @@ TO flex_system_operator;
 -- changeset flex:api-grant-service-provider-product-application-so-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
     status,
-    notes,
     qualified_at
 ) ON TABLE
 api.service_provider_product_application
@@ -5546,7 +5538,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5568,7 +5559,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5589,7 +5579,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5607,7 +5596,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5625,7 +5613,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5643,7 +5630,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5661,7 +5647,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5679,7 +5664,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5697,7 +5681,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5715,7 +5698,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,

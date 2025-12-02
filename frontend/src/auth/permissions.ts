@@ -326,8 +326,6 @@ export type Permission =
   | "product_type.service.read"
   | "service_provider_product_application.create"
   | "service_provider_product_application.id.read"
-  | "service_provider_product_application.notes.read"
-  | "service_provider_product_application.notes.update"
   | "service_provider_product_application.product_type_ids.create"
   | "service_provider_product_application.product_type_ids.read"
   | "service_provider_product_application.product_type_ids.update"
@@ -372,7 +370,6 @@ export type Permission =
   | "service_provider_product_application_comment_history.service_provider_product_application_id.read"
   | "service_provider_product_application_comment_history.visibility.read"
   | "service_provider_product_application_history.id.read"
-  | "service_provider_product_application_history.notes.read"
   | "service_provider_product_application_history.product_type_ids.read"
   | "service_provider_product_application_history.qualified_at.read"
   | "service_provider_product_application_history.read"
@@ -1466,10 +1463,6 @@ export const permissionRefs = {
     id: {
       read: "service_provider_product_application.id.read",
     },
-    notes: {
-      read: "service_provider_product_application.notes.read",
-      update: "service_provider_product_application.notes.update",
-    },
     product_type_ids: {
       create: "service_provider_product_application.product_type_ids.create",
       read: "service_provider_product_application.product_type_ids.read",
@@ -1573,9 +1566,6 @@ export const permissionRefs = {
     read: "service_provider_product_application_history.read",
     id: {
       read: "service_provider_product_application_history.id.read",
-    },
-    notes: {
-      read: "service_provider_product_application_history.notes.read",
     },
     product_type_ids: {
       read: "service_provider_product_application_history.product_type_ids.read",
@@ -2679,7 +2669,6 @@ const permissions: Permissions = {
     "product_type.read",
     "product_type.service.read",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.qualified_at.read",
     "service_provider_product_application.read",
@@ -2710,7 +2699,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",
@@ -3181,7 +3169,6 @@ const permissions: Permissions = {
     "product_type.read",
     "product_type.service.read",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.qualified_at.read",
     "service_provider_product_application.read",
@@ -3212,7 +3199,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",
@@ -3683,7 +3669,6 @@ const permissions: Permissions = {
     "product_type.read",
     "product_type.service.read",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.qualified_at.read",
     "service_provider_product_application.read",
@@ -3714,7 +3699,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",
@@ -4348,8 +4332,6 @@ const permissions: Permissions = {
     "product_type.read",
     "product_type.service.read",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.notes.update",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.product_type_ids.update",
     "service_provider_product_application.qualified_at.read",
@@ -4391,7 +4373,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",
@@ -4954,7 +4935,6 @@ const permissions: Permissions = {
     "product_type.read",
     "product_type.service.read",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.qualified_at.read",
     "service_provider_product_application.read",
@@ -4985,7 +4965,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",
@@ -5588,7 +5567,6 @@ const permissions: Permissions = {
     "product_type.service.read",
     "service_provider_product_application.create",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
     "service_provider_product_application.product_type_ids.create",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.product_type_ids.update",
@@ -5631,7 +5609,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",
@@ -6179,8 +6156,6 @@ const permissions: Permissions = {
     "product_type.read",
     "product_type.service.read",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
-    "service_provider_product_application.notes.update",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.qualified_at.read",
     "service_provider_product_application.qualified_at.update",
@@ -6221,7 +6196,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",
@@ -6758,7 +6732,6 @@ const permissions: Permissions = {
     "product_type.read",
     "product_type.service.read",
     "service_provider_product_application.id.read",
-    "service_provider_product_application.notes.read",
     "service_provider_product_application.product_type_ids.read",
     "service_provider_product_application.qualified_at.read",
     "service_provider_product_application.read",
@@ -6789,7 +6762,6 @@ const permissions: Permissions = {
     "service_provider_product_application_comment_history.service_provider_product_application_id.read",
     "service_provider_product_application_comment_history.visibility.read",
     "service_provider_product_application_history.id.read",
-    "service_provider_product_application_history.notes.read",
     "service_provider_product_application_history.product_type_ids.read",
     "service_provider_product_application_history.qualified_at.read",
     "service_provider_product_application_history.read",

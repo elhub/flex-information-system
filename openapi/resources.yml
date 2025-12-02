@@ -1360,13 +1360,6 @@ resources:
           - not_qualified
           - qualified
         example: in_progress
-      notes:
-        description: Free text notes on the current product application status.
-        format: text
-        type: string
-        maxLength: 512
-        nullable: true
-        example: null
       qualified_at:
         description: When the product application was last validated.
         format: timestamp with time zone

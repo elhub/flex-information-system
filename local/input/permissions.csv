@@ -192,7 +192,6 @@ service_provider_product_application;service_provider_id;;R;R;R;R;R;R;RC;R;;;
 service_provider_product_application;system_operator_id;;R;R;R;R;R;R;RC;R;;;
 service_provider_product_application;product_type_ids;;R;R;R;RU;R;R;RCU;R;;;
 service_provider_product_application;status;;R;R;R;RU;R;RU;R;R;;;
-service_provider_product_application;notes;;R;R;R;RU;R;RU;R;R;;;
 service_provider_product_application;qualified_at;;R;R;R;RU;R;RU;R;R;;;
 service_provider_product_application;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_provider_product_application;recorded_by;;R;R;R;R;R;R;R;R;;;

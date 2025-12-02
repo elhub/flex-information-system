@@ -20,7 +20,6 @@ class ServiceProviderProductApplicationCreateRequest:
         Attributes:
             product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
             status (ServiceProviderProductApplicationStatus | Unset): The status of the application. Example: in_progress.
-            notes (None | str | Unset): Free text notes on the current product application status.
             qualified_at (None | str | Unset): When the product application was last validated. Example: 2022-08-08 12:00:00
                 CET.
             service_provider_id (int | Unset): Reference to the service provider. Example: 18.
@@ -29,7 +28,6 @@ class ServiceProviderProductApplicationCreateRequest:
 
     product_type_ids: list[int] | Unset = UNSET
     status: ServiceProviderProductApplicationStatus | Unset = UNSET
-    notes: None | str | Unset = UNSET
     qualified_at: None | str | Unset = UNSET
     service_provider_id: int | Unset = UNSET
     system_operator_id: int | Unset = UNSET
@@ -43,12 +41,6 @@ class ServiceProviderProductApplicationCreateRequest:
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
-        notes: None | str | Unset
-        if isinstance(self.notes, Unset):
-            notes = UNSET
-        else:
-            notes = self.notes
 
         qualified_at: None | str | Unset
         if isinstance(self.qualified_at, Unset):
@@ -67,8 +59,6 @@ class ServiceProviderProductApplicationCreateRequest:
             field_dict["product_type_ids"] = product_type_ids
         if status is not UNSET:
             field_dict["status"] = status
-        if notes is not UNSET:
-            field_dict["notes"] = notes
         if qualified_at is not UNSET:
             field_dict["qualified_at"] = qualified_at
         if service_provider_id is not UNSET:
@@ -90,15 +80,6 @@ class ServiceProviderProductApplicationCreateRequest:
         else:
             status = ServiceProviderProductApplicationStatus(_status)
 
-        def _parse_notes(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        notes = _parse_notes(d.pop("notes", UNSET))
-
         def _parse_qualified_at(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -115,7 +96,6 @@ class ServiceProviderProductApplicationCreateRequest:
         service_provider_product_application_create_request = cls(
             product_type_ids=product_type_ids,
             status=status,
-            notes=notes,
             qualified_at=qualified_at,
             service_provider_id=service_provider_id,
             system_operator_id=system_operator_id,

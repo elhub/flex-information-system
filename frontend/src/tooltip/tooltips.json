@@ -180,7 +180,6 @@
         "system_operator_id": "Reference to the system operator.",
         "product_type_ids": "References to the product types.",
         "status": "The status of the application.",
-        "notes": "Free text notes on the current product application status.",
         "qualified_at": "When the product application was last validated."
     },
     "service_provider_product_application_comment": {
