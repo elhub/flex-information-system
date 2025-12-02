@@ -1,6 +1,5 @@
 import {
   AutocompleteInput,
-  AutocompleteInputProps,
   ReferenceInput,
   ReferenceInputBaseProps,
   ReferenceInputProps,
