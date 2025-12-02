@@ -3134,7 +3134,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3148,7 +3147,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3162,7 +3160,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3184,7 +3181,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3206,7 +3202,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3220,7 +3215,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3231,7 +3225,6 @@ TO flex_system_operator;
 -- changeset flex:api-grant-service-providing-group-grid-prequalification-so-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
     status,
-    notes,
     prequalified_at
 ) ON TABLE
 api.service_providing_group_grid_prequalification
@@ -3243,7 +3236,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3257,7 +3249,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3277,7 +3268,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3294,7 +3284,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3311,7 +3300,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3328,7 +3316,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3345,7 +3332,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3362,7 +3348,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3379,7 +3364,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3396,7 +3380,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,

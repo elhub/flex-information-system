@@ -1500,14 +1500,6 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_grid_prequalification_status"
                     },
-                    "notes": {
-                        "description": "Free text notes on the current prequalification status.",
-                        "format": "text",
-                        "type": "string",
-                        "maxLength": 512,
-                        "nullable": true,
-                        "example": null
-                    },
                     "prequalified_at": {
                         "description": "When the current grid prequalification was last approved.",
                         "format": "timestamp with time zone",

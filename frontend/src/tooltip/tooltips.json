@@ -59,7 +59,6 @@
         "service_providing_group_id": "Reference to the service providing group whose grid prequalification is tracked by the current resource.",
         "impacted_system_operator_id": "Reference to the `party` that is the impacted system operator.",
         "status": "The status of the grid prequalification for this service providing group.",
-        "notes": "Free text notes on the current prequalification status.",
         "prequalified_at": "When the current grid prequalification was last approved."
     },
     "service_providing_group_grid_prequalification_comment": {

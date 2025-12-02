@@ -133,3 +133,34 @@ EXECUTE FUNCTION utils.check_timestamp_on_status_update(
     '{validated}',
     '{validation_failed}'
 );
+
+-- changeset flex:controllable-unit-status-check-technical-resources-on-activation-function runOnChange:true endDelimiter:--
+-- CU-VAL004
+CREATE OR REPLACE FUNCTION
+controllable_unit_check_technical_resources_on_activation()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM flex.technical_resource AS tr
+        WHERE tr.controllable_unit_id = NEW.id
+    ) THEN
+        RAISE EXCEPTION
+            'Cannot activate controllable unit with no technical resources.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:controllable-unit-status-check-technical-resources-on-activation-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+controllable_unit_status_check_technical_resources_on_activation
+AFTER UPDATE ON controllable_unit
+FOR EACH ROW
+WHEN (OLD.status IS DISTINCT FROM NEW.status AND NEW.status = 'active') -- noqa
+EXECUTE FUNCTION controllable_unit_check_technical_resources_on_activation();

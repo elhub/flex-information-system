@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
             'not_approved'
         )
     ),
-    notes text NULL CHECK (char_length(notes) <= 512),
     prequalified_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'

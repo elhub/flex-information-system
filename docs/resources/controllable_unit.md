@@ -96,6 +96,7 @@ can only be edited by a FIS operator.
 | CU-VAL001           | If both `minimum_duration` and `maximum_duration` are specified, then the minimum duration must be lower than the maximum duration. | DONE   |
 | CU-VAL002           | If `grid_validation_status` is set to `validated`, then `validated_at` must already be specified in the resource or the request.    | DONE   |
 | CU-VAL003           | If `grid_validation_status` is set to `validation_failed`, then `validated_at` must be unset in the resource or by the request.     | DONE   |
+| CU-VAL004           | The controllable unit must have at least one technical resource for its status to be set to `active`.                               | DONE   |
 
 ## Notifications
 

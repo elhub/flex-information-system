@@ -2,8 +2,7 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:service-providing-group-grid-prequalification-comment-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS
-service_providing_group_grid_prequalification_comment (
+CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_providing_group_grid_prequalification_id bigint NOT NULL,
     visibility text NOT NULL DEFAULT 'same_party',

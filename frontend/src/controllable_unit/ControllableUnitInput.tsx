@@ -70,7 +70,7 @@ export const ControllableUnitInput = () => {
           <AutocompleteReferenceInput
             source="accounting_point_id"
             reference="accounting_point"
-            field="business_id"
+            fieldName="business_id"
           />
           <TextInput source="grid_node_id" />
         </InputStack>
