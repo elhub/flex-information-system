@@ -374,8 +374,7 @@ Allocation can be done with:
 ### Verification
 
 Verification is a quality assurance activity done by the system operator to ensure
-that the time series used for quantification and the delivered services are of sufficient
-quality.
+that the delivered service is of sufficient quality.
 
 Possible types of verification are:
 
@@ -385,8 +384,8 @@ accordance with the product requirements.
 - **Baseline quality** - check if the baseline is of sufficient quality based on
 the actual measurements.
 
-- **Consistency checks** - check if the quantified volume is equal to the activated
-volume.
+- **Consistency checks** - check delivery and bid volume over time to see if there
+are repeated discrepancies or systematic errors.
 
 Verification is targeted on the SPG level, where service is delivered.
 
