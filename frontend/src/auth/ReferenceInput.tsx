@@ -17,19 +17,20 @@ type AutocompleteReferenceInputProps = ReferenceInputBaseProps & {
   disabled?: boolean;
   readOnly?: boolean;
   validate?: ReferenceInputProps["validate"];
-}
+  fieldName?: string;
+};
 
 export const AutocompleteReferenceInput = (
   props: AutocompleteReferenceInputProps,
 ) => {
-  const { field, disabled, readOnly, source, label, ...rest } = props;
+  const { disabled, readOnly, source, label, fieldName, ...rest } = props;
 
   const record = useRecordContext();
   const defaultValue = record ? record[source] : undefined;
 
   const filterToQuery = (searchText: string) => {
     const filter: any = {};
-    filter[`${field ?? "name"}@ilike`] = `%${searchText}%`;
+    filter[`${fieldName ?? "name"}@ilike`] = `%${searchText}%`;
     return filter;
   };
 
@@ -45,16 +46,17 @@ export const AutocompleteReferenceInput = (
         readOnly={readOnly}
         filterToQuery={filterToQuery}
         label={label}
-        field={field}
       />
     </ReferenceInput>
   );
 };
 
-type PartyReferenceInputProps = Omit<AutocompleteReferenceInputProps, "reference"> & {
+type PartyReferenceInputProps = Omit<
+  AutocompleteReferenceInputProps,
+  "reference"
+> & {
   noTypeFilter?: boolean;
 };
-
 
 // version specialised to fields referencing party (optional type filtering)
 export const PartyReferenceInput = (props: PartyReferenceInputProps) => {

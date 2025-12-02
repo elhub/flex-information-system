@@ -18,7 +18,6 @@ export const PartyList = () => {
       key="id"
       source="id"
       label="Name"
-      reference="party"
       noTypeFilter
       alwaysOn
     />,
