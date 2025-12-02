@@ -16,6 +16,8 @@ from flex.models import (
     ControllableUnitSuspensionCommentResponse,
     ControllableUnitSuspensionCommentVisibility,
     ControllableUnitSuspensionCommentHistoryResponse,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
     ErrorMessage,
 )
 from flex.models import (
@@ -37,6 +39,7 @@ from flex.api.controllable_unit import (
     create_controllable_unit,
     update_controllable_unit,
 )
+from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -69,6 +72,15 @@ def data():
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
+
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-TR-FOR-ACTIVATION",
+            controllable_unit_id=cast(int, cu.id),
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
 
     u = update_controllable_unit.sync(
         client=client_fiso,
