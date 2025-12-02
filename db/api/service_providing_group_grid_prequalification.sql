@@ -8,7 +8,6 @@ WITH (security_invoker = true) AS (
     SELECT
         id,
         impacted_system_operator_id,
-        notes,
         prequalified_at,
         service_providing_group_id,
         status,
@@ -26,7 +25,6 @@ WITH (
         id,
         id AS service_providing_group_grid_prequalification_id,
         impacted_system_operator_id,
-        notes,
         prequalified_at,
         service_providing_group_id,
         status,
@@ -40,7 +38,6 @@ WITH (
         history_id AS id,
         id AS service_providing_group_grid_prequalification_id,
         impacted_system_operator_id,
-        notes,
         prequalified_at,
         service_providing_group_id,
         status,

@@ -493,13 +493,6 @@ resources:
           - approved
           - not_approved
         example: in_progress
-      notes:
-        description: Free text notes on the current prequalification status.
-        format: text
-        type: string
-        maxLength: 512
-        nullable: true
-        example: null
       prequalified_at:
         description: When the current grid prequalification was last approved.
         format: timestamp with time zone

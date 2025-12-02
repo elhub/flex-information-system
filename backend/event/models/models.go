@@ -379,7 +379,6 @@ type ApiServiceProvidingGroupGridPrequalification struct {
 	ServiceProvidingGroupID  int
 	ImpactedSystemOperatorID int
 	Status                   string
-	Notes                    *string
 	PrequalifiedAt           pgtype.Timestamptz
 	RecordedBy               int
 	RecordedAt               pgtype.Timestamptz
@@ -416,7 +415,6 @@ type ApiServiceProvidingGroupGridPrequalificationHistory struct {
 	ServiceProvidingGroupID                     int
 	ImpactedSystemOperatorID                    int
 	Status                                      string
-	Notes                                       *string
 	PrequalifiedAt                              pgtype.Timestamptz
 	RecordedBy                                  int
 	RecordedAt                                  pgtype.Timestamptz
