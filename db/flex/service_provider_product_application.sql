@@ -35,9 +35,6 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application (
             'qualified'
         )
     ),
-    notes text NULL CHECK (
-        char_length(notes) <= 512
-    ),
     qualified_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'

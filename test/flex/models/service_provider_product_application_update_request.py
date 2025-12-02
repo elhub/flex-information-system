@@ -20,14 +20,12 @@ class ServiceProviderProductApplicationUpdateRequest:
         Attributes:
             product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
             status (ServiceProviderProductApplicationStatus | Unset): The status of the application. Example: in_progress.
-            notes (None | str | Unset): Free text notes on the current product application status.
             qualified_at (None | str | Unset): When the product application was last validated. Example: 2022-08-08 12:00:00
                 CET.
     """
 
     product_type_ids: list[int] | Unset = UNSET
     status: ServiceProviderProductApplicationStatus | Unset = UNSET
-    notes: None | str | Unset = UNSET
     qualified_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -39,12 +37,6 @@ class ServiceProviderProductApplicationUpdateRequest:
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
-        notes: None | str | Unset
-        if isinstance(self.notes, Unset):
-            notes = UNSET
-        else:
-            notes = self.notes
 
         qualified_at: None | str | Unset
         if isinstance(self.qualified_at, Unset):
@@ -59,8 +51,6 @@ class ServiceProviderProductApplicationUpdateRequest:
             field_dict["product_type_ids"] = product_type_ids
         if status is not UNSET:
             field_dict["status"] = status
-        if notes is not UNSET:
-            field_dict["notes"] = notes
         if qualified_at is not UNSET:
             field_dict["qualified_at"] = qualified_at
 
@@ -78,15 +68,6 @@ class ServiceProviderProductApplicationUpdateRequest:
         else:
             status = ServiceProviderProductApplicationStatus(_status)
 
-        def _parse_notes(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        notes = _parse_notes(d.pop("notes", UNSET))
-
         def _parse_qualified_at(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -99,7 +80,6 @@ class ServiceProviderProductApplicationUpdateRequest:
         service_provider_product_application_update_request = cls(
             product_type_ids=product_type_ids,
             status=status,
-            notes=notes,
             qualified_at=qualified_at,
         )
 

@@ -2,7 +2,6 @@ import {
   required,
   SelectInput,
   SimpleForm,
-  TextInput,
   useGetIdentity,
   useGetList,
   useRecordContext,
@@ -127,12 +126,6 @@ export const ServiceProviderProductApplicationInput = () => {
               "not_qualified",
               "qualified",
             ]}
-          />
-          <TextInput
-            source="notes"
-            multiline={true}
-            minRows={3}
-            sx={{ minWidth: { xs: 300, md: 500 } }}
           />
           <DateTimeInput source="qualified_at" />
         </InputStack>

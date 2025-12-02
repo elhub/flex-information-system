@@ -34,7 +34,6 @@ application is updated as the process and lifecycle of the application progresse
 | <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a>    | Reference to the system operator.                                  | bigint<br/>Required<br/>Non-updatable                                                                                    | [party.id](party.md#field-id)               |
 | <a name="field-product_type_ids" href="#field-product_type_ids">product_type_ids</a>          | References to the product types.                                   | <br/>Required<br/>Array of bigint                                                                                        | [product_type.id](product_type.md#field-id) |
 | <a name="field-status" href="#field-status">status</a>                                        | The status of the application.                                     | text<br/>One of: `requested`, `in_progress`, `communication_test`, `not_qualified`, `qualified`<br/>Default: `requested` |                                             |
-| <a name="field-notes" href="#field-notes">notes</a>                                           | Free text notes on the current product application status.         | text<br/>Max length: `512`                                                                                               |                                             |
 | <a name="field-qualified_at" href="#field-qualified_at">qualified_at</a>                      | When the product application was last validated.                   | timestamp with time zone                                                                                                 |                                             |
 | <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                         | When the resource was recorded (created or updated) in the system. | timestamp with time zone<br/>Read only                                                                                   |                                             |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                         | The identity that recorded the resource.                           | bigint<br/>Read only                                                                                                     |                                             |
@@ -126,7 +125,6 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | system_operator_id  |      | R   | R  | R  | R    | R  | R  | RC  | R  |     |
 | product_type_ids    |      | R   | R  | R  | RU   | R  | R  | RCU | R  |     |
 | status              |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
-| notes               |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
 | qualified_at        |      | R   | R  | R  | RU   | R  | RU | R   | R  |     |
 | recorded_at         |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
 | recorded_by         |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
