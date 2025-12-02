@@ -92,7 +92,7 @@ def test_sppa_fiso(sts):
         client=client_fiso,
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
-            notes="test",
+            status=ServiceProviderProductApplicationStatus.IN_PROGRESS,
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -331,7 +331,7 @@ def test_sppa_so(sts):
         client=client_so,
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
-            notes="test edited by SO",
+            status=ServiceProviderProductApplicationStatus.IN_PROGRESS
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -343,7 +343,7 @@ def test_sppa_so(sts):
         client=client_so,
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
-            notes="test edited by SO",
+            status=ServiceProviderProductApplicationStatus.IN_PROGRESS
         ),
     )
     assert isinstance(u, ErrorMessage)

@@ -271,7 +271,6 @@ type ApiServiceProviderProductApplication struct {
 	SystemOperatorID  int
 	ProductTypeIds    []int
 	Status            string
-	Notes             *string
 	QualifiedAt       pgtype.Timestamptz
 	RecordedBy        int
 	RecordedAt        pgtype.Timestamptz
@@ -309,7 +308,6 @@ type ApiServiceProviderProductApplicationHistory struct {
 	SystemOperatorID                    int
 	ProductTypeIds                      []int
 	Status                              string
-	Notes                               *string
 	QualifiedAt                         pgtype.Timestamptz
 	RecordedBy                          int
 	RecordedAt                          pgtype.Timestamptz

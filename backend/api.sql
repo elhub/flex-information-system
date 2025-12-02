@@ -401,7 +401,6 @@ CREATE TABLE api.service_provider_product_application (
     system_operator_id bigint NOT NULL,
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     qualified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
@@ -413,7 +412,6 @@ CREATE TABLE api.service_provider_product_application_history (
     system_operator_id bigint NOT NULL,
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     qualified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
