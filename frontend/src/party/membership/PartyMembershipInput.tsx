@@ -35,7 +35,7 @@ export const PartyMembershipInput = () => {
           Basic information
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <PartyReferenceInput source="party_id" noFilter readOnly />
+          <PartyReferenceInput source="party_id" readOnly />
           {overrideRecord?.showTechnicalEntityID ? (
             <NumberInput source="entity_id" readOnly />
           ) : (
