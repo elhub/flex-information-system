@@ -205,7 +205,7 @@ pytest *args: (_venv)
     {{args}}
 
 # Test migrations by comparing main branch state with current branch
-test-migrations:
+test-migrations revision="main":
     #!/usr/bin/env bash
     set -e
 
@@ -214,7 +214,7 @@ test-migrations:
     WORKTREE_DIR=$(mktemp -d)
 
     echo "Creating git worktree for main branch at $WORKTREE_DIR"
-    git worktree add "$WORKTREE_DIR" main
+    git worktree add "$WORKTREE_DIR" {{ revision }}
     ln -sf "$(pwd)/.bin" "$WORKTREE_DIR/.bin"
     ln -sf "$(pwd)/test/keys" "$WORKTREE_DIR/test/keys"
 
@@ -227,7 +227,7 @@ test-migrations:
     trap cleanup EXIT
 
     # Run reset in the worktree
-    echo "Running 'just reload' on main branch..."
+    echo "Running 'just reload' on {{ revision }}..."
     cd "$WORKTREE_DIR"
     just reload
 
