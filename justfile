@@ -212,7 +212,10 @@ test-migrations revision="main":
     CURRENT_BRANCH=$(git branch --show-current)
     WORKTREE_DIR=$(mktemp -d)
 
-    echo "Creating git worktree for main branch at $WORKTREE_DIR"
+    echo "Testing that database loads with current state"
+    just reload
+
+    echo "Creating git worktree for {{ revision }} branch at $WORKTREE_DIR"
     git worktree add "$WORKTREE_DIR" {{ revision }}
     ln -sf "$(pwd)/.bin" "$WORKTREE_DIR/.bin"
     ln -sf "$(pwd)/test/keys" "$WORKTREE_DIR/test/keys"
