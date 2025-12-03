@@ -204,6 +204,40 @@ pytest *args: (_venv)
     -v test/security_token_service.py \
     {{args}}
 
+# Test migrations by comparing main branch state with current branch
+test-migrations:
+    #!/usr/bin/env bash
+    set -e
+
+    # Store current branch
+    CURRENT_BRANCH=$(git branch --show-current)
+    WORKTREE_DIR=$(mktemp -d)
+
+    echo "Creating git worktree for main branch at $WORKTREE_DIR"
+    git worktree add "$WORKTREE_DIR" main
+    ln -sf "$(pwd)/.bin" "$WORKTREE_DIR/.bin"
+    ln -sf "$(pwd)/test/keys" "$WORKTREE_DIR/test/keys"
+
+    # Cleanup function
+    cleanup() {
+        echo "Cleaning up worktree..."
+        echo "Removing worktree directory $WORKTREE_DIR"
+        git worktree remove $WORKTREE_DIR --force
+    }
+    trap cleanup EXIT
+
+    # Run reset in the worktree
+    echo "Running 'just reload' on main branch..."
+    cd "$WORKTREE_DIR"
+    just reload
+
+    # Return to original directory and run load
+    cd -
+    echo "Running 'just load' on $CURRENT_BRANCH..."
+    just load
+
+    echo "Migration test completed successfully!"
+
 megalinter:
     npx mega-linter-runner
 
