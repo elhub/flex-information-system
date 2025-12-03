@@ -1,8 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-grid-prequalification-create runOnChange:false endDelimiter:--
--- validCheckSum: 9:76cd8e2f4596c1bd2e019d353f952dba
+-- changeset flex:service-providing-group-grid-prequalification-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_providing_group_id bigint NOT NULL,
