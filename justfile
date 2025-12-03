@@ -204,12 +204,11 @@ pytest *args: (_venv)
     -v test/security_token_service.py \
     {{args}}
 
-# Test migrations by comparing main branch state with current branch
+# Test migrations resetting the database to a given revision, and running the migrations on the current branch
 test-migrations revision="main":
     #!/usr/bin/env bash
     set -e
 
-    # Store current branch
     CURRENT_BRANCH=$(git branch --show-current)
     WORKTREE_DIR=$(mktemp -d)
 
@@ -218,7 +217,6 @@ test-migrations revision="main":
     ln -sf "$(pwd)/.bin" "$WORKTREE_DIR/.bin"
     ln -sf "$(pwd)/test/keys" "$WORKTREE_DIR/test/keys"
 
-    # Cleanup function
     cleanup() {
         echo "Cleaning up worktree..."
         echo "Removing worktree directory $WORKTREE_DIR"
