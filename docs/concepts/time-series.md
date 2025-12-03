@@ -306,9 +306,9 @@ produce energy for the periods it is part of a reservation contract.
 
 ## Quantification and verification
 
-After the delivery of a service, it must establish if it was delivered according
-to the bid and the product requirements. We conceptually split this task in two,
-mainly based on why we do it and how often it is done. We call these activities
+After the delivery of a service, it must be established if the service was delivered
+according to the bid and the product requirements. We conceptually split this task
+in two, mainly based on why we do it and how often it is done. We call these activities
 *quantification* and *verification*.
 
 The activites *can* be equal in practice, but different in what we are trying to
@@ -318,18 +318,18 @@ more detail.
 
 | Aspect    | Quantification                  | Verification                                                          |
 |-----------|---------------------------------|-----------------------------------------------------------------------|
-| Purpose   | Settlement of service           | Quality assurance of service delivery or in stead of prequalification |
+| Purpose   | Settlement of service           | Quality assurance of service delivery or instead of prequalification  |
 | Frequency | After each and every activation | Ad-hoc or at certain intervals                                        |
 | Level     | SPG and AP/CU                   | SPG                                                                   |
 | Target    | Volume                          | Volume and quality                                                    |
-| Methods   | Can use simplified methods      | Usually more detailed and thorough                                    |
+| Methods   | Can use simplified methods      | Usually more detailed and thorough methods                            |
 
 > [!NOTE]
 >
 > How to do quantification and verification will vary between different products
 > *and service providing groups*. Sometimes, e.g. when the the group is "simple"
 > and the quantification method is based on trusted data and a detailed method,
-> then quantification and verification is one and the same activity.
+> then quantification and verification is the same activity.
 
 ### Quantification
 
@@ -409,7 +409,7 @@ challenges are
   energy consumption on an accounting point
 - finding and applying the correct method to verify the service delivery
 
-Verification can be done for every trade or activation, but given the challenges
+Verification can be done for every trade or activation but, given the challenges,
 it might be that it is feasible to only do it every now and then. This could for
 instance be once at application time (possibly to replace prequalification) and
 then ad-hoc or at certain intervals during the lifetime of the service providing
