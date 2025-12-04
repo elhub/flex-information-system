@@ -311,7 +311,7 @@ according to the bid and the product requirements. We conceptually split this ta
 in two, mainly based on why we do it and how often it is done. We call these activities
 *quantification* and *verification*.
 
-The activites *can* be equal in practice, but different in what we are trying to
+The activities *can* be equal in practice, but different in what we are trying to
 achieve. The following table summarizes the key reasons why it is useful to
 think about it as two things. The following two chapters we describe this in
 more detail.
