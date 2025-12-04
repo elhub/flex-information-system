@@ -17,6 +17,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FieldStack } from "../../auth";
+import zIndex from "@mui/material/styles/zIndex";
+import useLocationState from "../../hooks/useLocationState";
+import {
+  CallControllableUnitLookupData,
+  ControllableUnitLookupResponse,
+  ControllableUnitResponse,
+} from "../../generated-client";
 
 // button to redirect to the CU-SP create page with the CU ID pre-filled
 const CreateCUSPButton = () => {
@@ -27,7 +34,7 @@ const CreateCUSPButton = () => {
       to={`/controllable_unit_service_provider/create`}
       startIcon={<BookmarkAddIcon />}
       // input a CU ID instead of from a list of names (cf. CUSP input)
-      state={{ controllable_unit_id: record?.id, cuIDAsNumber: true }}
+      state={{ cuIDAsNumber: true }}
       label="Manage this controllable unit"
     />
   );
@@ -91,9 +98,7 @@ const ControllableUnitLookupResultItem = () => {
 
 // page to display results of controllable unit lookup operation
 export const ControllableUnitLookupResult = () => {
-  const {
-    state: { result },
-  } = useLocation();
+  const result = useLocationState<ControllableUnitLookupResponse>();
 
   return (
     <RecordContextProvider value={result}>

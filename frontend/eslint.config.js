@@ -26,7 +26,7 @@ module.exports = defineConfig([
         "prettier",
       ),
     ),
-
+    ignores: ["**/generated-client/**"],
     languageOptions: {
       parser: tsParser,
 

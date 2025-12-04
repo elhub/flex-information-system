@@ -365,7 +365,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client openapi-to-tooltips
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend openapi-to-tooltips
 
 template-to-openapi:
     #!/usr/bin/env bash
@@ -474,7 +474,7 @@ openapi-to-md:
 
     done
 
-openapi-client:
+openapi-client-test:
     #!/usr/bin/env bash
     set -euo pipefail
     mkdir -p ./out
@@ -496,6 +496,12 @@ openapi-client:
         --output-path ./out/openapi-client \
         --config ./openapi/openapi-client-config.yml
     mv ./out/openapi-client/flex test/flex
+
+openapi-client-frontend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd frontend
+    npx openapi-ts
 
 openapi-to-tooltips:
     #!/usr/bin/env bash

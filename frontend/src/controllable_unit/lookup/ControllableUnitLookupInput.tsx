@@ -13,6 +13,8 @@ import { apiURL } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
 import { useEffect } from "react";
+import { client } from "../../generated-client/client.gen";
+import { callControllableUnitLookup } from "../../generated-client";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -30,23 +32,21 @@ const Toolbar = () => {
         body[key] = values[key];
       }
     }
-
-    const response = await fetch(apiURL + "/controllable_unit/lookup", {
-      method: "POST",
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify(body),
+    const response = await callControllableUnitLookup({
+      body: {
+        end_user: body.end_user,
+        accounting_point: body.accounting_point,
+        controllable_unit: body.controllable_unit,
+      },
     });
-    const lookupResult = await response.json();
 
-    if (!response.ok) {
+    if (response.error) {
       // error, just notify the user like in the other pages
-      notify(lookupResult.message, { type: "error" });
+      notify(response.error.message, { type: "error" });
     } else {
       // navigate to the dedicated show page for the result
       navigate("/controllable_unit/lookup/result", {
-        state: { result: lookupResult },
+        state: response.data,
       });
     }
   };
