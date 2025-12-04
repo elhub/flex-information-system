@@ -47,3 +47,10 @@ databaseChangeLog:
   - include:
       file: ./users.sql
       relativeToChangelogFile: true
+  # make sure the changes made by Liquibase are exposed in PostgREST
+  - changeSet:
+      id: notify-postgrest
+      author: flex
+      runAlways: true
+      changes:
+        - sql: NOTIFY pgrst, 'reload schema'
