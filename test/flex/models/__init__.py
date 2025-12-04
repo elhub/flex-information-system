@@ -224,6 +224,7 @@ from .service_provider_product_suspension_reason import ServiceProviderProductSu
 from .service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
 from .service_provider_product_suspension_update_request import ServiceProviderProductSuspensionUpdateRequest
 from .service_providing_group import ServiceProvidingGroup
+from .service_providing_group_bidding_zone import ServiceProvidingGroupBiddingZone
 from .service_providing_group_create_data import ServiceProvidingGroupCreateData
 from .service_providing_group_create_request import ServiceProvidingGroupCreateRequest
 from .service_providing_group_grid_prequalification import ServiceProvidingGroupGridPrequalification
@@ -533,6 +534,7 @@ __all__ = (
     "ServiceProviderProductSuspensionResponse",
     "ServiceProviderProductSuspensionUpdateRequest",
     "ServiceProvidingGroup",
+    "ServiceProvidingGroupBiddingZone",
     "ServiceProvidingGroupCreateData",
     "ServiceProvidingGroupCreateRequest",
     "ServiceProvidingGroupGridPrequalification",

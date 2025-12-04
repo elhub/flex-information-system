@@ -6,6 +6,7 @@ from typing import Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.service_providing_group_bidding_zone import ServiceProvidingGroupBiddingZone
 from ..models.service_providing_group_status import ServiceProvidingGroupStatus
 from ..types import UNSET, Unset
 
@@ -19,6 +20,8 @@ class ServiceProvidingGroupHistoryResponse:
     Attributes:
         service_providing_group_id (int): Reference to the resource that was updated. Example: 48.
         name (str | Unset): Free text name of the service providing group. Example: Batteries #09.
+        bidding_zone (ServiceProvidingGroupBiddingZone | Unset): The bidding zone that restricts which CUs that can be
+            added to the group. Also known as scheduling area og price area for TSO. Example: NO3.
         status (ServiceProvidingGroupStatus | Unset): The status of the group. Example: active.
         service_provider_id (int | Unset): Reference to the `party` (service provider) managing the group. Example: 17.
         recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
@@ -32,6 +35,7 @@ class ServiceProvidingGroupHistoryResponse:
 
     service_providing_group_id: int
     name: str | Unset = UNSET
+    bidding_zone: ServiceProvidingGroupBiddingZone | Unset = UNSET
     status: ServiceProvidingGroupStatus | Unset = UNSET
     service_provider_id: int | Unset = UNSET
     recorded_at: str | Unset = UNSET
@@ -45,6 +49,10 @@ class ServiceProvidingGroupHistoryResponse:
         service_providing_group_id = self.service_providing_group_id
 
         name = self.name
+
+        bidding_zone: str | Unset = UNSET
+        if not isinstance(self.bidding_zone, Unset):
+            bidding_zone = self.bidding_zone.value
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
@@ -79,6 +87,8 @@ class ServiceProvidingGroupHistoryResponse:
         )
         if name is not UNSET:
             field_dict["name"] = name
+        if bidding_zone is not UNSET:
+            field_dict["bidding_zone"] = bidding_zone
         if status is not UNSET:
             field_dict["status"] = status
         if service_provider_id is not UNSET:
@@ -102,6 +112,13 @@ class ServiceProvidingGroupHistoryResponse:
         service_providing_group_id = d.pop("service_providing_group_id")
 
         name = d.pop("name", UNSET)
+
+        _bidding_zone = d.pop("bidding_zone", UNSET)
+        bidding_zone: ServiceProvidingGroupBiddingZone | Unset
+        if isinstance(_bidding_zone, Unset):
+            bidding_zone = UNSET
+        else:
+            bidding_zone = ServiceProvidingGroupBiddingZone(_bidding_zone)
 
         _status = d.pop("status", UNSET)
         status: ServiceProvidingGroupStatus | Unset
@@ -139,6 +156,7 @@ class ServiceProvidingGroupHistoryResponse:
         service_providing_group_history_response = cls(
             service_providing_group_id=service_providing_group_id,
             name=name,
+            bidding_zone=bidding_zone,
             status=status,
             service_provider_id=service_provider_id,
             recorded_at=recorded_at,

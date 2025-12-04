@@ -91,6 +91,7 @@ service_providing_group;;;;;;;;;;;;;R
 service_providing_group;id;;R;R;R;R;R;R;R;R;;;
 service_providing_group;name;;R;R;R;RCU;R;R;RCU;R;;;
 service_providing_group;service_provider_id;;R;R;R;RC;R;R;RC;R;;;
+service_providing_group;bidding_zone;;R;R;R;RC;R;R;RC;R;;;
 service_providing_group;status;;R;R;R;RU;R;R;RU;R;;;
 service_providing_group;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_providing_group;recorded_by;;R;R;R;R;R;R;R;R;;;

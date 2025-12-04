@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
     service_provider_party_type text GENERATED ALWAYS AS (
         'service_provider'
     ) STORED,
+    bidding_zone text NOT NULL,
     status text NOT NULL DEFAULT 'new' CHECK (
         status IN (
             'new',
@@ -22,10 +23,12 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
         localtimestamp, null, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
-
     CONSTRAINT fk_service_providing_group_service_provider_id FOREIGN KEY (
         service_provider_id, service_provider_party_type
     ) REFERENCES party (id, type),
+    CONSTRAINT check_service_providing_group_bidding_zone CHECK (
+        bidding_zone IN ('NO1', 'NO2', 'NO3', 'NO4', 'NO5')
+    ),
     CONSTRAINT check_service_providing_group_name_length CHECK (
         (char_length(name) <= 128)
     )
