@@ -17,13 +17,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FieldStack } from "../../auth";
-import zIndex from "@mui/material/styles/zIndex";
-import useLocationState from "../../hooks/useLocationState";
-import {
-  CallControllableUnitLookupData,
-  ControllableUnitLookupResponse,
-  ControllableUnitResponse,
-} from "../../generated-client";
+import { zControllableUnitLookupResponse } from "../../generated-client/zod.gen";
 
 // button to redirect to the CU-SP create page with the CU ID pre-filled
 const CreateCUSPButton = () => {
@@ -98,10 +92,14 @@ const ControllableUnitLookupResultItem = () => {
 
 // page to display results of controllable unit lookup operation
 export const ControllableUnitLookupResult = () => {
-  const result = useLocationState<ControllableUnitLookupResponse>();
+  const {
+    state: { result },
+  } = useLocation();
+  const controllableUnitLookUpResult =
+    zControllableUnitLookupResponse.parse(result);
 
   return (
-    <RecordContextProvider value={result}>
+    <RecordContextProvider value={controllableUnitLookUpResult}>
       <Stack spacing={2}>
         <Box m={1} />
         <Title title="Controllable Unit Lookup Result" />
@@ -144,13 +142,13 @@ export const ControllableUnitLookupResult = () => {
             </Box>
           </Card>
         </Stack>
-        {result.controllable_units.length == 0 ? (
+        {controllableUnitLookUpResult.controllable_units.length == 0 ? (
           <Typography variant="h6">No controllable units found</Typography>
         ) : (
           <>
             <Typography variant="h6">Controllable units found</Typography>
             <Stack spacing={2}>
-              {result.controllable_units.map((record: any) => (
+              {controllableUnitLookUpResult.controllable_units.map((record) => (
                 <RecordContextProvider key={record.id} value={record}>
                   <ControllableUnitLookupResultItem />
                 </RecordContextProvider>

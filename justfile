@@ -502,6 +502,7 @@ openapi-client-frontend:
     set -euo pipefail
     cd frontend
     npx openapi-ts
+    npx prettier --write src/generated-client
 
 openapi-to-tooltips:
     #!/usr/bin/env bash

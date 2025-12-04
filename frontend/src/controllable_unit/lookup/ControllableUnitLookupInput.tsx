@@ -9,11 +9,9 @@ import { Typography, Stack, Button, Box } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import UndoIcon from "@mui/icons-material/Undo";
-import { apiURL } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
 import { useEffect } from "react";
-import { client } from "../../generated-client/client.gen";
 import { callControllableUnitLookup } from "../../generated-client";
 
 const Toolbar = () => {
@@ -43,12 +41,12 @@ const Toolbar = () => {
     if (response.error) {
       // error, just notify the user like in the other pages
       notify(response.error.message, { type: "error" });
-    } else {
-      // navigate to the dedicated show page for the result
-      navigate("/controllable_unit/lookup/result", {
-        state: response.data,
-      });
+      return;
     }
+    // navigate to the dedicated show page for the result
+    return navigate("/controllable_unit/lookup/result", {
+      state: { result: response.data },
+    });
   };
 
   return (
