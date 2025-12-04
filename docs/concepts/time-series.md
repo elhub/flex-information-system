@@ -313,7 +313,7 @@ in two, mainly based on why we do it and how often it is done. We call these act
 
 The activities *can* be equal in practice, but different in what we are trying to
 achieve. The following table summarizes the key reasons why it is useful to
-think about it as two things. The following two chapters we describe this in
+think about it as two things. The following two chapters describe this in
 more detail.
 
 | Aspect    | Quantification                  | Verification                                                          |
