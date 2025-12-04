@@ -204,6 +204,41 @@ pytest *args: (_venv)
     -v test/security_token_service.py \
     {{args}}
 
+# Test migrations resetting the database to a given revision, and running the migrations on the current branch
+test-migrations revision="main":
+    #!/usr/bin/env bash
+    set -e
+
+    CURRENT_BRANCH=$(git branch --show-current)
+    WORKTREE_DIR=$(mktemp -d)
+
+    echo "Testing that database loads with current state"
+    just reload
+
+    echo "Creating git worktree for {{ revision }} branch at $WORKTREE_DIR"
+    git worktree add "$WORKTREE_DIR" {{ revision }}
+    ln -sf "$(pwd)/.bin" "$WORKTREE_DIR/.bin"
+    ln -sf "$(pwd)/test/keys" "$WORKTREE_DIR/test/keys"
+
+    cleanup() {
+        echo "Cleaning up worktree..."
+        echo "Removing worktree directory $WORKTREE_DIR"
+        git worktree remove $WORKTREE_DIR --force
+    }
+    trap cleanup EXIT
+
+    # Run reset in the worktree
+    echo "Running 'just reload' on {{ revision }}..."
+    cd "$WORKTREE_DIR"
+    just reload
+
+    # Return to original directory and run load
+    cd -
+    echo "Running 'just load' on $CURRENT_BRANCH..."
+    just load
+
+    echo "Migration test completed successfully!"
+
 megalinter:
     npx mega-linter-runner
 
