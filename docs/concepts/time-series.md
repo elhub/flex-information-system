@@ -327,7 +327,7 @@ more detail.
 > [!NOTE]
 >
 > How to do quantification and verification will vary between different products
-> *and service providing groups*. Sometimes, e.g. when the the group is "simple"
+> *and service providing groups*. Sometimes, e.g. when the group is "simple"
 > and the quantification method is based on trusted data and a detailed method,
 > then quantification and verification is the same activity.
 
