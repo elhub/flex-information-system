@@ -868,9 +868,9 @@ BEGIN
   );
 
   INSERT INTO flex.service_providing_group (
-    name, service_provider_id
+    name, service_provider_id, bidding_zone
   ) VALUES (
-    entity_first_name || ' SPG', sp_id
+    entity_first_name || ' SPG', sp_id, 'NO3'
   ) RETURNING id INTO spg_id;
 
   FOREACH asset_type in ARRAY ARRAY['Car Charger','Water Heater','Solar Panel']::text[]

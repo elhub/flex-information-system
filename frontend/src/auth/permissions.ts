@@ -311,6 +311,7 @@ export type PermissionTarget =
   | "service_provider_product_suspension_history.service_provider_id"
   | "service_provider_product_suspension_history.service_provider_product_suspension_id"
   | "service_providing_group"
+  | "service_providing_group.bidding_zone"
   | "service_providing_group.id"
   | "service_providing_group.name"
   | "service_providing_group.recorded_at"
@@ -384,6 +385,7 @@ export type PermissionTarget =
   | "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
   | "service_providing_group_grid_suspension_history.service_providing_group_id"
   | "service_providing_group_history"
+  | "service_providing_group_history.bidding_zone"
   | "service_providing_group_history.id"
   | "service_providing_group_history.name"
   | "service_providing_group_history.recorded_at"
@@ -1741,6 +1743,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -2061,6 +2067,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {
@@ -3815,6 +3825,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -4135,6 +4149,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {
@@ -5889,6 +5907,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -6209,6 +6231,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {
@@ -8395,6 +8421,14 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group",
       operation: "create",
     },
@@ -8855,6 +8889,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {
@@ -10784,6 +10822,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -11104,6 +11146,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {
@@ -13042,6 +13088,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -13464,6 +13514,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {
@@ -15568,6 +15622,14 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group",
       operation: "create",
     },
@@ -15972,6 +16034,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {
@@ -17853,6 +17919,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.bidding_zone",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.id",
       operation: "read",
     },
@@ -18173,6 +18243,10 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_suspension_history.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
     {

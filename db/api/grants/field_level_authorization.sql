@@ -2587,6 +2587,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2599,6 +2600,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2611,6 +2613,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2621,7 +2624,8 @@ TO flex_end_user;
 -- changeset flex:api-grant-service-providing-group-fiso-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     name,
-    service_provider_id
+    service_provider_id,
+    bidding_zone
 ) ON TABLE
 api.service_providing_group
 TO flex_flexibility_information_system_operator;
@@ -2631,6 +2635,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2651,6 +2656,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2663,6 +2669,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2673,7 +2680,8 @@ TO flex_system_operator;
 -- changeset flex:api-grant-service-providing-group-sp-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     name,
-    service_provider_id
+    service_provider_id,
+    bidding_zone
 ) ON TABLE
 api.service_providing_group
 TO flex_service_provider;
@@ -2683,6 +2691,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2703,6 +2712,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2721,6 +2731,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2736,6 +2747,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2751,6 +2763,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2766,6 +2779,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2781,6 +2795,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2796,6 +2811,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2811,6 +2827,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2826,6 +2843,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,

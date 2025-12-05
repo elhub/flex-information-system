@@ -19,6 +19,7 @@ export const ServiceProvidingGroupList = () => (
       >
         <TextField source="name" />
       </ReferenceField>
+      <TextField source="bidding_zone" />
       <TextField source="status" />
       <ReferenceManyField
         reference="service_providing_group_grid_prequalification"

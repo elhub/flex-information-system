@@ -367,6 +367,7 @@ type ApiServiceProvidingGroup struct {
 	ID                int
 	Name              string
 	ServiceProviderID int
+	BiddingZone       string
 	Status            string
 	RecordedBy        int
 	RecordedAt        pgtype.Timestamptz
@@ -471,6 +472,7 @@ type ApiServiceProvidingGroupHistory struct {
 	ID                      int
 	Name                    string
 	ServiceProviderID       int
+	BiddingZone             string
 	Status                  string
 	RecordedBy              int
 	RecordedAt              pgtype.Timestamptz
