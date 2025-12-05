@@ -85,4 +85,4 @@ EXECUTE FUNCTION technical_resource_grid_validation_status_reset();
 CREATE OR REPLACE TRIGGER technical_resource_event
 AFTER INSERT OR UPDATE OR DELETE ON technical_resource
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('technical_resource');
+EXECUTE FUNCTION capture_event('controllable_unit');

@@ -89,4 +89,4 @@ service_provider_product_suspension_product_type_ids_insert();
 CREATE OR REPLACE TRIGGER service_provider_product_suspension_event
 AFTER INSERT OR UPDATE OR DELETE ON service_provider_product_suspension
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('service_provider_product_suspension');
+EXECUTE FUNCTION capture_event();

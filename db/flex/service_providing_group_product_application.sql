@@ -141,7 +141,7 @@ EXECUTE FUNCTION status.restrict_insert('requested');
 CREATE OR REPLACE TRIGGER service_providing_group_product_application_event
 AFTER INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('service_providing_group_product_application');
+EXECUTE FUNCTION capture_event('service_providing_group');
 
 -- changeset flex:service-providing-group-product-application-check-timestamp-on-status-update runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER spgpa_check_timestamp_on_status_prequalified
