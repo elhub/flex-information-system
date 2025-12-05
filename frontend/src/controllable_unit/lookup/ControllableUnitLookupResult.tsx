@@ -21,7 +21,6 @@ import { FieldStack } from "../../auth";
 // button to redirect to the CU-SP create page with the CU ID pre-filled
 const CreateCUSPButton = () => {
   const record = useRecordContext();
-  const a = "";
   return (
     <Button
       component={Link}
