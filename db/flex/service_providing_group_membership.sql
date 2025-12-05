@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS service_providing_group_membership (
 );
 
 -- changeset flex:service-providing-group-membership-consistency-on-valid-time-increase runOnChange:true endDelimiter:--
--- SPGM-VAL001: The controllable unit and service providing group must belong to the same service provider.
 CREATE OR REPLACE FUNCTION consistency_on_spgm_valid_time_increase()
 RETURNS trigger
 LANGUAGE plpgsql

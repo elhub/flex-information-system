@@ -23,10 +23,7 @@ controllable unit can belong to several groups at the same time.
 
 ## Validation Rules
 
-| Validation rule key | Validation rule                                                                             | Status |
-|---------------------|---------------------------------------------------------------------------------------------|--------|
-| SPGM-VAL001         | The controllable unit and service providing group must belong to the same service provider. | DONE   |
-| SPGM-VAL002         | The controllable unit must be in the price area defined on the SPG.                         | TODO   |
+No validation rules.
 
 ## Notifications
 
