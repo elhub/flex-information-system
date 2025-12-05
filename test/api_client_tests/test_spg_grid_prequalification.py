@@ -10,6 +10,7 @@ from flex.models import (
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
@@ -68,6 +69,7 @@ def data():
         body=ServiceProvidingGroupCreateRequest(
             service_provider_id=sp_id,
             name="New group",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
@@ -428,7 +430,9 @@ def test_spggp_so(data):
         impacted_system_operator_id=f"eq.{so_id}",
     )
     assert isinstance(spggps_so, list)
-    assert len(spggps_so) > 0, "No SPGGP records returned for impacted_system_operator_id"
+    assert len(spggps_so) > 0, (
+        "No SPGGP records returned for impacted_system_operator_id"
+    )
     so_spggp = spggps_so[0]
 
     u = update_service_providing_group_grid_prequalification.sync(
