@@ -33,6 +33,7 @@ from flex.models import (
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
@@ -347,6 +348,7 @@ def test_event_sp(sts):
         body=ServiceProvidingGroupCreateRequest(
             name="EVENT-TEST-SPG-1",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)

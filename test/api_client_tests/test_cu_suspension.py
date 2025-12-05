@@ -48,6 +48,7 @@ from flex.api.service_providing_group import (
 from flex.models import (
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
     SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
@@ -304,6 +305,7 @@ def test_cus_so(data):
         body=ServiceProvidingGroupCreateRequest(
             service_provider_id=sp_id,
             name="New group",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)

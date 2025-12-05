@@ -12,6 +12,7 @@ from flex.models import (
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
     SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
@@ -88,6 +89,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
         body=ServiceProvidingGroupCreateRequest(
             name="TEST-SPGPS-1",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)

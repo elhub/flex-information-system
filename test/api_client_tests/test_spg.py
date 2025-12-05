@@ -15,6 +15,7 @@ from flex.models import (
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationResponse,
     ErrorMessage,
@@ -73,6 +74,7 @@ def test_spg_fiso_sp(sts):
         body=ServiceProvidingGroupCreateRequest(
             name="TEST-SPG-1",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
@@ -82,6 +84,7 @@ def test_spg_fiso_sp(sts):
         body=ServiceProvidingGroupCreateRequest(
             name="TEST-SPG-3",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg2, ServiceProvidingGroupResponse)
@@ -219,6 +222,7 @@ def test_spg_so(sts):
         body=ServiceProvidingGroupCreateRequest(
             name="TEST-SPG-12",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)

@@ -11,6 +11,7 @@ from flex.models import (
     ControllableUnitRegulationDirection,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupCreateRequest,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipUpdateRequest,
@@ -76,6 +77,7 @@ def data():
         body=ServiceProvidingGroupCreateRequest(
             service_provider_id=sp_id,
             name="New group",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)

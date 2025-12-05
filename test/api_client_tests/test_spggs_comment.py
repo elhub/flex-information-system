@@ -11,6 +11,7 @@ from flex.models import (
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
@@ -70,6 +71,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
         body=ServiceProvidingGroupCreateRequest(
             name="TEST-SPG-SUSP-1",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)

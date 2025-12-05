@@ -14,6 +14,7 @@ from flex.models import (
     ControllableUnitGridValidationStatus,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupResponse,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
@@ -291,6 +292,7 @@ def test_controllable_unit_so(sts):
         body=ServiceProvidingGroupCreateRequest(
             service_provider_id=sp_id,
             name="New group",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
