@@ -2670,7 +2670,14 @@
                                 "type": "string",
                                 "pattern": "^(\\/([a-z][a-z_]*|[0-9]+))+$",
                                 "readOnly": true,
-                                "example": "/service_providing_group/4"
+                                "example": "/controllable_unit/4"
+                            },
+                            "subject": {
+                                "description": "The URI of the specific subject of the event within the resource pointed by `source`.",
+                                "format": "text",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "/technical_resource/2"
                             },
                             "data": {
                                 "description": "The data of the event.",
@@ -2698,7 +2705,8 @@
                             "specversion",
                             "time",
                             "type",
-                            "source"
+                            "source",
+                            "subject"
                         ]
                     }
                 ],

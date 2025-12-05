@@ -4575,6 +4575,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event
@@ -4587,6 +4588,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event
@@ -4599,6 +4601,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event
@@ -4611,6 +4614,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event
@@ -4623,6 +4627,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event
@@ -4635,6 +4640,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event
@@ -4647,6 +4653,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event
@@ -4659,6 +4666,7 @@ GRANT SELECT (
     time,
     type,
     source,
+    subject,
     data
 ) ON TABLE
 api.event

@@ -341,6 +341,7 @@ CREATE TABLE api.event (
     time timestamp with time zone NOT NULL,
     type text NOT NULL,
     source text NOT NULL,
+    subject text NOT NULL,
     data text NULL
 );
 CREATE TABLE api.notification (

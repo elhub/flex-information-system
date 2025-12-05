@@ -160,6 +160,7 @@ export type PermissionTarget =
   | "event.id"
   | "event.source"
   | "event.specversion"
+  | "event.subject"
   | "event.time"
   | "event.type"
   | "identity"
@@ -1117,6 +1118,10 @@ const rawPermissions: Record<
     },
     {
       target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.subject",
       operation: "read",
     },
     {
@@ -3202,6 +3207,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "event.subject",
+      operation: "read",
+    },
+    {
       target: "event.time",
       operation: "read",
     },
@@ -5281,6 +5290,10 @@ const rawPermissions: Record<
     },
     {
       target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.subject",
       operation: "read",
     },
     {
@@ -7616,6 +7629,10 @@ const rawPermissions: Record<
     },
     {
       target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.subject",
       operation: "read",
     },
     {
@@ -10199,6 +10216,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "event.subject",
+      operation: "read",
+    },
+    {
       target: "event.time",
       operation: "read",
     },
@@ -12355,6 +12376,10 @@ const rawPermissions: Record<
     },
     {
       target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.subject",
       operation: "read",
     },
     {
@@ -14917,6 +14942,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "event.subject",
+      operation: "read",
+    },
+    {
       target: "event.time",
       operation: "read",
     },
@@ -17293,6 +17322,10 @@ const rawPermissions: Record<
     },
     {
       target: "event.specversion",
+      operation: "read",
+    },
+    {
+      target: "event.subject",
       operation: "read",
     },
     {

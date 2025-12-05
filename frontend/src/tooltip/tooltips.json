@@ -136,6 +136,7 @@
         "time": "The time at which the event was generated.",
         "type": "The type of the event.",
         "source": "The URI of the resource concerned by the event.",
+        "subject": "The URI of the specific subject of the event within the resource pointed by `source`.",
         "data": "The data of the event."
     },
     "notification": {

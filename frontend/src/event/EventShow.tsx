@@ -14,6 +14,7 @@ export const EventShow = () => (
           <TextField source="id" label="ID" />
           <TextField source="type" />
           <TextField source="source" />
+          <TextField source="subject" />
           <FunctionField
             source="data"
             render={(record) =>

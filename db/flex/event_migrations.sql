@@ -23,3 +23,12 @@ ALTER COLUMN source_resource SET NOT NULL;
 
 ALTER TABLE flex.event
 ALTER COLUMN source_id SET NOT NULL;
+
+-- changeset flex:event-subject-fields runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'event' AND column_name LIKE 'subject%'
+ALTER TABLE flex.event
+ADD COLUMN subject_resource text;
+
+ALTER TABLE flex.event
+ADD COLUMN subject_id bigint;
