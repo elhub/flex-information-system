@@ -1036,6 +1036,7 @@ resources:
           want to consider it as an event on the main resource, for clarity.
         format: text
         type: string
+        nullable: true
         readOnly: true
         example: '/technical_resource/2'
       data:

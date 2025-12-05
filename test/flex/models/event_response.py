@@ -21,8 +21,8 @@ class EventResponse:
         time (str | Unset): The time at which the event was generated. Example: 2022-08-08 12:00:00 CET.
         type_ (str | Unset): The type of the event. Example: no.elhub.flex.service_providing_group.update.
         source (str | Unset): The URI of the resource concerned by the event. Example: /controllable_unit/4.
-        subject (str | Unset): The URI of the specific subject of the event within the resource pointed by `source`.
-            Example: /technical_resource/2.
+        subject (None | str | Unset): The URI of the specific subject of the event within the resource pointed by
+            `source`. Example: /technical_resource/2.
         data (None | str | Unset): The data of the event.
     """
 
@@ -31,7 +31,7 @@ class EventResponse:
     time: str | Unset = UNSET
     type_: str | Unset = UNSET
     source: str | Unset = UNSET
-    subject: str | Unset = UNSET
+    subject: None | str | Unset = UNSET
     data: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -46,7 +46,11 @@ class EventResponse:
 
         source = self.source
 
-        subject = self.subject
+        subject: None | str | Unset
+        if isinstance(self.subject, Unset):
+            subject = UNSET
+        else:
+            subject = self.subject
 
         data: None | str | Unset
         if isinstance(self.data, Unset):
@@ -87,7 +91,14 @@ class EventResponse:
 
         source = d.pop("source", UNSET)
 
-        subject = d.pop("subject", UNSET)
+        def _parse_subject(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        subject = _parse_subject(d.pop("subject", UNSET))
 
         def _parse_data(data: object) -> None | str | Unset:
             if data is None:

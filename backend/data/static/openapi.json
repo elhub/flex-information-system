@@ -2676,6 +2676,7 @@
                                 "description": "The URI of the specific subject of the event within the resource pointed by `source`.",
                                 "format": "text",
                                 "type": "string",
+                                "nullable": true,
                                 "readOnly": true,
                                 "example": "/technical_resource/2"
                             },
@@ -2705,8 +2706,7 @@
                             "specversion",
                             "time",
                             "type",
-                            "source",
-                            "subject"
+                            "source"
                         ]
                     }
                 ],
