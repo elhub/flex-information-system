@@ -29,10 +29,14 @@ DISABLE TRIGGER USER;
 ALTER TABLE flex.service_providing_group
 ADD COLUMN bidding_zone text;
 
+UPDATE flex.service_providing_group
+SET bidding_zone = 'NO3'
+WHERE bidding_zone IS NULL;
+
 ALTER TABLE flex.service_providing_group_history
 ADD COLUMN bidding_zone text;
 
-UPDATE flex.service_providing_group
+UPDATE flex.service_providing_group_history
 SET bidding_zone = 'NO3'
 WHERE bidding_zone IS NULL;
 
