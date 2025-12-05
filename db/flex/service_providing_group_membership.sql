@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_membership (
 );
 
 -- changeset flex:service-providing-group-membership-consistency-on-valid-time-increase runOnChange:true endDelimiter:--
+-- SPGM-VAL001: The controllable unit and service providing group must belong to the same service provider.
 CREATE OR REPLACE FUNCTION consistency_on_spgm_valid_time_increase()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -65,10 +66,15 @@ BEGIN
 END;
 $$;
 
--- changeset flex:service-providing-group-membership-upsert-consistency-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER service_providing_group_membership_upsert_consistency
+-- changeset flex:service-providing-group-membership-cusp-consistency-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER service_providing_group_membership_cusp_consistency
 BEFORE INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE consistency_on_spgm_valid_time_increase();
+
+-- changeset flex:service-providing-group-membership-upsert-consistency-trigger-drop runOnChange:true endDelimiter:--
+-- TODO: remove once rollout is complete
+DROP TRIGGER IF EXISTS service_providing_group_membership_upsert_consistency
+ON service_providing_group_membership;
 
 -- changeset flex:service-providing-group-insert-grip-prequalificaton-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
