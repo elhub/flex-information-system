@@ -574,7 +574,7 @@
                 "example": "same_party"
             },
             "service_providing_group_bidding_zone": {
-                "description": "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area og price area for TSO.",
+                "description": "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
                 "format": "text",
                 "type": "string",
                 "enum": [

@@ -20,7 +20,7 @@ class ServiceProvidingGroupResponse:
     Attributes:
         name (str | Unset): Free text name of the service providing group. Example: Batteries #09.
         bidding_zone (ServiceProvidingGroupBiddingZone | Unset): The bidding zone that restricts which CUs that can be
-            added to the group. Also known as scheduling area og price area for TSO. Example: NO3.
+            added to the group. Also known as scheduling area or price area for TSO. Example: NO3.
         status (ServiceProvidingGroupStatus | Unset): The status of the group. Example: active.
         service_provider_id (int | Unset): Reference to the `party` (service provider) managing the group. Example: 17.
         recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:

@@ -45,7 +45,7 @@
         "id": "Unique surrogate key.",
         "name": "Free text name of the service providing group.",
         "service_provider_id": "Reference to the `party` (service provider) managing the group.",
-        "bidding_zone": "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area og price area for TSO.",
+        "bidding_zone": "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
         "status": "The status of the group."
     },
     "service_providing_group_membership": {
