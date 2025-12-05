@@ -38,6 +38,7 @@ export const ServiceProvidingGroupShow = () => {
             <ReferenceField source="service_provider_id" reference="party">
               <TextField source="name" />
             </ReferenceField>
+            <TextField source="bidding_zone" />
             <TextField source="status" />
           </FieldStack>
           <Typography variant="h6" gutterBottom>
