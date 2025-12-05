@@ -180,6 +180,7 @@ type ApiEvent struct {
 	Time        pgtype.Timestamptz
 	Type        string
 	Source      string
+	Subject     *string
 	Data        *string
 }
 

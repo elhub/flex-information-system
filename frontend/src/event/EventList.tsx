@@ -8,6 +8,7 @@ export const EventList = () => (
       <TextField source="id" label="ID" />
       <TextField source="type" />
       <TextField source="source" />
+      <TextField source="subject" />
       <DateField source="time" showTime />
     </Datagrid>
   </List>

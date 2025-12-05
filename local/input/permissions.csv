@@ -149,6 +149,7 @@ event;specversion;;R;R;R;R;R;R;R;R;;;
 event;time;;R;R;R;R;R;R;R;R;;;
 event;type;;R;R;R;R;R;R;R;R;;;
 event;source;;R;R;R;R;R;R;R;R;;;
+event;subject;;R;R;R;R;R;R;R;R;;;
 event;data;;R;R;R;R;R;R;R;R;;;
 notification;;;;;;;;;;;;;R
 notification;id;;R;R;R;R;R;R;R;R;;;
