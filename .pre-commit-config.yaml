@@ -202,19 +202,15 @@ repos:
           - scss
         exclude: "local/mkdocs/.*"
 
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.26.0
+  - repo: local
     hooks:
       - id: eslint
-        additional_dependencies:
-          - eslint@9.26.0
-          - eslint-plugin-react@7.37.5
-          - eslint-plugin-react-hooks@5.2.0
-        files: \.[t]sx?$  # *.js, *.jsx, *.ts and *.tsx
-        args:
-          - "--config"
-          - "frontend/eslint.config.js"
-        types: [file]
+        name: eslint
+        entry: /usr/bin/bash
+        args: ['-c', 'cd frontend && npm run lint']
+        language: script
+        types_or: [ts, tsx, javascript]
+        pass_filenames: false
 
   - repo: local
     hooks:
