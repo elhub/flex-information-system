@@ -78,6 +78,7 @@ export const ControllableUnitLookupInput = () => {
     const lookupRequest = zControllableUnitLookupRequest.safeParse(data);
 
     if (!lookupRequest.success) {
+      // You should not end up here since zod validation is done before submission
       notify("Invalid input data", { type: "error" });
       return;
     }
@@ -102,7 +103,8 @@ export const ControllableUnitLookupInput = () => {
       maxWidth={1280}
       onSubmit={lookup}
       defaultValues={{ controllable_unit: defaultControllableUnit }}
-      resolver={zodResolver(zControllableUnitLookupRequest.partial())}
+      // React admin types does not handle required types in validation resolvers, but it works at runtime.
+      resolver={zodResolver(zControllableUnitLookupRequest) as any}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>
