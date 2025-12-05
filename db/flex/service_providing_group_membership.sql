@@ -107,7 +107,7 @@ spgm_insert_grid_prequalification();
 CREATE OR REPLACE TRIGGER service_providing_group_membership_event
 AFTER INSERT OR UPDATE OR DELETE ON service_providing_group_membership
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('service_providing_group_membership');
+EXECUTE FUNCTION capture_event('service_providing_group');
 
 -- changeset flex:service-providing-group-membership-timeline-midnight-aligned runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER

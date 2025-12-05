@@ -71,7 +71,7 @@ EXECUTE FUNCTION status.restrict_update('requested');
 CREATE OR REPLACE TRIGGER service_providing_group_grid_prequalification_event
 AFTER INSERT OR UPDATE ON service_providing_group_grid_prequalification
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('service_providing_group_grid_prequalification');
+EXECUTE FUNCTION capture_event('service_providing_group');
 
 -- changeset flex:service-providing-group-grid-prequalification-check-timestamp-on-status-update runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER

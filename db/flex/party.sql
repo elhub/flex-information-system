@@ -91,7 +91,7 @@ EXECUTE PROCEDURE utils.role_exists();
 CREATE OR REPLACE TRIGGER party_event
 AFTER INSERT OR UPDATE ON party
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('party');
+EXECUTE FUNCTION capture_event();
 
 -- changeset flex:current-party-owner-create runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION

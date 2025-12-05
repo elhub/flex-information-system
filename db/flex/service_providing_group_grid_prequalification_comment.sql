@@ -37,4 +37,4 @@ AFTER INSERT OR UPDATE
 ON service_providing_group_grid_prequalification_comment
 FOR EACH ROW
 EXECUTE FUNCTION
-capture_event('service_providing_group_grid_prequalification_comment');
+capture_event('service_providing_group_grid_prequalification');

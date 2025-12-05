@@ -37,4 +37,4 @@ AFTER INSERT OR UPDATE
 ON service_provider_product_application_comment
 FOR EACH ROW
 EXECUTE FUNCTION
-capture_event('service_provider_product_application_comment');
+capture_event('service_provider_product_application');

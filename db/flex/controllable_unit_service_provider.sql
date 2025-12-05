@@ -73,7 +73,7 @@ ON DELETE TO controllable_unit_service_provider DO INSTEAD
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_event
 AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_service_provider
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('controllable_unit_service_provider');
+EXECUTE FUNCTION capture_event('controllable_unit');
 
 -- changeset flex:controllable-unit-service-provider-valid-time-freeze runOnChange:true endDelimiter:--
 -- IFV: CUSP-VAL001

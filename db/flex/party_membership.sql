@@ -28,4 +28,4 @@ CREATE TABLE IF NOT EXISTS party_membership (
 CREATE OR REPLACE TRIGGER party_membership_event
 AFTER INSERT OR DELETE ON party_membership
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('party_membership');
+EXECUTE FUNCTION capture_event('party');

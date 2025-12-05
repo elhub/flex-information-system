@@ -38,4 +38,4 @@ AFTER INSERT OR UPDATE
 ON service_providing_group_grid_suspension_comment
 FOR EACH ROW
 EXECUTE FUNCTION
-capture_event('service_providing_group_grid_suspension_comment');
+capture_event('service_providing_group_grid_suspension');

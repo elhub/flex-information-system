@@ -40,4 +40,4 @@ EXECUTE FUNCTION status.restrict_insert('active');
 CREATE OR REPLACE TRIGGER system_operator_product_type_event
 AFTER INSERT OR UPDATE ON system_operator_product_type
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('system_operator_product_type');
+EXECUTE FUNCTION capture_event();

@@ -168,7 +168,7 @@ def test_event_eu(sts):
             e
             for e in events
             if e.type_ == "no.elhub.flex.controllable_unit_service_provider.create"
-            and e.source == f"/controllable_unit_service_provider/{cusp.id}"
+            and e.subject == f"/controllable_unit_service_provider/{cusp.id}"
         ]
 
         # RLS: EVENT-EU003
@@ -177,7 +177,7 @@ def test_event_eu(sts):
             e
             for e in events
             if e.type_ == "no.elhub.flex.technical_resource.create"
-            and e.source == f"/technical_resource/{tr.id}"
+            and e.subject == f"/technical_resource/{tr.id}"
         ]
 
         return (len(cu_event), len(cusp_event), len(tr_event))
@@ -237,7 +237,7 @@ def test_event_sp(sts):
         )
         or (
             e.type_ == "no.elhub.flex.technical_resource.create"
-            and e.source == f"/technical_resource/{tr.id}"
+            and e.subject == f"/technical_resource/{tr.id}"
         )
     )
 
@@ -430,7 +430,7 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.technical_resource.create"
-        and e.source == f"/technical_resource/{tr.id}"
+        and e.subject == f"/technical_resource/{tr.id}"
     )
 
     # RLS: EVENT-SP007
@@ -439,7 +439,7 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.service_providing_group_membership.create"
-        and e.source == f"/service_providing_group_membership/{spgm.id}"
+        and e.subject == f"/service_providing_group_membership/{spgm.id}"
     )
 
     # RLS: EVENT-SP011
@@ -457,7 +457,7 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.service_providing_group_grid_suspension.create"
-        and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
+        and e.subject == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
     # delete resources to test that we can still see the create events after
@@ -501,12 +501,15 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.technical_resource.delete"
-        and e.source == f"/technical_resource/{tr.id}"
+        and e.subject == f"/technical_resource/{tr.id}"
     )
 
     # but never lookup
     assert not any(
-        e for e in events if e.type_ == "no.elhub.flex.controllable_unit.lookup"
+        e
+        for e in events
+        if e.type_ == "no.elhub.flex.controllable_unit.lookup"
+        and e.source == f"/controllable_unit/{cu.id}"
     )
 
     # SP can see delete for SPGM
@@ -514,7 +517,7 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.service_providing_group_membership.delete"
-        and e.source == f"/service_providing_group_membership/{spgm.id}"
+        and e.subject == f"/service_providing_group_membership/{spgm.id}"
     )
 
     # SP can see delete for SPPS
@@ -530,7 +533,7 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.service_providing_group_grid_suspension.delete"
-        and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
+        and e.subject == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
     # RLS: EVENT-SP003
@@ -539,7 +542,7 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.controllable_unit_service_provider.create"
-        and e.source == f"/controllable_unit_service_provider/{cusp.id}"
+        and e.subject == f"/controllable_unit_service_provider/{cusp.id}"
     )
 
     # RLS: EVENT-SP004
@@ -558,7 +561,7 @@ def test_event_sp(sts):
         for e in events
         if e.type_
         == "no.elhub.flex.service_provider_product_application_comment.create"
-        and e.source
+        and e.subject
         == f"/service_provider_product_application_comment/{sppac_public.id}"
     )
     assert not any(
@@ -566,7 +569,7 @@ def test_event_sp(sts):
         for e in events
         if e.type_
         == "no.elhub.flex.service_provider_product_application_comment.create"
-        and e.source
+        and e.subject
         == f"/service_provider_product_application_comment/{sppac_hidden.id}"
     )
 
@@ -586,7 +589,7 @@ def test_event_sp(sts):
         for e in events
         if e.type_
         == "no.elhub.flex.service_providing_group_grid_prequalification.create"
-        and e.source == f"/service_providing_group_grid_prequalification/{spggp.id}"
+        and e.subject == f"/service_providing_group_grid_prequalification/{spggp.id}"
     )
 
     # RLS: EVENT-SP009
@@ -595,7 +598,7 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.service_providing_group_product_application.create"
-        and e.source == f"/service_providing_group_product_application/{spgpa.id}"
+        and e.subject == f"/service_providing_group_product_application/{spgpa.id}"
     )
 
     # RLS: EVENT-SP010
@@ -613,14 +616,14 @@ def test_event_sp(sts):
         e
         for e in events
         if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
-        and e.source
+        and e.subject
         == f"/service_provider_product_suspension_comment/{sppsc_public.id}"
     )
     assert not any(
         e
         for e in events
         if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
-        and e.source
+        and e.subject
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
 
@@ -633,7 +636,7 @@ def test_event_sp(sts):
         e
         for e in events_other
         if e.type_ == "no.elhub.flex.controllable_unit_service_provider.create"
-        and e.source == f"/controllable_unit_service_provider/{cusp.id}"
+        and e.subject == f"/controllable_unit_service_provider/{cusp.id}"
     )
     assert not any(
         e
@@ -654,7 +657,7 @@ def test_event_sp(sts):
         for e in events_other
         if e.type_
         == "no.elhub.flex.service_provider_product_application_comment.create"
-        and e.source
+        and e.subject
         == f"/service_provider_product_application_comment/{sppac_hidden.id}"
     )
     assert not any(
@@ -667,40 +670,40 @@ def test_event_sp(sts):
         e
         for e in events_other
         if e.type_ == "no.elhub.flex.service_providing_group_membership.create"
-        and e.source == f"/service_providing_group_membership/{spgm.id}"
+        and e.subject == f"/service_providing_group_membership/{spgm.id}"
     )
     assert not any(
         e
         for e in events_other
         if e.type_
         == "no.elhub.flex.service_providing_group_grid_prequalification.create"
-        and e.source == f"/service_providing_group_grid_prequalification/{spggp.id}"
+        and e.subject == f"/service_providing_group_grid_prequalification/{spggp.id}"
     )
     assert not any(
         e
         for e in events_other
         if e.type_ == "no.elhub.flex.service_providing_group_product_application.create"
-        and e.source == f"/service_providing_group_product_application/{spgpa.id}"
+        and e.subject == f"/service_providing_group_product_application/{spgpa.id}"
     )
     assert not any(
         e
         for e in events_other
         if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
-        and e.source
+        and e.subject
         == f"/service_provider_product_suspension_comment/{sppsc_public.id}"
     )
     assert not any(
         e
         for e in events_other
         if e.type_ == "no.elhub.flex.service_provider_product_suspension_comment.create"
-        and e.source
+        and e.subject
         == f"/service_provider_product_suspension_comment/{sppsc_hidden.id}"
     )
     assert not any(
         e
         for e in events_other
         if e.type_ == "no.elhub.flex.service_providing_group_grid_suspension.create"
-        and e.source == f"/service_providing_group_grid_suspension/{spggs.id}"
+        and e.subject == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
 

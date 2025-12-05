@@ -79,4 +79,4 @@ controllable_unit_suspension_cu_status_insert();
 CREATE OR REPLACE TRIGGER controllable_unit_suspension_event
 AFTER INSERT OR UPDATE OR DELETE ON controllable_unit_suspension
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('controllable_unit_suspension');
+EXECUTE FUNCTION capture_event('controllable_unit');

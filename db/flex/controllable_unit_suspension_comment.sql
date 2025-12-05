@@ -38,4 +38,4 @@ AFTER INSERT OR UPDATE
 ON controllable_unit_suspension_comment
 FOR EACH ROW
 EXECUTE FUNCTION
-capture_event('controllable_unit_suspension_comment');
+capture_event('controllable_unit_suspension');

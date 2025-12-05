@@ -124,7 +124,7 @@ service_providing_group_activation();
 CREATE OR REPLACE TRIGGER service_providing_group_event
 AFTER INSERT OR UPDATE ON service_providing_group
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('service_providing_group');
+EXECUTE FUNCTION capture_event();
 
 -- changeset flex:service-providing-group-activation-not-empty-function runOnChange:true endDelimiter:--
 -- SPG-VAL001

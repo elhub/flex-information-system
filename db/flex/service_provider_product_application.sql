@@ -161,7 +161,7 @@ EXECUTE FUNCTION status.restrict_update('requested');
 CREATE OR REPLACE TRIGGER service_provider_product_application_event
 AFTER INSERT OR UPDATE ON service_provider_product_application
 FOR EACH ROW
-EXECUTE FUNCTION capture_event('service_provider_product_application');
+EXECUTE FUNCTION capture_event();
 
 -- changeset flex:service-provider-product-application-check-timestamp-on-status-update runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
