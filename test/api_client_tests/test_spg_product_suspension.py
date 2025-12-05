@@ -12,6 +12,7 @@ from flex.models import (
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
     SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
@@ -95,6 +96,7 @@ def data():
         body=ServiceProvidingGroupCreateRequest(
             name="TEST-SPGPS-1",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)

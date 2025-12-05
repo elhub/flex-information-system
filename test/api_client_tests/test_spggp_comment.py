@@ -17,6 +17,9 @@ from flex.models.service_providing_group_create_request import (
     ServiceProvidingGroupCreateRequest,
 )
 from flex.models.service_providing_group_response import ServiceProvidingGroupResponse
+from flex.models.service_providing_group_bidding_zone import (
+    ServiceProvidingGroupBiddingZone,
+)
 from flex.models.service_providing_group_grid_prequalification_create_request import (
     ServiceProvidingGroupGridPrequalificationCreateRequest,
 )
@@ -55,6 +58,7 @@ def create_spggp(client_fiso, sp, so):
         body=ServiceProvidingGroupCreateRequest(
             name="Test SPG for SPGGP comment",
             service_provider_id=sp_id,
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
