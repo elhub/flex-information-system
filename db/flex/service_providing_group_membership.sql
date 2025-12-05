@@ -48,7 +48,8 @@ BEGIN
     from flex.service_providing_group spg
     where spg.id = NEW.service_providing_group_id;
 
-    select range_agg(cusp.valid_time_range) @> NEW.valid_time_range
+    select
+        COALESCE(range_agg(cusp.valid_time_range) @> NEW.valid_time_range, false)
     into lv_covered
     from flex.controllable_unit_service_provider as cusp
     where cusp.controllable_unit_id = NEW.controllable_unit_id
