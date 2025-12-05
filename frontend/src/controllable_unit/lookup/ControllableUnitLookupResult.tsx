@@ -28,7 +28,7 @@ const CreateCUSPButton = () => {
       to={`/controllable_unit_service_provider/create`}
       startIcon={<BookmarkAddIcon />}
       // input a CU ID instead of from a list of names (cf. CUSP input)
-      state={{ cuIDAsNumber: true }}
+      state={{ cuIDAsNumber: true, controllable_unit_id: record.id }}
       label="Manage this controllable unit"
     />
   );
