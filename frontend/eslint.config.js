@@ -17,16 +17,18 @@ const compat = new FlatCompat({
 
 module.exports = defineConfig([
   {
-    extends: fixupConfigRules(
-      compat.extends(
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended",
-        "prettier",
-      ),
+    ignores: ["src/generated-client/**"],
+  },
+  ...fixupConfigRules(
+    compat.extends(
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react/jsx-runtime",
+      "plugin:react-hooks/recommended",
+      "prettier",
     ),
-
+  ),
+  {
     languageOptions: {
       parser: tsParser,
 

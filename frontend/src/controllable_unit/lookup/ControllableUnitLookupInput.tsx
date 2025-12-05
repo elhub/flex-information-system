@@ -9,47 +9,14 @@ import { Typography, Stack, Button, Box } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import UndoIcon from "@mui/icons-material/Undo";
-import { apiURL } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
-import { useEffect } from "react";
+import { callControllableUnitLookup } from "../../generated-client";
+import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Toolbar = () => {
   const navigate = useNavigate();
-  const { getValues } = useFormContext();
-  const notify = useNotify();
-
-  // launch lookup request
-  const lookup = async () => {
-    let body: any = {};
-    const values = getValues();
-
-    // do not put undefined/null into the request body
-    for (const key in values) {
-      if (values[key]) {
-        body[key] = values[key];
-      }
-    }
-
-    const response = await fetch(apiURL + "/controllable_unit/lookup", {
-      method: "POST",
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify(body),
-    });
-    const lookupResult = await response.json();
-
-    if (!response.ok) {
-      // error, just notify the user like in the other pages
-      notify(lookupResult.message, { type: "error" });
-    } else {
-      // navigate to the dedicated show page for the result
-      navigate("/controllable_unit/lookup/result", {
-        state: { result: lookupResult },
-      });
-    }
-  };
 
   return (
     <RAToolbar>
@@ -57,7 +24,7 @@ const Toolbar = () => {
         color="primary"
         variant="contained"
         startIcon={<TravelExploreIcon />}
-        onClick={lookup}
+        type="submit"
       >
         Lookup
       </Button>
@@ -74,47 +41,72 @@ const Toolbar = () => {
   );
 };
 
+const ControllableUnitLookupForm = () => {
+  const { watch } = useFormContext();
+  const controllableUnit = watch("controllable_unit");
+  const accountingPoint = watch("accounting_point");
+
+  const accountingPointDisabled =
+    controllableUnit && controllableUnit.length > 0;
+  const controllableUnitDisabled =
+    accountingPoint && accountingPoint.length > 0;
+
+  return (
+    <InputStack direction="row" flexWrap="wrap">
+      <TextInput source="end_user" validate={required()} />
+      <TextInput source="accounting_point" disabled={accountingPointDisabled} />
+      <TextInput
+        source="controllable_unit"
+        disabled={controllableUnitDisabled}
+      />
+    </InputStack>
+  );
+};
+
 // page to enter data required for controllable unit lookup
 export const ControllableUnitLookupInput = () => {
   const { state } = useLocation();
+  const defaultControllableUnit = state?.controllable_unit as
+    | string
+    | undefined;
 
-  const ControllableUnitLookupForm = () => {
-    const { getValues, setValue } = useFormContext();
+  const navigate = useNavigate();
+  const notify = useNotify();
 
-    useEffect(() => {
-      if (state?.controllable_unit) {
-        setValue("controllable_unit", state?.controllable_unit);
-      }
+  // launch lookup request
+  const lookup = async (data: unknown) => {
+    const lookupRequest = zControllableUnitLookupRequest.safeParse(data);
+
+    if (!lookupRequest.success) {
+      // You should not end up here since zod validation is done before submission
+      notify("Invalid input data", { type: "error" });
+      return;
+    }
+
+    const response = await callControllableUnitLookup({
+      body: lookupRequest.data,
     });
 
-    const values = getValues();
-    const accountingPointDefined =
-      values.accounting_point && values.accounting_point.length > 0;
-    const controllableUnitDefined =
-      values.controllable_unit && values.controllable_unit.length > 0;
-
-    return (
-      <InputStack
-        direction="row"
-        flexWrap="wrap"
-        allowAll
-        resource="controllable_unit_lookup_request"
-      >
-        <TextInput source="end_user" validate={required()} />
-        <TextInput
-          source="accounting_point"
-          disabled={controllableUnitDefined}
-        />
-        <TextInput
-          source="controllable_unit"
-          disabled={accountingPointDefined}
-        />
-      </InputStack>
-    );
+    if (response.error) {
+      // error, just notify the user like in the other pages
+      notify(response.error.message, { type: "error" });
+      return;
+    }
+    // navigate to the dedicated show page for the result
+    return navigate("/controllable_unit/lookup/result", {
+      state: { result: response.data },
+    });
   };
 
   return (
-    <SimpleForm maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      maxWidth={1280}
+      onSubmit={lookup}
+      defaultValues={{ controllable_unit: defaultControllableUnit }}
+      // React admin types does not handle required types in validation resolvers, but it works at runtime.
+      resolver={zodResolver(zControllableUnitLookupRequest) as any}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Lookup a controllable unit

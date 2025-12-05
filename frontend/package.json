@@ -13,18 +13,21 @@
     },
     "dependencies": {
         "@fontsource/roboto": "^5.2.9",
+        "@hookform/resolvers": "^5.2.2",
         "@raphiniert/ra-data-postgrest": "^2.5.1",
         "@tanstack/react-query-devtools": "^5.90.2",
         "ra-input-rich-text": "^5.12.0",
         "react": "^19.2.0",
         "react-admin": "^5.12.0",
         "react-dom": "^19.2.0",
-        "use-react-router-breadcrumbs": "^4.0.1"
+        "use-react-router-breadcrumbs": "^4.0.1",
+        "zod": "^4.1.13"
     },
     "devDependencies": {
         "@eslint/compat": "1.4.1",
         "@eslint/eslintrc": "3.3.1",
         "@eslint/js": "9.39.1",
+        "@hey-api/openapi-ts": "0.88.0",
         "@types/node": "24.10.1",
         "@types/react": "19.2.7",
         "@types/react-dom": "19.2.3",

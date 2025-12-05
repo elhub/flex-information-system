@@ -6,6 +6,12 @@ import "@fontsource/roboto/700.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
+import { client } from "./generated-client/client.gen";
+import { apiURL } from "./httpConfig";
+
+client.setConfig({
+  baseUrl: apiURL,
+});
 
 declare global {
   interface Window {

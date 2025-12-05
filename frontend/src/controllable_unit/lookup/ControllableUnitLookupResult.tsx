@@ -17,6 +17,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FieldStack } from "../../auth";
+import { zControllableUnitLookupResponse } from "../../generated-client/zod.gen";
 
 // button to redirect to the CU-SP create page with the CU ID pre-filled
 const CreateCUSPButton = () => {
@@ -27,7 +28,7 @@ const CreateCUSPButton = () => {
       to={`/controllable_unit_service_provider/create`}
       startIcon={<BookmarkAddIcon />}
       // input a CU ID instead of from a list of names (cf. CUSP input)
-      state={{ controllable_unit_id: record?.id, cuIDAsNumber: true }}
+      state={{ cuIDAsNumber: true, controllable_unit_id: record?.id }}
       label="Manage this controllable unit"
     />
   );
@@ -94,9 +95,11 @@ export const ControllableUnitLookupResult = () => {
   const {
     state: { result },
   } = useLocation();
+  const controllableUnitLookUpResult =
+    zControllableUnitLookupResponse.parse(result);
 
   return (
-    <RecordContextProvider value={result}>
+    <RecordContextProvider value={controllableUnitLookUpResult}>
       <Stack spacing={2}>
         <Box m={1} />
         <Title title="Controllable Unit Lookup Result" />
@@ -139,13 +142,13 @@ export const ControllableUnitLookupResult = () => {
             </Box>
           </Card>
         </Stack>
-        {result.controllable_units.length == 0 ? (
+        {controllableUnitLookUpResult.controllable_units.length == 0 ? (
           <Typography variant="h6">No controllable units found</Typography>
         ) : (
           <>
             <Typography variant="h6">Controllable units found</Typography>
             <Stack spacing={2}>
-              {result.controllable_units.map((record: any) => (
+              {controllableUnitLookUpResult.controllable_units.map((record) => (
                 <RecordContextProvider key={record.id} value={record}>
                   <ControllableUnitLookupResultItem />
                 </RecordContextProvider>
