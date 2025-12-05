@@ -2,7 +2,6 @@ import {
   required,
   SelectInput,
   SimpleForm,
-  TextInput,
   useRecordContext,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
@@ -22,13 +21,11 @@ const filterRecord = ({
   service_providing_group_id,
   impacted_system_operator_id,
   status,
-  notes,
   prequalified_at,
 }: any) => ({
   service_providing_group_id,
   impacted_system_operator_id,
   status,
-  notes,
   prequalified_at,
 });
 
@@ -46,11 +43,7 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
   );
 
   return (
-    <SimpleForm
-      record={record}
-      maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled />}
-    >
+    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -75,12 +68,6 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
               "approved",
               "not_approved",
             ]}
-          />
-          <TextInput
-            source="notes"
-            multiline={true}
-            minRows={3}
-            sx={{ minWidth: { xs: 300, md: 500 } }}
           />
           <DateTimeInput source="prequalified_at" />
         </InputStack>

@@ -118,6 +118,7 @@ CREATE TABLE api.service_providing_group (
     id bigint NOT NULL,
     name text NOT NULL,
     service_provider_id bigint NOT NULL,
+    bidding_zone text NOT NULL,
     status text NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
@@ -127,6 +128,7 @@ CREATE TABLE api.service_providing_group_history (
     id bigint NOT NULL,
     name text NOT NULL,
     service_provider_id bigint NOT NULL,
+    bidding_zone text NOT NULL,
     status text NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
@@ -159,7 +161,6 @@ CREATE TABLE api.service_providing_group_grid_prequalification (
     service_providing_group_id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     prequalified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
@@ -170,8 +171,30 @@ CREATE TABLE api.service_providing_group_grid_prequalification_history (
     service_providing_group_id bigint NOT NULL,
     impacted_system_operator_id bigint NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     prequalified_at timestamp with time zone NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
+CREATE TABLE api.service_providing_group_grid_prequalification_comment (
+    id bigint NOT NULL,
+    service_providing_group_grid_prequalification_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE api.service_providing_group_grid_prequalification_comment_history (
+    service_providing_group_grid_prequalification_comment_id bigint NOT NULL,
+    id bigint NOT NULL,
+    service_providing_group_grid_prequalification_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -380,7 +403,6 @@ CREATE TABLE api.service_provider_product_application (
     system_operator_id bigint NOT NULL,
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     qualified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
@@ -392,7 +414,6 @@ CREATE TABLE api.service_provider_product_application_history (
     system_operator_id bigint NOT NULL,
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
-    notes text NULL,
     qualified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,

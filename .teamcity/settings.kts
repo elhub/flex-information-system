@@ -44,6 +44,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         repository = imageRepoBackend
                     }
                     changelogDirectory = "./db"
+                    liquibaseEntrypoint = "changelog.yml"
+                    source = Source.CommitSha
                 }
 
                 gitOps {

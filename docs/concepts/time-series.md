@@ -306,9 +306,30 @@ produce energy for the periods it is part of a reservation contract.
 
 ## Quantification and verification
 
-When establishing how much flex has been delivered we conceptually split the
-activity in two: *quantification* and *verification*. These look very similar -
-and can sometime be one and the same - but does have different purposes.
+After the delivery of a service, it must be established if the service was delivered
+according to the bid and the product requirements. We conceptually split this task
+in two, mainly based on why we do it and how often it is done. We call these activities
+*quantification* and *verification*.
+
+The activities *can* be equal in practice, but different in what we are trying to
+achieve. The following table summarizes the key reasons why it is useful to
+think about it as two things. The following two chapters describe this in
+more detail.
+
+| Aspect    | Quantification                  | Verification                                                          |
+|-----------|---------------------------------|-----------------------------------------------------------------------|
+| Purpose   | Settlement of service           | Quality assurance of service delivery or instead of prequalification  |
+| Frequency | After each and every activation | Ad-hoc or at certain intervals                                        |
+| Level     | SPG and AP/CU                   | SPG                                                                   |
+| Target    | Volume                          | Volume and quality                                                    |
+| Methods   | Can use simplified methods      | Usually more detailed and thorough methods                            |
+
+> [!NOTE]
+>
+> How to do quantification and verification will vary between different products
+> *and service providing groups*. Sometimes, e.g. when the group is "simple"
+> and the quantification method is based on trusted data and a detailed method,
+> then quantification and verification is the same activity.
 
 ### Quantification
 
@@ -373,11 +394,9 @@ Allocation can be done with:
 
 ### Verification
 
-Verification is an activity done by the system operator to check that a service
-was actually delivered. The system operator might want to assess both that the
-agreed volume was delivered and that the service was delivered with the right
-quality and in compliance with the product requirements of the specific
-products.
+Verification is a quality assurance activity done by the system operator to
+ensure that the delivered service is of sufficient quality and that the agreed
+volume has been delivered.
 
 Verification is targeted on the SPG level, where service is delivered.
 
@@ -390,22 +409,30 @@ challenges are
   energy consumption on an accounting point
 - finding and applying the correct method to verify the service delivery
 
-Verification can be done for every trade or activation, but given the challenges
+Verification can be done for every trade or activation but, given the challenges,
 it might be that it is feasible to only do it every now and then. This could for
-instance be once at application time and then ad-hoc or at certain intervals
-during the lifetime of the service providing group.
+instance be once at application time (possibly to replace prequalification) and
+then ad-hoc or at certain intervals during the lifetime of the service providing
+group.
 
-If, however, verification of volume is done for every trade, then we can also
-consider it as quantification and the result should be used for settlement. It
-is however expected that we will see that quantification is done with a
-simplified method or with a higher degree of trust than what verification
-implies. Current TSO and DSO markets both quantify with simplified methods.
+If, however, verification of volume is done for every trade, then we are
+basically doing quantification at the same time and the result should be used
+for settlement. It is however expected that we will see that quantification is
+done with a simplified method or with a higher degree of trust than what
+verification implies. Current TSO and DSO markets both quantify with simplified
+methods.
 
 The verification might include
 
-- comparing the quantified volume to what is observed in the accounting point
-- getting additional data from the service provider or others - e.g. high
-  granularity data - and doing analysis on that
+- **Compare to trusted data** - Comparing the quantified volume to what is
+  observed in the accounting point.
+- **Product verification** - Check if the quality of the delivered service is in
+  accordance with the product requirements. E.g. by getting additional data from
+  the service provider or others and doing analysis on that.
+- **Baseline quality** - Check if the baseline is of sufficient quality based on
+  the actual measurements.
+- **Consistency checks** - Check delivery and bid volume over time to see if
+  there are repeated discrepancies or systematic errors.
 
 It is at the system operator's discretion to decide how and when to verify the
 service delivery, as long as it does not put an additional/undue burden on the

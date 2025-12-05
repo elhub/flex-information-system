@@ -45,6 +45,7 @@
         "id": "Unique surrogate key.",
         "name": "Free text name of the service providing group.",
         "service_provider_id": "Reference to the `party` (service provider) managing the group.",
+        "bidding_zone": "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
         "status": "The status of the group."
     },
     "service_providing_group_membership": {
@@ -59,8 +60,15 @@
         "service_providing_group_id": "Reference to the service providing group whose grid prequalification is tracked by the current resource.",
         "impacted_system_operator_id": "Reference to the `party` that is the impacted system operator.",
         "status": "The status of the grid prequalification for this service providing group.",
-        "notes": "Free text notes on the current prequalification status.",
         "prequalified_at": "When the current grid prequalification was last approved."
+    },
+    "service_providing_group_grid_prequalification_comment": {
+        "id": "Unique surrogate identifier.",
+        "service_providing_group_grid_prequalification_id": "Reference to the service providing group grid prequalification.",
+        "created_by": "Reference to the identity that created the comment.",
+        "created_at": "When the comment was added to the SPGGP.",
+        "visibility": "The level of visibility of the comment.",
+        "content": "Free text content of the comment."
     },
     "service_providing_group_grid_suspension": {
         "id": "Unique surrogate identifier.",
@@ -173,7 +181,6 @@
         "system_operator_id": "Reference to the system operator.",
         "product_type_ids": "References to the product types.",
         "status": "The status of the application.",
-        "notes": "Free text notes on the current product application status.",
         "qualified_at": "When the product application was last validated."
     },
     "service_provider_product_application_comment": {

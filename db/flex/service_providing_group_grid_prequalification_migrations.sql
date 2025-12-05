@@ -33,3 +33,8 @@ WHEN (
     AND OLD.prequalified_at IS NULL AND NEW.prequalified_at IS NULL -- noqa
 )
 EXECUTE FUNCTION spg_grid_prequalification_status_approved();
+
+
+--changeset flex:service-providing-group-grid-prequalification-remove-notes runOnChange:true endDelimiter:--
+ALTER TABLE flex.service_providing_group_grid_prequalification
+DROP COLUMN IF EXISTS notes CASCADE;

@@ -52,7 +52,6 @@ export const ServiceProviderProductApplicationShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="status" />
-            <TextField source="notes" />
             <DateField source="qualified_at" showTime />
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>

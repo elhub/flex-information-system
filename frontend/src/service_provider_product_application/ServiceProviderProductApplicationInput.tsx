@@ -2,7 +2,6 @@ import {
   required,
   SelectInput,
   SimpleForm,
-  TextInput,
   useGetIdentity,
   useGetList,
   useRecordContext,
@@ -96,11 +95,7 @@ export const ServiceProviderProductApplicationInput = () => {
   });
 
   return (
-    <SimpleForm
-      record={record}
-      maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled />}
-    >
+    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -127,12 +122,6 @@ export const ServiceProviderProductApplicationInput = () => {
               "not_qualified",
               "qualified",
             ]}
-          />
-          <TextInput
-            source="notes"
-            multiline={true}
-            minRows={3}
-            sx={{ minWidth: { xs: 300, md: 500 } }}
           />
           <DateTimeInput source="qualified_at" />
         </InputStack>

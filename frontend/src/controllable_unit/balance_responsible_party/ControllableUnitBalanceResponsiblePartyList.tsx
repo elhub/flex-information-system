@@ -8,16 +8,17 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { DateField } from "../../components/datetime";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
   // accounting point id of the controllable unit whose BRPs we want to get
   const { accounting_point_id } = useRecordContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
-  const canRead = permissions.includes(
-    permissionRefs.accounting_point_balance_responsible_party.read,
+  const canRead = permissions?.allow(
+    "accounting_point_balance_responsible_party",
+    "read",
   );
 
   return (

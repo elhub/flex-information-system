@@ -91,7 +91,7 @@ service_providing_group;;;;;;;;;;;;;R
 service_providing_group;id;;R;R;R;R;R;R;R;R;;;
 service_providing_group;name;;R;R;R;RCU;R;R;RCU;R;;;
 service_providing_group;service_provider_id;;R;R;R;RC;R;R;RC;R;;;
-service_providing_group;price_area;;R;R;R;RC;R;R;RC;R;;;
+service_providing_group;bidding_zone;;R;R;R;RC;R;R;RC;R;;;
 service_providing_group;status;;R;R;R;RU;R;R;RU;R;;;
 service_providing_group;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_providing_group;recorded_by;;R;R;R;R;R;R;R;R;;;
@@ -108,10 +108,18 @@ service_providing_group_grid_prequalification;id;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_prequalification;service_providing_group_id;;R;R;R;RC;R;R;R;R;;;
 service_providing_group_grid_prequalification;impacted_system_operator_id;;R;R;R;RC;R;R;R;R;;;
 service_providing_group_grid_prequalification;status;;R;R;R;RU;R;RU;R;R;;;
-service_providing_group_grid_prequalification;notes;;R;R;R;R;R;RU;R;R;;;
 service_providing_group_grid_prequalification;prequalified_at;;R;R;R;RU;R;RU;R;R;;;
 service_providing_group_grid_prequalification;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_prequalification;recorded_by;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;;;;;;;;;;;;;R
+service_providing_group_grid_prequalification_comment;id;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;service_providing_group_grid_prequalification_id;;R;R;R;RC;R;RC;RC;R;;;
+service_providing_group_grid_prequalification_comment;created_by;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;created_at;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;visibility;;R;R;R;RCU;R;RCU;RCU;R;;;
+service_providing_group_grid_prequalification_comment;content;;R;R;R;RCU;R;RCU;RCU;R;;;
+service_providing_group_grid_prequalification_comment;recorded_at;;R;R;R;R;R;R;R;R;;;
+service_providing_group_grid_prequalification_comment;recorded_by;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_suspension;;;;;;D;;D;;;;;R
 service_providing_group_grid_suspension;id;;R;R;R;R;R;R;R;R;;;
 service_providing_group_grid_suspension;impacted_system_operator_id;;R;R;R;RC;R;RC;R;R;;;
@@ -185,7 +193,6 @@ service_provider_product_application;service_provider_id;;R;R;R;R;R;R;RC;R;;;
 service_provider_product_application;system_operator_id;;R;R;R;R;R;R;RC;R;;;
 service_provider_product_application;product_type_ids;;R;R;R;RU;R;R;RCU;R;;;
 service_provider_product_application;status;;R;R;R;RU;R;RU;R;R;;;
-service_provider_product_application;notes;;R;R;R;RU;R;RU;R;R;;;
 service_provider_product_application;qualified_at;;R;R;R;RU;R;RU;R;R;;;
 service_provider_product_application;recorded_at;;R;R;R;R;R;R;R;R;;;
 service_provider_product_application;recorded_by;;R;R;R;R;R;R;R;R;;;

@@ -17,17 +17,19 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
-import { permissionRefs } from "../../auth/permissions";
+import { Permissions } from "../../auth/permissions";
+import { CommentList } from "../../components/comments";
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
-  const canUpdate = permissions.includes(
-    permissionRefs.service_providing_group_grid_prequalification.update,
+  const canUpdate = permissions?.allow(
+    "service_providing_group_grid_prequalification",
+    "update",
   );
 
   const EditButton = () => {
@@ -74,7 +76,6 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
             </ReferenceField>
             <TextField source="status" />
             <DateField source="prequalified_at" showTime />
-            <TextField source="notes" />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
@@ -86,6 +87,15 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
+        {!isHistory && (
+          <>
+            <Typography variant="h6" gutterBottom>
+              Comments
+            </Typography>
+            <NestedResourceHistoryButton child="comment" label="comments" />
+            <CommentList />
+          </>
+        )}
         <NestedResourceHistoryButton
           child="grid_prequalification"
           label="grid prequalification resources"

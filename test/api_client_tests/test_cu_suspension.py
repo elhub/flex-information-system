@@ -14,6 +14,8 @@ from flex.models import (
     ServiceProvidingGroupResponse,
     ErrorMessage,
     EmptyObject,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
 )
 from flex.models import (
     ControllableUnitSuspensionCreateRequest,
@@ -46,6 +48,7 @@ from flex.api.service_providing_group import (
 from flex.models import (
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
     SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
@@ -73,6 +76,9 @@ from flex.api.service_providing_group import (
 from flex.api.controllable_unit import (
     create_controllable_unit,
     update_controllable_unit,
+)
+from flex.api.technical_resource import (
+    create_technical_resource,
 )
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -120,6 +126,15 @@ def data():
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     # activate cu
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-TR-FOR-ACTIVATION",
+            controllable_unit_id=cast(int, cu.id),
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
     u = update_controllable_unit.sync(
         client=client_fiso,
         id=cast(int, cu.id),
@@ -267,6 +282,15 @@ def test_cus_so(data):
     )
     assert isinstance(cu, ControllableUnitResponse)
 
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-TR-FOR-ACTIVATION",
+            controllable_unit_id=cast(int, cu.id),
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
     u = update_controllable_unit.sync(
         client=client_fiso,
         id=cast(int, cu.id),
@@ -281,6 +305,7 @@ def test_cus_so(data):
         body=ServiceProvidingGroupCreateRequest(
             service_provider_id=sp_id,
             name="New group",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
@@ -458,6 +483,15 @@ def test_cus_sp(data):
     assert isinstance(cus, ErrorMessage)
 
     # Set CU as active and try again
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-TR-FOR-ACTIVATION",
+            controllable_unit_id=cast(int, cu.id),
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
     u = update_controllable_unit.sync(
         client=client_fiso,
         id=cast(int, cu.id),

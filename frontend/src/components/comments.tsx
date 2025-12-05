@@ -28,6 +28,7 @@ import { DateField } from "./datetime";
 import { capitaliseFirstLetter, chunksOf, removeSuffix } from "../util";
 import { Toolbar } from "./Toolbar";
 import { RichTextInput } from "ra-input-rich-text";
+import { Permissions, PermissionTarget } from "../auth/permissions";
 
 const EditButton = (props: { url: string }) => (
   <Button
@@ -60,13 +61,16 @@ const ListActions = ({
   parentPathS,
   baseIDInformation,
 }: {
-  permissions: string[];
+  permissions: Permissions | undefined;
   baseResource: string;
   parentPathS: string;
   baseIDInformation: any;
 }) => (
   <TopToolbar>
-    {permissions.includes(`${baseResource}_comment.create`) && (
+    {permissions?.allow(
+      `${baseResource}_comment` as PermissionTarget,
+      "create",
+    ) && (
       <CreateButton
         parentPath={parentPathS}
         baseIDInformation={baseIDInformation}
@@ -77,7 +81,7 @@ const ListActions = ({
 
 export const CommentShow = () => {
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
   const location = useLocation();
 
   const isHistory = resource.endsWith("_history");
@@ -94,7 +98,10 @@ export const CommentShow = () => {
     <Show
       actions={
         !isHistory &&
-        permissions.includes(`${baseResource}_comment.update`) && (
+        permissions?.allow(
+          `${baseResource}_comment` as PermissionTarget,
+          "update",
+        ) && (
           <TopToolbar>
             <EditButton url={location.pathname} />
           </TopToolbar>
@@ -146,7 +153,7 @@ export type CommentListProps = {
 };
 
 export const CommentList = (props: CommentListProps) => {
-  const { permissions } = usePermissions();
+  const { permissions } = usePermissions<Permissions>();
   const location = useLocation();
 
   const resource = useResourceContext()!;
@@ -170,7 +177,10 @@ export const CommentList = (props: CommentListProps) => {
   const parentPathS = parentPath.map((p) => `/${p.resource}/${p.id}`).join("");
 
   return (
-    permissions.includes(`${baseResource}_comment.read`) && (
+    permissions?.allow(
+      `${baseResource}_comment` as PermissionTarget,
+      "read",
+    ) && (
       <ResourceContextProvider value={`${baseResource}_comment`}>
         <List
           title={false}
@@ -227,11 +237,7 @@ export const CommentInput = () => {
   const record: any = filterRecord({ ...actualRecord, ...overrideRecord });
 
   return (
-    <SimpleForm
-      record={record}
-      maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled />}
-    >
+    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information

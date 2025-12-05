@@ -271,7 +271,6 @@ type ApiServiceProviderProductApplication struct {
 	SystemOperatorID  int
 	ProductTypeIds    []int
 	Status            string
-	Notes             *string
 	QualifiedAt       pgtype.Timestamptz
 	RecordedBy        int
 	RecordedAt        pgtype.Timestamptz
@@ -309,7 +308,6 @@ type ApiServiceProviderProductApplicationHistory struct {
 	SystemOperatorID                    int
 	ProductTypeIds                      []int
 	Status                              string
-	Notes                               *string
 	QualifiedAt                         pgtype.Timestamptz
 	RecordedBy                          int
 	RecordedAt                          pgtype.Timestamptz
@@ -369,6 +367,7 @@ type ApiServiceProvidingGroup struct {
 	ID                int
 	Name              string
 	ServiceProviderID int
+	BiddingZone       string
 	Status            string
 	RecordedBy        int
 	RecordedAt        pgtype.Timestamptz
@@ -379,10 +378,34 @@ type ApiServiceProvidingGroupGridPrequalification struct {
 	ServiceProvidingGroupID  int
 	ImpactedSystemOperatorID int
 	Status                   string
-	Notes                    *string
 	PrequalifiedAt           pgtype.Timestamptz
 	RecordedBy               int
 	RecordedAt               pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupGridPrequalificationComment struct {
+	ID                                          int
+	ServiceProvidingGroupGridPrequalificationID int
+	CreatedBy                                   int
+	CreatedAt                                   pgtype.Timestamptz
+	Visibility                                  string
+	Content                                     string
+	RecordedBy                                  int
+	RecordedAt                                  pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupGridPrequalificationCommentHistory struct {
+	ServiceProvidingGroupGridPrequalificationCommentID int
+	ID                                                 int
+	ServiceProvidingGroupGridPrequalificationID        int
+	CreatedBy                                          int
+	CreatedAt                                          pgtype.Timestamptz
+	Visibility                                         string
+	Content                                            string
+	RecordedBy                                         int
+	RecordedAt                                         pgtype.Timestamptz
+	ReplacedBy                                         *int
+	ReplacedAt                                         pgtype.Timestamptz
 }
 
 type ApiServiceProvidingGroupGridPrequalificationHistory struct {
@@ -391,7 +414,6 @@ type ApiServiceProvidingGroupGridPrequalificationHistory struct {
 	ServiceProvidingGroupID                     int
 	ImpactedSystemOperatorID                    int
 	Status                                      string
-	Notes                                       *string
 	PrequalifiedAt                              pgtype.Timestamptz
 	RecordedBy                                  int
 	RecordedAt                                  pgtype.Timestamptz
@@ -450,6 +472,7 @@ type ApiServiceProvidingGroupHistory struct {
 	ID                      int
 	Name                    string
 	ServiceProviderID       int
+	BiddingZone             string
 	Status                  string
 	RecordedBy              int
 	RecordedAt              pgtype.Timestamptz

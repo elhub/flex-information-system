@@ -26,6 +26,7 @@ export const ServiceProvidingGroupHistoryList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
+        <TextField source="bidding_zone" />
         <TextField source="status" />
         <DateField source="recorded_at" showTime />
         <DateField source="replaced_at" showTime />

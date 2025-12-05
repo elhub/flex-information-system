@@ -2587,6 +2587,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2599,6 +2600,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2611,6 +2613,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2621,7 +2624,8 @@ TO flex_end_user;
 -- changeset flex:api-grant-service-providing-group-fiso-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     name,
-    service_provider_id
+    service_provider_id,
+    bidding_zone
 ) ON TABLE
 api.service_providing_group
 TO flex_flexibility_information_system_operator;
@@ -2631,6 +2635,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2651,6 +2656,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2663,6 +2669,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2673,7 +2680,8 @@ TO flex_system_operator;
 -- changeset flex:api-grant-service-providing-group-sp-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     name,
-    service_provider_id
+    service_provider_id,
+    bidding_zone
 ) ON TABLE
 api.service_providing_group
 TO flex_service_provider;
@@ -2683,6 +2691,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2703,6 +2712,7 @@ GRANT SELECT (
     id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     recorded_by
@@ -2721,6 +2731,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2736,6 +2747,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2751,6 +2763,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2766,6 +2779,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2781,6 +2795,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2796,6 +2811,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2811,6 +2827,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -2826,6 +2843,7 @@ GRANT SELECT (
     service_providing_group_id,
     name,
     service_provider_id,
+    bidding_zone,
     status,
     recorded_at,
     replaced_at,
@@ -3134,7 +3152,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3148,7 +3165,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3162,7 +3178,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3184,7 +3199,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3206,7 +3220,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3220,7 +3233,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3231,7 +3243,6 @@ TO flex_system_operator;
 -- changeset flex:api-grant-service-providing-group-grid-prequalification-so-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
     status,
-    notes,
     prequalified_at
 ) ON TABLE
 api.service_providing_group_grid_prequalification
@@ -3243,7 +3254,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3257,7 +3267,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     recorded_by
@@ -3277,7 +3286,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3294,7 +3302,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3311,7 +3318,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3328,7 +3334,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3345,7 +3350,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3362,7 +3366,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3379,7 +3382,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3396,7 +3398,6 @@ GRANT SELECT (
     service_providing_group_id,
     impacted_system_operator_id,
     status,
-    notes,
     prequalified_at,
     recorded_at,
     replaced_at,
@@ -3409,6 +3410,315 @@ TO flex_third_party;
 -- changeset flex:api-grant-service-providing-group-grid-prequalification-history-ien-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE
 api.service_providing_group_grid_prequalification_history
+TO flex_internal_event_notification;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_end_user;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-fiso-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    service_providing_group_grid_prequalification_id,
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-fiso-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_market_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-so-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    service_providing_group_grid_prequalification_id,
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-so-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-sp-insert endDelimiter:-- runAlways:true
+GRANT INSERT (
+    service_providing_group_grid_prequalification_id,
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_service_provider;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_service_provider;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-sp-update endDelimiter:-- runAlways:true
+GRANT UPDATE (
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_service_provider;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_third_party;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.service_providing_group_grid_prequalification_comment
+TO flex_internal_event_notification;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_end_user;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_market_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_system_operator;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_service_provider;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    id,
+    service_providing_group_grid_prequalification_comment_id,
+    service_providing_group_grid_prequalification_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
+TO flex_third_party;
+
+-- changeset flex:api-grant-service-providing-group-grid-prequalification-comment-history-ien-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+api.service_providing_group_grid_prequalification_comment_history
 TO flex_internal_event_notification;
 
 -- changeset flex:api-grant-service-providing-group-grid-suspension-brp-select endDelimiter:-- runAlways:true
@@ -5136,7 +5446,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5151,7 +5460,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5166,7 +5474,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5181,7 +5488,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5193,7 +5499,6 @@ TO flex_flexibility_information_system_operator;
 GRANT UPDATE (
     product_type_ids,
     status,
-    notes,
     qualified_at
 ) ON TABLE
 api.service_provider_product_application
@@ -5206,7 +5511,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5221,7 +5525,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5232,7 +5535,6 @@ TO flex_system_operator;
 -- changeset flex:api-grant-service-provider-product-application-so-update endDelimiter:-- runAlways:true
 GRANT UPDATE (
     status,
-    notes,
     qualified_at
 ) ON TABLE
 api.service_provider_product_application
@@ -5254,7 +5556,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5276,7 +5577,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     recorded_by
@@ -5297,7 +5597,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5315,7 +5614,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5333,7 +5631,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5351,7 +5648,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5369,7 +5665,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5387,7 +5682,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5405,7 +5699,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,
@@ -5423,7 +5716,6 @@ GRANT SELECT (
     system_operator_id,
     product_type_ids,
     status,
-    notes,
     qualified_at,
     recorded_at,
     replaced_at,

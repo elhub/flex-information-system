@@ -13,7 +13,6 @@ import { ControllableUnitServiceProviderList } from "./service_provider/Controll
 import {
   ResourceHistoryButton,
   NestedResourceHistoryButton,
-  RestoreButton,
 } from "../components/history";
 import { DateField } from "../components/datetime";
 import { TechnicalResourceList } from "./technical_resource/TechnicalResourceList";
@@ -142,7 +141,6 @@ export const ControllableUnitShow = () => {
             <ControllableUnitEnergySupplierList />
           </>
         )}
-        {isHistory && <RestoreButton />}
       </SimpleShowLayout>
     </Show>
   );

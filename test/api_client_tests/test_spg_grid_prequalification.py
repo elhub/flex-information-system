@@ -10,6 +10,7 @@ from flex.models import (
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
@@ -68,6 +69,7 @@ def data():
         body=ServiceProvidingGroupCreateRequest(
             service_provider_id=sp_id,
             name="New group",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
@@ -355,7 +357,7 @@ def test_spggp_sp(data):
 
 
 def test_spggp_so(data):
-    (sts, spg_id, _, _, spgm_id) = data
+    (sts, spg_id, so_id, _, spgm_id) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
@@ -423,12 +425,21 @@ def test_spggp_so(data):
     # RLS: SPGGP-SO001
     # SO can update SPGGP where they are impacted
 
+    spggps_so = list_service_providing_group_grid_prequalification.sync(
+        client=client_so,
+        impacted_system_operator_id=f"eq.{so_id}",
+    )
+    assert isinstance(spggps_so, list)
+    assert len(spggps_so) > 0, (
+        "No SPGGP records returned for impacted_system_operator_id"
+    )
+    so_spggp = spggps_so[0]
+
     u = update_service_providing_group_grid_prequalification.sync(
         client=client_so,
         id=cast(int, so_spggp.id),
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
             status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
-            notes="Edited by SO",
             prequalified_at="2024-01-01T08:00:00",
         ),
     )
@@ -440,7 +451,6 @@ def test_spggp_so(data):
         id=cast(int, other_spggp.id),
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
             status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
-            notes="Edited by SO",
             prequalified_at="2024-01-01T08:00:00",
         ),
     )

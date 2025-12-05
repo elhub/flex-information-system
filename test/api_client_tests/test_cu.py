@@ -14,10 +14,13 @@ from flex.models import (
     ControllableUnitGridValidationStatus,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupResponse,
+    ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
     ErrorMessage,
     EmptyObject,
 )
@@ -28,6 +31,9 @@ from flex.api.controllable_unit import (
     list_controllable_unit,
     list_controllable_unit_history,
     read_controllable_unit_history,
+)
+from flex.api.technical_resource import (
+    create_technical_resource,
 )
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -132,6 +138,27 @@ def test_controllable_unit_fiso(sts):
         ),
     )
     assert not (isinstance(u, ErrorMessage))
+
+    # RLS: CU-VAL004
+    # status active impossible if no technical resource
+
+    e = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-TR-FOR-ACTIVATION",
+            controllable_unit_id=cast(int, cu.id),
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
 
     u = update_controllable_unit.sync(
         client=client_fiso,
@@ -265,6 +292,7 @@ def test_controllable_unit_so(sts):
         body=ServiceProvidingGroupCreateRequest(
             service_provider_id=sp_id,
             name="New group",
+            bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
@@ -619,6 +647,17 @@ def test_controllable_unit_sp(sts):
     assert not (isinstance(u, ErrorMessage))
 
     # check status can be updated but not reset to new or un-terminated
+
+    # just need a TR for that
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-TR-FOR-ACTIVATION",
+            controllable_unit_id=cast(int, cu.id),
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
     u = update_controllable_unit.sync(
         client=client_sp2,
         id=cast(int, cu.id),

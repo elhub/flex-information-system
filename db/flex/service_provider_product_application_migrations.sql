@@ -34,3 +34,7 @@ WHEN (
     AND OLD.qualified_at IS NULL AND NEW.qualified_at IS NULL -- noqa
 )
 EXECUTE FUNCTION service_provider_product_application_status_qualified();
+
+-- changeset flex:service-provider-product-application-status-remove-notes runOnChange:true endDelimiter:--
+ALTER TABLE flex.service_provider_product_application
+DROP COLUMN IF EXISTS notes CASCADE;

@@ -20,7 +20,7 @@ export const ControllableUnitInput = () => {
   const createOrUpdate = useCreateOrUpdate();
 
   return (
-    <SimpleForm maxWidth={1280} toolbar={<Toolbar saveAlwaysEnabled />}>
+    <SimpleForm maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -70,7 +70,7 @@ export const ControllableUnitInput = () => {
           <AutocompleteReferenceInput
             source="accounting_point_id"
             reference="accounting_point"
-            field="business_id"
+            fieldName="business_id"
           />
           <TextInput source="grid_node_id" />
         </InputStack>

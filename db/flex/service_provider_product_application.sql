@@ -1,8 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-provider-product-application-create runOnChange:false endDelimiter:--
--- validCheckSum: 9:a542c9d6b49641997506235f5cf99282
+-- changeset flex:service-provider-product-application-create runOnChange:true endDelimiter:--
 -- relation between SP and SO with its product types
 CREATE TABLE IF NOT EXISTS service_provider_product_application (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -34,9 +33,6 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application (
             'not_qualified',
             'qualified'
         )
-    ),
-    notes text NULL CHECK (
-        char_length(notes) <= 512
     ),
     qualified_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(

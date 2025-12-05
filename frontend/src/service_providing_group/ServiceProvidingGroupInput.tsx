@@ -24,11 +24,7 @@ export const ServiceProvidingGroupInput = () => {
     : {};
 
   return (
-    <SimpleForm
-      defaultValues={record}
-      maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled />}
-    >
+    <SimpleForm defaultValues={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <PartyReferenceInput
           source="service_provider_id"
@@ -36,6 +32,11 @@ export const ServiceProvidingGroupInput = () => {
         />
         <InputStack direction="row" flexWrap="wrap">
           <TextInput source="name" label="Group name" />
+          <SelectInput
+            source="bidding_zone"
+            validate={createOrUpdate == "update" ? required() : undefined}
+            choices={["NO1", "NO2", "NO3", "NO4", "NO5"]}
+          />
           <SelectInput
             source="status"
             validate={createOrUpdate == "update" ? required() : undefined}

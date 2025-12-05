@@ -40,11 +40,7 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
   );
 
   return (
-    <SimpleForm
-      record={record}
-      maxWidth={1280}
-      toolbar={<Toolbar saveAlwaysEnabled />}
-    >
+    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information

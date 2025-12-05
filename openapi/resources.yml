@@ -350,10 +350,10 @@ resources:
           resource: party
           field: id
         example: 17
-      price_area:
+      bidding_zone:
         description: >-
-          The price area where the service providing group is located.
-          Also known as scheduling area.
+          The bidding zone that restricts which CUs that can be added to the group.
+          Also known as scheduling area or price area for TSO.
         format: text
         type: string
         enum:
@@ -458,6 +458,7 @@ resources:
       - list
       - read
     history_rls: true
+    comments: true
     audit: true
     generate_views: true
     properties:
@@ -505,13 +506,6 @@ resources:
           - approved
           - not_approved
         example: in_progress
-      notes:
-        description: Free text notes on the current prequalification status.
-        format: text
-        type: string
-        maxLength: 512
-        nullable: true
-        example: null
       prequalified_at:
         description: When the current grid prequalification was last approved.
         format: timestamp with time zone
@@ -1379,13 +1373,6 @@ resources:
           - not_qualified
           - qualified
         example: in_progress
-      notes:
-        description: Free text notes on the current product application status.
-        format: text
-        type: string
-        maxLength: 512
-        nullable: true
-        example: null
       qualified_at:
         description: When the product application was last validated.
         format: timestamp with time zone
