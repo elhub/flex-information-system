@@ -118,13 +118,13 @@ are close together and all connected to the same part of the grid, the SPG can
 offer local services such as congestion management. If the members are spread
 out over a larger area, the SPG can maybe only offer balancing services.
 
-Each SPG is resticted to a specific area by the service provider. The provider
+Each SPG is restricted to a specific area by the service provider. The provider
 specifies this when creating the SPG. We use the term `bidding zone`, rather
 than `scheduling area` used in NC DR, for this area.
 [SOGL](https://eur-lex.europa.eu/eli/reg/2017/1485/oj/eng) tells us that the
 geographical scope of the scheduling area is equal to the bidding zone. The term
 `bidding zone` is widely used and easy to understand for market participants.
-The norwegian word for bidding zone is `budområde`, and in common language also
+The Norwegian word for bidding zone is `budområde`, and in common language also
 referred to as `prisområde`.
 
 As of now, the bidding zones are the scheduling areas in Norway (NO1-NO5), used
