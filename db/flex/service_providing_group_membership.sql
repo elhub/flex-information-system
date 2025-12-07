@@ -77,7 +77,7 @@ DROP TRIGGER IF EXISTS service_providing_group_membership_upsert_consistency
 ON service_providing_group_membership;
 
 -- changeset flex:service-providing-group-membership-bidding-zone-consistency runOnChange:true endDelimiter:--
--- SPGM-VAL002: The bidding zone of the SPGM must be consistent with the bidding zone of the CU.
+-- SPGM-VAL002: The bidding zone of the SPG must be consistent with the bidding zone of the CU.
 CREATE OR REPLACE FUNCTION
 service_providing_group_membership_bidding_zone_consistency()
 RETURNS trigger
