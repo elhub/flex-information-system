@@ -9,7 +9,7 @@ WITH (security_invoker = true) AS (
         apbz.bidding_zone,
         apbz.valid_time_range
     FROM flex.controllable_unit AS cu
-        LEFT JOIN flex.accounting_point_bidding_zone AS apbz
+        INNER JOIN flex.accounting_point_bidding_zone AS apbz
             ON cu.accounting_point_id = apbz.accounting_point_id
 );
 
