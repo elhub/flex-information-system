@@ -32,10 +32,10 @@ $$
 DECLARE
     -- source of the event
     l_source text;
-    l_src_id bigint;
+    l_source_id bigint;
     -- subject of the event
     l_subject text;
-    l_sub_id bigint;
+    l_subject_id bigint;
     -- event details
     l_operation text;
     l_event_data jsonb;
@@ -51,19 +51,19 @@ BEGIN
     IF TG_NARGS = 0 THEN
         -- event without subject
         l_source := TG_TABLE_NAME;
-        l_src_id := l_id;
+        l_source_id := l_id;
         l_subject := null;
-        l_sub_id := null;
+        l_subject_id := null;
     ELSE
         -- the impacted table is the subject, the given table is the source
         l_source := TG_ARGV[0];
         IF TG_OP = 'DELETE' THEN
-            l_src_id := (to_jsonb(OLD)->>(l_source || '_id'))::bigint;
+            l_source_id := (to_jsonb(OLD)->>(l_source || '_id'))::bigint;
         ELSE
-            l_src_id := (to_jsonb(NEW)->>(l_source || '_id'))::bigint;
+            l_source_id := (to_jsonb(NEW)->>(l_source || '_id'))::bigint;
         END IF;
         l_subject := TG_TABLE_NAME;
-        l_sub_id := l_id;
+        l_subject_id := l_id;
     END IF;
 
     l_event_data := null;
@@ -98,9 +98,9 @@ BEGIN
             'no.elhub.flex.' || TG_TABLE_NAME || '.' || l_operation
         ),
         l_source,
-        l_src_id,
+        l_source_id,
         l_subject,
-        l_sub_id,
+        l_subject_id,
         l_event_data
     );
 
