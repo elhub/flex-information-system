@@ -33,10 +33,10 @@ No validation rules.
 
 ## Notifications
 
-| Action         | Recipient                  | Comment |
-|----------------|----------------------------|---------|
-| create         | All active SPs, SO on SOPT |         |
-| update, delete | SO on SOPT                 |         |
+| Action | Recipient                  | Comment |
+|--------|----------------------------|---------|
+| create | All active SPs, SO on SOPT |         |
+| update | SO on SOPT                 |         |
 
 ## Authorization
 
