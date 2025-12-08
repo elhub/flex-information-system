@@ -16,7 +16,8 @@ var ErrDataTooShort = errors.New("data too short")
 type event struct {
 	ID         int
 	Type       string
-	ResourceID int
+	SourceID   int
+	SubjectID  *int
 	RecordedAt pgtype.Timestamptz
 	RecordedBy int
 }
@@ -33,11 +34,11 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 	event.Type = string(td.Columns[1])
 
 	// `source_resource` is column index 2
-	// We don't need it since we have it as part of `type`
+	// We don't need it since we can infer it from `type`
 
-	event.ResourceID, err = strconv.Atoi(string(td.Columns[3]))
+	event.SourceID, err = strconv.Atoi(string(td.Columns[3]))
 	if err != nil {
-		return event, fmt.Errorf("could not parse ResourceID: %w", err)
+		return event, fmt.Errorf("could not parse SourceID: %w", err)
 	}
 
 	// `data` is column index 4
@@ -65,6 +66,22 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 		return event, fmt.Errorf("could not parse RecordedBy: %w", err)
 	}
 
+	// `subject_resource` is column index 7
+	// We don't need it since we can infer it from `type`
+
+	// this can be null though, if the event concerns a toplevel resource
+	subjectIDStr := string(td.Columns[8])
+	if subjectIDStr == "" {
+		event.SubjectID = nil
+		return event, nil
+	}
+
+	subjectID, err := strconv.Atoi(subjectIDStr)
+	if err != nil {
+		return event, fmt.Errorf("could not parse SubjectID: %w", err)
+	}
+
+	event.SubjectID = &subjectID
 	return event, nil
 }
 
@@ -84,7 +101,7 @@ func fromChange(change *pgrepl.Change) (event, error) {
 		return event, fmt.Errorf("could not get event type: %w", err)
 	}
 
-	event.ResourceID, err = change.GetIntColumnValue("source_id")
+	event.SourceID, err = change.GetIntColumnValue("source_id")
 	if err != nil {
 		return event, fmt.Errorf("could not get event source ID: %w", err)
 	}
@@ -101,5 +118,11 @@ func fromChange(change *pgrepl.Change) (event, error) {
 		return event, fmt.Errorf("could not get event identity: %w", err)
 	}
 
+	subjectID, err := change.GetIntColumnValue("subject_id")
+	if err != nil {
+		event.SubjectID = nil
+		return event, nil //nolint:nilerr
+	}
+	event.SubjectID = &subjectID
 	return event, nil
 }
