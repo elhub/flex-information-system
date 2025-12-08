@@ -4,7 +4,6 @@ import {
   Title,
   RecordContextProvider,
   Button,
-  useRecordContext,
 } from "react-admin";
 import { Link, useLocation } from "react-router-dom";
 import { Typography, Stack, Card, Box } from "@mui/material";
@@ -18,24 +17,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FieldStack } from "../../auth";
 import { zControllableUnitLookupResponse } from "../../generated-client/zod.gen";
+import { ControllableUnitLookupResponse } from "../../generated-client";
+import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
 
-// button to redirect to the CU-SP create page with the CU ID pre-filled
-const CreateCUSPButton = () => {
-  const record = useRecordContext();
-  return (
-    <Button
-      component={Link}
-      to={`/controllable_unit_service_provider/create`}
-      startIcon={<BookmarkAddIcon />}
-      // input a CU ID instead of from a list of names (cf. CUSP input)
-      state={{ cuIDAsNumber: true, controllable_unit_id: record?.id }}
-      label="Manage this controllable unit"
-    />
-  );
-};
+type ControllableUnit = ControllableUnitLookupResponse["controllable_units"][0];
+type TechnicalResource = ControllableUnit["technical_resources"][0];
 
 // local list of TRs for each CU
-const TechnicalResourceList = ({ data }: any) => (
+const TechnicalResourceList = ({
+  technical_resources,
+}: {
+  technical_resources: TechnicalResource[];
+}) => (
   <TableContainer component={Paper}>
     <Table size="small">
       <TableHead>
@@ -46,13 +39,13 @@ const TechnicalResourceList = ({ data }: any) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((record: any) => (
-          <TableRow key={record.id}>
+        {technical_resources.map((tr: TechnicalResource) => (
+          <TableRow key={tr.id}>
             <TableCell component="th" scope="row">
-              {record.id}
+              {tr.id}
             </TableCell>
-            <TableCell align="right">{record.name}</TableCell>
-            <TableCell align="right">{record.details}</TableCell>
+            <TableCell align="right">{tr.name}</TableCell>
+            <TableCell align="right">{tr.details}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -61,8 +54,20 @@ const TechnicalResourceList = ({ data }: any) => (
 );
 
 // one instance of this component per CU found in the lookup operation
-const ControllableUnitLookupResultItem = () => {
-  const record = useRecordContext()!;
+const ControllableUnitLookupResultItem = ({
+  controllableUnit,
+  endUserId,
+}: {
+  controllableUnit: ControllableUnit;
+  endUserId: number;
+}) => {
+  const cuspLocationState: ControllableUnitServiceProviderLocationState = {
+    cusp: {
+      controllable_unit_id: controllableUnit.id,
+      end_user_id: endUserId,
+    },
+    cuIDAsNumber: true,
+  };
 
   return (
     <Card>
@@ -80,11 +85,17 @@ const ControllableUnitLookupResultItem = () => {
         </FieldStack>
         <FieldStack spacing={2} allowAll hideTooltips>
           <TechnicalResourceList
-            source="technical_resources"
-            data={record.technical_resources}
+            technical_resources={controllableUnit.technical_resources}
           />
         </FieldStack>
-        <CreateCUSPButton />
+        <Button
+          component={Link}
+          to={`/controllable_unit_service_provider/create`}
+          startIcon={<BookmarkAddIcon />}
+          // input a CU ID instead of from a list of names (cf. CUSP input)
+          state={cuspLocationState}
+          label="Manage this controllable unit"
+        />
       </SimpleShowLayout>
     </Card>
   );
@@ -150,7 +161,10 @@ export const ControllableUnitLookupResult = () => {
             <Stack spacing={2}>
               {controllableUnitLookUpResult.controllable_units.map((record) => (
                 <RecordContextProvider key={record.id} value={record}>
-                  <ControllableUnitLookupResultItem />
+                  <ControllableUnitLookupResultItem
+                    controllableUnit={record}
+                    endUserId={controllableUnitLookUpResult.end_user.id}
+                  />
                 </RecordContextProvider>
               ))}
             </Stack>
