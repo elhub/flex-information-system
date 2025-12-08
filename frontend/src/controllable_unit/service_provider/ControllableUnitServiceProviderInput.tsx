@@ -5,6 +5,7 @@ import {
   TextInput,
   useGetIdentity,
   useRecordContext,
+  UserIdentity,
 } from "react-admin";
 import { Typography, Box, Stack } from "@mui/material";
 import {
@@ -16,62 +17,70 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
-import { useMemo } from "react";
 import { countDefinedValues } from "../../util";
+import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
+import { ControllableUnitServiceProvider } from "../../generated-client";
 
-// keep only the fields that map to the UI
-const filterRecord = ({
-  controllable_unit_id,
-  service_provider_id,
-  end_user_id,
-  contract_reference,
-  valid_from,
-  valid_to,
-}: any) => ({
-  controllable_unit_id,
-  service_provider_id,
-  end_user_id,
-  contract_reference,
-  valid_from,
-  valid_to,
-});
-
-// common layout to create and edit pages
-export const ControllableUnitServiceProviderInput = () => {
-  const { state: overrideRecord } = useLocation();
-  const hasOverride =
-    countDefinedValues(filterRecord({ ...overrideRecord })) > 0;
-  const actualRecord = useRecordContext();
-
-  // priority to the restored values if they exist, otherwise normal edit mode
-  // Memoize the combined record to avoid re-renders causing errors
-  const record = useMemo(
-    () => filterRecord({ ...actualRecord, ...overrideRecord }),
-    [actualRecord, overrideRecord],
-  );
-
-  const { data: identity, isLoading: identityLoading } = useGetIdentity();
-
+export type ControllableUnitServiceProviderLocationState = {
+  cusp?: Partial<ControllableUnitServiceProvider>;
   // if we came to this page as a user who cannot see the CU, we want to input a
   // CU ID, instead of using the autocomplete component that works from the list
   // of readable CUs
-  const cuIDAsNumber: boolean = !!overrideRecord?.cuIDAsNumber;
+  cuIDAsNumber?: boolean;
+};
 
-  const isServiceProvider = identity?.role == "flex_service_provider";
+// common layout to create and edit pages
+export const ControllableUnitServiceProviderInput = () => {
+  const { state } = useLocation();
+  const { cusp, cuIDAsNumber } =
+    state as ControllableUnitServiceProviderLocationState;
+  const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
-  const finalRecord = useMemo(() => {
-    const baseRecord = { ...record };
-    if (isServiceProvider) {
-      baseRecord.service_provider_id = identity?.partyID;
-    }
-    return baseRecord;
-  }, [record, isServiceProvider, identity?.partyID]);
+  const overrideRecord =
+    zControllableUnitServiceProvider.safeParse(cusp).data || {};
+  const hasOverride = countDefinedValues(overrideRecord) > 0;
+
+  const overridenRecord = {
+    ...actualRecord,
+    ...overrideRecord,
+  } as ControllableUnitServiceProvider;
+
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
 
   if (identityLoading) return <>Loading...</>;
 
   return (
+    <ControllableUnitServiceProviderForm
+      record={overridenRecord}
+      hasOverride={hasOverride}
+      cuIDAsNumber={!!cuIDAsNumber}
+      identity={identity}
+    />
+  );
+};
+
+const ControllableUnitServiceProviderForm = ({
+  record,
+  hasOverride,
+  cuIDAsNumber,
+  identity,
+}: {
+  record: ControllableUnitServiceProvider;
+  hasOverride: boolean;
+  cuIDAsNumber: boolean;
+  identity: UserIdentity | undefined;
+}) => {
+  const isServiceProvider = identity?.role == "flex_service_provider";
+  const recordWithPartyId = isServiceProvider
+    ? {
+        ...record,
+        service_provider_id: identity?.partyID,
+      }
+    : record;
+
+  return (
     <SimpleForm
-      record={finalRecord}
+      record={recordWithPartyId}
       maxWidth={1280}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.
