@@ -13,13 +13,13 @@ CREATE TABLE IF NOT EXISTS event (
     ),
     source_resource text NOT NULL,
     source_id bigint NOT NULL,
-    subject_resource text NULL,
-    subject_id bigint NULL,
     data jsonb NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
-    recorded_by bigint NOT NULL DEFAULT current_identity()
+    recorded_by bigint NOT NULL DEFAULT current_identity(),
+    subject_resource text NULL,
+    subject_id bigint NULL
 );
 
 -- changeset flex:event-capture runOnChange:true endDelimiter:--
