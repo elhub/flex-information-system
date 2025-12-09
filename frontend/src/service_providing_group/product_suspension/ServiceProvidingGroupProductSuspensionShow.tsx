@@ -20,6 +20,7 @@ import { CommentList } from "../../components/comments";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
+import { ResourceHierarchyRedirect } from "../../components/resource";
 
 export const ServiceProvidingGroupProductSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -34,11 +35,11 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
   );
 
   const EditButton = () => {
-    const record = useRecordContext()!;
+    const record = useRecordContext();
     return (
       <Button
         component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/product_suspension/${record.id}`}
+        to={`/service_providing_group/${record?.service_providing_group_id}/product_suspension/${record?.id}`}
         startIcon={<EditIcon />}
         label="Edit"
       />
@@ -56,6 +57,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
         )
       }
     >
+      <ResourceHierarchyRedirect />
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>

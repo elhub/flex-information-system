@@ -19,6 +19,7 @@ import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
+import { ResourceHierarchyRedirect } from "../../components/resource";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -33,11 +34,11 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
   );
 
   const EditButton = () => {
-    const record = useRecordContext()!;
+    const record = useRecordContext();
     return (
       <Button
         component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}`}
+        to={`/service_providing_group/${record?.service_providing_group_id}/product_application/${record?.id}`}
         startIcon={<EditIcon />}
         label="Edit"
       />
@@ -55,6 +56,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
         )
       }
     >
+      <ResourceHierarchyRedirect />
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>

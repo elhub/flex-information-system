@@ -19,13 +19,14 @@ import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
+import { ResourceHierarchyRedirect } from "../../components/resource";
 
 const EditButton = () => {
-  const record = useRecordContext()!;
+  const record = useRecordContext();
   return (
     <Button
       component={Link}
-      to={`/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}`}
+      to={`/controllable_unit/${record?.controllable_unit_id}/suspension/${record?.id}`}
       startIcon={<EditIcon />}
       label="Edit"
     />
@@ -55,6 +56,7 @@ export const ControllableUnitSuspensionShow = () => {
         )
       }
     >
+      <ResourceHierarchyRedirect />
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>

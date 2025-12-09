@@ -1,4 +1,9 @@
-import { Resource, Create, ResourceContextProvider } from "react-admin";
+import {
+  Resource,
+  Create,
+  ResourceContextProvider,
+  CustomRoutes,
+} from "react-admin";
 import { Route, Navigate } from "react-router-dom";
 import { JSX } from "react";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -291,6 +296,28 @@ export const createControllableUnitResources = (permissions: Permissions) => {
       />,
     );
   }
+
+  // redirect from flat URL
+  resources.push(
+    <CustomRoutes>
+      <Route
+        path="/controllable_unit_service_provider/:id/show"
+        element={
+          <ResourceContextProvider value="controllable_unit_service_provider">
+            <ControllableUnitServiceProviderShow />
+          </ResourceContextProvider>
+        }
+      />
+      <Route
+        path="/controllable_unit_suspension/:id/show"
+        element={
+          <ResourceContextProvider value="controllable_unit_suspension">
+            <ControllableUnitSuspensionShow />
+          </ResourceContextProvider>
+        }
+      />
+    </CustomRoutes>,
+  );
 
   return resources;
 };

@@ -21,6 +21,7 @@ import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
+import { ResourceHierarchyRedirect } from "../../components/resource";
 
 export const ControllableUnitServiceProviderShow = () => {
   const resource = useResourceContext()!;
@@ -35,11 +36,11 @@ export const ControllableUnitServiceProviderShow = () => {
   );
 
   const EditButton = () => {
-    const record = useRecordContext()!;
+    const record = useRecordContext();
     return (
       <Button
         component={Link}
-        to={`/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}`}
+        to={`/controllable_unit/${record?.controllable_unit_id}/service_provider/${record?.id}`}
         startIcon={<EditIcon />}
         label="Edit"
       />
@@ -57,6 +58,7 @@ export const ControllableUnitServiceProviderShow = () => {
         )
       }
     >
+      <ResourceHierarchyRedirect />
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>

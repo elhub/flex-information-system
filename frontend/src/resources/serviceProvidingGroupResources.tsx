@@ -1,4 +1,9 @@
-import { Resource, Create, ResourceContextProvider } from "react-admin";
+import {
+  Resource,
+  Create,
+  ResourceContextProvider,
+  CustomRoutes,
+} from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
@@ -508,6 +513,52 @@ export const createServiceProvidingGroupResources = (
       />,
     );
   }
+
+  // redirect from flat URL
+  resources.push(
+    <CustomRoutes>
+      <Route
+        path="/service_providing_group_grid_prequalification/:id/show"
+        element={
+          <ResourceContextProvider value="service_providing_group_grid_prequalification">
+            <ServiceProvidingGroupGridPrequalificationShow />
+          </ResourceContextProvider>
+        }
+      />
+      <Route
+        path="/service_providing_group_grid_suspension/:id/show"
+        element={
+          <ResourceContextProvider value="service_providing_group_grid_suspension">
+            <ServiceProvidingGroupGridSuspensionShow />
+          </ResourceContextProvider>
+        }
+      />
+      <Route
+        path="/service_providing_group_membership/:id/show"
+        element={
+          <ResourceContextProvider value="service_providing_group_membership">
+            <ServiceProvidingGroupMembershipShow />
+          </ResourceContextProvider>
+        }
+      />
+      <Route
+        path="/service_providing_group_product_application/:id/show"
+        element={
+          <ResourceContextProvider value="service_providing_group_product_application">
+            <ServiceProvidingGroupProductApplicationShow />
+          </ResourceContextProvider>
+        }
+      />
+      <Route
+        path="/service_providing_group_product_suspension/:id/show"
+        element={
+          <ResourceContextProvider value="service_providing_group_product_suspension">
+            <ServiceProvidingGroupProductSuspensionShow />
+          </ResourceContextProvider>
+        }
+      />
+    </CustomRoutes>,
+  );
 
   return resources;
 };

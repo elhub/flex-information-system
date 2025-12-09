@@ -19,6 +19,7 @@ import { FieldStack } from "../../auth";
 import { CommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
+import { ResourceHierarchyRedirect } from "../../components/resource";
 
 export const ServiceProvidingGroupGridSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -33,11 +34,11 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
   );
 
   const EditButton = () => {
-    const record = useRecordContext()!;
+    const record = useRecordContext();
     return (
       <Button
         component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/grid_suspension/${record.id}`}
+        to={`/service_providing_group/${record?.service_providing_group_id}/grid_suspension/${record?.id}`}
         startIcon={<EditIcon />}
         label="Edit"
       />
@@ -55,6 +56,7 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
         )
       }
     >
+      <ResourceHierarchyRedirect />
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>

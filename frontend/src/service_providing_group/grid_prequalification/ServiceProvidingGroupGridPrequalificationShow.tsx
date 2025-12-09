@@ -19,6 +19,7 @@ import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
 import { CommentList } from "../../components/comments";
+import { ResourceHierarchyRedirect } from "../../components/resource";
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const resource = useResourceContext()!;
@@ -33,11 +34,11 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
   );
 
   const EditButton = () => {
-    const record = useRecordContext()!;
+    const record = useRecordContext();
     return (
       <Button
         component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/grid_prequalification/${record.id}`}
+        to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification/${record?.id}`}
         startIcon={<EditIcon />}
         label="Edit"
       />
@@ -55,6 +56,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
         )
       }
     >
+      <ResourceHierarchyRedirect />
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>

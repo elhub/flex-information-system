@@ -12,7 +12,7 @@ import { Typography, Stack, CircularProgress, Alert } from "@mui/material";
 import { FieldStack } from "../auth";
 import { DateField } from "../components/datetime";
 import { AcknowledgeButton } from "./AcknowledgeButton";
-import { ResourceButton } from "../components/ResourceButton";
+import { ResourceButton } from "../components/resource";
 import { IdentityField } from "../components/IdentityField";
 
 export const EventResourceButton = () => {
