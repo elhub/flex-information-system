@@ -502,6 +502,10 @@ openapi-client-frontend:
     set -euo pipefail
     cd frontend
     npx openapi-ts
+
+    # replace all z.optional properties to preprocess null so we dont have to handle null or undefined. Only undefined in forms.
+    perl -i -pe 's/z\.optional\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*)\)/z.optional(z.preprocess((value) => (value === null ? undefined : value), $1.optional()))/g' src/generated-client/zod.gen.ts
+
     npx prettier --write src/generated-client
 
 openapi-to-tooltips:

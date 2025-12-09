@@ -273,6 +273,16 @@ export type ControllableUnitSuspensionCommentVisibility =
   | "any_involved_party";
 
 /**
+ * The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.
+ */
+export type ServiceProvidingGroupBiddingZone =
+  | "NO1"
+  | "NO2"
+  | "NO3"
+  | "NO4"
+  | "NO5";
+
+/**
  * The status of the group.
  */
 export type ServiceProvidingGroupStatus =
@@ -655,6 +665,7 @@ export type ServiceProvidingGroupUpdateRequest = {
    * Free text name of the service providing group.
    */
   name?: string;
+  bidding_zone?: ServiceProvidingGroupBiddingZone;
   status?: ServiceProvidingGroupStatus;
 };
 
@@ -1351,6 +1362,10 @@ export type Event = EventCreateData & {
    * The URI of the resource concerned by the event.
    */
   readonly source?: string;
+  /**
+   * The URI of the specific subject of the event within the resource pointed by `source`.
+   */
+  readonly subject?: string;
   /**
    * The data of the event.
    */
