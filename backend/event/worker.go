@@ -85,7 +85,7 @@ func (eventWorker *Worker) Stop(ctx context.Context) error {
 // handleMessage is the function run by the worker on each Message coming
 // from a replication connection dedicated to event processing. It has access
 // to a transaction to perform operations on the database.
-func (eventWorker *Worker) handleMessage( //nolint:cyclop,funlen
+func (eventWorker *Worker) handleMessage(
 	ctx context.Context,
 	message *pgoutput.InsertMessage,
 ) error {
@@ -107,20 +107,8 @@ func (eventWorker *Worker) handleMessage( //nolint:cyclop,funlen
 		return fmt.Errorf("could not parse event from change: %w", err)
 	}
 
-	// we can use a default value for the subject ID, since it won't be used in
-	// cases where the event type is identified to have no subject
-	var subjectID int
-	if event.SubjectID != nil {
-		subjectID = *event.SubjectID
-	} else {
-		subjectID = 0
-	}
-
 	slog.DebugContext(
-		ctx, "handling event",
-		"type", event.Type,
-		"source_id", event.SourceID,
-		"subject_id", subjectID,
+		ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID,
 	)
 
 	// TODO (improvement): go through the auth API instead of the models
@@ -133,8 +121,7 @@ func (eventWorker *Worker) handleMessage( //nolint:cyclop,funlen
 	notificationRecipients, err := queries.GetNotificationRecipients(
 		ctx,
 		event.Type,
-		event.SourceID,
-		subjectID,
+		event.ResourceID,
 		event.RecordedAt,
 	)
 	if err != nil {

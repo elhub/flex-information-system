@@ -16,8 +16,7 @@ var ErrDataTooShort = errors.New("data too short")
 type event struct {
 	ID         int
 	Type       string
-	SourceID   int
-	SubjectID  *int
+	ResourceID int
 	RecordedAt pgtype.Timestamptz
 	RecordedBy int
 }
@@ -36,10 +35,8 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 	// `source_resource` is column index 2
 	// We don't need it since we can infer it from `type`
 
-	event.SourceID, err = strconv.Atoi(string(td.Columns[3]))
-	if err != nil {
-		return event, fmt.Errorf("could not parse SourceID: %w", err)
-	}
+	// `source_id` is column index 3
+	// we parse it when subject is undefined, see below
 
 	// `data` is column index 4
 	// We don't use it, so no need to parse
@@ -69,19 +66,22 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 	// `subject_resource` is column index 7
 	// We don't need it since we can infer it from `type`
 
-	// this can be null though, if the event concerns a toplevel resource
+	// try to parse subject ID (it can be null if the event concerns a toplevel resource)
 	subjectIDStr := string(td.Columns[8])
-	if subjectIDStr == "" {
-		event.SubjectID = nil
+	if subjectIDStr != "" {
+		event.ResourceID, err = strconv.Atoi(subjectIDStr)
+		if err != nil {
+			return event, fmt.Errorf("could not parse ResourceID: %w", err)
+		}
 		return event, nil
 	}
 
-	subjectID, err := strconv.Atoi(subjectIDStr)
+	// if no subject is defined, use source ID as resource ID
+	event.ResourceID, err = strconv.Atoi(string(td.Columns[3]))
 	if err != nil {
-		return event, fmt.Errorf("could not parse SubjectID: %w", err)
+		return event, fmt.Errorf("could not parse ResourceID: %w", err)
 	}
 
-	event.SubjectID = &subjectID
 	return event, nil
 }
 
@@ -101,11 +101,6 @@ func fromChange(change *pgrepl.Change) (event, error) {
 		return event, fmt.Errorf("could not get event type: %w", err)
 	}
 
-	event.SourceID, err = change.GetIntColumnValue("source_id")
-	if err != nil {
-		return event, fmt.Errorf("could not get event source ID: %w", err)
-	}
-
 	recordedAt, err := change.GetTstzrangeLowerColumnValue("record_time_range")
 	if err != nil {
 		return event, fmt.Errorf("could not get event time: %w", err)
@@ -118,11 +113,13 @@ func fromChange(change *pgrepl.Change) (event, error) {
 		return event, fmt.Errorf("could not get event identity: %w", err)
 	}
 
-	subjectID, err := change.GetIntColumnValue("subject_id")
+	event.ResourceID, err = change.GetIntColumnValue("subject_id")
 	if err != nil {
-		event.SubjectID = nil
-		return event, nil //nolint:nilerr
+		event.ResourceID, err = change.GetIntColumnValue("source_id")
+		if err != nil {
+			return event, fmt.Errorf("could not get event source ID: %w", err)
+		}
 	}
-	event.SubjectID = &subjectID
+
 	return event, nil
 }
