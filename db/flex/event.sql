@@ -1,8 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:event-create runOnChange:false endDelimiter:--
---validCheckSum: 9:d51ff0412749453fa4f79b1db182e4c4
+-- changeset flex:event-create runAlways:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS event (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- reverse DNS style identifier
