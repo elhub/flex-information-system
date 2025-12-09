@@ -38,9 +38,8 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 		)
 	case "no.elhub.flex.system_operator_product_type.create":
 		return q.GetSystemOperatorProductTypeCreateNotificationRecipients(ctx, resourceID, recordedAt)
-	case "no.elhub.flex.system_operator_product_type.update",
-		"no.elhub.flex.system_operator_product_type.delete":
-		return q.GetSystemOperatorProductTypeUpdateDeleteNotificationRecipients(ctx, resourceID)
+	case "no.elhub.flex.system_operator_product_type.update":
+		return q.GetSystemOperatorProductTypeUpdateNotificationRecipients(ctx, resourceID)
 	case "no.elhub.flex.service_provider_product_application.create",
 		"no.elhub.flex.service_provider_product_application.update":
 		return q.GetServiceProviderProductApplicationNotificationRecipients(ctx, resourceID, recordedAt)
@@ -75,17 +74,25 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 	case "no.elhub.flex.service_providing_group_grid_suspension.create",
 		"no.elhub.flex.service_providing_group_grid_suspension.update",
 		"no.elhub.flex.service_providing_group_grid_suspension.delete":
-		return q.GetServiceProvidingGroupGridSuspensionNotificationRecipients(ctx, resourceID, recordedAt)
+		return q.GetServiceProvidingGroupGridSuspensionNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.service_providing_group_grid_suspension_comment.create",
 		"no.elhub.flex.service_providing_group_grid_suspension_comment.update":
-		return q.GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients(ctx, resourceID, recordedAt)
+		return q.GetServiceProvidingGroupGridSuspensionCommentNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.service_providing_group_product_suspension.create",
 		"no.elhub.flex.service_providing_group_product_suspension.update",
 		"no.elhub.flex.service_providing_group_product_suspension.delete":
-		return q.GetServiceProvidingGroupProductSuspensionNotificationRecipients(ctx, resourceID, recordedAt)
+		return q.GetServiceProvidingGroupProductSuspensionNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.service_providing_group_product_suspension_comment.create",
 		"no.elhub.flex.service_providing_group_product_suspension_comment.update":
-		return q.GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients(ctx, resourceID, recordedAt)
+		return q.GetServiceProvidingGroupProductSuspensionCommentNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.technical_resource.create",
 		"no.elhub.flex.technical_resource.update",
 		"no.elhub.flex.technical_resource.delete":

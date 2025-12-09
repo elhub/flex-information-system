@@ -8,7 +8,7 @@ WHERE type = 'service_provider'
 AND status = 'active'
 AND tstzrange(recorded_at, replaced_at, '[)') @> @recorded_at::timestamptz;
 
--- name: GetSystemOperatorProductTypeUpdateDeleteNotificationRecipients :many
+-- name: GetSystemOperatorProductTypeUpdateNotificationRecipients :many
 SELECT system_operator_id
 FROM api.system_operator_product_type sopt
 WHERE sopt.id = @resource_id;
@@ -67,8 +67,9 @@ SELECT DISTINCT unnest(
 )::bigint
 FROM (
     SELECT
-        cusph.service_provider_id, cusph.controllable_unit_id,
-        cusph.valid_from, cusph.valid_to
+        cusph.service_provider_id,
+        cusph.controllable_unit_id,
+        cusph.valid_from
     FROM api.controllable_unit_service_provider_history AS cusph
     WHERE cusph.controllable_unit_service_provider_id = @resource_id
     AND cusph.recorded_at <= @recorded_at

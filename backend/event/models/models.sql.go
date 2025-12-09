@@ -141,8 +141,9 @@ SELECT DISTINCT unnest(
 )::bigint
 FROM (
     SELECT
-        cusph.service_provider_id, cusph.controllable_unit_id,
-        cusph.valid_from, cusph.valid_to
+        cusph.service_provider_id,
+        cusph.controllable_unit_id,
+        cusph.valid_from
     FROM api.controllable_unit_service_provider_history AS cusph
     WHERE cusph.controllable_unit_service_provider_id = $1
     AND cusph.recorded_at <= $2
@@ -857,14 +858,14 @@ func (q *Queries) GetSystemOperatorProductTypeCreateNotificationRecipients(ctx c
 	return items, nil
 }
 
-const getSystemOperatorProductTypeUpdateDeleteNotificationRecipients = `-- name: GetSystemOperatorProductTypeUpdateDeleteNotificationRecipients :many
+const getSystemOperatorProductTypeUpdateNotificationRecipients = `-- name: GetSystemOperatorProductTypeUpdateNotificationRecipients :many
 SELECT system_operator_id
 FROM api.system_operator_product_type sopt
 WHERE sopt.id = $1
 `
 
-func (q *Queries) GetSystemOperatorProductTypeUpdateDeleteNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
-	rows, err := q.db.Query(ctx, getSystemOperatorProductTypeUpdateDeleteNotificationRecipients, resourceID)
+func (q *Queries) GetSystemOperatorProductTypeUpdateNotificationRecipients(ctx context.Context, resourceID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getSystemOperatorProductTypeUpdateNotificationRecipients, resourceID)
 	if err != nil {
 		return nil, err
 	}
@@ -901,11 +902,11 @@ FROM api.controllable_unit AS cu
     INNER JOIN notification.controllable_unit_system_operator AS cuso
         ON cu.id = cuso.controllable_unit_id
 WHERE cu.id = (
-        SELECT controllable_unit_id
-        FROM api.technical_resource_history trh
-        WHERE trh.technical_resource_id = $1
-        LIMIT 1
-    )
+    SELECT controllable_unit_id
+    FROM api.technical_resource_history trh
+    WHERE trh.technical_resource_id = $1
+    LIMIT 1
+)
     AND cu.status != 'new'
     AND cuso.valid_time_range @> $2::timestamptz
 `

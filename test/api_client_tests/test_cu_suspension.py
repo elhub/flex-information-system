@@ -268,6 +268,9 @@ def test_cus_so(data):
     client_sp = sts.fresh_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
+    client_eu = sts.get_client(TestEntity.TEST, "EU")
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
     # create CU and SPG, link CU to SP in charge of the SPG,
     # add CU to SPG, mark SO as impacted for SPG
 
@@ -339,12 +342,24 @@ def test_cus_so(data):
     )
     assert isinstance(err, ErrorMessage)
 
+    cusp = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_provider_id=sp_id,
+            end_user_id=eu_id,
+            contract_reference="TEST-CONTRACT-CUS",
+            valid_from="2024-01-02 Europe/Oslo",
+        ),
+    )
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
+
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from="2024-01-02 Europe/Oslo",
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)

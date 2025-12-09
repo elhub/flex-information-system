@@ -85,8 +85,6 @@ func (eventWorker *Worker) Stop(ctx context.Context) error {
 // handleMessage is the function run by the worker on each Message coming
 // from a replication connection dedicated to event processing. It has access
 // to a transaction to perform operations on the database.
-//
-
 func (eventWorker *Worker) handleMessage(
 	ctx context.Context,
 	message *pgoutput.InsertMessage,
@@ -109,7 +107,9 @@ func (eventWorker *Worker) handleMessage(
 		return fmt.Errorf("could not parse event from change: %w", err)
 	}
 
-	slog.DebugContext(ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID)
+	slog.DebugContext(
+		ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID,
+	)
 
 	// TODO (improvement): go through the auth API instead of the models
 	eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)

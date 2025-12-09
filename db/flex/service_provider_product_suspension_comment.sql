@@ -38,4 +38,4 @@ AFTER INSERT OR UPDATE
 ON service_provider_product_suspension_comment
 FOR EACH ROW
 EXECUTE FUNCTION
-capture_event('service_provider_product_suspension_comment');
+capture_event('service_provider_product_suspension');

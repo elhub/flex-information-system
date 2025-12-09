@@ -33,12 +33,10 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 	event.Type = string(td.Columns[1])
 
 	// `source_resource` is column index 2
-	// We don't need it since we have it as part of `type`
+	// We don't need it since we can infer it from `type`
 
-	event.ResourceID, err = strconv.Atoi(string(td.Columns[3]))
-	if err != nil {
-		return event, fmt.Errorf("could not parse ResourceID: %w", err)
-	}
+	// `source_id` is column index 3
+	// we parse it when subject is undefined, see below
 
 	// `data` is column index 4
 	// We don't use it, so no need to parse
@@ -65,6 +63,25 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 		return event, fmt.Errorf("could not parse RecordedBy: %w", err)
 	}
 
+	// `subject_resource` is column index 7
+	// We don't need it since we can infer it from `type`
+
+	// try to parse subject ID (it can be null if the event concerns a toplevel resource)
+	subjectIDStr := string(td.Columns[8])
+	if subjectIDStr != "" {
+		event.ResourceID, err = strconv.Atoi(subjectIDStr)
+		if err != nil {
+			return event, fmt.Errorf("could not parse ResourceID: %w", err)
+		}
+		return event, nil
+	}
+
+	// if no subject is defined, use source ID as resource ID
+	event.ResourceID, err = strconv.Atoi(string(td.Columns[3]))
+	if err != nil {
+		return event, fmt.Errorf("could not parse ResourceID: %w", err)
+	}
+
 	return event, nil
 }
 
@@ -84,11 +101,6 @@ func fromChange(change *pgrepl.Change) (event, error) {
 		return event, fmt.Errorf("could not get event type: %w", err)
 	}
 
-	event.ResourceID, err = change.GetIntColumnValue("source_id")
-	if err != nil {
-		return event, fmt.Errorf("could not get event source ID: %w", err)
-	}
-
 	recordedAt, err := change.GetTstzrangeLowerColumnValue("record_time_range")
 	if err != nil {
 		return event, fmt.Errorf("could not get event time: %w", err)
@@ -99,6 +111,14 @@ func fromChange(change *pgrepl.Change) (event, error) {
 	event.RecordedBy, err = change.GetIntColumnValue("recorded_by")
 	if err != nil {
 		return event, fmt.Errorf("could not get event identity: %w", err)
+	}
+
+	event.ResourceID, err = change.GetIntColumnValue("subject_id")
+	if err != nil {
+		event.ResourceID, err = change.GetIntColumnValue("source_id")
+		if err != nil {
+			return event, fmt.Errorf("could not get event source ID: %w", err)
+		}
 	}
 
 	return event, nil
