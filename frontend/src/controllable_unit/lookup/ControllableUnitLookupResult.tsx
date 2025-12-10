@@ -19,15 +19,39 @@ import { FieldStack } from "../../auth";
 import { zControllableUnitLookupResponse } from "../../generated-client/zod.gen";
 import { ControllableUnitLookupResponse } from "../../generated-client";
 import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
+import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 
-type ControllableUnit = ControllableUnitLookupResponse["controllable_units"][0];
-type TechnicalResource = ControllableUnit["technical_resources"][0];
+type LookupResponse_ControllableUnit =
+  ControllableUnitLookupResponse["controllable_units"][0];
+type LookupResponse_TechnicalResource =
+  LookupResponse_ControllableUnit["technical_resources"][0];
 
+const CreateCUButton = ({
+  accountingPointId,
+}: {
+  accountingPointId: number;
+}) => {
+  const cuspLocationState: ControllableUnitInputLocationState = {
+    controllableUnit: {
+      accounting_point_id: accountingPointId,
+    },
+  };
+
+  return (
+    <Button
+      component={Link}
+      to={`/controllable_unit/create`}
+      startIcon={<BookmarkAddIcon />}
+      state={cuspLocationState}
+      label="Create a new controllable unit"
+    />
+  );
+};
 // local list of TRs for each CU
 const TechnicalResourceList = ({
   technical_resources,
 }: {
-  technical_resources: TechnicalResource[];
+  technical_resources: LookupResponse_TechnicalResource[];
 }) => (
   <TableContainer component={Paper}>
     <Table size="small">
@@ -39,7 +63,7 @@ const TechnicalResourceList = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {technical_resources.map((tr: TechnicalResource) => (
+        {technical_resources.map((tr: LookupResponse_TechnicalResource) => (
           <TableRow key={tr.id}>
             <TableCell component="th" scope="row">
               {tr.id}
@@ -58,7 +82,7 @@ const ControllableUnitLookupResultItem = ({
   controllableUnit,
   endUserId,
 }: {
-  controllableUnit: ControllableUnit;
+  controllableUnit: LookupResponse_ControllableUnit;
   endUserId: number;
 }) => {
   const cuspLocationState: ControllableUnitServiceProviderLocationState = {
@@ -153,6 +177,9 @@ export const ControllableUnitLookupResult = () => {
             </Box>
           </Card>
         </Stack>
+        <CreateCUButton
+          accountingPointId={controllableUnitLookUpResult.accounting_point.id}
+        />
         {controllableUnitLookUpResult.controllable_units.length == 0 ? (
           <Typography variant="h6">No controllable units found</Typography>
         ) : (
