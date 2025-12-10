@@ -19,9 +19,10 @@ import { CommentList as GenericCommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
+import { ControllableUnitSuspension } from "../../generated-client";
 
 const EditButton = () => {
-  const record = useRecordContext();
+  const record = useRecordContext<ControllableUnitSuspension>();
   return (
     <Button
       component={Link}
@@ -32,8 +33,10 @@ const EditButton = () => {
   );
 };
 
+// manual components to support both flat and nested URLs for this resource
+
 const HistoryButton = () => {
-  const record = useRecordContext();
+  const record = useRecordContext<ControllableUnitSuspension>();
   const { permissions } = usePermissions<Permissions>();
 
   const filter =
@@ -54,7 +57,7 @@ const HistoryButton = () => {
 };
 
 const CommentHistoryButton = () => {
-  const record = useRecordContext();
+  const record = useRecordContext<ControllableUnitSuspension>();
   const { permissions } = usePermissions<Permissions>();
 
   return (
@@ -74,13 +77,20 @@ const CommentHistoryButton = () => {
 };
 
 const CommentList = () => {
-  const record = useRecordContext();
+  const record = useRecordContext<ControllableUnitSuspension>();
   return (
     <GenericCommentList
-      parentPath={[
-        { resource: "controllable_unit", id: record?.controllable_unit_id },
-        { resource: "suspension", id: record?.id },
-      ]}
+      parentPath={
+        record
+          ? [
+              {
+                resource: "controllable_unit",
+                id: record.controllable_unit_id!,
+              },
+              { resource: "suspension", id: record.id! },
+            ]
+          : undefined
+      }
     />
   );
 };

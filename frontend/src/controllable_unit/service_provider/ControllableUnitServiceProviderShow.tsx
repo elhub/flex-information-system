@@ -21,7 +21,7 @@ import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
-import { ResourceHierarchyRedirect } from "../../components/resource";
+import { ResourceHierarchyRedirect } from "../../components/ResourceButton";
 
 export const ControllableUnitServiceProviderShow = () => {
   const resource = useResourceContext()!;

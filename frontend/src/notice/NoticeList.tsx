@@ -6,7 +6,7 @@ import {
   useRecordContext,
 } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
-import { ResourceButton } from "../components/resource";
+import { ResourceButton } from "../components/ResourceButton";
 import { NoticeShow } from "./NoticeShow";
 import noticeTypes from "./noticeTypes";
 

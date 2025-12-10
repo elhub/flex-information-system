@@ -19,7 +19,7 @@ import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
-import { ResourceHierarchyRedirect } from "../../components/resource";
+import { ResourceHierarchyRedirect } from "../../components/ResourceButton";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;

@@ -151,7 +151,7 @@ export type CommentListProps = {
   // (override if not to be derived from URL)
   baseResource?: string;
   parentPath?: {
-    resource: any;
+    resource: string;
     id: number;
   }[];
 };
