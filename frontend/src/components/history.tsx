@@ -15,7 +15,7 @@ import { chunksOf, removeSuffix } from "../util";
 export const historyRowClick = (
   _: Identifier,
   resource: string,
-  record: RaRecord,
+  record: RaRecord
 ) => {
   const mainResource = resource.replace(/_history$/, "");
   return `/${mainResource}/${record[mainResource + "_id"]}/history/${
@@ -23,8 +23,8 @@ export const historyRowClick = (
   }/show`;
 };
 
-export const ResourceHistoryButton = () => {
-  const record = useRecordContext()!;
+export const ResourceHistoryButton = ({ id }: { id?: string }) => {
+  const record = useRecordContext();
   const resource = useResourceContext()!;
   const { permissions } = usePermissions<Permissions>();
 
@@ -34,8 +34,8 @@ export const ResourceHistoryButton = () => {
 
   if (permissions?.allow(historyResource, "read")) {
     const actualId = resource.endsWith("_history")
-      ? record[actualResource + "_id"]
-      : record.id;
+      ? record?.[actualResource + "_id"]
+      : id || record?.id;
 
     return (
       <Button
@@ -68,7 +68,7 @@ export type NestedResourceHistoryButtonProps = {
 };
 
 export const NestedResourceHistoryButton = (
-  props: NestedResourceHistoryButtonProps,
+  props: NestedResourceHistoryButtonProps
 ) => {
   const { permissions } = usePermissions<Permissions>();
   const location = useLocation();
@@ -117,13 +117,13 @@ export const NestedResourceHistoryButton = (
       disabled={
         !permissions?.allow(
           `${childAPIResource}_history` as PermissionTarget,
-          "read",
+          "read"
         )
       }
       component={Link}
       to={`${parentPathS}/${props.child}_history${filter}`}
       startIcon={<HistoryIcon />}
-      label={`View History of ${props.label ?? "Relations"}`}
+      label={`View History ${props.label ?? ""}`}
     />
   );
 };

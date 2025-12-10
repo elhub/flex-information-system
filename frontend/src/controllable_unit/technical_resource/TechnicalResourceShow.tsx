@@ -6,14 +6,13 @@ import {
   TextField,
   TopToolbar,
   usePermissions,
-  useRecordContext,
   useResourceContext,
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
 import { NestedResourceHistoryButton } from "../../components/history";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
@@ -22,23 +21,15 @@ import { Permissions } from "../../auth/permissions";
 export const TechnicalResourceShow = () => {
   const resource = useResourceContext()!;
   const { permissions } = usePermissions<Permissions>();
+  const { id, controllable_unit_id } = useParams<{
+    id: string;
+    controllable_unit_id: string;
+  }>();
 
   const isHistory = resource.endsWith("_history");
 
   // Permission checks
   const canUpdate = permissions?.allow("technical_resource", "update");
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show
@@ -46,7 +37,12 @@ export const TechnicalResourceShow = () => {
         !isHistory &&
         canUpdate && (
           <TopToolbar>
-            <EditButton />
+            <Button
+              component={Link}
+              to={`/controllable_unit/${controllable_unit_id}/technical_resource/${id}`}
+              startIcon={<EditIcon />}
+              label="Edit"
+            />
           </TopToolbar>
         )
       }

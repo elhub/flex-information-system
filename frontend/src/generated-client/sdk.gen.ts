@@ -508,7 +508,7 @@ export type Options<
  * Introspection for the Flexibility Information System main API. The document is following the OpenAPI 3.1 spec.
  */
 export const readOpenapiJson = <ThrowOnError extends boolean = false>(
-  options?: Options<ReadOpenapiJsonData, ThrowOnError>,
+  options?: Options<ReadOpenapiJsonData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ReadOpenapiJsonResponses,
@@ -528,7 +528,7 @@ export const readOpenapiJson = <ThrowOnError extends boolean = false>(
 export const callControllableUnitLookup = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<CallControllableUnitLookupData, ThrowOnError>,
+  options: Options<CallControllableUnitLookupData, ThrowOnError>
 ) =>
   (options.client ?? client).post<
     CallControllableUnitLookupResponses,
@@ -550,7 +550,7 @@ export const callControllableUnitLookup = <
  * Lookup an entity from its business ID. Creates the entity if missing.
  */
 export const callEntityLookup = <ThrowOnError extends boolean = false>(
-  options: Options<CallEntityLookupData, ThrowOnError>,
+  options: Options<CallEntityLookupData, ThrowOnError>
 ) =>
   (options.client ?? client).post<
     CallEntityLookupResponses,
@@ -570,7 +570,7 @@ export const callEntityLookup = <ThrowOnError extends boolean = false>(
  * List Controllable unit
  */
 export const listControllableUnit = <ThrowOnError extends boolean = false>(
-  options?: Options<ListControllableUnitData, ThrowOnError>,
+  options?: Options<ListControllableUnitData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitResponses,
@@ -586,7 +586,7 @@ export const listControllableUnit = <ThrowOnError extends boolean = false>(
  * Create Controllable unit
  */
 export const createControllableUnit = <ThrowOnError extends boolean = false>(
-  options?: Options<CreateControllableUnitData, ThrowOnError>,
+  options?: Options<CreateControllableUnitData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateControllableUnitResponses,
@@ -606,7 +606,7 @@ export const createControllableUnit = <ThrowOnError extends boolean = false>(
  * Read Controllable unit
  */
 export const readControllableUnit = <ThrowOnError extends boolean = false>(
-  options: Options<ReadControllableUnitData, ThrowOnError>,
+  options: Options<ReadControllableUnitData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitResponses,
@@ -622,7 +622,7 @@ export const readControllableUnit = <ThrowOnError extends boolean = false>(
  * Update Controllable unit
  */
 export const updateControllableUnit = <ThrowOnError extends boolean = false>(
-  options: Options<UpdateControllableUnitData, ThrowOnError>,
+  options: Options<UpdateControllableUnitData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateControllableUnitResponses,
@@ -644,7 +644,7 @@ export const updateControllableUnit = <ThrowOnError extends boolean = false>(
 export const listControllableUnitHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListControllableUnitHistoryData, ThrowOnError>,
+  options?: Options<ListControllableUnitHistoryData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitHistoryResponses,
@@ -662,7 +662,7 @@ export const listControllableUnitHistory = <
 export const readControllableUnitHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadControllableUnitHistoryData, ThrowOnError>,
+  options: Options<ReadControllableUnitHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitHistoryResponses,
@@ -680,7 +680,7 @@ export const readControllableUnitHistory = <
 export const listControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListControllableUnitSuspensionData, ThrowOnError>,
+  options?: Options<ListControllableUnitSuspensionData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitSuspensionResponses,
@@ -698,7 +698,7 @@ export const listControllableUnitSuspension = <
 export const createControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateControllableUnitSuspensionData, ThrowOnError>,
+  options?: Options<CreateControllableUnitSuspensionData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateControllableUnitSuspensionResponses,
@@ -720,7 +720,7 @@ export const createControllableUnitSuspension = <
 export const deleteControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<DeleteControllableUnitSuspensionData, ThrowOnError>,
+  options: Options<DeleteControllableUnitSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeleteControllableUnitSuspensionResponses,
@@ -742,7 +742,7 @@ export const deleteControllableUnitSuspension = <
 export const readControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadControllableUnitSuspensionData, ThrowOnError>,
+  options: Options<ReadControllableUnitSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitSuspensionResponses,
@@ -760,7 +760,7 @@ export const readControllableUnitSuspension = <
 export const updateControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateControllableUnitSuspensionData, ThrowOnError>,
+  options: Options<UpdateControllableUnitSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateControllableUnitSuspensionResponses,
@@ -782,7 +782,7 @@ export const updateControllableUnitSuspension = <
 export const listControllableUnitSuspensionHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListControllableUnitSuspensionHistoryData, ThrowOnError>,
+  options?: Options<ListControllableUnitSuspensionHistoryData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitSuspensionHistoryResponses,
@@ -800,7 +800,7 @@ export const listControllableUnitSuspensionHistory = <
 export const readControllableUnitSuspensionHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadControllableUnitSuspensionHistoryData, ThrowOnError>,
+  options: Options<ReadControllableUnitSuspensionHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitSuspensionHistoryResponses,
@@ -818,7 +818,7 @@ export const readControllableUnitSuspensionHistory = <
 export const listControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListControllableUnitSuspensionCommentData, ThrowOnError>,
+  options?: Options<ListControllableUnitSuspensionCommentData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitSuspensionCommentResponses,
@@ -836,7 +836,7 @@ export const listControllableUnitSuspensionComment = <
 export const createControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateControllableUnitSuspensionCommentData, ThrowOnError>,
+  options?: Options<CreateControllableUnitSuspensionCommentData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateControllableUnitSuspensionCommentResponses,
@@ -858,7 +858,7 @@ export const createControllableUnitSuspensionComment = <
 export const readControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadControllableUnitSuspensionCommentData, ThrowOnError>,
+  options: Options<ReadControllableUnitSuspensionCommentData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitSuspensionCommentResponses,
@@ -876,7 +876,7 @@ export const readControllableUnitSuspensionComment = <
 export const updateControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateControllableUnitSuspensionCommentData, ThrowOnError>,
+  options: Options<UpdateControllableUnitSuspensionCommentData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateControllableUnitSuspensionCommentResponses,
@@ -901,7 +901,7 @@ export const listControllableUnitSuspensionCommentHistory = <
   options?: Options<
     ListControllableUnitSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitSuspensionCommentHistoryResponses,
@@ -922,7 +922,7 @@ export const readControllableUnitSuspensionCommentHistory = <
   options: Options<
     ReadControllableUnitSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitSuspensionCommentHistoryResponses,
@@ -940,7 +940,7 @@ export const readControllableUnitSuspensionCommentHistory = <
 export const listControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListControllableUnitServiceProviderData, ThrowOnError>,
+  options?: Options<ListControllableUnitServiceProviderData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitServiceProviderResponses,
@@ -958,7 +958,7 @@ export const listControllableUnitServiceProvider = <
 export const createControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateControllableUnitServiceProviderData, ThrowOnError>,
+  options?: Options<CreateControllableUnitServiceProviderData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateControllableUnitServiceProviderResponses,
@@ -980,7 +980,7 @@ export const createControllableUnitServiceProvider = <
 export const deleteControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<DeleteControllableUnitServiceProviderData, ThrowOnError>,
+  options: Options<DeleteControllableUnitServiceProviderData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeleteControllableUnitServiceProviderResponses,
@@ -1002,7 +1002,7 @@ export const deleteControllableUnitServiceProvider = <
 export const readControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadControllableUnitServiceProviderData, ThrowOnError>,
+  options: Options<ReadControllableUnitServiceProviderData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitServiceProviderResponses,
@@ -1020,7 +1020,7 @@ export const readControllableUnitServiceProvider = <
 export const updateControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateControllableUnitServiceProviderData, ThrowOnError>,
+  options: Options<UpdateControllableUnitServiceProviderData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateControllableUnitServiceProviderResponses,
@@ -1045,7 +1045,7 @@ export const listControllableUnitServiceProviderHistory = <
   options?: Options<
     ListControllableUnitServiceProviderHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListControllableUnitServiceProviderHistoryResponses,
@@ -1063,10 +1063,7 @@ export const listControllableUnitServiceProviderHistory = <
 export const readControllableUnitServiceProviderHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<
-    ReadControllableUnitServiceProviderHistoryData,
-    ThrowOnError
-  >,
+  options: Options<ReadControllableUnitServiceProviderHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadControllableUnitServiceProviderHistoryResponses,
@@ -1082,7 +1079,7 @@ export const readControllableUnitServiceProviderHistory = <
  * List Service providing group
  */
 export const listServiceProvidingGroup = <ThrowOnError extends boolean = false>(
-  options?: Options<ListServiceProvidingGroupData, ThrowOnError>,
+  options?: Options<ListServiceProvidingGroupData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupResponses,
@@ -1100,7 +1097,7 @@ export const listServiceProvidingGroup = <ThrowOnError extends boolean = false>(
 export const createServiceProvidingGroup = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateServiceProvidingGroupData, ThrowOnError>,
+  options?: Options<CreateServiceProvidingGroupData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupResponses,
@@ -1120,7 +1117,7 @@ export const createServiceProvidingGroup = <
  * Read Service providing group
  */
 export const readServiceProvidingGroup = <ThrowOnError extends boolean = false>(
-  options: Options<ReadServiceProvidingGroupData, ThrowOnError>,
+  options: Options<ReadServiceProvidingGroupData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupResponses,
@@ -1138,7 +1135,7 @@ export const readServiceProvidingGroup = <ThrowOnError extends boolean = false>(
 export const updateServiceProvidingGroup = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateServiceProvidingGroupData, ThrowOnError>,
+  options: Options<UpdateServiceProvidingGroupData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupResponses,
@@ -1160,7 +1157,7 @@ export const updateServiceProvidingGroup = <
 export const listServiceProvidingGroupHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListServiceProvidingGroupHistoryData, ThrowOnError>,
+  options?: Options<ListServiceProvidingGroupHistoryData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupHistoryResponses,
@@ -1178,7 +1175,7 @@ export const listServiceProvidingGroupHistory = <
 export const readServiceProvidingGroupHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadServiceProvidingGroupHistoryData, ThrowOnError>,
+  options: Options<ReadServiceProvidingGroupHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupHistoryResponses,
@@ -1196,7 +1193,7 @@ export const readServiceProvidingGroupHistory = <
 export const listServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListServiceProvidingGroupMembershipData, ThrowOnError>,
+  options?: Options<ListServiceProvidingGroupMembershipData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupMembershipResponses,
@@ -1214,7 +1211,7 @@ export const listServiceProvidingGroupMembership = <
 export const createServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateServiceProvidingGroupMembershipData, ThrowOnError>,
+  options?: Options<CreateServiceProvidingGroupMembershipData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupMembershipResponses,
@@ -1236,7 +1233,7 @@ export const createServiceProvidingGroupMembership = <
 export const deleteServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<DeleteServiceProvidingGroupMembershipData, ThrowOnError>,
+  options: Options<DeleteServiceProvidingGroupMembershipData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeleteServiceProvidingGroupMembershipResponses,
@@ -1258,7 +1255,7 @@ export const deleteServiceProvidingGroupMembership = <
 export const readServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadServiceProvidingGroupMembershipData, ThrowOnError>,
+  options: Options<ReadServiceProvidingGroupMembershipData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupMembershipResponses,
@@ -1276,7 +1273,7 @@ export const readServiceProvidingGroupMembership = <
 export const updateServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateServiceProvidingGroupMembershipData, ThrowOnError>,
+  options: Options<UpdateServiceProvidingGroupMembershipData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupMembershipResponses,
@@ -1301,7 +1298,7 @@ export const listServiceProvidingGroupMembershipHistory = <
   options?: Options<
     ListServiceProvidingGroupMembershipHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupMembershipHistoryResponses,
@@ -1319,10 +1316,7 @@ export const listServiceProvidingGroupMembershipHistory = <
 export const readServiceProvidingGroupMembershipHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<
-    ReadServiceProvidingGroupMembershipHistoryData,
-    ThrowOnError
-  >,
+  options: Options<ReadServiceProvidingGroupMembershipHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupMembershipHistoryResponses,
@@ -1343,7 +1337,7 @@ export const listServiceProvidingGroupGridPrequalification = <
   options?: Options<
     ListServiceProvidingGroupGridPrequalificationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridPrequalificationResponses,
@@ -1364,7 +1358,7 @@ export const createServiceProvidingGroupGridPrequalification = <
   options?: Options<
     CreateServiceProvidingGroupGridPrequalificationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupGridPrequalificationResponses,
@@ -1389,7 +1383,7 @@ export const readServiceProvidingGroupGridPrequalification = <
   options: Options<
     ReadServiceProvidingGroupGridPrequalificationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridPrequalificationResponses,
@@ -1410,7 +1404,7 @@ export const updateServiceProvidingGroupGridPrequalification = <
   options: Options<
     UpdateServiceProvidingGroupGridPrequalificationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupGridPrequalificationResponses,
@@ -1435,7 +1429,7 @@ export const listServiceProvidingGroupGridPrequalificationHistory = <
   options?: Options<
     ListServiceProvidingGroupGridPrequalificationHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridPrequalificationHistoryResponses,
@@ -1456,7 +1450,7 @@ export const readServiceProvidingGroupGridPrequalificationHistory = <
   options: Options<
     ReadServiceProvidingGroupGridPrequalificationHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridPrequalificationHistoryResponses,
@@ -1477,7 +1471,7 @@ export const listServiceProvidingGroupGridPrequalificationComment = <
   options?: Options<
     ListServiceProvidingGroupGridPrequalificationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridPrequalificationCommentResponses,
@@ -1498,7 +1492,7 @@ export const createServiceProvidingGroupGridPrequalificationComment = <
   options?: Options<
     CreateServiceProvidingGroupGridPrequalificationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupGridPrequalificationCommentResponses,
@@ -1523,7 +1517,7 @@ export const readServiceProvidingGroupGridPrequalificationComment = <
   options: Options<
     ReadServiceProvidingGroupGridPrequalificationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridPrequalificationCommentResponses,
@@ -1544,7 +1538,7 @@ export const updateServiceProvidingGroupGridPrequalificationComment = <
   options: Options<
     UpdateServiceProvidingGroupGridPrequalificationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupGridPrequalificationCommentResponses,
@@ -1569,7 +1563,7 @@ export const listServiceProvidingGroupGridPrequalificationCommentHistory = <
   options?: Options<
     ListServiceProvidingGroupGridPrequalificationCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridPrequalificationCommentHistoryResponses,
@@ -1590,7 +1584,7 @@ export const readServiceProvidingGroupGridPrequalificationCommentHistory = <
   options: Options<
     ReadServiceProvidingGroupGridPrequalificationCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridPrequalificationCommentHistoryResponses,
@@ -1608,7 +1602,7 @@ export const readServiceProvidingGroupGridPrequalificationCommentHistory = <
 export const listServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListServiceProvidingGroupGridSuspensionData, ThrowOnError>,
+  options?: Options<ListServiceProvidingGroupGridSuspensionData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridSuspensionResponses,
@@ -1626,10 +1620,7 @@ export const listServiceProvidingGroupGridSuspension = <
 export const createServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<
-    CreateServiceProvidingGroupGridSuspensionData,
-    ThrowOnError
-  >,
+  options?: Options<CreateServiceProvidingGroupGridSuspensionData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupGridSuspensionResponses,
@@ -1651,7 +1642,7 @@ export const createServiceProvidingGroupGridSuspension = <
 export const deleteServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<DeleteServiceProvidingGroupGridSuspensionData, ThrowOnError>,
+  options: Options<DeleteServiceProvidingGroupGridSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeleteServiceProvidingGroupGridSuspensionResponses,
@@ -1673,7 +1664,7 @@ export const deleteServiceProvidingGroupGridSuspension = <
 export const readServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadServiceProvidingGroupGridSuspensionData, ThrowOnError>,
+  options: Options<ReadServiceProvidingGroupGridSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridSuspensionResponses,
@@ -1691,7 +1682,7 @@ export const readServiceProvidingGroupGridSuspension = <
 export const updateServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateServiceProvidingGroupGridSuspensionData, ThrowOnError>,
+  options: Options<UpdateServiceProvidingGroupGridSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupGridSuspensionResponses,
@@ -1716,7 +1707,7 @@ export const listServiceProvidingGroupGridSuspensionHistory = <
   options?: Options<
     ListServiceProvidingGroupGridSuspensionHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridSuspensionHistoryResponses,
@@ -1737,7 +1728,7 @@ export const readServiceProvidingGroupGridSuspensionHistory = <
   options: Options<
     ReadServiceProvidingGroupGridSuspensionHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridSuspensionHistoryResponses,
@@ -1758,7 +1749,7 @@ export const listServiceProvidingGroupGridSuspensionComment = <
   options?: Options<
     ListServiceProvidingGroupGridSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridSuspensionCommentResponses,
@@ -1779,7 +1770,7 @@ export const createServiceProvidingGroupGridSuspensionComment = <
   options?: Options<
     CreateServiceProvidingGroupGridSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupGridSuspensionCommentResponses,
@@ -1804,7 +1795,7 @@ export const readServiceProvidingGroupGridSuspensionComment = <
   options: Options<
     ReadServiceProvidingGroupGridSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridSuspensionCommentResponses,
@@ -1825,7 +1816,7 @@ export const updateServiceProvidingGroupGridSuspensionComment = <
   options: Options<
     UpdateServiceProvidingGroupGridSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupGridSuspensionCommentResponses,
@@ -1850,7 +1841,7 @@ export const listServiceProvidingGroupGridSuspensionCommentHistory = <
   options?: Options<
     ListServiceProvidingGroupGridSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupGridSuspensionCommentHistoryResponses,
@@ -1871,7 +1862,7 @@ export const readServiceProvidingGroupGridSuspensionCommentHistory = <
   options: Options<
     ReadServiceProvidingGroupGridSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupGridSuspensionCommentHistoryResponses,
@@ -1887,7 +1878,7 @@ export const readServiceProvidingGroupGridSuspensionCommentHistory = <
  * List Entity
  */
 export const listEntity = <ThrowOnError extends boolean = false>(
-  options?: Options<ListEntityData, ThrowOnError>,
+  options?: Options<ListEntityData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListEntityResponses,
@@ -1903,7 +1894,7 @@ export const listEntity = <ThrowOnError extends boolean = false>(
  * Create Entity
  */
 export const createEntity = <ThrowOnError extends boolean = false>(
-  options?: Options<CreateEntityData, ThrowOnError>,
+  options?: Options<CreateEntityData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateEntityResponses,
@@ -1923,7 +1914,7 @@ export const createEntity = <ThrowOnError extends boolean = false>(
  * Read Entity
  */
 export const readEntity = <ThrowOnError extends boolean = false>(
-  options: Options<ReadEntityData, ThrowOnError>,
+  options: Options<ReadEntityData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadEntityResponses,
@@ -1939,7 +1930,7 @@ export const readEntity = <ThrowOnError extends boolean = false>(
  * Update Entity
  */
 export const updateEntity = <ThrowOnError extends boolean = false>(
-  options: Options<UpdateEntityData, ThrowOnError>,
+  options: Options<UpdateEntityData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateEntityResponses,
@@ -1959,7 +1950,7 @@ export const updateEntity = <ThrowOnError extends boolean = false>(
  * List Entity client
  */
 export const listEntityClient = <ThrowOnError extends boolean = false>(
-  options?: Options<ListEntityClientData, ThrowOnError>,
+  options?: Options<ListEntityClientData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListEntityClientResponses,
@@ -1975,7 +1966,7 @@ export const listEntityClient = <ThrowOnError extends boolean = false>(
  * Create Entity client
  */
 export const createEntityClient = <ThrowOnError extends boolean = false>(
-  options?: Options<CreateEntityClientData, ThrowOnError>,
+  options?: Options<CreateEntityClientData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateEntityClientResponses,
@@ -1995,7 +1986,7 @@ export const createEntityClient = <ThrowOnError extends boolean = false>(
  * Delete Entity client
  */
 export const deleteEntityClient = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteEntityClientData, ThrowOnError>,
+  options: Options<DeleteEntityClientData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeleteEntityClientResponses,
@@ -2015,7 +2006,7 @@ export const deleteEntityClient = <ThrowOnError extends boolean = false>(
  * Read Entity client
  */
 export const readEntityClient = <ThrowOnError extends boolean = false>(
-  options: Options<ReadEntityClientData, ThrowOnError>,
+  options: Options<ReadEntityClientData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadEntityClientResponses,
@@ -2031,7 +2022,7 @@ export const readEntityClient = <ThrowOnError extends boolean = false>(
  * Update Entity client
  */
 export const updateEntityClient = <ThrowOnError extends boolean = false>(
-  options: Options<UpdateEntityClientData, ThrowOnError>,
+  options: Options<UpdateEntityClientData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateEntityClientResponses,
@@ -2051,7 +2042,7 @@ export const updateEntityClient = <ThrowOnError extends boolean = false>(
  * List Party
  */
 export const listParty = <ThrowOnError extends boolean = false>(
-  options?: Options<ListPartyData, ThrowOnError>,
+  options?: Options<ListPartyData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListPartyResponses,
@@ -2067,7 +2058,7 @@ export const listParty = <ThrowOnError extends boolean = false>(
  * Create Party
  */
 export const createParty = <ThrowOnError extends boolean = false>(
-  options?: Options<CreatePartyData, ThrowOnError>,
+  options?: Options<CreatePartyData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreatePartyResponses,
@@ -2087,7 +2078,7 @@ export const createParty = <ThrowOnError extends boolean = false>(
  * Read Party
  */
 export const readParty = <ThrowOnError extends boolean = false>(
-  options: Options<ReadPartyData, ThrowOnError>,
+  options: Options<ReadPartyData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadPartyResponses,
@@ -2103,7 +2094,7 @@ export const readParty = <ThrowOnError extends boolean = false>(
  * Update Party
  */
 export const updateParty = <ThrowOnError extends boolean = false>(
-  options: Options<UpdatePartyData, ThrowOnError>,
+  options: Options<UpdatePartyData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdatePartyResponses,
@@ -2123,7 +2114,7 @@ export const updateParty = <ThrowOnError extends boolean = false>(
  * List Party - history
  */
 export const listPartyHistory = <ThrowOnError extends boolean = false>(
-  options?: Options<ListPartyHistoryData, ThrowOnError>,
+  options?: Options<ListPartyHistoryData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListPartyHistoryResponses,
@@ -2139,7 +2130,7 @@ export const listPartyHistory = <ThrowOnError extends boolean = false>(
  * Read Party - history
  */
 export const readPartyHistory = <ThrowOnError extends boolean = false>(
-  options: Options<ReadPartyHistoryData, ThrowOnError>,
+  options: Options<ReadPartyHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadPartyHistoryResponses,
@@ -2155,7 +2146,7 @@ export const readPartyHistory = <ThrowOnError extends boolean = false>(
  * List Party Membership
  */
 export const listPartyMembership = <ThrowOnError extends boolean = false>(
-  options?: Options<ListPartyMembershipData, ThrowOnError>,
+  options?: Options<ListPartyMembershipData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListPartyMembershipResponses,
@@ -2171,7 +2162,7 @@ export const listPartyMembership = <ThrowOnError extends boolean = false>(
  * Create Party Membership
  */
 export const createPartyMembership = <ThrowOnError extends boolean = false>(
-  options?: Options<CreatePartyMembershipData, ThrowOnError>,
+  options?: Options<CreatePartyMembershipData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreatePartyMembershipResponses,
@@ -2191,7 +2182,7 @@ export const createPartyMembership = <ThrowOnError extends boolean = false>(
  * Delete Party Membership
  */
 export const deletePartyMembership = <ThrowOnError extends boolean = false>(
-  options: Options<DeletePartyMembershipData, ThrowOnError>,
+  options: Options<DeletePartyMembershipData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeletePartyMembershipResponses,
@@ -2211,7 +2202,7 @@ export const deletePartyMembership = <ThrowOnError extends boolean = false>(
  * Read Party Membership
  */
 export const readPartyMembership = <ThrowOnError extends boolean = false>(
-  options: Options<ReadPartyMembershipData, ThrowOnError>,
+  options: Options<ReadPartyMembershipData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadPartyMembershipResponses,
@@ -2227,7 +2218,7 @@ export const readPartyMembership = <ThrowOnError extends boolean = false>(
  * Update Party Membership
  */
 export const updatePartyMembership = <ThrowOnError extends boolean = false>(
-  options: Options<UpdatePartyMembershipData, ThrowOnError>,
+  options: Options<UpdatePartyMembershipData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdatePartyMembershipResponses,
@@ -2249,7 +2240,7 @@ export const updatePartyMembership = <ThrowOnError extends boolean = false>(
 export const listPartyMembershipHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListPartyMembershipHistoryData, ThrowOnError>,
+  options?: Options<ListPartyMembershipHistoryData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListPartyMembershipHistoryResponses,
@@ -2267,7 +2258,7 @@ export const listPartyMembershipHistory = <
 export const readPartyMembershipHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadPartyMembershipHistoryData, ThrowOnError>,
+  options: Options<ReadPartyMembershipHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadPartyMembershipHistoryResponses,
@@ -2283,7 +2274,7 @@ export const readPartyMembershipHistory = <
  * List Identity
  */
 export const listIdentity = <ThrowOnError extends boolean = false>(
-  options?: Options<ListIdentityData, ThrowOnError>,
+  options?: Options<ListIdentityData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListIdentityResponses,
@@ -2299,7 +2290,7 @@ export const listIdentity = <ThrowOnError extends boolean = false>(
  * Read Identity
  */
 export const readIdentity = <ThrowOnError extends boolean = false>(
-  options: Options<ReadIdentityData, ThrowOnError>,
+  options: Options<ReadIdentityData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadIdentityResponses,
@@ -2315,7 +2306,7 @@ export const readIdentity = <ThrowOnError extends boolean = false>(
  * List Technical Resource
  */
 export const listTechnicalResource = <ThrowOnError extends boolean = false>(
-  options?: Options<ListTechnicalResourceData, ThrowOnError>,
+  options?: Options<ListTechnicalResourceData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListTechnicalResourceResponses,
@@ -2331,7 +2322,7 @@ export const listTechnicalResource = <ThrowOnError extends boolean = false>(
  * Create Technical Resource
  */
 export const createTechnicalResource = <ThrowOnError extends boolean = false>(
-  options?: Options<CreateTechnicalResourceData, ThrowOnError>,
+  options?: Options<CreateTechnicalResourceData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateTechnicalResourceResponses,
@@ -2351,7 +2342,7 @@ export const createTechnicalResource = <ThrowOnError extends boolean = false>(
  * Delete Technical Resource
  */
 export const deleteTechnicalResource = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteTechnicalResourceData, ThrowOnError>,
+  options: Options<DeleteTechnicalResourceData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeleteTechnicalResourceResponses,
@@ -2371,7 +2362,7 @@ export const deleteTechnicalResource = <ThrowOnError extends boolean = false>(
  * Read Technical Resource
  */
 export const readTechnicalResource = <ThrowOnError extends boolean = false>(
-  options: Options<ReadTechnicalResourceData, ThrowOnError>,
+  options: Options<ReadTechnicalResourceData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadTechnicalResourceResponses,
@@ -2387,7 +2378,7 @@ export const readTechnicalResource = <ThrowOnError extends boolean = false>(
  * Update Technical Resource
  */
 export const updateTechnicalResource = <ThrowOnError extends boolean = false>(
-  options: Options<UpdateTechnicalResourceData, ThrowOnError>,
+  options: Options<UpdateTechnicalResourceData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateTechnicalResourceResponses,
@@ -2409,7 +2400,7 @@ export const updateTechnicalResource = <ThrowOnError extends boolean = false>(
 export const listTechnicalResourceHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListTechnicalResourceHistoryData, ThrowOnError>,
+  options?: Options<ListTechnicalResourceHistoryData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListTechnicalResourceHistoryResponses,
@@ -2427,7 +2418,7 @@ export const listTechnicalResourceHistory = <
 export const readTechnicalResourceHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadTechnicalResourceHistoryData, ThrowOnError>,
+  options: Options<ReadTechnicalResourceHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadTechnicalResourceHistoryResponses,
@@ -2443,7 +2434,7 @@ export const readTechnicalResourceHistory = <
  * List Event
  */
 export const listEvent = <ThrowOnError extends boolean = false>(
-  options?: Options<ListEventData, ThrowOnError>,
+  options?: Options<ListEventData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListEventResponses,
@@ -2459,7 +2450,7 @@ export const listEvent = <ThrowOnError extends boolean = false>(
  * Read Event
  */
 export const readEvent = <ThrowOnError extends boolean = false>(
-  options: Options<ReadEventData, ThrowOnError>,
+  options: Options<ReadEventData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadEventResponses,
@@ -2475,7 +2466,7 @@ export const readEvent = <ThrowOnError extends boolean = false>(
  * List Notification
  */
 export const listNotification = <ThrowOnError extends boolean = false>(
-  options?: Options<ListNotificationData, ThrowOnError>,
+  options?: Options<ListNotificationData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListNotificationResponses,
@@ -2491,7 +2482,7 @@ export const listNotification = <ThrowOnError extends boolean = false>(
  * Read Notification
  */
 export const readNotification = <ThrowOnError extends boolean = false>(
-  options: Options<ReadNotificationData, ThrowOnError>,
+  options: Options<ReadNotificationData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadNotificationResponses,
@@ -2507,7 +2498,7 @@ export const readNotification = <ThrowOnError extends boolean = false>(
  * Update Notification
  */
 export const updateNotification = <ThrowOnError extends boolean = false>(
-  options: Options<UpdateNotificationData, ThrowOnError>,
+  options: Options<UpdateNotificationData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateNotificationResponses,
@@ -2527,7 +2518,7 @@ export const updateNotification = <ThrowOnError extends boolean = false>(
  * List Accounting Point
  */
 export const listAccountingPoint = <ThrowOnError extends boolean = false>(
-  options?: Options<ListAccountingPointData, ThrowOnError>,
+  options?: Options<ListAccountingPointData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListAccountingPointResponses,
@@ -2543,7 +2534,7 @@ export const listAccountingPoint = <ThrowOnError extends boolean = false>(
  * Read Accounting Point
  */
 export const readAccountingPoint = <ThrowOnError extends boolean = false>(
-  options: Options<ReadAccountingPointData, ThrowOnError>,
+  options: Options<ReadAccountingPointData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadAccountingPointResponses,
@@ -2564,7 +2555,7 @@ export const listAccountingPointBalanceResponsibleParty = <
   options?: Options<
     ListAccountingPointBalanceResponsiblePartyData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListAccountingPointBalanceResponsiblePartyResponses,
@@ -2582,7 +2573,7 @@ export const listAccountingPointBalanceResponsibleParty = <
 export const listAccountingPointEnergySupplier = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListAccountingPointEnergySupplierData, ThrowOnError>,
+  options?: Options<ListAccountingPointEnergySupplierData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListAccountingPointEnergySupplierResponses,
@@ -2598,7 +2589,7 @@ export const listAccountingPointEnergySupplier = <
  * List Product Type
  */
 export const listProductType = <ThrowOnError extends boolean = false>(
-  options?: Options<ListProductTypeData, ThrowOnError>,
+  options?: Options<ListProductTypeData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListProductTypeResponses,
@@ -2614,7 +2605,7 @@ export const listProductType = <ThrowOnError extends boolean = false>(
  * Read Product Type
  */
 export const readProductType = <ThrowOnError extends boolean = false>(
-  options: Options<ReadProductTypeData, ThrowOnError>,
+  options: Options<ReadProductTypeData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadProductTypeResponses,
@@ -2632,7 +2623,7 @@ export const readProductType = <ThrowOnError extends boolean = false>(
 export const listSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListSystemOperatorProductTypeData, ThrowOnError>,
+  options?: Options<ListSystemOperatorProductTypeData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListSystemOperatorProductTypeResponses,
@@ -2650,7 +2641,7 @@ export const listSystemOperatorProductType = <
 export const createSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateSystemOperatorProductTypeData, ThrowOnError>,
+  options?: Options<CreateSystemOperatorProductTypeData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateSystemOperatorProductTypeResponses,
@@ -2672,7 +2663,7 @@ export const createSystemOperatorProductType = <
 export const readSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadSystemOperatorProductTypeData, ThrowOnError>,
+  options: Options<ReadSystemOperatorProductTypeData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadSystemOperatorProductTypeResponses,
@@ -2690,7 +2681,7 @@ export const readSystemOperatorProductType = <
 export const updateSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateSystemOperatorProductTypeData, ThrowOnError>,
+  options: Options<UpdateSystemOperatorProductTypeData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateSystemOperatorProductTypeResponses,
@@ -2712,7 +2703,7 @@ export const updateSystemOperatorProductType = <
 export const listSystemOperatorProductTypeHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListSystemOperatorProductTypeHistoryData, ThrowOnError>,
+  options?: Options<ListSystemOperatorProductTypeHistoryData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListSystemOperatorProductTypeHistoryResponses,
@@ -2730,7 +2721,7 @@ export const listSystemOperatorProductTypeHistory = <
 export const readSystemOperatorProductTypeHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadSystemOperatorProductTypeHistoryData, ThrowOnError>,
+  options: Options<ReadSystemOperatorProductTypeHistoryData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadSystemOperatorProductTypeHistoryResponses,
@@ -2748,7 +2739,7 @@ export const readSystemOperatorProductTypeHistory = <
 export const listServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListServiceProviderProductApplicationData, ThrowOnError>,
+  options?: Options<ListServiceProviderProductApplicationData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductApplicationResponses,
@@ -2766,7 +2757,7 @@ export const listServiceProviderProductApplication = <
 export const createServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateServiceProviderProductApplicationData, ThrowOnError>,
+  options?: Options<CreateServiceProviderProductApplicationData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateServiceProviderProductApplicationResponses,
@@ -2788,7 +2779,7 @@ export const createServiceProviderProductApplication = <
 export const readServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadServiceProviderProductApplicationData, ThrowOnError>,
+  options: Options<ReadServiceProviderProductApplicationData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductApplicationResponses,
@@ -2806,7 +2797,7 @@ export const readServiceProviderProductApplication = <
 export const updateServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateServiceProviderProductApplicationData, ThrowOnError>,
+  options: Options<UpdateServiceProviderProductApplicationData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProviderProductApplicationResponses,
@@ -2831,7 +2822,7 @@ export const listServiceProviderProductApplicationHistory = <
   options?: Options<
     ListServiceProviderProductApplicationHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductApplicationHistoryResponses,
@@ -2852,7 +2843,7 @@ export const readServiceProviderProductApplicationHistory = <
   options: Options<
     ReadServiceProviderProductApplicationHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductApplicationHistoryResponses,
@@ -2873,7 +2864,7 @@ export const listServiceProviderProductApplicationComment = <
   options?: Options<
     ListServiceProviderProductApplicationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductApplicationCommentResponses,
@@ -2894,7 +2885,7 @@ export const createServiceProviderProductApplicationComment = <
   options?: Options<
     CreateServiceProviderProductApplicationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProviderProductApplicationCommentResponses,
@@ -2919,7 +2910,7 @@ export const readServiceProviderProductApplicationComment = <
   options: Options<
     ReadServiceProviderProductApplicationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductApplicationCommentResponses,
@@ -2940,7 +2931,7 @@ export const updateServiceProviderProductApplicationComment = <
   options: Options<
     UpdateServiceProviderProductApplicationCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProviderProductApplicationCommentResponses,
@@ -2965,7 +2956,7 @@ export const listServiceProviderProductApplicationCommentHistory = <
   options?: Options<
     ListServiceProviderProductApplicationCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductApplicationCommentHistoryResponses,
@@ -2986,7 +2977,7 @@ export const readServiceProviderProductApplicationCommentHistory = <
   options: Options<
     ReadServiceProviderProductApplicationCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductApplicationCommentHistoryResponses,
@@ -3004,7 +2995,7 @@ export const readServiceProviderProductApplicationCommentHistory = <
 export const listServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<ListServiceProviderProductSuspensionData, ThrowOnError>,
+  options?: Options<ListServiceProviderProductSuspensionData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductSuspensionResponses,
@@ -3022,7 +3013,7 @@ export const listServiceProviderProductSuspension = <
 export const createServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<CreateServiceProviderProductSuspensionData, ThrowOnError>,
+  options?: Options<CreateServiceProviderProductSuspensionData, ThrowOnError>
 ) =>
   (options?.client ?? client).post<
     CreateServiceProviderProductSuspensionResponses,
@@ -3044,7 +3035,7 @@ export const createServiceProviderProductSuspension = <
 export const deleteServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<DeleteServiceProviderProductSuspensionData, ThrowOnError>,
+  options: Options<DeleteServiceProviderProductSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).delete<
     DeleteServiceProviderProductSuspensionResponses,
@@ -3066,7 +3057,7 @@ export const deleteServiceProviderProductSuspension = <
 export const readServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<ReadServiceProviderProductSuspensionData, ThrowOnError>,
+  options: Options<ReadServiceProviderProductSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductSuspensionResponses,
@@ -3084,7 +3075,7 @@ export const readServiceProviderProductSuspension = <
 export const updateServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<UpdateServiceProviderProductSuspensionData, ThrowOnError>,
+  options: Options<UpdateServiceProviderProductSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProviderProductSuspensionResponses,
@@ -3109,7 +3100,7 @@ export const listServiceProviderProductSuspensionHistory = <
   options?: Options<
     ListServiceProviderProductSuspensionHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductSuspensionHistoryResponses,
@@ -3130,7 +3121,7 @@ export const readServiceProviderProductSuspensionHistory = <
   options: Options<
     ReadServiceProviderProductSuspensionHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductSuspensionHistoryResponses,
@@ -3151,7 +3142,7 @@ export const listServiceProviderProductSuspensionComment = <
   options?: Options<
     ListServiceProviderProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductSuspensionCommentResponses,
@@ -3172,7 +3163,7 @@ export const createServiceProviderProductSuspensionComment = <
   options?: Options<
     CreateServiceProviderProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProviderProductSuspensionCommentResponses,
@@ -3197,7 +3188,7 @@ export const readServiceProviderProductSuspensionComment = <
   options: Options<
     ReadServiceProviderProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductSuspensionCommentResponses,
@@ -3218,7 +3209,7 @@ export const updateServiceProviderProductSuspensionComment = <
   options: Options<
     UpdateServiceProviderProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProviderProductSuspensionCommentResponses,
@@ -3243,7 +3234,7 @@ export const listServiceProviderProductSuspensionCommentHistory = <
   options?: Options<
     ListServiceProviderProductSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProviderProductSuspensionCommentHistoryResponses,
@@ -3264,7 +3255,7 @@ export const readServiceProviderProductSuspensionCommentHistory = <
   options: Options<
     ReadServiceProviderProductSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProviderProductSuspensionCommentHistoryResponses,
@@ -3285,7 +3276,7 @@ export const listServiceProvidingGroupProductApplication = <
   options?: Options<
     ListServiceProvidingGroupProductApplicationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupProductApplicationResponses,
@@ -3306,7 +3297,7 @@ export const createServiceProvidingGroupProductApplication = <
   options?: Options<
     CreateServiceProvidingGroupProductApplicationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupProductApplicationResponses,
@@ -3331,7 +3322,7 @@ export const readServiceProvidingGroupProductApplication = <
   options: Options<
     ReadServiceProvidingGroupProductApplicationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupProductApplicationResponses,
@@ -3352,7 +3343,7 @@ export const updateServiceProvidingGroupProductApplication = <
   options: Options<
     UpdateServiceProvidingGroupProductApplicationData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupProductApplicationResponses,
@@ -3377,7 +3368,7 @@ export const listServiceProvidingGroupProductApplicationHistory = <
   options?: Options<
     ListServiceProvidingGroupProductApplicationHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupProductApplicationHistoryResponses,
@@ -3398,7 +3389,7 @@ export const readServiceProvidingGroupProductApplicationHistory = <
   options: Options<
     ReadServiceProvidingGroupProductApplicationHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupProductApplicationHistoryResponses,
@@ -3419,7 +3410,7 @@ export const listServiceProvidingGroupProductSuspension = <
   options?: Options<
     ListServiceProvidingGroupProductSuspensionData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupProductSuspensionResponses,
@@ -3440,7 +3431,7 @@ export const createServiceProvidingGroupProductSuspension = <
   options?: Options<
     CreateServiceProvidingGroupProductSuspensionData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupProductSuspensionResponses,
@@ -3465,7 +3456,7 @@ export const deleteServiceProvidingGroupProductSuspension = <
   options: Options<
     DeleteServiceProvidingGroupProductSuspensionData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).delete<
     DeleteServiceProvidingGroupProductSuspensionResponses,
@@ -3487,10 +3478,7 @@ export const deleteServiceProvidingGroupProductSuspension = <
 export const readServiceProvidingGroupProductSuspension = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<
-    ReadServiceProvidingGroupProductSuspensionData,
-    ThrowOnError
-  >,
+  options: Options<ReadServiceProvidingGroupProductSuspensionData, ThrowOnError>
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupProductSuspensionResponses,
@@ -3511,7 +3499,7 @@ export const updateServiceProvidingGroupProductSuspension = <
   options: Options<
     UpdateServiceProvidingGroupProductSuspensionData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupProductSuspensionResponses,
@@ -3536,7 +3524,7 @@ export const listServiceProvidingGroupProductSuspensionHistory = <
   options?: Options<
     ListServiceProvidingGroupProductSuspensionHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupProductSuspensionHistoryResponses,
@@ -3557,7 +3545,7 @@ export const readServiceProvidingGroupProductSuspensionHistory = <
   options: Options<
     ReadServiceProvidingGroupProductSuspensionHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupProductSuspensionHistoryResponses,
@@ -3578,7 +3566,7 @@ export const listServiceProvidingGroupProductSuspensionComment = <
   options?: Options<
     ListServiceProvidingGroupProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupProductSuspensionCommentResponses,
@@ -3599,7 +3587,7 @@ export const createServiceProvidingGroupProductSuspensionComment = <
   options?: Options<
     CreateServiceProvidingGroupProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).post<
     CreateServiceProvidingGroupProductSuspensionCommentResponses,
@@ -3624,7 +3612,7 @@ export const readServiceProvidingGroupProductSuspensionComment = <
   options: Options<
     ReadServiceProvidingGroupProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupProductSuspensionCommentResponses,
@@ -3645,7 +3633,7 @@ export const updateServiceProvidingGroupProductSuspensionComment = <
   options: Options<
     UpdateServiceProvidingGroupProductSuspensionCommentData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).patch<
     UpdateServiceProvidingGroupProductSuspensionCommentResponses,
@@ -3670,7 +3658,7 @@ export const listServiceProvidingGroupProductSuspensionCommentHistory = <
   options?: Options<
     ListServiceProvidingGroupProductSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options?.client ?? client).get<
     ListServiceProvidingGroupProductSuspensionCommentHistoryResponses,
@@ -3691,7 +3679,7 @@ export const readServiceProvidingGroupProductSuspensionCommentHistory = <
   options: Options<
     ReadServiceProvidingGroupProductSuspensionCommentHistoryData,
     ThrowOnError
-  >,
+  >
 ) =>
   (options.client ?? client).get<
     ReadServiceProvidingGroupProductSuspensionCommentHistoryResponses,
@@ -3707,7 +3695,7 @@ export const readServiceProvidingGroupProductSuspensionCommentHistory = <
  * List Notice
  */
 export const listNotice = <ThrowOnError extends boolean = false>(
-  options?: Options<ListNoticeData, ThrowOnError>,
+  options?: Options<ListNoticeData, ThrowOnError>
 ) =>
   (options?.client ?? client).get<
     ListNoticeResponses,

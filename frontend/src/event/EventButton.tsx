@@ -10,11 +10,12 @@ import { Link } from "react-router-dom";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 
 export const EventButton = (
-  props: ButtonProps & { filterOnSubject?: boolean },
+  props: ButtonProps & { filterOnSubject?: boolean; recordId?: string }
 ) => {
-  const { filterOnSubject, ...rest } = props;
   const resource = useResourceContext();
-  const record = useRecordContext()!;
+  const record = useRecordContext();
+  const { recordId, filterOnSubject, ...rest } = props;
+  const actualRecordId = recordId || record?.id;
 
   const { permissions } = usePermissions<Permissions>();
 
@@ -27,7 +28,7 @@ export const EventButton = (
   const filter =
     "?filter=" +
     encodeURIComponent(
-      `{ "${filterField}@like": "/${resource}/${record.id}" }`,
+      `{ "${filterField}@like": "/${resource}/${actualRecordId}" }`
     );
 
   return canRead ? (

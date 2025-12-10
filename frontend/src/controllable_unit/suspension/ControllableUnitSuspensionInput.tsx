@@ -7,39 +7,34 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { Toolbar } from "../../components/Toolbar";
-import { useLocation } from "react-router-dom";
 import {
   PartyReferenceInput,
   InputStack,
   AutocompleteReferenceInput,
 } from "../../auth";
-import { useMemo } from "react";
+import { ControllableUnitSuspension } from "../../generated-client";
+import useLocationState from "../../hooks/useLocationState";
 import { zControllableUnitSuspension } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// keep only the fields that map to the UI
-const filterRecord = ({
-  controllable_unit_id,
-  impacted_system_operator_id,
-  reason,
-}: any) => ({
-  controllable_unit_id,
-  impacted_system_operator_id,
-  reason,
-});
+export type ControllableUnitSuspensionLocationState = {
+  cus?: Partial<ControllableUnitSuspension>;
+};
 
 // common layout to create and edit pages
 export const ControllableUnitSuspensionInput = () => {
-  const { state: overrideRecord } = useLocation();
+  const locationState =
+    useLocationState<ControllableUnitSuspensionLocationState>();
+  const overrideRecord =
+    zControllableUnitSuspension.safeParse(locationState?.cus).data || {};
   const actualRecord = useRecordContext();
   const { data: identity } = useGetIdentity();
   const isSystemOperator = identity?.role == "flex_system_operator";
 
-  // Memoize the combined record to avoid re-renders causing errors
-  const record = useMemo(
-    () => filterRecord({ ...actualRecord, ...overrideRecord }),
-    [actualRecord, overrideRecord],
-  );
+  const record = {
+    ...actualRecord,
+    ...overrideRecord,
+  };
 
   return (
     <SimpleForm

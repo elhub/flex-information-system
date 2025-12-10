@@ -5,7 +5,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { ControllableUnitList } from "../controllable_unit/ControllableUnitList";
-import { ControllableUnitShow } from "../controllable_unit/ControllableUnitShow";
+import { ControllableUnitShow } from "../controllable_unit/show/ControllableUnitShow";
 import { ControllableUnitInput } from "../controllable_unit/ControllableUnitInput";
 import { ControllableUnitLookupInput } from "../controllable_unit/lookup/ControllableUnitLookupInput";
 import { ControllableUnitLookupResult } from "../controllable_unit/lookup/ControllableUnitLookupResult";
@@ -26,6 +26,7 @@ import {
 } from "../components/comments";
 import { ControllableUnitSuspensionList } from "../controllable_unit";
 import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
+import { ControllableUnitBalanceResponsiblePartyList } from "../controllable_unit/balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 
 export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
@@ -41,7 +42,11 @@ export const createControllableUnitResources = (permissions: Permissions) => {
         key="controllable_unit"
         name="controllable_unit"
         list={ControllableUnitList}
-        show={ControllableUnitShow}
+        show={
+          <ResourceContextProvider value="controllable_unit">
+            <ControllableUnitShow />
+          </ResourceContextProvider>
+        }
         icon={BookmarkIcon}
         edit={
           canUpdate ? (
@@ -89,6 +94,11 @@ export const createControllableUnitResources = (permissions: Permissions) => {
             </ResourceContextProvider>
           }
         />
+        <Route
+          path=":controllable_unit_id/suspension"
+          element={<ControllableUnitSuspensionList />}
+        />
+
         <Route
           path=":controllable_unit_id/suspension_history"
           element={<ControllableUnitSuspensionHistoryList />}
@@ -163,7 +173,7 @@ export const createControllableUnitResources = (permissions: Permissions) => {
         {/* controllable unit service provider relation */}
         <Route
           path=":controllable_unit_id/service_provider"
-          element={<Navigate to="../show" relative="path" replace={true} />}
+          element={<ControllableUnitServiceProviderList />}
         />
         <Route
           path=":controllable_unit_id/service_provider/:id/show"
@@ -255,6 +265,14 @@ export const createControllableUnitResources = (permissions: Permissions) => {
           element={
             <ResourceContextProvider value="technical_resource_history">
               <TechnicalResourceShow />
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":controllable_unit_id/balance_responsible_party"
+          element={
+            <ResourceContextProvider value="controllable_unit">
+              <ControllableUnitBalanceResponsiblePartyList />
             </ResourceContextProvider>
           }
         />

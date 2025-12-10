@@ -1,44 +1,33 @@
-import { Children } from "react";
-import { useResourceContext, usePermissions, Labeled } from "react-admin";
-import { Permissions, PermissionTarget } from "./permissions";
-import { Divider, Stack as MUIStack } from "@mui/material";
-import { FieldTooltip } from "../tooltip/FieldTooltip";
+import { Divider, Stack as MUIStack, StackProps } from "@mui/material";
+import { ViewPermissionGuard } from "./";
+import React from "react";
+
+type FieldStackProps = {
+  children: React.ReactNode;
+  allowAll?: boolean;
+  hideTooltips?: boolean;
+  resource?: string;
+} & StackProps;
 
 // custom Stack component forcing label display and hiding the underlying
 // fields based on permissions
-export const FieldStack = (props: any) => {
-  const resourceFromContext = useResourceContext();
+export const FieldStack = (props: FieldStackProps) => {
   const {
     children,
-    allowAll: allowAllProp,
-    hideTooltips: hideTooltipsProp,
+    allowAll = false,
+    hideTooltips = false,
+    resource,
     ...rest
   } = props;
-  const { permissions } = usePermissions<Permissions>();
-
-  const allowAll = allowAllProp ?? false;
-  const hideTooltips = hideTooltipsProp ?? false;
-  const resource = props.resource ?? resourceFromContext;
-
-  const addPermissionToField = (field: any) =>
-    (allowAll ||
-      permissions?.allow(
-        `${resource}.${field.props.source}` as PermissionTarget,
-        "read",
-      )) && (
-      <>
-        <Labeled>{field}</Labeled>
-        {!hideTooltips && (
-          <FieldTooltip resource={resource} field={field.props.source} />
-        )}
-      </>
-    );
-
   return (
     <MUIStack divider={<Divider flexItem orientation="vertical" />} {...rest}>
-      {Children.map(children, (child: any) =>
-        child.props.source ? addPermissionToField(child) : child,
-      )}
+      <ViewPermissionGuard
+        allowAll={allowAll}
+        hideTooltips={hideTooltips}
+        resource={resource}
+      >
+        {children}
+      </ViewPermissionGuard>
     </MUIStack>
   );
 };

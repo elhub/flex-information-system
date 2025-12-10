@@ -1,18 +1,29 @@
 import {
   List,
+  Loading,
   ReferenceField,
   ResourceContextProvider,
   TextField,
+  useGetOne,
   usePermissions,
-  useRecordContext,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import { DateField } from "../../components/datetime";
 import { Permissions } from "../../auth/permissions";
+import { ControllableUnit } from "../../generated-client";
+import { useParams } from "react-router-dom";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
   // accounting point id of the controllable unit whose BRPs we want to get
-  const { accounting_point_id } = useRecordContext()!;
+  const { controllable_unit_id } = useParams<{
+    controllable_unit_id: string;
+  }>();
+  const { data: cu, isLoading } = useGetOne<ControllableUnit & { id: number }>(
+    "controllable_unit",
+    { id: Number(controllable_unit_id) },
+    { enabled: !!controllable_unit_id },
+  );
+
   const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
@@ -20,6 +31,14 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
     "accounting_point_balance_responsible_party",
     "read",
   );
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!canRead) {
+    return null;
+  }
 
   return (
     canRead && (
@@ -29,7 +48,9 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
           perPage={10}
           exporter={false}
           empty={false}
-          filter={{ accounting_point_id: accounting_point_id }}
+          filter={
+            cu ? { accounting_point_id: cu.accounting_point_id } : undefined
+          }
           sort={{ field: "valid_from", order: "ASC" }}
           disableSyncWithLocation
         >
