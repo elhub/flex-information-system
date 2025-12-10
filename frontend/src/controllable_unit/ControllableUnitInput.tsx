@@ -4,6 +4,7 @@ import {
   SelectInput,
   SimpleForm,
   TextInput,
+  useNotify,
   useRecordContext,
 } from "react-admin";
 import {
@@ -39,6 +40,7 @@ export const ControllableUnitInput = () => {
   const createOrUpdate = useCreateOrUpdate();
   const locationState = useLocationState<ControllableUnitInputLocationState>();
   const navigate = useNavigate();
+  const notify = useNotify();
 
   const controllableUnitOverride: Partial<ControllableUnit> =
     locationState?.controllableUnit
@@ -70,9 +72,11 @@ export const ControllableUnitInput = () => {
       },
     };
 
+    notify("Controllable Unit created successfully", { type: "success" });
+
     navigate(
       `/controllable_unit/${controllableUnit.id}/service_provider/create`,
-      { state: cuspState },
+      { state: cuspState, replace: true },
     );
   };
 

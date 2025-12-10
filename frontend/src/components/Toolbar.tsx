@@ -11,11 +11,14 @@ type ToolbarProps = {
   saveAlwaysEnabled?: boolean;
   saveLabel?: string;
   onSuccess?: (data: unknown) => void;
+  onCancel?: () => void;
 } & RAToolbarProps;
 
 export const Toolbar = (props: ToolbarProps) => {
-  const { saveAlwaysEnabled, saveLabel, onSuccess, ...rest } = props;
+  const { saveAlwaysEnabled, saveLabel, onSuccess, onCancel, ...rest } = props;
   const navigate = useNavigate();
+
+  const handleCancel = onCancel ? onCancel : () => navigate(-1);
 
   return (
     <RAToolbar {...rest}>
@@ -30,7 +33,7 @@ export const Toolbar = (props: ToolbarProps) => {
         color="inherit"
         variant="contained"
         startIcon={<UndoIcon />}
-        onClick={() => navigate(-1)}
+        onClick={handleCancel}
       >
         Cancel
       </Button>

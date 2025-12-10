@@ -13,7 +13,7 @@ import {
   PartyReferenceInput,
   InputStack,
 } from "../../auth";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import {
@@ -77,6 +77,7 @@ const ControllableUnitServiceProviderForm = ({
   cuIDAsNumber: boolean;
   identity: UserIdentity | undefined;
 }) => {
+  const navigate = useNavigate();
   const isServiceProvider = identity?.role == "flex_service_provider";
   const recordWithPartyId = isServiceProvider
     ? {
@@ -84,6 +85,15 @@ const ControllableUnitServiceProviderForm = ({
         service_provider_id: identity?.partyID,
       }
     : record;
+
+  const onCancel = () => {
+    if (!record.controllable_unit_id) {
+      navigate(-1);
+      return;
+    }
+
+    navigate(`/controllable_unit/${record.controllable_unit_id}/show`);
+  };
 
   return (
     <SimpleForm
@@ -96,7 +106,7 @@ const ControllableUnitServiceProviderForm = ({
          we will apply are already brought into the fields by the state passed
          into the restore button. So the save button is disabled, but we still
          want to be able to hit it right away after clicking restore. */
-      toolbar={<Toolbar saveAlwaysEnabled={hasOverride} />}
+      toolbar={<Toolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />}
     >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
