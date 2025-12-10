@@ -47,7 +47,9 @@ export const ControllableUnitServiceProviderInput = () => {
   const overridenRecord = {
     ...actualRecord,
     ...overrideRecord,
-    valid_from: formatDateToMidnightISO(overrideRecord.valid_from),
+    valid_from: overrideRecord.valid_from
+      ? formatDateToMidnightISO(overrideRecord.valid_from)
+      : actualRecord?.valid_from,
   } as ControllableUnitServiceProvider;
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();

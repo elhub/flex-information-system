@@ -22,9 +22,9 @@ import { ControllableUnitServiceProviderLocationState } from "../service_provide
 import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 
 type LookupResponse_ControllableUnit =
-  ControllableUnitLookupResponse["controllable_units"][0];
+  ControllableUnitLookupResponse["controllable_units"][number];
 type LookupResponse_TechnicalResource =
-  LookupResponse_ControllableUnit["technical_resources"][0];
+  LookupResponse_ControllableUnit["technical_resources"][number];
 
 const CreateCUButton = ({
   accountingPointId,

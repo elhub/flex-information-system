@@ -6,6 +6,7 @@ import {
   DateField as RADateField,
   DateTimeInput as RADateTimeInput,
 } from "react-admin";
+import z from "zod";
 
 export const DateField = (props: DateFieldProps) => (
   <RADateField
@@ -88,7 +89,12 @@ seemingly being to just add a space after the date.
 export const formatDateToMidnightISO = (
   date?: string | null,
 ): string | null => {
-  return date ? new Date(date + " ").toISOString() : null;
+  const dateSchema = z.iso.date().safeParse(date);
+  if (!dateSchema.success) {
+    return null;
+  }
+
+  return new Date(date + " ").toISOString();
 };
 
 export const MidnightDateInput = (props: DateInputProps) => (

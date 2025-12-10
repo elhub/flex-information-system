@@ -61,7 +61,7 @@ export const ControllableUnitInput = () => {
   } as ControllableUnit;
 
   const onCreate = (data: unknown) => {
-    const controllableUnit = data as ControllableUnit;
+    const controllableUnit = zControllableUnit.parse(data);
     const cuspState: ControllableUnitServiceProviderLocationState = {
       cusp: {
         controllable_unit_id: controllableUnit.id,
