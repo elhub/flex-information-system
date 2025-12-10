@@ -46,18 +46,14 @@ export const createControllableUnitResources = (permissions: Permissions) => {
             <EditRedirectPreviousPage>
               <ControllableUnitInput />
             </EditRedirectPreviousPage>
-          ) : (
-            (null as any)
-          )
+          ) : undefined
         }
         create={
           canCreate ? (
-            <Create redirect="list">
+            <Create>
               <ControllableUnitInput />
             </Create>
-          ) : (
-            (null as any)
-          )
+          ) : undefined
         }
         recordRepresentation="name"
       >

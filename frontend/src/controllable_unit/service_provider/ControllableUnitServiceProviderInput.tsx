@@ -13,13 +13,17 @@ import {
   PartyReferenceInput,
   InputStack,
 } from "../../auth";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
-import { MidnightDateInput } from "../../components/datetime";
+import {
+  formatDateToMidnightISO,
+  MidnightDateInput,
+} from "../../components/datetime";
 import { countDefinedValues } from "../../util";
 import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
 import { ControllableUnitServiceProvider } from "../../generated-client";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export type ControllableUnitServiceProviderLocationState = {
   cusp?: Partial<ControllableUnitServiceProvider>;
@@ -43,6 +47,9 @@ export const ControllableUnitServiceProviderInput = () => {
   const overridenRecord = {
     ...actualRecord,
     ...overrideRecord,
+    valid_from: overrideRecord.valid_from
+      ? formatDateToMidnightISO(overrideRecord.valid_from)
+      : actualRecord?.valid_from,
   } as ControllableUnitServiceProvider;
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -70,6 +77,7 @@ const ControllableUnitServiceProviderForm = ({
   cuIDAsNumber: boolean;
   identity: UserIdentity | undefined;
 }) => {
+  const navigate = useNavigate();
   const isServiceProvider = identity?.role == "flex_service_provider";
   const recordWithPartyId = isServiceProvider
     ? {
@@ -78,17 +86,27 @@ const ControllableUnitServiceProviderForm = ({
       }
     : record;
 
+  const onCancel = () => {
+    if (!record.controllable_unit_id) {
+      navigate(-1);
+      return;
+    }
+
+    navigate(`/controllable_unit/${record.controllable_unit_id}/show`);
+  };
+
   return (
     <SimpleForm
       record={recordWithPartyId}
       maxWidth={1280}
+      resolver={zodResolver(zControllableUnitServiceProvider)}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.
          In the case of a restore, we don't do any edit, as the modifications
          we will apply are already brought into the fields by the state passed
          into the restore button. So the save button is disabled, but we still
          want to be able to hit it right away after clicking restore. */
-      toolbar={<Toolbar saveAlwaysEnabled={hasOverride} />}
+      toolbar={<Toolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />}
     >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>

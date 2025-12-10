@@ -22,19 +22,22 @@ import { ControllableUnitServiceProviderLocationState } from "../service_provide
 import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 
 type LookupResponse_ControllableUnit =
-  ControllableUnitLookupResponse["controllable_units"][0];
+  ControllableUnitLookupResponse["controllable_units"][number];
 type LookupResponse_TechnicalResource =
-  LookupResponse_ControllableUnit["technical_resources"][0];
+  LookupResponse_ControllableUnit["technical_resources"][number];
 
 const CreateCUButton = ({
   accountingPointId,
+  endUserId,
 }: {
   accountingPointId: number;
+  endUserId?: number;
 }) => {
   const cuspLocationState: ControllableUnitInputLocationState = {
     controllableUnit: {
       accounting_point_id: accountingPointId,
     },
+    endUserId: endUserId,
   };
 
   return (
@@ -179,6 +182,7 @@ export const ControllableUnitLookupResult = () => {
         </Stack>
         <CreateCUButton
           accountingPointId={controllableUnitLookUpResult.accounting_point.id}
+          endUserId={controllableUnitLookUpResult.end_user.id}
         />
         {controllableUnitLookUpResult.controllable_units.length == 0 ? (
           <Typography variant="h6">No controllable units found</Typography>
