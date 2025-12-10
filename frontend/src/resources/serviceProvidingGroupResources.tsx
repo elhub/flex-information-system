@@ -562,7 +562,36 @@ export const createServiceProvidingGroupResources = (
     </CustomRoutes>,
   );
 
-  // SPG grid/product suspensions also need to exist as standalone resources
+  // some subresources also need to exist as standalone resources
+  // (access with flat URL)
+
+  const canReadSPGGP = permissions.allow(
+    "service_providing_group_grid_prequalification",
+    "read",
+  );
+
+  if (canReadSPGGP) {
+    resources.push(
+      <Resource
+        key="service_providing_group_grid_prequalification"
+        name="service_providing_group_grid_prequalification"
+        show={ServiceProvidingGroupGridPrequalificationShow}
+      >
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history"
+          element={<ServiceProvidingGroupGridPrequalificationHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_prequalification_history">
+              <ServiceProvidingGroupGridPrequalificationShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
+    );
+  }
 
   const canReadSPGGS = permissions.allow(
     "service_providing_group_grid_suspension",
