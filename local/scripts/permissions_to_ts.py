@@ -46,6 +46,7 @@ history_enabled = [
     "service_providing_group",
     "service_providing_group_membership",
     "service_providing_group_grid_prequalification",
+    "service_providing_group_grid_prequalification_comment",
     "service_providing_group_grid_suspension",
     "service_providing_group_grid_suspension_comment",
     "party",

@@ -336,6 +336,18 @@ export type PermissionTarget =
   | "service_providing_group_grid_prequalification_comment.recorded_by"
   | "service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id"
   | "service_providing_group_grid_prequalification_comment.visibility"
+  | "service_providing_group_grid_prequalification_comment_history"
+  | "service_providing_group_grid_prequalification_comment_history.content"
+  | "service_providing_group_grid_prequalification_comment_history.created_at"
+  | "service_providing_group_grid_prequalification_comment_history.created_by"
+  | "service_providing_group_grid_prequalification_comment_history.id"
+  | "service_providing_group_grid_prequalification_comment_history.recorded_at"
+  | "service_providing_group_grid_prequalification_comment_history.recorded_by"
+  | "service_providing_group_grid_prequalification_comment_history.replaced_at"
+  | "service_providing_group_grid_prequalification_comment_history.replaced_by"
+  | "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id"
+  | "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id"
+  | "service_providing_group_grid_prequalification_comment_history.visibility"
   | "service_providing_group_grid_prequalification_history"
   | "service_providing_group_grid_prequalification_history.id"
   | "service_providing_group_grid_prequalification_history.impacted_system_operator_id"
@@ -1853,6 +1865,65 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_prequalification_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
       operation: "read",
     },
     {
@@ -3942,6 +4013,65 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_grid_prequalification_history.id",
       operation: "read",
     },
@@ -6025,6 +6155,65 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_prequalification_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
       operation: "read",
     },
     {
@@ -8631,6 +8820,65 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_grid_prequalification_history.id",
       operation: "read",
     },
@@ -10951,6 +11199,65 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_grid_prequalification_history.id",
       operation: "read",
     },
@@ -13262,6 +13569,65 @@ const rawPermissions: Record<
       target:
         "service_providing_group_grid_prequalification_comment.visibility",
       operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
+      operation: "read",
     },
     {
       target: "service_providing_group_grid_prequalification_history.id",
@@ -15818,6 +16184,65 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_grid_prequalification_history.id",
       operation: "read",
     },
@@ -18057,6 +18482,65 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_grid_prequalification_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_grid_prequalification_comment_history.visibility",
       operation: "read",
     },
     {
