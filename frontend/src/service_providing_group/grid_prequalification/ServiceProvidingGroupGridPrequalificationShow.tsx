@@ -74,7 +74,7 @@ const CommentHistoryButton = () => {
           "read",
         )
       }
-      to={`/service_providing_group_id/${record?.service_providing_group_id}/grid_prequalification/${record?.id}/comment_history`}
+      to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification/${record?.id}/comment_history`}
       startIcon={<HistoryIcon />}
       label="View History of Comments"
     />
