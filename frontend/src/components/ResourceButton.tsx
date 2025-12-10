@@ -1,10 +1,15 @@
-import { Button, useRecordContext, useResourceContext } from "react-admin";
+import {
+  Button,
+  ButtonProps,
+  useRecordContext,
+  useResourceContext,
+} from "react-admin";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DataObjectIcon from "@mui/icons-material/DataObject";
 import { useEffect } from "react";
 
 // button used in event-related resources to navigate to the concerned resource
-export const ResourceButton = (props: any) => {
+export const ResourceButton = (props: ButtonProps & { source: string }) => {
   const { source, ...rest } = props;
 
   const resource = source.split("/")[1];
