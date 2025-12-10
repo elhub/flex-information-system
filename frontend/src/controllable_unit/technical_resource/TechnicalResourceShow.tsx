@@ -78,7 +78,7 @@ export const TechnicalResourceShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         <NestedResourceHistoryButton
           child="technical_resource"
           childAPIResource="technical_resource"

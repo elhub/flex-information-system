@@ -76,7 +76,7 @@ export const PartyMembershipShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        <EventButton />
+        <EventButton filterOnSubject />
         <NestedResourceHistoryButton
           child="membership"
           label="party memberships"

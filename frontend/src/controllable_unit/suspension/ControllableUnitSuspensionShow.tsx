@@ -86,7 +86,7 @@ export const ControllableUnitSuspensionShow = () => {
           </FieldStack>
         </Stack>
         <NestedResourceHistoryButton child="suspension" label="Suspensions" />
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>

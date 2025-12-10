@@ -96,7 +96,7 @@ export const ControllableUnitServiceProviderShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         <NestedResourceHistoryButton
           child="service_provider"
           label="service provider contracts"

@@ -87,7 +87,7 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         <NestedResourceHistoryButton
           child="product_suspension"
           label="product suspension"
