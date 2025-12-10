@@ -1,10 +1,13 @@
 import {
+  DateFieldProps,
   DateInput,
+  DateInputProps,
+  DateTimeInputProps,
   DateField as RADateField,
   DateTimeInput as RADateTimeInput,
 } from "react-admin";
 
-export const DateField = (props: any) => (
+export const DateField = (props: DateFieldProps) => (
   <RADateField
     locales="no-NO"
     options={{
@@ -51,7 +54,7 @@ creation of the string :
 
   cf https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
 */
-export const DateTimeInput = (props: any) => (
+export const DateTimeInput = (props: DateTimeInputProps) => (
   <RADateTimeInput
     // implementation based on the default one
     // cf https://github.com/marmelab/react-admin/blob/107db17fd690c0611c91a80ac858b5c6c91b3fc2/packages/ra-core/src/form/useInput.ts#L22
@@ -82,11 +85,12 @@ There are many possibilities to denote midnight in ISO format, the shortest one
 seemingly being to just add a space after the date.
 
 */
-export const MidnightDateInput = (props: any) => (
-  <DateInput
-    parse={(value: any) =>
-      value == "" ? null : new Date(value + " ").toISOString()
-    }
-    {...props}
-  />
+export const formatDateToMidnightISO = (
+  date?: string | null,
+): string | null => {
+  return date ? new Date(date + " ").toISOString() : null;
+};
+
+export const MidnightDateInput = (props: DateInputProps) => (
+  <DateInput parse={formatDateToMidnightISO} {...props} />
 );

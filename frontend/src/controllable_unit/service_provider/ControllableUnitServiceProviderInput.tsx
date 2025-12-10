@@ -16,10 +16,14 @@ import {
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
-import { MidnightDateInput } from "../../components/datetime";
+import {
+  formatDateToMidnightISO,
+  MidnightDateInput,
+} from "../../components/datetime";
 import { countDefinedValues } from "../../util";
 import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
 import { ControllableUnitServiceProvider } from "../../generated-client";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export type ControllableUnitServiceProviderLocationState = {
   cusp?: Partial<ControllableUnitServiceProvider>;
@@ -43,6 +47,7 @@ export const ControllableUnitServiceProviderInput = () => {
   const overridenRecord = {
     ...actualRecord,
     ...overrideRecord,
+    valid_from: formatDateToMidnightISO(overrideRecord.valid_from),
   } as ControllableUnitServiceProvider;
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -82,6 +87,7 @@ const ControllableUnitServiceProviderForm = ({
     <SimpleForm
       record={recordWithPartyId}
       maxWidth={1280}
+      resolver={zodResolver(zControllableUnitServiceProvider)}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.
          In the case of a restore, we don't do any edit, as the modifications

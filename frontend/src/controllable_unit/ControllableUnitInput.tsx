@@ -26,15 +26,19 @@ import useLocationState from "../hooks/useLocationState";
 import { zControllableUnit } from "../generated-client/zod.gen";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { ControllableUnitServiceProviderLocationState } from "./service_provider/ControllableUnitServiceProviderInput";
 
 export type ControllableUnitInputLocationState = {
   controllableUnit: Partial<ControllableUnit>;
+  endUserId?: number;
 };
 
 // common layout to create and edit pages
 export const ControllableUnitInput = () => {
   const createOrUpdate = useCreateOrUpdate();
   const locationState = useLocationState<ControllableUnitInputLocationState>();
+  const navigate = useNavigate();
 
   const controllableUnitOverride: Partial<ControllableUnit> =
     locationState?.controllableUnit
@@ -56,11 +60,31 @@ export const ControllableUnitInput = () => {
     ...controllableUnitOverride,
   } as ControllableUnit;
 
+  const onCreate = (data: unknown) => {
+    const controllableUnit = data as ControllableUnit;
+    const cuspState: ControllableUnitServiceProviderLocationState = {
+      cusp: {
+        controllable_unit_id: controllableUnit.id,
+        end_user_id: locationState?.endUserId,
+        valid_from: controllableUnit.start_date,
+      },
+    };
+
+    navigate(
+      `/controllable_unit/${controllableUnit.id}/service_provider/create`,
+      { state: cuspState },
+    );
+  };
+
   return (
     <SimpleForm
       record={overridenRecord}
       resolver={zodResolver(zControllableUnit) as any}
-      toolbar={<Toolbar />}
+      toolbar={
+        <Toolbar
+          onSuccess={createOrUpdate === "create" ? onCreate : undefined}
+        />
+      }
     >
       <Typography variant="h5" gutterBottom>
         {createOrUpdate == "update"
