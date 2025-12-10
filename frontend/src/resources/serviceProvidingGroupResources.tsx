@@ -565,6 +565,34 @@ export const createServiceProvidingGroupResources = (
   // some subresources also need to exist as standalone resources
   // (access with flat URL)
 
+  const canReadSPGM = permissions.allow(
+    "service_providing_group_membership",
+    "read",
+  );
+
+  if (canReadSPGM) {
+    resources.push(
+      <Resource
+        key="service_providing_group_membership"
+        name="service_providing_group_membership"
+        show={ServiceProvidingGroupMembershipShow}
+      >
+        <Route
+          path=":service_providing_group_membership_id/history"
+          element={<ServiceProvidingGroupMembershipHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_membership_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_membership_history">
+              <ServiceProvidingGroupMembershipShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
+    );
+  }
+
   const canReadSPGGP = permissions.allow(
     "service_providing_group_grid_prequalification",
     "read",
