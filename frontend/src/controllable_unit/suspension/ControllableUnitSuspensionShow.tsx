@@ -12,14 +12,13 @@ import {
 import { Typography, Stack } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-import { CommentList } from "../../components/comments";
+import { CommentList as GenericCommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
-import { ResourceHierarchyRedirect } from "../../components/resource";
+import HistoryIcon from "@mui/icons-material/History";
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -29,6 +28,59 @@ const EditButton = () => {
       to={`/controllable_unit/${record?.controllable_unit_id}/suspension/${record?.id}`}
       startIcon={<EditIcon />}
       label="Edit"
+    />
+  );
+};
+
+const HistoryButton = () => {
+  const record = useRecordContext();
+  const { permissions } = usePermissions<Permissions>();
+
+  const filter =
+    `?filter=` +
+    encodeURIComponent(`{ "controllable_unit_suspension_id": ${record?.id} }`);
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow("controllable_unit_suspension_history", "read")
+      }
+      to={`/controllable_unit/${record?.controllable_unit_id}/suspension_history${filter}`}
+      startIcon={<HistoryIcon />}
+      label="View History"
+    />
+  );
+};
+
+const CommentHistoryButton = () => {
+  const record = useRecordContext();
+  const { permissions } = usePermissions<Permissions>();
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "controllable_unit_suspension_comment_history",
+          "read",
+        )
+      }
+      to={`/controllable_unit/${record?.controllable_unit_id}/suspension/${record?.id}/comment_history`}
+      startIcon={<HistoryIcon />}
+      label="View History of Comments"
+    />
+  );
+};
+
+const CommentList = () => {
+  const record = useRecordContext();
+  return (
+    <GenericCommentList
+      parentPath={[
+        { resource: "controllable_unit", id: record?.controllable_unit_id },
+        { resource: "suspension", id: record?.id },
+      ]}
     />
   );
 };
@@ -56,7 +108,6 @@ export const ControllableUnitSuspensionShow = () => {
         )
       }
     >
-      <ResourceHierarchyRedirect />
       <SimpleShowLayout>
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
@@ -87,14 +138,14 @@ export const ControllableUnitSuspensionShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        <NestedResourceHistoryButton child="suspension" label="Suspensions" />
+        <HistoryButton />
         {!isHistory && <EventButton />}
         {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>
               Comments
             </Typography>
-            <NestedResourceHistoryButton child="comment" label="comments" />
+            <CommentHistoryButton />
             <CommentList />
           </>
         )}

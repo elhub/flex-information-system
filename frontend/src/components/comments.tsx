@@ -150,6 +150,10 @@ export type CommentListProps = {
   // API resource where comments are attached
   // (override if not to be derived from URL)
   baseResource?: string;
+  parentPath?: {
+    resource: any;
+    id: number;
+  }[];
 };
 
 export const CommentList = (props: CommentListProps) => {
@@ -160,13 +164,15 @@ export const CommentList = (props: CommentListProps) => {
   const baseResource = props.baseResource ?? resource;
 
   // TODO: just throw the first '/' and extract the last ID, no need to chunk
-  const parentPath = chunksOf(
-    2,
-    removeSuffix("/show", location.pathname).split("/").slice(1),
-  ).map(([resource, id]) => ({
-    resource,
-    id: Number(id),
-  }));
+  const parentPath =
+    props.parentPath ??
+    chunksOf(
+      2,
+      removeSuffix("/show", location.pathname).split("/").slice(1),
+    ).map(([resource, id]) => ({
+      resource,
+      id: Number(id),
+    }));
 
   // ID of the row in the base resource we are listing comments for
   const baseID = parentPath.at(-1)!.id;

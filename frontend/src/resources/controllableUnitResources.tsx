@@ -1,9 +1,4 @@
-import {
-  Resource,
-  Create,
-  ResourceContextProvider,
-  CustomRoutes,
-} from "react-admin";
+import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route, Navigate } from "react-router-dom";
 import { JSX } from "react";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
@@ -29,6 +24,7 @@ import {
   CommentInput,
   CommentHistoryList,
 } from "../components/comments";
+import { ControllableUnitSuspensionList } from "../controllable_unit";
 
 export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
@@ -297,27 +293,47 @@ export const createControllableUnitResources = (permissions: Permissions) => {
     );
   }
 
-  // redirect from flat URL
-  resources.push(
-    <CustomRoutes>
-      <Route
-        path="/controllable_unit_service_provider/:id/show"
-        element={
-          <ResourceContextProvider value="controllable_unit_service_provider">
-            <ControllableUnitServiceProviderShow />
-          </ResourceContextProvider>
-        }
-      />
-      <Route
-        path="/controllable_unit_suspension/:id/show"
-        element={
-          <ResourceContextProvider value="controllable_unit_suspension">
-            <ControllableUnitSuspensionShow />
-          </ResourceContextProvider>
-        }
-      />
-    </CustomRoutes>,
+  // CU suspension also needs to exist as standalone resource
+
+  const canReadCUS = permissions.allow("controllable_unit_suspension", "read");
+  const canCreateCUS = permissions.allow(
+    "controllable_unit_suspension",
+    "create",
   );
+
+  if (canReadCUS) {
+    resources.push(
+      <Resource
+        key="controllable_unit_suspension"
+        name="controllable_unit_suspension"
+        list={ControllableUnitSuspensionList}
+        show={ControllableUnitSuspensionShow}
+        create={
+          canCreateCUS ? (
+            <Create redirect={() => `controllable_unit`}>
+              <ControllableUnitSuspensionInput />
+            </Create>
+          ) : (
+            (null as any)
+          )
+        }
+      >
+        {/* controllable unit suspension history */}
+        <Route
+          path=":controllable_unit_suspension_id/history"
+          element={<ControllableUnitSuspensionHistoryList />}
+        />
+        <Route
+          path=":controllable_unit_suspension_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="controllable_unit_suspension_history">
+              <ControllableUnitSuspensionShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
+    );
+  }
 
   return resources;
 };
