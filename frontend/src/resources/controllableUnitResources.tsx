@@ -265,7 +265,9 @@ export const createControllableUnitResources = (permissions: Permissions) => {
     );
   }
 
-  // Permission checks for controllable unit service provider
+  // CUSP and CU suspension also need to exist as standalone resources
+  // (access with flat URL)
+
   const canReadCUSP = permissions.allow(
     "controllable_unit_service_provider",
     "read",
@@ -280,6 +282,7 @@ export const createControllableUnitResources = (permissions: Permissions) => {
       <Resource
         key="controllable_unit_service_provider"
         name="controllable_unit_service_provider"
+        show={ControllableUnitServiceProviderShow}
         create={
           canCreateCUSP ? (
             <Create redirect={() => `controllable_unit`}>
@@ -292,8 +295,6 @@ export const createControllableUnitResources = (permissions: Permissions) => {
       />,
     );
   }
-
-  // CU suspension also needs to exist as standalone resource
 
   const canReadCUS = permissions.allow("controllable_unit_suspension", "read");
   const canCreateCUS = permissions.allow(
