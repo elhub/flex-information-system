@@ -621,6 +621,34 @@ export const createServiceProvidingGroupResources = (
     );
   }
 
+  const canReadSPGPA = permissions.allow(
+    "service_providing_group_product_application",
+    "read",
+  );
+
+  if (canReadSPGPA) {
+    resources.push(
+      <Resource
+        key="service_providing_group_product_application"
+        name="service_providing_group_product_application"
+        show={ServiceProvidingGroupProductApplicationShow}
+      >
+        <Route
+          path=":service_providing_group_product_application_id/history"
+          element={<ServiceProvidingGroupProductApplicationHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_product_application_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_history">
+              <ServiceProvidingGroupProductApplicationShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
+    );
+  }
+
   const canReadSPGGS = permissions.allow(
     "service_providing_group_grid_suspension",
     "read",
