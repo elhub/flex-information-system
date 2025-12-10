@@ -15,16 +15,22 @@ import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../../auth/permissions";
+import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
 
-const CreateButton = ({ id }: { id: number }) => (
-  <Button
-    component={Link}
-    to={`/controllable_unit/${id}/service_provider/create`}
-    startIcon={<AddIcon />}
-    state={{ controllable_unit_id: id }}
-    label="Create"
-  />
-);
+const CreateButton = ({ id }: { id: number }) => {
+  const locationState: ControllableUnitServiceProviderLocationState = {
+    cusp: { controllable_unit_id: id },
+  };
+  return (
+    <Button
+      component={Link}
+      to={`/controllable_unit/${id}/service_provider/create`}
+      startIcon={<AddIcon />}
+      state={locationState}
+      label="Create"
+    />
+  );
+};
 
 const CULookupButton = ({ business_id }: { business_id: string }) => (
   <Button
