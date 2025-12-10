@@ -1,9 +1,4 @@
-import {
-  Resource,
-  Create,
-  ResourceContextProvider,
-  CustomRoutes,
-} from "react-admin";
+import { Resource, Create, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
@@ -469,7 +464,20 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-      />,
+      >
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history"
+          element={<ServiceProvidingGroupGridPrequalificationHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_prequalification_history">
+              <ServiceProvidingGroupGridPrequalificationShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
     );
   }
 
@@ -512,70 +520,6 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-      />,
-    );
-  }
-
-  // redirect from flat URL
-  resources.push(
-    <CustomRoutes>
-      <Route
-        path="/service_providing_group_grid_prequalification/:id/show"
-        element={
-          <ResourceContextProvider value="service_providing_group_grid_prequalification">
-            <ServiceProvidingGroupGridPrequalificationShow />
-          </ResourceContextProvider>
-        }
-      />
-      <Route
-        path="/service_providing_group_grid_suspension/:id/show"
-        element={
-          <ResourceContextProvider value="service_providing_group_grid_suspension">
-            <ServiceProvidingGroupGridSuspensionShow />
-          </ResourceContextProvider>
-        }
-      />
-      <Route
-        path="/service_providing_group_membership/:id/show"
-        element={
-          <ResourceContextProvider value="service_providing_group_membership">
-            <ServiceProvidingGroupMembershipShow />
-          </ResourceContextProvider>
-        }
-      />
-      <Route
-        path="/service_providing_group_product_application/:id/show"
-        element={
-          <ResourceContextProvider value="service_providing_group_product_application">
-            <ServiceProvidingGroupProductApplicationShow />
-          </ResourceContextProvider>
-        }
-      />
-      <Route
-        path="/service_providing_group_product_suspension/:id/show"
-        element={
-          <ResourceContextProvider value="service_providing_group_product_suspension">
-            <ServiceProvidingGroupProductSuspensionShow />
-          </ResourceContextProvider>
-        }
-      />
-    </CustomRoutes>,
-  );
-
-  // some subresources also need to exist as standalone resources
-  // (access with flat URL)
-
-  const canReadSPGM = permissions.allow(
-    "service_providing_group_membership",
-    "read",
-  );
-
-  if (canReadSPGM) {
-    resources.push(
-      <Resource
-        key="service_providing_group_membership"
-        name="service_providing_group_membership"
-        show={ServiceProvidingGroupMembershipShow}
       >
         <Route
           path=":service_providing_group_membership_id/history"
@@ -586,34 +530,6 @@ export const createServiceProvidingGroupResources = (
           element={
             <ResourceContextProvider value="service_providing_group_membership_history">
               <ServiceProvidingGroupMembershipShow />
-            </ResourceContextProvider>
-          }
-        />
-      </Resource>,
-    );
-  }
-
-  const canReadSPGGP = permissions.allow(
-    "service_providing_group_grid_prequalification",
-    "read",
-  );
-
-  if (canReadSPGGP) {
-    resources.push(
-      <Resource
-        key="service_providing_group_grid_prequalification"
-        name="service_providing_group_grid_prequalification"
-        show={ServiceProvidingGroupGridPrequalificationShow}
-      >
-        <Route
-          path=":service_providing_group_grid_prequalification_id/history"
-          element={<ServiceProvidingGroupGridPrequalificationHistoryList />}
-        />
-        <Route
-          path=":service_providing_group_grid_prequalification_id/history/:id/show"
-          element={
-            <ResourceContextProvider value="service_providing_group_grid_prequalification_history">
-              <ServiceProvidingGroupGridPrequalificationShow />
             </ResourceContextProvider>
           }
         />
