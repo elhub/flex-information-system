@@ -29,6 +29,7 @@ import {
   ServiceProvidingGroupGridSuspensionInput,
   ServiceProvidingGroupGridSuspensionList,
   ServiceProvidingGroupGridSuspensionShow,
+  ServiceProvidingGroupProductApplicationList,
 } from "../service_providing_group";
 import {
   CommentShow,
@@ -547,6 +548,7 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group_product_application"
         name="service_providing_group_product_application"
+        list={ServiceProvidingGroupProductApplicationList}
         show={ServiceProvidingGroupProductApplicationShow}
       >
         <Route

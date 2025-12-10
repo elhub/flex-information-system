@@ -25,6 +25,7 @@ import {
   CommentHistoryList,
 } from "../components/comments";
 import { ControllableUnitSuspensionList } from "../controllable_unit";
+import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 
 export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
@@ -282,6 +283,7 @@ export const createControllableUnitResources = (permissions: Permissions) => {
       <Resource
         key="controllable_unit_service_provider"
         name="controllable_unit_service_provider"
+        list={ControllableUnitServiceProviderList}
         show={ControllableUnitServiceProviderShow}
         create={
           canCreateCUSP ? (
