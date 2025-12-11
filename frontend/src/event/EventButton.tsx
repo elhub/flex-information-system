@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonProps,
   usePermissions,
   useRecordContext,
   useResourceContext,
@@ -8,7 +9,10 @@ import { Permissions } from "../auth/permissions";
 import { Link } from "react-router-dom";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 
-export const EventButton = (props: any) => {
+export const EventButton = (
+  props: ButtonProps & { filterOnSubject?: boolean },
+) => {
+  const { filterOnSubject, ...rest } = props;
   const resource = useResourceContext();
   const record = useRecordContext()!;
 
@@ -17,9 +21,14 @@ export const EventButton = (props: any) => {
   // Permission checks
   const canRead = permissions?.allow("event", "read");
 
+  // if the button is on a subresource's page, we should filter events on subject,
+  // because the source field will contain the parent resource instead
+  const filterField = filterOnSubject ? "subject" : "source";
   const filter =
     "?filter=" +
-    encodeURIComponent(`{ "source@like": "/${resource}/${record.id}" }`);
+    encodeURIComponent(
+      `{ "${filterField}@like": "/${resource}/${record.id}" }`,
+    );
 
   return canRead ? (
     <Button
@@ -27,7 +36,7 @@ export const EventButton = (props: any) => {
       to={`/event${filter}`}
       startIcon={<NewReleasesIcon />}
       label="Events"
-      {...props}
+      {...rest}
     />
   ) : null;
 };

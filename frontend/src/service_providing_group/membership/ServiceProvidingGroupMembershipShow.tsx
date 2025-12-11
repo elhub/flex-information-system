@@ -91,7 +91,7 @@ export const ServiceProvidingGroupMembershipShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         <NestedResourceHistoryButton
           child="membership"
           label="memberships in this group"

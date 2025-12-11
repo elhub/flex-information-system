@@ -85,7 +85,7 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         <NestedResourceHistoryButton
           child="grid_suspension"
           label="grid suspension"

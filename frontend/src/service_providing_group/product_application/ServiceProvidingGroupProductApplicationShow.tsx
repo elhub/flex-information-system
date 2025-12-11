@@ -100,7 +100,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             <IdentityField source="replaced_by" />
           </FieldStack>
         </Stack>
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         <NestedResourceHistoryButton
           child="product_application"
           label="product applications"

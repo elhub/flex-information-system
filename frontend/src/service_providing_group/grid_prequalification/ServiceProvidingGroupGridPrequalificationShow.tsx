@@ -86,7 +86,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>
