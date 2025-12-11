@@ -3,7 +3,7 @@
 
 -- changeset flex:accounting-point-bidding-zone-create runAlways:true endDelimiter:--
 CREATE OR REPLACE VIEW accounting_point_bidding_zone
-WITH (security_invoker = true) AS (
+WITH (security_invoker = false) AS (
     SELECT
         ap_mga.accounting_point_id,
         mga.price_area AS bidding_zone,

@@ -3,7 +3,7 @@
 
 -- changeset flex:controllable-unit-bidding-zone-create runAlways:true endDelimiter:--
 CREATE OR REPLACE VIEW controllable_unit_bidding_zone
-WITH (security_invoker = true) AS (
+WITH (security_invoker = false) AS (
     SELECT
         cu.id AS controllable_unit_id,
         apbz.bidding_zone,

@@ -4,7 +4,8 @@
 -- changeset flex:notice runOnChange:true endDelimiter:--
 -- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
 DROP VIEW IF EXISTS notice CASCADE;
-CREATE VIEW notice AS (
+CREATE VIEW notice
+WITH (security_invoker = false) AS (
     -- CU grid node ID missing
     SELECT -- noqa
         ap_so.system_operator_id AS party_id,
@@ -55,7 +56,7 @@ CREATE VIEW notice AS (
     FROM service_provider_product_application AS sppa
     WHERE sppa.status = 'requested'
 
-    -- SPGM inconsistency
+    -- SPGM CUSP inconsistency
     UNION ALL
     SELECT -- noqa
         spg.service_provider_id AS party_id,
@@ -78,6 +79,30 @@ CREATE VIEW notice AS (
             WHERE spgm.controllable_unit_id = cusp.controllable_unit_id
                 AND spg.service_provider_id = cusp.service_provider_id
                 AND cusp.valid_timeline @> spgm.valid_time_range
+        )
+
+    -- SPGM CUBZ inconsistency
+    UNION ALL
+    SELECT -- noqa
+        spg.service_provider_id AS party_id,
+        'no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch' AS type, -- noqa
+        '/service_providing_group_membership/' || spgm.id AS source,
+        null::jsonb AS data -- noqa
+    FROM flex.service_providing_group_membership AS spgm -- noqa
+        INNER JOIN flex.service_providing_group AS spg
+            ON spgm.service_providing_group_id = spg.id
+    WHERE NOT EXISTS (
+            SELECT 1 FROM (
+                SELECT
+                    controllable_unit_id,
+                    bidding_zone,
+                    range_agg(valid_time_range) AS valid_timeline
+                FROM flex.controllable_unit_bidding_zone
+                GROUP BY controllable_unit_id, bidding_zone
+            ) AS cubz
+            WHERE spgm.controllable_unit_id = cubz.controllable_unit_id
+                AND spg.bidding_zone = cubz.bidding_zone
+                AND cubz.valid_timeline @> spgm.valid_time_range
         )
 
     -- SPG product application status requested
