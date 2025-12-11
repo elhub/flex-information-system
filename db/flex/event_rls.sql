@@ -83,7 +83,7 @@ FOR SELECT
 TO flex_common
 USING (
     NOT (type ~ 'no.elhub.flex.controllable_unit.lookup')
-    -- when subject is here, is is the most precise identifier of the thing
+    -- when subject is here, it is the most precise identifier of the thing
     -- the event concerns, so we should do the check on it instead of source
     AND CASE WHEN subject_resource IS NOT null
             THEN event_resource_visible_check(
