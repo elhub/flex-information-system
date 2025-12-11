@@ -130,7 +130,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
           </FieldStack>
         </Stack>
         <HistoryButton />
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
       </SimpleShowLayout>
     </Show>
   );

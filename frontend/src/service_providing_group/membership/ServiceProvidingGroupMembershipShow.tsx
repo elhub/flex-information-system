@@ -121,7 +121,7 @@ export const ServiceProvidingGroupMembershipShow = () => {
           </FieldStack>
         </Stack>
         <HistoryButton />
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
       </SimpleShowLayout>
     </Show>
   );

@@ -124,7 +124,7 @@ export const ControllableUnitServiceProviderShow = () => {
           </FieldStack>
         </Stack>
         <HistoryButton />
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         {isHistory && (
           <RestoreButton parent="controllable_unit" child="service_provider" />
         )}

@@ -154,7 +154,7 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
           </FieldStack>
         </Stack>
         <HistoryButton />
-        {!isHistory && <EventButton />}
+        {!isHistory && <EventButton filterOnSubject />}
         {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>
