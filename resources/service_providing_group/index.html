@@ -2648,6 +2648,12 @@ After termination, the status can only be edited by a FIS operator.</p>
 <td><a href="../party/#field-id">party.id</a></td>
 </tr>
 <tr>
+<td><a name="field-bidding_zone" href="#field-bidding_zone">bidding_zone</a></td>
+<td>The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.</td>
+<td>text<br/>One of: <code>NO1</code>, <code>NO2</code>, <code>NO3</code>, <code>NO4</code>, <code>NO5</code><br/>Required</td>
+<td></td>
+</tr>
+<tr>
 <td><a name="field-status" href="#field-status">status</a></td>
 <td>The status of the group.</td>
 <td>text<br/>One of: <code>new</code>, <code>active</code>, <code>inactive</code>, <code>terminated</code><br/>Default: <code>new</code><br/><br/>Always <code>new</code> when created. Can then be updated to the other values. Once <code>terminated</code>, only editable by a FIS operator.</td>
@@ -2844,6 +2850,19 @@ resource. The default policy is <strong>deny</strong>.</p>
 </tr>
 <tr>
 <td>service_provider_id</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RC</td>
+<td>R</td>
+<td>R</td>
+<td>RC</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>bidding_zone</td>
 <td></td>
 <td>R</td>
 <td>R</td>

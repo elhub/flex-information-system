@@ -2449,10 +2449,24 @@ agreement point within the same scheduling area. SPG is defined by the service
 provider to provide balancing or local services;</p>
 </blockquote>
 <p>A <a href="../../resources/service_providing_group/">service providing group</a> (SPG) is
-a collection of CUs. The CUs are grouped together within a scheduling area by a
-SP to deliver certain services (like balancing or congestion management). In
-Norway the scheduling areas are the same as the bidding zones or price areas
-NO1 - NO5.</p>
+a collection of CUs. We call the CUs <em>members</em> of the SPG.</p>
+<p>The topological location of the members limits the use of the SPG. If SPG members
+are close together and all connected to the same part of the grid, the SPG can
+offer local services such as congestion management. If the members are spread
+out over a larger area, the SPG can maybe only offer balancing services.</p>
+<p>Each SPG is restricted to a specific area by the service provider. The provider
+specifies this when creating the SPG. We use the term <code>bidding zone</code>, rather
+than <code>scheduling area</code> used in NC DR, for this area.
+<a href="https://eur-lex.europa.eu/eli/reg/2017/1485/oj/eng">SOGL</a> tells us that the
+geographical scope of the scheduling area is equal to the bidding zone. The term
+<code>bidding zone</code> is widely used and easy to understand for market participants.
+The Norwegian word for bidding zone is <code>budområde</code>, and in common language also
+referred to as <code>prisområde</code>.</p>
+<p>As of now, the bidding zones are the scheduling areas in Norway (NO1-NO5), used
+for balancing. But this concept and restriction of SPG can also be extended to
+include local services. We foresee use of local bidding zones on SPGs used for
+congestion management. The term <code>bidding zone</code> is thus more flexible and
+future-proof than <code>scheduling area</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The NC DR also includes a definition of a 'service providing unit' (SPU) as a

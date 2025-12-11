@@ -573,6 +573,19 @@
         ],
         "example": "same_party"
       },
+      "service_providing_group_bidding_zone": {
+        "description": "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
+        "format": "text",
+        "type": "string",
+        "enum": [
+          "NO1",
+          "NO2",
+          "NO3",
+          "NO4",
+          "NO5"
+        ],
+        "example": "NO3"
+      },
       "service_providing_group_status": {
         "description": "The status of the group.",
         "format": "text",
@@ -1314,6 +1327,9 @@
             "maxLength": 128,
             "example": "Batteries #09"
           },
+          "bidding_zone": {
+            "$ref": "#/components/schemas/service_providing_group_bidding_zone"
+          },
           "status": {
             "$ref": "#/components/schemas/service_providing_group_status"
           }
@@ -1350,6 +1366,7 @@
             "required": [
               "name",
               "service_provider_id",
+              "bidding_zone",
               "status"
             ]
           }
@@ -1392,6 +1409,7 @@
               "id",
               "name",
               "service_provider_id",
+              "bidding_zone",
               "status",
               "recorded_at",
               "recorded_by"
@@ -2652,7 +2670,15 @@
                 "type": "string",
                 "pattern": "^(\\/([a-z][a-z_]*|[0-9]+))+$",
                 "readOnly": true,
-                "example": "/service_providing_group/4"
+                "example": "/controllable_unit/4"
+              },
+              "subject": {
+                "description": "The URI of the specific subject of the event within the resource pointed by `source`.",
+                "format": "text",
+                "type": "string",
+                "nullable": true,
+                "readOnly": true,
+                "example": "/technical_resource/2"
               },
               "data": {
                 "description": "The data of the event.",
