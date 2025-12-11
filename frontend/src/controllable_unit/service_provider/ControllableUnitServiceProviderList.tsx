@@ -17,7 +17,7 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
 
-const CreateButton = ({ id }: { id: number }) => {
+const CreateButton = ({ id }: { id: number | undefined }) => {
   const locationState: ControllableUnitServiceProviderLocationState = {
     cusp: { controllable_unit_id: id },
   };
@@ -26,18 +26,22 @@ const CreateButton = ({ id }: { id: number }) => {
       component={Link}
       to={`/controllable_unit/${id}/service_provider/create`}
       startIcon={<AddIcon />}
-      state={locationState}
+      state={id ? locationState : undefined}
       label="Create"
     />
   );
 };
 
-const CULookupButton = ({ business_id }: { business_id: string }) => (
+const CULookupButton = ({
+  business_id,
+}: {
+  business_id: string | undefined;
+}) => (
   <Button
     component={Link}
     to="/controllable_unit/lookup"
     startIcon={<TravelExploreIcon />}
-    state={{ controllable_unit: business_id }}
+    state={business_id ? { controllable_unit: business_id } : undefined}
     label="Lookup this controllable unit"
   />
 );
@@ -49,7 +53,7 @@ const ListActions = ({
 }: {
   permissions: Permissions | undefined;
   id: any;
-  business_id: string;
+  business_id: string | undefined;
 }) => {
   const canLookup = permissions?.allow("controllable_unit", "lookup");
   const canCreate = permissions?.allow(
@@ -59,14 +63,15 @@ const ListActions = ({
 
   return (
     <TopToolbar>
-      {canLookup && <CULookupButton business_id={business_id} />}
+      {/* id undefined = standalone CUSP list (so no lookup button) */}
+      {id && canLookup && <CULookupButton business_id={business_id} />}
       {canCreate && <CreateButton id={id} />}
     </TopToolbar>
   );
 };
 
 export const ControllableUnitServiceProviderList = () => {
-  const { id, business_id } = useRecordContext()!;
+  const cuspData = useRecordContext();
   const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
@@ -91,13 +96,17 @@ export const ControllableUnitServiceProviderList = () => {
         actions={
           <ListActions
             permissions={permissions}
-            id={id}
-            business_id={business_id}
+            id={cuspData?.id}
+            business_id={cuspData?.business_id}
           />
         }
         exporter={false}
         empty={false}
-        filter={{ controllable_unit_id: id, "valid_from@not.is": null }}
+        filter={
+          cuspData
+            ? { controllable_unit_id: cuspData.id, "valid_from@not.is": null }
+            : { "valid_from@not.is": null }
+        }
         sort={{ field: "valid_from", order: "DESC" }}
         disableSyncWithLocation
       >

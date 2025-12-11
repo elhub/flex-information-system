@@ -11,14 +11,94 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
-import { NestedResourceHistoryButton } from "../../components/history";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
-import { CommentList } from "../../components/comments";
+import HistoryIcon from "@mui/icons-material/History";
+import { CommentList as GenericCommentList } from "../../components/comments";
+import { ServiceProvidingGroupGridPrequalification } from "../../generated-client";
+
+const EditButton = () => {
+  const record = useRecordContext();
+  return (
+    <Button
+      component={Link}
+      to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification/${record?.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
+};
+
+// manual components to support both flat and nested URLs for this resource
+
+const HistoryButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupGridPrequalification>();
+  const { permissions } = usePermissions<Permissions>();
+
+  const filter =
+    `?filter=` +
+    encodeURIComponent(
+      `{ "service_providing_group_grid_prequalification_id": ${record?.id} }`,
+    );
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "service_providing_group_grid_prequalification_history",
+          "read",
+        )
+      }
+      to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification_history${filter}`}
+      startIcon={<HistoryIcon />}
+      label="View History"
+    />
+  );
+};
+
+const CommentHistoryButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupGridPrequalification>();
+  const { permissions } = usePermissions<Permissions>();
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "service_providing_group_grid_prequalification_comment_history",
+          "read",
+        )
+      }
+      to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification/${record?.id}/comment_history`}
+      startIcon={<HistoryIcon />}
+      label="View History of Comments"
+    />
+  );
+};
+
+const CommentList = () => {
+  const record = useRecordContext<ServiceProvidingGroupGridPrequalification>();
+  return (
+    <GenericCommentList
+      parentPath={
+        record
+          ? [
+              {
+                resource: "service_providing_group",
+                id: record.service_providing_group_id!,
+              },
+              { resource: "grid_prequalification", id: record.id! },
+            ]
+          : undefined
+      }
+    />
+  );
+};
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const resource = useResourceContext()!;
@@ -31,18 +111,6 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
     "service_providing_group_grid_prequalification",
     "update",
   );
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/grid_prequalification/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show
@@ -86,20 +154,17 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
+        <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
         {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>
               Comments
             </Typography>
-            <NestedResourceHistoryButton child="comment" label="comments" />
+            <CommentHistoryButton />
             <CommentList />
           </>
         )}
-        <NestedResourceHistoryButton
-          child="grid_prequalification"
-          label="grid prequalification resources"
-        />
       </SimpleShowLayout>
     </Show>
   );

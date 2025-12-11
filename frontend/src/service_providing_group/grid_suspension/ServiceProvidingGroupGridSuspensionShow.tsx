@@ -12,13 +12,93 @@ import {
 import { Typography, Stack } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-import { CommentList } from "../../components/comments";
+import { CommentList as GenericCommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
+import HistoryIcon from "@mui/icons-material/History";
+import { ServiceProvidingGroupGridSuspension } from "../../generated-client";
+
+const EditButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupGridSuspension>();
+  return (
+    <Button
+      component={Link}
+      to={`/service_providing_group/${record?.service_providing_group_id}/grid_suspension/${record?.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
+};
+
+// manual components to support both flat and nested URLs for this resource
+
+const HistoryButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupGridSuspension>();
+  const { permissions } = usePermissions<Permissions>();
+
+  const filter =
+    `?filter=` +
+    encodeURIComponent(
+      `{ "service_providing_group_grid_suspension_id": ${record?.id} }`,
+    );
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "service_providing_group_grid_suspension_history",
+          "read",
+        )
+      }
+      to={`/service_providing_group/${record?.service_providing_group_id}/grid_suspension_history${filter}`}
+      startIcon={<HistoryIcon />}
+      label="View History"
+    />
+  );
+};
+
+const CommentHistoryButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupGridSuspension>();
+  const { permissions } = usePermissions<Permissions>();
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "service_providing_group_grid_suspension_comment_history",
+          "read",
+        )
+      }
+      to={`/service_providing_group/${record?.service_providing_group_id}/grid_suspension/${record?.id}/comment_history`}
+      startIcon={<HistoryIcon />}
+      label="View History of Comments"
+    />
+  );
+};
+
+const CommentList = () => {
+  const record = useRecordContext<ServiceProvidingGroupGridSuspension>();
+  return (
+    <GenericCommentList
+      parentPath={
+        record
+          ? [
+              {
+                resource: "service_providing_group",
+                id: record.service_providing_group_id!,
+              },
+              { resource: "grid_suspension", id: record.id! },
+            ]
+          : undefined
+      }
+    />
+  );
+};
 
 export const ServiceProvidingGroupGridSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -31,18 +111,6 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
     "service_providing_group_grid_suspension",
     "update",
   );
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/grid_suspension/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show
@@ -85,17 +153,14 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
+        <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
-        <NestedResourceHistoryButton
-          child="grid_suspension"
-          label="grid suspension"
-        />
         {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>
               Comments
             </Typography>
-            <NestedResourceHistoryButton child="comment" label="comments" />
+            <CommentHistoryButton />
             <CommentList />
           </>
         )}

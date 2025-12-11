@@ -24,6 +24,8 @@ import {
   CommentInput,
   CommentHistoryList,
 } from "../components/comments";
+import { ControllableUnitSuspensionList } from "../controllable_unit";
+import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 
 export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
@@ -260,7 +262,9 @@ export const createControllableUnitResources = (permissions: Permissions) => {
     );
   }
 
-  // Permission checks for controllable unit service provider
+  // CUSP and CU suspension also need to exist as standalone resources
+  // (access with flat URL)
+
   const canReadCUSP = permissions.allow(
     "controllable_unit_service_provider",
     "read",
@@ -275,6 +279,8 @@ export const createControllableUnitResources = (permissions: Permissions) => {
       <Resource
         key="controllable_unit_service_provider"
         name="controllable_unit_service_provider"
+        list={ControllableUnitServiceProviderList}
+        show={ControllableUnitServiceProviderShow}
         create={
           canCreateCUSP ? (
             <Create redirect={() => `controllable_unit`}>
@@ -285,6 +291,46 @@ export const createControllableUnitResources = (permissions: Permissions) => {
           )
         }
       />,
+    );
+  }
+
+  const canReadCUS = permissions.allow("controllable_unit_suspension", "read");
+  const canCreateCUS = permissions.allow(
+    "controllable_unit_suspension",
+    "create",
+  );
+
+  if (canReadCUS) {
+    resources.push(
+      <Resource
+        key="controllable_unit_suspension"
+        name="controllable_unit_suspension"
+        list={ControllableUnitSuspensionList}
+        show={ControllableUnitSuspensionShow}
+        create={
+          canCreateCUS ? (
+            <Create redirect={() => `controllable_unit`}>
+              <ControllableUnitSuspensionInput />
+            </Create>
+          ) : (
+            (null as any)
+          )
+        }
+      >
+        {/* controllable unit suspension history */}
+        <Route
+          path=":controllable_unit_suspension_id/history"
+          element={<ControllableUnitSuspensionHistoryList />}
+        />
+        <Route
+          path=":controllable_unit_suspension_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="controllable_unit_suspension_history">
+              <ControllableUnitSuspensionShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
     );
   }
 

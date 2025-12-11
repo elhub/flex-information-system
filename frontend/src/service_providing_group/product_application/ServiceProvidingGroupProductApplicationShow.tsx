@@ -12,13 +12,54 @@ import {
 import { Typography, Stack } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { NestedResourceHistoryButton } from "../../components/history";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
+import HistoryIcon from "@mui/icons-material/History";
+import { ServiceProvidingGroupProductApplication } from "../../generated-client";
+
+const EditButton = () => {
+  const record = useRecordContext();
+  return (
+    <Button
+      component={Link}
+      to={`/service_providing_group/${record?.service_providing_group_id}/product_application/${record?.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
+};
+
+// manual components to support both flat and nested URLs for this resource
+
+const HistoryButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupProductApplication>();
+  const { permissions } = usePermissions<Permissions>();
+
+  const filter =
+    `?filter=` +
+    encodeURIComponent(
+      `{ "service_providing_group_product_application_id": ${record?.id} }`,
+    );
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "service_providing_group_product_application_history",
+          "read",
+        )
+      }
+      to={`/service_providing_group/${record?.service_providing_group_id}/product_application_history${filter}`}
+      startIcon={<HistoryIcon />}
+      label="View History"
+    />
+  );
+};
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -31,18 +72,6 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
     "service_providing_group_product_application",
     "update",
   );
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show
@@ -100,11 +129,8 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             <IdentityField source="replaced_by" />
           </FieldStack>
         </Stack>
+        <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
-        <NestedResourceHistoryButton
-          child="product_application"
-          label="product applications"
-        />
       </SimpleShowLayout>
     </Show>
   );

@@ -27,13 +27,16 @@ import { ServiceProvidingGroupProductSuspensionHistoryList } from "../service_pr
 import {
   ServiceProvidingGroupGridSuspensionHistoryList,
   ServiceProvidingGroupGridSuspensionInput,
+  ServiceProvidingGroupGridSuspensionList,
   ServiceProvidingGroupGridSuspensionShow,
+  ServiceProvidingGroupProductApplicationList,
 } from "../service_providing_group";
 import {
   CommentShow,
   CommentInput,
   CommentHistoryList,
 } from "../components/comments";
+import { ServiceProvidingGroupProductSuspensionList } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionList";
 
 export const createServiceProvidingGroupResources = (
   permissions: Permissions,
@@ -462,7 +465,20 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-      />,
+      >
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history"
+          element={<ServiceProvidingGroupGridPrequalificationHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_grid_prequalification_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_prequalification_history">
+              <ServiceProvidingGroupGridPrequalificationShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
     );
   }
 
@@ -505,7 +521,135 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-      />,
+      >
+        <Route
+          path=":service_providing_group_membership_id/history"
+          element={<ServiceProvidingGroupMembershipHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_membership_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_membership_history">
+              <ServiceProvidingGroupMembershipShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
+    );
+  }
+
+  const canReadSPGPA = permissions.allow(
+    "service_providing_group_product_application",
+    "read",
+  );
+
+  if (canReadSPGPA) {
+    resources.push(
+      <Resource
+        key="service_providing_group_product_application"
+        name="service_providing_group_product_application"
+        list={ServiceProvidingGroupProductApplicationList}
+        show={ServiceProvidingGroupProductApplicationShow}
+      >
+        <Route
+          path=":service_providing_group_product_application_id/history"
+          element={<ServiceProvidingGroupProductApplicationHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_product_application_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_history">
+              <ServiceProvidingGroupProductApplicationShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
+    );
+  }
+
+  const canReadSPGGS = permissions.allow(
+    "service_providing_group_grid_suspension",
+    "read",
+  );
+  const canCreateSPGGS = permissions.allow(
+    "service_providing_group_grid_suspension",
+    "create",
+  );
+
+  if (canReadSPGGS) {
+    resources.push(
+      <Resource
+        key="service_providing_group_grid_suspension"
+        name="service_providing_group_grid_suspension"
+        list={ServiceProvidingGroupGridSuspensionList}
+        show={ServiceProvidingGroupGridSuspensionShow}
+        create={
+          canCreateSPGGS ? (
+            <Create redirect={() => "service_providing_group"}>
+              <ServiceProvidingGroupGridSuspensionInput />
+            </Create>
+          ) : (
+            (null as any)
+          )
+        }
+      >
+        {/* service providing group grid suspension history */}
+        <Route
+          path=":service_providing_group_grid_suspension_id/history"
+          element={<ServiceProvidingGroupGridSuspensionHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_grid_suspension_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_grid_suspension_history">
+              <ServiceProvidingGroupGridSuspensionShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
+    );
+  }
+
+  const canReadSPGPS = permissions.allow(
+    "service_providing_group_product_suspension",
+    "read",
+  );
+  const canCreateSPGPS = permissions.allow(
+    "service_providing_group_product_suspension",
+    "create",
+  );
+
+  if (canReadSPGPS) {
+    resources.push(
+      <Resource
+        key="service_providing_group_product_suspension"
+        name="service_providing_group_product_suspension"
+        list={ServiceProvidingGroupProductSuspensionList}
+        show={ServiceProvidingGroupProductSuspensionShow}
+        create={
+          canCreateSPGPS ? (
+            <Create redirect={() => "service_providing_group"}>
+              <ServiceProvidingGroupProductSuspensionInput />
+            </Create>
+          ) : (
+            (null as any)
+          )
+        }
+      >
+        {/* service providing group product suspension history */}
+        <Route
+          path=":service_providing_group_product_suspension_id/history"
+          element={<ServiceProvidingGroupProductSuspensionHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_product_suspension_id/history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_suspension_history">
+              <ServiceProvidingGroupProductSuspensionShow />
+            </ResourceContextProvider>
+          }
+        />
+      </Resource>,
     );
   }
 

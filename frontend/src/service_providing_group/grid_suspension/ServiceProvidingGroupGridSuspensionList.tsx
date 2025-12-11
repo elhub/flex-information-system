@@ -11,8 +11,10 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
+import { DateField } from "../../components/datetime";
+import { IdentityField } from "../../components/IdentityField";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -59,6 +61,11 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
     "delete",
   );
 
+  // are we in flat URL mode or nested
+  const isURLFlat = useLocation().pathname.includes(
+    "service_providing_group_grid_suspension",
+  );
+
   return (
     canRead && (
       <ResourceContextProvider value="service_providing_group_grid_suspension">
@@ -84,7 +91,7 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
             }
           >
             <TextField source="id" label="ID" />
-            {!record?.id && (
+            {(!record?.id || isURLFlat) && (
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
@@ -101,6 +108,8 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
               <TextField source="name" />
             </ReferenceField>
             <TextField source="reason" />
+            {isURLFlat && <DateField source="recorded_at" showTime />}
+            {isURLFlat && <IdentityField source="recorded_by" />}
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

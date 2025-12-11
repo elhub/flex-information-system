@@ -11,13 +11,54 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
-import { NestedResourceHistoryButton } from "../../components/history";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
+import HistoryIcon from "@mui/icons-material/History";
+import { ServiceProvidingGroupMembership } from "../../generated-client";
+
+const EditButton = () => {
+  const record = useRecordContext();
+  return (
+    <Button
+      component={Link}
+      to={`/service_providing_group/${record?.service_providing_group_id}/membership/${record?.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
+};
+
+// manual components to support both flat and nested URLs for this resource
+
+const HistoryButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupMembership>();
+  const { permissions } = usePermissions<Permissions>();
+
+  const filter =
+    `?filter=` +
+    encodeURIComponent(
+      `{ "service_providing_group_membership_id": ${record?.id} }`,
+    );
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "service_providing_group_membership_history",
+          "read",
+        )
+      }
+      to={`/service_providing_group/${record?.service_providing_group_id}/membership_history${filter}`}
+      startIcon={<HistoryIcon />}
+      label="View History"
+    />
+  );
+};
 
 export const ServiceProvidingGroupMembershipShow = () => {
   const resource = useResourceContext()!;
@@ -30,18 +71,6 @@ export const ServiceProvidingGroupMembershipShow = () => {
     "service_providing_group_membership",
     "update",
   );
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/service_providing_group/${record.service_providing_group_id}/membership/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show
@@ -91,11 +120,8 @@ export const ServiceProvidingGroupMembershipShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
+        <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
-        <NestedResourceHistoryButton
-          child="membership"
-          label="memberships in this group"
-        />
       </SimpleShowLayout>
     </Show>
   );

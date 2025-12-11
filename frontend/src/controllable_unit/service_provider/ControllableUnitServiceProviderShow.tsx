@@ -11,16 +11,55 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { FieldStack } from "../../auth";
-import {
-  NestedResourceHistoryButton,
-  RestoreButton,
-} from "../../components/history";
+import { RestoreButton } from "../../components/history";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { EventButton } from "../../event/EventButton";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
+import HistoryIcon from "@mui/icons-material/History";
+import { ControllableUnitServiceProvider } from "../../generated-client";
+
+const EditButton = () => {
+  const record = useRecordContext<ControllableUnitServiceProvider>();
+  return (
+    <Button
+      component={Link}
+      to={`/controllable_unit/${record?.controllable_unit_id}/service_provider/${record?.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
+};
+
+// manual component to support both flat and nested URLs for this resource
+
+const HistoryButton = () => {
+  const record = useRecordContext<ControllableUnitServiceProvider>();
+  const { permissions } = usePermissions<Permissions>();
+
+  const filter =
+    `?filter=` +
+    encodeURIComponent(
+      `{ "controllable_unit_service_provider_id": ${record?.id} }`,
+    );
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "controllable_unit_service_provider_history",
+          "read",
+        )
+      }
+      to={`/controllable_unit/${record?.controllable_unit_id}/service_provider_history${filter}`}
+      startIcon={<HistoryIcon />}
+      label="View History"
+    />
+  );
+};
 
 export const ControllableUnitServiceProviderShow = () => {
   const resource = useResourceContext()!;
@@ -33,18 +72,6 @@ export const ControllableUnitServiceProviderShow = () => {
     "controllable_unit_service_provider",
     "update",
   );
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show
@@ -96,11 +123,8 @@ export const ControllableUnitServiceProviderShow = () => {
             <IdentityField source="recorded_by" />
           </FieldStack>
         </Stack>
+        <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
-        <NestedResourceHistoryButton
-          child="service_provider"
-          label="service provider contracts"
-        />
         {isHistory && (
           <RestoreButton parent="controllable_unit" child="service_provider" />
         )}

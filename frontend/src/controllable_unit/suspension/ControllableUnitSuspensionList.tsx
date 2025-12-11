@@ -11,8 +11,10 @@ import {
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
+import { DateField } from "../../components/datetime";
+import { IdentityField } from "../../components/IdentityField";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -56,6 +58,11 @@ export const ControllableUnitSuspensionList = () => {
     "delete",
   );
 
+  // are we in flat URL mode or nested
+  const isURLFlat = useLocation().pathname.includes(
+    "controllable_unit_suspension",
+  );
+
   return (
     canRead && (
       <ResourceContextProvider value="controllable_unit_suspension">
@@ -80,6 +87,16 @@ export const ControllableUnitSuspensionList = () => {
               `/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}/show`
             }
           >
+            {isURLFlat && <TextField source="id" label="ID" />}
+            {isURLFlat && (
+              <ReferenceField
+                source="controllable_unit_id"
+                reference="controllable_unit"
+                sortable={false}
+              >
+                <TextField source="name" />
+              </ReferenceField>
+            )}
             <ReferenceField
               source="impacted_system_operator_id"
               reference="party"
@@ -88,6 +105,8 @@ export const ControllableUnitSuspensionList = () => {
               <TextField source="name" />
             </ReferenceField>
             <TextField source="reason" />
+            {isURLFlat && <DateField source="recorded_at" showTime />}
+            {isURLFlat && <IdentityField source="recorded_by" />}
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}
