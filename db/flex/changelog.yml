@@ -199,9 +199,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   # Views
-  - include:
-      file: ./notice.sql
-      relativeToChangelogFile: true
+
   - include:
       file: ./accounting_point_service_provider.sql
       relativeToChangelogFile: true
@@ -226,7 +224,9 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_system_operator.sql
       relativeToChangelogFile: true
-
+  - include:
+      file: ./notice.sql
+      relativeToChangelogFile: true
   # history
   - includeAll:
       path: ./

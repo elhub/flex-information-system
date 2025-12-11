@@ -3,7 +3,7 @@
 
 -- changeset flex:api-notice-create endDelimiter:-- runAlways:true
 CREATE OR REPLACE VIEW api.notice
-WITH (security_invoker = true) AS (
+WITH (security_invoker = false, security_barrier = true) AS ( -- cf AP-BRP
     SELECT
         data,
         party_id,
