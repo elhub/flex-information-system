@@ -44,7 +44,9 @@ No policies.
 
 #### Common
 
-No policies.
+| Policy key   | Policy                                                                          | Status |
+|--------------|---------------------------------------------------------------------------------|--------|
+| EVENT-COM001 | Read events related to a resource that they could read when the event happened. | DONE   |
 
 #### Balance Responsible Party
 
@@ -78,32 +80,11 @@ No policies.
 
 #### System Operator
 
-| Policy key  | Policy                                                                                                                                     | Status |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------------------|--------|
-| EVENT-SO001 | Read all events related to CU, CUS, CUSC, CUSP, TR, SOPT, SPPA, SPPS, SPPAC, SPPSC, SPG, SPGM, SPGGP, SPGGS, SPGGSC, SPGPA, SPGPS, SPGPSC. | DONE   |
+No policies.
 
 #### Service Provider
 
-| Policy key  | Policy                                                                                         | Status |
-|-------------|------------------------------------------------------------------------------------------------|--------|
-| EVENT-SP001 | Read events related to controllable units (except lookup) when they are SP on the CU.          | DONE   |
-| EVENT-SP002 | Read events related to technical resources when they are SP on the CU.                         | DONE   |
-| EVENT-SP003 | Read events related to CUSP when they are the SP.                                              | DONE   |
-| EVENT-SP004 | Read events related to SPPA concerning themselves.                                             | DONE   |
-| EVENT-SP005 | Read events related to comments on SPPA concerning themselves, when they can see the comments. | DONE   |
-| EVENT-SP006 | Read events related to service providing groups when they own them.                            | DONE   |
-| EVENT-SP007 | Read events related to SPG memberships when they own the SPG.                                  | DONE   |
-| EVENT-SP008 | Read events related to SPG grid prequalifications when they own the SPG.                       | DONE   |
-| EVENT-SP009 | Read events related to SPG product applications when they own the SPG.                         | DONE   |
-| EVENT-SP010 | Read events related to SOPT.                                                                   | DONE   |
-| EVENT-SP011 | Read events related to SPPS when they are the SP.                                              | DONE   |
-| EVENT-SP012 | Read events related to comments on SPPS concerning themselves, when they can see the comments. | DONE   |
-| EVENT-SP013 | Read events related to SPG grid suspensions when they own the SPG.                             | DONE   |
-| EVENT-SP014 | Read events related to comments on SPG grid suspensions, when they can see the comments.       | DONE   |
-| EVENT-SP015 | Read events related to SPG product suspensions when they own the SPG.                          | DONE   |
-| EVENT-SP016 | Read events related to comments on SPG product suspensions, when they can see the comments.    | DONE   |
-| EVENT-SP017 | Read events related to CU suspensions when they are SP on the CU.                              | DONE   |
-| EVENT-SP018 | Read events related to comments on CU suspensions, when they can see the comments.             | DONE   |
+No policies.
 
 #### Third Party
 

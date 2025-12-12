@@ -90,6 +90,7 @@ from flex.api.service_providing_group_membership import (
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
     update_service_providing_group_grid_prequalification,
+    list_service_providing_group_grid_prequalification,
 )
 from flex.api.service_providing_group_grid_suspension import (
     create_service_providing_group_grid_suspension,
@@ -190,13 +191,25 @@ def test_event_eu(sts):
     assert check(client_other_eu) == (0, 0, 0)
 
 
+# both SP and SO tests test the following general policy:
+# RLS: EVENT-COM001
+
+
 def test_event_sp(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    # This test creates a lot of resources related to a *fresh* SP so we can
+    # run the test multiple times without interference. However, as SO, we use
+    # the Test SO which is common between test runs. As it is a new SP on every
+    # run, we should not have problems, except for some of the resources. In
+    # such cases, we either just find the ID of the existing resource or create
+    # a meaningless one related to another fresh SO just to test that SP can see
+    # the event.
 
     client_sp = sts.fresh_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    client_so = sts.get_client(TestEntity.TEST, "SO")
     so_id = sts.get_userinfo(client_so)["party_id"]
 
     client_eu = sts.get_client(TestEntity.TEST, "EU")
@@ -225,8 +238,6 @@ def test_event_sp(sts):
     events = list_event.sync(client=client_sp, limit="10000")
     assert isinstance(events, list)
 
-    # RLS: EVENT-SP001
-    # RLS: EVENT-SP002
     # SP cannot see CU/TR creation event before being SP
     assert not any(
         e
@@ -270,6 +281,17 @@ def test_event_sp(sts):
             product_type_id=1,
         ),
     )
+    if isinstance(sopt, ErrorMessage):
+        # SOPT already exists, create dummy SOPT for a fresh SO
+        client_so = sts.fresh_client(TestEntity.TEST, "SO")
+        new_so_id = sts.get_userinfo(client_so)["party_id"]
+        sopt = create_system_operator_product_type.sync(
+            client=client_fiso,
+            body=SystemOperatorProductTypeCreateRequest(
+                system_operator_id=new_so_id,
+                product_type_id=1,
+            ),
+        )
     assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     sppa = create_service_provider_product_application.sync(
@@ -379,6 +401,15 @@ def test_event_sp(sts):
             impacted_system_operator_id=so_id,
         ),
     )
+    if isinstance(spggp, ErrorMessage):
+        # possibly already created when activating the SPG, retrieve it
+        spggps = list_service_providing_group_grid_prequalification.sync(
+            client=client_fiso,
+            service_providing_group_id=f"eq.{spg.id}",
+        )
+        assert isinstance(spggps, list)
+        assert len(spggps) == 1
+        spggp = spggps[0]
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     u = update_service_providing_group_grid_prequalification.sync(
@@ -433,7 +464,6 @@ def test_event_sp(sts):
         and e.subject == f"/technical_resource/{tr.id}"
     )
 
-    # RLS: EVENT-SP007
     # SP can see SPGM when they are SP on the SPG
     assert any(
         e
@@ -442,7 +472,6 @@ def test_event_sp(sts):
         and e.subject == f"/service_providing_group_membership/{spgm.id}"
     )
 
-    # RLS: EVENT-SP011
     # SP can see SPPS events when they are SP
     assert any(
         e
@@ -451,7 +480,6 @@ def test_event_sp(sts):
         and e.source == f"/service_provider_product_suspension/{spps.id}"
     )
 
-    # RLS: EVENT-SP013
     # SP can see SPGGS events when they are SP
     assert any(
         e
@@ -536,7 +564,6 @@ def test_event_sp(sts):
         and e.subject == f"/service_providing_group_grid_suspension/{spggs.id}"
     )
 
-    # RLS: EVENT-SP003
     # SP can see CUSP events when they are SP
     assert any(
         e
@@ -545,7 +572,6 @@ def test_event_sp(sts):
         and e.subject == f"/controllable_unit_service_provider/{cusp.id}"
     )
 
-    # RLS: EVENT-SP004
     # same for SPPA
     assert any(
         e
@@ -554,7 +580,6 @@ def test_event_sp(sts):
         and e.source == f"/service_provider_product_application/{sppa.id}"
     )
 
-    # RLS: EVENT-SP005
     # same for comments but only if they have the right visibility
     assert any(
         e
@@ -573,7 +598,6 @@ def test_event_sp(sts):
         == f"/service_provider_product_application_comment/{sppac_hidden.id}"
     )
 
-    # RLS: EVENT-SP006
     # same for SPG
     assert any(
         e
@@ -582,7 +606,6 @@ def test_event_sp(sts):
         and e.source == f"/service_providing_group/{spg.id}"
     )
 
-    # RLS: EVENT-SP008
     # same for SPGGP
     assert any(
         e
@@ -592,7 +615,6 @@ def test_event_sp(sts):
         and e.subject == f"/service_providing_group_grid_prequalification/{spggp.id}"
     )
 
-    # RLS: EVENT-SP009
     # same for SPGPA
     assert any(
         e
@@ -601,7 +623,6 @@ def test_event_sp(sts):
         and e.subject == f"/service_providing_group_product_application/{spgpa.id}"
     )
 
-    # RLS: EVENT-SP010
     # SP can see SOPT events
     assert any(
         e
@@ -610,7 +631,6 @@ def test_event_sp(sts):
         and e.source == f"/system_operator_product_type/{sopt.id}"
     )
 
-    # RLS: EVENT-SP012
     # same for comments but only if they have the right visibility
     assert any(
         e
@@ -708,7 +728,6 @@ def test_event_sp(sts):
 
 
 # RLS: EVENT-FISO001
-# RLS: EVENT-SO001
 # This test comes after the SP test. Doing so, we can then test all resources
 # because the SP test creates one of each.
 def test_event_fiso_so(sts):
