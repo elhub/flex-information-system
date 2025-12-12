@@ -365,7 +365,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend openapi-to-tooltips
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl openapi-to-tooltips
 
 template-to-openapi:
     #!/usr/bin/env bash
@@ -507,6 +507,11 @@ openapi-client-frontend:
     perl -i -pe 's/z\.optional\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*)\)/z.optional(z.preprocess((value) => (value === null ? undefined : value), $1.optional()))/g' src/generated-client/zod.gen.ts
 
     npx prettier --write src/generated-client
+
+resources-to-intl:
+    #!/usr/bin/env bash
+    cat openapi/resources.yml \
+        | .venv/bin/python3 local/scripts/resources_to_intl.py
 
 openapi-to-tooltips:
     #!/usr/bin/env bash
