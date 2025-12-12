@@ -44,4 +44,4 @@ AFTER INSERT OR UPDATE
 ON {{ resource }}_comment
 FOR EACH ROW
 EXECUTE FUNCTION
-capture_event('{{ resource }}_comment');
+capture_event('{{ resource }}');
