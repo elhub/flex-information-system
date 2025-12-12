@@ -489,8 +489,8 @@ resources:
         example: NO3
         x-intl:
           en: Bidding zone
-          nb: Budsone
-          nn: Budsone
+          nb: Budområde
+          nn: Budområde
       status:
         description: The status of the group.
         x-details: >-
