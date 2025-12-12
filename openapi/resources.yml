@@ -117,9 +117,9 @@ resources:
         readOnly: true
         example: true
         x-intl:
-          en: Small?
-          nb: Liten?
-          nn: Liten?
+          en: Small
+          nb: Liten
+          nn: Liten
       minimum_duration:
         description: >-
           The minimum activation duration in seconds.
@@ -234,8 +234,8 @@ resources:
         example: 2022-08-08 12:00:00 CET
         x-intl:
           en: Validated at
-          nb: Validert ved
-          nn: Validert ved
+          nb: Validert
+          nn: Validert
 
   - id: controllable_unit_suspension
     acronym: CUS
@@ -567,8 +567,8 @@ resources:
         example: 55
         x-intl:
           en: Service providing group
-          nb: Tjenestelevererende gruppe
-          nn: Tenestelevererande gruppe
+          nb: Fleksibilitetsgruppe
+          nn: Fleksibilitetsgruppe
       valid_from:
         description: >-
           The date from which the relation between the controllable unit and
@@ -637,8 +637,8 @@ resources:
         example: 55
         x-intl:
           en: Service providing group
-          nb: Tjenestelevererende gruppe
-          nn: Tenestelevererande gruppe
+          nb: Fleksibilitetsgruppe
+          nn: Fleksibilitetsgruppe
       impacted_system_operator_id:
         description: >-
           Reference to the `party` that is the impacted system operator.
@@ -682,8 +682,8 @@ resources:
         example: 2023-01-08 10:00:00 CET
         x-intl:
           en: Prequalified at
-          nb: Prekvalifisert ved
-          nn: Prekvalifisert ved
+          nb: Prekvalifisert
+          nn: Prekvalifisert
 
   - id: service_providing_group_grid_suspension
     acronym: SPGGS
@@ -743,8 +743,8 @@ resources:
         example: 13
         x-intl:
           en: Service providing group
-          nb: Tjenestelevererende gruppe
-          nn: Tenestelevererande gruppe
+          nb: Fleksibilitetsgruppe
+          nn: Fleksibilitetsgruppe
       reason:
         description: The reason for the suspension.
         format: text
@@ -910,8 +910,8 @@ resources:
         example: 30
         x-intl:
           en: Party
-          nb: Party
-          nn: Party
+          nb: Aktør
+          nn: Aktør
       scopes:
         description: >-
           List of scopes granted to the user when it logs in as an entity or
@@ -1132,8 +1132,8 @@ resources:
         example: 379
         x-intl:
           en: Party
-          nb: Party
-          nn: Party
+          nb: Aktør
+          nn: Aktør
       entity_id:
         description: >-
           Reference to the entity that the party represents.
@@ -1433,8 +1433,8 @@ resources:
         example: 37
         x-intl:
           en: Party
-          nb: Party
-          nn: Party
+          nb: Aktør
+          nn: Aktør
 
   - id: accounting_point
     acronym: AP
@@ -1797,8 +1797,8 @@ resources:
         example: 2022-08-08 12:00:00 CET
         x-intl:
           en: Qualified at
-          nb: Kvalifisert ved
-          nn: Kvalifisert ved
+          nb: Kvalifisert
+          nn: Kvalifisert
 
   - id: service_provider_product_suspension
     acronym: SPPS
@@ -1845,8 +1845,8 @@ resources:
         example: 9
         x-intl:
           en: Procuring system operator
-          nb: Innkjøpende systemoperatør
-          nn: Innkjøpande systemoperatør
+          nb: Kjøpende systemoperatør
+          nn: Kjøpande systemoperatør
       service_provider_id:
         description: Reference to the service provider being suspended.
         format: bigint
@@ -1930,8 +1930,8 @@ resources:
         example: 18
         x-intl:
           en: Service providing group
-          nb: Tjenestelevererende gruppe
-          nn: Tenestelevererande gruppe
+          nb: Fleksibilitetsgruppe
+          nn: Fleksibilitetsgruppe
       procuring_system_operator_id:
         description: Reference to the procuring system operator.
         format: bigint
@@ -1943,8 +1943,8 @@ resources:
         example: 39
         x-intl:
           en: Procuring system operator
-          nb: Innkjøpende systemoperatør
-          nn: Innkjøpande systemoperatør
+          nb: Kjøpende systemoperatør
+          nn: Kjøpande systemoperatør
       product_type_ids:
         description: References to the product types.
         type: array
@@ -1996,8 +1996,8 @@ resources:
         example: 2022-08-08 12:00:00 CET
         x-intl:
           en: Prequalified at
-          nb: Prekvalifisert ved
-          nn: Prekvalifisert ved
+          nb: Prekvalifisert
+          nn: Prekvalifisert
       verified_at:
         description: When the product application was last verified.
         format: timestamp with time zone
@@ -2006,8 +2006,8 @@ resources:
         example: 2021-08-08 10:00:00 CET
         x-intl:
           en: Verified at
-          nb: Verifisert ved
-          nn: Verifisert ved
+          nb: Verifisert
+          nn: Verifisert
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS
@@ -2054,8 +2054,8 @@ resources:
         example: 91
         x-intl:
           en: Procuring system operator
-          nb: Innkjøpende systemoperatør
-          nn: Innkjøpande systemoperatør
+          nb: Kjøpende systemoperatør
+          nn: Kjøpande systemoperatør
       service_providing_group_id:
         description: Reference to the service providing group being suspended.
         format: bigint
@@ -2067,8 +2067,8 @@ resources:
         example: 7
         x-intl:
           en: Service providing group
-          nb: Tjenestelevererende gruppe
-          nn: Tenestelevererande gruppe
+          nb: Fleksibilitetsgruppe
+          nn: Fleksibilitetsgruppe
       product_type_ids:
         description: References to the suspended product types.
         type: array
@@ -2116,8 +2116,8 @@ resources:
         example: 18
         x-intl:
           en: Party
-          nb: Party
-          nn: Party
+          nb: Aktør
+          nn: Aktør
       type:
         description: The type of the notice.
         format: text
