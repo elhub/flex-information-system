@@ -8,7 +8,7 @@ This script copies the internationalisation labels from the resource YAML file
 to a JSON file used by the frontend.
 """
 
-output_file = "frontend/src/intl/labels.json"
+output_file = "frontend/src/intl/field-labels.json"
 
 # ------------------------------------------------------------------------------
 
