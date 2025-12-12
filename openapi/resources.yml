@@ -22,6 +22,10 @@ resources:
         type: integer
         readOnly: true
         example: 12
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       business_id:
         description: Unique business identifier for the controllable unit.
         format: text
@@ -30,12 +34,20 @@ resources:
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
         readOnly: true
         example: '53919b79-876f-4dad-8bde-b29368367604'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
       name:
         description: Free text name of the controllable unit.
         format: text
         type: string
         maxLength: 512
         example: 'Car Charger #34'
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
       start_date:
         description: >-
           The usage date when the controllable unit is first active.
@@ -43,6 +55,10 @@ resources:
         type: string
         nullable: true
         example: '2024-05-17'
+        x-intl:
+          en: Start date
+          nb: Startdato
+          nn: Startdato
       status:
         description: The status of the controllable unit.
         x-details: >-
@@ -57,6 +73,10 @@ resources:
           - inactive
           - terminated
         example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
       regulation_direction:
         description: >-
           The regulation direction of the controllable unit. `up` means it can
@@ -71,6 +91,10 @@ resources:
           - down
           - both
         example: up
+        x-intl:
+          en: Regulation direction
+          nb: Reguleringsretning
+          nn: Reguleringsretning
       maximum_available_capacity:
         description: >-
           Maximum continuous active power that the controllable unit can produce
@@ -81,6 +105,10 @@ resources:
         maximum: 999999.999
         multipleOf: 0.001
         example: 3.5
+        x-intl:
+          en: Maximum available capacity
+          nb: Maksimal tilgjengelig kapasitet
+          nn: Maksimal tilgjengeleg kapasitet
       is_small:
         description: >-
           Whether the controllable unit is small or not, following NCDR.
@@ -88,6 +116,10 @@ resources:
         type: boolean
         readOnly: true
         example: true
+        x-intl:
+          en: Small?
+          nb: Liten?
+          nn: Liten?
       minimum_duration:
         description: >-
           The minimum activation duration in seconds.
@@ -96,6 +128,10 @@ resources:
         minimum: 0
         nullable: true
         example: 30
+        x-intl:
+          en: Minimum duration
+          nb: Minimumsvarighet
+          nn: Minimumsvarigheit
       maximum_duration:
         description: >-
           The maximum activation duration in seconds.
@@ -104,6 +140,10 @@ resources:
         minimum: 0
         nullable: true
         example: 1200
+        x-intl:
+          en: Maximum duration
+          nb: Maksimumsvarighet
+          nn: Maksimumsvarigheit
       recovery_duration:
         description: >-
           The minimum recovery duration between activations in seconds.
@@ -112,6 +152,10 @@ resources:
         minimum: 0
         nullable: true
         example: 3600
+        x-intl:
+          en: Recovery duration
+          nb: Gjenopprettingsvarighet
+          nn: Gjenopprettingsvarigheit
       ramp_rate:
         description: >-
           The rate of power per unit of time to reach empty or full power
@@ -122,6 +166,10 @@ resources:
         multipleOf: 0.001
         nullable: true
         example: 0.1
+        x-intl:
+          en: Ramp rate
+          nb: Effektendringshastighet
+          nn: Effektendringshastigheit
       accounting_point_id:
         description: >-
           Reference to the accounting point that the controllable unit is
@@ -134,6 +182,10 @@ resources:
           resource: accounting_point
           field: id
         example: 10289
+        x-intl:
+          en: Accounting point ID
+          nb: Avregningspunkt-ID
+          nn: Avregningspunkt-ID
       grid_node_id:
         description: >-
           Reference to the node that the controllable unit is connected to.
@@ -143,6 +195,10 @@ resources:
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
         nullable: true
         example: '53919b79-876f-4dad-8bde-b29368367604'
+        x-intl:
+          en: Grid node ID
+          nb: Nettnode-ID
+          nn: Nettnode-ID
       grid_validation_status:
         description: The grid validation status of the controllable unit.
         format: text
@@ -155,6 +211,10 @@ resources:
           - validated
           - validation_failed
         example: validated
+        x-intl:
+          en: Grid validation status
+          nb: Nettvalideringsstatus
+          nn: Nettvalideringsstatus
       grid_validation_notes:
         description: Free text notes on the current grid validation status.
         format: text
@@ -162,12 +222,20 @@ resources:
         maxLength: 512
         nullable: true
         example: null
+        x-intl:
+          en: Grid validation notes
+          nb: Nettvalideringsnotater
+          nn: Nettvalideringsnotat
       validated_at:
         description: When the controllable unit was last validated.
         format: timestamp with time zone
         type: string
         nullable: true
         example: 2022-08-08 12:00:00 CET
+        x-intl:
+          en: Validated at
+          nb: Validert ved
+          nn: Validert ved
 
   - id: controllable_unit_suspension
     acronym: CUS
@@ -195,6 +263,10 @@ resources:
         type: integer
         readOnly: true
         example: 74
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       controllable_unit_id:
         description: >-
           Reference to the suspended controllable unit.
@@ -205,6 +277,10 @@ resources:
           resource: controllable_unit
           field: id
         example: 2
+        x-intl:
+          en: Controllable Unit
+          nb: Kontrollerbar enhet
+          nn: Kontrollerbar eining
       impacted_system_operator_id:
         description: >-
           Reference to the impacted system operator suspending the controllable
@@ -218,6 +294,10 @@ resources:
         example: 7
         required: false
         x-details: Defaults to the system operator creating the resource.
+        x-intl:
+          en: Impacted system operator
+          nb: Berørt systemoperatør
+          nn: Påverka systemoperatør
       reason:
         description: The reason for the suspension.
         format: text
@@ -226,6 +306,10 @@ resources:
           - compromises_safe_operation
           - other
         example: compromises_safe_operation
+        x-intl:
+          en: Reason
+          nb: Årsak
+          nn: Årsak
 
   - id: controllable_unit_service_provider
     acronym: CUSP
@@ -249,6 +333,10 @@ resources:
         type: integer
         readOnly: true
         example: 7
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       controllable_unit_id:
         description: >-
           Reference to the controllable unit this relation links to a
@@ -260,6 +348,10 @@ resources:
           resource: controllable_unit
           field: id
         example: 2
+        x-intl:
+          en: Controllable unit
+          nb: Kontrollerbar enhet
+          nn: Kontrollerbar eining
       service_provider_id:
         description: >-
           Reference to the `party` (service provider) this relation links to
@@ -271,6 +363,10 @@ resources:
           resource: party
           field: id
         example: 78
+        x-intl:
+          en: Service provider
+          nb: Tjenesteleverandør
+          nn: Tenesteleverandør
       end_user_id:
         description: >-
           Technical ID of the end user behind the accounting point.
@@ -280,6 +376,10 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+        x-intl:
+          en: End user
+          nb: Sluttbruker
+          nn: Sluttbrukar
       contract_reference:
         description: >-
           The service providers internal reference to the contract with the
@@ -294,6 +394,10 @@ resources:
         maxLength: 128
         nullable: false
         example: '123e4567-e89b-12d3-a456-426614174000'
+        x-intl:
+          en: Contract reference
+          nb: Kontraktsreferanse
+          nn: Kontraktsreferanse
       valid_from:
         description: >-
           The date from which the relation between the controllable unit and
@@ -302,6 +406,10 @@ resources:
         type: string
         nullable: true
         example: 2022-08-08 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
       valid_to:
         description: >-
           The date until which the relation between the controllable unit and
@@ -310,6 +418,10 @@ resources:
         type: string
         nullable: true
         example: 2022-09-10 00:00:00 CET
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
 
   - id: service_providing_group
     acronym: SPG
@@ -333,6 +445,10 @@ resources:
         type: integer
         readOnly: true
         example: 4
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       name:
         description: >-
           Free text name of the service providing group.
@@ -340,6 +456,10 @@ resources:
         type: string
         maxLength: 128
         example: 'Batteries #09'
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
       service_provider_id:
         description: >-
           Reference to the `party` (service provider) managing the group.
@@ -350,6 +470,10 @@ resources:
           resource: party
           field: id
         example: 17
+        x-intl:
+          en: Service provider
+          nb: Tjenesteleverandør
+          nn: Tenesteleverandør
       bidding_zone:
         description: >-
           The bidding zone that restricts which CUs that can be added to the group.
@@ -363,6 +487,10 @@ resources:
           - NO4
           - NO5
         example: NO3
+        x-intl:
+          en: Bidding zone
+          nb: Budsone
+          nn: Budsone
       status:
         description: The status of the group.
         x-details: >-
@@ -377,6 +505,10 @@ resources:
           - inactive
           - terminated
         example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
 
   - id: service_providing_group_membership
     acronym: SPGM
@@ -403,6 +535,10 @@ resources:
         type: integer
         readOnly: true
         example: 27
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       controllable_unit_id:
         description: >-
           Reference to the controllable unit this relation links to a
@@ -414,6 +550,10 @@ resources:
           resource: controllable_unit
           field: id
         example: 6
+        x-intl:
+          en: Controllable unit
+          nb: Kontrollerbar enhet
+          nn: Kontrollerbar eining
       service_providing_group_id:
         description: >-
           Reference to the service providing group this relation links to a
@@ -425,6 +565,10 @@ resources:
           resource: service_providing_group
           field: id
         example: 55
+        x-intl:
+          en: Service providing group
+          nb: Tjenestelevererende gruppe
+          nn: Tenestelevererande gruppe
       valid_from:
         description: >-
           The date from which the relation between the controllable unit and
@@ -433,6 +577,10 @@ resources:
         format: timestamp with time zone
         type: string
         example: 2022-08-08 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
       valid_to:
         description: >-
           The date until which the relation between the controllable unit and
@@ -442,6 +590,10 @@ resources:
         type: string
         nullable: true
         example: null
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
 
   - id: service_providing_group_grid_prequalification
     acronym: SPGGP
@@ -468,6 +620,10 @@ resources:
         type: integer
         readOnly: true
         example: 27
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       service_providing_group_id:
         description: >-
           Reference to the service providing group whose grid prequalification
@@ -479,6 +635,10 @@ resources:
           resource: service_providing_group
           field: id
         example: 55
+        x-intl:
+          en: Service providing group
+          nb: Tjenestelevererende gruppe
+          nn: Tenestelevererande gruppe
       impacted_system_operator_id:
         description: >-
           Reference to the `party` that is the impacted system operator.
@@ -489,6 +649,10 @@ resources:
           resource: party
           field: id
         example: 7
+        x-intl:
+          en: Impacted system operator
+          nb: Berørt systemoperatør
+          nn: Påverka systemoperatør
       status:
         description: >-
           The status of the grid prequalification for this service providing
@@ -506,12 +670,20 @@ resources:
           - approved
           - not_approved
         example: in_progress
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
       prequalified_at:
         description: When the current grid prequalification was last approved.
         format: timestamp with time zone
         type: string
         nullable: true
         example: 2023-01-08 10:00:00 CET
+        x-intl:
+          en: Prequalified at
+          nb: Prekvalifisert ved
+          nn: Prekvalifisert ved
 
   - id: service_providing_group_grid_suspension
     acronym: SPGGS
@@ -539,6 +711,10 @@ resources:
         type: integer
         readOnly: true
         example: 49
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       impacted_system_operator_id:
         description: >-
           Reference to the impacted system operator suspending the service
@@ -552,6 +728,10 @@ resources:
           resource: party
           field: id
         example: 7
+        x-intl:
+          en: Impacted system operator
+          nb: Berørt systemoperatør
+          nn: Påverka systemoperatør
       service_providing_group_id:
         description: Reference to the service providing group being suspended.
         format: bigint
@@ -561,6 +741,10 @@ resources:
           resource: service_providing_group
           field: id
         example: 13
+        x-intl:
+          en: Service providing group
+          nb: Tjenestelevererende gruppe
+          nn: Tenestelevererande gruppe
       reason:
         description: The reason for the suspension.
         format: text
@@ -570,6 +754,10 @@ resources:
           - significant_group_change
           - other
         example: significant_group_change
+        x-intl:
+          en: Reason
+          nb: Årsak
+          nn: Årsak
 
   - id: entity
     acronym: ENT
@@ -603,6 +791,10 @@ resources:
         type: integer
         readOnly: true
         example: 14
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       business_id:
         description: >-
           The business identifier of the entity. Format depends on
@@ -611,6 +803,10 @@ resources:
         type: string
         x-no-update: true
         example: '13370000000'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
       business_id_type:
         description: >-
           The type of the business identifier.
@@ -618,17 +814,29 @@ resources:
         type: string
         x-no-update: true
         example: pid
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
       name:
         description: Name of the entity. Maximum 128 characters.
         format: text
         type: string
         example: John Smith
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
       type:
         description: The type of the entity, e.g Person, Organisation
         format: text
         type: string
         x-no-update: true
         example: person
+        x-intl:
+          en: Type
+          nb: Type
+          nn: Type
 
   - id: entity_client
     acronym: ECL
@@ -651,6 +859,10 @@ resources:
         type: integer
         readOnly: true
         example: 14
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       entity_id:
         description: Reference to the entity that this client is attached to.
         format: bigint
@@ -660,6 +872,10 @@ resources:
           resource: entity
           field: id
         example: 30
+        x-intl:
+          en: Entity
+          nb: Entitet
+          nn: Entitet
       name:
         description: Name of the client.
         format: text
@@ -667,6 +883,10 @@ resources:
         maxLength: 256
         nullable: true
         example: Laptop
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
       client_id:
         description: >-
           The identifier of the entity. For use with client credentials
@@ -674,6 +894,10 @@ resources:
         format: text
         type: string
         example: addr@flex.test
+        x-intl:
+          en: Client ID
+          nb: Klient-ID
+          nn: Klient-ID
       party_id:
         description: >-
           Reference to the party this client allows to assume. A null value
@@ -684,6 +908,10 @@ resources:
           resource: party
           field: id
         example: 30
+        x-intl:
+          en: Party
+          nb: Party
+          nn: Party
       scopes:
         description: >-
           List of scopes granted to the user when it logs in as an entity or
@@ -697,6 +925,10 @@ resources:
           "$ref": "#/components/schemas/auth_scope"
         nullable: false
         example: ["read:data"]
+        x-intl:
+          en: Scopes
+          nb: Scopes
+          nn: Scopes
       client_secret:
         description: >-
           The secret of the entity. For use with client credentials
@@ -706,6 +938,10 @@ resources:
         minLength: 12
         nullable: true
         example: mysupersecretpassword
+        x-intl:
+          en: Client secret
+          nb: Klienthemmelighet
+          nn: Klientløyndom
       public_key:
         description:
           The public key of the entity (X.509 SubjectPublicKeyInfo). For use
@@ -721,6 +957,10 @@ resources:
           kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
           0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
           -----END PUBLIC KEY-----
+        x-intl:
+          en: Public key
+          nb: Offentlig nøkkel
+          nn: Offentleg nøkkel
 
   - id: party
     acronym: PTY
@@ -755,6 +995,10 @@ resources:
         type: integer
         readOnly: true
         example: 11
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       business_id:
         description: >-
           The business identifier of the party. Format depends on
@@ -764,6 +1008,10 @@ resources:
         x-no-update: true
         required: false
         example: '1337099000000'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
       business_id_type:
         description: >-
           The type of the business identifier.
@@ -777,6 +1025,10 @@ resources:
           - eic_x
           - org
         example: gln
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
       entity_id:
         description: >-
           Reference to the entity that is the parent of the party.
@@ -787,11 +1039,19 @@ resources:
           resource: entity
           field: id
         example: 30
+        x-intl:
+          en: Entity
+          nb: Entitet
+          nn: Entitet
       name:
         description: Name of the party. Maximum 128 characters.
         format: text
         type: string
         example: Flex Energy Supplier
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
       role:
         description: >-
           The role of the party. Currently maps to 1:1 to `type`.
@@ -800,6 +1060,10 @@ resources:
         type: string
         x-no-update: true
         example: flex_energy_supplier
+        x-intl:
+          en: Role
+          nb: Rolle
+          nn: Rolle
       type:
         description: >-
           The type of the party, e.g SystemOperator, ServiceProvider
@@ -807,6 +1071,10 @@ resources:
         type: string
         x-no-update: true
         example: energy_supplier
+        x-intl:
+          en: Type
+          nb: Type
+          nn: Type
       status:
         description: The status of the party.
         format: text
@@ -819,6 +1087,10 @@ resources:
           - suspended
           - terminated
         example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
 
   - id: party_membership
     acronym: PTYM
@@ -844,6 +1116,10 @@ resources:
         type: integer
         readOnly: true
         example: 44
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       party_id:
         description: >-
           Reference to the party that the membership links to an entity.
@@ -854,6 +1130,10 @@ resources:
           resource: party
           field: id
         example: 379
+        x-intl:
+          en: Party
+          nb: Party
+          nn: Party
       entity_id:
         description: >-
           Reference to the entity that the party represents.
@@ -864,6 +1144,10 @@ resources:
           resource: entity
           field: id
         example: 30
+        x-intl:
+          en: Entity
+          nb: Entitet
+          nn: Entitet
       scopes:
         description: >-
           List of scopes granted to the entity when it acts as the party.
@@ -874,6 +1158,10 @@ resources:
           "$ref": "#/components/schemas/auth_scope"
         nullable: false
         example: ["read:data"]
+        x-intl:
+          en: Scopes
+          nb: Scopes
+          nn: Scopes
 
   - id: identity
     acronym: ID
@@ -958,11 +1246,19 @@ resources:
         type: integer
         readOnly: true
         example: 89
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       name:
         description: Name of the technical resource. Maximum 128 characters.
         format: text
         type: string
         example: 'Battery Unit #1'
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
       controllable_unit_id:
         description: >-
           Reference to the controllable unit that this technical resource
@@ -974,6 +1270,10 @@ resources:
           resource: controllable_unit
           field: id
         example: 37
+        x-intl:
+          en: Controllable Unit
+          nb: Kontrollerbar enhet
+          nn: Kontrollerbar eining
       details:
         description: >-
           Free text details about the technical resource.
@@ -984,6 +1284,10 @@ resources:
         example: |-
           Make: ACME
           Model: Car Charger 3000
+        x-intl:
+          en: Details
+          nb: Detaljer
+          nn: Detaljar
 
   - id: event
     acronym: EVENT
@@ -1000,6 +1304,10 @@ resources:
         type: integer
         readOnly: true
         example: 89
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       specversion:
         description: >-
           The version of the CloudEvents specification followed by the resource.
@@ -1007,12 +1315,20 @@ resources:
         type: string
         readOnly: true
         example: '1.0'
+        x-intl:
+          en: Specification version
+          nb: Spesifikasjonsversjon
+          nn: Spesifikasjonsversjon
       time:
         description: The time at which the event was generated.
         format: timestamp with time zone
         type: string
         readOnly: true
         example: 2022-08-08 12:00:00 CET
+        x-intl:
+          en: Time
+          nb: Tidspunkt
+          nn: Tidspunkt
       type:
         description: The type of the event.
         format: text
@@ -1020,6 +1336,10 @@ resources:
         pattern: '^no.elhub.flex.'
         readOnly: true
         example: 'no.elhub.flex.service_providing_group.update'
+        x-intl:
+          en: Type
+          nb: Type
+          nn: Type
       source:
         description: The URI of the resource concerned by the event.
         format: text
@@ -1027,6 +1347,10 @@ resources:
         pattern: '^(\/([a-z][a-z_]*|[0-9]+))+$'
         readOnly: true
         example: '/controllable_unit/4'
+        x-intl:
+          en: Source
+          nb: Kilde
+          nn: Kjelde
       subject:
         description: >-
           The URI of the specific subject of the event within the resource
@@ -1039,6 +1363,10 @@ resources:
         nullable: true
         readOnly: true
         example: '/technical_resource/2'
+        x-intl:
+          en: Subject
+          nb: Emne
+          nn: Emne
       data:
         description: The data of the event.
         format: text
@@ -1046,6 +1374,10 @@ resources:
         readOnly: true
         nullable: true
         example: null
+        x-intl:
+          en: Data
+          nb: Data
+          nn: Data
 
   - id: notification
     acronym: NOT
@@ -1064,11 +1396,19 @@ resources:
         type: integer
         readOnly: true
         example: 89
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       acknowledged:
         description: Whether the notification was acknowledged by the target user.
         format: boolean
         type: boolean
         example: false
+        x-intl:
+          en: Acknowledged
+          nb: Bekreftet
+          nn: Bekrefta
       event_id:
         description: Reference to the event notified by this resource.
         format: bigint
@@ -1078,6 +1418,10 @@ resources:
           resource: event
           field: id
         example: 37
+        x-intl:
+          en: Event ID
+          nb: Hendelse-ID
+          nn: Hending-ID
       party_id:
         description: Reference to the party concerned by this notification.
         format: bigint
@@ -1087,6 +1431,10 @@ resources:
           resource: party
           field: id
         example: 37
+        x-intl:
+          en: Party
+          nb: Party
+          nn: Party
 
   - id: accounting_point
     acronym: AP
@@ -1242,12 +1590,20 @@ resources:
         type: integer
         readOnly: true
         example: 4
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       business_id:
         description: The code for this product type.
         format: text
         type: string
         readOnly: true
         example: 'manual_congestion'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
       name:
         description: The name of the product type.
         format: text
@@ -1255,18 +1611,30 @@ resources:
         maxLength: 64
         readOnly: true
         example: 'Manual Congestion'
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
       service:
         description: The service offered by the product type.
         format: text
         type: string
         readOnly: true
         example: 'congestion management'
+        x-intl:
+          en: Service
+          nb: Tjeneste
+          nn: Teneste
       products:
         description: Examples of products belonging to this product type.
         format: text
         type: string
         readOnly: true
         example: 'LongFlex, ShortFlex'
+        x-intl:
+          en: Products
+          nb: Produkter
+          nn: Produkt
 
   - id: system_operator_product_type
     acronym: SOPT
@@ -1291,6 +1659,10 @@ resources:
         type: integer
         readOnly: true
         example: 89
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       system_operator_id:
         description: Reference to the system operator.
         format: bigint
@@ -1300,6 +1672,10 @@ resources:
           resource: party
           field: id
         example: 37
+        x-intl:
+          en: System operator
+          nb: Systemoperatør
+          nn: Systemoperatør
       product_type_id:
         description: Reference to the product type.
         format: bigint
@@ -1309,6 +1685,10 @@ resources:
           resource: product_type
           field: id
         example: 8
+        x-intl:
+          en: Product type
+          nb: Produkttype
+          nn: Produkttype
       status:
         description: The status of the relation.
         format: text
@@ -1318,6 +1698,10 @@ resources:
           - active
           - inactive
         example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
 
   - id: service_provider_product_application
     acronym: SPPA
@@ -1345,6 +1729,10 @@ resources:
         type: integer
         readOnly: true
         example: 89
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       service_provider_id:
         description: Reference to the service provider.
         format: bigint
@@ -1354,6 +1742,10 @@ resources:
           resource: party
           field: id
         example: 18
+        x-intl:
+          en: Service provider
+          nb: Tjenesteleverandør
+          nn: Tenesteleverandør
       system_operator_id:
         description: Reference to the system operator.
         format: bigint
@@ -1363,6 +1755,10 @@ resources:
           resource: party
           field: id
         example: 39
+        x-intl:
+          en: System operator
+          nb: Systemoperatør
+          nn: Systemoperatør
       product_type_ids:
         description: References to the product types.
         type: array
@@ -1373,6 +1769,10 @@ resources:
           resource: product_type
           field: id
         example: [2, 4, 5]
+        x-intl:
+          en: Product types
+          nb: Produkttyper
+          nn: Produkttypar
       status:
         description: The status of the application.
         format: text
@@ -1385,12 +1785,20 @@ resources:
           - not_qualified
           - qualified
         example: in_progress
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
       qualified_at:
         description: When the product application was last validated.
         format: timestamp with time zone
         type: string
         nullable: true
         example: 2022-08-08 12:00:00 CET
+        x-intl:
+          en: Qualified at
+          nb: Kvalifisert ved
+          nn: Kvalifisert ved
 
   - id: service_provider_product_suspension
     acronym: SPPS
@@ -1418,6 +1826,10 @@ resources:
         type: integer
         readOnly: true
         example: 74
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       procuring_system_operator_id:
         description: >-
           Reference to the procuring system operator suspending the service
@@ -1431,6 +1843,10 @@ resources:
           resource: party
           field: id
         example: 9
+        x-intl:
+          en: Procuring system operator
+          nb: Innkjøpende systemoperatør
+          nn: Innkjøpande systemoperatør
       service_provider_id:
         description: Reference to the service provider being suspended.
         format: bigint
@@ -1440,6 +1856,10 @@ resources:
           resource: party
           field: id
         example: 52
+        x-intl:
+          en: Service provider
+          nb: Tjenesteleverandør
+          nn: Tenesteleverandør
       product_type_ids:
         description: References to the suspended product types.
         type: array
@@ -1450,6 +1870,10 @@ resources:
           resource: product_type
           field: id
         example: [1, 7]
+        x-intl:
+          en: Product types
+          nb: Produkttyper
+          nn: Produkttypar
       reason:
         description: The reason for the suspension.
         format: text
@@ -1462,6 +1886,10 @@ resources:
           - breach_of_conditions
           - other
         example: communication_issues
+        x-intl:
+          en: Reason
+          nb: Årsak
+          nn: Årsak
 
   - id: service_providing_group_product_application
     acronym: SPGPA
@@ -1487,6 +1915,10 @@ resources:
         type: integer
         readOnly: true
         example: 89
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       service_providing_group_id:
         description: Reference to the service providing group.
         format: bigint
@@ -1496,6 +1928,10 @@ resources:
           resource: service_providing_group
           field: id
         example: 18
+        x-intl:
+          en: Service providing group
+          nb: Tjenestelevererende gruppe
+          nn: Tenestelevererande gruppe
       procuring_system_operator_id:
         description: Reference to the procuring system operator.
         format: bigint
@@ -1505,6 +1941,10 @@ resources:
           resource: party
           field: id
         example: 39
+        x-intl:
+          en: Procuring system operator
+          nb: Innkjøpende systemoperatør
+          nn: Innkjøpande systemoperatør
       product_type_ids:
         description: References to the product types.
         type: array
@@ -1515,6 +1955,10 @@ resources:
           resource: product_type
           field: id
         example: [2, 4, 5]
+        x-intl:
+          en: Product types
+          nb: Produkttyper
+          nn: Produkttypar
       status:
         description: The status of the application.
         format: text
@@ -1529,6 +1973,10 @@ resources:
           - verified
           - rejected
         example: in_progress
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
       notes:
         description: Free text notes on the current product application status.
         format: text
@@ -1536,18 +1984,30 @@ resources:
         maxLength: 512
         nullable: true
         example: null
+        x-intl:
+          en: Notes
+          nb: Notater
+          nn: Notat
       prequalified_at:
         description: When the product application was last prequalified.
         format: timestamp with time zone
         type: string
         nullable: true
         example: 2022-08-08 12:00:00 CET
+        x-intl:
+          en: Prequalified at
+          nb: Prekvalifisert ved
+          nn: Prekvalifisert ved
       verified_at:
         description: When the product application was last verified.
         format: timestamp with time zone
         type: string
         nullable: true
         example: 2021-08-08 10:00:00 CET
+        x-intl:
+          en: Verified at
+          nb: Verifisert ved
+          nn: Verifisert ved
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS
@@ -1575,6 +2035,10 @@ resources:
         type: integer
         readOnly: true
         example: 12
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
       procuring_system_operator_id:
         description: >-
           Reference to the procuring system operator suspending the service
@@ -1588,6 +2052,10 @@ resources:
           resource: party
           field: id
         example: 91
+        x-intl:
+          en: Procuring system operator
+          nb: Innkjøpende systemoperatør
+          nn: Innkjøpande systemoperatør
       service_providing_group_id:
         description: Reference to the service providing group being suspended.
         format: bigint
@@ -1597,6 +2065,10 @@ resources:
           resource: service_providing_group
           field: id
         example: 7
+        x-intl:
+          en: Service providing group
+          nb: Tjenestelevererende gruppe
+          nn: Tenestelevererande gruppe
       product_type_ids:
         description: References to the suspended product types.
         type: array
@@ -1607,6 +2079,10 @@ resources:
           resource: product_type
           field: id
         example: [3, 6]
+        x-intl:
+          en: Product typer
+          nb: Produkttyper
+          nn: Produkttypar
       reason:
         description: The reason for the suspension.
         format: text
@@ -1615,6 +2091,10 @@ resources:
           - failed_verification
           - other
         example: failed_verification
+        x-intl:
+          en: Reason
+          nb: Årsak
+          nn: Årsak
 
   - id: notice
     acronym: NOTICE
@@ -1634,6 +2114,10 @@ resources:
           resource: party
           field: id
         example: 18
+        x-intl:
+          en: Party
+          nb: Party
+          nn: Party
       type:
         description: The type of the notice.
         format: text
@@ -1641,6 +2125,10 @@ resources:
         pattern: '^no.elhub.flex.'
         readOnly: true
         example: 'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract'
+        x-intl:
+          en: Type
+          nb: Type
+          nn: Type
       source:
         description: The URI of the resource concerned by the event.
         format: text
@@ -1648,6 +2136,10 @@ resources:
         pattern: '^(\/([a-z][a-z_]*|[0-9]+))+$'
         readOnly: true
         example: '/service_providing_group_membership/4'
+        x-intl:
+          en: Source
+          nb: Kilde
+          nn: Kjelde
       data:
         description: The data of the notice.
         type: object
@@ -1655,3 +2147,7 @@ resources:
         readOnly: true
         nullable: true
         example: null
+        x-intl:
+          en: Data
+          nb: Data
+          nn: Data
