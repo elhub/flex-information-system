@@ -25,7 +25,7 @@ export const ResourceButton = (props: ButtonProps & { source: string }) => {
           navigate(`/${resource}/${id}/show`);
         } else {
           notify(
-            `The concerned resource (${resource}/${id}) no longer exists.`,
+            `The concerned resource (${resource}/${id}) can no longer be accessed.`,
             { type: "error" },
           );
         }
