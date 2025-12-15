@@ -116,17 +116,32 @@ export const ControllableUnitServiceProviderList = () => {
             `/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}/show`
           }
         >
-          <TextField source="id" label="ID" />
+          <TextField
+            source="id"
+            label="field.controllable_unit_service_provider.id"
+          />
           <ReferenceField
             source="service_provider_id"
             reference="party"
             sortable={false}
+            label="field.controllable_unit_service_provider.service_provider_id"
           >
             <TextField source="name" />
           </ReferenceField>
-          <TextField source="contract_reference" />
-          <DateField source="valid_from" showTime />
-          <DateField source="valid_to" showTime />
+          <TextField
+            source="contract_reference"
+            label="field.controllable_unit_service_provider.contract_reference"
+          />
+          <DateField
+            source="valid_from"
+            showTime
+            label="field.controllable_unit_service_provider.valid_from"
+          />
+          <DateField
+            source="valid_to"
+            showTime
+            label="field.controllable_unit_service_provider.valid_to"
+          />
           {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
         </Datagrid>
       </List>

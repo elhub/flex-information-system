@@ -124,16 +124,21 @@ export const ControllableUnitSuspensionShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.controllable_unit_suspension.id"
+            />
             <ReferenceField
               source="controllable_unit_id"
               reference="controllable_unit"
+              label="field.controllable_unit_suspension.controllable_unit_id"
             >
               <TextField source="name" />
             </ReferenceField>
             <ReferenceField
               source="impacted_system_operator_id"
               reference="party"
+              label="field.controllable_unit_suspension.impacted_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
@@ -143,9 +148,19 @@ export const ControllableUnitSuspensionShow = () => {
             Controllable unit suspension process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="reason" />
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <TextField
+              source="reason"
+              label="field.controllable_unit_suspension.reason"
+            />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.controllable_unit_suspension.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.controllable_unit_suspension.recorded_by"
+            />
           </FieldStack>
         </Stack>
         <HistoryButton />

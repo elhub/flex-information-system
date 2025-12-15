@@ -27,11 +27,14 @@ export const EntityList = () => {
       filters={entityFilters}
     >
       <Datagrid>
-        <TextField source="id" />
-        <TextField source="name" />
-        <TextField source="type" />
-        <TextField source="business_id" label="Business ID" />
-        <TextField source="business_id_type" label="Business ID type" />
+        <TextField source="id" label="field.entity.id" />
+        <TextField source="name" label="field.entity.name" />
+        <TextField source="type" label="field.entity.type" />
+        <TextField source="business_id" label="field.entity.business_id" />
+        <TextField
+          source="business_id_type"
+          label="field.entity.business_id_type"
+        />
       </Datagrid>
     </List>
   );

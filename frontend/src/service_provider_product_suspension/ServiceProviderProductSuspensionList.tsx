@@ -56,11 +56,15 @@ export const ServiceProviderProductSuspensionList = () => {
       filters={ServiceProviderProductSuspensionListFilters}
     >
       <Datagrid bulkActionButtons={false} rowClick="show">
-        <TextField source="id" label="ID" />
+        <TextField
+          source="id"
+          label="field.service_provider_product_suspension.id"
+        />
         <ReferenceField
           source="procuring_system_operator_id"
           reference="party"
           sortable={false}
+          label="field.service_provider_product_suspension.procuring_system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -68,6 +72,7 @@ export const ServiceProviderProductSuspensionList = () => {
           source="service_provider_id"
           reference="party"
           sortable={false}
+          label="field.service_provider_product_suspension.service_provider_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -75,9 +80,19 @@ export const ServiceProviderProductSuspensionList = () => {
           label="Product types"
           source="product_type_ids"
         />
-        <TextField source="reason" />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
+        <TextField
+          source="reason"
+          label="field.service_provider_product_suspension.reason"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.service_provider_product_suspension.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.service_provider_product_suspension.recorded_by"
+        />
         {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
       </Datagrid>
     </List>

@@ -56,9 +56,16 @@ export const NotificationShow = () => (
           Basic information
         </Typography>
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="id" label="ID" />
-          <BooleanField source="acknowledged" />
-          <ReferenceField source="party_id" reference="party">
+          <TextField source="id" label="field.notification.id" />
+          <BooleanField
+            source="acknowledged"
+            label="field.notification.acknowledged"
+          />
+          <ReferenceField
+            source="party_id"
+            reference="party"
+            label="field.notification.party_id"
+          >
             <TextField source="name" />
           </ReferenceField>
         </FieldStack>
@@ -67,25 +74,25 @@ export const NotificationShow = () => (
           Event
         </Typography>
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="event_id" label="Event ID" />
+          <TextField source="event_id" label="field.notification.event_id" />
           <ReferenceField
             source="event_id"
             reference="event"
-            label="Event type"
+            label="field.event.type"
           >
             <TextField source="type" />
           </ReferenceField>
           <ReferenceField
             source="event_id"
             reference="event"
-            label="Event source"
+            label="field.event.source"
           >
-            <TextField source="source" />
+            <TextField source="source" label="field.notification.source" />
           </ReferenceField>
           <ReferenceField
             source="event_id"
             reference="event"
-            label="Event data"
+            label="field.event.data"
           >
             <FunctionField
               source="data"
@@ -97,7 +104,7 @@ export const NotificationShow = () => (
           <ReferenceField
             source="event_id"
             reference="event"
-            label="Event time"
+            label="field.event.time"
           >
             <DateField source="time" showTime />
           </ReferenceField>
@@ -107,8 +114,15 @@ export const NotificationShow = () => (
           Registration
         </Typography>
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <DateField source="recorded_at" showTime />
-          <IdentityField source="recorded_by" />
+          <DateField
+            source="recorded_at"
+            showTime
+            label="field.notification.recorded_at"
+          />
+          <IdentityField
+            source="recorded_by"
+            label="field.notification.recorded_by"
+          />
         </FieldStack>
       </Stack>
       <EventResourceButton />

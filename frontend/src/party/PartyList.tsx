@@ -58,16 +58,25 @@ export const PartyList = () => {
       filters={partyFilters}
     >
       <Datagrid>
-        <TextField source="id" label="ID" />
-        <TextField source="business_id" label="Business ID" />
-        <ReferenceField source="entity_id" reference="entity" sortable={false}>
+        <TextField source="id" label="field.party.id" />
+        <TextField source="business_id" label="field.party.business_id" />
+        <ReferenceField
+          source="entity_id"
+          reference="entity"
+          sortable={false}
+          label="field.party.entity_id"
+        >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="name" />
-        <TextField source="type" />
-        <TextField source="role" />
-        <TextField source="status" />
-        <DateField source="recorded_at" showTime />
+        <TextField source="name" label="field.party.name" />
+        <TextField source="type" label="field.party.type" />
+        <TextField source="role" label="field.party.role" />
+        <TextField source="status" label="field.party.status" />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.party.recorded_at"
+        />
       </Datagrid>
     </List>
   );

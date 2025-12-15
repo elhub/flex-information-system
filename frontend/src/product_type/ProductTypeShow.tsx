@@ -10,11 +10,14 @@ export const ProductTypeShow = () => (
           Basic information
         </Typography>
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="id" label="ID" />
-          <TextField source="business_id" label="Business ID" />
-          <TextField source="name" />
-          <TextField source="service" />
-          <TextField source="products" />
+          <TextField source="id" label="field.product_type.id" />
+          <TextField
+            source="business_id"
+            label="field.product_type.business_id"
+          />
+          <TextField source="name" label="field.product_type.name" />
+          <TextField source="service" label="field.product_type.service" />
+          <TextField source="products" label="field.product_type.products" />
         </FieldStack>
       </Stack>
     </SimpleShowLayout>

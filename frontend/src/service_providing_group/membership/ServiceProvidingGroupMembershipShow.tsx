@@ -89,16 +89,21 @@ export const ServiceProvidingGroupMembershipShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_providing_group_membership.id"
+            />
             <ReferenceField
               source="controllable_unit_id"
               reference="controllable_unit"
+              label="field.service_providing_group_membership.controllable_unit_id"
             >
               <TextField source="name" />
             </ReferenceField>
             <ReferenceField
               source="service_providing_group_id"
               reference="service_providing_group"
+              label="field.service_providing_group_membership.service_providing_group_id"
             >
               <TextField source="name" />
             </ReferenceField>
@@ -108,16 +113,31 @@ export const ServiceProvidingGroupMembershipShow = () => {
             Valid time
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="valid_from" showTime />
-            <DateField source="valid_to" showTime />
+            <DateField
+              source="valid_from"
+              showTime
+              label="field.service_providing_group_membership.valid_from"
+            />
+            <DateField
+              source="valid_to"
+              showTime
+              label="field.service_providing_group_membership.valid_to"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.service_providing_group_membership.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.service_providing_group_membership.recorded_by"
+            />
           </FieldStack>
         </Stack>
         <HistoryButton />

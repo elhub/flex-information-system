@@ -90,37 +90,69 @@ export const ControllableUnitServiceProviderShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
-            <TextField source="controllable_unit_service_provider_id" />
+            <TextField
+              source="id"
+              label="field.controllable_unit_service_provider.id"
+            />
+            <TextField
+              source="controllable_unit_service_provider_id"
+              label="field.controllable_unit_service_provider.controllable_unit_service_provider_id"
+            />
             <ReferenceField
               source="controllable_unit_id"
               reference="controllable_unit"
+              label="field.controllable_unit_service_provider.controllable_unit_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField source="service_provider_id" reference="party">
+            <ReferenceField
+              source="service_provider_id"
+              reference="party"
+              label="field.controllable_unit_service_provider.service_provider_id"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="end_user_id" />
+            <TextField
+              source="end_user_id"
+              label="field.controllable_unit_service_provider.end_user_id"
+            />
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="contract_reference" />
+            <TextField
+              source="contract_reference"
+              label="field.controllable_unit_service_provider.contract_reference"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Valid time
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="valid_from" showTime />
-            <DateField source="valid_to" showTime />
+            <DateField
+              source="valid_from"
+              showTime
+              label="field.controllable_unit_service_provider.valid_from"
+            />
+            <DateField
+              source="valid_to"
+              showTime
+              label="field.controllable_unit_service_provider.valid_to"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.controllable_unit_service_provider.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.controllable_unit_service_provider.recorded_by"
+            />
           </FieldStack>
         </Stack>
         <HistoryButton />

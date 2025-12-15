@@ -1,664 +1,695 @@
 {
-    "controllable_unit": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
+    "en": {
+        "controllable_unit": {
+            "id": "ID",
+            "business_id": "Business ID",
+            "name": "Name",
+            "start_date": "Start date",
+            "status": "Status",
+            "regulation_direction": "Regulation direction",
+            "maximum_available_capacity": "Maximum available capacity",
+            "is_small": "Small",
+            "minimum_duration": "Minimum duration",
+            "maximum_duration": "Maximum duration",
+            "recovery_duration": "Recovery duration",
+            "ramp_rate": "Ramp rate",
+            "accounting_point_id": "Accounting point ID",
+            "grid_node_id": "Grid node ID",
+            "grid_validation_status": "Grid validation status",
+            "grid_validation_notes": "Grid validation notes",
+            "validated_at": "Validated at",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "business_id": {
-            "en": "Business ID",
-            "nb": "Forretnings-ID",
-            "nn": "Forretnings-ID"
+        "controllable_unit_suspension": {
+            "id": "ID",
+            "controllable_unit_id": "Controllable Unit",
+            "impacted_system_operator_id": "Impacted system operator",
+            "reason": "Reason",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "name": {
-            "en": "Name",
-            "nb": "Navn",
-            "nn": "Namn"
+        "controllable_unit_service_provider": {
+            "id": "ID",
+            "controllable_unit_id": "Controllable unit",
+            "service_provider_id": "Service provider",
+            "end_user_id": "End user",
+            "contract_reference": "Contract reference",
+            "valid_from": "Valid from",
+            "valid_to": "Valid to",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "start_date": {
-            "en": "Start date",
-            "nb": "Startdato",
-            "nn": "Startdato"
+        "service_providing_group": {
+            "id": "ID",
+            "name": "Name",
+            "service_provider_id": "Service provider",
+            "bidding_zone": "Bidding zone",
+            "status": "Status",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "status": {
-            "en": "Status",
-            "nb": "Status",
-            "nn": "Status"
+        "service_providing_group_membership": {
+            "id": "ID",
+            "controllable_unit_id": "Controllable unit",
+            "service_providing_group_id": "Service providing group",
+            "valid_from": "Valid from",
+            "valid_to": "Valid to",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "regulation_direction": {
-            "en": "Regulation direction",
-            "nb": "Reguleringsretning",
-            "nn": "Reguleringsretning"
+        "service_providing_group_grid_prequalification": {
+            "id": "ID",
+            "service_providing_group_id": "Service providing group",
+            "impacted_system_operator_id": "Impacted system operator",
+            "status": "Status",
+            "prequalified_at": "Prequalified at",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "maximum_available_capacity": {
-            "en": "Maximum available capacity",
-            "nb": "Maksimal tilgjengelig kapasitet",
-            "nn": "Maksimal tilgjengeleg kapasitet"
+        "service_providing_group_grid_suspension": {
+            "id": "ID",
+            "impacted_system_operator_id": "Impacted system operator",
+            "service_providing_group_id": "Service providing group",
+            "reason": "Reason",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "is_small": {
-            "en": "Small?",
-            "nb": "Liten?",
-            "nn": "Liten?"
+        "entity": {
+            "id": "ID",
+            "business_id": "Business ID",
+            "business_id_type": "Business ID type",
+            "name": "Name",
+            "type": "Type",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "minimum_duration": {
-            "en": "Minimum duration",
-            "nb": "Minimumsvarighet",
-            "nn": "Minimumsvarigheit"
+        "entity_client": {
+            "id": "ID",
+            "entity_id": "Entity",
+            "name": "Name",
+            "client_id": "Client ID",
+            "party_id": "Party",
+            "scopes": "Scopes",
+            "client_secret": "Client secret",
+            "public_key": "Public key",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "maximum_duration": {
-            "en": "Maximum duration",
-            "nb": "Maksimumsvarighet",
-            "nn": "Maksimumsvarigheit"
+        "party": {
+            "id": "ID",
+            "business_id": "Business ID",
+            "business_id_type": "Business ID type",
+            "entity_id": "Entity",
+            "name": "Name",
+            "role": "Role",
+            "type": "Type",
+            "status": "Status",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "recovery_duration": {
-            "en": "Recovery duration",
-            "nb": "Gjenopprettingsvarighet",
-            "nn": "Gjenopprettingsvarigheit"
+        "party_membership": {
+            "id": "ID",
+            "party_id": "Party",
+            "entity_id": "Entity",
+            "scopes": "Scopes",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "ramp_rate": {
-            "en": "Ramp rate",
-            "nb": "Effektendringshastighet",
-            "nn": "Effektendringshastigheit"
+        "identity": {
+            "id": "ID",
+            "entity_id": "Entity",
+            "entity_name": "Entity name",
+            "party_id": "Party",
+            "party_name": "Party name"
         },
-        "accounting_point_id": {
-            "en": "Accounting point ID",
-            "nb": "Avregningspunkt-ID",
-            "nn": "Avregningspunkt-ID"
+        "technical_resource": {
+            "id": "ID",
+            "name": "Name",
+            "controllable_unit_id": "Controllable Unit",
+            "details": "Details",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "grid_node_id": {
-            "en": "Grid node ID",
-            "nb": "Nettnode-ID",
-            "nn": "Nettnode-ID"
+        "event": {
+            "id": "ID",
+            "specversion": "Specification version",
+            "time": "Time",
+            "type": "Type",
+            "source": "Source",
+            "subject": "Subject",
+            "data": "Data"
         },
-        "grid_validation_status": {
-            "en": "Grid validation status",
-            "nb": "Nettvalideringsstatus",
-            "nn": "Nettvalideringsstatus"
+        "notification": {
+            "id": "ID",
+            "acknowledged": "Acknowledged",
+            "event_id": "Event ID",
+            "party_id": "Party",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "grid_validation_notes": {
-            "en": "Grid validation notes",
-            "nb": "Nettvalideringsnotater",
-            "nn": "Nettvalideringsnotat"
+        "accounting_point": {
+            "id": "ID",
+            "business_id": "Business ID",
+            "system_operator_id": "System operator",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
         },
-        "validated_at": {
-            "en": "Validated at",
-            "nb": "Validert ved",
-            "nn": "Validert ved"
+        "accounting_point_balance_responsible_party": {
+            "accounting_point_id": "Accounting point",
+            "balance_responsible_party_id": "Balance responsible party",
+            "energy_direction": "Energy direction",
+            "valid_from": "Valid from",
+            "valid_to": "Valid to"
+        },
+        "accounting_point_energy_supplier": {
+            "accounting_point_id": "Accounting point",
+            "energy_supplier_id": "Energy supplier",
+            "valid_from": "Valid from",
+            "valid_to": "Valid to"
+        },
+        "product_type": {
+            "id": "ID",
+            "business_id": "Business ID",
+            "name": "Name",
+            "service": "Service",
+            "products": "Products"
+        },
+        "system_operator_product_type": {
+            "id": "ID",
+            "system_operator_id": "System operator",
+            "product_type_id": "Product type",
+            "status": "Status",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
+        },
+        "service_provider_product_application": {
+            "id": "ID",
+            "service_provider_id": "Service provider",
+            "system_operator_id": "System operator",
+            "product_type_ids": "Product types",
+            "status": "Status",
+            "qualified_at": "Qualified at",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
+        },
+        "service_provider_product_suspension": {
+            "id": "ID",
+            "procuring_system_operator_id": "Procuring system operator",
+            "service_provider_id": "Service provider",
+            "product_type_ids": "Product types",
+            "reason": "Reason",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
+        },
+        "service_providing_group_product_application": {
+            "id": "ID",
+            "service_providing_group_id": "Service providing group",
+            "procuring_system_operator_id": "Procuring system operator",
+            "product_type_ids": "Product types",
+            "status": "Status",
+            "notes": "Notes",
+            "prequalified_at": "Prequalified at",
+            "verified_at": "Verified at",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
+        },
+        "service_providing_group_product_suspension": {
+            "id": "ID",
+            "procuring_system_operator_id": "Procuring system operator",
+            "service_providing_group_id": "Service providing group",
+            "product_type_ids": "Product typer",
+            "reason": "Reason",
+            "recorded_at": "Recorded at",
+            "recorded_by": "Recorded by"
+        },
+        "notice": {
+            "party_id": "Party",
+            "type": "Type",
+            "source": "Source",
+            "data": "Data"
         }
     },
-    "controllable_unit_suspension": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
+    "nb": {
+        "controllable_unit": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "name": "Navn",
+            "start_date": "Startdato",
+            "status": "Status",
+            "regulation_direction": "Reguleringsretning",
+            "maximum_available_capacity": "Maksimal tilgjengelig kapasitet",
+            "is_small": "Liten",
+            "minimum_duration": "Minimumsvarighet",
+            "maximum_duration": "Maksimumsvarighet",
+            "recovery_duration": "Gjenopprettingsvarighet",
+            "ramp_rate": "Effektendringshastighet",
+            "accounting_point_id": "Avregningspunkt-ID",
+            "grid_node_id": "Nettnode-ID",
+            "grid_validation_status": "Nettvalideringsstatus",
+            "grid_validation_notes": "Nettvalideringsnotater",
+            "validated_at": "Validert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
         },
-        "controllable_unit_id": {
-            "en": "Controllable Unit",
-            "nb": "Kontrollerbar enhet",
-            "nn": "Kontrollerbar eining"
+        "controllable_unit_suspension": {
+            "id": "ID",
+            "controllable_unit_id": "Kontrollerbar enhet",
+            "impacted_system_operator_id": "Berørt systemoperatør",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
         },
-        "impacted_system_operator_id": {
-            "en": "Impacted system operator",
-            "nb": "Berørt systemoperatør",
-            "nn": "Påverka systemoperatør"
+        "controllable_unit_service_provider": {
+            "id": "ID",
+            "controllable_unit_id": "Kontrollerbar enhet",
+            "service_provider_id": "Tjenesteleverandør",
+            "end_user_id": "Sluttbruker",
+            "contract_reference": "Kontraktsreferanse",
+            "valid_from": "Gyldig fra",
+            "valid_to": "Gyldig til",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
         },
-        "reason": {
-            "en": "Reason",
-            "nb": "Årsak",
-            "nn": "Årsak"
+        "service_providing_group": {
+            "id": "ID",
+            "name": "Navn",
+            "service_provider_id": "Tjenesteleverandør",
+            "bidding_zone": "Budområde",
+            "status": "Status",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_membership": {
+            "id": "ID",
+            "controllable_unit_id": "Kontrollerbar enhet",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "valid_from": "Gyldig fra",
+            "valid_to": "Gyldig til",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_grid_prequalification": {
+            "id": "ID",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "impacted_system_operator_id": "Berørt systemoperatør",
+            "status": "Status",
+            "prequalified_at": "Prekvalifisert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_grid_suspension": {
+            "id": "ID",
+            "impacted_system_operator_id": "Berørt systemoperatør",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "entity": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "business_id_type": "Forretnings-ID-type",
+            "name": "Navn",
+            "type": "Type",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "entity_client": {
+            "id": "ID",
+            "entity_id": "Entitet",
+            "name": "Navn",
+            "client_id": "Klient-ID",
+            "party_id": "Aktør",
+            "scopes": "Scopes",
+            "client_secret": "Klienthemmelighet",
+            "public_key": "Offentlig nøkkel",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "party": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "business_id_type": "Forretnings-ID-type",
+            "entity_id": "Entitet",
+            "name": "Navn",
+            "role": "Rolle",
+            "type": "Type",
+            "status": "Status",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "party_membership": {
+            "id": "ID",
+            "party_id": "Aktør",
+            "entity_id": "Entitet",
+            "scopes": "Scopes",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "identity": {
+            "id": "ID",
+            "entity_id": "Entitet",
+            "entity_name": "Entitetsnavn",
+            "party_id": "Aktør",
+            "party_name": "Aktørnavn"
+        },
+        "technical_resource": {
+            "id": "ID",
+            "name": "Navn",
+            "controllable_unit_id": "Kontrollerbar enhet",
+            "details": "Detaljer",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "event": {
+            "id": "ID",
+            "specversion": "Spesifikasjonsversjon",
+            "time": "Tidspunkt",
+            "type": "Type",
+            "source": "Kilde",
+            "subject": "Emne",
+            "data": "Data"
+        },
+        "notification": {
+            "id": "ID",
+            "acknowledged": "Bekreftet",
+            "event_id": "Hendelse-ID",
+            "party_id": "Aktør",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "accounting_point": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "system_operator_id": "Systemoperatør",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "accounting_point_balance_responsible_party": {
+            "accounting_point_id": "Avregningspunkt",
+            "balance_responsible_party_id": "Balanseansvarlig",
+            "energy_direction": "Energiretning",
+            "valid_from": "Gyldig fra",
+            "valid_to": "Gyldig til"
+        },
+        "accounting_point_energy_supplier": {
+            "accounting_point_id": "Avregningspunkt",
+            "energy_supplier_id": "Kraftleverandør",
+            "valid_from": "Gyldig fra",
+            "valid_to": "Gyldig til"
+        },
+        "product_type": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "name": "Navn",
+            "service": "Tjeneste",
+            "products": "Produkter"
+        },
+        "system_operator_product_type": {
+            "id": "ID",
+            "system_operator_id": "Systemoperatør",
+            "product_type_id": "Produkttype",
+            "status": "Status",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_provider_product_application": {
+            "id": "ID",
+            "service_provider_id": "Tjenesteleverandør",
+            "system_operator_id": "Systemoperatør",
+            "product_type_ids": "Produkttyper",
+            "status": "Status",
+            "qualified_at": "Kvalifisert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_provider_product_suspension": {
+            "id": "ID",
+            "procuring_system_operator_id": "Kjøpende systemoperatør",
+            "service_provider_id": "Tjenesteleverandør",
+            "product_type_ids": "Produkttyper",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_product_application": {
+            "id": "ID",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "procuring_system_operator_id": "Kjøpende systemoperatør",
+            "product_type_ids": "Produkttyper",
+            "status": "Status",
+            "notes": "Notater",
+            "prequalified_at": "Prekvalifisert",
+            "verified_at": "Verifisert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_product_suspension": {
+            "id": "ID",
+            "procuring_system_operator_id": "Kjøpende systemoperatør",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "product_type_ids": "Produkttyper",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "notice": {
+            "party_id": "Aktør",
+            "type": "Type",
+            "source": "Kilde",
+            "data": "Data"
         }
     },
-    "controllable_unit_service_provider": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "controllable_unit_id": {
-            "en": "Controllable unit",
-            "nb": "Kontrollerbar enhet",
-            "nn": "Kontrollerbar eining"
-        },
-        "service_provider_id": {
-            "en": "Service provider",
-            "nb": "Tjenesteleverandør",
-            "nn": "Tenesteleverandør"
-        },
-        "end_user_id": {
-            "en": "End user",
-            "nb": "Sluttbruker",
-            "nn": "Sluttbrukar"
-        },
-        "contract_reference": {
-            "en": "Contract reference",
-            "nb": "Kontraktsreferanse",
-            "nn": "Kontraktsreferanse"
-        },
-        "valid_from": {
-            "en": "Valid from",
-            "nb": "Gyldig fra",
-            "nn": "Gyldig frå"
-        },
-        "valid_to": {
-            "en": "Valid to",
-            "nb": "Gyldig til",
-            "nn": "Gyldig til"
-        }
-    },
-    "service_providing_group": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "name": {
-            "en": "Name",
-            "nb": "Navn",
-            "nn": "Namn"
-        },
-        "service_provider_id": {
-            "en": "Service provider",
-            "nb": "Tjenesteleverandør",
-            "nn": "Tenesteleverandør"
-        },
-        "bidding_zone": {
-            "en": "Bidding zone",
-            "nb": "Budområde",
-            "nn": "Budområde"
-        },
-        "status": {
-            "en": "Status",
-            "nb": "Status",
-            "nn": "Status"
-        }
-    },
-    "service_providing_group_membership": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "controllable_unit_id": {
-            "en": "Controllable unit",
-            "nb": "Kontrollerbar enhet",
-            "nn": "Kontrollerbar eining"
-        },
-        "service_providing_group_id": {
-            "en": "Service providing group",
-            "nb": "Tjenestelevererende gruppe",
-            "nn": "Tenestelevererande gruppe"
-        },
-        "valid_from": {
-            "en": "Valid from",
-            "nb": "Gyldig fra",
-            "nn": "Gyldig frå"
-        },
-        "valid_to": {
-            "en": "Valid to",
-            "nb": "Gyldig til",
-            "nn": "Gyldig til"
-        }
-    },
-    "service_providing_group_grid_prequalification": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "service_providing_group_id": {
-            "en": "Service providing group",
-            "nb": "Tjenestelevererende gruppe",
-            "nn": "Tenestelevererande gruppe"
-        },
-        "impacted_system_operator_id": {
-            "en": "Impacted system operator",
-            "nb": "Berørt systemoperatør",
-            "nn": "Påverka systemoperatør"
-        },
-        "status": {
-            "en": "Status",
-            "nb": "Status",
-            "nn": "Status"
-        },
-        "prequalified_at": {
-            "en": "Prequalified at",
-            "nb": "Prekvalifisert ved",
-            "nn": "Prekvalifisert ved"
-        }
-    },
-    "service_providing_group_grid_suspension": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "impacted_system_operator_id": {
-            "en": "Impacted system operator",
-            "nb": "Berørt systemoperatør",
-            "nn": "Påverka systemoperatør"
-        },
-        "service_providing_group_id": {
-            "en": "Service providing group",
-            "nb": "Tjenestelevererende gruppe",
-            "nn": "Tenestelevererande gruppe"
-        },
-        "reason": {
-            "en": "Reason",
-            "nb": "Årsak",
-            "nn": "Årsak"
-        }
-    },
-    "entity": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "business_id": {
-            "en": "Business ID",
-            "nb": "Forretnings-ID",
-            "nn": "Forretnings-ID"
-        },
-        "business_id_type": {
-            "en": "Business ID type",
-            "nb": "Forretnings-ID-type",
-            "nn": "Forretnings-ID-type"
-        },
-        "name": {
-            "en": "Name",
-            "nb": "Navn",
-            "nn": "Namn"
-        },
-        "type": {
-            "en": "Type",
-            "nb": "Type",
-            "nn": "Type"
-        }
-    },
-    "entity_client": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "entity_id": {
-            "en": "Entity",
-            "nb": "Entitet",
-            "nn": "Entitet"
-        },
-        "name": {
-            "en": "Name",
-            "nb": "Navn",
-            "nn": "Namn"
-        },
-        "client_id": {
-            "en": "Client ID",
-            "nb": "Klient-ID",
-            "nn": "Klient-ID"
-        },
-        "party_id": {
-            "en": "Party",
-            "nb": "Party",
-            "nn": "Party"
-        },
-        "scopes": {
-            "en": "Scopes",
-            "nb": "Scopes",
-            "nn": "Scopes"
-        },
-        "client_secret": {
-            "en": "Client secret",
-            "nb": "Klienthemmelighet",
-            "nn": "Klientløyndom"
-        },
-        "public_key": {
-            "en": "Public key",
-            "nb": "Offentlig nøkkel",
-            "nn": "Offentleg nøkkel"
-        }
-    },
-    "party": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "business_id": {
-            "en": "Business ID",
-            "nb": "Forretnings-ID",
-            "nn": "Forretnings-ID"
-        },
-        "business_id_type": {
-            "en": "Business ID type",
-            "nb": "Forretnings-ID-type",
-            "nn": "Forretnings-ID-type"
-        },
-        "entity_id": {
-            "en": "Entity",
-            "nb": "Entitet",
-            "nn": "Entitet"
-        },
-        "name": {
-            "en": "Name",
-            "nb": "Navn",
-            "nn": "Namn"
-        },
-        "role": {
-            "en": "Role",
-            "nb": "Rolle",
-            "nn": "Rolle"
-        },
-        "type": {
-            "en": "Type",
-            "nb": "Type",
-            "nn": "Type"
-        },
-        "status": {
-            "en": "Status",
-            "nb": "Status",
-            "nn": "Status"
-        }
-    },
-    "party_membership": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "party_id": {
-            "en": "Party",
-            "nb": "Party",
-            "nn": "Party"
-        },
-        "entity_id": {
-            "en": "Entity",
-            "nb": "Entitet",
-            "nn": "Entitet"
-        },
-        "scopes": {
-            "en": "Scopes",
-            "nb": "Scopes",
-            "nn": "Scopes"
-        }
-    },
-    "technical_resource": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "name": {
-            "en": "Name",
-            "nb": "Navn",
-            "nn": "Namn"
-        },
-        "controllable_unit_id": {
-            "en": "Controllable Unit",
-            "nb": "Kontrollerbar enhet",
-            "nn": "Kontrollerbar eining"
-        },
-        "details": {
-            "en": "Details",
-            "nb": "Detaljer",
-            "nn": "Detaljar"
-        }
-    },
-    "event": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "specversion": {
-            "en": "Specification version",
-            "nb": "Spesifikasjonsversjon",
-            "nn": "Spesifikasjonsversjon"
-        },
-        "time": {
-            "en": "Time",
-            "nb": "Tidspunkt",
-            "nn": "Tidspunkt"
-        },
-        "type": {
-            "en": "Type",
-            "nb": "Type",
-            "nn": "Type"
-        },
-        "source": {
-            "en": "Source",
-            "nb": "Kilde",
-            "nn": "Kjelde"
-        },
-        "subject": {
-            "en": "Subject",
-            "nb": "Emne",
-            "nn": "Emne"
-        },
-        "data": {
-            "en": "Data",
-            "nb": "Data",
-            "nn": "Data"
-        }
-    },
-    "notification": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "acknowledged": {
-            "en": "Acknowledged",
-            "nb": "Bekreftet",
-            "nn": "Bekrefta"
-        },
-        "event_id": {
-            "en": "Event ID",
-            "nb": "Hendelse-ID",
-            "nn": "Hending-ID"
-        },
-        "party_id": {
-            "en": "Party",
-            "nb": "Party",
-            "nn": "Party"
-        }
-    },
-    "product_type": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "business_id": {
-            "en": "Business ID",
-            "nb": "Forretnings-ID",
-            "nn": "Forretnings-ID"
-        },
-        "name": {
-            "en": "Name",
-            "nb": "Navn",
-            "nn": "Namn"
-        },
-        "service": {
-            "en": "Service",
-            "nb": "Tjeneste",
-            "nn": "Teneste"
-        },
-        "products": {
-            "en": "Products",
-            "nb": "Produkter",
-            "nn": "Produkt"
-        }
-    },
-    "system_operator_product_type": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "system_operator_id": {
-            "en": "System operator",
-            "nb": "Systemoperatør",
-            "nn": "Systemoperatør"
-        },
-        "product_type_id": {
-            "en": "Product type",
-            "nb": "Produkttype",
-            "nn": "Produkttype"
-        },
-        "status": {
-            "en": "Status",
-            "nb": "Status",
-            "nn": "Status"
-        }
-    },
-    "service_provider_product_application": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "service_provider_id": {
-            "en": "Service provider",
-            "nb": "Tjenesteleverandør",
-            "nn": "Tenesteleverandør"
-        },
-        "system_operator_id": {
-            "en": "System operator",
-            "nb": "Systemoperatør",
-            "nn": "Systemoperatør"
-        },
-        "product_type_ids": {
-            "en": "Product types",
-            "nb": "Produkttyper",
-            "nn": "Produkttypar"
-        },
-        "status": {
-            "en": "Status",
-            "nb": "Status",
-            "nn": "Status"
-        },
-        "qualified_at": {
-            "en": "Qualified at",
-            "nb": "Kvalifisert ved",
-            "nn": "Kvalifisert ved"
-        }
-    },
-    "service_provider_product_suspension": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "procuring_system_operator_id": {
-            "en": "Procuring system operator",
-            "nb": "Innkjøpende systemoperatør",
-            "nn": "Innkjøpande systemoperatør"
-        },
-        "service_provider_id": {
-            "en": "Service provider",
-            "nb": "Tjenesteleverandør",
-            "nn": "Tenesteleverandør"
-        },
-        "product_type_ids": {
-            "en": "Product types",
-            "nb": "Produkttyper",
-            "nn": "Produkttypar"
-        },
-        "reason": {
-            "en": "Reason",
-            "nb": "Årsak",
-            "nn": "Årsak"
-        }
-    },
-    "service_providing_group_product_application": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "service_providing_group_id": {
-            "en": "Service providing group",
-            "nb": "Tjenestelevererende gruppe",
-            "nn": "Tenestelevererande gruppe"
-        },
-        "procuring_system_operator_id": {
-            "en": "Procuring system operator",
-            "nb": "Innkjøpende systemoperatør",
-            "nn": "Innkjøpande systemoperatør"
-        },
-        "product_type_ids": {
-            "en": "Product types",
-            "nb": "Produkttyper",
-            "nn": "Produkttypar"
-        },
-        "status": {
-            "en": "Status",
-            "nb": "Status",
-            "nn": "Status"
-        },
-        "notes": {
-            "en": "Notes",
-            "nb": "Notater",
-            "nn": "Notat"
-        },
-        "prequalified_at": {
-            "en": "Prequalified at",
-            "nb": "Prekvalifisert ved",
-            "nn": "Prekvalifisert ved"
-        },
-        "verified_at": {
-            "en": "Verified at",
-            "nb": "Verifisert ved",
-            "nn": "Verifisert ved"
-        }
-    },
-    "service_providing_group_product_suspension": {
-        "id": {
-            "en": "ID",
-            "nb": "ID",
-            "nn": "ID"
-        },
-        "procuring_system_operator_id": {
-            "en": "Procuring system operator",
-            "nb": "Innkjøpende systemoperatør",
-            "nn": "Innkjøpande systemoperatør"
-        },
-        "service_providing_group_id": {
-            "en": "Service providing group",
-            "nb": "Tjenestelevererende gruppe",
-            "nn": "Tenestelevererande gruppe"
-        },
-        "product_type_ids": {
-            "en": "Product typer",
-            "nb": "Produkttyper",
-            "nn": "Produkttypar"
-        },
-        "reason": {
-            "en": "Reason",
-            "nb": "Årsak",
-            "nn": "Årsak"
-        }
-    },
-    "notice": {
-        "party_id": {
-            "en": "Party",
-            "nb": "Party",
-            "nn": "Party"
-        },
-        "type": {
-            "en": "Type",
-            "nb": "Type",
-            "nn": "Type"
-        },
-        "source": {
-            "en": "Source",
-            "nb": "Kilde",
-            "nn": "Kjelde"
-        },
-        "data": {
-            "en": "Data",
-            "nb": "Data",
-            "nn": "Data"
+    "nn": {
+        "controllable_unit": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "name": "Namn",
+            "start_date": "Startdato",
+            "status": "Status",
+            "regulation_direction": "Reguleringsretning",
+            "maximum_available_capacity": "Maksimal tilgjengeleg kapasitet",
+            "is_small": "Liten",
+            "minimum_duration": "Minimumsvarigheit",
+            "maximum_duration": "Maksimumsvarigheit",
+            "recovery_duration": "Gjenopprettingsvarigheit",
+            "ramp_rate": "Effektendringshastigheit",
+            "accounting_point_id": "Avregningspunkt-ID",
+            "grid_node_id": "Nettnode-ID",
+            "grid_validation_status": "Nettvalideringsstatus",
+            "grid_validation_notes": "Nettvalideringsnotat",
+            "validated_at": "Validert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "controllable_unit_suspension": {
+            "id": "ID",
+            "controllable_unit_id": "Kontrollerbar eining",
+            "impacted_system_operator_id": "Påverka systemoperatør",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "controllable_unit_service_provider": {
+            "id": "ID",
+            "controllable_unit_id": "Kontrollerbar eining",
+            "service_provider_id": "Tenesteleverandør",
+            "end_user_id": "Sluttbrukar",
+            "contract_reference": "Kontraktsreferanse",
+            "valid_from": "Gyldig frå",
+            "valid_to": "Gyldig til",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group": {
+            "id": "ID",
+            "name": "Namn",
+            "service_provider_id": "Tenesteleverandør",
+            "bidding_zone": "Budområde",
+            "status": "Status",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_membership": {
+            "id": "ID",
+            "controllable_unit_id": "Kontrollerbar eining",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "valid_from": "Gyldig frå",
+            "valid_to": "Gyldig til",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_grid_prequalification": {
+            "id": "ID",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "impacted_system_operator_id": "Påverka systemoperatør",
+            "status": "Status",
+            "prequalified_at": "Prekvalifisert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_grid_suspension": {
+            "id": "ID",
+            "impacted_system_operator_id": "Påverka systemoperatør",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "entity": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "business_id_type": "Forretnings-ID-type",
+            "name": "Namn",
+            "type": "Type",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "entity_client": {
+            "id": "ID",
+            "entity_id": "Entitet",
+            "name": "Namn",
+            "client_id": "Klient-ID",
+            "party_id": "Aktør",
+            "scopes": "Scopes",
+            "client_secret": "Klientløyndom",
+            "public_key": "Offentleg nøkkel",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "party": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "business_id_type": "Forretnings-ID-type",
+            "entity_id": "Entitet",
+            "name": "Namn",
+            "role": "Rolle",
+            "type": "Type",
+            "status": "Status",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "party_membership": {
+            "id": "ID",
+            "party_id": "Aktør",
+            "entity_id": "Entitet",
+            "scopes": "Scopes",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "identity": {
+            "id": "ID",
+            "entity_id": "Entitet",
+            "entity_name": "Entitetsnamn",
+            "party_id": "Aktør",
+            "party_name": "Aktørnamn"
+        },
+        "technical_resource": {
+            "id": "ID",
+            "name": "Namn",
+            "controllable_unit_id": "Kontrollerbar eining",
+            "details": "Detaljar",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "event": {
+            "id": "ID",
+            "specversion": "Spesifikasjonsversjon",
+            "time": "Tidspunkt",
+            "type": "Type",
+            "source": "Kjelde",
+            "subject": "Emne",
+            "data": "Data"
+        },
+        "notification": {
+            "id": "ID",
+            "acknowledged": "Bekrefta",
+            "event_id": "Hending-ID",
+            "party_id": "Aktør",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "accounting_point": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "system_operator_id": "Systemoperatør",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "accounting_point_balance_responsible_party": {
+            "accounting_point_id": "Avregningspunkt",
+            "balance_responsible_party_id": "Balanseansvarleg",
+            "energy_direction": "Energiretning",
+            "valid_from": "Gyldig frå",
+            "valid_to": "Gyldig til"
+        },
+        "accounting_point_energy_supplier": {
+            "accounting_point_id": "Avregningspunkt",
+            "energy_supplier_id": "Kraftleverandør",
+            "valid_from": "Gyldig frå",
+            "valid_to": "Gyldig til"
+        },
+        "product_type": {
+            "id": "ID",
+            "business_id": "Forretnings-ID",
+            "name": "Namn",
+            "service": "Teneste",
+            "products": "Produkt"
+        },
+        "system_operator_product_type": {
+            "id": "ID",
+            "system_operator_id": "Systemoperatør",
+            "product_type_id": "Produkttype",
+            "status": "Status",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_provider_product_application": {
+            "id": "ID",
+            "service_provider_id": "Tenesteleverandør",
+            "system_operator_id": "Systemoperatør",
+            "product_type_ids": "Produkttypar",
+            "status": "Status",
+            "qualified_at": "Kvalifisert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_provider_product_suspension": {
+            "id": "ID",
+            "procuring_system_operator_id": "Kjøpande systemoperatør",
+            "service_provider_id": "Tenesteleverandør",
+            "product_type_ids": "Produkttypar",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_product_application": {
+            "id": "ID",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "procuring_system_operator_id": "Kjøpande systemoperatør",
+            "product_type_ids": "Produkttypar",
+            "status": "Status",
+            "notes": "Notat",
+            "prequalified_at": "Prekvalifisert",
+            "verified_at": "Verifisert",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "service_providing_group_product_suspension": {
+            "id": "ID",
+            "procuring_system_operator_id": "Kjøpande systemoperatør",
+            "service_providing_group_id": "Fleksibilitetsgruppe",
+            "product_type_ids": "Produkttypar",
+            "reason": "Årsak",
+            "recorded_at": "Registrert",
+            "recorded_by": "Registrert av"
+        },
+        "notice": {
+            "party_id": "Aktør",
+            "type": "Type",
+            "source": "Kjelde",
+            "data": "Data"
         }
     }
 }

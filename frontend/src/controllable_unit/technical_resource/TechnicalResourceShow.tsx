@@ -57,25 +57,37 @@ export const TechnicalResourceShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
-            <TextField source="name" />
+            <TextField source="id" label="field.technical_resource.id" />
+            <TextField source="name" label="field.technical_resource.name" />
             <ReferenceField
               source="controllable_unit_id"
               reference="controllable_unit"
+              label="field.technical_resource.controllable_unit_id"
             >
               <TextField source="name" />
             </ReferenceField>
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="details" sx={{ whiteSpace: "pre-wrap" }} />
+            <TextField
+              source="details"
+              sx={{ whiteSpace: "pre-wrap" }}
+              label="field.technical_resource.details"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.technical_resource.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.technical_resource.recorded_by"
+            />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton filterOnSubject />}

@@ -82,17 +82,28 @@ export const PartyMembershipList = () => {
               `/party/${record.party_id}/membership/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
+            <TextField source="id" label="field.party_membership.id" />
             <ReferenceField
               source="entity_id"
               reference="entity"
               sortable={false}
+              label="field.party_membership.entity_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <ScopesField source="scopes" />
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <ScopesField
+              source="scopes"
+              label="field.party_membership.scopes"
+            />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.party_membership.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.party_membership.recorded_by"
+            />
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

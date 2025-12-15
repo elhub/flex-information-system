@@ -38,11 +38,15 @@ export const ServiceProviderProductApplicationList = () => {
       filters={ServiceProviderProductApplicationListFilters}
     >
       <Datagrid>
-        <TextField source="id" label="ID" />
+        <TextField
+          source="id"
+          label="field.service_provider_product_application.id"
+        />
         <ReferenceField
           source="service_provider_id"
           reference="party"
           sortable={false}
+          label="field.service_provider_product_application.service_provider_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -50,15 +54,23 @@ export const ServiceProviderProductApplicationList = () => {
           source="system_operator_id"
           reference="party"
           sortable={false}
+          label="field.service_provider_product_application.system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
         <ProductTypeArrayField
-          label="Product types"
+          label="field.service_provider_product_application.product_type_ids"
           source="product_type_ids"
         />
-        <TextField source="status" />
-        <DateField source="qualified_at" showTime />
+        <TextField
+          source="status"
+          label="field.service_provider_product_application.status"
+        />
+        <DateField
+          source="qualified_at"
+          showTime
+          label="field.service_provider_product_application.qualified_at"
+        />
       </Datagrid>
     </List>
   );

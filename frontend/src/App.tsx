@@ -60,6 +60,7 @@ import postgrestRestProvider, {
 } from "@raphiniert/ra-data-postgrest";
 
 import { roleNames } from "./roles";
+import { useI18nProvider } from "./intl/intl";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -168,6 +169,7 @@ const AppBar = () => {
         variant="outlined"
         style={{ color: elhubTheme.palette.primary.contrastText }}
       />
+      <Box sx={{ width: 8 }} />
     </RaAppBar>
   );
 };
@@ -362,6 +364,7 @@ const Layout = ({ children }: LayoutProps) => (
 export const App = () => (
   <Admin
     authProvider={authProvider()}
+    i18nProvider={useI18nProvider()}
     dashboard={Dashboard}
     dataProvider={dataProvider}
     disableTelemetry

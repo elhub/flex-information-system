@@ -84,12 +84,16 @@ export const ServiceProvidingGroupMembershipList = () => {
               `/service_providing_group/${record.service_providing_group_id}/membership/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_providing_group_membership.id"
+            />
             {!record?.id && (
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
                 sortable={false}
+                label="field.service_providing_group_membership.service_providing_group_id"
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -98,11 +102,20 @@ export const ServiceProvidingGroupMembershipList = () => {
               source="controllable_unit_id"
               reference="controllable_unit"
               sortable={false}
+              label="field.service_providing_group_membership.controllable_unit_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <DateField source="valid_from" showTime />
-            <DateField source="valid_to" showTime />
+            <DateField
+              source="valid_from"
+              showTime
+              label="field.service_providing_group_membership.valid_from"
+            />
+            <DateField
+              source="valid_to"
+              showTime
+              label="field.service_providing_group_membership.valid_to"
+            />
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

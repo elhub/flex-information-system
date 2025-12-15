@@ -11,11 +11,14 @@ export const EntityShow = () => (
           Basic information
         </Typography>
         <FieldStack direction="row" spacing={2}>
-          <TextField source="id" label="ID" />
-          <TextField source="name" />
-          <TextField source="type" />
-          <TextField source="business_id" label="Business ID" />
-          <TextField source="business_id_type" label="Business ID type" />
+          <TextField source="id" label="field.entity.id" />
+          <TextField source="name" label="field.entity.name" />
+          <TextField source="type" label="field.entity.type" />
+          <TextField source="business_id" label="field.entity.business_id" />
+          <TextField
+            source="business_id_type"
+            label="field.entity.business_id_type"
+          />
         </FieldStack>
         <Typography variant="h6" gutterBottom>
           Clients

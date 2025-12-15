@@ -86,12 +86,16 @@ export const ServiceProvidingGroupProductSuspensionList = () => {
               `/service_providing_group/${record.service_providing_group_id}/product_suspension/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_providing_group_product_suspension.id"
+            />
             {(!record?.id || isURLFlat) && (
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
                 sortable={false}
+                label="field.service_providing_group_product_suspension.service_providing_group_id"
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -100,13 +104,28 @@ export const ServiceProvidingGroupProductSuspensionList = () => {
               source="procuring_system_operator_id"
               reference="party"
               sortable={false}
+              label="field.service_providing_group_product_suspension.procuring_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <ProductTypeArrayField label="Product types" />
-            <TextField source="reason" />
-            {isURLFlat && <DateField source="recorded_at" showTime />}
-            {isURLFlat && <IdentityField source="recorded_by" />}
+            <ProductTypeArrayField label="field.service_providing_group_product_suspension.product_type_ids" />
+            <TextField
+              source="reason"
+              label="field.service_providing_group_product_suspension.reason"
+            />
+            {isURLFlat && (
+              <DateField
+                source="recorded_at"
+                showTime
+                label="field.service_providing_group_product_suspension.recorded_at"
+              />
+            )}
+            {isURLFlat && (
+              <IdentityField
+                source="recorded_by"
+                label="field.service_providing_group_product_suspension.recorded_by"
+              />
+            )}
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

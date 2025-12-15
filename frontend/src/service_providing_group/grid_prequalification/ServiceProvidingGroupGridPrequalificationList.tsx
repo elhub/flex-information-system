@@ -75,12 +75,16 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
               `/service_providing_group/${record.service_providing_group_id}/grid_prequalification/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_providing_group_grid_prequalification.id"
+            />
             {!record?.id && (
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
                 sortable={false}
+                label="field.service_providing_group_grid_prequalification.service_providing_group_id"
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -89,11 +93,19 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
               source="impacted_system_operator_id"
               reference="party"
               sortable={false}
+              label="field.service_providing_group_grid_prequalification.impacted_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="status" />
-            <DateField source="prequalified_at" showTime />
+            <TextField
+              source="status"
+              label="field.service_providing_group_grid_prequalification.status"
+            />
+            <DateField
+              source="prequalified_at"
+              showTime
+              label="field.service_providing_group_grid_prequalification.prequalified_at"
+            />
           </Datagrid>
         </List>
       </ResourceContextProvider>
