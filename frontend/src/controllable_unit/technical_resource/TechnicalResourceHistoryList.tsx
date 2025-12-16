@@ -44,7 +44,7 @@ export const TechnicalResourceHistoryList = () => {
           `/controllable_unit/${record.controllable_unit_id}/technical_resource_history/${record.id}/show`
         }
       >
-        <TextField source="id" label="field.technical_resource.id" />
+        <TextField source="id" label="field.technical_resource_history.id" />
         <TextField
           source="technical_resource_id"
           label="field.technical_resource_history.technical_resource_id"
