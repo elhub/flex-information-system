@@ -90,12 +90,16 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
               `/service_providing_group/${record.service_providing_group_id}/grid_suspension/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_providing_group_grid_suspension.id"
+            />
             {(!record?.id || isURLFlat) && (
               <ReferenceField
                 source="service_providing_group_id"
                 reference="service_providing_group"
                 sortable={false}
+                label="field.service_providing_group_grid_suspension.service_providing_group_id"
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -104,12 +108,27 @@ export const ServiceProvidingGroupGridSuspensionList = () => {
               source="impacted_system_operator_id"
               reference="party"
               sortable={false}
+              label="field.service_providing_group_grid_suspension.impacted_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="reason" />
-            {isURLFlat && <DateField source="recorded_at" showTime />}
-            {isURLFlat && <IdentityField source="recorded_by" />}
+            <TextField
+              source="reason"
+              label="field.service_providing_group_grid_suspension.reason"
+            />
+            {isURLFlat && (
+              <DateField
+                source="recorded_at"
+                showTime
+                label="field.service_providing_group_grid_suspension.recorded_at"
+              />
+            )}
+            {isURLFlat && (
+              <IdentityField
+                source="recorded_by"
+                label="field.service_providing_group_grid_suspension.recorded_by"
+              />
+            )}
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

@@ -73,12 +73,16 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             `/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}/show`
           }
         >
-          <TextField source="id" label="ID" />
+          <TextField
+            source="id"
+            label="field.service_providing_group_product_application.id"
+          />
           {!record?.id && (
             <ReferenceField
               source="service_providing_group_id"
               reference="service_providing_group"
               sortable={false}
+              label="field.service_providing_group_product_application.service_providing_group_id"
             >
               <TextField source="name" />
             </ReferenceField>
@@ -87,15 +91,19 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             source="procuring_system_operator_id"
             reference="party"
             sortable={false}
+            label="field.service_providing_group_product_application.procuring_system_operator_id"
           >
             <TextField source="name" />
           </ReferenceField>
           <ProductTypeArrayField
-            label="Product types"
+            label="field.service_providing_group_product_application.product_type_ids"
             source="product_type_ids"
             sortable={false}
           />
-          <TextField source="status" />
+          <TextField
+            source="status"
+            label="field.service_providing_group_product_application.status"
+          />
         </Datagrid>
       </List>
     </ResourceContextProvider>

@@ -67,9 +67,12 @@ export const TechnicalResourceList = () => {
               `/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
-            <TextField source="name" />
-            <TextField source="details" />
+            <TextField source="id" label="field.technical_resource.id" />
+            <TextField source="name" label="field.technical_resource.name" />
+            <TextField
+              source="details"
+              label="field.technical_resource.details"
+            />
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

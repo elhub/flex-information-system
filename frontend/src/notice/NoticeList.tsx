@@ -55,11 +55,16 @@ export const NoticeList = () => {
       empty={false}
     >
       <Datagrid expand={NoticeShow} expandSingle={true}>
-        <ReferenceField source="party_id" reference="party" sortable={false}>
+        <ReferenceField
+          source="party_id"
+          reference="party"
+          sortable={false}
+          label="field.notice.party_id"
+        >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="type" />
-        <TextField source="source" />
+        <TextField source="type" label="field.notice.type" />
+        <TextField source="source" label="field.notice.source" />
         <NoticeResourceButton />
       </Datagrid>
     </List>

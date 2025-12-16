@@ -33,11 +33,12 @@ export const SystemOperatorProductTypeList = () => {
       filters={SystemOperatorProductTypeListFilters}
     >
       <Datagrid>
-        <TextField source="id" label="ID" />
+        <TextField source="id" label="field.system_operator_product_type.id" />
         <ReferenceField
           source="system_operator_id"
           reference="party"
           sortable={false}
+          label="field.system_operator_product_type.system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -45,9 +46,17 @@ export const SystemOperatorProductTypeList = () => {
           reference="product_type"
           source="product_type_id"
           sortable={false}
+          label="field.system_operator_product_type.product_type_id"
         />
-        <TextField source="status" />
-        <DateField source="recorded_at" showTime />
+        <TextField
+          source="status"
+          label="field.system_operator_product_type.status"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.system_operator_product_type.recorded_at"
+        />
       </Datagrid>
     </List>
   );

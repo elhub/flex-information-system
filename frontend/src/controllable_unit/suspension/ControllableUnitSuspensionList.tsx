@@ -87,12 +87,18 @@ export const ControllableUnitSuspensionList = () => {
               `/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}/show`
             }
           >
-            {isURLFlat && <TextField source="id" label="ID" />}
+            {isURLFlat && (
+              <TextField
+                source="id"
+                label="field.controllable_unit_suspension.id"
+              />
+            )}
             {isURLFlat && (
               <ReferenceField
                 source="controllable_unit_id"
                 reference="controllable_unit"
                 sortable={false}
+                label="field.controllable_unit_suspension.controllable_unit_id"
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -101,12 +107,27 @@ export const ControllableUnitSuspensionList = () => {
               source="impacted_system_operator_id"
               reference="party"
               sortable={false}
+              label="field.controllable_unit_suspension.impacted_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="reason" />
-            {isURLFlat && <DateField source="recorded_at" showTime />}
-            {isURLFlat && <IdentityField source="recorded_by" />}
+            <TextField
+              source="reason"
+              label="field.controllable_unit_suspension.reason"
+            />
+            {isURLFlat && (
+              <DateField
+                source="recorded_at"
+                showTime
+                label="field.controllable_unit_suspension.recorded_at"
+              />
+            )}
+            {isURLFlat && (
+              <IdentityField
+                source="recorded_by"
+                label="field.controllable_unit_suspension.recorded_by"
+              />
+            )}
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

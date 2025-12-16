@@ -29,26 +29,47 @@ export const PartyShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
-            <TextField source="business_id" label="Business ID" />
-            <TextField source="business_id_type" label="Business ID type" />
-            <ReferenceField source="entity_id" reference="entity">
+            <TextField source="id" label="field.party.id" />
+            <TextField source="business_id" label="field.party.business_id" />
+            <TextField
+              source="business_id_type"
+              label="field.party.business_id_type"
+            />
+            <ReferenceField
+              source="entity_id"
+              reference="entity"
+              label="field.party.entity_id"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="name" />
-            <TextField source="type" />
-            <TextField source="role" />
-            <TextField source="status" />
+            <TextField source="name" label="field.party.name" />
+            <TextField source="type" label="field.party.type" />
+            <TextField source="role" label="field.party.role" />
+            <TextField source="status" label="field.party.status" />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
-            <DateField source="replaced_at" showTime />
-            <IdentityField source="replaced_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.party.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.party.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.party.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.party.replaced_by"
+            />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

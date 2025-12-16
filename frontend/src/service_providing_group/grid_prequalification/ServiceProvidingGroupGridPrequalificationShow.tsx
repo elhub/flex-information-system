@@ -129,29 +129,48 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_providing_group_grid_prequalification.id"
+            />
             <ReferenceField
               source="service_providing_group_id"
               reference="service_providing_group"
+              label="field.service_providing_group_grid_prequalification.service_providing_group_id"
             >
               <TextField source="name" />
             </ReferenceField>
             <ReferenceField
               source="impacted_system_operator_id"
               reference="party"
+              label="field.service_providing_group_grid_prequalification.impacted_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="status" />
-            <DateField source="prequalified_at" showTime />
+            <TextField
+              source="status"
+              label="field.service_providing_group_grid_prequalification.status"
+            />
+            <DateField
+              source="prequalified_at"
+              showTime
+              label="field.service_providing_group_grid_prequalification.prequalified_at"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.service_providing_group_grid_prequalification.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.service_providing_group_grid_prequalification.recorded_by"
+            />
           </FieldStack>
         </Stack>
         <HistoryButton />

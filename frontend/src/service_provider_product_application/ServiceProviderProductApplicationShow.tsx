@@ -34,15 +34,26 @@ export const ServiceProviderProductApplicationShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
-            <ReferenceField source="service_provider_id" reference="party">
+            <TextField
+              source="id"
+              label="field.service_provider_product_application.id"
+            />
+            <ReferenceField
+              source="service_provider_id"
+              reference="party"
+              label="field.service_provider_product_application.service_provider_id"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField source="system_operator_id" reference="party">
+            <ReferenceField
+              source="system_operator_id"
+              reference="party"
+              label="field.service_provider_product_application.system_operator_id"
+            >
               <TextField source="name" />
             </ReferenceField>
             <ProductTypeArrayField
-              label="Product types"
+              label="field.service_provider_product_application.product_type_ids"
               source="product_type_ids"
             />
           </FieldStack>
@@ -51,8 +62,15 @@ export const ServiceProviderProductApplicationShow = () => {
             Application process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="status" />
-            <DateField source="qualified_at" showTime />
+            <TextField
+              source="status"
+              label="field.service_provider_product_application.status"
+            />
+            <DateField
+              source="qualified_at"
+              showTime
+              label="field.service_provider_product_application.qualified_at"
+            />
           </FieldStack>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <ServiceProviderProductApplicationAlreadyQualified />
@@ -65,10 +83,24 @@ export const ServiceProviderProductApplicationShow = () => {
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
-            <DateField source="replaced_at" showTime />
-            <IdentityField source="replaced_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.service_provider_product_application.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.service_provider_product_application.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.service_provider_product_application.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.service_provider_product_application.replaced_by"
+            />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

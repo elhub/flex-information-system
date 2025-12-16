@@ -58,22 +58,42 @@ export const PartyMembershipShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
-            <ReferenceField source="entity_id" reference="entity" link="show">
+            <TextField source="id" label="field.party_membership.id" />
+            <ReferenceField
+              source="entity_id"
+              reference="entity"
+              link="show"
+              label="field.party_membership.entity_id"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField source="party_id" reference="party" link="show">
+            <ReferenceField
+              source="party_id"
+              reference="party"
+              link="show"
+              label="field.party_membership.party_id"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <ScopesField source="scopes" />
+            <ScopesField
+              source="scopes"
+              label="field.party_membership.scopes"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.party_membership.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.party_membership.recorded_by"
+            />
           </FieldStack>
         </Stack>
         <EventButton filterOnSubject />

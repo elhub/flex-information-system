@@ -77,10 +77,16 @@ const NoticePartyMissingShow = () => {
         <ResourceContextProvider value="entity">
           <RecordContextProvider value={record.data.entity}>
             <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
-              <TextField source="business_id" label="Business ID" />
-              <TextField source="business_id_type" label="Business ID Type" />
-              <TextField source="name" />
-              <TextField source="type" />
+              <TextField
+                source="business_id"
+                label="field.entity.business_id"
+              />
+              <TextField
+                source="business_id_type"
+                label="field.entity.business_id_type"
+              />
+              <TextField source="name" label="field.entity.name" />
+              <TextField source="type" label="field.entity.type" />
               {entityAlert}
             </FieldStack>
           </RecordContextProvider>
@@ -90,11 +96,14 @@ const NoticePartyMissingShow = () => {
         <ResourceContextProvider value="party">
           <RecordContextProvider value={record.data.party}>
             <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
-              <TextField source="business_id" label="Business ID" />
-              <TextField source="business_id_type" label="Business ID Type" />
-              <TextField source="entity_id" label="Entity ID" />
-              <TextField source="name" />
-              <TextField source="type" />
+              <TextField source="business_id" label="field.party.business_id" />
+              <TextField
+                source="business_id_type"
+                label="field.party.business_id_type"
+              />
+              <TextField source="entity_id" label="field.party.entity_id" />
+              <TextField source="name" label="field.party.name" />
+              <TextField source="type" label="field.party.type" />
               <PartyCreateButton disabled={!entityExists} />
             </FieldStack>
           </RecordContextProvider>
@@ -131,10 +140,16 @@ const NoticePartyOutdatedShow = () => {
           <ResourceContextProvider value="entity">
             <RecordContextProvider value={record.data.entity}>
               <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
-                <TextField source="business_id" label="Business ID" />
-                <TextField source="business_id_type" label="Business ID Type" />
-                <TextField source="name" />
-                <TextField source="type" />
+                <TextField
+                  source="business_id"
+                  label="field.entity.business_id"
+                />
+                <TextField
+                  source="business_id_type"
+                  label="field.entity.business_id_type"
+                />
+                <TextField source="name" label="field.entity.name" />
+                <TextField source="type" label="field.entity.type" />
                 {entityExists ? (
                   <Alert severity="success">
                     <AlertTitle>Found</AlertTitle>
@@ -172,17 +187,17 @@ const NoticePartyOutdatedShow = () => {
             >
               <DataTable.Col
                 source="business_id"
-                label="Business ID"
+                label="field.party.business_id"
                 field={TextField}
               />
               <DataTable.Col
                 source="business_id_type"
-                label="Business ID type"
+                label="field.party.business_id_type"
                 field={TextField}
               />
               <DataTable.Col
                 source="entity_id"
-                label="Entity ID"
+                label="field.party.entity_id"
                 field={TextField}
                 cellSx={(r) =>
                   entityChanged
@@ -194,6 +209,7 @@ const NoticePartyOutdatedShow = () => {
               />
               <DataTable.Col
                 source="name"
+                label="field.party.name"
                 field={TextField}
                 cellSx={(r) =>
                   nameChanged
@@ -203,7 +219,11 @@ const NoticePartyOutdatedShow = () => {
                     : {}
                 }
               />
-              <DataTable.Col source="type" field={TextField} />
+              <DataTable.Col
+                source="type"
+                label="field.party.type"
+                field={TextField}
+              />
             </DataTable>
             <PartyUpdateButton
               party_id={partyID}
@@ -238,8 +258,16 @@ const NoticeCUSPValidTimeOutsideContractShow = () => {
             bulkActionButtons={false}
             data={record.data.invalid_timeline}
           >
-            <DataTable.Col source="valid_from" field={DateField} />
-            <DataTable.Col source="valid_to" field={DateField} />
+            <DataTable.Col
+              source="valid_from"
+              label="field.controllable_unit_service_provider.valid_from"
+              field={DateField}
+            />
+            <DataTable.Col
+              source="valid_to"
+              label="field.controllable_unit_service_provider.valid_to"
+              field={DateField}
+            />
           </DataTable>
         </FieldStack>
       </Stack>
@@ -261,7 +289,10 @@ const NoticeSPPSProductTypeNotQualifiedShow = () => {
         </Typography>
         <RecordContextProvider value={record.data}>
           <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
-            <ProductTypeArrayField source="product_type_ids" />
+            <ProductTypeArrayField
+              label="field.service_provider_product_suspension.product_type_ids"
+              source="product_type_ids"
+            />
           </FieldStack>
         </RecordContextProvider>
       </Stack>

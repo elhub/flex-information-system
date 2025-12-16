@@ -38,11 +38,20 @@ export const ControllableUnitEnergySupplierList = () => {
               source="energy_supplier_id"
               reference="party"
               sortable={false}
+              label="field.accounting_point_energy_supplier.energy_supplier_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <DateField source="valid_from" showTime />
-            <DateField source="valid_to" showTime />
+            <DateField
+              source="valid_from"
+              showTime
+              label="field.accounting_point_energy_supplier.valid_from"
+            />
+            <DateField
+              source="valid_to"
+              showTime
+              label="field.accounting_point_energy_supplier.valid_to"
+            />
           </Datagrid>
         </List>
       </ResourceContextProvider>

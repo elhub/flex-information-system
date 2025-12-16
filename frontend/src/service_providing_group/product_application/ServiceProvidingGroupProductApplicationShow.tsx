@@ -90,16 +90,21 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_providing_group_product_application.id"
+            />
             <ReferenceField
               source="service_providing_group_id"
               reference="service_providing_group"
+              label="field.service_providing_group_product_application.service_providing_group_id"
             >
               <TextField source="name" />
             </ReferenceField>
             <ReferenceField
               source="procuring_system_operator_id"
               reference="party"
+              label="field.service_providing_group_product_application.procuring_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
@@ -113,20 +118,48 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             Application process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="status" />
-            <TextField source="notes" />
-            <DateField source="prequalified_at" showTime />
-            <DateField source="verified_at" showTime />
+            <TextField
+              source="status"
+              label="field.service_providing_group_product_application.status"
+            />
+            <TextField
+              source="notes"
+              label="field.service_providing_group_product_application.notes"
+            />
+            <DateField
+              source="prequalified_at"
+              showTime
+              label="field.service_providing_group_product_application.prequalified_at"
+            />
+            <DateField
+              source="verified_at"
+              showTime
+              label="field.service_providing_group_product_application.verified_at"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
-            <DateField source="replaced_at" showTime />
-            <IdentityField source="replaced_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.service_providing_group_product_application.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.service_providing_group_product_application.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.service_providing_group_product_application.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.service_providing_group_product_application.replaced_by"
+            />
           </FieldStack>
         </Stack>
         <HistoryButton />

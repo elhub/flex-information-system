@@ -33,22 +33,49 @@ export const ServiceProvidingGroupShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
-            <TextField source="name" />
-            <ReferenceField source="service_provider_id" reference="party">
+            <TextField source="id" label="field.service_providing_group.id" />
+            <TextField
+              source="name"
+              label="field.service_providing_group.name"
+            />
+            <ReferenceField
+              source="service_provider_id"
+              reference="party"
+              label="field.service_providing_group.service_provider_id"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="bidding_zone" />
-            <TextField source="status" />
+            <TextField
+              source="bidding_zone"
+              label="field.service_providing_group.bidding_zone"
+            />
+            <TextField
+              source="status"
+              label="field.service_providing_group.status"
+            />
           </FieldStack>
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
-            <DateField source="replaced_at" showTime />
-            <IdentityField source="replaced_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.service_providing_group.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.service_providing_group.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.service_providing_group.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.service_providing_group.replaced_by"
+            />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

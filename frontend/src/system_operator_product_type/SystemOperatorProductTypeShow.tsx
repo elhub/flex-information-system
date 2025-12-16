@@ -25,21 +25,49 @@ export const SystemOperatorProductTypeShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
-            <ReferenceField source="system_operator_id" reference="party">
+            <TextField
+              source="id"
+              label="field.system_operator_product_type.id"
+            />
+            <ReferenceField
+              source="system_operator_id"
+              reference="party"
+              label="field.system_operator_product_type.system_operator_id"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField reference="product_type" source="product_type_id" />
-            <TextField source="status" />
+            <ReferenceField
+              reference="product_type"
+              source="product_type_id"
+              label="field.system_operator_product_type.product_type_id"
+            />
+            <TextField
+              source="status"
+              label="field.system_operator_product_type.status"
+            />
           </FieldStack>
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
-            <DateField source="replaced_at" showTime />
-            <IdentityField source="replaced_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.system_operator_product_type.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.system_operator_product_type.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.system_operator_product_type.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.system_operator_product_type.replaced_by"
+            />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

@@ -30,31 +30,56 @@ export const ServiceProviderProductSuspensionShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
+            <TextField
+              source="id"
+              label="field.service_provider_product_suspension.id"
+            />
             <ReferenceField
               source="procuring_system_operator_id"
               reference="party"
+              label="field.service_provider_product_suspension.procuring_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField source="service_provider_id" reference="party">
+            <ReferenceField
+              source="service_provider_id"
+              reference="party"
+              label="field.service_provider_product_suspension.service_provider_id"
+            >
               <TextField source="name" />
             </ReferenceField>
             <ProductTypeArrayField
-              label="Product types"
+              label="field.service_provider_product_suspension.product_type_ids"
               source="product_type_ids"
             />
-            <TextField source="reason" />
+            <TextField
+              source="reason"
+              label="field.service_provider_product_suspension.reason"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
-            <DateField source="replaced_at" showTime />
-            <IdentityField source="replaced_by" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.service_provider_product_suspension.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.service_provider_product_suspension.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.service_provider_product_suspension.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.service_provider_product_suspension.replaced_by"
+            />
           </FieldStack>
         </Stack>
         <ResourceHistoryButton />

@@ -66,19 +66,30 @@ export const EntityClientList = () => {
               `/entity/${record.entity_id}/client/${record.id}/show`
             }
           >
-            <TextField source="id" label="ID" />
-            <TextField source="client_id" label="Client ID" />
-            <TextField source="name" />
+            <TextField source="id" label="field.entity_client.id" />
+            <TextField
+              source="client_id"
+              label="field.entity_client.client_id"
+            />
+            <TextField source="name" label="field.entity_client.name" />
             <ReferenceField
               source="party_id"
               reference="party"
               sortable={false}
+              label="field.entity_client.party_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <ScopesField source="scopes" />
-            <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
+            <ScopesField source="scopes" label="field.entity_client.scopes" />
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.entity_client.recorded_at"
+            />
+            <IdentityField
+              source="recorded_by"
+              label="field.entity_client.recorded_by"
+            />
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}

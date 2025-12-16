@@ -38,12 +38,24 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
               source="balance_responsible_party_id"
               reference="party"
               sortable={false}
+              label="field.accounting_point_balance_responsible_party.balance_responsible_party_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="energy_direction" />
-            <DateField source="valid_from" showTime />
-            <DateField source="valid_to" showTime />
+            <TextField
+              source="energy_direction"
+              label="field.accounting_point_balance_responsible_party.energy_direction"
+            />
+            <DateField
+              source="valid_from"
+              showTime
+              label="field.accounting_point_balance_responsible_party.valid_from"
+            />
+            <DateField
+              source="valid_to"
+              showTime
+              label="field.accounting_point_balance_responsible_party.valid_to"
+            />
           </Datagrid>
         </List>
       </ResourceContextProvider>
