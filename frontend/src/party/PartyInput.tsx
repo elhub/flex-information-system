@@ -16,6 +16,8 @@ import { useFormContext } from "react-hook-form";
 import { roleNames } from "../roles";
 import { useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { zParty } from "../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // component updating the role field automatically based on the type field
 const PartyTypeInput = (props: any) => {
@@ -127,27 +129,38 @@ export const PartyInput = () => {
   );
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zParty)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <TextInput source="name" />
-          <TextInput source="business_id" label="Business ID" />
+          <TextInput source="name" label="field.party.name" />
+          <TextInput source="business_id" label="field.party.business_id" />
           <PartyBusinessIDTypeInput
             source="business_id_type"
-            label="Business ID type"
+            label="field.party.business_id_type"
           />
-          <PartyTypeInput source="type" />
+          <PartyTypeInput source="type" label="field.party.type" />
           <TextInput
             source="role"
+            label="field.party.role"
             readOnly // see comment in PartyTypeInput
             defaultValue="flex_balance_responsible_party"
           />
-          <AutocompleteReferenceInput source="entity_id" reference="entity" />
+          <AutocompleteReferenceInput
+            source="entity_id"
+            reference="entity"
+            label="field.party.entity_id"
+          />
           <SelectInput
             source="status"
+            label="field.party.status"
             validate={createOrUpdate == "update" ? required() : undefined}
             choices={["new", "active", "inactive", "suspended", "terminated"]}
           />

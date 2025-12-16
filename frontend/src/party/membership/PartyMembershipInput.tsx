@@ -9,6 +9,8 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ScopesInput } from "../../components/scopes";
 import { useMemo } from "react";
+import { zPartyMembership } from "../../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
@@ -30,20 +32,37 @@ export const PartyMembershipInput = () => {
   );
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zPartyMembership)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <PartyReferenceInput source="party_id" readOnly />
+          <PartyReferenceInput
+            source="party_id"
+            label="field.party_membership.party_id"
+            readOnly
+          />
           {overrideRecord?.showTechnicalEntityID ? (
-            <NumberInput source="entity_id" readOnly />
+            <NumberInput
+              source="entity_id"
+              label="field.party_membership.entity_id"
+              readOnly
+            />
           ) : (
-            <AutocompleteReferenceInput source="entity_id" reference="entity" />
+            <AutocompleteReferenceInput
+              source="entity_id"
+              reference="entity"
+              label="field.party_membership.entity_id"
+            />
           )}
         </InputStack>
-        <ScopesInput source="scopes" />
+        <ScopesInput source="scopes" label="field.party_membership.scopes" />
       </Stack>
     </SimpleForm>
   );
