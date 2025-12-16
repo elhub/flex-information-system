@@ -44,11 +44,15 @@ export const ControllableUnitSuspensionHistoryList = () => {
           `/controllable_unit/${record.controllable_unit_id}/suspension_history/${record.id}/show`
         }
       >
-        <TextField source="id" label="ID" />
+        <TextField
+          source="id"
+          label="field.controllable_unit_suspension_history.id"
+        />
         <ReferenceField
           source="controllable_unit_id"
           reference="controllable_unit"
           sortable={false}
+          label="field.controllable_unit_suspension_history.controllable_unit_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -56,12 +60,23 @@ export const ControllableUnitSuspensionHistoryList = () => {
           source="impacted_system_operator_id"
           reference="party"
           sortable={false}
+          label="field.controllable_unit_suspension_history.impacted_system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="reason" />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
+        <TextField
+          source="reason"
+          label="field.controllable_unit_suspension_history.reason"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.controllable_unit_suspension_history.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.controllable_unit_suspension_history.recorded_by"
+        />
       </Datagrid>
     </List>
   );

@@ -2,6 +2,7 @@
 import yaml
 import json
 import sys
+from copy import deepcopy
 
 """
 This script copies the internationalisation labels from the resource YAML file
@@ -54,6 +55,21 @@ if __name__ == "__main__":
             }
         if len(resource_translations) > 0:
             translations[resource["id"]] = resource_translations
+        if "history" in resource:
+            resource_translations = deepcopy(resource_translations)
+            if "x-intl" in resource:
+                resource_translations[f"{resource['id']}_id"] = resource["x-intl"]
+            resource_translations["replaced_at"] = {
+                "en": "Replaced at",
+                "nb": "Erstattet",
+                "nn": "Erstattet",
+            }
+            resource_translations["replaced_by"] = {
+                "en": "Replaced by",
+                "nb": "Erstattet av",
+                "nn": "Erstattet av",
+            }
+            translations[f"{resource['id']}_history"] = resource_translations
 
     transposed, keys = transpose_translations(translations)
 

@@ -96,7 +96,7 @@ export const ControllableUnitServiceProviderShow = () => {
             />
             <TextField
               source="controllable_unit_service_provider_id"
-              label="field.controllable_unit_service_provider.controllable_unit_service_provider_id"
+              label="field.controllable_unit_service_provider_history.controllable_unit_service_provider_id"
             />
             <ReferenceField
               source="controllable_unit_id"
@@ -152,6 +152,15 @@ export const ControllableUnitServiceProviderShow = () => {
             <IdentityField
               source="recorded_by"
               label="field.controllable_unit_service_provider.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.controllable_unit_service_provider_history.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.controllable_unit_service_provider_history.replaced_by"
             />
           </FieldStack>
         </Stack>

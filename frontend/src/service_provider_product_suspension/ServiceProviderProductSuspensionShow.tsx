@@ -34,6 +34,10 @@ export const ServiceProviderProductSuspensionShow = () => {
               source="id"
               label="field.service_provider_product_suspension.id"
             />
+            <TextField
+              source="service_provider_product_suspension_id"
+              label="field.service_provider_product_suspension_history.service_provider_product_suspension_id"
+            />
             <ReferenceField
               source="procuring_system_operator_id"
               reference="party"
@@ -74,11 +78,11 @@ export const ServiceProviderProductSuspensionShow = () => {
             <DateField
               source="replaced_at"
               showTime
-              label="field.service_provider_product_suspension.replaced_at"
+              label="field.service_provider_product_suspension_history.replaced_at"
             />
             <IdentityField
               source="replaced_by"
-              label="field.service_provider_product_suspension.replaced_by"
+              label="field.service_provider_product_suspension_history.replaced_by"
             />
           </FieldStack>
         </Stack>

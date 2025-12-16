@@ -18,12 +18,19 @@ export const ServiceProviderProductApplicationHistoryList = () => {
       empty={false}
     >
       <Datagrid rowClick={historyRowClick}>
-        <TextField source="id" label="ID" />
-        <TextField source="service_provider_product_application_id" />
+        <TextField
+          source="id"
+          label="field.service_provider_product_application_history.id"
+        />
+        <TextField
+          source="service_provider_product_application_id"
+          label="field.service_provider_product_application_history.service_provider_product_application_id"
+        />
         <ReferenceField
           source="service_provider_id"
           reference="party"
           sortable={false}
+          label="field.service_provider_product_application_history.service_provider_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -31,13 +38,29 @@ export const ServiceProviderProductApplicationHistoryList = () => {
           source="system_operator_id"
           reference="party"
           sortable={false}
+          label="field.service_provider_product_application_history.system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="status" />
-        <DateField source="qualified_at" showTime />
-        <DateField source="recorded_at" showTime />
-        <DateField source="replaced_at" showTime />
+        <TextField
+          source="status"
+          label="field.service_provider_product_application_history.status"
+        />
+        <DateField
+          source="qualified_at"
+          showTime
+          label="field.service_provider_product_application_history.qualified_at"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.service_provider_product_application_history.recorded_at"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.service_provider_product_application_history.replaced_at"
+        />
       </Datagrid>
     </List>
   );

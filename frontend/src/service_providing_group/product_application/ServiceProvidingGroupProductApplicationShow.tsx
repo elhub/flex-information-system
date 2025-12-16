@@ -94,6 +94,10 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               source="id"
               label="field.service_providing_group_product_application.id"
             />
+            <TextField
+              source="service_providing_group_product_application_id"
+              label="field.service_providing_group_product_application_history.service_providing_group_product_application_id"
+            />
             <ReferenceField
               source="service_providing_group_id"
               reference="service_providing_group"
@@ -154,11 +158,11 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             <DateField
               source="replaced_at"
               showTime
-              label="field.service_providing_group_product_application.replaced_at"
+              label="field.service_providing_group_product_application_history.replaced_at"
             />
             <IdentityField
               source="replaced_by"
-              label="field.service_providing_group_product_application.replaced_by"
+              label="field.service_providing_group_product_application_history.replaced_by"
             />
           </FieldStack>
         </Stack>
