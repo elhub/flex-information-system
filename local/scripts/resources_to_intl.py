@@ -5,28 +5,27 @@ import sys
 
 """
 This script copies the internationalisation labels from the resource YAML file
-to a JSON file used by the frontend.
+to a TypeScript file used by the frontend.
 """
 
-output_file = "frontend/src/intl/field-labels.json"
+output_file = "frontend/src/intl/field-labels.ts"
 
 
 # transpose a dictionary to switch between the following two types:
 #   input:  resource |-> (field    |-> (language |-> label))
-#   output: language |-> (resource |-> (field    |-> label))
+#   output: language |-> ("resource.field" |-> label)
 def transpose_translations(tr):
     translations = {}
+    all_keys = set()
     for resource, resource_language_labels in tr.items():
         for field, language_labels in resource_language_labels.items():
+            key = f"{resource}.{field}"
+            all_keys.add(key)
             for lang, label in language_labels.items():
-                # add the label, creating the nested structure if not exists
                 if lang not in translations:
-                    translations[lang] = {resource: {field: label}}
-                elif resource not in translations[lang]:
-                    translations[lang][resource] = {field: label}
-                else:
-                    translations[lang][resource][field] = label
-    return translations
+                    translations[lang] = {}
+                translations[lang][key] = label
+    return translations, sorted(list(all_keys))
 
 
 # ------------------------------------------------------------------------------
@@ -56,8 +55,17 @@ if __name__ == "__main__":
         if len(resource_translations) > 0:
             translations[resource["id"]] = resource_translations
 
+    transposed, keys = transpose_translations(translations)
+
     with open(output_file, "w") as output_f:
-        json.dump(
-            transpose_translations(translations), output_f, indent=4, ensure_ascii=False
+        output_f.write("// AUTO-GENERATED FILE (scripts/resources_to_intl.py)\n\n")
+        output_f.write("export type FieldLabel =\n")
+        for i, key in enumerate(keys):
+            output_f.write(f'  | "{key}"\n')
+        output_f.write(";\n\n")
+
+        output_f.write(
+            "export const fieldLabels: Record<string, Record<FieldLabel, string>> = "
         )
-        print(file=output_f)
+        json.dump(transposed, output_f, indent=2, ensure_ascii=False)
+        output_f.write(";\n")
