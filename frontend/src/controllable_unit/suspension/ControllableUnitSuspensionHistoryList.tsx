@@ -77,6 +77,15 @@ export const ControllableUnitSuspensionHistoryList = () => {
           source="recorded_by"
           label="field.controllable_unit_suspension_history.recorded_by"
         />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.controllable_unit_suspension_history.replaced_at"
+        />
+        <IdentityField
+          source="replaced_by"
+          label="field.controllable_unit_suspension_history.replaced_by"
+        />
       </Datagrid>
     </List>
   );
