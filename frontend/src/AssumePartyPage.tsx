@@ -27,6 +27,7 @@ import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
 import { ScopesField } from "./components/scopes";
 import { useTheme } from "@mui/material/styles";
+import { EnumField } from "./components/EnumField";
 
 export const AssumePartyPage = () => {
   const [unAssumed, setUnAssumed] = useState(false);
@@ -162,7 +163,7 @@ export const AssumePartyPage = () => {
               reference="party"
               sortable={false}
             >
-              <TextField source="type" />
+              <EnumField source="type" enumKey="party.type" />
             </ReferenceField>
             <ScopesField source="scopes" />
             <ReferenceField
@@ -200,7 +201,7 @@ export const AssumePartyPage = () => {
             <Datagrid bulkActionButtons={false} rowClick={false}>
               <TextField label="ID" source="id" />
               <TextField source="name" />
-              <TextField source="type" />
+              <EnumField source="type" enumKey="party.type" />
               <ReferenceField
                 label="Assume party"
                 source="id"

@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../auth/permissions";
+import { EnumField } from "../components/EnumField";
 
 const CreateCUSPButton = () => (
   <Button
@@ -88,10 +89,15 @@ export const ControllableUnitList = () => {
           source="start_date"
           label="field.controllable_unit.start_date"
         />
-        <TextField source="status" label="field.controllable_unit.status" />
-        <TextField
+        <EnumField
+          source="status"
+          label="field.controllable_unit.status"
+          enumKey="controllable_unit.status"
+        />
+        <EnumField
           source="regulation_direction"
           label="field.controllable_unit.regulation_direction"
+          enumKey="controllable_unit.regulation_direction"
         />
         <BooleanField
           source="is_small"
@@ -108,9 +114,10 @@ export const ControllableUnitList = () => {
           source="grid_node_id"
           label="field.controllable_unit.grid_node_id"
         />
-        <TextField
+        <EnumField
           source="grid_validation_status"
           label="field.controllable_unit.grid_validation_status"
+          enumKey="controllable_unit.grid_validation_status"
         />
         <DateField
           source="recorded_at"

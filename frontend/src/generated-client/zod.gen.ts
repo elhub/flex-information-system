@@ -278,6 +278,36 @@ export const zServiceProvidingGroupGridSuspensionCommentVisibility = z.enum([
 export const zPartyBusinessIdType = z.enum(["gln", "uuid", "eic_x", "org"]);
 
 /**
+ * The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
+ */
+export const zPartyRole = z.enum([
+  "flex_balance_responsible_party",
+  "flex_end_user",
+  "flex_energy_supplier",
+  "flex_flexibility_information_system_operator",
+  "flex_market_operator",
+  "flex_organisation",
+  "flex_service_provider",
+  "flex_system_operator",
+  "flex_third_party",
+]);
+
+/**
+ * The type of the party, e.g SystemOperator, ServiceProvider
+ */
+export const zPartyType = z.enum([
+  "balance_responsible_party",
+  "end_user",
+  "energy_supplier",
+  "flexibility_information_system_operator",
+  "market_operator",
+  "organisation",
+  "service_provider",
+  "system_operator",
+  "third_party",
+]);
+
+/**
  * The status of the party.
  */
 export const zPartyStatus = z.enum([
@@ -1363,6 +1393,18 @@ export const zPartyUpdateRequest = z.object({
       z.string().optional(),
     ),
   ),
+  role: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyRole.optional(),
+    ),
+  ),
+  type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyType.optional(),
+    ),
+  ),
   status: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1394,18 +1436,6 @@ export const zPartyCreateData = zPartyUpdateRequest.and(
       z.preprocess(
         (value) => (value === null ? undefined : value),
         z.int().optional(),
-      ),
-    ),
-    role: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-    type: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
       ),
     ),
   }),

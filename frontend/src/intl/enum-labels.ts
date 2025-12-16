@@ -21,11 +21,29 @@ export type EnumLabel =
   | "party.business_id_type.gln"
   | "party.business_id_type.org"
   | "party.business_id_type.uuid"
+  | "party.role.flex_balance_responsible_party"
+  | "party.role.flex_end_user"
+  | "party.role.flex_energy_supplier"
+  | "party.role.flex_flexibility_information_system_operator"
+  | "party.role.flex_market_operator"
+  | "party.role.flex_organisation"
+  | "party.role.flex_service_provider"
+  | "party.role.flex_system_operator"
+  | "party.role.flex_third_party"
   | "party.status.active"
   | "party.status.inactive"
   | "party.status.new"
   | "party.status.suspended"
   | "party.status.terminated"
+  | "party.type.balance_responsible_party"
+  | "party.type.end_user"
+  | "party.type.energy_supplier"
+  | "party.type.flexibility_information_system_operator"
+  | "party.type.market_operator"
+  | "party.type.organisation"
+  | "party.type.service_provider"
+  | "party.type.system_operator"
+  | "party.type.third_party"
   | "service_provider_product_application.status.communication_test"
   | "service_provider_product_application.status.in_progress"
   | "service_provider_product_application.status.not_qualified"
@@ -104,6 +122,24 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x": "EIC-X (Energy Identification Code - Market parties)",
     "party.business_id_type.org": "Organisation number",
+    "party.role.flex_balance_responsible_party": "Balance Responsible Party",
+    "party.role.flex_end_user": "End User",
+    "party.role.flex_energy_supplier": "Energy Supplier",
+    "party.role.flex_flexibility_information_system_operator": "Flexibility Information System Operator",
+    "party.role.flex_market_operator": "Market Operator",
+    "party.role.flex_organisation": "Organisation",
+    "party.role.flex_service_provider": "Service Provider",
+    "party.role.flex_system_operator": "System Operator",
+    "party.role.flex_third_party": "Third Party",
+    "party.type.balance_responsible_party": "Balance Responsible Party",
+    "party.type.end_user": "End User",
+    "party.type.energy_supplier": "Energy Supplier",
+    "party.type.flexibility_information_system_operator": "Flexibility Information System Operator",
+    "party.type.market_operator": "Market Operator",
+    "party.type.organisation": "Organisation",
+    "party.type.service_provider": "Service Provider",
+    "party.type.system_operator": "System Operator",
+    "party.type.third_party": "Third Party",
     "party.status.new": "New",
     "party.status.active": "Active",
     "party.status.inactive": "Inactive",
@@ -170,6 +206,24 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x": "EIC-X (Energy Identification Code - Markedsaktører)",
     "party.business_id_type.org": "Organisasjonsnummer",
+    "party.role.flex_balance_responsible_party": "Balanseansvarlig",
+    "party.role.flex_end_user": "Sluttbruker",
+    "party.role.flex_energy_supplier": "Kraftleverandør",
+    "party.role.flex_flexibility_information_system_operator": "Fleksibilitetsinformasjonssystemoperatør",
+    "party.role.flex_market_operator": "Markedsoperatør",
+    "party.role.flex_organisation": "Organisasjon",
+    "party.role.flex_service_provider": "Tjenesteleverandør",
+    "party.role.flex_system_operator": "Systemoperatør",
+    "party.role.flex_third_party": "Tredjepart",
+    "party.type.balance_responsible_party": "Balansansvarlig",
+    "party.type.end_user": "Sluttbruker",
+    "party.type.energy_supplier": "Kraftleverandør",
+    "party.type.flexibility_information_system_operator": "Fleksibilitetsinformasjonssystemoperatør",
+    "party.type.market_operator": "Markedsoperatør",
+    "party.type.organisation": "Organisasjon",
+    "party.type.service_provider": "Tjenesteleverandør",
+    "party.type.system_operator": "Systemoperatør",
+    "party.type.third_party": "Tredjepart",
     "party.status.new": "Ny",
     "party.status.active": "Aktiv",
     "party.status.inactive": "Inaktiv",
@@ -236,6 +290,24 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x": "EIC-X (Energy Identification Code - Marknadsaktørar)",
     "party.business_id_type.org": "Organisasjonsnummer",
+    "party.role.flex_balance_responsible_party": "Balanseansvarleg",
+    "party.role.flex_end_user": "Sluttbrukar",
+    "party.role.flex_energy_supplier": "Kraftleverandør",
+    "party.role.flex_flexibility_information_system_operator": "Fleksibilitetsinformasjonssystemoperatør",
+    "party.role.flex_market_operator": "Marknadsoperatør",
+    "party.role.flex_organisation": "Organisasjon",
+    "party.role.flex_service_provider": "Tenesteleverandør",
+    "party.role.flex_system_operator": "Systemoperatør",
+    "party.role.flex_third_party": "Tredjepart",
+    "party.type.balance_responsible_party": "Balansansvarleg",
+    "party.type.end_user": "Sluttbrukar",
+    "party.type.energy_supplier": "Kraftleverandør",
+    "party.type.flexibility_information_system_operator": "Fleksibilitetsinformasjonssystemoperatør",
+    "party.type.market_operator": "Marknadsoperatør",
+    "party.type.organisation": "Organisasjon",
+    "party.type.service_provider": "Tenesteleverandør",
+    "party.type.system_operator": "Systemoperatør",
+    "party.type.third_party": "Tredjepart",
     "party.status.new": "Ny",
     "party.status.active": "Aktiv",
     "party.status.inactive": "Inaktiv",

@@ -329,6 +329,34 @@ export type ServiceProvidingGroupGridSuspensionCommentVisibility =
 export type PartyBusinessIdType = "gln" | "uuid" | "eic_x" | "org";
 
 /**
+ * The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
+ */
+export type PartyRole =
+  | "flex_balance_responsible_party"
+  | "flex_end_user"
+  | "flex_energy_supplier"
+  | "flex_flexibility_information_system_operator"
+  | "flex_market_operator"
+  | "flex_organisation"
+  | "flex_service_provider"
+  | "flex_system_operator"
+  | "flex_third_party";
+
+/**
+ * The type of the party, e.g SystemOperator, ServiceProvider
+ */
+export type PartyType =
+  | "balance_responsible_party"
+  | "end_user"
+  | "energy_supplier"
+  | "flexibility_information_system_operator"
+  | "market_operator"
+  | "organisation"
+  | "service_provider"
+  | "system_operator"
+  | "third_party";
+
+/**
  * The status of the party.
  */
 export type PartyStatus =
@@ -1117,6 +1145,8 @@ export type PartyUpdateRequest = {
    * Name of the party. Maximum 128 characters.
    */
   name?: string;
+  role?: PartyRole;
+  type?: PartyType;
   status?: PartyStatus;
 };
 
@@ -1140,14 +1170,6 @@ export type PartyCreateData = PartyUpdateRequest & {
    * Reference to the entity that is the parent of the party.
    */
   entity_id?: number;
-  /**
-   * The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
-   */
-  role?: string;
-  /**
-   * The type of the party, e.g SystemOperator, ServiceProvider
-   */
-  type?: string;
 };
 
 /**

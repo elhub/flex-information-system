@@ -1204,6 +1204,52 @@ resources:
           en: Role
           nb: Rolle
           nn: Rolle
+        enum:
+          - id: flex_balance_responsible_party
+            x-intl:
+              en: Balance Responsible Party
+              nb: Balanseansvarlig
+              nn: Balanseansvarleg
+          - id: flex_end_user
+            x-intl:
+              en: End User
+              nb: Sluttbruker
+              nn: Sluttbrukar
+          - id: flex_energy_supplier
+            x-intl:
+              en: Energy Supplier
+              nb: Kraftleverandør
+              nn: Kraftleverandør
+          - id: flex_flexibility_information_system_operator
+            x-intl:
+              en: Flexibility Information System Operator
+              nb: Fleksibilitetsinformasjonssystemoperatør
+              nn: Fleksibilitetsinformasjonssystemoperatør
+          - id: flex_market_operator
+            x-intl:
+              en: Market Operator
+              nb: Markedsoperatør
+              nn: Marknadsoperatør
+          - id: flex_organisation
+            x-intl:
+              en: Organisation
+              nb: Organisasjon
+              nn: Organisasjon
+          - id: flex_service_provider
+            x-intl:
+              en: Service Provider
+              nb: Tjenesteleverandør
+              nn: Tenesteleverandør
+          - id: flex_system_operator
+            x-intl:
+              en: System Operator
+              nb: Systemoperatør
+              nn: Systemoperatør
+          - id: flex_third_party
+            x-intl:
+              en: Third Party
+              nb: Tredjepart
+              nn: Tredjepart
       type:
         description: >-
           The type of the party, e.g SystemOperator, ServiceProvider
@@ -1215,6 +1261,52 @@ resources:
           en: Type
           nb: Type
           nn: Type
+        enum:
+          - id: balance_responsible_party
+            x-intl:
+              en: Balance Responsible Party
+              nb: Balanseansvarlig
+              nn: Balanseansvarleg
+          - id: end_user
+            x-intl:
+              en: End User
+              nb: Sluttbruker
+              nn: Sluttbrukar
+          - id: energy_supplier
+            x-intl:
+              en: Energy Supplier
+              nb: Kraftleverandør
+              nn: Kraftleverandør
+          - id: flexibility_information_system_operator
+            x-intl:
+              en: Flexibility Information System Operator
+              nb: Fleksibilitetsinformasjonssystemoperatør
+              nn: Fleksibilitetsinformasjonssystemoperatør
+          - id: market_operator
+            x-intl:
+              en: Market Operator
+              nb: Markedsoperatør
+              nn: Marknadsoperatør
+          - id: organisation
+            x-intl:
+              en: Organisation
+              nb: Organisasjon
+              nn: Organisasjon
+          - id: service_provider
+            x-intl:
+              en: Service Provider
+              nb: Tjenesteleverandør
+              nn: Tenesteleverandør
+          - id: system_operator
+            x-intl:
+              en: System Operator
+              nb: Systemoperatør
+              nn: Systemoperatør
+          - id: third_party
+            x-intl:
+              en: Third Party
+              nb: Tredjepart
+              nn: Tredjepart
       status:
         description: The status of the party.
         format: text

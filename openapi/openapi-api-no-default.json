@@ -651,6 +651,40 @@
                 ],
                 "example": "gln"
             },
+            "party_role": {
+                "description": "The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.",
+                "format": "text",
+                "type": "string",
+                "example": "flex_energy_supplier",
+                "enum": [
+                    "flex_balance_responsible_party",
+                    "flex_end_user",
+                    "flex_energy_supplier",
+                    "flex_flexibility_information_system_operator",
+                    "flex_market_operator",
+                    "flex_organisation",
+                    "flex_service_provider",
+                    "flex_system_operator",
+                    "flex_third_party"
+                ]
+            },
+            "party_type": {
+                "description": "The type of the party, e.g SystemOperator, ServiceProvider",
+                "format": "text",
+                "type": "string",
+                "example": "energy_supplier",
+                "enum": [
+                    "balance_responsible_party",
+                    "end_user",
+                    "energy_supplier",
+                    "flexibility_information_system_operator",
+                    "market_operator",
+                    "organisation",
+                    "service_provider",
+                    "system_operator",
+                    "third_party"
+                ]
+            },
             "party_status": {
                 "description": "The status of the party.",
                 "format": "text",
@@ -2197,6 +2231,12 @@
                         "type": "string",
                         "example": "Flex Energy Supplier"
                     },
+                    "role": {
+                        "$ref": "#/components/schemas/party_role"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/party_type"
+                    },
                     "status": {
                         "$ref": "#/components/schemas/party_status"
                     }
@@ -2222,18 +2262,6 @@
                                 "format": "bigint",
                                 "type": "integer",
                                 "example": 30
-                            },
-                            "role": {
-                                "description": "The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.",
-                                "format": "text",
-                                "type": "string",
-                                "example": "flex_energy_supplier"
-                            },
-                            "type": {
-                                "description": "The type of the party, e.g SystemOperator, ServiceProvider",
-                                "format": "text",
-                                "type": "string",
-                                "example": "energy_supplier"
                             }
                         }
                     }

@@ -177,7 +177,9 @@ from .party_membership_history_response import PartyMembershipHistoryResponse
 from .party_membership_response import PartyMembershipResponse
 from .party_membership_update_request import PartyMembershipUpdateRequest
 from .party_response import PartyResponse
+from .party_role import PartyRole
 from .party_status import PartyStatus
+from .party_type import PartyType
 from .party_update_request import PartyUpdateRequest
 from .product_type import ProductType
 from .product_type_response import ProductTypeResponse
@@ -499,7 +501,9 @@ __all__ = (
     "PartyMembershipResponse",
     "PartyMembershipUpdateRequest",
     "PartyResponse",
+    "PartyRole",
     "PartyStatus",
+    "PartyType",
     "PartyUpdateRequest",
     "ProductType",
     "ProductTypeResponse",
