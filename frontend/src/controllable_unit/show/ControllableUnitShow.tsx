@@ -49,6 +49,7 @@ const Layout = () => {
 
         <Connections controllableUnitViewModel={controllableUnitViewModel} />
         <TechnicalResources
+          controllableUnitId={controllableUnitViewModel.controllableUnit.id}
           technicalResources={controllableUnitViewModel.technicalResources}
         />
 
