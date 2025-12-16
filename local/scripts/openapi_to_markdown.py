@@ -71,7 +71,7 @@ for field, prop in properties.items():
 
     if prop.get("enum"):
         format += "<br/>One of: "
-        format += ", ".join([f"`{e}`" for e in prop["enum"]])
+        format += ", ".join([f"`{e['id']}`" for e in prop["enum"]])
 
     if prop.get("pattern") is not None:
         pattern = prop["pattern"].replace("|", "\\|")

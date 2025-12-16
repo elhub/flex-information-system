@@ -476,6 +476,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
         for field, data in resource["properties"].items():
             if "enum" in data:
                 enum_name = f"{resource['id']}_{field}"
+                data["enum"] = [e["id"] for e in data["enum"]]
                 schemas[enum_name] = data
                 resource["properties"][field] = {
                     "$ref": f"#/components/schemas/{enum_name}"

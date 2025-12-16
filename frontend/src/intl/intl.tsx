@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { fieldLabels, FieldLabel } from "./field-labels";
+import { fieldLabels as allFieldLabels, FieldLabel } from "./field-labels";
+import { enumLabels as allEnumLabels, EnumLabel } from "./enum-labels";
 import { defaultI18nProvider } from "react-admin";
 
 type AppLanguage = "en" | "nb" | "nn";
@@ -9,24 +10,32 @@ const appLanguage: AppLanguage =
 
 export const useI18nProvider = () => {
   const [language, setLanguage] = useState<AppLanguage>(appLanguage);
-  const labels = useMemo(() => fieldLabels[language], [language]);
+
+  const fieldLabels = useMemo(() => allFieldLabels[language], [language]);
+  const enumLabels = useMemo(() => allEnumLabels[language], [language]);
+
   return {
     getLocales: () => [
       { locale: "en", name: "English" },
       { locale: "nb", name: "Norsk Bokmål" },
       { locale: "nn", name: "Norsk Nynorsk" },
     ],
+
     getLocale: () => language,
+
     changeLocale: async (locale: string) => setLanguage(locale as AppLanguage),
+
     translate: (key: string, options: any) => {
-      if (!key.startsWith("field."))
-        return defaultI18nProvider.translate(key, options);
+      if (key.startsWith("field."))
+        // resource field
+        return fieldLabels[key.slice("field.".length) as FieldLabel] ?? key;
 
-      const parts = key.split(".");
-      const resource = parts[1];
-      const field = parts[2];
+      if (key.startsWith("enum."))
+        // enum value
+        return enumLabels[key.slice("enum.".length) as EnumLabel] ?? key;
 
-      return labels[`${resource}.${field}` as FieldLabel] ?? key;
+      // default case: resort to React-Admin
+      return defaultI18nProvider.translate(key, options);
     },
   };
 };
