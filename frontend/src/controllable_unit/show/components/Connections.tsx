@@ -1,12 +1,7 @@
 import { Box, Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import {
-  AccountingPoint,
-  AccountingPointBalanceResponsibleParty,
-  ControllableUnitServiceProvider,
-  Party,
-} from "../../../generated-client";
 import { LabelValue } from "./LabelValue";
+import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 
 const formatRange = (start: string | undefined, end: string | undefined) => {
   if (!start) {
@@ -21,24 +16,19 @@ const formatRange = (start: string | undefined, end: string | undefined) => {
 };
 
 export const Connections = ({
-  controllableUnitId,
-  serviceProvider,
-  controllableUnitServiceProvider,
-  balanceResponsibleParty,
-  controllableUnitBalanceResponsibleParty,
-  accountingPoint,
-  systemOperator,
+  controllableUnitViewModel,
 }: {
-  controllableUnitId: string | undefined;
-  serviceProvider: Party | undefined;
-  controllableUnitServiceProvider: ControllableUnitServiceProvider | undefined;
-  balanceResponsibleParty: Party | undefined;
-  controllableUnitBalanceResponsibleParty:
-    | AccountingPointBalanceResponsibleParty
-    | undefined;
-  accountingPoint: AccountingPoint | undefined;
-  systemOperator: Party | undefined;
+  controllableUnitViewModel: ControllableUnitShowViewModel;
 }) => {
+  const {
+    controllableUnit,
+    serviceProvider,
+    controllableUnitServiceProvider,
+    balanceResponsibleParty,
+    controllableUnitBalanceResponsibleParty,
+    accountingPoint,
+    systemOperator,
+  } = controllableUnitViewModel;
   const serviceProviderRange = formatRange(
     controllableUnitServiceProvider?.valid_from,
     controllableUnitServiceProvider?.valid_to,
@@ -71,7 +61,7 @@ export const Connections = ({
           }
         />
         <Link
-          to={`/controllable_unit/${controllableUnitId}/service_provider`}
+          to={`/controllable_unit/${controllableUnit.id}/service_provider`}
           component={RouterLink}
         >
           See previous contracts
@@ -94,7 +84,7 @@ export const Connections = ({
           }
         />
         <Link
-          to={`/controllable_unit/${controllableUnitId}/balance_responsible_party`}
+          to={`/controllable_unit/${controllableUnit.id}/balance_responsible_party`}
           component={RouterLink}
         >
           See previous balance responsible parties

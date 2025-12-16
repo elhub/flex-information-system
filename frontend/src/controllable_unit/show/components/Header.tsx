@@ -1,17 +1,23 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import {
   ControllableUnit,
-  ControllableUnitSuspension,
+  ControllableUnitStatus,
 } from "../../../generated-client";
-import { StatusChip } from "./StatusChip";
-import { Suspensions } from "./Suspensions";
+
+const colorMap: Record<
+  ControllableUnitStatus,
+  "info" | "primary" | "secondary" | "warning"
+> = {
+  new: "info",
+  active: "primary",
+  inactive: "secondary",
+  terminated: "warning",
+};
 
 export const Header = ({
   controllableUnit,
-  suspensions,
 }: {
   controllableUnit: ControllableUnit | undefined;
-  suspensions: ControllableUnitSuspension[] | undefined;
 }) => {
   return (
     <Box
@@ -26,8 +32,11 @@ export const Header = ({
         Controllable Unit - {controllableUnit?.name} (
         {controllableUnit?.maximum_available_capacity} kW)
       </Typography>
-      <StatusChip status={controllableUnit?.status ?? "active"} />
-      <Suspensions suspensions={suspensions} />
+      <Chip
+        label={controllableUnit?.status ?? "active"}
+        color={colorMap[controllableUnit?.status ?? "active"]}
+      />
+      ;
     </Box>
   );
 };

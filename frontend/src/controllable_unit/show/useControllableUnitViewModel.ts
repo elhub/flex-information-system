@@ -13,7 +13,7 @@ import {
   readAccountingPoint,
   readParty,
   TechnicalResource,
-} from "../generated-client";
+} from "../../generated-client";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -35,10 +35,10 @@ const throwOnError = <T>(response: Response<T>): T | undefined => {
   return data;
 };
 
-type ControllableUnitShowViewModel = {
+export type ControllableUnitShowViewModel = {
   controllableUnit: ControllableUnit | ControllableUnitHistoryResponse;
   serviceProvider: Party | undefined;
-  ControllableUnitServiceProvider: ControllableUnitServiceProvider | undefined;
+  controllableUnitServiceProvider: ControllableUnitServiceProvider | undefined;
   technicalResources: TechnicalResource[] | undefined;
   systemOperator: Party | undefined;
   accountingPoint: AccountingPoint | undefined;
@@ -169,7 +169,7 @@ const getControllableUnitData = async (
     controllableUnitBalanceResponsibleParty:
       accountingPoint.controllableUnitBalanceResponsibleParty,
     suspensions: suspensions as ControllableUnitSuspension[] | undefined,
-    ControllableUnitServiceProvider: cuspData.cusp,
+    controllableUnitServiceProvider: cuspData.cusp,
   };
 };
 

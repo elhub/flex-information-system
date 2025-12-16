@@ -10,7 +10,7 @@ import {
   ControllableUnit,
   ControllableUnitHistoryResponse,
 } from "../../generated-client";
-import { useControllableUnitViewModel } from "../ControllableUnitQueries";
+import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useParams } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Connections } from "./components/Connections";
@@ -19,6 +19,7 @@ import { TechnicalInformation } from "./components/TechnicalInformation";
 import { GridValidation } from "./components/GridValidation";
 import { MetaInfo } from "./components/MetaInfo";
 import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
+import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 
 const Layout = () => {
   const record = useRecordContext<
@@ -41,26 +42,12 @@ const Layout = () => {
   return (
     <SimpleShowLayout>
       <Stack direction="column" spacing={4}>
-        <Header
-          controllableUnit={controllableUnitViewModel.controllableUnit}
-          suspensions={controllableUnitViewModel.suspensions}
+        <Header controllableUnit={controllableUnitViewModel.controllableUnit} />
+        <ControllableUnitAlerts
+          controllableUnitViewModel={controllableUnitViewModel}
         />
 
-        <Connections
-          controllableUnitId={record?.id?.toString() ?? undefined}
-          serviceProvider={controllableUnitViewModel.serviceProvider}
-          controllableUnitServiceProvider={
-            controllableUnitViewModel.ControllableUnitServiceProvider
-          }
-          balanceResponsibleParty={
-            controllableUnitViewModel.balanceResponsibleParty
-          }
-          controllableUnitBalanceResponsibleParty={
-            controllableUnitViewModel.controllableUnitBalanceResponsibleParty
-          }
-          accountingPoint={controllableUnitViewModel.accountingPoint}
-          systemOperator={controllableUnitViewModel.systemOperator}
-        />
+        <Connections controllableUnitViewModel={controllableUnitViewModel} />
         <TechnicalResources
           technicalResources={controllableUnitViewModel.technicalResources}
         />
