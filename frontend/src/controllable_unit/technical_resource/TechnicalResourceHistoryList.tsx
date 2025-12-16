@@ -49,23 +49,26 @@ export const TechnicalResourceHistoryList = () => {
           source="technical_resource_id"
           label="field.technical_resource_history.technical_resource_id"
         />
-        <TextField source="name" label="field.technical_resource.name" />
+        <TextField
+          source="name"
+          label="field.technical_resource_history.name"
+        />
         <ReferenceField
           source="controllable_unit_id"
           reference="controllable_unit"
           sortable={false}
-          label="field.technical_resource.controllable_unit_id"
+          label="field.technical_resource_history.controllable_unit_id"
         >
           <TextField source="name" />
         </ReferenceField>
         <DateField
           source="recorded_at"
           showTime
-          label="field.technical_resource.recorded_at"
+          label="field.technical_resource_history.recorded_at"
         />
         <IdentityField
           source="recorded_by"
-          label="field.technical_resource.recorded_by"
+          label="field.technical_resource_history.recorded_by"
         />
         <DateField
           source="replaced_at"
