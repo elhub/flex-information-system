@@ -172,8 +172,8 @@ resources:
         example: 0.1
         x-intl:
           en: Ramp rate
-          nb: Effektendringshastighet
-          nn: Effektendringshastigheit
+          nb: Ramping
+          nn: Ramping
       accounting_point_id:
         description: >-
           Reference to the accounting point that the controllable unit is
