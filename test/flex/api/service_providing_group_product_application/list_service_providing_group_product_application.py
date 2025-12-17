@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 
 import httpx
 
@@ -72,7 +72,7 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -84,7 +84,13 @@ def _parse_response(
         return response_200
 
     if response.status_code == 206:
-        response_206 = cast(Any, None)
+        response_206 = []
+        _response_206 = response.json()
+        for response_206_item_data in _response_206:
+            response_206_item = ServiceProvidingGroupProductApplicationResponse.from_dict(response_206_item_data)
+
+            response_206.append(response_206_item)
+
         return response_206
 
     if response.status_code == 400:
@@ -146,7 +152,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -169,7 +175,7 @@ def sync_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupProductApplicationPrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
     """List Service Providing Group Product Application
 
     Args:
@@ -190,7 +196,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -228,7 +234,7 @@ def sync(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupProductApplicationPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
     """List Service Providing Group Product Application
 
     Args:
@@ -249,7 +255,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]
     """
 
     return sync_detailed(
@@ -282,7 +288,7 @@ async def asyncio_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupProductApplicationPrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
     """List Service Providing Group Product Application
 
     Args:
@@ -303,7 +309,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -339,7 +345,7 @@ async def asyncio(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupProductApplicationPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
     """List Service Providing Group Product Application
 
     Args:
@@ -360,7 +366,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]
     """
 
     return (

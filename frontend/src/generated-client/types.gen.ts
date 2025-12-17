@@ -3441,7 +3441,7 @@ export type ListControllableUnitResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitResponse>;
 };
 
 export type ListControllableUnitResponse =
@@ -3706,7 +3706,7 @@ export type ListControllableUnitHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitHistoryResponse>;
 };
 
 export type ListControllableUnitHistoryResponse =
@@ -3856,7 +3856,7 @@ export type ListControllableUnitSuspensionResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitSuspensionResponse>;
 };
 
 export type ListControllableUnitSuspensionResponse =
@@ -4162,7 +4162,7 @@ export type ListControllableUnitSuspensionHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitSuspensionHistoryResponse>;
 };
 
 export type ListControllableUnitSuspensionHistoryResponse =
@@ -4308,7 +4308,7 @@ export type ListControllableUnitSuspensionCommentResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitSuspensionCommentResponse>;
 };
 
 export type ListControllableUnitSuspensionCommentResponse =
@@ -4565,7 +4565,7 @@ export type ListControllableUnitSuspensionCommentHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitSuspensionCommentHistoryResponse>;
 };
 
 export type ListControllableUnitSuspensionCommentHistoryResponse =
@@ -4719,7 +4719,7 @@ export type ListControllableUnitServiceProviderResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitServiceProviderResponse>;
 };
 
 export type ListControllableUnitServiceProviderResponse =
@@ -5029,7 +5029,7 @@ export type ListControllableUnitServiceProviderHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ControllableUnitServiceProviderHistoryResponse>;
 };
 
 export type ListControllableUnitServiceProviderHistoryResponse =
@@ -5179,7 +5179,7 @@ export type ListServiceProvidingGroupResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupResponse>;
 };
 
 export type ListServiceProvidingGroupResponse =
@@ -5440,7 +5440,7 @@ export type ListServiceProvidingGroupHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupHistoryResponse>;
 };
 
 export type ListServiceProvidingGroupHistoryResponse =
@@ -5590,7 +5590,7 @@ export type ListServiceProvidingGroupMembershipResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupMembershipResponse>;
 };
 
 export type ListServiceProvidingGroupMembershipResponse =
@@ -5896,7 +5896,7 @@ export type ListServiceProvidingGroupMembershipHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupMembershipHistoryResponse>;
 };
 
 export type ListServiceProvidingGroupMembershipHistoryResponse =
@@ -6046,7 +6046,7 @@ export type ListServiceProvidingGroupGridPrequalificationResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupGridPrequalificationResponse>;
 };
 
 export type ListServiceProvidingGroupGridPrequalificationResponse =
@@ -6307,7 +6307,7 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupGridPrequalificationHistoryResponse>;
 };
 
 export type ListServiceProvidingGroupGridPrequalificationHistoryResponse =
@@ -6453,7 +6453,7 @@ export type ListServiceProvidingGroupGridPrequalificationCommentResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupGridPrequalificationCommentResponse>;
 };
 
 export type ListServiceProvidingGroupGridPrequalificationCommentResponse =
@@ -6712,7 +6712,7 @@ export type ListServiceProvidingGroupGridPrequalificationCommentHistoryResponses
     /**
      * Partial Content
      */
-    206: unknown;
+    206: Array<ServiceProvidingGroupGridPrequalificationCommentHistoryResponse>;
   };
 
 export type ListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
@@ -6864,7 +6864,7 @@ export type ListServiceProvidingGroupGridSuspensionResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupGridSuspensionResponse>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionResponse =
@@ -7170,7 +7170,7 @@ export type ListServiceProvidingGroupGridSuspensionHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupGridSuspensionHistoryResponse>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionHistoryResponse =
@@ -7316,7 +7316,7 @@ export type ListServiceProvidingGroupGridSuspensionCommentResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupGridSuspensionCommentResponse>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionCommentResponse =
@@ -7573,7 +7573,7 @@ export type ListServiceProvidingGroupGridSuspensionCommentHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupGridSuspensionCommentHistoryResponse>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
@@ -7729,7 +7729,7 @@ export type ListEntityResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<EntityResponse>;
 };
 
 export type ListEntityResponse = ListEntityResponses[keyof ListEntityResponses];
@@ -7985,7 +7985,7 @@ export type ListEntityClientResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<EntityClientResponse>;
 };
 
 export type ListEntityClientResponse =
@@ -8291,7 +8291,7 @@ export type ListPartyResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<PartyResponse>;
 };
 
 export type ListPartyResponse = ListPartyResponses[keyof ListPartyResponses];
@@ -8552,7 +8552,7 @@ export type ListPartyHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<PartyHistoryResponse>;
 };
 
 export type ListPartyHistoryResponse =
@@ -8702,7 +8702,7 @@ export type ListPartyMembershipResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<PartyMembershipResponse>;
 };
 
 export type ListPartyMembershipResponse =
@@ -9008,7 +9008,7 @@ export type ListPartyMembershipHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<PartyMembershipHistoryResponse>;
 };
 
 export type ListPartyMembershipHistoryResponse =
@@ -9165,7 +9165,7 @@ export type ListIdentityResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<IdentityResponse>;
 };
 
 export type ListIdentityResponse =
@@ -9311,7 +9311,7 @@ export type ListTechnicalResourceResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<TechnicalResourceResponse>;
 };
 
 export type ListTechnicalResourceResponse =
@@ -9617,7 +9617,7 @@ export type ListTechnicalResourceHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<TechnicalResourceHistoryResponse>;
 };
 
 export type ListTechnicalResourceHistoryResponse =
@@ -9758,7 +9758,7 @@ export type ListEventResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<EventResponse>;
 };
 
 export type ListEventResponse = ListEventResponses[keyof ListEventResponses];
@@ -9902,7 +9902,7 @@ export type ListNotificationResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<NotificationResponse>;
 };
 
 export type ListNotificationResponse =
@@ -10105,7 +10105,7 @@ export type ListAccountingPointResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<AccountingPointResponse>;
 };
 
 export type ListAccountingPointResponse =
@@ -10248,7 +10248,7 @@ export type ListAccountingPointBalanceResponsiblePartyResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<AccountingPointBalanceResponsiblePartyResponse>;
 };
 
 export type ListAccountingPointBalanceResponsiblePartyResponse =
@@ -10342,7 +10342,7 @@ export type ListAccountingPointEnergySupplierResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<AccountingPointEnergySupplierResponse>;
 };
 
 export type ListAccountingPointEnergySupplierResponse =
@@ -10440,7 +10440,7 @@ export type ListProductTypeResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ProductTypeResponse>;
 };
 
 export type ListProductTypeResponse =
@@ -10587,7 +10587,7 @@ export type ListSystemOperatorProductTypeResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<SystemOperatorProductTypeResponse>;
 };
 
 export type ListSystemOperatorProductTypeResponse =
@@ -10848,7 +10848,7 @@ export type ListSystemOperatorProductTypeHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<SystemOperatorProductTypeHistoryResponse>;
 };
 
 export type ListSystemOperatorProductTypeHistoryResponse =
@@ -11002,7 +11002,7 @@ export type ListServiceProviderProductApplicationResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductApplicationResponse>;
 };
 
 export type ListServiceProviderProductApplicationResponse =
@@ -11267,7 +11267,7 @@ export type ListServiceProviderProductApplicationHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductApplicationHistoryResponse>;
 };
 
 export type ListServiceProviderProductApplicationHistoryResponse =
@@ -11413,7 +11413,7 @@ export type ListServiceProviderProductApplicationCommentResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductApplicationCommentResponse>;
 };
 
 export type ListServiceProviderProductApplicationCommentResponse =
@@ -11670,7 +11670,7 @@ export type ListServiceProviderProductApplicationCommentHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductApplicationCommentHistoryResponse>;
 };
 
 export type ListServiceProviderProductApplicationCommentHistoryResponse =
@@ -11824,7 +11824,7 @@ export type ListServiceProviderProductSuspensionResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductSuspensionResponse>;
 };
 
 export type ListServiceProviderProductSuspensionResponse =
@@ -12134,7 +12134,7 @@ export type ListServiceProviderProductSuspensionHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductSuspensionHistoryResponse>;
 };
 
 export type ListServiceProviderProductSuspensionHistoryResponse =
@@ -12280,7 +12280,7 @@ export type ListServiceProviderProductSuspensionCommentResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductSuspensionCommentResponse>;
 };
 
 export type ListServiceProviderProductSuspensionCommentResponse =
@@ -12537,7 +12537,7 @@ export type ListServiceProviderProductSuspensionCommentHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProviderProductSuspensionCommentHistoryResponse>;
 };
 
 export type ListServiceProviderProductSuspensionCommentHistoryResponse =
@@ -12691,7 +12691,7 @@ export type ListServiceProvidingGroupProductApplicationResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupProductApplicationResponse>;
 };
 
 export type ListServiceProvidingGroupProductApplicationResponse =
@@ -12956,7 +12956,7 @@ export type ListServiceProvidingGroupProductApplicationHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupProductApplicationHistoryResponse>;
 };
 
 export type ListServiceProvidingGroupProductApplicationHistoryResponse =
@@ -13110,7 +13110,7 @@ export type ListServiceProvidingGroupProductSuspensionResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupProductSuspensionResponse>;
 };
 
 export type ListServiceProvidingGroupProductSuspensionResponse =
@@ -13420,7 +13420,7 @@ export type ListServiceProvidingGroupProductSuspensionHistoryResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupProductSuspensionHistoryResponse>;
 };
 
 export type ListServiceProvidingGroupProductSuspensionHistoryResponse =
@@ -13566,7 +13566,7 @@ export type ListServiceProvidingGroupProductSuspensionCommentResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<ServiceProvidingGroupProductSuspensionCommentResponse>;
 };
 
 export type ListServiceProvidingGroupProductSuspensionCommentResponse =
@@ -13824,7 +13824,7 @@ export type ListServiceProvidingGroupProductSuspensionCommentHistoryResponses =
     /**
      * Partial Content
      */
-    206: unknown;
+    206: Array<ServiceProvidingGroupProductSuspensionCommentHistoryResponse>;
   };
 
 export type ListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
@@ -13966,7 +13966,7 @@ export type ListNoticeResponses = {
   /**
    * Partial Content
    */
-  206: unknown;
+  206: Array<NoticeResponse>;
 };
 
 export type ListNoticeResponse = ListNoticeResponses[keyof ListNoticeResponses];

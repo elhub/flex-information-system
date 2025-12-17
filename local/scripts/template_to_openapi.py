@@ -152,7 +152,7 @@ response_templates = {
 }
 
 
-def template_ok_response(resource):
+def template_ok_response(resource, response_code=200):
     return {
         "list": {
             "content": {
@@ -163,7 +163,7 @@ def template_ok_response(resource):
                     }
                 }
             },
-            "description": "OK",
+            "description": "Partial Content" if response_code == 206 else "OK",
         },
         "read": {
             "content": {
@@ -374,11 +374,11 @@ def generate_endpoint_responses(
 
     for response_code in response_codes:
         # OK response depends on the operation, the others not
-        if response_code == 200:
+        if response_code == 200 or response_code == 206:
             response_template: dict[str, Any]
-            response_template = template_ok_response(resource_id).get(operation) or {
-                "description": "OK"
-            }
+            response_template = template_ok_response(resource_id, response_code).get(
+                operation
+            ) or {"description": "OK"}
 
             # add links to the response
             if operation == "read" and links is not None:

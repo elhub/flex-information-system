@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 
 import httpx
 
@@ -70,7 +70,7 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
@@ -82,7 +82,13 @@ def _parse_response(
         return response_200
 
     if response.status_code == 206:
-        response_206 = cast(Any, None)
+        response_206 = []
+        _response_206 = response.json()
+        for response_206_item_data in _response_206:
+            response_206_item = ServiceProvidingGroupMembershipHistoryResponse.from_dict(response_206_item_data)
+
+            response_206.append(response_206_item)
+
         return response_206
 
     if response.status_code == 400:
@@ -144,7 +150,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -167,7 +173,7 @@ def sync_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupMembershipHistoryPrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
     """List Membership relation of controllable unit in service providing group - history
 
     Args:
@@ -188,7 +194,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -226,7 +232,7 @@ def sync(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupMembershipHistoryPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
     """List Membership relation of controllable unit in service providing group - history
 
     Args:
@@ -247,7 +253,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]
     """
 
     return sync_detailed(
@@ -280,7 +286,7 @@ async def asyncio_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupMembershipHistoryPrefer | Unset = UNSET,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
     """List Membership relation of controllable unit in service providing group - history
 
     Args:
@@ -301,7 +307,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -337,7 +343,7 @@ async def asyncio(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupMembershipHistoryPrefer | Unset = UNSET,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
     """List Membership relation of controllable unit in service providing group - history
 
     Args:
@@ -358,7 +364,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]
     """
 
     return (
