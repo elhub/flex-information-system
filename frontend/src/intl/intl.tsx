@@ -18,7 +18,7 @@ export const useI18nProvider = () => {
     ],
     getLocale: () => language,
     changeLocale: async (locale: string) => setLanguage(locale as AppLanguage),
-    translate: (key: string, options: any) => {
+    translate: (key: string, options?: unknown) => {
       if (!key.startsWith("field."))
         return defaultI18nProvider.translate(key, options);
 
@@ -29,4 +29,9 @@ export const useI18nProvider = () => {
       return labels[`${resource}.${field}` as FieldLabel] ?? key;
     },
   };
+};
+
+export const useTranslateField = () => {
+  const { translate } = useI18nProvider();
+  return (key: FieldLabel, options?: unknown) => translate(key, options);
 };

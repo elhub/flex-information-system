@@ -1,11 +1,12 @@
 import { Box, Typography } from "@mui/material";
+import { FieldLabel } from "../../../intl/field-labels";
 
 export const LabelValue = ({
   label,
   value,
   unit,
 }: {
-  label: string;
+  label: FieldLabel;
   value: string | number | undefined;
   unit?: string;
 }) => {

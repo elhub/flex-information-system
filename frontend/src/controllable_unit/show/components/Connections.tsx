@@ -41,7 +41,7 @@ export const Connections = ({
   return (
     <Box>
       <LabelValue
-        label="Accounting point"
+        label="accounting_point.business_id"
         value={`${accountingPoint?.business_id} (${systemOperator?.name})`}
       />
       <Box
@@ -53,7 +53,7 @@ export const Connections = ({
         }}
       >
         <LabelValue
-          label="Service provider"
+          label="controllable_unit_service_provider.id"
           value={
             serviceProvider
               ? `${serviceProvider?.name} (${serviceProviderRange})`
@@ -76,7 +76,7 @@ export const Connections = ({
         }}
       >
         <LabelValue
-          label="Balance responsible party"
+          label="accounting_point_balance_responsible_party.balance_responsible_party_id"
           value={
             balanceResponsibleParty
               ? `${balanceResponsibleParty?.name} (${balanceResponsiblePartyRange})`
