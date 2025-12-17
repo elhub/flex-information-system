@@ -44,22 +44,54 @@ export const ControllableUnitServiceProviderHistoryList = () => {
           `/controllable_unit/${record.controllable_unit_id}/service_provider_history/${record.id}/show`
         }
       >
-        <TextField source="id" label="ID" />
-        <TextField source="controllable_unit_service_provider_id" />
+        <TextField
+          source="id"
+          label="field.controllable_unit_service_provider_history.id"
+        />
+        <TextField
+          source="controllable_unit_service_provider_id"
+          label="field.controllable_unit_service_provider_history.controllable_unit_service_provider_id"
+        />
         <ReferenceField
           source="service_provider_id"
           reference="party"
           sortable={false}
+          label="field.controllable_unit_service_provider_history.service_provider_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="contract_reference" />
-        <DateField source="valid_from" showTime />
-        <DateField source="valid_to" showTime />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
-        <DateField source="replaced_at" showTime />
-        <IdentityField source="replaced_by" />
+        <TextField
+          source="contract_reference"
+          label="field.controllable_unit_service_provider_history.contract_reference"
+        />
+        <DateField
+          source="valid_from"
+          showTime
+          label="field.controllable_unit_service_provider_history.valid_from"
+        />
+        <DateField
+          source="valid_to"
+          showTime
+          label="field.controllable_unit_service_provider_history.valid_to"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.controllable_unit_service_provider_history.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.controllable_unit_service_provider_history.recorded_by"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.controllable_unit_service_provider_history.replaced_at"
+        />
+        <IdentityField
+          source="replaced_by"
+          label="field.controllable_unit_service_provider_history.replaced_by"
+        />
       </Datagrid>
     </List>
   );

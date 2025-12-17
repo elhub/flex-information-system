@@ -45,12 +45,19 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
           `/service_providing_group/${record.service_providing_group_id}/product_application_history/${record.id}/show`
         }
       >
-        <TextField source="id" label="ID" />
-        <TextField source="service_provider_product_application_id" />
+        <TextField
+          source="id"
+          label="field.service_providing_group_product_application_history.id"
+        />
+        <TextField
+          source="service_provider_product_application_id"
+          label="field.service_providing_group_product_application_history.service_provider_product_application_id"
+        />
         <ReferenceField
           source="procuring_system_operator_id"
           reference="party"
           sortable={false}
+          label="field.service_providing_group_product_application_history.procuring_system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -60,12 +67,34 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
           sortable={false}
         />
         <TextField source="status" />
-        <DateField source="prequalified_at" showTime />
-        <DateField source="verified_at" showTime />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
-        <DateField source="replaced_at" showTime />
-        <IdentityField source="replaced_by" />
+        <DateField
+          source="prequalified_at"
+          showTime
+          label="field.service_providing_group_product_application_history.prequalified_at"
+        />
+        <DateField
+          source="verified_at"
+          showTime
+          label="field.service_providing_group_product_application_history.verified_at"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.service_providing_group_product_application_history.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.service_providing_group_product_application_history.recorded_by"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.service_providing_group_product_application_history.replaced_at"
+        />
+        <IdentityField
+          source="replaced_by"
+          label="field.service_providing_group_product_application_history.replaced_by"
+        />
       </Datagrid>
     </List>
   );

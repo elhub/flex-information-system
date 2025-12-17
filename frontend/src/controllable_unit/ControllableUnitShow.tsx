@@ -157,11 +157,11 @@ export const ControllableUnitShow = () => {
             <DateField
               source="replaced_at"
               showTime
-              label="field.controllable_unit.replaced_at"
+              label="field.controllable_unit_history.replaced_at"
             />
             <IdentityField
               source="replaced_by"
-              label="field.controllable_unit.replaced_by"
+              label="field.controllable_unit_history.replaced_by"
             />
           </FieldStack>
         </Stack>

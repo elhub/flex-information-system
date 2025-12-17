@@ -128,6 +128,10 @@ export const ControllableUnitSuspensionShow = () => {
               source="id"
               label="field.controllable_unit_suspension.id"
             />
+            <TextField
+              source="controllable_unit_suspension_id"
+              label="field.controllable_unit_suspension_history.controllable_unit_suspension_id"
+            />
             <ReferenceField
               source="controllable_unit_id"
               reference="controllable_unit"
@@ -160,6 +164,15 @@ export const ControllableUnitSuspensionShow = () => {
             <IdentityField
               source="recorded_by"
               label="field.controllable_unit_suspension.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.controllable_unit_suspension_history.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.controllable_unit_suspension_history.replaced_by"
             />
           </FieldStack>
         </Stack>

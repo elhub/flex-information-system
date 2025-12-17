@@ -35,6 +35,10 @@ export const ServiceProvidingGroupShow = () => {
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="id" label="field.service_providing_group.id" />
             <TextField
+              source="service_providing_group_id"
+              label="field.service_providing_group_history.service_providing_group_id"
+            />
+            <TextField
               source="name"
               label="field.service_providing_group.name"
             />
@@ -70,11 +74,11 @@ export const ServiceProvidingGroupShow = () => {
             <DateField
               source="replaced_at"
               showTime
-              label="field.service_providing_group.replaced_at"
+              label="field.service_providing_group_history.replaced_at"
             />
             <IdentityField
               source="replaced_by"
-              label="field.service_providing_group.replaced_by"
+              label="field.service_providing_group_history.replaced_by"
             />
           </FieldStack>
         </Stack>

@@ -59,6 +59,10 @@ export const PartyMembershipShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="id" label="field.party_membership.id" />
+            <TextField
+              source="party_membership_id"
+              label="field.party_membership_history.party_membership_id"
+            />
             <ReferenceField
               source="entity_id"
               reference="entity"
@@ -93,6 +97,15 @@ export const PartyMembershipShow = () => {
             <IdentityField
               source="recorded_by"
               label="field.party_membership.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.party_membership_history.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.party_membership_history.replaced_by"
             />
           </FieldStack>
         </Stack>

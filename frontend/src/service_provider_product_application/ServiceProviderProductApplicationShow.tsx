@@ -38,6 +38,10 @@ export const ServiceProviderProductApplicationShow = () => {
               source="id"
               label="field.service_provider_product_application.id"
             />
+            <TextField
+              source="service_provider_product_application_id"
+              label="field.service_provider_product_application_history.service_provider_product_application_id"
+            />
             <ReferenceField
               source="service_provider_id"
               reference="party"
@@ -95,11 +99,11 @@ export const ServiceProviderProductApplicationShow = () => {
             <DateField
               source="replaced_at"
               showTime
-              label="field.service_provider_product_application.replaced_at"
+              label="field.service_provider_product_application_history.replaced_at"
             />
             <IdentityField
               source="replaced_by"
-              label="field.service_provider_product_application.replaced_by"
+              label="field.service_provider_product_application_history.replaced_by"
             />
           </FieldStack>
         </Stack>

@@ -34,13 +34,17 @@ export const PartyMembershipHistoryList = () => {
           `/party/${record.party_id}/membership_history/${record.id}/show`
         }
       >
-        <TextField source="id" label="ID" />
-        <TextField source="party_membership_id" />
+        <TextField source="id" label="field.party_membership_history.id" />
+        <TextField
+          source="party_membership_id"
+          label="field.party_membership_history.party_membership_id"
+        />
         <ReferenceField
           source="entity_id"
           reference="entity"
           link="show"
           sortable={false}
+          label="field.party_membership_history.entity_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -49,14 +53,32 @@ export const PartyMembershipHistoryList = () => {
           reference="party"
           link="show"
           sortable={false}
+          label="field.party_membership_history.party_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <ScopesField source="scopes" />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
-        <DateField source="replaced_at" showTime />
-        <IdentityField source="replaced_by" />
+        <ScopesField
+          source="scopes"
+          label="field.party_membership_history.scopes"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.party_membership_history.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.party_membership_history.recorded_by"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.party_membership_history.replaced_at"
+        />
+        <IdentityField
+          source="replaced_by"
+          label="field.party_membership_history.replaced_by"
+        />
       </Datagrid>
     </List>
   );

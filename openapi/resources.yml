@@ -5,6 +5,10 @@ resources:
     name: Controllable Unit
     summary: Controllable unit
     description: Controllable unit
+    x-intl:
+      en: Controllable Unit
+      nb: Kontrollerbar enhet
+      nn: Kontrollerbar eining
     operations:
       - list
       - read
@@ -168,8 +172,8 @@ resources:
         example: 0.1
         x-intl:
           en: Ramp rate
-          nb: Effektendringshastighet
-          nn: Effektendringshastigheit
+          nb: Ramping
+          nn: Ramping
       accounting_point_id:
         description: >-
           Reference to the accounting point that the controllable unit is
@@ -243,6 +247,10 @@ resources:
     description: >-
       The relation allowing an impacted system operator to temporarily suspend a
       controllable unit.
+    x-intl:
+      en: Controllable Unit Suspension
+      nb: Suspensjon av kontrollerbar enhet
+      nn: Suspensjon av kontrollerbar eining
     operations:
       - list
       - read
@@ -315,6 +323,10 @@ resources:
     acronym: CUSP
     summary: Relation between controllable unit and service provider
     description: Relation between controllable unit and service provider
+    x-intl:
+      en: Controllable Unit Service Provider
+      nb: Kontrollerbar enhet tjenesteleverandør
+      nn: Kontrollerbar eining tenesteleverandør
     operations:
       - list
       - read
@@ -427,6 +439,10 @@ resources:
     acronym: SPG
     summary: Service providing group
     description: Group of controllable units
+    x-intl:
+      en: Service Providing Group
+      nb: Fleksibilitetsgruppe
+      nn: Fleksibilitetsgruppe
     operations:
       - list
       - read
@@ -516,6 +532,10 @@ resources:
       Membership relation of controllable unit in service providing group
     description: >-
       Membership relation of controllable unit in service providing group
+    x-intl:
+      en: Service Providing Group Membership
+      nb: Medlemskap i fleksibilitetsgruppe
+      nn: Medlemskap i fleksibilitetsgruppe
     operations:
       - list
       - read
@@ -601,6 +621,10 @@ resources:
       Grid prequalification for service providing group
     description: >-
       Grid prequalification for service providing group
+    x-intl:
+      en: Service Providing Group Grid Prequalification
+      nb: Nettprekvalifisering for fleksibilitetsgruppe
+      nn: Nettprekvalifisering for fleksibilitetsgruppe
     operations:
       - list
       - read
@@ -691,6 +715,10 @@ resources:
     description: >-
       The relation allowing an impacted system operator to temporarily suspend a
       service providing group from delivering services.
+    x-intl:
+      en: Service Providing Group Grid Suspension
+      nb: Nettsuspensjon for fleksibilitetsgruppe
+      nn: Nettsuspensjon for fleksibilitetsgruppe
     operations:
       - list
       - read
@@ -773,6 +801,10 @@ resources:
       * Person
       * Organisation
     # yamllint enable rule:line-length
+    x-intl:
+      en: Entity
+      nb: Entitet
+      nn: Entitet
     operations:
       - list
       - read
@@ -844,6 +876,10 @@ resources:
     description: >-
       Client linked to an entity for client credentials and JWT grant
       authentication methods.
+    x-intl:
+      en: Entity Client
+      nb: Entitetsklient
+      nn: Entitetsklient
     operations:
       - list
       - read
@@ -977,6 +1013,10 @@ resources:
       * System Operator
       * End User
     # yamllint enable rule:line-length
+    x-intl:
+      en: Party
+      nb: Aktør
+      nn: Aktør
     operations:
       - list
       - read
@@ -1097,6 +1137,10 @@ resources:
     summary: Party Membership
     description: |-
       The relation between a party and entity.
+    x-intl:
+      en: Party Membership
+      nb: Aktørmedlemskap
+      nn: Aktørmedlemskap
     operations:
       - list
       - read
@@ -1169,6 +1213,10 @@ resources:
     description: >-
       Resource uniquely identifying a user by linking its entity and the
       potentially assumed party.
+    x-intl:
+      en: Identity
+      nb: Identitet
+      nn: Identitet
     operations:
       - read
       - list
@@ -1247,6 +1295,10 @@ resources:
     acronym: TR
     summary: Technical Resource
     description: Technical unit being part of a controllable unit.
+    x-intl:
+      en: Technical Resource
+      nb: Teknisk ressurs
+      nn: Teknisk ressurs
     operations:
       - list
       - read
@@ -1313,6 +1365,10 @@ resources:
     acronym: EVENT
     summary: Event
     description: Event happening in the system.
+    x-intl:
+      en: Event
+      nb: Hendelse
+      nn: Hending
     operations:
       - list
       - read
@@ -1403,6 +1459,10 @@ resources:
     acronym: NOT
     summary: Notification
     description: Notification about an event happening in the system.
+    x-intl:
+      en: Notification
+      nb: Varsel
+      nn: Varsel
     operations:
       - list
       - read
@@ -1460,6 +1520,10 @@ resources:
     acronym: AP
     summary: Accounting Point
     description: Accounting point for a controllable unit.
+    x-intl:
+      en: Accounting Point
+      nb: Avregningspunkt
+      nn: Avregningspunkt
     operations:
       - read
       - list
@@ -1507,6 +1571,10 @@ resources:
     summary: Accounting Point Balance Responsible Party
     description: >-
       Relation linking a balance responsible party to an accounting point.
+    x-intl:
+      en: Accounting Point Balance Responsible Party
+      nb: Avregningspunkt balanseansvarlig
+      nn: Avregningspunkt balanseansvarleg
     operations:
       - list
     generate_views: false
@@ -1586,6 +1654,10 @@ resources:
     summary: Accounting Point Energy Supplier
     description: >-
       Relation linking an energy supplier to an accounting point.
+    x-intl:
+      en: Accounting Point Energy Supplier
+      nb: Avregningspunkt kraftleverandør
+      nn: Avregningspunkt kraftleverandør
     operations:
       - list
     generate_views: false
@@ -1647,6 +1719,10 @@ resources:
     acronym: PT
     summary: Product Type
     description: Product type.
+    x-intl:
+      en: Product Type
+      nb: Produkttype
+      nn: Produkttype
     operations:
       - read
       - list
@@ -1709,6 +1785,10 @@ resources:
     summary: System Operator Product Type
     description: >-
       Relation between a system operator and a product type they want to buy.
+    x-intl:
+      en: System Operator Product Type
+      nb: Systemoperatør produkttype
+      nn: Systemoperatør produkttype
     operations:
       - list
       - read
@@ -1778,6 +1858,10 @@ resources:
       Relation between a service provider and a system operator, for the SP to
       apply for delivering the SO some of the types of product they want to buy
       on a flexibility market.
+    x-intl:
+      en: Service Provider Product Application
+      nb: Tjenesteleverandør produktsøknad
+      nn: Tenesteleverandør produktsøknad
     operations:
       - list
       - read
@@ -1874,6 +1958,10 @@ resources:
     description: >-
       The relation allowing a procuring system operator to temporarily suspend a
       service provider from delivering them products of the given types.
+    x-intl:
+      en: Service Provider Product Suspension
+      nb: Tjenesteleverandør produktsuspensjon
+      nn: Tenesteleverandør produktsuspensjon
     operations:
       - list
       - read
@@ -1961,6 +2049,10 @@ resources:
 
   - id: service_providing_group_product_application
     acronym: SPGPA
+    x-intl:
+      en: Service Providing Group Product Application
+      nb: Fleksibilitetsgruppe produktsøknad
+      nn: Fleksibilitetsgruppe produktsøknad
     summary: Service Providing Group Product Application
     description: >-
       Relation between a service providing group and a system operator for a
@@ -2083,6 +2175,10 @@ resources:
     description: >-
       The relation allowing a procuring system operator to temporarily suspend a
       service providing group from delivering products of certain types.
+    x-intl:
+      en: Service Providing Group Product Suspension
+      nb: Fleksibilitetsgruppe produktsuspensjon
+      nn: Fleksibilitetsgruppe produktsuspensjon
     operations:
       - list
       - read
@@ -2169,6 +2265,10 @@ resources:
     summary: Notice
     description: >-
       Notice to users about various issues or actions expected from them.
+    x-intl:
+      en: Notice
+      nb: Melding
+      nn: Melding
     operations:
       - list
     generate_views: false
