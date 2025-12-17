@@ -9,6 +9,8 @@ import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { ProductTypeInput } from "../product_type/components";
+import { zSystemOperatorProductType } from "../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -41,7 +43,12 @@ export const SystemOperatorProductTypeInput = () => {
   });
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zSystemOperatorProductType)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -49,11 +56,17 @@ export const SystemOperatorProductTypeInput = () => {
         <InputStack direction="row" flexWrap="wrap">
           <PartyReferenceInput
             source="system_operator_id"
+            label="field.system_operator_product_type.system_operator_id"
             readOnly={isSystemOperator}
           />
-          <ProductTypeInput source="product_type_id" validate={required()} />
+          <ProductTypeInput
+            source="product_type_id"
+            label="field.system_operator_product_type.product_type_id"
+            validate={required()}
+          />
           <SelectInput
             source="status"
+            label="field.system_operator_product_type.status"
             validate={required()}
             choices={["active", "inactive"]}
           />

@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import { DateTimeInput } from "../components/datetime";
 import { Toolbar } from "../components/Toolbar";
 import { ProductTypeArrayInput } from "../product_type/components";
+import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -95,7 +97,12 @@ export const ServiceProviderProductApplicationInput = () => {
   });
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zServiceProviderProductApplication)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -103,10 +110,17 @@ export const ServiceProviderProductApplicationInput = () => {
         <InputStack direction="row" flexWrap="wrap">
           <PartyReferenceInput
             source="service_provider_id"
+            label="field.service_provider_product_application.service_provider_id"
             readOnly={isServiceProvider}
           />
-          <PartyReferenceInput source="system_operator_id" />
-          <ProductTypesInput source="product_type_ids" label="Product types" />
+          <PartyReferenceInput
+            source="system_operator_id"
+            label="field.service_provider_product_application.system_operator_id"
+          />
+          <ProductTypesInput
+            source="product_type_ids"
+            label="field.service_provider_product_application.product_type_ids"
+          />
         </InputStack>
         <Typography variant="h6" gutterBottom>
           Application process
@@ -114,6 +128,7 @@ export const ServiceProviderProductApplicationInput = () => {
         <InputStack direction="row" flexWrap="wrap">
           <SelectInput
             source="status"
+            label="field.service_provider_product_application.status"
             validate={required()}
             choices={[
               "requested",
@@ -123,7 +138,10 @@ export const ServiceProviderProductApplicationInput = () => {
               "qualified",
             ]}
           />
-          <DateTimeInput source="qualified_at" />
+          <DateTimeInput
+            source="qualified_at"
+            label="field.service_provider_product_application.qualified_at"
+          />
         </InputStack>
       </Stack>
     </SimpleForm>

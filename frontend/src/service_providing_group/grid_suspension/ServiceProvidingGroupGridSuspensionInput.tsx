@@ -14,6 +14,8 @@ import {
   AutocompleteReferenceInput,
 } from "../../auth";
 import { useMemo } from "react";
+import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -40,7 +42,12 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
   );
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zServiceProvidingGroupGridSuspension)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -49,6 +56,7 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
           <AutocompleteReferenceInput
             source="service_providing_group_id"
             reference="service_providing_group"
+            label="field.service_providing_group_grid_suspension.service_providing_group_id"
             readOnly={!!record?.service_providing_group_id}
           />
         </InputStack>
@@ -56,6 +64,7 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
           {!isSystemOperator && (
             <PartyReferenceInput
               source="impacted_system_operator_id"
+              label="field.service_providing_group_grid_suspension.impacted_system_operator_id"
               filter={{ type: "system_operator" }}
             />
           )}
@@ -66,6 +75,7 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
         <InputStack direction="row" flexWrap="wrap">
           <SelectInput
             source="reason"
+            label="field.service_providing_group_grid_suspension.reason"
             validate={required()}
             choices={[
               "breach_of_conditions",

@@ -14,6 +14,8 @@ import {
   AutocompleteReferenceInput,
 } from "../../auth";
 import { useMemo } from "react";
+import { zControllableUnitSuspension } from "../../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -40,7 +42,12 @@ export const ControllableUnitSuspensionInput = () => {
   );
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zControllableUnitSuspension)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -49,6 +56,7 @@ export const ControllableUnitSuspensionInput = () => {
           <AutocompleteReferenceInput
             source="controllable_unit_id"
             reference="controllable_unit"
+            label="field.controllable_unit_suspension.controllable_unit_id"
             readOnly={!!record?.controllable_unit_id}
           />
         </InputStack>
@@ -56,6 +64,7 @@ export const ControllableUnitSuspensionInput = () => {
           {!isSystemOperator && (
             <PartyReferenceInput
               source="impacted_system_operator_id"
+              label="field.controllable_unit_suspension.impacted_system_operator_id"
               filter={{ type: "system_operator" }}
             />
           )}
@@ -66,6 +75,7 @@ export const ControllableUnitSuspensionInput = () => {
         <InputStack direction="row" flexWrap="wrap">
           <SelectInput
             source="reason"
+            label="field.controllable_unit_suspension.reason"
             validate={required()}
             choices={["compromises_safe_operation", "other"]}
           />

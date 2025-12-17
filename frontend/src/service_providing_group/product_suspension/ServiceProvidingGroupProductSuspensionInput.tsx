@@ -15,6 +15,8 @@ import {
 } from "../../auth";
 import { useMemo } from "react";
 import { ProductTypeArrayInput } from "../../product_type/components";
+import { zServiceProvidingGroupProductSuspension } from "../../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const filterRecord = ({
   service_providing_group_id,
@@ -40,7 +42,12 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
   );
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zServiceProvidingGroupProductSuspension)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -49,6 +56,7 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
           <AutocompleteReferenceInput
             source="service_providing_group_id"
             reference="service_providing_group"
+            label="field.service_providing_group_product_suspension.service_providing_group_id"
             readOnly={!!record?.service_providing_group_id}
           />
         </InputStack>
@@ -56,13 +64,14 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
           {!isSystemOperator && (
             <PartyReferenceInput
               source="procuring_system_operator_id"
+              label="field.service_providing_group_product_suspension.procuring_system_operator_id"
               filter={{ type: "system_operator" }}
             />
           )}
         </InputStack>
         <ProductTypeArrayInput
           source="product_type_ids"
-          label="Product types"
+          label="field.service_providing_group_product_suspension.product_type_ids"
         />
         <Typography variant="h6" gutterBottom>
           Product suspension process
@@ -70,6 +79,7 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
         <InputStack direction="row" flexWrap="wrap">
           <SelectInput
             source="reason"
+            label="field.service_providing_group_product_suspension.reason"
             validate={required()}
             choices={["failed_verification", "other"]}
           />
