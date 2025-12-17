@@ -12,6 +12,8 @@ import { Link as RouterLink } from "react-router-dom";
 import { TechnicalResource } from "../../../generated-client";
 import AddIcon from "@mui/icons-material/Add";
 import { useI18nProvider } from "../../../intl/intl";
+import { usePermissions } from "react-admin";
+import { Permissions } from "../../../auth/permissions";
 
 export const TechnicalResources = ({
   technicalResources,
@@ -21,6 +23,11 @@ export const TechnicalResources = ({
   technicalResources: TechnicalResource[] | undefined;
 }) => {
   const { translate } = useI18nProvider();
+  const { permissions } = usePermissions<Permissions>();
+  const canCreateTechnicalResource = permissions?.allow(
+    "technical_resource",
+    "create",
+  );
 
   if (!controllableUnitId) {
     return null;
@@ -31,13 +38,15 @@ export const TechnicalResources = ({
         <Typography variant="h6" sx={{ fontWeight: "bold" }} gutterBottom>
           Technical resources:
         </Typography>
-        <Button
-          component={RouterLink}
-          to={`/controllable_unit/${controllableUnitId}/technical_resource/create`}
-          startIcon={<AddIcon />}
-        >
-          Add technical resource
-        </Button>
+        {canCreateTechnicalResource && (
+          <Button
+            component={RouterLink}
+            to={`/controllable_unit/${controllableUnitId}/technical_resource/create`}
+            startIcon={<AddIcon />}
+          >
+            Add technical resource
+          </Button>
+        )}
       </Stack>
       {!!technicalResources?.length && (
         <Box

@@ -1,7 +1,8 @@
-import { Link } from "react-admin";
+import { Link, usePermissions } from "react-admin";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import { Alert, AlertColor, AlertTitle, Button } from "@mui/material";
 import { ReactNode } from "react";
+import { Permissions } from "../../../auth/permissions";
 
 type AlertType = {
   severity: AlertColor;
@@ -10,12 +11,20 @@ type AlertType = {
   action?: ReactNode;
 };
 
-const getAlert = (
+const useControllableUnitAlerts = (
   controllableUnitViewModel: ControllableUnitShowViewModel,
 ): AlertType | null => {
   const { controllableUnit, suspensions, technicalResources } =
     controllableUnitViewModel;
-
+  const { permissions } = usePermissions<Permissions>();
+  const canCreateTechnicalResource = permissions?.allow(
+    "technical_resource",
+    "create",
+  );
+  const canUpdateControllableUnit = permissions?.allow(
+    "controllable_unit",
+    "update",
+  );
   if (suspensions?.length) {
     const suspension = suspensions[0];
     return {
@@ -42,6 +51,7 @@ const getAlert = (
       action: (
         <Button
           component={Link}
+          disabled={!canCreateTechnicalResource}
           to={`/controllable_unit/${controllableUnit.id}/technical_resource/create`}
         >
           Add technical resource
@@ -59,6 +69,7 @@ const getAlert = (
       action: (
         <Button
           component={Link}
+          disabled={!canUpdateControllableUnit}
           to={`/controllable_unit/${controllableUnit.id}/edit`}
         >
           Edit status
@@ -74,7 +85,7 @@ export const ControllableUnitAlerts = ({
 }: {
   controllableUnitViewModel: ControllableUnitShowViewModel;
 }) => {
-  const alert = getAlert(controllableUnitViewModel);
+  const alert = useControllableUnitAlerts(controllableUnitViewModel);
   if (!alert) {
     return null;
   }
