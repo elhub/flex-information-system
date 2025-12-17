@@ -5172,7 +5172,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -5753,7 +5762,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -6072,7 +6090,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_suspension_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -6739,7 +6766,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_suspension_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -7048,7 +7084,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -7611,7 +7656,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_suspension_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -7940,7 +7994,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_service_provider_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -8624,7 +8687,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/controllable_unit_service_provider_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -8942,7 +9014,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -9514,7 +9595,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -9833,7 +9923,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_membership_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -10500,7 +10599,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_membership_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -10819,7 +10927,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -11399,7 +11516,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -11708,7 +11834,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -12271,7 +12406,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -12590,7 +12734,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -13257,7 +13410,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -13566,7 +13728,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -14129,7 +14300,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -14455,7 +14635,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/entity_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -15006,7 +15195,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/entity_client_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -15667,7 +15865,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/party_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -16256,7 +16463,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/party_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -16575,7 +16791,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/party_membership_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -17242,7 +17467,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/party_membership_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -17581,7 +17815,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/identity_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -17928,7 +18171,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/technical_resource_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -18587,7 +18839,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/technical_resource_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -18886,7 +19147,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/event_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -19204,7 +19474,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/notification_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -19646,7 +19925,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -19963,7 +20251,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -20160,7 +20457,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -20365,7 +20671,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/product_type_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -20683,7 +20998,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/system_operator_product_type_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -21263,7 +21587,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/system_operator_product_type_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -21592,7 +21925,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_application_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -22189,7 +22531,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_application_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -22498,7 +22849,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_application_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -23061,7 +23421,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_application_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -23390,7 +23759,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -24074,7 +24452,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_suspension_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -24383,7 +24770,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_suspension_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -24946,7 +25342,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_provider_product_suspension_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -25275,7 +25680,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -25872,7 +26286,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -26201,7 +26624,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -26885,7 +27317,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_suspension_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -27194,7 +27635,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -27757,7 +28207,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {
@@ -28056,7 +28515,16 @@
                         "description": "OK"
                     },
                     "206": {
-                        "content": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/notice_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
                         "description": "Partial Content"
                     },
                     "400": {

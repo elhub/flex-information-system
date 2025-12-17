@@ -902,11 +902,11 @@ FROM api.controllable_unit AS cu
     INNER JOIN notification.controllable_unit_system_operator AS cuso
         ON cu.id = cuso.controllable_unit_id
 WHERE cu.id = (
-    SELECT controllable_unit_id
-    FROM api.technical_resource_history trh
-    WHERE trh.technical_resource_id = $1
-    LIMIT 1
-)
+        SELECT controllable_unit_id
+        FROM api.technical_resource_history trh
+        WHERE trh.technical_resource_id = $1
+        LIMIT 1
+    )
     AND cu.status != 'new'
     AND cuso.valid_time_range @> $2::timestamptz
 `

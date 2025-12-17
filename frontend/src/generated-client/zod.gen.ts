@@ -4153,7 +4153,7 @@ export const zListControllableUnitData = z.object({
 
 export const zListControllableUnitResponse = z.union([
   z.array(zControllableUnitResponse),
-  z.unknown(),
+  z.array(zControllableUnitResponse),
 ]);
 
 export const zCreateControllableUnitData = z.object({
@@ -4331,7 +4331,7 @@ export const zListControllableUnitHistoryData = z.object({
 
 export const zListControllableUnitHistoryResponse = z.union([
   z.array(zControllableUnitHistoryResponse),
-  z.unknown(),
+  z.array(zControllableUnitHistoryResponse),
 ]);
 
 export const zReadControllableUnitHistoryData = z.object({
@@ -4454,7 +4454,7 @@ export const zListControllableUnitSuspensionData = z.object({
 
 export const zListControllableUnitSuspensionResponse = z.union([
   z.array(zControllableUnitSuspensionResponse),
-  z.unknown(),
+  z.array(zControllableUnitSuspensionResponse),
 ]);
 
 export const zCreateControllableUnitSuspensionData = z.object({
@@ -4654,7 +4654,7 @@ export const zListControllableUnitSuspensionHistoryData = z.object({
 
 export const zListControllableUnitSuspensionHistoryResponse = z.union([
   z.array(zControllableUnitSuspensionHistoryResponse),
-  z.unknown(),
+  z.array(zControllableUnitSuspensionHistoryResponse),
 ]);
 
 export const zReadControllableUnitSuspensionHistoryData = z.object({
@@ -4768,7 +4768,7 @@ export const zListControllableUnitSuspensionCommentData = z.object({
 
 export const zListControllableUnitSuspensionCommentResponse = z.union([
   z.array(zControllableUnitSuspensionCommentResponse),
-  z.unknown(),
+  z.array(zControllableUnitSuspensionCommentResponse),
 ]);
 
 export const zCreateControllableUnitSuspensionCommentData = z.object({
@@ -4936,7 +4936,7 @@ export const zListControllableUnitSuspensionCommentHistoryData = z.object({
 
 export const zListControllableUnitSuspensionCommentHistoryResponse = z.union([
   z.array(zControllableUnitSuspensionCommentHistoryResponse),
-  z.unknown(),
+  z.array(zControllableUnitSuspensionCommentHistoryResponse),
 ]);
 
 export const zReadControllableUnitSuspensionCommentHistoryData = z.object({
@@ -5068,7 +5068,7 @@ export const zListControllableUnitServiceProviderData = z.object({
 
 export const zListControllableUnitServiceProviderResponse = z.union([
   z.array(zControllableUnitServiceProviderResponse),
-  z.unknown(),
+  z.array(zControllableUnitServiceProviderResponse),
 ]);
 
 export const zCreateControllableUnitServiceProviderData = z.object({
@@ -5277,7 +5277,7 @@ export const zListControllableUnitServiceProviderHistoryData = z.object({
 
 export const zListControllableUnitServiceProviderHistoryResponse = z.union([
   z.array(zControllableUnitServiceProviderHistoryResponse),
-  z.unknown(),
+  z.array(zControllableUnitServiceProviderHistoryResponse),
 ]);
 
 export const zReadControllableUnitServiceProviderHistoryData = z.object({
@@ -5397,7 +5397,7 @@ export const zListServiceProvidingGroupData = z.object({
 
 export const zListServiceProvidingGroupResponse = z.union([
   z.array(zServiceProvidingGroupResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupResponse),
 ]);
 
 export const zCreateServiceProvidingGroupData = z.object({
@@ -5571,7 +5571,7 @@ export const zListServiceProvidingGroupHistoryData = z.object({
 
 export const zListServiceProvidingGroupHistoryResponse = z.union([
   z.array(zServiceProvidingGroupHistoryResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupHistoryResponse),
 ]);
 
 export const zReadServiceProvidingGroupHistoryData = z.object({
@@ -5694,7 +5694,7 @@ export const zListServiceProvidingGroupMembershipData = z.object({
 
 export const zListServiceProvidingGroupMembershipResponse = z.union([
   z.array(zServiceProvidingGroupMembershipResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupMembershipResponse),
 ]);
 
 export const zCreateServiceProvidingGroupMembershipData = z.object({
@@ -5894,7 +5894,7 @@ export const zListServiceProvidingGroupMembershipHistoryData = z.object({
 
 export const zListServiceProvidingGroupMembershipHistoryResponse = z.union([
   z.array(zServiceProvidingGroupMembershipHistoryResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupMembershipHistoryResponse),
 ]);
 
 export const zReadServiceProvidingGroupMembershipHistoryData = z.object({
@@ -6017,7 +6017,7 @@ export const zListServiceProvidingGroupGridPrequalificationData = z.object({
 
 export const zListServiceProvidingGroupGridPrequalificationResponse = z.union([
   z.array(zServiceProvidingGroupGridPrequalificationResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupGridPrequalificationResponse),
 ]);
 
 export const zCreateServiceProvidingGroupGridPrequalificationData = z.object({
@@ -6195,7 +6195,7 @@ export const zListServiceProvidingGroupGridPrequalificationHistoryData =
 export const zListServiceProvidingGroupGridPrequalificationHistoryResponse =
   z.union([
     z.array(zServiceProvidingGroupGridPrequalificationHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupGridPrequalificationHistoryResponse),
   ]);
 
 export const zReadServiceProvidingGroupGridPrequalificationHistoryData =
@@ -6312,7 +6312,7 @@ export const zListServiceProvidingGroupGridPrequalificationCommentData =
 export const zListServiceProvidingGroupGridPrequalificationCommentResponse =
   z.union([
     z.array(zServiceProvidingGroupGridPrequalificationCommentResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupGridPrequalificationCommentResponse),
   ]);
 
 export const zCreateServiceProvidingGroupGridPrequalificationCommentData =
@@ -6486,7 +6486,7 @@ export const zListServiceProvidingGroupGridPrequalificationCommentHistoryData =
 export const zListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
   z.union([
     z.array(zServiceProvidingGroupGridPrequalificationCommentHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupGridPrequalificationCommentHistoryResponse),
   ]);
 
 export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryData =
@@ -6610,7 +6610,7 @@ export const zListServiceProvidingGroupGridSuspensionData = z.object({
 
 export const zListServiceProvidingGroupGridSuspensionResponse = z.union([
   z.array(zServiceProvidingGroupGridSuspensionResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupGridSuspensionResponse),
 ]);
 
 export const zCreateServiceProvidingGroupGridSuspensionData = z.object({
@@ -6810,7 +6810,7 @@ export const zListServiceProvidingGroupGridSuspensionHistoryData = z.object({
 
 export const zListServiceProvidingGroupGridSuspensionHistoryResponse = z.union([
   z.array(zServiceProvidingGroupGridSuspensionHistoryResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupGridSuspensionHistoryResponse),
 ]);
 
 export const zReadServiceProvidingGroupGridSuspensionHistoryData = z.object({
@@ -6924,7 +6924,7 @@ export const zListServiceProvidingGroupGridSuspensionCommentData = z.object({
 
 export const zListServiceProvidingGroupGridSuspensionCommentResponse = z.union([
   z.array(zServiceProvidingGroupGridSuspensionCommentResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupGridSuspensionCommentResponse),
 ]);
 
 export const zCreateServiceProvidingGroupGridSuspensionCommentData = z.object({
@@ -7092,7 +7092,7 @@ export const zListServiceProvidingGroupGridSuspensionCommentHistoryData =
 export const zListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
   z.union([
     z.array(zServiceProvidingGroupGridSuspensionCommentHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupGridSuspensionCommentHistoryResponse),
   ]);
 
 export const zReadServiceProvidingGroupGridSuspensionCommentHistoryData =
@@ -7216,7 +7216,7 @@ export const zListEntityData = z.object({
 
 export const zListEntityResponse = z.union([
   z.array(zEntityResponse),
-  z.unknown(),
+  z.array(zEntityResponse),
 ]);
 
 export const zCreateEntityData = z.object({
@@ -7385,7 +7385,7 @@ export const zListEntityClientData = z.object({
 
 export const zListEntityClientResponse = z.union([
   z.array(zEntityClientResponse),
-  z.unknown(),
+  z.array(zEntityClientResponse),
 ]);
 
 export const zCreateEntityClientData = z.object({
@@ -7583,7 +7583,7 @@ export const zListPartyData = z.object({
 
 export const zListPartyResponse = z.union([
   z.array(zPartyResponse),
-  z.unknown(),
+  z.array(zPartyResponse),
 ]);
 
 export const zCreatePartyData = z.object({
@@ -7764,7 +7764,7 @@ export const zListPartyHistoryData = z.object({
 
 export const zListPartyHistoryResponse = z.union([
   z.array(zPartyHistoryResponse),
-  z.unknown(),
+  z.array(zPartyHistoryResponse),
 ]);
 
 export const zReadPartyHistoryData = z.object({
@@ -7886,7 +7886,7 @@ export const zListPartyMembershipData = z.object({
 
 export const zListPartyMembershipResponse = z.union([
   z.array(zPartyMembershipResponse),
-  z.unknown(),
+  z.array(zPartyMembershipResponse),
 ]);
 
 export const zCreatePartyMembershipData = z.object({
@@ -8084,7 +8084,7 @@ export const zListPartyMembershipHistoryData = z.object({
 
 export const zListPartyMembershipHistoryResponse = z.union([
   z.array(zPartyMembershipHistoryResponse),
-  z.unknown(),
+  z.array(zPartyMembershipHistoryResponse),
 ]);
 
 export const zReadPartyMembershipHistoryData = z.object({
@@ -8225,7 +8225,7 @@ export const zListIdentityData = z.object({
 
 export const zListIdentityResponse = z.union([
   z.array(zIdentityResponse),
-  z.unknown(),
+  z.array(zIdentityResponse),
 ]);
 
 export const zReadIdentityData = z.object({
@@ -8344,7 +8344,7 @@ export const zListTechnicalResourceData = z.object({
 
 export const zListTechnicalResourceResponse = z.union([
   z.array(zTechnicalResourceResponse),
-  z.unknown(),
+  z.array(zTechnicalResourceResponse),
 ]);
 
 export const zCreateTechnicalResourceData = z.object({
@@ -8539,7 +8539,7 @@ export const zListTechnicalResourceHistoryData = z.object({
 
 export const zListTechnicalResourceHistoryResponse = z.union([
   z.array(zTechnicalResourceHistoryResponse),
-  z.unknown(),
+  z.array(zTechnicalResourceHistoryResponse),
 ]);
 
 export const zReadTechnicalResourceHistoryData = z.object({
@@ -8644,7 +8644,7 @@ export const zListEventData = z.object({
 
 export const zListEventResponse = z.union([
   z.array(zEventResponse),
-  z.unknown(),
+  z.array(zEventResponse),
 ]);
 
 export const zReadEventData = z.object({
@@ -8766,7 +8766,7 @@ export const zListNotificationData = z.object({
 
 export const zListNotificationResponse = z.union([
   z.array(zNotificationResponse),
-  z.unknown(),
+  z.array(zNotificationResponse),
 ]);
 
 export const zReadNotificationData = z.object({
@@ -8903,7 +8903,7 @@ export const zListAccountingPointData = z.object({
 
 export const zListAccountingPointResponse = z.union([
   z.array(zAccountingPointResponse),
-  z.unknown(),
+  z.array(zAccountingPointResponse),
 ]);
 
 export const zReadAccountingPointData = z.object({
@@ -9016,7 +9016,7 @@ export const zListAccountingPointBalanceResponsiblePartyData = z.object({
 
 export const zListAccountingPointBalanceResponsiblePartyResponse = z.union([
   z.array(zAccountingPointBalanceResponsiblePartyResponse),
-  z.unknown(),
+  z.array(zAccountingPointBalanceResponsiblePartyResponse),
 ]);
 
 export const zListAccountingPointEnergySupplierData = z.object({
@@ -9106,7 +9106,7 @@ export const zListAccountingPointEnergySupplierData = z.object({
 
 export const zListAccountingPointEnergySupplierResponse = z.union([
   z.array(zAccountingPointEnergySupplierResponse),
-  z.unknown(),
+  z.array(zAccountingPointEnergySupplierResponse),
 ]);
 
 export const zListProductTypeData = z.object({
@@ -9199,7 +9199,7 @@ export const zListProductTypeData = z.object({
 
 export const zListProductTypeResponse = z.union([
   z.array(zProductTypeResponse),
-  z.unknown(),
+  z.array(zProductTypeResponse),
 ]);
 
 export const zReadProductTypeData = z.object({
@@ -9321,7 +9321,7 @@ export const zListSystemOperatorProductTypeData = z.object({
 
 export const zListSystemOperatorProductTypeResponse = z.union([
   z.array(zSystemOperatorProductTypeResponse),
-  z.unknown(),
+  z.array(zSystemOperatorProductTypeResponse),
 ]);
 
 export const zCreateSystemOperatorProductTypeData = z.object({
@@ -9498,7 +9498,7 @@ export const zListSystemOperatorProductTypeHistoryData = z.object({
 
 export const zListSystemOperatorProductTypeHistoryResponse = z.union([
   z.array(zSystemOperatorProductTypeHistoryResponse),
-  z.unknown(),
+  z.array(zSystemOperatorProductTypeHistoryResponse),
 ]);
 
 export const zReadSystemOperatorProductTypeHistoryData = z.object({
@@ -9630,7 +9630,7 @@ export const zListServiceProviderProductApplicationData = z.object({
 
 export const zListServiceProviderProductApplicationResponse = z.union([
   z.array(zServiceProviderProductApplicationResponse),
-  z.unknown(),
+  z.array(zServiceProviderProductApplicationResponse),
 ]);
 
 export const zCreateServiceProviderProductApplicationData = z.object({
@@ -9816,7 +9816,7 @@ export const zListServiceProviderProductApplicationHistoryData = z.object({
 
 export const zListServiceProviderProductApplicationHistoryResponse = z.union([
   z.array(zServiceProviderProductApplicationHistoryResponse),
-  z.unknown(),
+  z.array(zServiceProviderProductApplicationHistoryResponse),
 ]);
 
 export const zReadServiceProviderProductApplicationHistoryData = z.object({
@@ -9930,7 +9930,7 @@ export const zListServiceProviderProductApplicationCommentData = z.object({
 
 export const zListServiceProviderProductApplicationCommentResponse = z.union([
   z.array(zServiceProviderProductApplicationCommentResponse),
-  z.unknown(),
+  z.array(zServiceProviderProductApplicationCommentResponse),
 ]);
 
 export const zCreateServiceProviderProductApplicationCommentData = z.object({
@@ -10100,7 +10100,7 @@ export const zListServiceProviderProductApplicationCommentHistoryData =
 export const zListServiceProviderProductApplicationCommentHistoryResponse =
   z.union([
     z.array(zServiceProviderProductApplicationCommentHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProviderProductApplicationCommentHistoryResponse),
   ]);
 
 export const zReadServiceProviderProductApplicationCommentHistoryData =
@@ -10233,7 +10233,7 @@ export const zListServiceProviderProductSuspensionData = z.object({
 
 export const zListServiceProviderProductSuspensionResponse = z.union([
   z.array(zServiceProviderProductSuspensionResponse),
-  z.unknown(),
+  z.array(zServiceProviderProductSuspensionResponse),
 ]);
 
 export const zCreateServiceProviderProductSuspensionData = z.object({
@@ -10442,7 +10442,7 @@ export const zListServiceProviderProductSuspensionHistoryData = z.object({
 
 export const zListServiceProviderProductSuspensionHistoryResponse = z.union([
   z.array(zServiceProviderProductSuspensionHistoryResponse),
-  z.unknown(),
+  z.array(zServiceProviderProductSuspensionHistoryResponse),
 ]);
 
 export const zReadServiceProviderProductSuspensionHistoryData = z.object({
@@ -10556,7 +10556,7 @@ export const zListServiceProviderProductSuspensionCommentData = z.object({
 
 export const zListServiceProviderProductSuspensionCommentResponse = z.union([
   z.array(zServiceProviderProductSuspensionCommentResponse),
-  z.unknown(),
+  z.array(zServiceProviderProductSuspensionCommentResponse),
 ]);
 
 export const zCreateServiceProviderProductSuspensionCommentData = z.object({
@@ -10727,7 +10727,7 @@ export const zListServiceProviderProductSuspensionCommentHistoryData = z.object(
 export const zListServiceProviderProductSuspensionCommentHistoryResponse =
   z.union([
     z.array(zServiceProviderProductSuspensionCommentHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProviderProductSuspensionCommentHistoryResponse),
   ]);
 
 export const zReadServiceProviderProductSuspensionCommentHistoryData = z.object(
@@ -10861,7 +10861,7 @@ export const zListServiceProvidingGroupProductApplicationData = z.object({
 
 export const zListServiceProvidingGroupProductApplicationResponse = z.union([
   z.array(zServiceProvidingGroupProductApplicationResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupProductApplicationResponse),
 ]);
 
 export const zCreateServiceProvidingGroupProductApplicationData = z.object({
@@ -11050,7 +11050,7 @@ export const zListServiceProvidingGroupProductApplicationHistoryData = z.object(
 export const zListServiceProvidingGroupProductApplicationHistoryResponse =
   z.union([
     z.array(zServiceProvidingGroupProductApplicationHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupProductApplicationHistoryResponse),
   ]);
 
 export const zReadServiceProvidingGroupProductApplicationHistoryData = z.object(
@@ -11184,7 +11184,7 @@ export const zListServiceProvidingGroupProductSuspensionData = z.object({
 
 export const zListServiceProvidingGroupProductSuspensionResponse = z.union([
   z.array(zServiceProvidingGroupProductSuspensionResponse),
-  z.unknown(),
+  z.array(zServiceProvidingGroupProductSuspensionResponse),
 ]);
 
 export const zCreateServiceProvidingGroupProductSuspensionData = z.object({
@@ -11394,7 +11394,7 @@ export const zListServiceProvidingGroupProductSuspensionHistoryData = z.object({
 export const zListServiceProvidingGroupProductSuspensionHistoryResponse =
   z.union([
     z.array(zServiceProvidingGroupProductSuspensionHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupProductSuspensionHistoryResponse),
   ]);
 
 export const zReadServiceProvidingGroupProductSuspensionHistoryData = z.object({
@@ -11509,7 +11509,7 @@ export const zListServiceProvidingGroupProductSuspensionCommentData = z.object({
 export const zListServiceProvidingGroupProductSuspensionCommentResponse =
   z.union([
     z.array(zServiceProvidingGroupProductSuspensionCommentResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupProductSuspensionCommentResponse),
   ]);
 
 export const zCreateServiceProvidingGroupProductSuspensionCommentData =
@@ -11679,7 +11679,7 @@ export const zListServiceProvidingGroupProductSuspensionCommentHistoryData =
 export const zListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
   z.union([
     z.array(zServiceProvidingGroupProductSuspensionCommentHistoryResponse),
-    z.unknown(),
+    z.array(zServiceProvidingGroupProductSuspensionCommentHistoryResponse),
   ]);
 
 export const zReadServiceProvidingGroupProductSuspensionCommentHistoryData =
@@ -11785,5 +11785,5 @@ export const zListNoticeData = z.object({
 
 export const zListNoticeResponse = z.union([
   z.array(zNoticeResponse),
-  z.unknown(),
+  z.array(zNoticeResponse),
 ]);
