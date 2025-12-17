@@ -6,8 +6,10 @@ export const LabelValue = ({
   label,
   value,
   unit,
+  labelKey,
 }: {
-  label: FieldLabel;
+  labelKey?: FieldLabel;
+  label?: string;
   value: string | number | undefined;
   unit?: string;
 }) => {
@@ -26,7 +28,7 @@ export const LabelValue = ({
       }}
     >
       <Typography variant="subtitle1" color="text.secondary">
-        {translateLabel(label)}:
+        {labelKey ? translateLabel(labelKey) : label}:
       </Typography>
       <Typography variant="body1" fontWeight="400" color="text.primary">
         {value} {unit}

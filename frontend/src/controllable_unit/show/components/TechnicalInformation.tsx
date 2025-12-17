@@ -10,31 +10,31 @@ export const TechnicalInformation = ({
   return (
     <Box>
       <LabelValue
-        label="controllable_unit.maximum_available_capacity"
+        labelKey="controllable_unit.maximum_available_capacity"
         value={controllableUnit?.maximum_available_capacity}
         unit="kW"
       />
       <LabelValue
-        label="controllable_unit.regulation_direction"
+        labelKey="controllable_unit.regulation_direction"
         value={controllableUnit?.regulation_direction}
       />
       <LabelValue
-        label="controllable_unit.minimum_duration"
+        labelKey="controllable_unit.minimum_duration"
         value={controllableUnit?.minimum_duration}
         unit="s"
       />
       <LabelValue
-        label="controllable_unit.maximum_duration"
+        labelKey="controllable_unit.maximum_duration"
         value={controllableUnit?.maximum_duration}
         unit="s"
       />
       <LabelValue
-        label="controllable_unit.recovery_duration"
+        labelKey="controllable_unit.recovery_duration"
         value={controllableUnit?.recovery_duration?.toString()}
         unit="s"
       />
       <LabelValue
-        label="controllable_unit.ramp_rate"
+        labelKey="controllable_unit.ramp_rate"
         value={controllableUnit?.ramp_rate}
         unit="kW/min"
       />

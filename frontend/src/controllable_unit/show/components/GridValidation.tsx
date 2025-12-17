@@ -10,15 +10,15 @@ export const GridValidation = ({
   return (
     <Box>
       <LabelValue
-        label="controllable_unit.grid_node_id"
+        labelKey="controllable_unit.grid_node_id"
         value={controllableUnit?.grid_node_id}
       />
       <LabelValue
-        label="controllable_unit.grid_validation_status"
+        labelKey="controllable_unit.grid_validation_status"
         value={controllableUnit?.grid_validation_status}
       />
       <LabelValue
-        label="controllable_unit.grid_validation_notes"
+        labelKey="controllable_unit.grid_validation_notes"
         value={controllableUnit?.grid_validation_notes}
       />
     </Box>
