@@ -12,7 +12,7 @@ type ViewPermissionGuardProps = {
 };
 
 const hasSourceProp = (
-  child: unknown
+  child: unknown,
 ): child is React.ReactElement<{ source: string }> => {
   if (typeof child !== "object" || child === null) {
     return false;
@@ -45,15 +45,15 @@ export const ViewPermissionGuard = (props: ViewPermissionGuardProps) => {
   const resource = resourceFromProps ?? resourceFromContext;
 
   const addPermissionToField = (
-    field: React.ReactElement<{ source: string }>
+    field: React.ReactElement<{ source: string }>,
   ) =>
     (allowAll ||
       permissions?.allow(
         `${resource}.${field.props.source}` as PermissionTarget,
-        "read"
+        "read",
       )) && (
       <>
-        {!hideLabels ? <Labeled>{field}</Labeled> :  field }
+        {!hideLabels ? <Labeled>{field}</Labeled> : field}
         {!hideTooltips && (
           <FieldTooltip resource={resource} field={field.props.source} />
         )}
@@ -61,6 +61,6 @@ export const ViewPermissionGuard = (props: ViewPermissionGuardProps) => {
     );
 
   return Children.map(children, (child) =>
-    hasSourceProp(child) ? addPermissionToField(child) : child
+    hasSourceProp(child) ? addPermissionToField(child) : child,
   );
 };

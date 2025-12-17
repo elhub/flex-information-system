@@ -15,7 +15,7 @@ import { chunksOf, removeSuffix } from "../util";
 export const historyRowClick = (
   _: Identifier,
   resource: string,
-  record: RaRecord
+  record: RaRecord,
 ) => {
   const mainResource = resource.replace(/_history$/, "");
   return `/${mainResource}/${record[mainResource + "_id"]}/history/${
@@ -68,7 +68,7 @@ export type NestedResourceHistoryButtonProps = {
 };
 
 export const NestedResourceHistoryButton = (
-  props: NestedResourceHistoryButtonProps
+  props: NestedResourceHistoryButtonProps,
 ) => {
   const { permissions } = usePermissions<Permissions>();
   const location = useLocation();
@@ -117,7 +117,7 @@ export const NestedResourceHistoryButton = (
       disabled={
         !permissions?.allow(
           `${childAPIResource}_history` as PermissionTarget,
-          "read"
+          "read",
         )
       }
       component={Link}

@@ -5,6 +5,8 @@ import {
   ControllableUnitHistoryResponse,
   ControllableUnitServiceProvider,
   ControllableUnitSuspension,
+  EmptyObject,
+  ErrorMessage,
   listAccountingPointBalanceResponsibleParty,
   listControllableUnitServiceProvider,
   listControllableUnitSuspension,
@@ -24,10 +26,10 @@ type Response<T> =
     }
   | {
       data: undefined;
-      error: unknown;
+      error: ErrorMessage | EmptyObject;
     };
 
-const throwOnError = <T>(response: Response<T>): T | undefined => {
+const throwOnError = <T>(response: Response<T>): T => {
   const { data, error } = response;
   if (error) {
     throw error;
@@ -51,12 +53,12 @@ export type ControllableUnitShowViewModel = {
 
 const findCurrentCusp = async (controllableUnitId: number) => {
   //TODO: need to fix specification to return the type cusp and not unknown array
-  const cuspList = (await listControllableUnitServiceProvider({
+  const cuspList = await listControllableUnitServiceProvider({
     query: { controllable_unit_id: "eq." + controllableUnitId },
-  }).then(throwOnError)) as ControllableUnitServiceProvider[];
+  }).then(throwOnError);
 
   const currentCusp = cuspList.find(
-    (cusp: ControllableUnitServiceProvider) =>
+    (cusp) =>
       cusp.valid_from &&
       new Date(cusp.valid_from) <= new Date() &&
       (!cusp.valid_to || new Date(cusp.valid_to) >= new Date()),
@@ -77,9 +79,7 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
   const balanceResponsibleParties =
     await listAccountingPointBalanceResponsibleParty({
       query: { accounting_point_id: "eq." + accountingPointId },
-    })
-      .then(throwOnError)
-      .then((data) => data as AccountingPointBalanceResponsibleParty[]);
+    }).then(throwOnError);
 
   const currentBalanceResponsibleParty = balanceResponsibleParties.find(
     (brp) =>
@@ -108,7 +108,12 @@ const getAccountingPointData = async (
   accountingPointId: number | undefined,
 ) => {
   if (!accountingPointId) {
-    return { accountingPoint: undefined, systemOperator: undefined };
+    return {
+      accountingPoint: undefined,
+      systemOperator: undefined,
+      balanceResponsibleParty: undefined,
+      controllableUnitBalanceResponsibleParty: undefined,
+    };
   }
 
   const accountingPoint = await readAccountingPoint({
@@ -127,7 +132,13 @@ const getAccountingPointData = async (
     balanceResponsiblePartyPromise,
   ]);
 
-  return { accountingPoint, systemOperator, ...balanceResponsibleParty };
+  return {
+    accountingPoint,
+    systemOperator,
+    balanceResponsibleParty: balanceResponsibleParty?.balanceResponsibleParty,
+    controllableUnitBalanceResponsibleParty:
+      balanceResponsibleParty?.controllableUnitBalanceResponsibleParty,
+  };
 };
 
 const getControllableUnitData = async (
@@ -162,13 +173,13 @@ const getControllableUnitData = async (
   return {
     controllableUnit,
     serviceProvider: cuspData.systemProvider,
-    technicalResources: technicalResources as TechnicalResource[] | undefined,
+    technicalResources: technicalResources,
     systemOperator: accountingPoint.systemOperator,
     accountingPoint: accountingPoint.accountingPoint,
     balanceResponsibleParty: accountingPoint.balanceResponsibleParty,
     controllableUnitBalanceResponsibleParty:
       accountingPoint.controllableUnitBalanceResponsibleParty,
-    suspensions: suspensions as ControllableUnitSuspension[] | undefined,
+    suspensions: suspensions,
     controllableUnitServiceProvider: cuspData.cusp,
   };
 };
