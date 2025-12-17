@@ -26,6 +26,11 @@ export const useI18nProvider = () => {
       const resource = parts[1];
       const field = parts[2];
 
+      console.log({
+        resolved: labels[`${resource}.${field}` as FieldLabel],
+        resource: `${resource}.${field}`,
+        key,
+      });
       return labels[`${resource}.${field}` as FieldLabel] ?? key;
     },
   };
@@ -33,5 +38,6 @@ export const useI18nProvider = () => {
 
 export const useTranslateField = () => {
   const { translate } = useI18nProvider();
-  return (key: FieldLabel, options?: unknown) => translate(key, options);
+  return (key: FieldLabel, options?: unknown) =>
+    translate(`field.${key}`, options);
 };

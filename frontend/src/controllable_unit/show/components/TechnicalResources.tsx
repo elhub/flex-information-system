@@ -11,7 +11,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { TechnicalResource } from "../../../generated-client";
 import AddIcon from "@mui/icons-material/Add";
-import { useI18nProvider } from "../../../intl/intl";
+import { useTranslateField } from "../../../intl/intl";
 import { usePermissions } from "react-admin";
 import { Permissions } from "../../../auth/permissions";
 
@@ -22,7 +22,7 @@ export const TechnicalResources = ({
   controllableUnitId: number | undefined;
   technicalResources: TechnicalResource[] | undefined;
 }) => {
-  const { translate } = useI18nProvider();
+  const translateField = useTranslateField();
   const { permissions } = usePermissions<Permissions>();
   const canCreateTechnicalResource = permissions?.allow(
     "technical_resource",
@@ -70,7 +70,7 @@ export const TechnicalResources = ({
                 />
                 <CardContent>
                   <Typography variant="subtitle2" gutterBottom>
-                    {translate("technical_resource.details")}
+                    {translateField("technical_resource.details")}
                   </Typography>
                   <Typography variant="body1" gutterBottom>
                     {technicalResource.details}

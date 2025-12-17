@@ -36,7 +36,6 @@ export const Header = ({
         label={controllableUnit?.status ?? "active"}
         color={colorMap[controllableUnit?.status ?? "active"]}
       />
-      ;
     </Box>
   );
 };

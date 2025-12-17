@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { FieldLabel } from "../../../intl/field-labels";
+import { useTranslateField } from "../../../intl/intl";
 
 export const LabelValue = ({
   label,
@@ -10,6 +11,7 @@ export const LabelValue = ({
   value: string | number | undefined;
   unit?: string;
 }) => {
+  const translateLabel = useTranslateField();
   if (!value) {
     return null;
   }
@@ -24,7 +26,7 @@ export const LabelValue = ({
       }}
     >
       <Typography variant="subtitle1" color="text.secondary">
-        {label}:
+        {translateLabel(label)}:
       </Typography>
       <Typography variant="body1" fontWeight="400" color="text.primary">
         {value} {unit}
