@@ -26,11 +26,6 @@ export const useI18nProvider = () => {
       const resource = parts[1];
       const field = parts[2];
 
-      console.log({
-        resolved: labels[`${resource}.${field}` as FieldLabel],
-        resource: `${resource}.${field}`,
-        key,
-      });
       return labels[`${resource}.${field}` as FieldLabel] ?? key;
     },
   };
