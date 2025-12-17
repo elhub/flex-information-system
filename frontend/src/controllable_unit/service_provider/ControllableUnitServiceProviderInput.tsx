@@ -114,22 +114,34 @@ const ControllableUnitServiceProviderForm = ({
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
           {cuIDAsNumber ? (
-            <NumberInput source="controllable_unit_id" />
+            <NumberInput
+              source="controllable_unit_id"
+              label="field.controllable_unit_service_provider.controllable_unit_id"
+            />
           ) : (
             <AutocompleteReferenceInput
               source="controllable_unit_id"
               reference="controllable_unit"
+              label="field.controllable_unit_service_provider.controllable_unit_id"
               readOnly
             />
           )}
           <PartyReferenceInput
             source="service_provider_id"
+            label="field.controllable_unit_service_provider.service_provider_id"
             readOnly={isServiceProvider}
           />
-          <NumberInput source="end_user_id" />
+          <NumberInput
+            source="end_user_id"
+            label="field.controllable_unit_service_provider.end_user_id"
+          />
         </InputStack>
         <InputStack direction="row" flexWrap="wrap">
-          <TextInput source="contract_reference" validate={required()} />
+          <TextInput
+            source="contract_reference"
+            validate={required()}
+            label="field.controllable_unit_service_provider.contract_reference"
+          />
         </InputStack>
         <Stack direction="row" flexWrap="wrap">
           <Typography variant="h6" gutterBottom>
@@ -139,8 +151,14 @@ const ControllableUnitServiceProviderForm = ({
           <ValidTimeTooltip />
         </Stack>
         <InputStack direction="row" flexWrap="wrap">
-          <MidnightDateInput source="valid_from" />
-          <MidnightDateInput source="valid_to" />
+          <MidnightDateInput
+            source="valid_from"
+            label="field.controllable_unit_service_provider.valid_from"
+          />
+          <MidnightDateInput
+            source="valid_to"
+            label="field.controllable_unit_service_provider.valid_to"
+          />
         </InputStack>
       </Stack>
     </SimpleForm>

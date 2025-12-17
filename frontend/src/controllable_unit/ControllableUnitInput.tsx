@@ -97,15 +97,24 @@ export const ControllableUnitInput = () => {
       </Typography>
       <Stack direction="column" spacing={3}>
         <InputStack direction="row" flexWrap="wrap">
-          <TextInput source="name" validate={required()} />
+          <TextInput
+            source="name"
+            label="field.controllable_unit.name"
+            validate={required()}
+          />
           <AutocompleteReferenceInput
             source="accounting_point_id"
             reference="accounting_point"
+            label="field.controllable_unit.accounting_point_id"
             fieldName="business_id"
           />
-          <DateInput source="start_date" />
+          <DateInput
+            source="start_date"
+            label="field.controllable_unit.start_date"
+          />
           <SelectInput
             source="status"
+            label="field.controllable_unit.status"
             validate={createOrUpdate == "update" ? required() : undefined}
             choices={["new", "active", "inactive", "terminated"]}
           />
@@ -120,20 +129,39 @@ export const ControllableUnitInput = () => {
             <InputStack direction="row" flexWrap="wrap">
               <UnitInput
                 source="maximum_available_capacity"
+                label="field.controllable_unit.maximum_available_capacity"
                 unit="kW"
                 min={0}
                 validate={required()}
               />
               <SelectInput
                 source="regulation_direction"
+                label="field.controllable_unit.regulation_direction"
                 defaultValue="up"
                 validate={required()}
                 choices={["up", "down", "both"]}
               />
-              <UnitInput source="minimum_duration" unit="s" />
-              <UnitInput source="maximum_duration" unit="s" />
-              <UnitInput source="recovery_duration" unit="s" />
-              <UnitInput source="ramp_rate" unit="kW/min" min={0.001} />
+              <UnitInput
+                source="minimum_duration"
+                label="field.controllable_unit.minimum_duration"
+                unit="s"
+              />
+              <UnitInput
+                source="maximum_duration"
+                label="field.controllable_unit.maximum_duration"
+                unit="s"
+              />
+              <UnitInput
+                source="recovery_duration"
+                label="field.controllable_unit.recovery_duration"
+                unit="s"
+              />
+              <UnitInput
+                source="ramp_rate"
+                label="field.controllable_unit.ramp_rate"
+                unit="kW/min"
+                min={0.001}
+              />
             </InputStack>
           </AccordionDetails>
         </Accordion>
@@ -145,9 +173,13 @@ export const ControllableUnitInput = () => {
 
           <AccordionDetails>
             <InputStack direction="row" flexWrap="wrap">
-              <TextInput source="grid_node_id" />
+              <TextInput
+                source="grid_node_id"
+                label="field.controllable_unit.grid_node_id"
+              />
               <SelectInput
                 source="grid_validation_status"
+                label="field.controllable_unit.grid_validation_status"
                 validate={required()}
                 choices={[
                   "pending",
@@ -159,11 +191,15 @@ export const ControllableUnitInput = () => {
               />
               <TextInput
                 source="grid_validation_notes"
+                label="field.controllable_unit.grid_validation_notes"
                 multiline={true}
                 minRows={3}
                 sx={{ minWidth: { xs: 300, md: 500 } }}
               />
-              <DateTimeInput source="validated_at" />
+              <DateTimeInput
+                source="validated_at"
+                label="field.controllable_unit.validated_at"
+              />
             </InputStack>
           </AccordionDetails>
         </Accordion>

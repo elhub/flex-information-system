@@ -16,6 +16,8 @@ import {
 import { DateTimeInput } from "../../components/datetime";
 import { ProductTypeArrayInput } from "../../product_type/components";
 import { useMemo } from "react";
+import { zServiceProvidingGroupProductApplication } from "../../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -47,7 +49,12 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
   );
 
   return (
-    <SimpleForm record={record} maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      record={record}
+      maxWidth={1280}
+      resolver={zodResolver(zServiceProvidingGroupProductApplication)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
@@ -56,14 +63,17 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           <AutocompleteReferenceInput
             source="service_providing_group_id"
             reference="service_providing_group"
+            label="field.service_providing_group_product_application.service_providing_group_id"
             readOnly={!!record?.service_providing_group_id}
           />
           <PartyReferenceInput
             source="procuring_system_operator_id"
+            label="field.service_providing_group_product_application.procuring_system_operator_id"
             filter={{ type: "system_operator" }}
           />
           <ProductTypeArrayInput
             source="product_type_ids"
+            label="field.service_providing_group_product_application.product_type_ids"
             validate={required()}
           />
         </InputStack>
@@ -73,6 +83,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
         <InputStack direction="row" flexWrap="wrap">
           <SelectInput
             source="status"
+            label="field.service_providing_group_product_application.status"
             validate={required()}
             choices={[
               "requested",
@@ -86,12 +97,19 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           />
           <TextInput
             source="notes"
+            label="field.service_providing_group_product_application.notes"
             multiline={true}
             minRows={3}
             sx={{ minWidth: { xs: 300, md: 500 } }}
           />
-          <DateTimeInput source="prequalified_at" />
-          <DateTimeInput source="verified_at" />
+          <DateTimeInput
+            source="prequalified_at"
+            label="field.service_providing_group_product_application.prequalified_at"
+          />
+          <DateTimeInput
+            source="verified_at"
+            label="field.service_providing_group_product_application.verified_at"
+          />
         </InputStack>
       </Stack>
     </SimpleForm>

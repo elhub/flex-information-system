@@ -44,23 +44,41 @@ export const TechnicalResourceHistoryList = () => {
           `/controllable_unit/${record.controllable_unit_id}/technical_resource_history/${record.id}/show`
         }
       >
-        <TextField source="id" label="ID" />
+        <TextField source="id" label="field.technical_resource_history.id" />
         <TextField
           source="technical_resource_id"
-          label="Technical resource ID"
+          label="field.technical_resource_history.technical_resource_id"
         />
-        <TextField source="name" />
+        <TextField
+          source="name"
+          label="field.technical_resource_history.name"
+        />
         <ReferenceField
           source="controllable_unit_id"
           reference="controllable_unit"
           sortable={false}
+          label="field.technical_resource_history.controllable_unit_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
-        <DateField source="replaced_at" showTime />
-        <IdentityField source="replaced_by" />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.technical_resource_history.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.technical_resource_history.recorded_by"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.technical_resource_history.replaced_at"
+        />
+        <IdentityField
+          source="replaced_by"
+          label="field.technical_resource_history.replaced_by"
+        />
       </Datagrid>
     </List>
   );

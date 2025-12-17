@@ -133,6 +133,10 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
               source="id"
               label="field.service_providing_group_grid_suspension.id"
             />
+            <TextField
+              source="service_providing_group_grid_suspension_id"
+              label="field.service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
+            />
             <ReferenceField
               source="service_providing_group_id"
               reference="service_providing_group"
@@ -165,6 +169,15 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
             <IdentityField
               source="recorded_by"
               label="field.service_providing_group_grid_suspension.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.service_providing_group_grid_suspension_history.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.service_providing_group_grid_suspension_history.replaced_by"
             />
           </FieldStack>
         </Stack>

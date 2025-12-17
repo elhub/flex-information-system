@@ -58,6 +58,10 @@ export const TechnicalResourceShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="id" label="field.technical_resource.id" />
+            <TextField
+              source="technical_resource_id"
+              label="field.technical_resource_history.technical_resource_id"
+            />
             <TextField source="name" label="field.technical_resource.name" />
             <ReferenceField
               source="controllable_unit_id"
@@ -87,6 +91,15 @@ export const TechnicalResourceShow = () => {
             <IdentityField
               source="recorded_by"
               label="field.technical_resource.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.technical_resource_history.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.technical_resource_history.replaced_by"
             />
           </FieldStack>
         </Stack>

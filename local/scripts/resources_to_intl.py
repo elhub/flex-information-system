@@ -2,6 +2,7 @@
 import yaml
 import json
 import sys
+from copy import deepcopy
 
 """
 This script copies the internationalisation labels from the resource YAML file
@@ -33,6 +34,45 @@ def transpose_field_translations(tr):
     return translations, sorted(list(all_keys))
 
 
+comment_translations = {
+    "id": {
+        "en": "ID",
+        "nb": "ID",
+        "nn": "ID",
+    },
+    "created_by": {
+        "en": "Created by",
+        "nb": "Opprettet av",
+        "nn": "Oppretta av",
+    },
+    "visibility": {
+        "en": "Visibility",
+        "nb": "Synlighet",
+        "nn": "Synlegheit",
+    },
+    "content": {
+        "en": "Content",
+        "nb": "Innhold",
+        "nn": "Innhald",
+    },
+    "created_at": {
+        "en": "Created at",
+        "nb": "Opprettet",
+        "nn": "Oppretta",
+    },
+    "recorded_at": {
+        "en": "Recorded at",
+        "nb": "Registrert",
+        "nn": "Registrert",
+    },
+    "recorded_by": {
+        "en": "Recorded by",
+        "nb": "Registrert av",
+        "nn": "Registrert av",
+    },
+}
+
+
 # generate field translations and write them to output file
 def generate_field_translations(resources):
     translations = {}
@@ -54,6 +94,44 @@ def generate_field_translations(resources):
             }
         if len(resource_translations) > 0:
             translations[resource["id"]] = resource_translations
+        if "history" in resource:
+            resource_translations = deepcopy(resource_translations)
+            resource_translations[f"{resource['id']}_id"] = resource["x-intl"]
+            resource_translations["replaced_at"] = {
+                "en": "Replaced at",
+                "nb": "Erstattet",
+                "nn": "Erstattet",
+            }
+            resource_translations["replaced_by"] = {
+                "en": "Replaced by",
+                "nb": "Erstattet av",
+                "nn": "Erstattet av",
+            }
+            translations[f"{resource['id']}_history"] = resource_translations
+        if resource.get("comments"):
+            comment_resource_translations = deepcopy(comment_translations)
+            comment_resource_translations[f"{resource['id']}_id"] = resource["x-intl"]
+            translations[f"{resource['id']}_comment"] = comment_resource_translations
+            # comment history
+            comment_resource_translations = deepcopy(comment_resource_translations)
+            comment_resource_translations[f"{resource['id']}_comment_id"] = {
+                "en": "Comment ID",
+                "nb": "Kommentar-ID",
+                "nn": "Kommentar-ID",
+            }
+            comment_resource_translations["replaced_at"] = {
+                "en": "Replaced at",
+                "nb": "Erstattet",
+                "nn": "Erstattet",
+            }
+            comment_resource_translations["replaced_by"] = {
+                "en": "Replaced by",
+                "nb": "Erstattet av",
+                "nn": "Erstattet av",
+            }
+            translations[f"{resource['id']}_comment_history"] = (
+                comment_resource_translations
+            )
 
     transposed, keys = transpose_field_translations(translations)
 

@@ -90,9 +90,6 @@ export const CommentShow = () => {
     "_comment",
     removeSuffix("_history", resource),
   );
-  const baseResourceHumanName = capitaliseFirstLetter(
-    baseResource.replaceAll("_", " "),
-  );
 
   return (
     <Show
@@ -114,29 +111,62 @@ export const CommentShow = () => {
             Basic information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="ID" />
+            <TextField source="id" label={`field.${baseResource}_comment.id`} />
+            <TextField
+              source={`${baseResource}_comment_id`}
+              label={`field.${baseResource}_comment_history.${baseResource}_comment_id`}
+            />
             <TextField
               source={`${baseResource}_id`}
-              label={`${baseResourceHumanName} ID`}
+              label={`field.${baseResource}_comment.${baseResource}_id`}
             />
-            <IdentityField source="created_by" />
-            <TextField source="visibility" />
+            <IdentityField
+              source="created_by"
+              label={`field.${baseResource}_comment.created_by`}
+            />
+            <TextField
+              source="visibility"
+              label={`field.${baseResource}_comment.visibility`}
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Content
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <RichTextField source="content" />
+            <RichTextField
+              source="content"
+              label={`field.${baseResource}_comment.content`}
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
             Registration
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField source="created_at" showTime />
-            <DateField source="recorded_at" label="Last updated" showTime />
-            <IdentityField source="recorded_by" />
+            <DateField
+              source="created_at"
+              showTime
+              label={`field.${baseResource}_comment.created_at`}
+            />
+            <DateField
+              source="recorded_at"
+              showTime
+              label={`field.${baseResource}_comment.recorded_at`}
+            />
+            <IdentityField
+              source="recorded_by"
+              label={`field.${baseResource}_comment.recorded_by`}
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label={`field.${baseResource}_comment_history.replaced_at`}
+            />
+            <IdentityField
+              source="replaced_by"
+              label={`field.${baseResource}_comment_history.replaced_by`}
+            />
           </FieldStack>
         </Stack>
         {!isHistory && <EventButton />}
@@ -210,12 +240,29 @@ export const CommentList = (props: CommentListProps) => {
               `${parentPathS}/comment/${record.id}/show`
             }
           >
-            <TextField source="id" label="Comment ID" />
-            <DateField source="created_at" showTime />
-            <DateField source="recorded_at" label="Last updated" showTime />
-            <IdentityField source="created_by" />
-            <TextField source="visibility" />
-            <RichTextField source="content" />
+            <TextField source="id" label={`field.${baseResource}_comment.id`} />
+            <DateField
+              source="created_at"
+              label={`field.${baseResource}_comment.created_at`}
+              showTime
+            />
+            <DateField
+              source="recorded_at"
+              label={`field.${baseResource}_comment.recorded_at`}
+              showTime
+            />
+            <IdentityField
+              source="created_by"
+              label={`field.${baseResource}_comment.created_by`}
+            />
+            <TextField
+              source="visibility"
+              label={`field.${baseResource}_comment.visibility`}
+            />
+            <RichTextField
+              source="content"
+              label={`field.${baseResource}_comment.content`}
+            />
           </Datagrid>
         </List>
       </ResourceContextProvider>
@@ -327,14 +374,40 @@ export const CommentHistoryList = (props: CommentHistoryListProps) => {
           `${parentPathS}/comment_history/${record.id}/show`
         }
       >
-        <TextField source="id" label="ID" />
-        <TextField source="visibility" />
-        <IdentityField source="created_by" />
-        <RichTextField source="content" />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
-        <DateField source="replaced_at" showTime />
-        <IdentityField source="replaced_by" />
+        <TextField
+          source="id"
+          label={`field.${baseResource}_comment_history.id`}
+        />
+        <TextField
+          source="visibility"
+          label={`field.${baseResource}_comment_history.visibility`}
+        />
+        <IdentityField
+          source="created_by"
+          label={`field.${baseResource}_comment_history.created_by`}
+        />
+        <RichTextField
+          source="content"
+          label={`field.${baseResource}_comment_history.content`}
+        />
+        <DateField
+          source="recorded_at"
+          label={`field.${baseResource}_comment_history.recorded_at`}
+          showTime
+        />
+        <IdentityField
+          source="recorded_by"
+          label={`field.${baseResource}_comment_history.recorded_by`}
+        />
+        <DateField
+          source="replaced_at"
+          label={`field.${baseResource}_comment_history.replaced_at`}
+          showTime
+        />
+        <IdentityField
+          source="replaced_by"
+          label={`field.${baseResource}_comment_history.replaced_by`}
+        />
       </Datagrid>
     </List>
   );

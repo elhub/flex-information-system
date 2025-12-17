@@ -133,6 +133,10 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
               source="id"
               label="field.service_providing_group_grid_prequalification.id"
             />
+            <TextField
+              source="service_providing_group_grid_prequalification_id"
+              label="field.service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id"
+            />
             <ReferenceField
               source="service_providing_group_id"
               reference="service_providing_group"
@@ -170,6 +174,15 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
             <IdentityField
               source="recorded_by"
               label="field.service_providing_group_grid_prequalification.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.service_providing_group_grid_prequalification_history.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.service_providing_group_grid_prequalification_history.replaced_by"
             />
           </FieldStack>
         </Stack>

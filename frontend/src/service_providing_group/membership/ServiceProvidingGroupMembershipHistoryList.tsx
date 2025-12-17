@@ -44,12 +44,19 @@ export const ServiceProvidingGroupMembershipHistoryList = () => {
           `/service_providing_group/${record.service_providing_group_id}/membership_history/${record.id}/show`
         }
       >
-        <TextField source="id" />
-        <TextField source="service_providing_group_membership_id" />
+        <TextField
+          source="id"
+          label="field.service_providing_group_membership_history.id"
+        />
+        <TextField
+          source="service_providing_group_membership_id"
+          label="field.service_providing_group_membership_history.service_providing_group_membership_id"
+        />
         <ReferenceField
           source="controllable_unit_id"
           reference="controllable_unit"
           sortable={false}
+          label="field.service_providing_group_membership_history.controllable_unit_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -57,15 +64,38 @@ export const ServiceProvidingGroupMembershipHistoryList = () => {
           source="service_providing_group_id"
           reference="service_providing_group"
           sortable={false}
+          label="field.service_providing_group_membership_history.service_providing_group_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <DateField source="valid_from" showTime />
-        <DateField source="valid_to" showTime />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
-        <DateField source="replaced_at" showTime />
-        <IdentityField source="replaced_by" />
+        <DateField
+          source="valid_from"
+          showTime
+          label="field.service_providing_group_membership_history.valid_from"
+        />
+        <DateField
+          source="valid_to"
+          showTime
+          label="field.service_providing_group_membership_history.valid_to"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.service_providing_group_membership_history.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.service_providing_group_membership_history.recorded_by"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.service_providing_group_membership_history.replaced_at"
+        />
+        <IdentityField
+          source="replaced_by"
+          label="field.service_providing_group_membership_history.replaced_by"
+        />
       </Datagrid>
     </List>
   );

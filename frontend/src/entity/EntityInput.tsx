@@ -11,6 +11,8 @@ import { InputStack } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
+import { zEntity } from "../generated-client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const businessIDTypeOfEntityType = (entityType: string) => {
   switch (entityType) {
@@ -79,21 +81,28 @@ const EntityBusinessIDInput = (props: any) => {
 
 export const EntityInput = () => {
   return (
-    <SimpleForm maxWidth={1280} toolbar={<Toolbar />}>
+    <SimpleForm
+      maxWidth={1280}
+      resolver={zodResolver(zEntity)}
+      toolbar={<Toolbar />}
+    >
       <Stack direction="column" spacing={1}>
         <Typography variant="h6" gutterBottom>
           Basic information
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <EntityTypeInput source="type" />
+          <EntityTypeInput source="type" label="field.entity.type" />
           <TextInput
             source="business_id_type"
-            label="Business ID Type"
+            label="field.entity.business_id_type"
             defaultValue="person"
             readOnly
           />
-          <EntityBusinessIDInput source="business_id" label="Business ID" />
-          <TextInput source="name" />
+          <EntityBusinessIDInput
+            source="business_id"
+            label="field.entity.business_id"
+          />
+          <TextInput source="name" label="field.entity.name" />
         </InputStack>
       </Stack>
     </SimpleForm>

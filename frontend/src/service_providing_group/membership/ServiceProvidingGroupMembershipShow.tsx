@@ -93,6 +93,10 @@ export const ServiceProvidingGroupMembershipShow = () => {
               source="id"
               label="field.service_providing_group_membership.id"
             />
+            <TextField
+              source="service_providing_group_membership_id"
+              label="field.service_providing_group_membership_history.service_providing_group_membership_id"
+            />
             <ReferenceField
               source="controllable_unit_id"
               reference="controllable_unit"
@@ -137,6 +141,15 @@ export const ServiceProvidingGroupMembershipShow = () => {
             <IdentityField
               source="recorded_by"
               label="field.service_providing_group_membership.recorded_by"
+            />
+            <DateField
+              source="replaced_at"
+              showTime
+              label="field.service_providing_group_membership_history.replaced_at"
+            />
+            <IdentityField
+              source="replaced_by"
+              label="field.service_providing_group_membership_history.replaced_by"
             />
           </FieldStack>
         </Stack>

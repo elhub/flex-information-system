@@ -44,12 +44,19 @@ export const ServiceProvidingGroupGridSuspensionHistoryList = () => {
           `/service_providing_group/${record.service_providing_group_id}/grid_suspension_history/${record.id}/show`
         }
       >
-        <TextField source="id" />
-        <TextField source="service_providing_group_grid_suspension_id" />
+        <TextField
+          source="id"
+          label="field.service_providing_group_grid_suspension_history.id"
+        />
+        <TextField
+          source="service_providing_group_grid_suspension_id"
+          label="field.service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
+        />
         <ReferenceField
           source="service_providing_group_id"
           reference="service_providing_group"
           sortable={false}
+          label="field.service_providing_group_grid_suspension_history.service_providing_group_id"
         >
           <TextField source="name" />
         </ReferenceField>
@@ -57,14 +64,32 @@ export const ServiceProvidingGroupGridSuspensionHistoryList = () => {
           source="impacted_system_operator_id"
           reference="party"
           sortable={false}
+          label="field.service_providing_group_grid_suspension_history.impacted_system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="reason" />
-        <DateField source="recorded_at" showTime />
-        <IdentityField source="recorded_by" />
-        <DateField source="replaced_at" showTime />
-        <IdentityField source="replaced_by" />
+        <TextField
+          source="reason"
+          label="field.service_providing_group_grid_suspension_history.reason"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.service_providing_group_grid_suspension_history.recorded_at"
+        />
+        <IdentityField
+          source="recorded_by"
+          label="field.service_providing_group_grid_suspension_history.recorded_by"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.service_providing_group_grid_suspension_history.replaced_at"
+        />
+        <IdentityField
+          source="replaced_by"
+          label="field.service_providing_group_grid_suspension_history.replaced_by"
+        />
       </Datagrid>
     </List>
   );

@@ -30,6 +30,7 @@ export const PartyShow = () => {
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
             <TextField source="id" label="field.party.id" />
+            <TextField source="party_id" label="field.party_history.party_id" />
             <TextField source="business_id" label="field.party.business_id" />
             <TextField
               source="business_id_type"
@@ -64,11 +65,11 @@ export const PartyShow = () => {
             <DateField
               source="replaced_at"
               showTime
-              label="field.party.replaced_at"
+              label="field.party_history.replaced_at"
             />
             <IdentityField
               source="replaced_by"
-              label="field.party.replaced_by"
+              label="field.party_history.replaced_by"
             />
           </FieldStack>
         </Stack>

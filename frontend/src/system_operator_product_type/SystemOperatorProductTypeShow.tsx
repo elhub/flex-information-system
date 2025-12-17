@@ -29,6 +29,10 @@ export const SystemOperatorProductTypeShow = () => {
               source="id"
               label="field.system_operator_product_type.id"
             />
+            <TextField
+              source="system_operator_product_type_id"
+              label="field.system_operator_product_type_history.system_operator_product_type_id"
+            />
             <ReferenceField
               source="system_operator_id"
               reference="party"
@@ -62,11 +66,11 @@ export const SystemOperatorProductTypeShow = () => {
             <DateField
               source="replaced_at"
               showTime
-              label="field.system_operator_product_type.replaced_at"
+              label="field.system_operator_product_type_history.replaced_at"
             />
             <IdentityField
               source="replaced_by"
-              label="field.system_operator_product_type.replaced_by"
+              label="field.system_operator_product_type_history.replaced_by"
             />
           </FieldStack>
         </Stack>

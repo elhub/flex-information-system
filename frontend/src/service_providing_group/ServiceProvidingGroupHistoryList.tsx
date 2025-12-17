@@ -16,20 +16,41 @@ export const ServiceProvidingGroupHistoryList = () => {
       empty={false}
     >
       <Datagrid rowClick={historyRowClick}>
-        <TextField source="id" />
-        <TextField source="service_providing_group_id" />
+        <TextField
+          source="id"
+          label="field.service_providing_group_history.id"
+        />
+        <TextField
+          source="service_providing_group_id"
+          label="field.service_providing_group_history.service_providing_group_id"
+        />
         <TextField source="name" />
         <ReferenceField
           source="service_provider_id"
           reference="party"
           sortable={false}
+          label="field.service_providing_group_history.service_provider_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="bidding_zone" />
-        <TextField source="status" />
-        <DateField source="recorded_at" showTime />
-        <DateField source="replaced_at" showTime />
+        <TextField
+          source="bidding_zone"
+          label="field.service_providing_group_history.bidding_zone"
+        />
+        <TextField
+          source="status"
+          label="field.service_providing_group_history.status"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.service_providing_group_history.recorded_at"
+        />
+        <DateField
+          source="replaced_at"
+          showTime
+          label="field.service_providing_group_history.replaced_at"
+        />
       </Datagrid>
     </List>
   );
