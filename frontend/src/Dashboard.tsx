@@ -28,12 +28,14 @@ export const Dashboard = () => {
             <br />
             <br />
             Our system stores read-only{" "}
-            <a href={`${docsURL}/time/#record-time`}>historical data</a> for
-            some of its resources. This means that wrong data will remain in the
-            system even though the last version of the resource is corrected.
-            Should you inadvertently add sensitive data to a resource, please{" "}
-            <a href="mailto:post@elhub.no">contact us</a> so that we can
-            manually clean the problematic records.
+            <a href={`${docsURL}/technical/time/#record-time`}>
+              historical data
+            </a>{" "}
+            for some of its resources. This means that wrong data will remain in
+            the system even though the last version of the resource is
+            corrected. Should you inadvertently add sensitive data to a
+            resource, please <a href="mailto:post@elhub.no">contact us</a> so
+            that we can manually clean the problematic records.
             <br />
             <br />
             As a test system, it is also subject to frequent updates, and
