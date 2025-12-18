@@ -50,8 +50,8 @@ data:
       type: string
       default: same_party
       enum:
-        - same_party
-        - any_involved_party
+        - id: same_party
+        - id: any_involved_party
       example: same_party
       x-details: >-
         Comments marked `same_party` are visible only to the party that

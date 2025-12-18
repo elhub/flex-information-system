@@ -3,6 +3,7 @@ import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
+import { EnumField } from "../components/enum";
 
 export const PartyHistoryList = () => {
   const { party_id } = useParams();
@@ -30,9 +31,21 @@ export const PartyHistoryList = () => {
           <TextField source="name" />
         </ReferenceField>
         <TextField source="name" label="field.party_history.name" />
-        <TextField source="type" label="field.party_history.type" />
-        <TextField source="role" label="field.party_history.role" />
-        <TextField source="status" label="field.party_history.status" />
+        <EnumField
+          source="type"
+          label="field.party_history.type"
+          enumKey="party.type"
+        />
+        <EnumField
+          source="role"
+          label="field.party_history.role"
+          enumKey="party.role"
+        />
+        <EnumField
+          source="status"
+          label="field.party_history.status"
+          enumKey="party.status"
+        />
         <DateField
           source="recorded_at"
           showTime

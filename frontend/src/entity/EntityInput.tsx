@@ -1,11 +1,4 @@
-import {
-  email,
-  regex,
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-} from "react-admin";
+import { email, regex, required, SimpleForm, TextInput } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { InputStack } from "../auth";
 import { Toolbar } from "../components/Toolbar";
@@ -13,6 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import { zEntity } from "../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../components/enum";
 
 const businessIDTypeOfEntityType = (entityType: string) => {
   switch (entityType) {
@@ -39,14 +33,11 @@ const EntityTypeInput = (props: any) => {
   });
 
   return (
-    <SelectInput
-      choices={[
-        { id: "person", name: "Person" },
-        { id: "organisation", name: "Organisation" },
-      ]}
+    <EnumInput
+      enumKey="entity.type"
       defaultValue="person"
       validate={required()}
-      onChange={(event) => {
+      onChange={(event: any) => {
         formContext.setValue(
           "business_id_type",
           businessIDTypeOfEntityType(event.target.value),
@@ -92,9 +83,10 @@ export const EntityInput = () => {
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
           <EntityTypeInput source="type" label="field.entity.type" />
-          <TextInput
+          <EnumInput
             source="business_id_type"
             label="field.entity.business_id_type"
+            enumKey="entity.business_id_type"
             defaultValue="person"
             readOnly
           />

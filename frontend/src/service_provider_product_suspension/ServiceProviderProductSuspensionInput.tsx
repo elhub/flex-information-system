@@ -1,10 +1,11 @@
-import { required, SelectInput, SimpleForm, useGetIdentity } from "react-admin";
+import { required, SimpleForm, useGetIdentity } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { ProductTypeArrayInput } from "../product_type/components";
 import { zServiceProviderProductSuspension } from "../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../components/enum";
 
 export const ServiceProviderProductSuspensionInput = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -43,18 +44,11 @@ export const ServiceProviderProductSuspensionInput = () => {
           Suspension details
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <SelectInput
+          <EnumInput
             source="reason"
+            enumKey="service_provider_product_suspension.reason"
             label="field.service_provider_product_suspension.reason"
             validate={required()}
-            choices={[
-              "communication_issues",
-              "failing_heartbeat",
-              "system_issues",
-              "clearing_issues",
-              "breach_of_conditions",
-              "other",
-            ]}
           />
         </InputStack>
       </Stack>

@@ -9,6 +9,7 @@ import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { EnumField } from "../../components/enum";
 
 export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
   const params = useParams();
@@ -68,8 +69,9 @@ export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField
+        <EnumField
           source="status"
+          enumKey="service_providing_group_grid_prequalification.status"
           label="field.service_providing_group_grid_prequalification_history.status"
         />
         <DateField

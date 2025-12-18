@@ -21,6 +21,7 @@ import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { ServiceProvidingGroupProductSuspension } from "../../generated-client";
+import { EnumField } from "../../components/enum";
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -162,8 +163,9 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
             Product suspension process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
+            <EnumField
               source="reason"
+              enumKey="service_providing_group_product_suspension.reason"
               label="field.service_providing_group_product_suspension.reason"
             />
             <DateField

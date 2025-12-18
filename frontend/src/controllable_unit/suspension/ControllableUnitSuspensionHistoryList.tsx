@@ -9,6 +9,7 @@ import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { EnumField } from "../../components/enum";
 
 export const ControllableUnitSuspensionHistoryList = () => {
   const params = useParams();
@@ -64,9 +65,10 @@ export const ControllableUnitSuspensionHistoryList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField
+        <EnumField
           source="reason"
           label="field.controllable_unit_suspension_history.reason"
+          enumKey="controllable_unit_suspension.reason"
         />
         <DateField
           source="recorded_at"

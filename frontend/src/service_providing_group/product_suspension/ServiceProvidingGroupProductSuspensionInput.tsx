@@ -1,6 +1,5 @@
 import {
   required,
-  SelectInput,
   SimpleForm,
   useGetIdentity,
   useRecordContext,
@@ -17,6 +16,7 @@ import { useMemo } from "react";
 import { ProductTypeArrayInput } from "../../product_type/components";
 import { zServiceProvidingGroupProductSuspension } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../../components/enum";
 
 const filterRecord = ({
   service_providing_group_id,
@@ -77,8 +77,9 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
           Product suspension process
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <SelectInput
+          <EnumInput
             source="reason"
+            enumKey="service_providing_group_product_suspension.reason"
             label="field.service_providing_group_product_suspension.reason"
             validate={required()}
             choices={["failed_verification", "other"]}

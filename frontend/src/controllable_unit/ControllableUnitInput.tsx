@@ -1,7 +1,6 @@
 import {
   DateInput,
   required,
-  SelectInput,
   SimpleForm,
   TextInput,
   useNotify,
@@ -29,6 +28,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { ControllableUnitServiceProviderLocationState } from "./service_provider/ControllableUnitServiceProviderInput";
+import { EnumInput } from "../components/enum";
 
 export type ControllableUnitInputLocationState = {
   controllableUnit: Partial<ControllableUnit>;
@@ -112,11 +112,11 @@ export const ControllableUnitInput = () => {
             source="start_date"
             label="field.controllable_unit.start_date"
           />
-          <SelectInput
+          <EnumInput
             source="status"
             label="field.controllable_unit.status"
+            enumKey="controllable_unit.status"
             validate={createOrUpdate == "update" ? required() : undefined}
-            choices={["new", "active", "inactive", "terminated"]}
           />
         </InputStack>
 
@@ -134,12 +134,12 @@ export const ControllableUnitInput = () => {
                 min={0}
                 validate={required()}
               />
-              <SelectInput
+              <EnumInput
+                enumKey="controllable_unit.regulation_direction"
                 source="regulation_direction"
                 label="field.controllable_unit.regulation_direction"
                 defaultValue="up"
                 validate={required()}
-                choices={["up", "down", "both"]}
               />
               <UnitInput
                 source="minimum_duration"
@@ -177,17 +177,11 @@ export const ControllableUnitInput = () => {
                 source="grid_node_id"
                 label="field.controllable_unit.grid_node_id"
               />
-              <SelectInput
+              <EnumInput
                 source="grid_validation_status"
                 label="field.controllable_unit.grid_validation_status"
+                enumKey="controllable_unit.grid_validation_status"
                 validate={required()}
-                choices={[
-                  "pending",
-                  "in_progress",
-                  "incomplete_information",
-                  "validated",
-                  "validation_failed",
-                ]}
               />
               <TextInput
                 source="grid_validation_notes"

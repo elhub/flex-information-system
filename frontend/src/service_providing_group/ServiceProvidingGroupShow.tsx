@@ -19,6 +19,7 @@ import { ServiceProvidingGroupProductApplicationList } from "./product_applicati
 import { IdentityField } from "../components/IdentityField";
 import { ServiceProvidingGroupGridSuspensionList } from "./grid_suspension/ServiceProvidingGroupGridSuspensionList";
 import { ServiceProvidingGroupProductSuspensionList } from "./product_suspension/ServiceProvidingGroupProductSuspensionList";
+import { EnumField } from "../components/enum";
 
 export const ServiceProvidingGroupShow = () => {
   const resource = useResourceContext()!;
@@ -49,12 +50,14 @@ export const ServiceProvidingGroupShow = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField
+            <EnumField
               source="bidding_zone"
+              enumKey="service_providing_group.bidding_zone"
               label="field.service_providing_group.bidding_zone"
             />
-            <TextField
+            <EnumField
               source="status"
+              enumKey="service_providing_group.status"
               label="field.service_providing_group.status"
             />
           </FieldStack>

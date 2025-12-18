@@ -13,6 +13,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { Permissions } from "../../auth/permissions";
+import { EnumField } from "../../components/enum";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -97,8 +98,9 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField
+            <EnumField
               source="status"
+              enumKey="service_providing_group_grid_prequalification.status"
               label="field.service_providing_group_grid_prequalification.status"
             />
             <DateField

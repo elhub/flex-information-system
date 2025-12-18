@@ -1,6 +1,5 @@
 import {
   required,
-  SelectInput,
   SimpleForm,
   useGetIdentity,
   useRecordContext,
@@ -16,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ServiceProvidingGroupGridSuspension } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
+import { EnumInput } from "../../components/enum";
 
 export type ServiceProvidingGroupGridSuspensionLocationState = {
   spggs: Partial<ServiceProvidingGroupGridSuspension>;
@@ -70,15 +70,11 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
           Grid suspension process
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <SelectInput
+          <EnumInput
             source="reason"
+            enumKey="service_providing_group_grid_suspension.reason"
             label="field.service_providing_group_grid_suspension.reason"
             validate={required()}
-            choices={[
-              "breach_of_conditions",
-              "significant_group_change",
-              "other",
-            ]}
           />
         </InputStack>
       </Stack>

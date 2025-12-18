@@ -200,7 +200,7 @@ repos:
           - tsx
           - css
           - scss
-        exclude: "(local/mkdocs/.*|frontend/src/intl/field-labels.ts)"
+        exclude: "(local/mkdocs/.*|frontend/src/intl/.*-labels.ts|frontend/src/generated-client/.*)"
 
   - repo: local
     hooks:

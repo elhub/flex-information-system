@@ -1,15 +1,10 @@
-import {
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-  useGetIdentity,
-} from "react-admin";
+import { required, SimpleForm, TextInput, useGetIdentity } from "react-admin";
 import { InputStack, useCreateOrUpdate, PartyReferenceInput } from "../auth";
 import { Stack } from "@mui/material";
 import { Toolbar } from "../components/Toolbar";
 import { zServiceProvidingGroup } from "../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../components/enum";
 
 // common layout to create and edit pages
 export const ServiceProvidingGroupInput = () => {
@@ -40,17 +35,17 @@ export const ServiceProvidingGroupInput = () => {
         />
         <InputStack direction="row" flexWrap="wrap">
           <TextInput source="name" label="field.service_providing_group.name" />
-          <SelectInput
+          <EnumInput
             source="bidding_zone"
+            enumKey="service_providing_group.bidding_zone"
             label="field.service_providing_group.bidding_zone"
             validate={createOrUpdate == "update" ? required() : undefined}
-            choices={["NO1", "NO2", "NO3", "NO4", "NO5"]}
           />
-          <SelectInput
+          <EnumInput
             source="status"
+            enumKey="service_providing_group.status"
             label="field.service_providing_group.status"
             validate={createOrUpdate == "update" ? required() : undefined}
-            choices={["new", "active", "inactive", "terminated"]}
           />
         </InputStack>
       </Stack>

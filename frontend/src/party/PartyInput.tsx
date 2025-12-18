@@ -1,10 +1,4 @@
-import {
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-  useRecordContext,
-} from "react-admin";
+import { required, SimpleForm, TextInput, useRecordContext } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import {
   InputStack,
@@ -13,21 +7,16 @@ import {
 } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
-import { roleNames } from "../roles";
 import { useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { zParty } from "../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../components/enum";
 
 // component updating the role field automatically based on the type field
 const PartyTypeInput = (props: any) => {
   const formContext = useFormContext();
   const record = useRecordContext();
-
-  // all roles can be chosen except anonymous and entity
-  const roles = { ...roleNames };
-  delete roles.flex_anonymous;
-  delete roles.flex_entity;
 
   // if the form is filled from an existing record, make sure role is defined
   useEffect(() => {
@@ -35,10 +24,8 @@ const PartyTypeInput = (props: any) => {
   });
 
   return (
-    <SelectInput
-      choices={Object.entries(roles).map(([role, name]) => {
-        return { id: role.slice("flex_".length), name };
-      })}
+    <EnumInput
+      enumKey="party.type"
       defaultValue="balance_responsible_party"
       // no empty choice allowed
       validate={required()}
@@ -50,7 +37,7 @@ const PartyTypeInput = (props: any) => {
          to the DB, we make the text field for role read only and dependent on
          the type field, so the call is kind of always valid and the user does
          not have to care about it. */
-      onChange={(event) => {
+      onChange={(event: any) => {
         formContext.setValue("role", `flex_${event.target.value}`);
       }}
       {...props}
@@ -72,21 +59,9 @@ const PartyBusinessIDTypeInput = (props: any) => {
     }
   }, [formContext, isEndUser]);
 
-  // Map for human-readable display names
-  const businessIDTypeLabels: Record<string, string> = {
-    uuid: "UUID (Universally Unique Identifier)",
-    eic_x: "EIC-X (Energy Identification Code for Parties)",
-    gln: "GLN (Global Location Number)",
-    org: "ORG (Organisation Number)",
-  };
-  const businessIDTypes = ["uuid", "eic_x", "gln", "org"];
-
   return (
-    <SelectInput
-      choices={businessIDTypes.map((idType) => ({
-        id: idType,
-        name: businessIDTypeLabels[idType] || idType,
-      }))}
+    <EnumInput
+      enumKey="party.business_id_type"
       defaultValue="gln"
       validate={required()}
       readOnly={isEndUser}
@@ -147,9 +122,10 @@ export const PartyInput = () => {
             label="field.party.business_id_type"
           />
           <PartyTypeInput source="type" label="field.party.type" />
-          <TextInput
+          <EnumInput
             source="role"
             label="field.party.role"
+            enumKey="party.role"
             readOnly // see comment in PartyTypeInput
             defaultValue="flex_balance_responsible_party"
           />
@@ -158,11 +134,11 @@ export const PartyInput = () => {
             reference="entity"
             label="field.party.entity_id"
           />
-          <SelectInput
+          <EnumInput
             source="status"
             label="field.party.status"
+            enumKey="party.status"
             validate={createOrUpdate == "update" ? required() : undefined}
-            choices={["new", "active", "inactive", "suspended", "terminated"]}
           />
         </InputStack>
       </Stack>

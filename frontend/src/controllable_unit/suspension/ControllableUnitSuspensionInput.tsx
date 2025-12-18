@@ -1,6 +1,5 @@
 import {
   required,
-  SelectInput,
   SimpleForm,
   useGetIdentity,
   useRecordContext,
@@ -16,6 +15,7 @@ import { ControllableUnitSuspension } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import { zControllableUnitSuspension } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../../components/enum";
 
 export type ControllableUnitSuspensionLocationState = {
   cus?: Partial<ControllableUnitSuspension>;
@@ -68,11 +68,11 @@ export const ControllableUnitSuspensionInput = () => {
           Controllable unit suspension process
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <SelectInput
+          <EnumInput
             source="reason"
             label="field.controllable_unit_suspension.reason"
             validate={required()}
-            choices={["compromises_safe_operation", "other"]}
+            enumKey="controllable_unit_suspension.reason"
           />
         </InputStack>
       </Stack>

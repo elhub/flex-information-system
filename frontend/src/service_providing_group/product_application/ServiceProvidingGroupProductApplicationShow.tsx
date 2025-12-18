@@ -20,6 +20,7 @@ import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { ServiceProvidingGroupProductApplication } from "../../generated-client";
+import { EnumField } from "../../components/enum";
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -113,7 +114,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               <TextField source="name" />
             </ReferenceField>
             <ProductTypeArrayField
-              label="Product types"
+              label="field.service_providing_group_product_application.product_type_ids"
               source="product_type_ids"
             />
           </FieldStack>
@@ -122,8 +123,9 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             Application process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
+            <EnumField
               source="status"
+              enumKey="service_providing_group_product_application.status"
               label="field.service_providing_group_product_application.status"
             />
             <TextField

@@ -3,6 +3,7 @@ import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
+import { EnumField } from "../components/enum";
 
 export const SystemOperatorProductTypeHistoryList = () => {
   const { system_operator_product_type_id } = useParams();
@@ -39,8 +40,9 @@ export const SystemOperatorProductTypeHistoryList = () => {
           sortable={false}
           label="field.system_operator_product_type_history.product_type_id"
         />
-        <TextField
+        <EnumField
           source="status"
+          enumKey="system_operator_product_type.status"
           label="field.system_operator_product_type_history.status"
         />
         <DateField
