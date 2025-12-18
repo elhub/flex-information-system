@@ -9,8 +9,9 @@ import { text, TextKey } from "./text";
 
 type AppLanguage = "en" | "nb" | "nn";
 
-const appLanguage: AppLanguage =
-  window.env.LANGUAGE ?? import.meta.env.LANGUAGE ?? "en";
+const appLanguage: AppLanguage = "en";
+// TODO: uncomment to actually use intl
+// window.env.LANGUAGE ?? import.meta.env.LANGUAGE ?? "en";
 
 export type I18nProvider = RAI18nProvider & {
   // return all possible values for an enumeration
