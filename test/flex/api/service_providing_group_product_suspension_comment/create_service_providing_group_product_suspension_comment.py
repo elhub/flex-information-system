@@ -13,12 +13,12 @@ from ...models.service_providing_group_product_suspension_comment_create_request
 from ...models.service_providing_group_product_suspension_comment_response import (
     ServiceProvidingGroupProductSuspensionCommentResponse,
 )
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,7 +27,8 @@ def _get_kwargs(
         "url": "/service_providing_group_product_suspension_comment",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -114,14 +115,14 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Create Service Providing Group Product Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group product
-            suspension.
+        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema
+            for create operations - Comment made by a party involved in a service providing group
+            product suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -145,14 +146,14 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Create Service Providing Group Product Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group product
-            suspension.
+        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema
+            for create operations - Comment made by a party involved in a service providing group
+            product suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -171,14 +172,14 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Create Service Providing Group Product Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group product
-            suspension.
+        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema
+            for create operations - Comment made by a party involved in a service providing group
+            product suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -200,14 +201,14 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Create Service Providing Group Product Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group product
-            suspension.
+        body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema
+            for create operations - Comment made by a party involved in a service providing group
+            product suspension.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
