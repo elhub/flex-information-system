@@ -10,7 +10,6 @@ import {
   usePermissions,
   useResourceContext,
   required,
-  SelectInput,
   NumberInput,
   SimpleForm,
   TextInput,
@@ -29,6 +28,7 @@ import { capitaliseFirstLetter, chunksOf, removeSuffix } from "../util";
 import { Toolbar } from "./Toolbar";
 import { RichTextInput } from "ra-input-rich-text";
 import { Permissions, PermissionTarget } from "../auth/permissions";
+import { EnumField, EnumInput } from "./enum";
 
 const EditButton = (props: { url: string }) => (
   <Button
@@ -124,8 +124,9 @@ export const CommentShow = () => {
               source="created_by"
               label={`field.${baseResource}_comment.created_by`}
             />
-            <TextField
+            <EnumField
               source="visibility"
+              enumKey={`comment.visibility`}
               label={`field.${baseResource}_comment.visibility`}
             />
           </FieldStack>
@@ -255,8 +256,9 @@ export const CommentList = (props: CommentListProps) => {
               source="created_by"
               label={`field.${baseResource}_comment.created_by`}
             />
-            <TextField
+            <EnumField
               source="visibility"
+              enumKey="comment.visibility"
               label={`field.${baseResource}_comment.visibility`}
             />
             <RichTextField
@@ -297,11 +299,11 @@ export const CommentInput = () => {
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
           <TextInput source={`${baseResource}_id`} readOnly />
-          <SelectInput
+          <EnumInput
             source="visibility"
+            enumKey="comment.visibility"
             validate={required()}
             defaultValue="same_party"
-            choices={["same_party", "any_involved_party"]}
           />
         </InputStack>
 
@@ -354,7 +356,7 @@ export const CommentHistoryList = (props: CommentHistoryListProps) => {
     <NumberInput
       key={`${baseResource}_comment_id`}
       min="0"
-      label={`${baseResourceHumanName} Comment ID`}
+      label={`field.${baseResource}_comment_history.${baseResource}_comment_id`}
       source={`${baseResource}_comment_id`}
     />,
   ];
@@ -378,8 +380,9 @@ export const CommentHistoryList = (props: CommentHistoryListProps) => {
           source="id"
           label={`field.${baseResource}_comment_history.id`}
         />
-        <TextField
+        <EnumField
           source="visibility"
+          enumKey="comment.visibility"
           label={`field.${baseResource}_comment_history.visibility`}
         />
         <IdentityField

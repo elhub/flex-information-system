@@ -51,15 +51,7 @@ data:
       default: same_party
       enum:
         - id: same_party
-          x-intl:
-            en: Same party
-            nb: Samme aktør
-            nn: Same aktør
         - id: any_involved_party
-          x-intl:
-            en: Any involved party
-            nb: Alle involverte aktører
-            nn: Alle involverte aktørar
       example: same_party
       x-details: >-
         Comments marked `same_party` are visible only to the party that

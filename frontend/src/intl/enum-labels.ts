@@ -3,6 +3,8 @@
 export type EnumLabel =
   | "accounting_point_balance_responsible_party.energy_direction.consumption"
   | "accounting_point_balance_responsible_party.energy_direction.production"
+  | "comment.visibility.any_involved_party"
+  | "comment.visibility.same_party"
   | "controllable_unit.grid_validation_status.in_progress"
   | "controllable_unit.grid_validation_status.incomplete_information"
   | "controllable_unit.grid_validation_status.pending"
@@ -92,6 +94,8 @@ export type EnumLabel =
 
 export const enumLabels: Record<string, Record<EnumLabel, string>> = {
   "en": {
+    "comment.visibility.same_party": "Same party",
+    "comment.visibility.any_involved_party": "Any involved party",
     "controllable_unit.status.new": "New",
     "controllable_unit.status.active": "Active",
     "controllable_unit.status.inactive": "Inactive",
@@ -181,6 +185,8 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.other": "Other"
   },
   "nb": {
+    "comment.visibility.same_party": "Samme aktør",
+    "comment.visibility.any_involved_party": "Alle involverte aktører",
     "controllable_unit.status.new": "Ny",
     "controllable_unit.status.active": "Aktiv",
     "controllable_unit.status.inactive": "Inaktiv",
@@ -270,6 +276,8 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.other": "Annet"
   },
   "nn": {
+    "comment.visibility.same_party": "Same aktør",
+    "comment.visibility.any_involved_party": "Alle involverte aktørar",
     "controllable_unit.status.new": "Ny",
     "controllable_unit.status.active": "Aktiv",
     "controllable_unit.status.inactive": "Inaktiv",

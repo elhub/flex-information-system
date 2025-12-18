@@ -167,9 +167,23 @@ def transpose_enum_translations(tr):
     return translations
 
 
+comment_visibility_enum_translation = {
+    "comment.visibility.same_party": {
+        "en": "Same party",
+        "nb": "Samme aktør",
+        "nn": "Same aktør",
+    },
+    "comment.visibility.any_involved_party": {
+        "en": "Any involved party",
+        "nb": "Alle involverte aktører",
+        "nn": "Alle involverte aktørar",
+    },
+}
+
+
 # generate enum translations and write them to output file
 def generate_enum_translations(resources):
-    translations = {}
+    translations = comment_visibility_enum_translation
     for resource in resources:
         for field, attr in resource["properties"].items():
             if "enum" in attr:
