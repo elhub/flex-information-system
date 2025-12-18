@@ -36,6 +36,7 @@ import {
   useGetResourceLabel,
   useCanAccess,
   DataProvider,
+  useTranslate,
 } from "ra-core";
 
 import { Route } from "react-router-dom";
@@ -59,7 +60,6 @@ import postgrestRestProvider, {
   defaultSchema,
 } from "@raphiniert/ra-data-postgrest";
 
-import { roleNames } from "./roles";
 import { useI18nProvider } from "./intl/intl";
 
 const config: IDataProviderConfig = {
@@ -134,7 +134,16 @@ const Logout = () => {
 const AppBar = () => {
   const redirect = useRedirect();
   const { isLoading, data, error } = useGetIdentity();
+  const translate = useTranslate();
   if (error) redirect("/login");
+
+  let roleLabel = "...";
+  if (!isLoading) {
+    roleLabel =
+      data!.role == "flex_entity"
+        ? translate("text.entity_role")
+        : translate(`enum.party.role.${data!.role}`);
+  }
 
   return (
     <RaAppBar
@@ -165,7 +174,7 @@ const AppBar = () => {
       <TitlePortal />
       {isLoading && <CircularProgress size={25} thickness={2} />}
       <Chip
-        label={isLoading ? "..." : roleNames[data!.role]}
+        label={roleLabel}
         variant="outlined"
         style={{ color: elhubTheme.palette.primary.contrastText }}
       />

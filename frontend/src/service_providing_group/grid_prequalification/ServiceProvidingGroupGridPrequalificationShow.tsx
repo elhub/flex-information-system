@@ -20,6 +20,7 @@ import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { CommentList as GenericCommentList } from "../../components/comments";
 import { ServiceProvidingGroupGridPrequalification } from "../../generated-client";
+import { EnumField } from "../../components/enum";
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -151,8 +152,9 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField
+            <EnumField
               source="status"
+              enumKey="service_providing_group_grid_prequalification.status"
               label="field.service_providing_group_grid_prequalification.status"
             />
             <DateField

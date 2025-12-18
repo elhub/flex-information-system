@@ -22,6 +22,7 @@ import { IdentityField } from "../components/IdentityField";
 import { ControllableUnitBalanceResponsiblePartyList } from "./balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 import { ControllableUnitEnergySupplierList } from "./energy_supplier/ControllableUnitEnergySupplierList";
 import { ControllableUnitSuspensionList } from "./suspension/ControllableUnitSuspensionList";
+import { EnumField } from "../components/enum";
 
 export const ControllableUnitShow = () => {
   const resource = useResourceContext()!;
@@ -50,7 +51,11 @@ export const ControllableUnitShow = () => {
               source="start_date"
               label="field.controllable_unit.start_date"
             />
-            <TextField source="status" label="field.controllable_unit.status" />
+            <EnumField
+              source="status"
+              label="field.controllable_unit.status"
+              enumKey="controllable_unit.status"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
@@ -72,9 +77,10 @@ export const ControllableUnitShow = () => {
             Technical information
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
+            <EnumField
               source="regulation_direction"
               label="field.controllable_unit.regulation_direction"
+              enumKey="controllable_unit.regulation_direction"
             />
             <UnitField
               source="minimum_duration"
@@ -126,9 +132,10 @@ export const ControllableUnitShow = () => {
             Grid validation
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
+            <EnumField
               source="grid_validation_status"
               label="field.controllable_unit.grid_validation_status"
+              enumKey="controllable_unit.grid_validation_status"
             />
             <TextField
               source="grid_validation_notes"

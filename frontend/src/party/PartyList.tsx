@@ -1,10 +1,11 @@
-import { List, ReferenceField, SelectArrayInput, TextField } from "react-admin";
+import { List, ReferenceField, TextField } from "react-admin";
 import {
   AutocompleteReferenceInput,
   Datagrid,
   PartyReferenceInput,
 } from "../auth";
 import { DateField } from "../components/datetime";
+import { EnumArrayInput, EnumField } from "../components/enum";
 
 export const PartyList = () => {
   const partyFilters = [
@@ -21,31 +22,18 @@ export const PartyList = () => {
       noTypeFilter
       alwaysOn
     />,
-    <SelectArrayInput
+    <EnumArrayInput
       key="type"
       label="Party type"
       source="type@in"
-      choices={[
-        { id: "balance_responsible_party", name: "Balance Responsible Party" },
-        { id: "end_user", name: "End User" },
-        { id: "energy_supplier", name: "Energy Supplier" },
-        {
-          id: "flexibility_information_system_operator",
-          name: "Flexibility Information System Operator",
-        },
-        { id: "organisation", name: "Organisation" },
-        { id: "market_operator", name: "Market Operator" },
-        { id: "service_provider", name: "Service Provider" },
-        { id: "system_operator", name: "System Operator" },
-        { id: "third_party", name: "Third Party" },
-      ]}
+      enumKey="party.type"
       alwaysOn
     />,
-    <SelectArrayInput
+    <EnumArrayInput
       key="status"
       label="Status"
       source="status@in"
-      choices={["new", "active", "inactive", "suspended", "terminated"]}
+      enumKey="party.status"
       alwaysOn
     />,
   ];
@@ -69,9 +57,17 @@ export const PartyList = () => {
           <TextField source="name" />
         </ReferenceField>
         <TextField source="name" label="field.party.name" />
-        <TextField source="type" label="field.party.type" />
+        <EnumField
+          source="type"
+          label="field.party.type"
+          enumKey="party.type"
+        />
         <TextField source="role" label="field.party.role" />
-        <TextField source="status" label="field.party.status" />
+        <EnumField
+          source="status"
+          label="field.party.status"
+          enumKey="party.status"
+        />
         <DateField
           source="recorded_at"
           showTime

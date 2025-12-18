@@ -3,6 +3,7 @@ import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
+import { EnumField } from "../components/enum";
 
 export const ControllableUnitHistoryList = () => {
   const { controllable_unit_id } = useParams();
@@ -30,13 +31,15 @@ export const ControllableUnitHistoryList = () => {
           source="start_date"
           label="field.controllable_unit_history.start_date"
         />
-        <TextField
+        <EnumField
           source="status"
           label="field.controllable_unit_history.status"
+          enumKey="controllable_unit.status"
         />
-        <TextField
+        <EnumField
           source="regulation_direction"
           label="field.controllable_unit_history.regulation_direction"
+          enumKey="controllable_unit.regulation_direction"
         />
         <BooleanField
           source="is_small"
@@ -57,9 +60,10 @@ export const ControllableUnitHistoryList = () => {
           source="grid_node_id"
           label="field.controllable_unit_history.grid_node_id"
         />
-        <TextField
+        <EnumField
           source="grid_validation_status"
           label="field.controllable_unit_history.grid_validation_status"
+          enumKey="controllable_unit.grid_validation_status"
         />
         <DateField
           source="recorded_at"

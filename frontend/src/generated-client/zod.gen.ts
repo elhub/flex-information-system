@@ -275,7 +275,47 @@ export const zServiceProvidingGroupGridSuspensionCommentVisibility = z.enum([
 /**
  * The type of the business identifier.
  */
+export const zEntityBusinessIdType = z.enum(["pid", "org", "email"]);
+
+/**
+ * The type of the entity, e.g Person, Organisation
+ */
+export const zEntityType = z.enum(["person", "organisation"]);
+
+/**
+ * The type of the business identifier.
+ */
 export const zPartyBusinessIdType = z.enum(["gln", "uuid", "eic_x", "org"]);
+
+/**
+ * The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
+ */
+export const zPartyRole = z.enum([
+  "flex_balance_responsible_party",
+  "flex_end_user",
+  "flex_energy_supplier",
+  "flex_flexibility_information_system_operator",
+  "flex_market_operator",
+  "flex_organisation",
+  "flex_service_provider",
+  "flex_system_operator",
+  "flex_third_party",
+]);
+
+/**
+ * The type of the party, e.g SystemOperator, ServiceProvider
+ */
+export const zPartyType = z.enum([
+  "balance_responsible_party",
+  "end_user",
+  "energy_supplier",
+  "flexibility_information_system_operator",
+  "market_operator",
+  "organisation",
+  "service_provider",
+  "system_operator",
+  "third_party",
+]);
 
 /**
  * The status of the party.
@@ -1162,10 +1202,22 @@ export const zServiceProvidingGroupGridSuspensionCommentResponse =
  * * Organisation
  */
 export const zEntityUpdateRequest = z.object({
+  business_id_type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityBusinessIdType.optional(),
+    ),
+  ),
   name: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
       z.string().optional(),
+    ),
+  ),
+  type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityType.optional(),
     ),
   ),
 });
@@ -1183,18 +1235,6 @@ export const zEntityUpdateRequest = z.object({
 export const zEntityCreateData = zEntityUpdateRequest.and(
   z.object({
     business_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-    business_id_type: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-    type: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
         z.string().optional(),
@@ -1363,6 +1403,18 @@ export const zPartyUpdateRequest = z.object({
       z.string().optional(),
     ),
   ),
+  role: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyRole.optional(),
+    ),
+  ),
+  type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyType.optional(),
+    ),
+  ),
   status: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1394,18 +1446,6 @@ export const zPartyCreateData = zPartyUpdateRequest.and(
       z.preprocess(
         (value) => (value === null ? undefined : value),
         z.int().optional(),
-      ),
-    ),
-    role: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-    type: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
       ),
     ),
   }),

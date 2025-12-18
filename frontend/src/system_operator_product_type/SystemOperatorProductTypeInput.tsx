@@ -1,6 +1,5 @@
 import {
   required,
-  SelectInput,
   SimpleForm,
   useGetIdentity,
   useRecordContext,
@@ -11,6 +10,7 @@ import { Toolbar } from "../components/Toolbar";
 import { ProductTypeInput } from "../product_type/components";
 import { zSystemOperatorProductType } from "../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../components/enum";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -64,8 +64,9 @@ export const SystemOperatorProductTypeInput = () => {
             label="field.system_operator_product_type.product_type_id"
             validate={required()}
           />
-          <SelectInput
+          <EnumInput
             source="status"
+            enumKey="system_operator_product_type.status"
             label="field.system_operator_product_type.status"
             validate={required()}
             choices={["active", "inactive"]}

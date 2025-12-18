@@ -16,6 +16,7 @@ import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
 import { ProductTypeArrayField } from "../product_type/components";
 import { CommentList } from "../components/comments";
+import { EnumField } from "../components/enum";
 
 export const ServiceProviderProductSuspensionShow = () => {
   const resource = useResourceContext()!;
@@ -56,8 +57,9 @@ export const ServiceProviderProductSuspensionShow = () => {
               label="field.service_provider_product_suspension.product_type_ids"
               source="product_type_ids"
             />
-            <TextField
+            <EnumField
               source="reason"
+              enumKey="service_provider_product_suspension.reason"
               label="field.service_provider_product_suspension.reason"
             />
           </FieldStack>

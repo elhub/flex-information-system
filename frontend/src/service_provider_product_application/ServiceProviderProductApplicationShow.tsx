@@ -20,6 +20,7 @@ import {
   SPPAForSPButton,
 } from "./components";
 import { CommentList } from "../components/comments";
+import { EnumField } from "../components/enum";
 
 export const ServiceProviderProductApplicationShow = () => {
   const resource = useResourceContext()!;
@@ -66,9 +67,10 @@ export const ServiceProviderProductApplicationShow = () => {
             Application process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
+            <EnumField
               source="status"
               label="field.service_provider_product_application.status"
+              enumKey="service_provider_product_application.status"
             />
             <DateField
               source="qualified_at"

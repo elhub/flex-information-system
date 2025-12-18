@@ -72,10 +72,26 @@ resources:
         type: string
         default: new
         enum:
-          - new
-          - active
-          - inactive
-          - terminated
+          - id: new
+            x-intl:
+              en: New
+              nb: Ny
+              nn: Ny
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
+          - id: terminated
+            x-intl:
+              en: Terminated
+              nb: Terminert
+              nn: Terminert
         example: active
         x-intl:
           en: Status
@@ -91,9 +107,21 @@ resources:
         format: text
         type: string
         enum:
-          - up
-          - down
-          - both
+          - id: up
+            x-intl:
+              en: Up
+              nb: Opp
+              nn: Opp
+          - id: down
+            x-intl:
+              en: Down
+              nb: Ned
+              nn: Ned
+          - id: both
+            x-intl:
+              en: Both
+              nb: Begge
+              nn: Begge
         example: up
         x-intl:
           en: Regulation direction
@@ -209,11 +237,31 @@ resources:
         type: string
         default: pending
         enum:
-          - pending
-          - in_progress
-          - incomplete_information
-          - validated
-          - validation_failed
+          - id: pending
+            x-intl:
+              en: Pending
+              nb: Venter
+              nn: Ventar
+          - id: in_progress
+            x-intl:
+              en: In progress
+              nb: Under behandling
+              nn: Under behandling
+          - id: incomplete_information
+            x-intl:
+              en: Incomplete information
+              nb: Ufullstendig informasjon
+              nn: Ufullstendig informasjon
+          - id: validated
+            x-intl:
+              en: Validated
+              nb: Validert
+              nn: Validert
+          - id: validation_failed
+            x-intl:
+              en: Validation failed
+              nb: Feilet validering
+              nn: Feila validering
         example: validated
         x-intl:
           en: Grid validation status
@@ -311,8 +359,16 @@ resources:
         format: text
         type: string
         enum:
-          - compromises_safe_operation
-          - other
+          - id: compromises_safe_operation
+            x-intl:
+              en: Compromises safe operation
+              nb: Truer sikker drift
+              nn: Truar sikker drift
+          - id: other
+            x-intl:
+              en: Other
+              nb: Annet
+              nn: Anna
         example: compromises_safe_operation
         x-intl:
           en: Reason
@@ -497,11 +553,31 @@ resources:
         format: text
         type: string
         enum:
-          - NO1
-          - NO2
-          - NO3
-          - NO4
-          - NO5
+          - id: NO1
+            x-intl:
+              en: NO1 (Eastern Norway)
+              nb: NO1 (Østlandet)
+              nn: NO1 (Østlandet)
+          - id: NO2
+            x-intl:
+              en: NO2 (Southern Norway)
+              nb: NO2 (Sørvest-Norge)
+              nn: NO2 (Sørvest-Noreg)
+          - id: NO3
+            x-intl:
+              en: NO3 (Central Norway)
+              nb: NO3 (Midt-Norge)
+              nn: NO3 (Midt-Noreg)
+          - id: NO4
+            x-intl:
+              en: NO4 (Northern Norway)
+              nb: NO4 (Nord-Norge)
+              nn: NO4 (Nord-Noreg)
+          - id: NO5
+            x-intl:
+              en: NO5 (Western Norway)
+              nb: NO5 (Vestlandet)
+              nn: NO5 (Vestlandet)
         example: NO3
         x-intl:
           en: Bidding zone
@@ -516,10 +592,26 @@ resources:
         type: string
         default: new
         enum:
-          - new
-          - active
-          - inactive
-          - terminated
+          - id: new
+            x-intl:
+              en: New
+              nb: Ny
+              nn: Ny
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
+          - id: terminated
+            x-intl:
+              en: Terminated
+              nb: Terminert
+              nn: Terminert
         example: active
         x-intl:
           en: Status
@@ -688,11 +780,31 @@ resources:
         type: string
         default: requested
         enum:
-          - requested
-          - in_progress
-          - conditionally_approved
-          - approved
-          - not_approved
+          - id: requested
+            x-intl:
+              en: Requested
+              nb: Forespurt
+              nn: Førespurt
+          - id: in_progress
+            x-intl:
+              en: In progress
+              nb: Under behandling
+              nn: Under behandling
+          - id: conditionally_approved
+            x-intl:
+              en: Conditionally approved
+              nb: Betinget godkjent
+              nn: Betinga godkjent
+          - id: approved
+            x-intl:
+              en: Approved
+              nb: Godkjent
+              nn: Godkjent
+          - id: not_approved
+            x-intl:
+              en: Not approved
+              nb: Ikke godkjent
+              nn: Ikkje godkjent
         example: in_progress
         x-intl:
           en: Status
@@ -778,9 +890,21 @@ resources:
         format: text
         type: string
         enum:
-          - breach_of_conditions
-          - significant_group_change
-          - other
+          - id: breach_of_conditions
+            x-intl:
+              en: Breach of conditions
+              nb: Brudd på vilkår
+              nn: Brot på vilkår
+          - id: significant_group_change
+            x-intl:
+              en: Significant group change
+              nb: Vesentlig endring i gruppen
+              nn: Vesentleg endring i gruppa
+          - id: other
+            x-intl:
+              en: Other
+              nb: Annet
+              nn: Anna
         example: significant_group_change
         x-intl:
           en: Reason
@@ -850,6 +974,22 @@ resources:
           en: Business ID type
           nb: Forretnings-ID-type
           nn: Forretnings-ID-type
+        enum:
+          - id: pid
+            x-intl:
+              en: Personal ID number
+              nb: Personnummer
+              nn: Personnummer
+          - id: org
+            x-intl:
+              en: Organisation number
+              nb: Organisasjonsnummer
+              nn: Organisasjonsnummer
+          - id: email
+            x-intl:
+              en: Email
+              nb: E-post
+              nn: E-post
       name:
         description: Name of the entity. Maximum 128 characters.
         format: text
@@ -869,6 +1009,17 @@ resources:
           en: Type
           nb: Type
           nn: Type
+        enum:
+          - id: person
+            x-intl:
+              en: Person
+              nb: Person
+              nn: Person
+          - id: organisation
+            x-intl:
+              en: Organisation
+              nb: Organisasjon
+              nn: Organisasjon
 
   - id: entity_client
     acronym: ECL
@@ -1060,10 +1211,26 @@ resources:
         x-no-update: true
         default: uuid
         enum:
-          - gln
-          - uuid
-          - eic_x
-          - org
+          - id: gln
+            x-intl:
+              en: GLN (Global Location Number)
+              nb: GLN (Global Location Number)
+              nn: GLN (Global Location Number)
+          - id: uuid
+            x-intl:
+              en: UUID (Universally Unique Identifier)
+              nb: UUID (Universally Unique Identifier)
+              nn: UUID (Universally Unique Identifier)
+          - id: eic_x
+            x-intl:
+              en: EIC-X (Energy Identification Code - Market parties)
+              nb: EIC-X (Energy Identification Code - Markedsaktører)
+              nn: EIC-X (Energy Identification Code - Marknadsaktørar)
+          - id: org
+            x-intl:
+              en: Organisation number
+              nb: Organisasjonsnummer
+              nn: Organisasjonsnummer
         example: gln
         x-intl:
           en: Business ID type
@@ -1104,6 +1271,52 @@ resources:
           en: Role
           nb: Rolle
           nn: Rolle
+        enum:
+          - id: flex_balance_responsible_party
+            x-intl:
+              en: Balance Responsible Party
+              nb: Balanseansvarlig
+              nn: Balanseansvarleg
+          - id: flex_end_user
+            x-intl:
+              en: End User
+              nb: Sluttbruker
+              nn: Sluttbrukar
+          - id: flex_energy_supplier
+            x-intl:
+              en: Energy Supplier
+              nb: Kraftleverandør
+              nn: Kraftleverandør
+          - id: flex_flexibility_information_system_operator
+            x-intl:
+              en: Flexibility Information System Operator
+              nb: Fleksibilitetsinformasjonssystemoperatør
+              nn: Fleksibilitetsinformasjonssystemoperatør
+          - id: flex_market_operator
+            x-intl:
+              en: Market Operator
+              nb: Markedsoperatør
+              nn: Marknadsoperatør
+          - id: flex_organisation
+            x-intl:
+              en: Organisation
+              nb: Organisasjon
+              nn: Organisasjon
+          - id: flex_service_provider
+            x-intl:
+              en: Service Provider
+              nb: Tjenesteleverandør
+              nn: Tenesteleverandør
+          - id: flex_system_operator
+            x-intl:
+              en: System Operator
+              nb: Systemoperatør
+              nn: Systemoperatør
+          - id: flex_third_party
+            x-intl:
+              en: Third Party
+              nb: Tredjepart
+              nn: Tredjepart
       type:
         description: >-
           The type of the party, e.g SystemOperator, ServiceProvider
@@ -1115,17 +1328,83 @@ resources:
           en: Type
           nb: Type
           nn: Type
+        enum:
+          - id: balance_responsible_party
+            x-intl:
+              en: Balance Responsible Party
+              nb: Balanseansvarlig
+              nn: Balanseansvarleg
+          - id: end_user
+            x-intl:
+              en: End User
+              nb: Sluttbruker
+              nn: Sluttbrukar
+          - id: energy_supplier
+            x-intl:
+              en: Energy Supplier
+              nb: Kraftleverandør
+              nn: Kraftleverandør
+          - id: flexibility_information_system_operator
+            x-intl:
+              en: Flexibility Information System Operator
+              nb: Fleksibilitetsinformasjonssystemoperatør
+              nn: Fleksibilitetsinformasjonssystemoperatør
+          - id: market_operator
+            x-intl:
+              en: Market Operator
+              nb: Markedsoperatør
+              nn: Marknadsoperatør
+          - id: organisation
+            x-intl:
+              en: Organisation
+              nb: Organisasjon
+              nn: Organisasjon
+          - id: service_provider
+            x-intl:
+              en: Service Provider
+              nb: Tjenesteleverandør
+              nn: Tenesteleverandør
+          - id: system_operator
+            x-intl:
+              en: System Operator
+              nb: Systemoperatør
+              nn: Systemoperatør
+          - id: third_party
+            x-intl:
+              en: Third Party
+              nb: Tredjepart
+              nn: Tredjepart
       status:
         description: The status of the party.
         format: text
         type: string
         default: new
         enum:
-          - new
-          - active
-          - inactive
-          - suspended
-          - terminated
+          - id: new
+            x-intl:
+              en: New
+              nb: Ny
+              nn: Ny
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
+          - id: suspended
+            x-intl:
+              en: Suspended
+              nb: Suspendert
+              nn: Suspendert
+          - id: terminated
+            x-intl:
+              en: Terminated
+              nb: Terminert
+              nn: Terminert
         example: active
         x-intl:
           en: Status
@@ -1615,8 +1894,16 @@ resources:
         readOnly: true
         example: 'consumption'
         enum:
-          - consumption
-          - production
+          - id: consumption
+            x-intl:
+              en: Consumption
+              nb: Forbruk
+              nn: Forbruk
+          - id: production
+            x-intl:
+              en: Production
+              nb: Produksjon
+              nn: Produksjon
         x-intl:
           en: Energy direction
           nb: Energiretning
@@ -1843,8 +2130,16 @@ resources:
         type: string
         default: active
         enum:
-          - active
-          - inactive
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
         example: active
         x-intl:
           en: Status
@@ -1931,11 +2226,31 @@ resources:
         type: string
         default: requested
         enum:
-          - requested
-          - in_progress
-          - communication_test
-          - not_qualified
-          - qualified
+          - id: requested
+            x-intl:
+              en: Requested
+              nb: Forespurt
+              nn: Førespurt
+          - id: in_progress
+            x-intl:
+              en: In progress
+              nb: Under behandling
+              nn: Under behandling
+          - id: communication_test
+            x-intl:
+              en: Communication test
+              nb: Kommunikasjonstest
+              nn: Kommunikasjonstest
+          - id: not_qualified
+            x-intl:
+              en: Not qualified
+              nb: Ikke kvalifisert
+              nn: Ikkje kvalifisert
+          - id: qualified
+            x-intl:
+              en: Qualified
+              nb: Kvalifisert
+              nn: Kvalifisert
         example: in_progress
         x-intl:
           en: Status
@@ -2035,12 +2350,36 @@ resources:
         format: text
         type: string
         enum:
-          - communication_issues
-          - failing_heartbeat
-          - system_issues
-          - clearing_issues
-          - breach_of_conditions
-          - other
+          - id: communication_issues
+            x-intl:
+              en: Communication issues
+              nb: Kommunikasjonsproblemer
+              nn: Kommunikasjonsproblem
+          - id: failing_heartbeat
+            x-intl:
+              en: Failing heartbeat
+              nb: Feilende hjerteslag
+              nn: Feilande hjarteslag
+          - id: system_issues
+            x-intl:
+              en: System issues
+              nb: Systemproblemer
+              nn: Systemproblem
+          - id: clearing_issues
+            x-intl:
+              en: Clearing issues
+              nb: Avregningsproblemer
+              nn: Avrekningsproblem
+          - id: breach_of_conditions
+            x-intl:
+              en: Breach of conditions
+              nb: Brudd på vilkår
+              nn: Brot på vilkår
+          - id: other
+            x-intl:
+              en: Other
+              nb: Annet
+              nn: Anna
         example: communication_issues
         x-intl:
           en: Reason
@@ -2125,13 +2464,41 @@ resources:
         type: string
         default: requested
         enum:
-          - requested
-          - prequalification_pending
-          - in_progress
-          - temporary_qualified
-          - prequalified
-          - verified
-          - rejected
+          - id: requested
+            x-intl:
+              en: Requested
+              nb: Forespurt
+              nn: Førespurt
+          - id: prequalification_pending
+            x-intl:
+              en: Prequalification pending
+              nb: Prekvalifisering venter
+              nn: Prekvalifisering ventar
+          - id: in_progress
+            x-intl:
+              en: In progress
+              nb: Under behandling
+              nn: Under behandling
+          - id: temporary_qualified
+            x-intl:
+              en: Temporary qualified
+              nb: Midlertidig kvalifisert
+              nn: Mellombels kvalifisert
+          - id: prequalified
+            x-intl:
+              en: Prequalified
+              nb: Prekvalifisert
+              nn: Prekvalifisert
+          - id: verified
+            x-intl:
+              en: Verified
+              nb: Verifisert
+              nn: Verifisert
+          - id: rejected
+            x-intl:
+              en: Rejected
+              nb: Avvist
+              nn: Avvist
         example: in_progress
         x-intl:
           en: Status
@@ -2252,8 +2619,16 @@ resources:
         format: text
         type: string
         enum:
-          - failed_verification
-          - other
+          - id: failed_verification
+            x-intl:
+              en: Failed verification
+              nb: Feilet verifisering
+              nn: Feila verifisering
+          - id: other
+            x-intl:
+              en: Other
+              nb: Annet
+              nn: Anna
         example: failed_verification
         x-intl:
           en: Reason

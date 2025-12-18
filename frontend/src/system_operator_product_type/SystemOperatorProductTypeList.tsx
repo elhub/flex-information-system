@@ -3,17 +3,19 @@ import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { QuickFilter } from "../components/QuickFilter";
 import { ProductTypeArrayInput } from "../product_type/components";
+import { EnumField } from "../components/enum";
 
 export const SystemOperatorProductTypeList = () => {
   const SystemOperatorProductTypeListFilters = [
     <PartyReferenceInput
       key="system_operator_id"
       source="system_operator_id"
+      label="field.system_operator_product_type.system_operator_id"
       alwaysOn
     />,
     <ProductTypeArrayInput
       key="product_type_id"
-      label="Product types"
+      label="field.system_operator_product_type.product_type_id"
       source="product_type_id@in"
       alwaysOn
     />,
@@ -48,8 +50,9 @@ export const SystemOperatorProductTypeList = () => {
           sortable={false}
           label="field.system_operator_product_type.product_type_id"
         />
-        <TextField
+        <EnumField
           source="status"
+          enumKey="system_operator_product_type.status"
           label="field.system_operator_product_type.status"
         />
         <DateField

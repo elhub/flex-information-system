@@ -13,6 +13,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
+import { EnumField } from "../../components/enum";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -100,8 +101,9 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             source="product_type_ids"
             sortable={false}
           />
-          <TextField
+          <EnumField
             source="status"
+            enumKey="service_providing_group_product_application.status"
             label="field.service_providing_group_product_application.status"
           />
         </Datagrid>

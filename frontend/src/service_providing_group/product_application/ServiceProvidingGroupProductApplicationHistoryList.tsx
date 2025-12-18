@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ProductTypeArrayField } from "../../product_type/components";
+import { EnumField } from "../../components/enum";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const params = useParams();
@@ -25,7 +26,7 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
     <NumberInput
       key="service_providing_group_product_application_id"
       min="0"
-      label="Service Providing Group product_application ID"
+      label="field.service_providing_group_product_application_history.service_providing_group_product_application_id"
       source="service_providing_group_product_application_id"
     />,
   ];
@@ -62,11 +63,15 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
           <TextField source="name" />
         </ReferenceField>
         <ProductTypeArrayField
-          label="Product types"
+          label="field.service_providing_group_product_application_history.product_type_ids"
           source="product_type_ids"
           sortable={false}
         />
-        <TextField source="status" />
+        <EnumField
+          source="status"
+          enumKey="service_providing_group_product_application.status"
+          label="field.service_providing_group_product_application_history.status"
+        />
         <DateField
           source="prequalified_at"
           showTime

@@ -2,7 +2,6 @@ import {
   DeleteButton,
   List,
   ReferenceField,
-  SelectArrayInput,
   TextField,
   usePermissions,
 } from "react-admin";
@@ -11,6 +10,7 @@ import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
 import { IdentityField } from "../components/IdentityField";
+import { EnumArrayInput, EnumField } from "../components/enum";
 
 export const ServiceProviderProductSuspensionList = () => {
   const { permissions } = usePermissions<Permissions>();
@@ -25,25 +25,21 @@ export const ServiceProviderProductSuspensionList = () => {
     <PartyReferenceInput
       key="procuring_system_operator_id"
       source="procuring_system_operator_id"
+      filter={{ type: "system_operator" }}
+      label="field.service_provider_product_suspension.procuring_system_operator_id"
       alwaysOn
     />,
     <PartyReferenceInput
       key="service_provider_id"
       source="service_provider_id"
+      label="field.service_provider_product_suspension.service_provider_id"
       alwaysOn
     />,
-    <SelectArrayInput
+    <EnumArrayInput
       key="reason"
-      label="Reason"
+      enumKey="service_provider_product_suspension.reason"
+      label="field.service_provider_product_suspension.reason"
       source="reason@in"
-      choices={[
-        "communication_issues",
-        "failing_heartbeat",
-        "system_issues",
-        "clearing_issues",
-        "breach_of_conditions",
-        "other",
-      ]}
       alwaysOn
     />,
   ];
@@ -77,11 +73,12 @@ export const ServiceProviderProductSuspensionList = () => {
           <TextField source="name" />
         </ReferenceField>
         <ProductTypeArrayField
-          label="Product types"
+          label="field.service_provider_product_suspension.product_type_ids"
           source="product_type_ids"
         />
-        <TextField
+        <EnumField
           source="reason"
+          enumKey="service_provider_product_suspension.reason"
           label="field.service_provider_product_suspension.reason"
         />
         <DateField

@@ -15,6 +15,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { FieldStack } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
+import { EnumField } from "../components/enum";
 
 // button to jump to the party input page in update mode with autofilled form
 const PartyUpdateButton = (props: any) => {
@@ -81,12 +82,17 @@ const NoticePartyMissingShow = () => {
                 source="business_id"
                 label="field.entity.business_id"
               />
-              <TextField
+              <EnumField
                 source="business_id_type"
                 label="field.entity.business_id_type"
+                enumKey="entity.business_id_type"
               />
               <TextField source="name" label="field.entity.name" />
-              <TextField source="type" label="field.entity.type" />
+              <EnumField
+                source="type"
+                label="field.entity.type"
+                enumKey="entity.type"
+              />
               {entityAlert}
             </FieldStack>
           </RecordContextProvider>
@@ -97,13 +103,18 @@ const NoticePartyMissingShow = () => {
           <RecordContextProvider value={record.data.party}>
             <FieldStack direction="row" flexWrap="wrap" spacing={2} allowAll>
               <TextField source="business_id" label="field.party.business_id" />
-              <TextField
+              <EnumField
                 source="business_id_type"
                 label="field.party.business_id_type"
+                enumKey="party.business_id_type"
               />
               <TextField source="entity_id" label="field.party.entity_id" />
               <TextField source="name" label="field.party.name" />
-              <TextField source="type" label="field.party.type" />
+              <EnumField
+                source="type"
+                label="field.party.type"
+                enumKey="party.type"
+              />
               <PartyCreateButton disabled={!entityExists} />
             </FieldStack>
           </RecordContextProvider>
@@ -144,12 +155,17 @@ const NoticePartyOutdatedShow = () => {
                   source="business_id"
                   label="field.entity.business_id"
                 />
-                <TextField
+                <EnumField
                   source="business_id_type"
                   label="field.entity.business_id_type"
+                  enumKey="entity.business_id_type"
                 />
                 <TextField source="name" label="field.entity.name" />
-                <TextField source="type" label="field.entity.type" />
+                <EnumField
+                  source="type"
+                  label="field.entity.type"
+                  enumKey="entity.type"
+                />
                 {entityExists ? (
                   <Alert severity="success">
                     <AlertTitle>Found</AlertTitle>

@@ -20,6 +20,7 @@ import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { ControllableUnitSuspension } from "../../generated-client";
+import { EnumField } from "../../components/enum";
 
 const EditButton = () => {
   const record = useRecordContext<ControllableUnitSuspension>();
@@ -152,9 +153,10 @@ export const ControllableUnitSuspensionShow = () => {
             Controllable unit suspension process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
+            <EnumField
               source="reason"
               label="field.controllable_unit_suspension.reason"
+              enumKey="controllable_unit_suspension.reason"
             />
             <DateField
               source="recorded_at"

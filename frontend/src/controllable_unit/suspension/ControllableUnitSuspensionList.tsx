@@ -15,6 +15,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { EnumField } from "../../components/enum";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -111,9 +112,10 @@ export const ControllableUnitSuspensionList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField
+            <EnumField
               source="reason"
               label="field.controllable_unit_suspension.reason"
+              enumKey="controllable_unit_suspension.reason"
             />
             {isURLFlat && (
               <DateField
