@@ -25,7 +25,7 @@ export const ControllableUnitSuspensionHistoryList = () => {
     <NumberInput
       key="controllable_unit_suspension_id"
       min="0"
-      label="Controllable Unit Suspension ID"
+      label="field.controllable_unit_suspension_history.controllable_unit_suspension_id"
       source="controllable_unit_suspension_id"
     />,
   ];
