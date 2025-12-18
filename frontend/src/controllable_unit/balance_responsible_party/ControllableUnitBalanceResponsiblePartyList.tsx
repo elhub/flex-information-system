@@ -9,6 +9,7 @@ import {
 import { Datagrid } from "../../auth";
 import { DateField } from "../../components/datetime";
 import { Permissions } from "../../auth/permissions";
+import { EnumField } from "../../components/enum";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
   // accounting point id of the controllable unit whose BRPs we want to get
@@ -42,9 +43,10 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField
+            <EnumField
               source="energy_direction"
               label="field.accounting_point_balance_responsible_party.energy_direction"
+              enumKey="accounting_point_balance_responsible_party.energy_direction"
             />
             <DateField
               source="valid_from"

@@ -20,6 +20,7 @@ import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { ServiceProvidingGroupGridSuspension } from "../../generated-client";
+import { EnumField } from "../../components/enum";
 
 const EditButton = () => {
   const record = useRecordContext<ServiceProvidingGroupGridSuspension>();
@@ -157,8 +158,9 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
             Grid suspension process
           </Typography>
           <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
+            <EnumField
               source="reason"
+              enumKey="service_providing_group_grid_suspension.reason"
               label="field.service_providing_group_grid_suspension.reason"
             />
             <DateField

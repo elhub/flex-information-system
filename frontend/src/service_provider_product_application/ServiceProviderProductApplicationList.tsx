@@ -1,31 +1,28 @@
-import { List, ReferenceField, SelectArrayInput, TextField } from "react-admin";
+import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
+import { EnumArrayInput, EnumField } from "../components/enum";
 
 export const ServiceProviderProductApplicationList = () => {
   const ServiceProviderProductApplicationListFilters = [
     <PartyReferenceInput
       key="service_provider_id"
       source="service_provider_id"
+      label="field.service_provider_product_application.service_provider_id"
       alwaysOn
     />,
     <PartyReferenceInput
       key="system_operator_id"
       source="system_operator_id"
+      label="field.service_provider_product_application.system_operator_id"
       alwaysOn
     />,
-    <SelectArrayInput
+    <EnumArrayInput
       key="status"
-      label="Status"
+      enumKey="service_provider_product_application.status"
+      label="field.service_provider_product_application.status"
       source="status@in"
-      choices={[
-        "requested",
-        "in_progress",
-        "communication_test",
-        "not_qualified",
-        "qualified",
-      ]}
       alwaysOn
     />,
   ];
@@ -62,8 +59,9 @@ export const ServiceProviderProductApplicationList = () => {
           label="field.service_provider_product_application.product_type_ids"
           source="product_type_ids"
         />
-        <TextField
+        <EnumField
           source="status"
+          enumKey="service_provider_product_application.status"
           label="field.service_provider_product_application.status"
         />
         <DateField

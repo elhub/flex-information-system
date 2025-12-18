@@ -15,6 +15,7 @@ import {
 import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
+import { EnumField } from "../components/enum";
 
 export const PartyShow = () => {
   const resource = useResourceContext()!;
@@ -32,9 +33,10 @@ export const PartyShow = () => {
             <TextField source="id" label="field.party.id" />
             <TextField source="party_id" label="field.party_history.party_id" />
             <TextField source="business_id" label="field.party.business_id" />
-            <TextField
+            <EnumField
               source="business_id_type"
               label="field.party.business_id_type"
+              enumKey="party.business_id_type"
             />
             <ReferenceField
               source="entity_id"
@@ -44,9 +46,21 @@ export const PartyShow = () => {
               <TextField source="name" />
             </ReferenceField>
             <TextField source="name" label="field.party.name" />
-            <TextField source="type" label="field.party.type" />
-            <TextField source="role" label="field.party.role" />
-            <TextField source="status" label="field.party.status" />
+            <EnumField
+              source="type"
+              label="field.party.type"
+              enumKey="party.type"
+            />
+            <EnumField
+              source="role"
+              label="field.party.role"
+              enumKey="party.role"
+            />
+            <EnumField
+              source="status"
+              label="field.party.status"
+              enumKey="party.status"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>

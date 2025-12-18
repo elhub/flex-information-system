@@ -1,6 +1,5 @@
 import {
   required,
-  SelectInput,
   SimpleForm,
   useGetIdentity,
   useGetList,
@@ -15,6 +14,7 @@ import { Toolbar } from "../components/Toolbar";
 import { ProductTypeArrayInput } from "../product_type/components";
 import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../components/enum";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -126,17 +126,11 @@ export const ServiceProviderProductApplicationInput = () => {
           Application process
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <SelectInput
+          <EnumInput
             source="status"
+            enumKey="service_provider_product_application.status"
             label="field.service_provider_product_application.status"
             validate={required()}
-            choices={[
-              "requested",
-              "in_progress",
-              "communication_test",
-              "not_qualified",
-              "qualified",
-            ]}
           />
           <DateTimeInput
             source="qualified_at"

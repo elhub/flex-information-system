@@ -9,6 +9,7 @@ import { Datagrid } from "../../auth";
 import { useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { EnumField } from "../../components/enum";
 
 export const ServiceProvidingGroupGridSuspensionHistoryList = () => {
   const params = useParams();
@@ -24,7 +25,7 @@ export const ServiceProvidingGroupGridSuspensionHistoryList = () => {
     <NumberInput
       key="service_providing_group_grid_suspension_id"
       min="0"
-      label="Service Providing Group Grid Suspension ID"
+      label="field.service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
       source="service_providing_group_grid_suspension_id"
     />,
   ];
@@ -68,8 +69,9 @@ export const ServiceProvidingGroupGridSuspensionHistoryList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField
+        <EnumField
           source="reason"
+          enumKey="service_providing_group_grid_suspension.reason"
           label="field.service_providing_group_grid_suspension_history.reason"
         />
         <DateField

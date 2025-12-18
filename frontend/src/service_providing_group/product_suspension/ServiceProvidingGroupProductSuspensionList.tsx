@@ -16,6 +16,7 @@ import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
+import { EnumField } from "../../components/enum";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -109,8 +110,9 @@ export const ServiceProvidingGroupProductSuspensionList = () => {
               <TextField source="name" />
             </ReferenceField>
             <ProductTypeArrayField label="field.service_providing_group_product_suspension.product_type_ids" />
-            <TextField
+            <EnumField
               source="reason"
+              enumKey="service_providing_group_product_suspension.reason"
               label="field.service_providing_group_product_suspension.reason"
             />
             {isURLFlat && (

@@ -3,6 +3,7 @@ import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
+import { EnumField } from "../components/enum";
 
 export const ServiceProvidingGroupHistoryList = () => {
   const { service_providing_group_id } = useParams();
@@ -33,12 +34,14 @@ export const ServiceProvidingGroupHistoryList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField
+        <EnumField
           source="bidding_zone"
+          enumKey="service_providing_group.bidding_zone"
           label="field.service_providing_group_history.bidding_zone"
         />
-        <TextField
+        <EnumField
           source="status"
+          enumKey="service_providing_group.status"
           label="field.service_providing_group_history.status"
         />
         <DateField

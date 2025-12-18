@@ -57,6 +57,7 @@ from .controllable_unit_suspension_update_request import ControllableUnitSuspens
 from .controllable_unit_update_request import ControllableUnitUpdateRequest
 from .empty_object import EmptyObject
 from .entity import Entity
+from .entity_business_id_type import EntityBusinessIdType
 from .entity_client import EntityClient
 from .entity_client_create_data import EntityClientCreateData
 from .entity_client_create_request import EntityClientCreateRequest
@@ -68,6 +69,7 @@ from .entity_lookup_request import EntityLookupRequest
 from .entity_lookup_request_type import EntityLookupRequestType
 from .entity_lookup_response import EntityLookupResponse
 from .entity_response import EntityResponse
+from .entity_type import EntityType
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
 from .event import Event
@@ -407,6 +409,7 @@ __all__ = (
     "ControllableUnitUpdateRequest",
     "EmptyObject",
     "Entity",
+    "EntityBusinessIdType",
     "EntityClient",
     "EntityClientCreateData",
     "EntityClientCreateRequest",
@@ -418,6 +421,7 @@ __all__ = (
     "EntityLookupRequestType",
     "EntityLookupResponse",
     "EntityResponse",
+    "EntityType",
     "EntityUpdateRequest",
     "ErrorMessage",
     "Event",

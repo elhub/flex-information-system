@@ -27,7 +27,7 @@ import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
 import { ScopesField } from "./components/scopes";
 import { useTheme } from "@mui/material/styles";
-import { EnumField } from "./components/EnumField";
+import { EnumField } from "./components/enum";
 
 export const AssumePartyPage = () => {
   const [unAssumed, setUnAssumed] = useState(false);

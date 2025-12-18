@@ -1,13 +1,21 @@
 import { useMemo, useState } from "react";
 import { fieldLabels as allFieldLabels, FieldLabel } from "./field-labels";
 import { enumLabels as allEnumLabels, EnumLabel } from "./enum-labels";
-import { defaultI18nProvider } from "react-admin";
+import {
+  defaultI18nProvider,
+  I18nProvider as RAI18nProvider,
+} from "react-admin";
 import { text, TextKey } from "./text";
 
 type AppLanguage = "en" | "nb" | "nn";
 
 const appLanguage: AppLanguage =
   window.env.LANGUAGE ?? import.meta.env.LANGUAGE ?? "en";
+
+export type I18nProvider = RAI18nProvider & {
+  // return all possible values for an enumeration
+  getEnumValues: (enumKey: string) => string[];
+};
 
 export const useI18nProvider = () => {
   const [language, setLanguage] = useState<AppLanguage>(appLanguage);
@@ -43,5 +51,8 @@ export const useI18nProvider = () => {
       // default case: resort to React-Admin
       return defaultI18nProvider.translate(key, options);
     },
+
+    getEnumValues: (enumKey: string) =>
+      Object.keys(enumLabels).filter((key) => key.startsWith(enumKey)),
   };
 };

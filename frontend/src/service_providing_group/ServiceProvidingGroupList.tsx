@@ -6,6 +6,7 @@ import {
 } from "react-admin";
 import { Datagrid } from "../auth";
 import { DateField } from "../components/datetime";
+import { EnumField } from "../components/enum";
 
 export const ServiceProvidingGroupList = () => (
   <List perPage={25} sort={{ field: "id", order: "DESC" }} empty={false}>
@@ -20,15 +21,20 @@ export const ServiceProvidingGroupList = () => (
       >
         <TextField source="name" />
       </ReferenceField>
-      <TextField
+      <EnumField
         source="bidding_zone"
+        enumKey="service_providing_group.bidding_zone"
         label="field.service_providing_group.bidding_zone"
       />
-      <TextField source="status" label="field.service_providing_group.status" />
+      <EnumField
+        source="status"
+        enumKey="service_providing_group.status"
+        label="field.service_providing_group.status"
+      />
       <ReferenceManyField
         reference="service_providing_group_grid_prequalification"
         target="service_providing_group_id"
-        label="Grid prequalification"
+        label="text.spg_grid_prequalification_header"
         sortable={false}
       >
         <Datagrid empty={<span>No grid prequalification</span>}>
@@ -40,8 +46,9 @@ export const ServiceProvidingGroupList = () => (
           >
             <TextField source="name" />
           </ReferenceField>
-          <TextField
+          <EnumField
             source="status"
+            enumKey="service_providing_group_grid_prequalification.status"
             label="field.service_providing_group_grid_prequalification.status"
           />
         </Datagrid>
@@ -49,7 +56,7 @@ export const ServiceProvidingGroupList = () => (
       <ReferenceManyField
         reference="service_providing_group_product_application"
         target="service_providing_group_id"
-        label="Product application"
+        label="text.spg_product_application_header"
         sortable={false}
       >
         <Datagrid empty={<span>No product application</span>}>
@@ -61,8 +68,9 @@ export const ServiceProvidingGroupList = () => (
           >
             <TextField source="name" />
           </ReferenceField>
-          <TextField
+          <EnumField
             source="status"
+            enumKey="service_providing_group_product_application.status"
             label="field.service_providing_group_product_application.status"
           />
         </Datagrid>

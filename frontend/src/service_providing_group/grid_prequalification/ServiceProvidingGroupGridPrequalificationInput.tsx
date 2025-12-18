@@ -1,9 +1,4 @@
-import {
-  required,
-  SelectInput,
-  SimpleForm,
-  useRecordContext,
-} from "react-admin";
+import { required, SimpleForm, useRecordContext } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import {
   AutocompleteReferenceInput,
@@ -17,6 +12,7 @@ import { DateTimeInput } from "../../components/datetime";
 import { useMemo } from "react";
 import { zServiceProvidingGroupGridPrequalification } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../../components/enum";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -67,17 +63,11 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
             label="field.service_providing_group_grid_prequalification.impacted_system_operator_id"
             filter={{ type: "system_operator" }}
           />
-          <SelectInput
+          <EnumInput
             source="status"
+            enumKey="service_providing_group_grid_prequalification.status"
             label="field.service_providing_group_grid_prequalification.status"
             validate={createOrUpdate == "update" ? required() : undefined}
-            choices={[
-              "requested",
-              "in_progress",
-              "conditionally_approved",
-              "approved",
-              "not_approved",
-            ]}
           />
           <DateTimeInput
             source="prequalified_at"

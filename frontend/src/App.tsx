@@ -141,7 +141,7 @@ const AppBar = () => {
   if (!isLoading) {
     roleLabel =
       data!.role == "flex_entity"
-        ? translate("text.entity")
+        ? translate("text.entity_role")
         : translate(`enum.party.role.${data!.role}`);
   }
 

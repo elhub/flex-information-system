@@ -1,13 +1,22 @@
-export type TextKey = "entity";
+export type TextKey =
+  | "entity_role"
+  | "spg_grid_prequalification_header"
+  | "spg_product_application_header";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
-    entity: "Entity",
+    entity_role: "Entity",
+    spg_grid_prequalification_header: "Grid prequalification",
+    spg_product_application_header: "Product application",
   },
   nb: {
-    entity: "Entitet",
+    entity_role: "Entitet",
+    spg_grid_prequalification_header: "Nettprekvalifisering",
+    spg_product_application_header: "Produktsøknad",
   },
   nn: {
-    entity: "Entitet",
+    entity_role: "Entitet",
+    spg_grid_prequalification_header: "Nettprekvalifisering",
+    spg_product_application_header: "Produktsøknad",
   },
 };

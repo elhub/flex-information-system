@@ -1,10 +1,4 @@
-import {
-  required,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-  useRecordContext,
-} from "react-admin";
+import { required, SimpleForm, TextInput, useRecordContext } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { Toolbar } from "../../components/Toolbar";
 import { useLocation } from "react-router-dom";
@@ -18,6 +12,7 @@ import { ProductTypeArrayInput } from "../../product_type/components";
 import { useMemo } from "react";
 import { zServiceProvidingGroupProductApplication } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../../components/enum";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -81,8 +76,9 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           Application process
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <SelectInput
+          <EnumInput
             source="status"
+            enumKey="service_providing_group_product_application.status"
             label="field.service_providing_group_product_application.status"
             validate={required()}
             choices={[

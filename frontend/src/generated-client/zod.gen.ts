@@ -275,6 +275,16 @@ export const zServiceProvidingGroupGridSuspensionCommentVisibility = z.enum([
 /**
  * The type of the business identifier.
  */
+export const zEntityBusinessIdType = z.enum(["pid", "org", "email"]);
+
+/**
+ * The type of the entity, e.g Person, Organisation
+ */
+export const zEntityType = z.enum(["person", "organisation"]);
+
+/**
+ * The type of the business identifier.
+ */
 export const zPartyBusinessIdType = z.enum(["gln", "uuid", "eic_x", "org"]);
 
 /**
@@ -1192,10 +1202,22 @@ export const zServiceProvidingGroupGridSuspensionCommentResponse =
  * * Organisation
  */
 export const zEntityUpdateRequest = z.object({
+  business_id_type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityBusinessIdType.optional(),
+    ),
+  ),
   name: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
       z.string().optional(),
+    ),
+  ),
+  type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityType.optional(),
     ),
   ),
 });
@@ -1213,18 +1235,6 @@ export const zEntityUpdateRequest = z.object({
 export const zEntityCreateData = zEntityUpdateRequest.and(
   z.object({
     business_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-    business_id_type: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-    type: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
         z.string().optional(),

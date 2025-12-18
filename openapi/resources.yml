@@ -974,6 +974,22 @@ resources:
           en: Business ID type
           nb: Forretnings-ID-type
           nn: Forretnings-ID-type
+        enum:
+          - id: pid
+            x-intl:
+              en: Personal ID number
+              nb: Personnummer
+              nn: Personnummer
+          - id: org
+            x-intl:
+              en: Organisation number
+              nb: Organisasjonsnummer
+              nn: Organisasjonsnummer
+          - id: email
+            x-intl:
+              en: Email
+              nb: E-post
+              nn: E-post
       name:
         description: Name of the entity. Maximum 128 characters.
         format: text
@@ -993,6 +1009,17 @@ resources:
           en: Type
           nb: Type
           nn: Type
+        enum:
+          - id: person
+            x-intl:
+              en: Person
+              nb: Person
+              nn: Person
+          - id: organisation
+            x-intl:
+              en: Organisation
+              nb: Organisasjon
+              nn: Organisasjon
 
   - id: entity_client
     acronym: ECL

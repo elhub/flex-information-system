@@ -646,6 +646,27 @@
                 ],
                 "example": "same_party"
             },
+            "entity_business_id_type": {
+                "description": "The type of the business identifier.",
+                "format": "text",
+                "type": "string",
+                "example": "pid",
+                "enum": [
+                    "pid",
+                    "org",
+                    "email"
+                ]
+            },
+            "entity_type": {
+                "description": "The type of the entity, e.g Person, Organisation",
+                "format": "text",
+                "type": "string",
+                "example": "person",
+                "enum": [
+                    "person",
+                    "organisation"
+                ]
+            },
             "party_business_id_type": {
                 "description": "The type of the business identifier.",
                 "format": "text",
@@ -1992,11 +2013,17 @@
                 "description": "Request schema for update operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
                 "type": "object",
                 "properties": {
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/entity_business_id_type"
+                    },
                     "name": {
                         "description": "Name of the entity. Maximum 128 characters.",
                         "format": "text",
                         "type": "string",
                         "example": "John Smith"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/entity_type"
                     }
                 }
             },
@@ -2014,18 +2041,6 @@
                                 "format": "text",
                                 "type": "string",
                                 "example": "13370000000"
-                            },
-                            "business_id_type": {
-                                "description": "The type of the business identifier.",
-                                "format": "text",
-                                "type": "string",
-                                "example": "pid"
-                            },
-                            "type": {
-                                "description": "The type of the entity, e.g Person, Organisation",
-                                "format": "text",
-                                "type": "string",
-                                "example": "person"
                             }
                         }
                     }
@@ -14440,8 +14455,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "eq.somebusiness_id_type",
-                        "description": "The type of the business identifier."
+                        "example": "eq.somebusiness_id_type"
                     },
                     {
                         "description": "Filtering Columns",

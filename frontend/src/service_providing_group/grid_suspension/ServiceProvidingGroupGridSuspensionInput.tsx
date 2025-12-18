@@ -1,6 +1,5 @@
 import {
   required,
-  SelectInput,
   SimpleForm,
   useGetIdentity,
   useRecordContext,
@@ -16,6 +15,7 @@ import {
 import { useMemo } from "react";
 import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EnumInput } from "../../components/enum";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -73,15 +73,11 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
           Grid suspension process
         </Typography>
         <InputStack direction="row" flexWrap="wrap">
-          <SelectInput
+          <EnumInput
             source="reason"
+            enumKey="service_providing_group_grid_suspension.reason"
             label="field.service_providing_group_grid_suspension.reason"
             validate={required()}
-            choices={[
-              "breach_of_conditions",
-              "significant_group_change",
-              "other",
-            ]}
           />
         </InputStack>
       </Stack>

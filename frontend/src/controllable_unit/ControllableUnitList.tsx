@@ -4,7 +4,6 @@ import {
   BooleanField,
   ReferenceField,
   TextField,
-  SelectArrayInput,
   ExportButton,
   CreateButton,
   usePermissions,
@@ -16,7 +15,7 @@ import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../auth/permissions";
-import { EnumField } from "../components/EnumField";
+import { EnumArrayInput, EnumField } from "../components/enum";
 
 const CreateCUSPButton = () => (
   <Button
@@ -61,11 +60,11 @@ const ListActions = () => {
 
 export const ControllableUnitList = () => {
   const controllableUnitFilters = [
-    <SelectArrayInput
+    <EnumArrayInput
       key="status"
       label="Status"
       source="status@in"
-      choices={["new", "active", "inactive", "terminated"]}
+      enumKey="controllable_unit.status"
       alwaysOn
     />,
   ];

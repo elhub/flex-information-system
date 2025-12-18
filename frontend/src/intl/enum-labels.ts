@@ -17,6 +17,11 @@ export type EnumLabel =
   | "controllable_unit.status.terminated"
   | "controllable_unit_suspension.reason.compromises_safe_operation"
   | "controllable_unit_suspension.reason.other"
+  | "entity.business_id_type.email"
+  | "entity.business_id_type.org"
+  | "entity.business_id_type.pid"
+  | "entity.type.organisation"
+  | "entity.type.person"
   | "party.business_id_type.eic_x"
   | "party.business_id_type.gln"
   | "party.business_id_type.org"
@@ -118,6 +123,11 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_suspension.reason.breach_of_conditions": "Breach of conditions",
     "service_providing_group_grid_suspension.reason.significant_group_change": "Significant group change",
     "service_providing_group_grid_suspension.reason.other": "Other",
+    "entity.business_id_type.pid": "Personal ID number",
+    "entity.business_id_type.org": "Organisation number",
+    "entity.business_id_type.email": "Email",
+    "entity.type.person": "Person",
+    "entity.type.organisation": "Organisation",
     "party.business_id_type.gln": "GLN (Global Location Number)",
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x": "EIC-X (Energy Identification Code - Market parties)",
@@ -202,6 +212,11 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_suspension.reason.breach_of_conditions": "Brudd på vilkår",
     "service_providing_group_grid_suspension.reason.significant_group_change": "Vesentlig endring i gruppen",
     "service_providing_group_grid_suspension.reason.other": "Annet",
+    "entity.business_id_type.pid": "Personnummer",
+    "entity.business_id_type.org": "Organisasjonsnummer",
+    "entity.business_id_type.email": "E-post",
+    "entity.type.person": "Person",
+    "entity.type.organisation": "Organisasjon",
     "party.business_id_type.gln": "GLN (Global Location Number)",
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x": "EIC-X (Energy Identification Code - Markedsaktører)",
@@ -215,7 +230,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.role.flex_service_provider": "Tjenesteleverandør",
     "party.role.flex_system_operator": "Systemoperatør",
     "party.role.flex_third_party": "Tredjepart",
-    "party.type.balance_responsible_party": "Balansansvarlig",
+    "party.type.balance_responsible_party": "Balanseansvarlig",
     "party.type.end_user": "Sluttbruker",
     "party.type.energy_supplier": "Kraftleverandør",
     "party.type.flexibility_information_system_operator": "Fleksibilitetsinformasjonssystemoperatør",
@@ -286,6 +301,11 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_suspension.reason.breach_of_conditions": "Brot på vilkår",
     "service_providing_group_grid_suspension.reason.significant_group_change": "Vesentleg endring i gruppa",
     "service_providing_group_grid_suspension.reason.other": "Anna",
+    "entity.business_id_type.pid": "Personnummer",
+    "entity.business_id_type.org": "Organisasjonsnummer",
+    "entity.business_id_type.email": "E-post",
+    "entity.type.person": "Person",
+    "entity.type.organisation": "Organisasjon",
     "party.business_id_type.gln": "GLN (Global Location Number)",
     "party.business_id_type.uuid": "UUID (Universally Unique Identifier)",
     "party.business_id_type.eic_x": "EIC-X (Energy Identification Code - Marknadsaktørar)",
@@ -299,7 +319,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.role.flex_service_provider": "Tenesteleverandør",
     "party.role.flex_system_operator": "Systemoperatør",
     "party.role.flex_third_party": "Tredjepart",
-    "party.type.balance_responsible_party": "Balansansvarleg",
+    "party.type.balance_responsible_party": "Balanseansvarleg",
     "party.type.end_user": "Sluttbrukar",
     "party.type.energy_supplier": "Kraftleverandør",
     "party.type.flexibility_information_system_operator": "Fleksibilitetsinformasjonssystemoperatør",

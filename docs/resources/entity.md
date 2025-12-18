@@ -28,15 +28,15 @@ to their organisation, and possibly create entities for their colleagues.
 
 ## Fields
 
-| Name                                                                                 | Description                                                                  | Format                                 | Reference |
-|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------------------------|-----------|
-| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.<br/><br/>Note:<br/>This is a Primary Key.       | bigint<br/>Read only                   |           |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the entity. Format depends on `business_id_type`. | text<br/>Required<br/>Non-updatable    |           |
-| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                         | text<br/>Required<br/>Non-updatable    |           |
-| <a name="field-name" href="#field-name">name</a>                                     | Name of the entity. Maximum 128 characters.                                  | text<br/>Required                      |           |
-| <a name="field-type" href="#field-type">type</a>                                     | The type of the entity, e.g Person, Organisation                             | text<br/>Required<br/>Non-updatable    |           |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                | When the resource was recorded (created or updated) in the system.           | timestamp with time zone<br/>Read only |           |
-| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                | The identity that recorded the resource.                                     | bigint<br/>Read only                   |           |
+| Name                                                                                 | Description                                                                  | Format                                                                   | Reference |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------|-----------|
+| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.<br/><br/>Note:<br/>This is a Primary Key.       | bigint<br/>Read only                                                     |           |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the entity. Format depends on `business_id_type`. | text<br/>Required<br/>Non-updatable                                      |           |
+| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                         | text<br/>One of: `pid`, `org`, `email`<br/>Required<br/>Non-updatable    |           |
+| <a name="field-name" href="#field-name">name</a>                                     | Name of the entity. Maximum 128 characters.                                  | text<br/>Required                                                        |           |
+| <a name="field-type" href="#field-type">type</a>                                     | The type of the entity, e.g Person, Organisation                             | text<br/>One of: `person`, `organisation`<br/>Required<br/>Non-updatable |           |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                | When the resource was recorded (created or updated) in the system.           | timestamp with time zone<br/>Read only                                   |           |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                | The identity that recorded the resource.                                     | bigint<br/>Read only                                                     |           |
 
 ## Validation Rules
 

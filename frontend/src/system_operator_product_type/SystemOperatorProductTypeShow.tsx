@@ -11,6 +11,7 @@ import { ResourceHistoryButton } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
+import { EnumField } from "../components/enum";
 
 export const SystemOperatorProductTypeShow = () => {
   const resource = useResourceContext()!;
@@ -45,8 +46,9 @@ export const SystemOperatorProductTypeShow = () => {
               source="product_type_id"
               label="field.system_operator_product_type.product_type_id"
             />
-            <TextField
+            <EnumField
               source="status"
+              enumKey="system_operator_product_type.status"
               label="field.system_operator_product_type.status"
             />
           </FieldStack>

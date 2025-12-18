@@ -3,6 +3,7 @@ import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
+import { EnumField } from "../components/enum";
 
 export const ServiceProviderProductApplicationHistoryList = () => {
   const { service_provider_product_application_id } = useParams();
@@ -42,8 +43,9 @@ export const ServiceProviderProductApplicationHistoryList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField
+        <EnumField
           source="status"
+          enumKey="service_provider_product_application.status"
           label="field.service_provider_product_application_history.status"
         />
         <DateField

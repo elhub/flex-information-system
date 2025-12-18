@@ -1,13 +1,14 @@
-import { List, SelectArrayInput, TextField } from "react-admin";
+import { List, TextField } from "react-admin";
 import { AutocompleteReferenceInput, Datagrid } from "../auth";
+import { EnumArrayInput, EnumField } from "../components/enum";
 
 export const EntityList = () => {
   const entityFilters = [
-    <SelectArrayInput
+    <EnumArrayInput
       key="type"
       label="Type"
       source="type@in"
-      choices={["organisation", "person"]}
+      enumKey="entity.type"
       alwaysOn
     />,
     <AutocompleteReferenceInput
@@ -29,11 +30,16 @@ export const EntityList = () => {
       <Datagrid>
         <TextField source="id" label="field.entity.id" />
         <TextField source="name" label="field.entity.name" />
-        <TextField source="type" label="field.entity.type" />
+        <EnumField
+          source="type"
+          label="field.entity.type"
+          enumKey="entity.type"
+        />
         <TextField source="business_id" label="field.entity.business_id" />
-        <TextField
+        <EnumField
           source="business_id_type"
           label="field.entity.business_id_type"
+          enumKey="entity.business_id_type"
         />
       </Datagrid>
     </List>

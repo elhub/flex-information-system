@@ -326,6 +326,16 @@ export type ServiceProvidingGroupGridSuspensionCommentVisibility =
 /**
  * The type of the business identifier.
  */
+export type EntityBusinessIdType = "pid" | "org" | "email";
+
+/**
+ * The type of the entity, e.g Person, Organisation
+ */
+export type EntityType = "person" | "organisation";
+
+/**
+ * The type of the business identifier.
+ */
 export type PartyBusinessIdType = "gln" | "uuid" | "eic_x" | "org";
 
 /**
@@ -992,10 +1002,12 @@ export type ServiceProvidingGroupGridSuspensionCommentResponse =
  * * Organisation
  */
 export type EntityUpdateRequest = {
+  business_id_type?: EntityBusinessIdType;
   /**
    * Name of the entity. Maximum 128 characters.
    */
   name?: string;
+  type?: EntityType;
 };
 
 /**
@@ -1013,14 +1025,6 @@ export type EntityCreateData = EntityUpdateRequest & {
    * The business identifier of the entity. Format depends on `business_id_type`.
    */
   business_id?: string;
-  /**
-   * The type of the business identifier.
-   */
-  business_id_type?: string;
-  /**
-   * The type of the entity, e.g Person, Organisation
-   */
-  type?: string;
 };
 
 /**
@@ -7686,9 +7690,6 @@ export type ListEntityData = {
      * The business identifier of the entity. Format depends on `business_id_type`.
      */
     business_id?: string;
-    /**
-     * The type of the business identifier.
-     */
     business_id_type?: string;
     /**
      * Filtering Columns
