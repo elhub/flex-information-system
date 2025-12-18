@@ -27,11 +27,14 @@ export const useI18nProvider = () => {
   return {
     getLocales: () => [
       { locale: "en", name: "English" },
-      { locale: "nb", name: "Norsk Bokmål" },
-      { locale: "nn", name: "Norsk Nynorsk" },
+      // TODO: uncomment to show language button
+      // { locale: "nb", name: "Norsk Bokmål" },
+      // { locale: "nn", name: "Norsk Nynorsk" },
     ],
 
-    getLocale: () => language,
+    // TODO: uncomment to actually use intl
+    // getLocale: () => language,
+    getLocale: () => "en",
 
     changeLocale: async (locale: string) => setLanguage(locale as AppLanguage),
 
