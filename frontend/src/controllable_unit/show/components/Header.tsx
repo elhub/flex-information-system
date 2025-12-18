@@ -1,4 +1,4 @@
-import { Box, Chip, Typography } from "@mui/material";
+import { Chip, Stack, Typography } from "@mui/material";
 import {
   ControllableUnit,
   ControllableUnitStatus,
@@ -20,14 +20,7 @@ export const Header = ({
   controllableUnit: ControllableUnit | undefined;
 }) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "row",
-        gap: 2,
-      }}
-    >
+    <Stack direction="row" spacing={2} alignItems="center">
       <Typography variant="h4" gutterBottom>
         Controllable Unit - {controllableUnit?.name} (
         {controllableUnit?.maximum_available_capacity} kW)
@@ -36,6 +29,6 @@ export const Header = ({
         label={controllableUnit?.status ?? "active"}
         color={colorMap[controllableUnit?.status ?? "active"]}
       />
-    </Box>
+    </Stack>
   );
 };

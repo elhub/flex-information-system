@@ -52,7 +52,6 @@ export type ControllableUnitShowViewModel = {
 };
 
 const findCurrentCusp = async (controllableUnitId: number) => {
-  //TODO: need to fix specification to return the type cusp and not unknown array
   const cuspList = await listControllableUnitServiceProvider({
     query: { controllable_unit_id: "eq." + controllableUnitId },
   }).then(throwOnError);
@@ -150,7 +149,7 @@ const getControllableUnitData = async (
     throw new Error("Controllable unit not found");
   }
   const technicalResourcesPromise = listTechnicalResource({
-    query: { controllable_unit_id: "eq." + controllableUnitIdInt },
+    query: { controllable_unit_id: "eqqq." + controllableUnitIdInt },
   }).then(throwOnError);
 
   const accountingPointPromise = getAccountingPointData(

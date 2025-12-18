@@ -1,4 +1,4 @@
-import { Box, Link } from "@mui/material";
+import { Box, Link, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { LabelValue } from "./LabelValue";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
@@ -44,14 +44,7 @@ export const Connections = ({
         label="Accounting point"
         value={`${accountingPoint?.business_id} (${systemOperator?.name})`}
       />
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "row",
-          gap: 1,
-        }}
-      >
+      <Stack direction="row" spacing={1} alignItems="center">
         <LabelValue
           label="Service provider"
           value={
@@ -66,15 +59,8 @@ export const Connections = ({
         >
           See previous contracts
         </Link>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "row",
-          gap: 1,
-        }}
-      >
+      </Stack>
+      <Stack direction="row" spacing={1} alignItems="center">
         <LabelValue
           labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
           value={
@@ -89,7 +75,7 @@ export const Connections = ({
         >
           See previous balance responsible parties
         </Link>
-      </Box>
+      </Stack>
     </Box>
   );
 };

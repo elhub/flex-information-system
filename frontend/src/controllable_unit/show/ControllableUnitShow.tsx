@@ -36,7 +36,8 @@ const Layout = () => {
   }
 
   if (error) {
-    return "error";
+    // This is catched by the React Admin Error Boundary
+    throw error;
   }
 
   return (

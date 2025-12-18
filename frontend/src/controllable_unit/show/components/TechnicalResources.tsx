@@ -49,15 +49,7 @@ export const TechnicalResources = ({
         )}
       </Stack>
       {!!technicalResources?.length && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 2,
-            flexWrap: "wrap",
-            maxWidth: "1000px",
-          }}
-        >
+        <Stack direction="row" spacing={2} flexWrap="wrap" maxWidth="1000px">
           {technicalResources?.map((technicalResource) => (
             <Card key={technicalResource.id}>
               <CardActionArea
@@ -79,7 +71,7 @@ export const TechnicalResources = ({
               </CardActionArea>
             </Card>
           ))}
-        </Box>
+        </Stack>
       )}
     </Box>
   );

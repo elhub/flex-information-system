@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { ControllableUnit } from "../../../generated-client";
 import { useTranslateField } from "../../../intl/intl";
 
@@ -18,10 +18,10 @@ export const MetaInfo = ({
   );
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+    <Stack direction="row" spacing={1}>
       <Typography color="text.secondary">
         {translateField("controllable_unit.recorded_at")}: {formattedDate}
       </Typography>
-    </Box>
+    </Stack>
   );
 };
