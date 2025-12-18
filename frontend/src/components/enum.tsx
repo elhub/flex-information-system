@@ -1,7 +1,9 @@
 import { Chip } from "@mui/material";
 import {
   SelectArrayInput,
+  SelectArrayInputProps,
   SelectInput,
+  SelectInputProps,
   useI18nProvider,
   useRecordContext,
   useTranslate,
@@ -30,13 +32,16 @@ export const EnumField = ({ enumKey, source }: EnumFieldProps) => {
   );
 };
 
-export const EnumInput = (props: any) => {
+export const EnumInput = ({
+  enumKey,
+  ...props
+}: { enumKey: string } & SelectInputProps) => {
   const i18nProvider = useI18nProvider() as I18nProvider;
 
   return (
     <SelectInput
       {...props}
-      choices={i18nProvider.getEnumValues(props.enumKey).map((value) => ({
+      choices={i18nProvider.getEnumValues(enumKey).map((value) => ({
         id: value.split(".").pop(),
         name: `enum.${value}`,
       }))}
@@ -44,13 +49,16 @@ export const EnumInput = (props: any) => {
   );
 };
 
-export const EnumArrayInput = (props: any) => {
+export const EnumArrayInput = ({
+  enumKey,
+  ...props
+}: { enumKey: string } & SelectArrayInputProps) => {
   const i18nProvider = useI18nProvider() as I18nProvider;
 
   return (
     <SelectArrayInput
       {...props}
-      choices={i18nProvider.getEnumValues(props.enumKey).map((value) => ({
+      choices={i18nProvider.getEnumValues(enumKey).map((value) => ({
         id: value.split(".").pop(),
         name: `enum.${value}`,
       }))}
