@@ -4,6 +4,7 @@ import {
   Title,
   RecordContextProvider,
   Button,
+  useTranslate,
 } from "react-admin";
 import { Link, useLocation } from "react-router-dom";
 import { Typography, Stack, Card, Box } from "@mui/material";
@@ -55,30 +56,38 @@ const TechnicalResourceList = ({
   technical_resources,
 }: {
   technical_resources: LookupResponse_TechnicalResource[];
-}) => (
-  <TableContainer component={Paper}>
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <TableCell>ID</TableCell>
-          <TableCell align="right">Name</TableCell>
-          <TableCell align="right">Details</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {technical_resources.map((tr: LookupResponse_TechnicalResource) => (
-          <TableRow key={tr.id}>
-            <TableCell component="th" scope="row">
-              {tr.id}
+}) => {
+  const translate = useTranslate();
+
+  return (
+    <TableContainer component={Paper}>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>{translate("field.technical_resource.id")}</TableCell>
+            <TableCell align="right">
+              {translate("field.technical_resource.name")}
             </TableCell>
-            <TableCell align="right">{tr.name}</TableCell>
-            <TableCell align="right">{tr.details}</TableCell>
+            <TableCell align="right">
+              {translate("field.technical_resource.details")}
+            </TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
+        </TableHead>
+        <TableBody>
+          {technical_resources.map((tr: LookupResponse_TechnicalResource) => (
+            <TableRow key={tr.id}>
+              <TableCell component="th" scope="row">
+                {tr.id}
+              </TableCell>
+              <TableCell align="right">{tr.name}</TableCell>
+              <TableCell align="right">{tr.details}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 // one instance of this component per CU found in the lookup operation
 const ControllableUnitLookupResultItem = ({
@@ -106,9 +115,12 @@ const ControllableUnitLookupResultItem = ({
           allowAll
           hideTooltips
         >
-          <TextField source="id" label="ID" />
-          <TextField source="business_id" label="Business ID" />
-          <TextField source="name" />
+          <TextField source="id" label="field.controllable_unit.id" />
+          <TextField
+            source="business_id"
+            label="field.controllable_unit.business_id"
+          />
+          <TextField source="name" label="field.controllable_unit.name" />
         </FieldStack>
         <FieldStack spacing={2} allowAll hideTooltips>
           <TechnicalResourceList
@@ -154,10 +166,13 @@ export const ControllableUnitLookupResult = () => {
                   allowAll
                   hideTooltips
                 >
-                  <TextField source="accounting_point.id" label="ID" />
+                  <TextField
+                    source="accounting_point.id"
+                    label="field.accounting_point.id"
+                  />
                   <TextField
                     source="accounting_point.business_id"
-                    label="Business ID"
+                    label="field.accounting_point.business_id"
                   />
                 </FieldStack>
               </Stack>
@@ -174,7 +189,7 @@ export const ControllableUnitLookupResult = () => {
                   allowAll
                   hideTooltips
                 >
-                  <TextField source="end_user.id" label="ID" />
+                  <TextField source="end_user.id" label="field.party.id" />
                 </FieldStack>
               </Stack>
             </Box>

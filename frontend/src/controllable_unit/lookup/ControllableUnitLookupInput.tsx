@@ -53,10 +53,19 @@ const ControllableUnitLookupForm = () => {
 
   return (
     <InputStack direction="row" flexWrap="wrap">
-      <TextInput source="end_user" validate={required()} />
-      <TextInput source="accounting_point" disabled={accountingPointDisabled} />
+      <TextInput
+        source="end_user"
+        label="text.lookup.input.end_user"
+        validate={required()}
+      />
+      <TextInput
+        source="accounting_point"
+        label="text.lookup.input.accounting_point"
+        disabled={accountingPointDisabled}
+      />
       <TextInput
         source="controllable_unit"
+        label="text.lookup.input.controllable_unit"
         disabled={controllableUnitDisabled}
       />
     </InputStack>
