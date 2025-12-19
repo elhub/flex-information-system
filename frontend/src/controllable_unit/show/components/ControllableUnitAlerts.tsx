@@ -1,0 +1,103 @@
+import { Link, usePermissions } from "react-admin";
+import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
+import { Alert, AlertColor, AlertTitle, Button } from "@mui/material";
+import { ReactNode } from "react";
+import { Permissions } from "../../../auth/permissions";
+
+type AlertType = {
+  severity: AlertColor;
+  title: string;
+  content: ReactNode;
+  action?: ReactNode;
+};
+
+const useControllableUnitAlerts = (
+  controllableUnitViewModel: ControllableUnitShowViewModel,
+): AlertType | null => {
+  const { controllableUnit, suspensions, technicalResources } =
+    controllableUnitViewModel;
+  const { permissions } = usePermissions<Permissions>();
+  const canCreateTechnicalResource = permissions?.allow(
+    "technical_resource",
+    "create",
+  );
+  const canUpdateControllableUnit = permissions?.allow(
+    "controllable_unit",
+    "update",
+  );
+  if (suspensions?.length) {
+    const suspension = suspensions[0];
+    return {
+      severity: "error",
+      title: "Suspension",
+      content: `The controllable unit is suspended. Reason: ${suspension.reason}`,
+      action: (
+        <Button
+          component={Link}
+          to={`/controllable_unit/${controllableUnit.id}/suspension/${suspension.id}/show`}
+        >
+          See suspension
+        </Button>
+      ),
+    };
+  }
+
+  if (technicalResources?.length === 0) {
+    return {
+      severity: "info",
+      title: "No technical resources",
+      content:
+        "To set the controllable unit as active, one technical resource is required.",
+      action: (
+        <Button
+          component={Link}
+          disabled={!canCreateTechnicalResource}
+          to={`/controllable_unit/${controllableUnit.id}/technical_resource/create`}
+        >
+          Add technical resource
+        </Button>
+      ),
+    };
+  }
+
+  if (controllableUnit.status === "new") {
+    return {
+      severity: "info",
+      title: "Not active",
+      content:
+        "The controllable unit is not active. Please set it as active to use it.",
+      action: (
+        <Button
+          component={Link}
+          disabled={!canUpdateControllableUnit}
+          to={`/controllable_unit/${controllableUnit.id}/edit`}
+        >
+          Edit status
+        </Button>
+      ),
+    };
+  }
+  return null;
+};
+
+export const ControllableUnitAlerts = ({
+  controllableUnitViewModel,
+}: {
+  controllableUnitViewModel: ControllableUnitShowViewModel;
+}) => {
+  const alert = useControllableUnitAlerts(controllableUnitViewModel);
+  if (!alert) {
+    return null;
+  }
+  return (
+    <Alert
+      sx={{ maxWidth: 800 }}
+      action={alert.action}
+      variant="outlined"
+      severity={alert.severity as AlertColor}
+    >
+      <AlertTitle>{alert.title}</AlertTitle>
+      {alert.content}
+    </Alert>
+  );
+};

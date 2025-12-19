@@ -38,8 +38,7 @@ export const useI18nProvider = () => {
     getLocale: () => "en",
 
     changeLocale: async (locale: string) => setLanguage(locale as AppLanguage),
-
-    translate: (key: string, options: any) => {
+    translate: (key: string, options?: unknown) => {
       if (key.startsWith("field."))
         // resource field
         return fieldLabels[key.slice("field.".length) as FieldLabel] ?? key;
@@ -59,4 +58,10 @@ export const useI18nProvider = () => {
     getEnumValues: (enumKey: string) =>
       Object.keys(enumLabels).filter((key) => key.startsWith(enumKey)),
   };
+};
+
+export const useTranslateField = () => {
+  const { translate } = useI18nProvider();
+  return (key: FieldLabel, options?: unknown) =>
+    translate(`field.${key}`, options);
 };

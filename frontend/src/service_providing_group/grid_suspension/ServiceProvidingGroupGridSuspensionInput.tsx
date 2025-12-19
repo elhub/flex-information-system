@@ -6,40 +6,37 @@ import {
 } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { Toolbar } from "../../components/Toolbar";
-import { useLocation } from "react-router-dom";
 import {
   PartyReferenceInput,
   InputStack,
   AutocompleteReferenceInput,
 } from "../../auth";
-import { useMemo } from "react";
-import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ServiceProvidingGroupGridSuspension } from "../../generated-client";
+import useLocationState from "../../hooks/useLocationState";
+import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
 
-// keep only the fields that map to the UI
-const filterRecord = ({
-  service_providing_group_id,
-  impacted_system_operator_id,
-  reason,
-}: any) => ({
-  service_providing_group_id,
-  impacted_system_operator_id,
-  reason,
-});
+export type ServiceProvidingGroupGridSuspensionLocationState = {
+  spggs: Partial<ServiceProvidingGroupGridSuspension>;
+};
 
 // common layout to create and edit pages
 export const ServiceProvidingGroupGridSuspensionInput = () => {
-  const { state: overrideRecord } = useLocation();
-  const actualRecord = useRecordContext();
+  const locationState =
+    useLocationState<ServiceProvidingGroupGridSuspensionLocationState>();
+  const overrideRecord =
+    zServiceProvidingGroupGridSuspension.safeParse(locationState?.spggs).data ||
+    {};
+
+  const actualRecord = useRecordContext<ServiceProvidingGroupGridSuspension>();
   const { data: identity } = useGetIdentity();
   const isSystemOperator = identity?.role == "flex_system_operator";
 
-  // Memoize the combined record to avoid re-renders causing errors
-  const record = useMemo(
-    () => filterRecord({ ...actualRecord, ...overrideRecord }),
-    [actualRecord, overrideRecord],
-  );
+  const record: ServiceProvidingGroupGridSuspension = {
+    ...actualRecord,
+    ...overrideRecord,
+  };
 
   return (
     <SimpleForm

@@ -23,8 +23,8 @@ export const historyRowClick = (
   }/show`;
 };
 
-export const ResourceHistoryButton = () => {
-  const record = useRecordContext()!;
+export const ResourceHistoryButton = ({ id }: { id?: string }) => {
+  const record = useRecordContext();
   const resource = useResourceContext()!;
   const { permissions } = usePermissions<Permissions>();
 
@@ -34,8 +34,8 @@ export const ResourceHistoryButton = () => {
 
   if (permissions?.allow(historyResource, "read")) {
     const actualId = resource.endsWith("_history")
-      ? record[actualResource + "_id"]
-      : record.id;
+      ? record?.[actualResource + "_id"]
+      : id || record?.id;
 
     return (
       <Button
@@ -123,7 +123,7 @@ export const NestedResourceHistoryButton = (
       component={Link}
       to={`${parentPathS}/${props.child}_history${filter}`}
       startIcon={<HistoryIcon />}
-      label={`View History of ${props.label ?? "Relations"}`}
+      label={`View History ${props.label ?? ""}`}
     />
   );
 };

@@ -7,15 +7,19 @@ import {
   TextField,
   TopToolbar,
   usePermissions,
-  useRecordContext,
+  useGetOne,
+  Loading,
 } from "react-admin";
+import { Typography } from "@mui/material";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DateField } from "../../components/datetime";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
+import { NestedResourceHistoryButton } from "../../components/history";
+import { ControllableUnit } from "../../generated-client";
 
 const CreateButton = ({ id }: { id: number | undefined }) => {
   const locationState: ControllableUnitServiceProviderLocationState = {
@@ -66,12 +70,20 @@ const ListActions = ({
       {/* id undefined = standalone CUSP list (so no lookup button) */}
       {id && canLookup && <CULookupButton business_id={business_id} />}
       {canCreate && <CreateButton id={id} />}
+      <NestedResourceHistoryButton child="service_provider" />
     </TopToolbar>
   );
 };
 
 export const ControllableUnitServiceProviderList = () => {
-  const cuspData = useRecordContext();
+  const { controllable_unit_id } = useParams<{
+    controllable_unit_id: string;
+  }>();
+  const { data: cu, isLoading } = useGetOne<ControllableUnit & { id: number }>(
+    "controllable_unit",
+    { id: Number(controllable_unit_id) },
+    { enabled: !!controllable_unit_id },
+  );
   const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
@@ -84,27 +96,33 @@ export const ControllableUnitServiceProviderList = () => {
     "delete",
   );
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   if (!canRead) {
     return null; // or a fallback UI
   }
 
   return (
     <ResourceContextProvider value="controllable_unit_service_provider">
+      <Typography variant="h5" mt={1} gutterBottom>
+        Service provider relations
+      </Typography>
       <List
-        title={false}
         perPage={10}
         actions={
           <ListActions
             permissions={permissions}
-            id={cuspData?.id}
-            business_id={cuspData?.business_id}
+            id={cu?.id}
+            business_id={cu?.business_id}
           />
         }
         exporter={false}
         empty={false}
         filter={
-          cuspData
-            ? { controllable_unit_id: cuspData.id, "valid_from@not.is": null }
+          cu
+            ? { controllable_unit_id: cu.id, "valid_from@not.is": null }
             : { "valid_from@not.is": null }
         }
         sort={{ field: "valid_from", order: "DESC" }}

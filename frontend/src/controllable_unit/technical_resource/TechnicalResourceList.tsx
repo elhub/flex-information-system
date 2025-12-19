@@ -11,6 +11,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { Typography } from "@mui/material";
 import { Permissions } from "../../auth/permissions";
 
 // automatically fill the controllable_unit_id field with the ID of the
@@ -51,9 +52,12 @@ export const TechnicalResourceList = () => {
   return (
     canRead && (
       <ResourceContextProvider value="technical_resource">
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          Technical resources:
+        </Typography>
         <List
-          title={false}
           perPage={10}
+          title={false}
           actions={<ListActions permissions={permissions} id={id} />}
           exporter={false}
           empty={false}
