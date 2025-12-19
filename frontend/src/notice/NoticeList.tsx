@@ -21,12 +21,13 @@ export const NoticeList = () => {
   const filters = [
     <PartyReferenceInput
       source="party_id"
-      label="Party"
+      label="field.notice.party_id"
       noTypeFilter
       key="party"
     />,
     <AutocompleteInput
       key="notice_type"
+      label="field.notice.type"
       source="type"
       TextFieldProps={{
         style: {
@@ -41,7 +42,6 @@ export const NoticeList = () => {
         },
       }}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
-      label="Notice type"
     />,
   ];
 

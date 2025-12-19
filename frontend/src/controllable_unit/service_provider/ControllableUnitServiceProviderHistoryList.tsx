@@ -24,7 +24,7 @@ export const ControllableUnitServiceProviderHistoryList = () => {
     <NumberInput
       key="controllable_unit_service_provider_id"
       min="0"
-      label="Controllable Unit Service Provider ID"
+      label="field.controllable_unit_service_provider_history.controllable_unit_service_provider_id"
       source="controllable_unit_service_provider_id"
     />,
   ];

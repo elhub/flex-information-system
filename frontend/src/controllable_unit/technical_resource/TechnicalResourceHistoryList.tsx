@@ -24,7 +24,7 @@ export const TechnicalResourceHistoryList = () => {
     <NumberInput
       key="technical_resource_id"
       min="0"
-      label="Technical Resource ID"
+      label="field.technical_resource_history.technical_resource_id"
       source="technical_resource_id"
     />,
   ];
