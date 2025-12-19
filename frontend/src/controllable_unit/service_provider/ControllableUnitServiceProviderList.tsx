@@ -10,6 +10,7 @@ import {
   useGetOne,
   Loading,
 } from "react-admin";
+import { Typography } from "@mui/material";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useParams } from "react-router-dom";
@@ -17,7 +18,6 @@ import { DateField } from "../../components/datetime";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
-import { Box, Typography } from "@mui/material";
 import { NestedResourceHistoryButton } from "../../components/history";
 import { ControllableUnit } from "../../generated-client";
 
@@ -70,6 +70,7 @@ const ListActions = ({
       {/* id undefined = standalone CUSP list (so no lookup button) */}
       {id && canLookup && <CULookupButton business_id={business_id} />}
       {canCreate && <CreateButton id={id} />}
+      <NestedResourceHistoryButton child="service_provider" />
     </TopToolbar>
   );
 };
@@ -105,21 +106,10 @@ export const ControllableUnitServiceProviderList = () => {
 
   return (
     <ResourceContextProvider value="controllable_unit_service_provider">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography variant="h6" gutterBottom>
-          Service provider relations
-        </Typography>
-        <NestedResourceHistoryButton child="service_provider" />
-      </Box>
-
+      <Typography variant="h5" mt={1} gutterBottom>
+        Service provider relations
+      </Typography>
       <List
-        title={false}
         perPage={10}
         actions={
           <ListActions

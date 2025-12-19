@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { ControllableUnit } from "../../../generated-client";
-import { LabelValue } from "./LabelValue";
+import { LabelValue } from "../../../components/LabelValue";
 
 export const TechnicalInformation = ({
   controllableUnit,

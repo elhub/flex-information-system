@@ -1,6 +1,6 @@
 import { Box, Link, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { LabelValue } from "./LabelValue";
+import { LabelValue } from "../../../components/LabelValue";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 
 const formatRange = (start: string | undefined, end: string | undefined) => {
@@ -9,10 +9,10 @@ const formatRange = (start: string | undefined, end: string | undefined) => {
   }
 
   if (!end) {
-    return `${new Date(start).toLocaleDateString()} - present`;
+    return `${new Date(start).toLocaleDateString("no-NB")} - present`;
   }
 
-  return `${new Date(start).toLocaleDateString()} - ${new Date(end).toLocaleDateString()}`;
+  return `${new Date(start).toLocaleDateString("no-NB")} - ${new Date(end).toLocaleDateString("no-NB")}`;
 };
 
 export const Connections = ({
@@ -25,17 +25,12 @@ export const Connections = ({
     serviceProvider,
     controllableUnitServiceProvider,
     balanceResponsibleParty,
-    controllableUnitBalanceResponsibleParty,
     accountingPoint,
     systemOperator,
   } = controllableUnitViewModel;
   const serviceProviderRange = formatRange(
     controllableUnitServiceProvider?.valid_from,
     controllableUnitServiceProvider?.valid_to,
-  );
-  const balanceResponsiblePartyRange = formatRange(
-    controllableUnitBalanceResponsibleParty?.valid_from,
-    controllableUnitBalanceResponsibleParty?.valid_to,
   );
 
   return (
@@ -57,7 +52,7 @@ export const Connections = ({
           to={`/controllable_unit/${controllableUnit.id}/service_provider`}
           component={RouterLink}
         >
-          See previous contracts
+          See all contracts
         </Link>
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
@@ -65,7 +60,7 @@ export const Connections = ({
           labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
           value={
             balanceResponsibleParty
-              ? `${balanceResponsibleParty?.name} (${balanceResponsiblePartyRange})`
+              ? `${balanceResponsibleParty?.name}`
               : "No balance responsible party"
           }
         />
@@ -73,7 +68,7 @@ export const Connections = ({
           to={`/controllable_unit/${controllableUnit.id}/balance_responsible_party`}
           component={RouterLink}
         >
-          See previous balance responsible parties
+          See all balance responsible parties
         </Link>
       </Stack>
     </Box>

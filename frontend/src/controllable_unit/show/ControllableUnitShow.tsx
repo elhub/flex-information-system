@@ -17,9 +17,9 @@ import { Connections } from "./components/Connections";
 import { TechnicalResources } from "./components/TechnicalResources";
 import { TechnicalInformation } from "./components/TechnicalInformation";
 import { GridValidation } from "./components/GridValidation";
-import { MetaInfo } from "./components/MetaInfo";
 import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
+import { LabelValue } from "../../components/LabelValue";
 
 const Layout = () => {
   const record = useRecordContext<
@@ -62,8 +62,10 @@ const Layout = () => {
           controllableUnit={controllableUnitViewModel.controllableUnit}
         />
 
-        <MetaInfo
-          controllableUnit={controllableUnitViewModel.controllableUnit}
+        <LabelValue
+          color="text.secondary"
+          labelKey="controllable_unit.recorded_at"
+          value={controllableUnitViewModel.controllableUnit.recorded_at}
         />
       </Stack>
     </SimpleShowLayout>

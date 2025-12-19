@@ -1,6 +1,5 @@
 import {
   AccountingPoint,
-  AccountingPointBalanceResponsibleParty,
   ControllableUnit,
   ControllableUnitHistoryResponse,
   ControllableUnitServiceProvider,
@@ -46,9 +45,6 @@ export type ControllableUnitShowViewModel = {
   accountingPoint: AccountingPoint | undefined;
   suspensions: ControllableUnitSuspension[] | undefined;
   balanceResponsibleParty: Party | undefined;
-  controllableUnitBalanceResponsibleParty:
-    | AccountingPointBalanceResponsibleParty
-    | undefined;
 };
 
 const findCurrentCusp = async (controllableUnitId: number) => {
@@ -88,7 +84,9 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
   );
 
   if (!currentBalanceResponsibleParty) {
-    return undefined;
+    return {
+      balanceResponsibleParty: undefined,
+    };
   }
 
   const balanceResponsibleParty = await readParty({
@@ -99,7 +97,6 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
 
   return {
     balanceResponsibleParty,
-    controllableUnitBalanceResponsibleParty: currentBalanceResponsibleParty,
   };
 };
 
@@ -111,7 +108,6 @@ const getAccountingPointData = async (
       accountingPoint: undefined,
       systemOperator: undefined,
       balanceResponsibleParty: undefined,
-      controllableUnitBalanceResponsibleParty: undefined,
     };
   }
 
@@ -135,8 +131,6 @@ const getAccountingPointData = async (
     accountingPoint,
     systemOperator,
     balanceResponsibleParty: balanceResponsibleParty?.balanceResponsibleParty,
-    controllableUnitBalanceResponsibleParty:
-      balanceResponsibleParty?.controllableUnitBalanceResponsibleParty,
   };
 };
 
@@ -149,7 +143,7 @@ const getControllableUnitData = async (
     throw new Error("Controllable unit not found");
   }
   const technicalResourcesPromise = listTechnicalResource({
-    query: { controllable_unit_id: "eqqq." + controllableUnitIdInt },
+    query: { controllable_unit_id: "eq." + controllableUnitIdInt },
   }).then(throwOnError);
 
   const accountingPointPromise = getAccountingPointData(
@@ -176,8 +170,6 @@ const getControllableUnitData = async (
     systemOperator: accountingPoint.systemOperator,
     accountingPoint: accountingPoint.accountingPoint,
     balanceResponsibleParty: accountingPoint.balanceResponsibleParty,
-    controllableUnitBalanceResponsibleParty:
-      accountingPoint.controllableUnitBalanceResponsibleParty,
     suspensions: suspensions,
     controllableUnitServiceProvider: cuspData.cusp,
   };
