@@ -5,7 +5,7 @@ import {
   useRecordContext,
   useResourceContext,
 } from "react-admin";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import {
   ControllableUnit,
   ControllableUnitHistoryResponse,
@@ -14,12 +14,12 @@ import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useParams } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Connections } from "./components/Connections";
-import { TechnicalResources } from "./components/TechnicalResources";
 import { TechnicalInformation } from "./components/TechnicalInformation";
 import { GridValidation } from "./components/GridValidation";
 import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 import { LabelValue } from "../../components/LabelValue";
+import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
 
 const Layout = () => {
   const record = useRecordContext<
@@ -49,10 +49,10 @@ const Layout = () => {
         />
 
         <Connections controllableUnitViewModel={controllableUnitViewModel} />
-        <TechnicalResources
-          controllableUnitId={controllableUnitViewModel.controllableUnit.id}
-          technicalResources={controllableUnitViewModel.technicalResources}
-        />
+
+        <Box sx={{ maxWidth: "1000px" }}>
+          <TechnicalResourceList />
+        </Box>
 
         <TechnicalInformation
           controllableUnit={controllableUnitViewModel.controllableUnit}
@@ -65,7 +65,13 @@ const Layout = () => {
         <LabelValue
           color="text.secondary"
           labelKey="controllable_unit.recorded_at"
-          value={controllableUnitViewModel.controllableUnit.recorded_at}
+          value={
+            controllableUnitViewModel.controllableUnit.recorded_at
+              ? new Date(
+                  controllableUnitViewModel.controllableUnit.recorded_at,
+                ).toLocaleString()
+              : undefined
+          }
         />
       </Stack>
     </SimpleShowLayout>
