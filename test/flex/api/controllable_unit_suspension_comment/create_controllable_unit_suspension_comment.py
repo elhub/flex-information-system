@@ -9,12 +9,12 @@ from ...models.controllable_unit_suspension_comment_create_request import Contro
 from ...models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ControllableUnitSuspensionCommentCreateRequest,
+    body: ControllableUnitSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,7 +23,8 @@ def _get_kwargs(
         "url": "/controllable_unit_suspension_comment",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -110,12 +111,12 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitSuspensionCommentCreateRequest,
+    body: ControllableUnitSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable Unit Suspension Comment
 
     Args:
-        body (ControllableUnitSuspensionCommentCreateRequest): Request schema for create
+        body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create
             operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:
@@ -140,12 +141,12 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitSuspensionCommentCreateRequest,
+    body: ControllableUnitSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable Unit Suspension Comment
 
     Args:
-        body (ControllableUnitSuspensionCommentCreateRequest): Request schema for create
+        body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create
             operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:
@@ -165,12 +166,12 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitSuspensionCommentCreateRequest,
+    body: ControllableUnitSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable Unit Suspension Comment
 
     Args:
-        body (ControllableUnitSuspensionCommentCreateRequest): Request schema for create
+        body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create
             operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:
@@ -193,12 +194,12 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitSuspensionCommentCreateRequest,
+    body: ControllableUnitSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable Unit Suspension Comment
 
     Args:
-        body (ControllableUnitSuspensionCommentCreateRequest): Request schema for create
+        body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create
             operations - Comment made by a party involved in a controllable unit suspension.
 
     Raises:

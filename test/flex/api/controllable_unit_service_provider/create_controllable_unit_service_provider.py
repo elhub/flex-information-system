@@ -9,12 +9,12 @@ from ...models.controllable_unit_service_provider_create_request import Controll
 from ...models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ControllableUnitServiceProviderCreateRequest,
+    body: ControllableUnitServiceProviderCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,7 +23,8 @@ def _get_kwargs(
         "url": "/controllable_unit_service_provider",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -110,13 +111,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitServiceProviderCreateRequest,
+    body: ControllableUnitServiceProviderCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Relation between controllable unit and service provider
 
     Args:
-        body (ControllableUnitServiceProviderCreateRequest): Request schema for create operations
-            - Relation between controllable unit and service provider
+        body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create
+            operations - Relation between controllable unit and service provider
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -140,13 +141,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitServiceProviderCreateRequest,
+    body: ControllableUnitServiceProviderCreateRequest | Unset = UNSET,
 ) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Relation between controllable unit and service provider
 
     Args:
-        body (ControllableUnitServiceProviderCreateRequest): Request schema for create operations
-            - Relation between controllable unit and service provider
+        body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create
+            operations - Relation between controllable unit and service provider
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -165,13 +166,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitServiceProviderCreateRequest,
+    body: ControllableUnitServiceProviderCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Relation between controllable unit and service provider
 
     Args:
-        body (ControllableUnitServiceProviderCreateRequest): Request schema for create operations
-            - Relation between controllable unit and service provider
+        body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create
+            operations - Relation between controllable unit and service provider
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -193,13 +194,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitServiceProviderCreateRequest,
+    body: ControllableUnitServiceProviderCreateRequest | Unset = UNSET,
 ) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Relation between controllable unit and service provider
 
     Args:
-        body (ControllableUnitServiceProviderCreateRequest): Request schema for create operations
-            - Relation between controllable unit and service provider
+        body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create
+            operations - Relation between controllable unit and service provider
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

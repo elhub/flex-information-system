@@ -13,12 +13,12 @@ from ...models.service_providing_group_grid_prequalification_comment_create_requ
 from ...models.service_providing_group_grid_prequalification_comment_response import (
     ServiceProvidingGroupGridPrequalificationCommentResponse,
 )
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,7 +27,8 @@ def _get_kwargs(
         "url": "/service_providing_group_grid_prequalification_comment",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -114,14 +115,14 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group grid
-            prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
+            schema for create operations - Comment made by a party involved in a service providing
+            group grid prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -145,14 +146,14 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group grid
-            prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
+            schema for create operations - Comment made by a party involved in a service providing
+            group grid prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -171,14 +172,14 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group grid
-            prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
+            schema for create operations - Comment made by a party involved in a service providing
+            group grid prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -200,14 +201,14 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
-            create operations - Comment made by a party involved in a service providing group grid
-            prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
+            schema for create operations - Comment made by a party involved in a service providing
+            group grid prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

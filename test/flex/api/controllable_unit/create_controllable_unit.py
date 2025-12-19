@@ -9,12 +9,12 @@ from ...models.controllable_unit_create_request import ControllableUnitCreateReq
 from ...models.controllable_unit_response import ControllableUnitResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ControllableUnitCreateRequest,
+    body: ControllableUnitCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,7 +23,8 @@ def _get_kwargs(
         "url": "/controllable_unit",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -110,13 +111,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest,
+    body: ControllableUnitCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
-            unit
+        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
+            Controllable unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -140,13 +141,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest,
+    body: ControllableUnitCreateRequest | Unset = UNSET,
 ) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
-            unit
+        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
+            Controllable unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -165,13 +166,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest,
+    body: ControllableUnitCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
-            unit
+        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
+            Controllable unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -193,13 +194,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest,
+    body: ControllableUnitCreateRequest | Unset = UNSET,
 ) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
-            unit
+        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
+            Controllable unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

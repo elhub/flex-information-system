@@ -9,12 +9,12 @@ from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...models.system_operator_product_type_create_request import SystemOperatorProductTypeCreateRequest
 from ...models.system_operator_product_type_response import SystemOperatorProductTypeResponse
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: SystemOperatorProductTypeCreateRequest,
+    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,7 +23,8 @@ def _get_kwargs(
         "url": "/system_operator_product_type",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -110,13 +111,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest,
+    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
-            Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
+            operations - Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -140,13 +141,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest,
+    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
-            Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
+            operations - Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -165,13 +166,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest,
+    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
-            Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
+            operations - Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -193,13 +194,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest,
+    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
-            Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
+            operations - Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

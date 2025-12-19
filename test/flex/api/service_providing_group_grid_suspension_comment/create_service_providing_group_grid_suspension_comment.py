@@ -13,12 +13,12 @@ from ...models.service_providing_group_grid_suspension_comment_create_request im
 from ...models.service_providing_group_grid_suspension_comment_response import (
     ServiceProvidingGroupGridSuspensionCommentResponse,
 )
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,7 +27,8 @@ def _get_kwargs(
         "url": "/service_providing_group_grid_suspension_comment",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -114,13 +115,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Create Service Providing Group Grid Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest): Request schema for create
-            operations - Comment made by a party involved in a service providing group grid
+        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
             suspension.
 
     Raises:
@@ -145,13 +146,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Create Service Providing Group Grid Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest): Request schema for create
-            operations - Comment made by a party involved in a service providing group grid
+        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
             suspension.
 
     Raises:
@@ -171,13 +172,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Create Service Providing Group Grid Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest): Request schema for create
-            operations - Comment made by a party involved in a service providing group grid
+        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
             suspension.
 
     Raises:
@@ -200,13 +201,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest,
+    body: ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Create Service Providing Group Grid Suspension Comment
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest): Request schema for create
-            operations - Comment made by a party involved in a service providing group grid
+        body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
             suspension.
 
     Raises:
