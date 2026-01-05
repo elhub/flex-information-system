@@ -14645,6 +14645,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.grid_node_id",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.grid_node_id",
       operation: "read",
     },
     {
