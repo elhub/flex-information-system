@@ -1416,8 +1416,7 @@ GRANT UPDATE (
     minimum_duration,
     maximum_duration,
     recovery_duration,
-    ramp_rate,
-    grid_node_id
+    ramp_rate
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;

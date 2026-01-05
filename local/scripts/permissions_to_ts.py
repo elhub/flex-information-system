@@ -160,7 +160,6 @@ print("")
 
 print("""\
 export type Permissions = {
-  // eslint-disable-next-line no-unused-vars
   allow: (target: PermissionTarget, operation: PermissionOperation) => boolean;
 };
 """)

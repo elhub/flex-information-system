@@ -14652,10 +14652,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.grid_validation_notes",
       operation: "read",
     },
