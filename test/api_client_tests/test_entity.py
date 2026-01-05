@@ -7,6 +7,8 @@ from flex.models import (
     EntityCreateRequest,
     EntityUpdateRequest,
     EntityResponse,
+    EntityBusinessIdType,
+    EntityType,
     ErrorMessage,
     PartyMembershipCreateRequest,
     PartyMembershipResponse,
@@ -89,8 +91,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_pid(),
-            business_id_type="pid",
-            type_="organisation",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.ORGANISATION,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -100,8 +102,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_gsrn(),
-            business_id_type="gsrn",
-            type_="organisation",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.ORGANISATION,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -111,8 +113,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_pid(),
-            business_id_type="org",
-            type_="organisation",
+            business_id_type=EntityBusinessIdType.ORG,
+            type_=EntityType.ORGANISATION,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -122,8 +124,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_org(),
-            business_id_type="pid",
-            type_="organisation",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.ORGANISATION,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -133,8 +135,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity VALID ORG",
             business_id=random_org(),
-            business_id_type="org",
-            type_="organisation",
+            business_id_type=EntityBusinessIdType.ORG,
+            type_=EntityType.ORGANISATION,
         ),
     )
     assert isinstance(e, EntityResponse)
@@ -146,8 +148,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_gsrn(),
-            business_id_type="gsrn",
-            type_="person",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -157,8 +159,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_org(),
-            business_id_type="org",
-            type_="person",
+            business_id_type=EntityBusinessIdType.ORG,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -168,8 +170,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_org(),
-            business_id_type="pid",
-            type_="person",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -179,8 +181,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_email(),
-            business_id_type="pid",
-            type_="person",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -190,8 +192,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity",
             business_id=random_pid(),
-            business_id_type="email",
-            type_="person",
+            business_id_type=EntityBusinessIdType.EMAIL,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -201,8 +203,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity VALID EMAIL",
             business_id=random_email(),
-            business_id_type="email",
-            type_="person",
+            business_id_type=EntityBusinessIdType.EMAIL,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, EntityResponse)
@@ -212,8 +214,8 @@ def test_entity_fiso(sts):
         body=EntityCreateRequest(
             name="Test Entity VALID PID",
             business_id=random_pid(),
-            business_id_type="pid",
-            type_="person",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, EntityResponse)
@@ -257,8 +259,8 @@ def test_entity_org(sts):
         body=EntityCreateRequest(
             name="Test Entity Seen By Org",
             business_id=random_pid(),
-            business_id_type="pid",
-            type_="person",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(ent, EntityResponse)
@@ -305,7 +307,7 @@ def test_entity_com(sts):
     n_organisations = len(
         list(
             filter(
-                lambda ent: ent.type_ == "organisation",
+                lambda ent: ent.type_ == EntityType.ORGANISATION,
                 entities,
             )
         )
@@ -369,7 +371,7 @@ def test_entity_ent(sts):
     entities_ent = list_entity.sync(client=client_ent)
     assert isinstance(entities_ent, list)
     assert len(entities_ent) == 1
-    assert entities_ent[0].type_ == "person"
+    assert entities_ent[0].type_ == EntityType.PERSON
 
 
 def test_rla_absence(sts):
@@ -383,7 +385,7 @@ def test_rla_absence(sts):
                     client=sts.get_client(TestEntity.TEST, "FISO"),
                 ),
             )
-            if ent.type_ == "organisation"
+            if ent.type_ == EntityType.ORGANISATION
         ]
     )
 

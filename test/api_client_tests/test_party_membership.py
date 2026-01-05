@@ -11,6 +11,8 @@ from flex.models import (
     PartyCreateRequest,
     PartyBusinessIdType,
     PartyResponse,
+    PartyRole,
+    PartyType,
     ErrorMessage,
     EmptyObject,
 )
@@ -161,8 +163,8 @@ def test_ptym_org(sts):
         body=PartyCreateRequest(
             name="Test Org SP",
             entity_id=org_ent_id,
-            role="flex_service_provider",
-            type_="service_provider",
+            role=PartyRole.FLEX_SERVICE_PROVIDER,
+            type_=PartyType.SERVICE_PROVIDER,
             business_id_type=PartyBusinessIdType.GLN,
             business_id=unique_gln(),
         ),
