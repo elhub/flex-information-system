@@ -643,7 +643,6 @@ def test_controllable_unit_sp(sts):
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
             name="TEST-CU-2-EDITED",
-            grid_node_id="92a7d3bf-fee5-4abc-9130-75c0111ea700",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
