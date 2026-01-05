@@ -113,7 +113,7 @@ connect user="postgres":
 
 # initialize local development environment
 init: && _venv _java_install _plantuml_install _liquibase_install _keypair
-    rm -rf .venv .bin
+    rm -rf .bin .venv
     pre-commit install
 
 _java_install:
@@ -158,6 +158,10 @@ _plantuml_install:
     fi
 
     ln -sf "${PLANTUML_JAR}" plantuml.jar
+
+# Set up a fresh Python virtual environment
+venv: && _venv
+    rm -rf .venv
 
 _venv:
     #!/usr/bin/env bash

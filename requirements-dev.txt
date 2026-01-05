@@ -10,8 +10,8 @@ openpyxl
 pandas
 psycopg[binary,pool]
 pyjwt
-pytest==8.4.2
+pytest==9.0.2
 python-dotenv
-schemathesis==4.7.5
+schemathesis==4.7.9
 tabulate
 Flask
