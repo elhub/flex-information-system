@@ -13,7 +13,7 @@ import {
   PartyReferenceInput,
   InputStack,
 } from "../../auth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import {
@@ -24,6 +24,7 @@ import { countDefinedValues } from "../../util";
 import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
 import { ControllableUnitServiceProvider } from "../../generated-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useLocationState from "../../hooks/useLocationState";
 
 export type ControllableUnitServiceProviderLocationState = {
   cusp?: Partial<ControllableUnitServiceProvider>;
@@ -35,9 +36,9 @@ export type ControllableUnitServiceProviderLocationState = {
 
 // common layout to create and edit pages
 export const ControllableUnitServiceProviderInput = () => {
-  const { state } = useLocation();
-  const { cusp, cuIDAsNumber } =
-    state as ControllableUnitServiceProviderLocationState;
+  const locationState =
+    useLocationState<ControllableUnitServiceProviderLocationState>();
+  const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
   const overrideRecord =
