@@ -1,6 +1,8 @@
 from flex import AuthenticatedClient, Client
 from flex.models import (
     AuthScope,
+    PartyType,
+    PartyRole,
     PartyResponse,
     PartyCreateRequest,
     PartyBusinessIdType,
@@ -198,16 +200,15 @@ class SecurityTokenService:
         return Client(base_url=self.api_url, verify_ssl=False)
 
     _party_types = {
-        "BRP": "balance_responsible_party",
-        "EU": "end_user",
-        "ES": "energy_supplier",
-        "ENT": "entity",
-        "FISO": "flexibility_information_system_operator",
-        "MO": "market_operator",
-        "ORG": "organisation",
-        "SO": "system_operator",
-        "SP": "service_provider",
-        "TP": "third_party",
+        "BRP": PartyType.BALANCE_RESPONSIBLE_PARTY,
+        "EU": PartyType.END_USER,
+        "ES": PartyType.ENERGY_SUPPLIER,
+        "FISO": PartyType.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR,
+        "MO": PartyType.MARKET_OPERATOR,
+        "ORG": PartyType.ORGANISATION,
+        "SO": PartyType.SYSTEM_OPERATOR,
+        "SP": PartyType.SERVICE_PROVIDER,
+        "TP": PartyType.THIRD_PARTY,
     }
 
     def fresh_client(self, entity, party_name):
@@ -219,7 +220,7 @@ class SecurityTokenService:
 
         # create a party with the given role and add the given entity to it
 
-        if party_type == "end_user":
+        if party_type == PartyType.END_USER:
             business_id_type = UNSET
             business_id = UNSET
         else:
@@ -238,7 +239,7 @@ class SecurityTokenService:
         party = create_party.sync(
             client=client_fiso,
             body=PartyCreateRequest(
-                role=f"flex_{party_type}",
+                role=PartyRole(f"flex_{party_type.value}"),
                 type_=party_type,
                 name=f"{entity} {party_name} #{
                     ''.join(

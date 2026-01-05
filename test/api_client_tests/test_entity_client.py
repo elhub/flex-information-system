@@ -12,6 +12,8 @@ from flex.models import (
     PartyCreateRequest,
     PartyBusinessIdType,
     PartyResponse,
+    PartyRole,
+    PartyType,
     ErrorMessage,
     EmptyObject,
 )
@@ -128,8 +130,8 @@ def test_entity_client_fiso(sts):
             name="New Party Entity Client Test",
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
-            role="flex_service_provider",
-            type_="service_provider",
+            role=PartyRole.FLEX_SERVICE_PROVIDER,
+            type_=PartyType.SERVICE_PROVIDER,
             entity_id=ent_id,
         ),
     )
@@ -141,8 +143,8 @@ def test_entity_client_fiso(sts):
             name="New Party Entity Client Test 2",
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
-            role="flex_energy_supplier",
-            type_="energy_supplier",
+            role=PartyRole.FLEX_ENERGY_SUPPLIER,
+            type_=PartyType.ENERGY_SUPPLIER,
             entity_id=other_ent_id,
         ),
     )

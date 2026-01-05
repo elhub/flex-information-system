@@ -10,6 +10,8 @@ from flex.models import (
     PartyUpdateRequest,
     PartyBusinessIdType,
     ErrorMessage,
+    PartyRole,
+    PartyType,
 )
 from flex.api.party import (
     create_party,
@@ -122,8 +124,8 @@ def test_party_fiso(sts):
         client=client_fiso,
         body=PartyCreateRequest(
             name="New End User",
-            role="flex_end_user",
-            type_="end_user",
+            role=PartyRole.FLEX_END_USER,
+            type_=PartyType.END_USER,
             entity_id=ent_id,
         ),
     )
@@ -139,8 +141,8 @@ def test_party_fiso(sts):
                 f"11X7{str(int(time.time_ns()))[-11:]}",
             ),
             business_id_type=PartyBusinessIdType.EIC_X,
-            role="flex_service_provider",
-            type_="service_provider",
+            role=PartyRole.FLEX_SERVICE_PROVIDER,
+            type_=PartyType.SERVICE_PROVIDER,
             entity_id=ent_id,
         ),
     )
@@ -153,8 +155,8 @@ def test_party_fiso(sts):
             name="New Party",
             business_id=unique_gln(),
             business_id_type=PartyBusinessIdType.GLN,
-            role="flex_flexibility_information_system_operator",
-            type_="flexibility_information_system_operator",
+            role=PartyRole.FLEX_FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR,
+            type_=PartyType.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR,
             entity_id=ent_id,
         ),
     )

@@ -11,6 +11,8 @@ from flex.models import (
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
     EntityCreateRequest,
+    EntityBusinessIdType,
+    EntityType,
     EntityResponse,
     ErrorMessage,
 )
@@ -287,8 +289,8 @@ def test_cu_lookup_remote(sts):
         body=EntityCreateRequest(
             name="TEST-CU-LOOKUP-REMOTE",
             business_id=random_pid(),
-            business_id_type="pid",
-            type_="person",
+            business_id_type=EntityBusinessIdType.PID,
+            type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, EntityResponse)
