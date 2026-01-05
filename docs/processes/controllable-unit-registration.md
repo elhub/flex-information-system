@@ -24,7 +24,9 @@ inform SP about missing details.
     * mapping of grid nodes in local markets to grid nodes in transmission
       system operator markets
 * There is no national grid model that includes all metering point ids. Requires
-  system operator to map metering points to grid nodes.
+  system operator to map metering points to grid nodes. If the service provider
+  has the information about the grid node, they can include it when they
+  register the controllable unit.
 
 ## Sequence
 
