@@ -1375,7 +1375,8 @@ GRANT INSERT (
     maximum_duration,
     recovery_duration,
     ramp_rate,
-    accounting_point_id
+    accounting_point_id,
+    grid_node_id
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;
@@ -1415,7 +1416,8 @@ GRANT UPDATE (
     minimum_duration,
     maximum_duration,
     recovery_duration,
-    ramp_rate
+    ramp_rate,
+    grid_node_id
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;

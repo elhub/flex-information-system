@@ -202,7 +202,7 @@ For party type abbreviations, check [the auth docs](../technical/auth.md#party-m
 | recovery_duration          |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
 | ramp_rate                  |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
 | accounting_point_id        |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| grid_node_id               |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
+| grid_node_id               |      | R   | R  | R  | RCU  | R  | RU | RCU | R  |     |
 | grid_validation_status     |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
 | grid_validation_notes      |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
 | validated_at               |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
