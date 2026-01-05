@@ -5,6 +5,8 @@ from security_token_service import (
 from flex.models import (
     PartyCreateRequest,
     PartyResponse,
+    PartyRole,
+    PartyType,
 )
 from flex.api.party import (
     create_party,
@@ -185,8 +187,8 @@ def test_token_exchange_ok_ent(sts):
         client=client_fiso,
         body=PartyCreateRequest(
             entity_id=ent_id,
-            type_="end_user",
-            role="flex_end_user",
+            type_=PartyType.END_USER,
+            role=PartyRole.FLEX_END_USER,
             name="Auth Test EU",
         ),
     )
