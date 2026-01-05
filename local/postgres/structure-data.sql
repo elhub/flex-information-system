@@ -1,3 +1,6 @@
+BEGIN;
+SELECT set_config('flex.current_identity', '0', true);
+
 INSERT INTO flex.entity (
     name, type, business_id, business_id_type
 )
@@ -70,3 +73,5 @@ VALUES
     'flex_system_operator',
     'active'
 );
+
+COMMIT;
