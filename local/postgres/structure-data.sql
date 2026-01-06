@@ -8,25 +8,6 @@ VALUES
 ('LB Entity AS', 'organisation', '123456789', 'org'),
 ('LB Nett AS', 'organisation', '987654321', 'org');
 
-INSERT INTO flex.metering_grid_area (
-    business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_time_range
-)
-VALUES
-(
-    '42YTEST-TEST-00P',
-    'TEST MGA',
-    'NO3',
-    (
-        SELECT id FROM flex.party
-        WHERE business_id = '1337123400004'
-    ),
-    tstzrange('2000-01-01 Europe/Oslo', null)
-);
-
 INSERT INTO flex.party (
     business_id,
     business_id_type,
@@ -72,6 +53,25 @@ VALUES
     'system_operator',
     'flex_system_operator',
     'active'
+);
+
+INSERT INTO flex.metering_grid_area (
+    business_id,
+    name,
+    price_area,
+    system_operator_id,
+    valid_time_range
+)
+VALUES
+(
+    '42YTEST-TEST-00P',
+    'TEST MGA',
+    'NO3',
+    (
+        SELECT id FROM flex.party
+        WHERE business_id = '1337123400004'
+    ),
+    tstzrange('2000-01-01 Europe/Oslo', null)
 );
 
 COMMIT;
