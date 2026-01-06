@@ -1,33 +1,33 @@
 import { SimpleForm, TextInput, useRecordContext } from "react-admin";
 import { Typography, Stack } from "@mui/material";
 import { AutocompleteReferenceInput, InputStack } from "../../auth";
-import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
-import { useMemo } from "react";
 import { zTechnicalResource } from "../../generated-client/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TechnicalResource } from "../../generated-client";
+import useLocationState from "../../hooks/useLocationState";
 
-const filterRecord = ({ name, controllable_unit_id, details }: any) => ({
-  name,
-  controllable_unit_id,
-  details,
-});
+export type TechnicalResourceInputLocationState = {
+  technicalResource?: Partial<TechnicalResource>;
+};
 
 // common layout to create and edit pages
 export const TechnicalResourceInput = () => {
-  const { state: overrideRecord } = useLocation();
-  const actualRecord = useRecordContext();
+  const locationState = useLocationState<TechnicalResourceInputLocationState>();
+  const technicalResourceOverride = locationState?.technicalResource
+    ? zTechnicalResource.parse(locationState?.technicalResource)
+    : {};
 
-  // priority to the restored values if they exist, otherwise normal edit mode
-  // Memoize the combined record to avoid re-renders causing errors
-  const record = useMemo(
-    () => filterRecord({ ...actualRecord, ...overrideRecord }),
-    [actualRecord, overrideRecord],
-  );
+  const record = useRecordContext<TechnicalResource>();
+
+  const overridenRecord = {
+    ...record,
+    ...technicalResourceOverride,
+  };
 
   return (
     <SimpleForm
-      record={record}
+      record={overridenRecord}
       maxWidth={1280}
       resolver={zodResolver(zTechnicalResource)}
       toolbar={<Toolbar />}

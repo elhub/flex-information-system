@@ -7,22 +7,33 @@ import {
   TopToolbar,
   usePermissions,
   useRecordContext,
+  Identifier,
 } from "react-admin";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { Permissions } from "../../auth/permissions";
+import { TechnicalResourceInputLocationState } from "./TechnicalResourceInput";
 
 // automatically fill the controllable_unit_id field with the ID of the
 // show page the create button is displayed on
-const CreateButton = ({ id }: { id: any }) => {
+const CreateButton = ({
+  controllableUnitId,
+}: {
+  controllableUnitId: Identifier;
+}) => {
+  const locationState: TechnicalResourceInputLocationState = {
+    technicalResource: {
+      controllable_unit_id: Number(controllableUnitId),
+    },
+  };
   return (
     <Button
       component={Link}
-      to={`/controllable_unit/${id}/technical_resource/create`}
+      to={`/controllable_unit/${controllableUnitId}/technical_resource/create`}
       startIcon={<AddIcon />}
-      state={{ controllable_unit_id: id }}
+      state={locationState}
       label="Create"
     />
   );
@@ -33,11 +44,15 @@ const ListActions = ({
   id,
 }: {
   permissions: Permissions | undefined;
-  id: any;
+  id: Identifier;
 }) => {
   const canCreate = permissions?.allow("technical_resource", "create");
 
-  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
+  return (
+    <TopToolbar>
+      {canCreate && <CreateButton controllableUnitId={id} />}
+    </TopToolbar>
+  );
 };
 
 export const TechnicalResourceList = () => {
