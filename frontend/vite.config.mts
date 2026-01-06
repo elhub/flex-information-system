@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
 import { homedir } from "os";
+import checker from "vite-plugin-checker";
 
 // https://vitejs.dev/config/
 
@@ -24,7 +25,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@mui/material/Tooltip"],
   },
-  plugins: [react()],
+  plugins: [react(), checker({ typescript: true })],
   define: {
     "process.env": {},
   },
@@ -33,13 +34,13 @@ export default defineConfig({
       output: {
         manualChunks: {
           // Separate MUI components into their own chunk (icons tree-shake separately)
-          'mui-core': ['@mui/material'],
+          "mui-core": ["@mui/material"],
           // Separate React Admin into its own chunk
-          'react-admin': ['react-admin', 'ra-core'],
+          "react-admin": ["react-admin", "ra-core"],
           // Separate data provider
-          'data-provider': ['@raphiniert/ra-data-postgrest'],
+          "data-provider": ["@raphiniert/ra-data-postgrest"],
           // Separate query devtools (only for dev)
-          'react-query-devtools': ['@tanstack/react-query-devtools'],
+          "react-query-devtools": ["@tanstack/react-query-devtools"],
         },
       },
     },

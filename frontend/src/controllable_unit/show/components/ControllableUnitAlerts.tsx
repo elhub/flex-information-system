@@ -3,6 +3,7 @@ import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import { Alert, AlertColor, AlertTitle, Button } from "@mui/material";
 import { ReactNode } from "react";
 import { Permissions } from "../../../auth/permissions";
+import { ActivateControllableUnitButton } from "./ActivateControllableUnitButton";
 
 type AlertType = {
   severity: AlertColor;
@@ -60,20 +61,17 @@ const useControllableUnitAlerts = (
     };
   }
 
-  if (controllableUnit.status === "new") {
+  if (controllableUnit.id && controllableUnit.status === "new") {
     return {
       severity: "info",
       title: "Not active",
       content:
         "The controllable unit is not active. Please set it as active to use it.",
       action: (
-        <Button
-          component={Link}
+        <ActivateControllableUnitButton
+          controllableUnitId={controllableUnit.id}
           disabled={!canUpdateControllableUnit}
-          to={`/controllable_unit/${controllableUnit.id}/edit`}
-        >
-          Edit status
-        </Button>
+        />
       ),
     };
   }
