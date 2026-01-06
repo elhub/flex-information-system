@@ -16,7 +16,7 @@ import {
   TechnicalResource,
 } from "../../generated-client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 type Response<T> =
   | {
@@ -136,7 +136,7 @@ const getAccountingPointData = async (
 
 const getControllableUnitData = async (
   controllableUnit: ControllableUnit | undefined,
-): Promise<ControllableUnitShowViewModel> => {
+): Promise<Omit<ControllableUnitShowViewModel, "controllableUnit">> => {
   const controllableUnitIdInt = controllableUnit?.id ?? 0;
 
   if (!controllableUnit) {
@@ -164,7 +164,6 @@ const getControllableUnitData = async (
     ]);
 
   return {
-    controllableUnit,
     serviceProvider: cuspData.systemProvider,
     technicalResources: technicalResources,
     systemOperator: accountingPoint.systemOperator,
@@ -175,7 +174,7 @@ const getControllableUnitData = async (
   };
 };
 
-const controllableUnitViewModelQueryKey = (
+export const controllableUnitViewModelQueryKey = (
   controllableUnitId: number | undefined,
 ) => ["controllableUnitViewModel", controllableUnitId];
 export const useControllableUnitViewModel = (
@@ -183,10 +182,20 @@ export const useControllableUnitViewModel = (
     | ControllableUnit
     | ControllableUnitHistoryResponse
     | undefined,
-) => {
-  return useQuery({
+): UseQueryResult<ControllableUnitShowViewModel> => {
+  const query = useQuery({
     queryKey: controllableUnitViewModelQueryKey(controllableUnit?.id),
     queryFn: () => getControllableUnitData(controllableUnit),
     enabled: !!controllableUnit?.id,
   });
+
+  return {
+    ...query,
+    data: query.data
+      ? {
+          ...query.data,
+          controllableUnit,
+        }
+      : undefined,
+  } as unknown as UseQueryResult<ControllableUnitShowViewModel>;
 };

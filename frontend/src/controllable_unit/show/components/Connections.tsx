@@ -21,12 +21,12 @@ export const Connections = ({
   controllableUnitViewModel: ControllableUnitShowViewModel;
 }) => {
   const {
-    controllableUnit,
     serviceProvider,
     controllableUnitServiceProvider,
     balanceResponsibleParty,
     accountingPoint,
     systemOperator,
+    controllableUnit,
   } = controllableUnitViewModel;
   const serviceProviderRange = formatRange(
     controllableUnitServiceProvider?.valid_from,
@@ -49,7 +49,7 @@ export const Connections = ({
           }
         />
         <Link
-          to={`/controllable_unit/${controllableUnit.id}/service_provider`}
+          to={`/controllable_unit/${controllableUnit?.id}/service_provider`}
           component={RouterLink}
         >
           See all contracts
@@ -65,7 +65,7 @@ export const Connections = ({
           }
         />
         <Link
-          to={`/controllable_unit/${controllableUnit.id}/balance_responsible_party`}
+          to={`/controllable_unit/${controllableUnit?.id}/balance_responsible_party`}
           component={RouterLink}
         >
           See all balance responsible parties

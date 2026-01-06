@@ -43,7 +43,9 @@ const Layout = () => {
   return (
     <SimpleShowLayout>
       <Stack direction="column" spacing={4}>
-        <Header controllableUnit={controllableUnitViewModel.controllableUnit} />
+        <Header
+          controllableUnit={controllableUnitViewModel?.controllableUnit}
+        />
         <ControllableUnitAlerts
           controllableUnitViewModel={controllableUnitViewModel}
         />
@@ -55,20 +57,20 @@ const Layout = () => {
         </Box>
 
         <TechnicalInformation
-          controllableUnit={controllableUnitViewModel.controllableUnit}
+          controllableUnit={controllableUnitViewModel?.controllableUnit}
         />
 
         <GridValidation
-          controllableUnit={controllableUnitViewModel.controllableUnit}
+          controllableUnit={controllableUnitViewModel?.controllableUnit}
         />
 
         <LabelValue
           color="text.secondary"
           labelKey="controllable_unit.recorded_at"
           value={
-            controllableUnitViewModel.controllableUnit.recorded_at
+            controllableUnitViewModel?.controllableUnit?.recorded_at
               ? new Date(
-                  controllableUnitViewModel.controllableUnit.recorded_at,
+                  controllableUnitViewModel?.controllableUnit?.recorded_at,
                 ).toLocaleString()
               : undefined
           }
