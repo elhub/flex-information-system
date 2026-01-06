@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import { controllableUnitViewModelQueryKey } from "../useControllableUnitViewModel";
 import { useConfirmAction } from "../../../components/ConfirmAction";
 import { updateControllableUnit } from "../../../generated-client";
@@ -25,21 +24,6 @@ export const ActivateControllableUnitButton = ({
           path: { id: controllableUnitId },
           body: { status: "active" },
         }),
-      onSuccess: () => {
-        queryClient.setQueryData(
-          controllableUnitViewModelQueryKey(controllableUnitId),
-          (old: ControllableUnitShowViewModel | undefined) =>
-            old
-              ? {
-                  ...old,
-                  controllableUnit: {
-                    ...old.controllableUnit,
-                    status: "active",
-                  },
-                }
-              : old,
-        );
-      },
       onSettled: () => {
         queryClient.invalidateQueries({
           queryKey: [
