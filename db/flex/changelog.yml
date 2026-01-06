@@ -320,55 +320,6 @@ databaseChangeLog:
             primaryKey: BUSINESS_ID
             header: true
 
-  # Structure Data
-  - changeSet:
-      id: entity-structure-data
-      author: flex
-      runOnChange: true
-      changes:
-        - loadUpdateData:
-            file: ./structure_data/entity.csv
-            relativeToChangelogFile: true
-            schemaName: flex
-            tableName: entity
-            separator: ","
-            primaryKey: BUSINESS_ID
-            header: true
-
-  - changeSet:
-      id: party-structure-data
-      author: flex
-      runOnChange: true
-      changes:
-        - loadUpdateData:
-            file: ./structure_data/party.csv
-            relativeToChangelogFile: true
-            schemaName: flex
-            tableName: party
-            separator: ","
-            primaryKey: BUSINESS_ID
-            header: true
-
-  - changeSet:
-      id: metering-grid-area-structure-data
-      author: flex
-      runOnChange: true
-      changes:
-        - loadUpdateData:
-            file: ./structure_data/metering_grid_area.csv
-            relativeToChangelogFile: true
-            schemaName: flex
-            tableName: metering_grid_area
-            separator: ","
-            quotchar: '"'
-            primaryKey: BUSINESS_ID
-            header: true
-            columns:
-              # allow computing the range from a query
-              - column:
-                  header: VALID_TIME_RANGE
-                  type: COMPUTED
-
   # Replication slots
   - include:
       file: ./replication/slots.sql
