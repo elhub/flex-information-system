@@ -6,17 +6,24 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { MutationOptions, useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { useNotify } from "react-admin";
 
 type UseConfirmActionOptions = {
-  title: ReactNode;
+  title: string;
   content?: ReactNode;
-  confirmText?: ReactNode;
-  cancelText?: ReactNode;
+  confirmText?: string;
+  cancelText?: string;
   successMessage?: string;
-  onConfirmMutation: MutationOptions;
+  onConfirmMutation: UseMutationOptions<unknown, Error, void>;
 };
+
+/*
+This component is used to confirm an action with a dialog.
+
+The mutation is passed as an option and will be executed when the user confirms the action.
+
+*/
 
 export const useConfirmAction = ({
   title,

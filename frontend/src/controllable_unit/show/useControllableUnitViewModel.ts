@@ -197,5 +197,8 @@ export const useControllableUnitViewModel = (
           controllableUnit,
         }
       : undefined,
-  } as unknown as UseQueryResult<ControllableUnitShowViewModel>;
+    // Since controllable unit is prefetched, we dont want controllableUnit to be in the query logic, so we can partially invalidate the query when the controllable unit is updated
+    // but for simplicity we want the controllable unit to be available in the view model, so we add it to the data
+    // Thats why we return the query result and add the controllableUnit to the data, casting it manually since the types of useQuery are complex and not easily inferrable
+  } as UseQueryResult<ControllableUnitShowViewModel>;
 };

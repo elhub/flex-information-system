@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { controllableUnitViewModelQueryKey } from "../useControllableUnitViewModel";
 import { useConfirmAction } from "../../../components/ConfirmAction";
 import { updateControllableUnit } from "../../../generated-client";
 
@@ -31,9 +30,6 @@ export const ActivateControllableUnitButton = ({
             "getOne",
             { id: String(controllableUnitId) },
           ],
-        });
-        queryClient.invalidateQueries({
-          queryKey: controllableUnitViewModelQueryKey(controllableUnitId),
         });
       },
     },
