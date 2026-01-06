@@ -66,9 +66,13 @@ services:
       - "idp.flex.internal:host-gateway"
   frontend:
     build: ./frontend
-    environment:
-      VITE_FLEX_URL: https://test.flex.internal:6443
-      VITE_FLEX_COLOR_DARK: '#36454F'
+    volumes:
+      - type: bind
+        source: ${PWD}/local/frontend/env.test.js
+        target: /usr/share/nginx/html/env.js
+    read_only: true
+    tmpfs:
+      - /tmp
     ports:
       - "8080:8080"
     depends_on:
