@@ -585,9 +585,9 @@ export const createServiceProvidingGroupResources = (
         show={ServiceProvidingGroupGridSuspensionShow}
         create={
           canCreateSPGGS ? (
-            <Create redirect={() => "service_providing_group"}>
+            <CreateRedirectPreviousPage>
               <ServiceProvidingGroupGridSuspensionInput />
-            </Create>
+            </CreateRedirectPreviousPage>
           ) : (
             (null as any)
           )
@@ -628,9 +628,9 @@ export const createServiceProvidingGroupResources = (
         show={ServiceProvidingGroupProductSuspensionShow}
         create={
           canCreateSPGPS ? (
-            <Create redirect={() => "service_providing_group"}>
+            <CreateRedirectPreviousPage>
               <ServiceProvidingGroupProductSuspensionInput />
-            </Create>
+            </CreateRedirectPreviousPage>
           ) : (
             (null as any)
           )

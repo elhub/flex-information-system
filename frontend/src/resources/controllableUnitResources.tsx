@@ -327,9 +327,9 @@ export const createControllableUnitResources = (permissions: Permissions) => {
         show={ControllableUnitSuspensionShow}
         create={
           canCreateCUS ? (
-            <Create redirect={() => `controllable_unit`}>
+            <CreateRedirectPreviousPage>
               <ControllableUnitSuspensionInput />
-            </Create>
+            </CreateRedirectPreviousPage>
           ) : (
             (null as any)
           )
