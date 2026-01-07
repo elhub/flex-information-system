@@ -4,6 +4,7 @@ import { Alert, AlertColor, AlertTitle, Button } from "@mui/material";
 import { ReactNode } from "react";
 import { Permissions } from "../../../auth/permissions";
 import { ActivateControllableUnitButton } from "./ActivateControllableUnitButton";
+import { TechnicalResourceInputLocationState } from "../../technical_resource/TechnicalResourceInput";
 
 type AlertType = {
   severity: AlertColor;
@@ -44,6 +45,11 @@ const useControllableUnitAlerts = (
   }
 
   if (technicalResources?.length === 0) {
+    const locationState: TechnicalResourceInputLocationState = {
+      technicalResource: {
+        controllable_unit_id: controllableUnit.id,
+      },
+    };
     return {
       severity: "info",
       title: "No technical resources",
@@ -53,6 +59,7 @@ const useControllableUnitAlerts = (
         <Button
           component={Link}
           disabled={!canCreateTechnicalResource}
+          state={locationState}
           to={`/controllable_unit/${controllableUnit.id}/technical_resource/create`}
         >
           Add technical resource
