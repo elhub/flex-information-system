@@ -292,9 +292,23 @@ const MainMenu = () => (
         name="service_providing_group_product_application"
         label="SPG product applications"
       />
+    </SubMenu>
+    <SubMenu text="Suspension" defaultOpen>
+      <LabelledResourceMenuItem
+        name="controllable_unit_suspension"
+        label="CU suspensions"
+      />
       <LabelledResourceMenuItem
         name="service_provider_product_suspension"
         label="SP product suspensions"
+      />
+      <LabelledResourceMenuItem
+        name="service_providing_group_grid_suspension"
+        label="SPG grid suspensions"
+      />
+      <LabelledResourceMenuItem
+        name="service_providing_group_product_suspension"
+        label="SPG product suspensions"
       />
     </SubMenu>
     <SubMenu text="Product type">
