@@ -53,6 +53,9 @@ BEGIN
     WHERE id = lv_controllable_unit_id
     AND grid_validation_status not in ('pending', 'in_progress','validated');
 
+    IF TG_OP = 'DELETE' THEN
+        RETURN OLD;
+    END IF;
     RETURN NEW;
 END;
 $$;

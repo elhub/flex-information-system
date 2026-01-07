@@ -495,6 +495,14 @@ def test_tr_sp(sts):
     assert isinstance(cu, ControllableUnitResponse)
     assert cu.grid_validation_status == ControllableUnitGridValidationStatus.PENDING
 
+    # SP can delete their TR
+    d = delete_technical_resource.sync(
+        client=client_common_sp,
+        id=cast(int, tr.id),
+        body=EmptyObject(),
+    )
+    assert not isinstance(d, ErrorMessage)
+
 
 def test_rla_absence(sts):
     roles_without_rla = ["TP"]
