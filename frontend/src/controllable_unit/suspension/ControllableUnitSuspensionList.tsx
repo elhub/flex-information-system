@@ -23,7 +23,7 @@ const CreateButton = ({ id }: { id: any }) => (
     to={
       id
         ? `/controllable_unit/${id}/suspension/create`
-        : "/controllable_unit/suspension/create"
+        : "/controllable_unit_suspension/create"
     }
     startIcon={<AddIcon />}
     state={{ controllable_unit_id: id }}
