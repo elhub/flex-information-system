@@ -20,14 +20,14 @@ export const TechnicalResourceInput = () => {
 
   const record = useRecordContext<TechnicalResource>();
 
-  const overridenRecord = {
+  const overriddenRecord = {
     ...record,
     ...technicalResourceOverride,
   };
 
   return (
     <SimpleForm
-      record={overridenRecord}
+      record={overriddenRecord}
       maxWidth={1280}
       resolver={zodResolver(zTechnicalResource)}
       toolbar={<Toolbar />}
