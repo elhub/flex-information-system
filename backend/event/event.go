@@ -67,7 +67,12 @@ func fromTupleData(td *pgoutput.TupleData) (event, error) {
 	// We don't need it since we can infer it from `type`
 
 	// try to parse subject ID (it can be null if the event concerns a toplevel resource)
-	subjectIDStr := string(td.Columns[8])
+	var subjectIDStr string
+	if len(td.Columns) < 9 { //nolint:mnd
+		subjectIDStr = ""
+	} else {
+		subjectIDStr = string(td.Columns[8])
+	}
 	if subjectIDStr != "" {
 		event.ResourceID, err = strconv.Atoi(subjectIDStr)
 		if err != nil {
