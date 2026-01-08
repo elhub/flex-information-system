@@ -68,6 +68,8 @@ def test_entity_client_fiso(sts):
             entity_id=ent_id,
             name="test client name",
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+            client_id="client - test entity client ent",
+            party_id=client_ent.party_id,
         ),
     )
     assert isinstance(clt, EntityClient)
@@ -257,6 +259,8 @@ def test_entity_client_org(sts):
             entity_id=org_ent_id,
             name="test client name",
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+            client_id="client - test entity client org",
+            party_id=client_org.party_id,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -269,6 +273,8 @@ def test_entity_client_org(sts):
             entity_id=org_ent_id,
             name="test client name",
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+            client_id="client - test entity client org",
+            party_id=client_org_ent.party_id,
         ),
     )
     assert isinstance(clt, EntityClient)
@@ -305,6 +311,8 @@ def test_entity_client_org(sts):
             entity_id=org_ent_id,
             name="test client name",
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+            client_id="client - test entity client org with org ent",
+            party_id=client_org_with_org_ent.party_id,
         ),
     )
     assert isinstance(e, ErrorMessage)
