@@ -42,10 +42,9 @@ export const ControllableUnitInput = () => {
   const navigate = useNavigate();
   const notify = useNotify();
 
-  const controllableUnitOverride: Partial<ControllableUnit> =
-    locationState?.controllableUnit
-      ? zControllableUnit.parse(locationState?.controllableUnit)
-      : {};
+  const controllableUnitOverride: Partial<ControllableUnit> = zControllableUnit
+    .partial()
+    .parse(locationState?.controllableUnit);
 
   const record = useRecordContext<ControllableUnit>();
 
@@ -63,7 +62,7 @@ export const ControllableUnitInput = () => {
   } as ControllableUnit;
 
   const onCreate = (data: unknown) => {
-    const controllableUnit = zControllableUnit.parse(data);
+    const controllableUnit = zControllableUnit.partial().parse(data);
     const cuspState: ControllableUnitServiceProviderLocationState = {
       cusp: {
         controllable_unit_id: controllableUnit.id,
