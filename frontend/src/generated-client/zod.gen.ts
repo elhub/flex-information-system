@@ -4165,30 +4165,6 @@ export const zListControllableUnitData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitResponse = z.union([
@@ -4343,30 +4319,6 @@ export const zListControllableUnitHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitHistoryResponse = z.union([
@@ -4462,30 +4414,6 @@ export const zListControllableUnitSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -4666,30 +4594,6 @@ export const zListControllableUnitSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitSuspensionHistoryResponse = z.union([
@@ -4776,30 +4680,6 @@ export const zListControllableUnitSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -4948,30 +4828,6 @@ export const zListControllableUnitSuspensionCommentHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitSuspensionCommentHistoryResponse = z.union([
@@ -5076,30 +4932,6 @@ export const zListControllableUnitServiceProviderData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -5289,30 +5121,6 @@ export const zListControllableUnitServiceProviderHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitServiceProviderHistoryResponse = z.union([
@@ -5405,30 +5213,6 @@ export const zListServiceProvidingGroupData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -5583,30 +5367,6 @@ export const zListServiceProvidingGroupHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupHistoryResponse = z.union([
@@ -5702,30 +5462,6 @@ export const zListServiceProvidingGroupMembershipData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -5906,30 +5642,6 @@ export const zListServiceProvidingGroupMembershipHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupMembershipHistoryResponse = z.union([
@@ -6025,30 +5737,6 @@ export const zListServiceProvidingGroupGridPrequalificationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -6206,30 +5894,6 @@ export const zListServiceProvidingGroupGridPrequalificationHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationHistoryResponse =
@@ -6319,30 +5983,6 @@ export const zListServiceProvidingGroupGridPrequalificationCommentData =
           z.preprocess(
             (value) => (value === null ? undefined : value),
             z.string().optional(),
-          ),
-        ),
-      }),
-    ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
           ),
         ),
       }),
@@ -6497,30 +6137,6 @@ export const zListServiceProvidingGroupGridPrequalificationCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
@@ -6618,30 +6234,6 @@ export const zListServiceProvidingGroupGridSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -6822,30 +6414,6 @@ export const zListServiceProvidingGroupGridSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupGridSuspensionHistoryResponse = z.union([
@@ -6932,30 +6500,6 @@ export const zListServiceProvidingGroupGridSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -7103,30 +6647,6 @@ export const zListServiceProvidingGroupGridSuspensionCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
@@ -7224,30 +6744,6 @@ export const zListEntityData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -7393,30 +6889,6 @@ export const zListEntityClientData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -7595,30 +7067,6 @@ export const zListPartyData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListPartyResponse = z.union([
@@ -7776,30 +7224,6 @@ export const zListPartyHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListPartyHistoryResponse = z.union([
@@ -7894,30 +7318,6 @@ export const zListPartyMembershipData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8096,30 +7496,6 @@ export const zListPartyMembershipHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListPartyMembershipHistoryResponse = z.union([
@@ -8237,30 +7613,6 @@ export const zListIdentityData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListIdentityResponse = z.union([
@@ -8352,30 +7704,6 @@ export const zListTechnicalResourceData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8551,30 +7879,6 @@ export const zListTechnicalResourceHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListTechnicalResourceHistoryResponse = z.union([
@@ -8652,30 +7956,6 @@ export const zListEventData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8774,30 +8054,6 @@ export const zListNotificationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8915,30 +8171,6 @@ export const zListAccountingPointData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListAccountingPointResponse = z.union([
@@ -9028,30 +8260,6 @@ export const zListAccountingPointBalanceResponsiblePartyData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListAccountingPointBalanceResponsiblePartyResponse = z.union([
@@ -9114,30 +8322,6 @@ export const zListAccountingPointEnergySupplierData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -9207,30 +8391,6 @@ export const zListProductTypeData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -9329,30 +8489,6 @@ export const zListSystemOperatorProductTypeData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -9510,30 +8646,6 @@ export const zListSystemOperatorProductTypeHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListSystemOperatorProductTypeHistoryResponse = z.union([
@@ -9638,30 +8750,6 @@ export const zListServiceProviderProductApplicationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -9828,30 +8916,6 @@ export const zListServiceProviderProductApplicationHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProviderProductApplicationHistoryResponse = z.union([
@@ -9938,30 +9002,6 @@ export const zListServiceProviderProductApplicationCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -10111,30 +9151,6 @@ export const zListServiceProviderProductApplicationCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProviderProductApplicationCommentHistoryResponse =
@@ -10241,30 +9257,6 @@ export const zListServiceProviderProductSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -10454,30 +9446,6 @@ export const zListServiceProviderProductSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProviderProductSuspensionHistoryResponse = z.union([
@@ -10564,30 +9532,6 @@ export const zListServiceProviderProductSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -10737,30 +9681,6 @@ export const zListServiceProviderProductSuspensionCommentHistoryData = z.object(
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   },
 );
 
@@ -10869,30 +9789,6 @@ export const zListServiceProvidingGroupProductApplicationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -11060,30 +9956,6 @@ export const zListServiceProvidingGroupProductApplicationHistoryData = z.object(
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   },
 );
 
@@ -11192,30 +10064,6 @@ export const zListServiceProvidingGroupProductSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -11405,30 +10253,6 @@ export const zListServiceProvidingGroupProductSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupProductSuspensionHistoryResponse =
@@ -11516,30 +10340,6 @@ export const zListServiceProvidingGroupProductSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -11690,30 +10490,6 @@ export const zListServiceProvidingGroupProductSuspensionCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
@@ -11793,30 +10569,6 @@ export const zListNoticeData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),

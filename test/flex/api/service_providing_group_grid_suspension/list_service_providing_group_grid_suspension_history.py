@@ -7,9 +7,6 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.list_service_providing_group_grid_suspension_history_prefer import (
-    ListServiceProvidingGroupGridSuspensionHistoryPrefer,
-)
 from ...models.service_providing_group_grid_suspension_history_response import (
     ServiceProvidingGroupGridSuspensionHistoryResponse,
 )
@@ -26,20 +23,7 @@ def _get_kwargs(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset = UNSET,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-    if not isinstance(range_, Unset):
-        headers["Range"] = range_
-
-    if not isinstance(range_unit, Unset):
-        headers["Range-Unit"] = range_unit
-
-    if not isinstance(prefer, Unset):
-        headers["Prefer"] = str(prefer)
-
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -66,7 +50,6 @@ def _get_kwargs(
         "params": params,
     }
 
-    _kwargs["headers"] = headers
     return _kwargs
 
 
@@ -172,9 +155,6 @@ def sync_detailed(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionHistoryResponse]]:
     """List Service Providing Group Grid Suspension - history
 
@@ -187,9 +167,6 @@ def sync_detailed(
         offset (str | Unset):
         limit (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -208,9 +185,6 @@ def sync_detailed(
         offset=offset,
         limit=limit,
         service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = client.get_httpx_client().request(
@@ -231,9 +205,6 @@ def sync(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionHistoryResponse] | None:
     """List Service Providing Group Grid Suspension - history
 
@@ -246,9 +217,6 @@ def sync(
         offset (str | Unset):
         limit (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -268,9 +236,6 @@ def sync(
         offset=offset,
         limit=limit,
         service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     ).parsed
 
 
@@ -285,9 +250,6 @@ async def asyncio_detailed(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionHistoryResponse]]:
     """List Service Providing Group Grid Suspension - history
 
@@ -300,9 +262,6 @@ async def asyncio_detailed(
         offset (str | Unset):
         limit (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -321,9 +280,6 @@ async def asyncio_detailed(
         offset=offset,
         limit=limit,
         service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -342,9 +298,6 @@ async def asyncio(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     service_providing_group_grid_suspension_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionHistoryResponse] | None:
     """List Service Providing Group Grid Suspension - history
 
@@ -357,9 +310,6 @@ async def asyncio(
         offset (str | Unset):
         limit (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -380,8 +330,5 @@ async def asyncio(
             offset=offset,
             limit=limit,
             service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
-            range_=range_,
-            range_unit=range_unit,
-            prefer=prefer,
         )
     ).parsed
