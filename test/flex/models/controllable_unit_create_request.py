@@ -21,15 +21,17 @@ class ControllableUnitCreateRequest:
     """Request schema for create operations - Controllable unit
 
     Attributes:
-        name (str | Unset): Free text name of the controllable unit. Example: Car Charger #34.
+        name (str): Free text name of the controllable unit. Example: Car Charger #34.
+        regulation_direction (ControllableUnitRegulationDirection): The regulation direction of the controllable unit.
+            `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
+            production or increase consumption. Example: up.
+        maximum_available_capacity (float): Maximum continuous active power that the controllable unit can produce or
+            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
+            Example: 10289.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.
         status (ControllableUnitStatus | Unset): The status of the controllable unit. Example: active.
-        regulation_direction (ControllableUnitRegulationDirection | Unset): The regulation direction of the controllable
-            unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
-            production or increase consumption. Example: up.
-        maximum_available_capacity (float | Unset): Maximum continuous active power that the controllable unit can
-            produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         minimum_duration (int | None | Unset): The minimum activation duration in seconds. Example: 30.
         maximum_duration (int | None | Unset): The maximum activation duration in seconds. Example: 1200.
         recovery_duration (int | None | Unset): The minimum recovery duration between activations in seconds. Example:
@@ -43,15 +45,14 @@ class ControllableUnitCreateRequest:
         grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
         validated_at (None | str | Unset): When the controllable unit was last validated. Example: 2022-08-08 12:00:00
             CET.
-        accounting_point_id (int | Unset): Reference to the accounting point that the controllable unit is connected to.
-            Example: 10289.
     """
 
-    name: str | Unset = UNSET
+    name: str
+    regulation_direction: ControllableUnitRegulationDirection
+    maximum_available_capacity: float
+    accounting_point_id: int
     start_date: datetime.date | None | Unset = UNSET
     status: ControllableUnitStatus | Unset = UNSET
-    regulation_direction: ControllableUnitRegulationDirection | Unset = UNSET
-    maximum_available_capacity: float | Unset = UNSET
     minimum_duration: int | None | Unset = UNSET
     maximum_duration: int | None | Unset = UNSET
     recovery_duration: int | None | Unset = UNSET
@@ -60,11 +61,16 @@ class ControllableUnitCreateRequest:
     grid_validation_status: ControllableUnitGridValidationStatus | Unset = UNSET
     grid_validation_notes: None | str | Unset = UNSET
     validated_at: None | str | Unset = UNSET
-    accounting_point_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
+
+        regulation_direction = self.regulation_direction.value
+
+        maximum_available_capacity = self.maximum_available_capacity
+
+        accounting_point_id = self.accounting_point_id
 
         start_date: None | str | Unset
         if isinstance(self.start_date, Unset):
@@ -77,12 +83,6 @@ class ControllableUnitCreateRequest:
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
-
-        regulation_direction: str | Unset = UNSET
-        if not isinstance(self.regulation_direction, Unset):
-            regulation_direction = self.regulation_direction.value
-
-        maximum_available_capacity = self.maximum_available_capacity
 
         minimum_duration: int | None | Unset
         if isinstance(self.minimum_duration, Unset):
@@ -130,21 +130,20 @@ class ControllableUnitCreateRequest:
         else:
             validated_at = self.validated_at
 
-        accounting_point_id = self.accounting_point_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
+        field_dict.update(
+            {
+                "name": name,
+                "regulation_direction": regulation_direction,
+                "maximum_available_capacity": maximum_available_capacity,
+                "accounting_point_id": accounting_point_id,
+            }
+        )
         if start_date is not UNSET:
             field_dict["start_date"] = start_date
         if status is not UNSET:
             field_dict["status"] = status
-        if regulation_direction is not UNSET:
-            field_dict["regulation_direction"] = regulation_direction
-        if maximum_available_capacity is not UNSET:
-            field_dict["maximum_available_capacity"] = maximum_available_capacity
         if minimum_duration is not UNSET:
             field_dict["minimum_duration"] = minimum_duration
         if maximum_duration is not UNSET:
@@ -161,15 +160,19 @@ class ControllableUnitCreateRequest:
             field_dict["grid_validation_notes"] = grid_validation_notes
         if validated_at is not UNSET:
             field_dict["validated_at"] = validated_at
-        if accounting_point_id is not UNSET:
-            field_dict["accounting_point_id"] = accounting_point_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
+
+        regulation_direction = ControllableUnitRegulationDirection(d.pop("regulation_direction"))
+
+        maximum_available_capacity = d.pop("maximum_available_capacity")
+
+        accounting_point_id = d.pop("accounting_point_id")
 
         def _parse_start_date(data: object) -> datetime.date | None | Unset:
             if data is None:
@@ -194,15 +197,6 @@ class ControllableUnitCreateRequest:
             status = UNSET
         else:
             status = ControllableUnitStatus(_status)
-
-        _regulation_direction = d.pop("regulation_direction", UNSET)
-        regulation_direction: ControllableUnitRegulationDirection | Unset
-        if isinstance(_regulation_direction, Unset):
-            regulation_direction = UNSET
-        else:
-            regulation_direction = ControllableUnitRegulationDirection(_regulation_direction)
-
-        maximum_available_capacity = d.pop("maximum_available_capacity", UNSET)
 
         def _parse_minimum_duration(data: object) -> int | None | Unset:
             if data is None:
@@ -274,14 +268,13 @@ class ControllableUnitCreateRequest:
 
         validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
 
-        accounting_point_id = d.pop("accounting_point_id", UNSET)
-
         controllable_unit_create_request = cls(
             name=name,
-            start_date=start_date,
-            status=status,
             regulation_direction=regulation_direction,
             maximum_available_capacity=maximum_available_capacity,
+            accounting_point_id=accounting_point_id,
+            start_date=start_date,
+            status=status,
             minimum_duration=minimum_duration,
             maximum_duration=maximum_duration,
             recovery_duration=recovery_duration,
@@ -290,7 +283,6 @@ class ControllableUnitCreateRequest:
             grid_validation_status=grid_validation_status,
             grid_validation_notes=grid_validation_notes,
             validated_at=validated_at,
-            accounting_point_id=accounting_point_id,
         )
 
         controllable_unit_create_request.additional_properties = d

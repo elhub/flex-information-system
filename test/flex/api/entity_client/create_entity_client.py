@@ -6,15 +6,15 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
+from ...models.entity_client import EntityClient
 from ...models.entity_client_create_request import EntityClientCreateRequest
-from ...models.entity_client_response import EntityClientResponse
 from ...models.error_message import ErrorMessage
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: EntityClientCreateRequest | Unset = UNSET,
+    body: EntityClientCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/entity_client",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
+) -> EmptyObject | ErrorMessage | EntityClient | ErrorMessage | None:
     if response.status_code == 201:
-        response_201 = EntityClientResponse.from_dict(response.json())
+        response_201 = EntityClient.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
+) -> Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,20 +110,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
+    body: EntityClientCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]
+        Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -141,20 +140,20 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
+    body: EntityClientCreateRequest,
+) -> EmptyObject | ErrorMessage | EntityClient | ErrorMessage | None:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage
+        EmptyObject | ErrorMessage | EntityClient | ErrorMessage
     """
 
     return sync_detailed(
@@ -166,20 +165,20 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
+    body: EntityClientCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]
+        Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -194,20 +193,20 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
+    body: EntityClientCreateRequest,
+) -> EmptyObject | ErrorMessage | EntityClient | ErrorMessage | None:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage
+        EmptyObject | ErrorMessage | EntityClient | ErrorMessage
     """
 
     return (

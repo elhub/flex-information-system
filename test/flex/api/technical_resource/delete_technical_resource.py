@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from typing import Any, cast
-from urllib.parse import quote
 
 import httpx
 
@@ -8,25 +7,22 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     id: int,
     *,
-    body: EmptyObject | Unset = UNSET,
+    body: EmptyObject,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
     _kwargs: dict[str, Any] = {
         "method": "delete",
-        "url": "/technical_resource/{id}".format(
-            id=quote(str(id), safe=""),
-        ),
+        "url": f"/technical_resource/{id}",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -103,13 +99,13 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject | Unset = UNSET,
+    body: EmptyObject,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Technical Resource
 
     Args:
         id (int):
-        body (EmptyObject | Unset): An empty object
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -135,13 +131,13 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject | Unset = UNSET,
+    body: EmptyObject,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Technical Resource
 
     Args:
         id (int):
-        body (EmptyObject | Unset): An empty object
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -162,13 +158,13 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject | Unset = UNSET,
+    body: EmptyObject,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Technical Resource
 
     Args:
         id (int):
-        body (EmptyObject | Unset): An empty object
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -192,13 +188,13 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject | Unset = UNSET,
+    body: EmptyObject,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Technical Resource
 
     Args:
         id (int):
-        body (EmptyObject | Unset): An empty object
+        body (EmptyObject): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

@@ -7,14 +7,14 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.service_providing_group import ServiceProvidingGroup
 from ...models.service_providing_group_create_request import ServiceProvidingGroupCreateRequest
-from ...models.service_providing_group_response import ServiceProvidingGroupResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/service_providing_group",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
     if response.status_code == 201:
-        response_201 = ServiceProvidingGroupResponse.from_dict(response.json())
+        response_201 = ServiceProvidingGroup.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,20 +110,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
+    body: ServiceProvidingGroupCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]
     """
 
     kwargs = _get_kwargs(
@@ -141,20 +140,20 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
+    body: ServiceProvidingGroupCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup
     """
 
     return sync_detailed(
@@ -166,20 +165,20 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
+    body: ServiceProvidingGroupCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]
     """
 
     kwargs = _get_kwargs(
@@ -194,20 +193,20 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
+    body: ServiceProvidingGroupCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup
     """
 
     return (

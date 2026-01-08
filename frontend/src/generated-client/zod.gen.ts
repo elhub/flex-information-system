@@ -27,21 +27,6 @@ export const zAuthScope = z.enum([
   "manage:auth",
 ]);
 
-export const zAuditFields = z.object({
-  recorded_at: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      z.string().readonly().optional(),
-    ),
-  ),
-  recorded_by: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      z.int().readonly().optional(),
-    ),
-  ),
-});
-
 /**
  * Request schema for controllable unit lookup operations
  */
@@ -425,12 +410,14 @@ export const zControllableUnitUpdateRequest = z.object({
       z.iso.date().optional(),
     ),
   ),
-  status: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zControllableUnitStatus.optional(),
-    ),
-  ),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zControllableUnitStatus.optional(),
+      ),
+    )
+    .default("new"),
   regulation_direction: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -478,12 +465,14 @@ export const zControllableUnitUpdateRequest = z.object({
         .optional(),
     ),
   ),
-  grid_validation_status: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zControllableUnitGridValidationStatus.optional(),
-    ),
-  ),
+  grid_validation_status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zControllableUnitGridValidationStatus.optional(),
+      ),
+    )
+    .default("pending"),
   grid_validation_notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -499,64 +488,166 @@ export const zControllableUnitUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Controllable unit
- */
-export const zControllableUnitCreateData = zControllableUnitUpdateRequest.and(
-  z.object({
-    accounting_point_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-  }),
-);
-
-/**
  * Request schema for create operations - Controllable unit
  */
-export const zControllableUnitCreateRequest = zControllableUnitCreateData.and(
-  z.unknown(),
-);
+export const zControllableUnitCreateRequest = z.object({
+  name: z.string().max(512),
+  start_date: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.date().optional(),
+    ),
+  ),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zControllableUnitStatus.optional(),
+      ),
+    )
+    .default("new"),
+  regulation_direction: zControllableUnitRegulationDirection,
+  maximum_available_capacity: z.number().gte(0).lte(999999.999),
+  minimum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  maximum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  recovery_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  ramp_rate: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.number().gte(0.001).optional(),
+    ),
+  ),
+  accounting_point_id: z.int(),
+  grid_node_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
+  grid_validation_status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zControllableUnitGridValidationStatus.optional(),
+      ),
+    )
+    .default("pending"),
+  grid_validation_notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  validated_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
  * Data schema - Controllable unit
  */
-export const zControllableUnit = zControllableUnitCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-      business_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z
-            .string()
-            .regex(
-              /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-            )
-            .readonly()
-            .optional(),
-        ),
-      ),
-      is_small: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.boolean().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zControllableUnit = z.object({
+  id: z.int().readonly(),
+  business_id: z
+    .string()
+    .regex(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    )
+    .readonly(),
+  name: z.string().max(512),
+  start_date: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.date().optional(),
+    ),
+  ),
+  status: zControllableUnitStatus.default("new"),
+  regulation_direction: zControllableUnitRegulationDirection,
+  maximum_available_capacity: z.number().gte(0).lte(999999.999),
+  is_small: z.boolean().readonly(),
+  minimum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  maximum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  recovery_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  ramp_rate: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.number().gte(0.001).optional(),
+    ),
+  ),
+  accounting_point_id: z.int(),
+  grid_node_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
+  grid_validation_status:
+    zControllableUnitGridValidationStatus.default("pending"),
+  grid_validation_notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  validated_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Controllable unit
+ * Controllable unit Response
+ *
+ * Response schema - Controllable unit
  */
-export const zControllableUnitResponse = zControllableUnit.and(z.unknown());
+export const zControllableUnitResponse = zControllableUnit;
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
@@ -571,64 +662,50 @@ export const zControllableUnitSuspensionUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
- */
-export const zControllableUnitSuspensionCreateData =
-  zControllableUnitSuspensionUpdateRequest.and(
-    z.object({
-      controllable_unit_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      impacted_system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export const zControllableUnitSuspensionCreateRequest =
-  zControllableUnitSuspensionCreateData.and(z.unknown());
+export const zControllableUnitSuspensionCreateRequest = z.object({
+  controllable_unit_id: z.int(),
+  impacted_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().optional(),
+    ),
+  ),
+  reason: zControllableUnitSuspensionReason,
+});
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export const zControllableUnitSuspension = zControllableUnitSuspensionCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zControllableUnitSuspension = z.object({
+  id: z.int().readonly(),
+  controllable_unit_id: z.int(),
+  impacted_system_operator_id: z.int(),
+  reason: zControllableUnitSuspensionReason,
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Controllable Unit Suspension Response
+ *
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export const zControllableUnitSuspensionResponse =
-  zControllableUnitSuspension.and(z.unknown());
+export const zControllableUnitSuspensionResponse = zControllableUnitSuspension;
 
 /**
  * Request schema for update operations - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentUpdateRequest = z.object({
-  visibility: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zControllableUnitSuspensionCommentVisibility.optional(),
-    ),
-  ),
+  visibility: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zControllableUnitSuspensionCommentVisibility.optional(),
+      ),
+    )
+    .default("same_party"),
   content: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -638,60 +715,43 @@ export const zControllableUnitSuspensionCommentUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a controllable unit suspension.
- */
-export const zControllableUnitSuspensionCommentCreateData =
-  zControllableUnitSuspensionCommentUpdateRequest.and(
-    z.object({
-      controllable_unit_suspension_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Comment made by a party involved in a controllable unit suspension.
  */
-export const zControllableUnitSuspensionCommentCreateRequest =
-  zControllableUnitSuspensionCommentCreateData.and(z.unknown());
+export const zControllableUnitSuspensionCommentCreateRequest = z.object({
+  controllable_unit_suspension_id: z.int(),
+  visibility: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zControllableUnitSuspensionCommentVisibility.optional(),
+      ),
+    )
+    .default("same_party"),
+  content: z.string().max(2048),
+});
 
 /**
  * Data schema - Comment made by a party involved in a controllable unit suspension.
  */
-export const zControllableUnitSuspensionComment =
-  zControllableUnitSuspensionCommentCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_by: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_at: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zControllableUnitSuspensionComment = z.object({
+  id: z.int().readonly(),
+  controllable_unit_suspension_id: z.int(),
+  created_by: z.int().readonly(),
+  created_at: z.string().readonly(),
+  visibility:
+    zControllableUnitSuspensionCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a controllable unit suspension.
+ * Controllable Unit Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentResponse =
-  zControllableUnitSuspensionComment.and(z.unknown());
+  zControllableUnitSuspensionComment;
 
 /**
  * Request schema for update operations - Relation between controllable unit and service provider
@@ -718,60 +778,59 @@ export const zControllableUnitServiceProviderUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Relation between controllable unit and service provider
- */
-export const zControllableUnitServiceProviderCreateData =
-  zControllableUnitServiceProviderUpdateRequest.and(
-    z.object({
-      controllable_unit_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      service_provider_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      end_user_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Relation between controllable unit and service provider
  */
-export const zControllableUnitServiceProviderCreateRequest =
-  zControllableUnitServiceProviderCreateData.and(z.unknown());
+export const zControllableUnitServiceProviderCreateRequest = z.object({
+  controllable_unit_id: z.int(),
+  service_provider_id: z.int(),
+  end_user_id: z.int(),
+  contract_reference: z.string().max(128),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
  * Data schema - Relation between controllable unit and service provider
  */
-export const zControllableUnitServiceProvider =
-  zControllableUnitServiceProviderCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zControllableUnitServiceProvider = z.object({
+  id: z.int().readonly(),
+  controllable_unit_id: z.int(),
+  service_provider_id: z.int(),
+  end_user_id: z.int(),
+  contract_reference: z.string().max(128),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Relation between controllable unit and service provider
+ * Relation between controllable unit and service provider Response
+ *
+ * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderResponse =
-  zControllableUnitServiceProvider.and(z.unknown());
+  zControllableUnitServiceProvider;
 
 /**
  * Request schema for update operations - Group of controllable units
@@ -789,57 +848,52 @@ export const zServiceProvidingGroupUpdateRequest = z.object({
       zServiceProvidingGroupBiddingZone.optional(),
     ),
   ),
-  status: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zServiceProvidingGroupStatus.optional(),
-    ),
-  ),
-});
-
-/**
- * Data of the request schema for create operations - Group of controllable units
- */
-export const zServiceProvidingGroupCreateData =
-  zServiceProvidingGroupUpdateRequest.and(
-    z.object({
-      service_provider_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupStatus.optional(),
       ),
-    }),
-  );
+    )
+    .default("new"),
+});
 
 /**
  * Request schema for create operations - Group of controllable units
  */
-export const zServiceProvidingGroupCreateRequest =
-  zServiceProvidingGroupCreateData.and(z.unknown());
+export const zServiceProvidingGroupCreateRequest = z.object({
+  name: z.string().max(128),
+  service_provider_id: z.int(),
+  bidding_zone: zServiceProvidingGroupBiddingZone,
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupStatus.optional(),
+      ),
+    )
+    .default("new"),
+});
 
 /**
  * Data schema - Group of controllable units
  */
-export const zServiceProvidingGroup = zServiceProvidingGroupCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zServiceProvidingGroup = z.object({
+  id: z.int().readonly(),
+  name: z.string().max(128),
+  service_provider_id: z.int(),
+  bidding_zone: zServiceProvidingGroupBiddingZone,
+  status: zServiceProvidingGroupStatus.default("new"),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Group of controllable units
+ * Service providing group Response
+ *
+ * Response schema - Group of controllable units
  */
-export const zServiceProvidingGroupResponse = zServiceProvidingGroup.and(
-  z.unknown(),
-);
+export const zServiceProvidingGroupResponse = zServiceProvidingGroup;
 
 /**
  * Request schema for update operations - Membership relation of controllable unit in service providing group
@@ -860,66 +914,59 @@ export const zServiceProvidingGroupMembershipUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Membership relation of controllable unit in service providing group
- */
-export const zServiceProvidingGroupMembershipCreateData =
-  zServiceProvidingGroupMembershipUpdateRequest.and(
-    z.object({
-      controllable_unit_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      service_providing_group_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Membership relation of controllable unit in service providing group
  */
-export const zServiceProvidingGroupMembershipCreateRequest =
-  zServiceProvidingGroupMembershipCreateData.and(z.unknown());
+export const zServiceProvidingGroupMembershipCreateRequest = z.object({
+  controllable_unit_id: z.int(),
+  service_providing_group_id: z.int(),
+  valid_from: z.string(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
  * Data schema - Membership relation of controllable unit in service providing group
  */
-export const zServiceProvidingGroupMembership =
-  zServiceProvidingGroupMembershipCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupMembership = z.object({
+  id: z.int().readonly(),
+  controllable_unit_id: z.int(),
+  service_providing_group_id: z.int(),
+  valid_from: z.string(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Membership relation of controllable unit in service providing group
+ * Membership relation of controllable unit in service providing group Response
+ *
+ * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipResponse =
-  zServiceProvidingGroupMembership.and(z.unknown());
+  zServiceProvidingGroupMembership;
 
 /**
  * Request schema for update operations - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationUpdateRequest = z.object(
   {
-    status: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupGridPrequalificationStatus.optional(),
-      ),
-    ),
+    status: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupGridPrequalificationStatus.optional(),
+        ),
+      )
+      .default("requested"),
     prequalified_at: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -930,66 +977,68 @@ export const zServiceProvidingGroupGridPrequalificationUpdateRequest = z.object(
 );
 
 /**
- * Data of the request schema for create operations - Grid prequalification for service providing group
- */
-export const zServiceProvidingGroupGridPrequalificationCreateData =
-  zServiceProvidingGroupGridPrequalificationUpdateRequest.and(
-    z.object({
-      service_providing_group_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      impacted_system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Grid prequalification for service providing group
  */
-export const zServiceProvidingGroupGridPrequalificationCreateRequest =
-  zServiceProvidingGroupGridPrequalificationCreateData.and(z.unknown());
+export const zServiceProvidingGroupGridPrequalificationCreateRequest = z.object(
+  {
+    service_providing_group_id: z.int(),
+    impacted_system_operator_id: z.int(),
+    status: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupGridPrequalificationStatus.optional(),
+        ),
+      )
+      .default("requested"),
+    prequalified_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().optional(),
+      ),
+    ),
+  },
+);
 
 /**
  * Data schema - Grid prequalification for service providing group
  */
-export const zServiceProvidingGroupGridPrequalification =
-  zServiceProvidingGroupGridPrequalificationCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupGridPrequalification = z.object({
+  id: z.int().readonly(),
+  service_providing_group_id: z.int(),
+  impacted_system_operator_id: z.int(),
+  status: zServiceProvidingGroupGridPrequalificationStatus.default("requested"),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Grid prequalification for service providing group
+ * Grid prequalification for service providing group Response
+ *
+ * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationResponse =
-  zServiceProvidingGroupGridPrequalification.and(z.unknown());
+  zServiceProvidingGroupGridPrequalification;
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
   z.object({
-    visibility: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
-      ),
-    ),
+    visibility: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
+        ),
+      )
+      .default("same_party"),
     content: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -999,60 +1048,46 @@ export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
   });
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service providing group grid prequalification.
- */
-export const zServiceProvidingGroupGridPrequalificationCommentCreateData =
-  zServiceProvidingGroupGridPrequalificationCommentUpdateRequest.and(
-    z.object({
-      service_providing_group_grid_prequalification_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentCreateRequest =
-  zServiceProvidingGroupGridPrequalificationCommentCreateData.and(z.unknown());
+  z.object({
+    service_providing_group_grid_prequalification_id: z.int(),
+    visibility: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
+        ),
+      )
+      .default("same_party"),
+    content: z.string().max(2048),
+  });
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid prequalification.
  */
-export const zServiceProvidingGroupGridPrequalificationComment =
-  zServiceProvidingGroupGridPrequalificationCommentCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_by: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_at: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupGridPrequalificationComment = z.object({
+  id: z.int().readonly(),
+  service_providing_group_grid_prequalification_id: z.int(),
+  created_by: z.int().readonly(),
+  created_at: z.string().readonly(),
+  visibility:
+    zServiceProvidingGroupGridPrequalificationCommentVisibility.default(
+      "same_party",
+    ),
+  content: z.string().max(2048),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid prequalification.
+ * Grid prequalification for service providing group Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentResponse =
-  zServiceProvidingGroupGridPrequalificationComment.and(z.unknown());
+  zServiceProvidingGroupGridPrequalificationComment;
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
@@ -1067,66 +1102,52 @@ export const zServiceProvidingGroupGridSuspensionUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
- */
-export const zServiceProvidingGroupGridSuspensionCreateData =
-  zServiceProvidingGroupGridSuspensionUpdateRequest.and(
-    z.object({
-      impacted_system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      service_providing_group_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
-export const zServiceProvidingGroupGridSuspensionCreateRequest =
-  zServiceProvidingGroupGridSuspensionCreateData.and(z.unknown());
+export const zServiceProvidingGroupGridSuspensionCreateRequest = z.object({
+  impacted_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().optional(),
+    ),
+  ),
+  service_providing_group_id: z.int(),
+  reason: zServiceProvidingGroupGridSuspensionReason,
+});
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
-export const zServiceProvidingGroupGridSuspension =
-  zServiceProvidingGroupGridSuspensionCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupGridSuspension = z.object({
+  id: z.int().readonly(),
+  impacted_system_operator_id: z.int(),
+  service_providing_group_id: z.int(),
+  reason: zServiceProvidingGroupGridSuspensionReason,
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ * Service Providing Group Grid Suspension Response
+ *
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionResponse =
-  zServiceProvidingGroupGridSuspension.and(z.unknown());
+  zServiceProvidingGroupGridSuspension;
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentUpdateRequest =
   z.object({
-    visibility: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
-      ),
-    ),
+    visibility: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
+        ),
+      )
+      .default("same_party"),
     content: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -1136,60 +1157,44 @@ export const zServiceProvidingGroupGridSuspensionCommentUpdateRequest =
   });
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service providing group grid suspension.
- */
-export const zServiceProvidingGroupGridSuspensionCommentCreateData =
-  zServiceProvidingGroupGridSuspensionCommentUpdateRequest.and(
-    z.object({
-      service_providing_group_grid_suspension_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
-  zServiceProvidingGroupGridSuspensionCommentCreateData.and(z.unknown());
+  z.object({
+    service_providing_group_grid_suspension_id: z.int(),
+    visibility: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
+        ),
+      )
+      .default("same_party"),
+    content: z.string().max(2048),
+  });
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid suspension.
  */
-export const zServiceProvidingGroupGridSuspensionComment =
-  zServiceProvidingGroupGridSuspensionCommentCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_by: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_at: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupGridSuspensionComment = z.object({
+  id: z.int().readonly(),
+  service_providing_group_grid_suspension_id: z.int(),
+  created_by: z.int().readonly(),
+  created_at: z.string().readonly(),
+  visibility:
+    zServiceProvidingGroupGridSuspensionCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid suspension.
+ * Service Providing Group Grid Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentResponse =
-  zServiceProvidingGroupGridSuspensionComment.and(z.unknown());
+  zServiceProvidingGroupGridSuspensionComment;
 
 /**
  * Request schema for update operations - Entity - Natural or legal person
@@ -1223,27 +1228,6 @@ export const zEntityUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Entity - Natural or legal person
- *
- * An entity is a natural or legal person that can be a party in the Flexibility Information System.
- *
- * Example entity types:
- *
- * * Person
- * * Organisation
- */
-export const zEntityCreateData = zEntityUpdateRequest.and(
-  z.object({
-    business_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-  }),
-);
-
-/**
  * Request schema for create operations - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
@@ -1253,7 +1237,12 @@ export const zEntityCreateData = zEntityUpdateRequest.and(
  * * Person
  * * Organisation
  */
-export const zEntityCreateRequest = zEntityCreateData.and(z.unknown());
+export const zEntityCreateRequest = z.object({
+  business_id: z.string(),
+  business_id_type: zEntityBusinessIdType,
+  name: z.string(),
+  type: zEntityType,
+});
 
 /**
  * Data schema - Entity - Natural or legal person
@@ -1265,21 +1254,20 @@ export const zEntityCreateRequest = zEntityCreateData.and(z.unknown());
  * * Person
  * * Organisation
  */
-export const zEntity = zEntityCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zEntity = z.object({
+  id: z.int().readonly(),
+  business_id: z.string(),
+  business_id_type: zEntityBusinessIdType,
+  name: z.string(),
+  type: zEntityType,
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Entity - Natural or legal person
+ * Entity Response
+ *
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -1288,7 +1276,7 @@ export const zEntity = zEntityCreateData
  * * Person
  * * Organisation
  */
-export const zEntityResponse = zEntity.and(z.unknown());
+export const zEntityResponse = zEntity;
 
 /**
  * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
@@ -1338,46 +1326,80 @@ export const zEntityClientUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
- */
-export const zEntityClientCreateData = zEntityClientUpdateRequest.and(
-  z.object({
-    entity_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-  }),
-);
-
-/**
  * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export const zEntityClientCreateRequest = zEntityClientCreateData.and(
-  z.unknown(),
-);
+export const zEntityClientCreateRequest = z.object({
+  entity_id: z.int(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(256).optional(),
+    ),
+  ),
+  client_id: z.string(),
+  party_id: z.int(),
+  scopes: z.array(zAuthScope),
+  client_secret: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().min(12).optional(),
+    ),
+  ),
+  public_key: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+        )
+        .optional(),
+    ),
+  ),
+});
 
 /**
  * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export const zEntityClient = zEntityClientCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zEntityClient = z.object({
+  id: z.int().readonly(),
+  entity_id: z.int(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(256).optional(),
+    ),
+  ),
+  client_id: z.string(),
+  party_id: z.int(),
+  scopes: z.array(zAuthScope),
+  client_secret: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().min(12).optional(),
+    ),
+  ),
+  public_key: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+        )
+        .optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Entity client Response
+ *
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export const zEntityClientResponse = zEntityClient.and(z.unknown());
+export const zEntityClientResponse = zEntityClient;
 
 /**
  * Request schema for update operations - The body that interacts with the Flexibility Information System
@@ -1391,12 +1413,14 @@ export const zEntityClientResponse = zEntityClient.and(z.unknown());
  * * End User
  */
 export const zPartyUpdateRequest = z.object({
-  business_id_type: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zPartyBusinessIdType.optional(),
-    ),
-  ),
+  business_id_type: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zPartyBusinessIdType.optional(),
+      ),
+    )
+    .default("uuid"),
   name: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1415,41 +1439,15 @@ export const zPartyUpdateRequest = z.object({
       zPartyType.optional(),
     ),
   ),
-  status: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zPartyStatus.optional(),
-    ),
-  ),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zPartyStatus.optional(),
+      ),
+    )
+    .default("new"),
 });
-
-/**
- * Data of the request schema for create operations - The body that interacts with the Flexibility Information System
- *
- * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
- *
- * Example party types:
- *
- * * Service Provider
- * * System Operator
- * * End User
- */
-export const zPartyCreateData = zPartyUpdateRequest.and(
-  z.object({
-    business_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().optional(),
-      ),
-    ),
-    entity_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-  }),
-);
 
 /**
  * Request schema for create operations - The body that interacts with the Flexibility Information System
@@ -1462,7 +1460,34 @@ export const zPartyCreateData = zPartyUpdateRequest.and(
  * * System Operator
  * * End User
  */
-export const zPartyCreateRequest = zPartyCreateData.and(z.unknown());
+export const zPartyCreateRequest = z.object({
+  business_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  business_id_type: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zPartyBusinessIdType.optional(),
+      ),
+    )
+    .default("uuid"),
+  entity_id: z.int(),
+  name: z.string(),
+  role: zPartyRole,
+  type: zPartyType,
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zPartyStatus.optional(),
+      ),
+    )
+    .default("new"),
+});
 
 /**
  * Data schema - The body that interacts with the Flexibility Information System
@@ -1475,18 +1500,18 @@ export const zPartyCreateRequest = zPartyCreateData.and(z.unknown());
  * * System Operator
  * * End User
  */
-export const zParty = zPartyCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zParty = z.object({
+  id: z.int().readonly(),
+  business_id: z.string(),
+  business_id_type: zPartyBusinessIdType.default("uuid"),
+  entity_id: z.int(),
+  name: z.string(),
+  role: zPartyRole,
+  type: zPartyType,
+  status: zPartyStatus.default("new"),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.missing
@@ -1532,7 +1557,9 @@ export const zNoticeData = z.union([
 ]);
 
 /**
- * Response schema for operations with return values - The body that interacts with the Flexibility Information System
+ * Party Response
+ *
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -1542,7 +1569,7 @@ export const zNoticeData = z.union([
  * * System Operator
  * * End User
  */
-export const zPartyResponse = zParty.and(z.unknown());
+export const zPartyResponse = zParty;
 
 /**
  * Request schema for update operations - The relation between a party and entity.
@@ -1557,105 +1584,60 @@ export const zPartyMembershipUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - The relation between a party and entity.
- */
-export const zPartyMembershipCreateData = zPartyMembershipUpdateRequest.and(
-  z.object({
-    party_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-    entity_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-  }),
-);
-
-/**
  * Request schema for create operations - The relation between a party and entity.
  */
-export const zPartyMembershipCreateRequest = zPartyMembershipCreateData.and(
-  z.unknown(),
-);
+export const zPartyMembershipCreateRequest = z.object({
+  party_id: z.int(),
+  entity_id: z.int(),
+  scopes: z.array(zAuthScope),
+});
 
 /**
  * Data schema - The relation between a party and entity.
  */
-export const zPartyMembership = zPartyMembershipCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zPartyMembership = z.object({
+  id: z.int().readonly(),
+  party_id: z.int(),
+  entity_id: z.int(),
+  scopes: z.array(zAuthScope),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - The relation between a party and entity.
+ * Party Membership Response
+ *
+ * Response schema - The relation between a party and entity.
  */
-export const zPartyMembershipResponse = zPartyMembership.and(z.unknown());
-
-/**
- * Request schema for update operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
- */
-export const zIdentityUpdateRequest = z.record(z.string(), z.unknown());
-
-/**
- * Data of the request schema for create operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
- */
-export const zIdentityCreateData = zIdentityUpdateRequest;
+export const zPartyMembershipResponse = zPartyMembership;
 
 /**
  * Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
-export const zIdentity = zIdentityCreateData.and(
-  z.object({
-    id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().readonly().optional(),
-      ),
+export const zIdentity = z.object({
+  id: z.int().readonly(),
+  entity_id: z.int().readonly(),
+  entity_name: z.string().readonly(),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().readonly().optional(),
     ),
-    entity_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().readonly().optional(),
-      ),
+  ),
+  party_name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
     ),
-    entity_name: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-    party_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().readonly().optional(),
-      ),
-    ),
-    party_name: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-  }),
-);
+  ),
+});
 
 /**
- * Response schema for operations with return values - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ * Identity Response
+ *
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
-export const zIdentityResponse = zIdentity.and(z.unknown());
+export const zIdentityResponse = zIdentity;
 
 /**
  * Request schema for update operations - Technical unit being part of a controllable unit.
@@ -1676,115 +1658,78 @@ export const zTechnicalResourceUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Technical unit being part of a controllable unit.
- */
-export const zTechnicalResourceCreateData = zTechnicalResourceUpdateRequest.and(
-  z.object({
-    controllable_unit_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-  }),
-);
-
-/**
  * Request schema for create operations - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResourceCreateRequest = zTechnicalResourceCreateData.and(
-  z.unknown(),
-);
+export const zTechnicalResourceCreateRequest = z.object({
+  name: z.string(),
+  controllable_unit_id: z.int(),
+  details: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(1024).optional(),
+    ),
+  ),
+});
 
 /**
  * Data schema - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResource = zTechnicalResourceCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zTechnicalResource = z.object({
+  id: z.int().readonly(),
+  name: z.string(),
+  controllable_unit_id: z.int(),
+  details: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(1024).optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Technical unit being part of a controllable unit.
+ * Technical Resource Response
+ *
+ * Response schema - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResourceResponse = zTechnicalResource.and(z.unknown());
-
-/**
- * Request schema for update operations - Event happening in the system.
- */
-export const zEventUpdateRequest = z.record(z.string(), z.unknown());
-
-/**
- * Data of the request schema for create operations - Event happening in the system.
- */
-export const zEventCreateData = zEventUpdateRequest;
+export const zTechnicalResourceResponse = zTechnicalResource;
 
 /**
  * Data schema - Event happening in the system.
  */
-export const zEvent = zEventCreateData.and(
-  z.object({
-    id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().readonly().optional(),
-      ),
+export const zEvent = z.object({
+  id: z.int().readonly(),
+  specversion: z.string().readonly(),
+  time: z.string().readonly(),
+  type: z
+    .string()
+    .regex(/^no.elhub.flex./)
+    .readonly(),
+  source: z
+    .string()
+    .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
+    .readonly(),
+  subject: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
     ),
-    specversion: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
+  ),
+  data: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
     ),
-    time: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-    type: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z
-          .string()
-          .regex(/^no.elhub.flex./)
-          .readonly()
-          .optional(),
-      ),
-    ),
-    source: z.optional(
-      z
-        .string()
-        .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
-        .readonly(),
-    ),
-    subject: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-    data: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-  }),
-);
+  ),
+});
 
 /**
- * Response schema for operations with return values - Event happening in the system.
+ * Event Response
+ *
+ * Response schema - Event happening in the system.
  */
-export const zEventResponse = zEvent.and(z.unknown());
+export const zEventResponse = zEvent;
 
 /**
  * Request schema for update operations - Notification about an event happening in the system.
@@ -1799,316 +1744,158 @@ export const zNotificationUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Notification about an event happening in the system.
- */
-export const zNotificationCreateData = zNotificationUpdateRequest.and(
-  z.object({
-    event_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-    party_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().optional(),
-      ),
-    ),
-  }),
-);
-
-/**
  * Data schema - Notification about an event happening in the system.
  */
-export const zNotification = zNotificationCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zNotification = z.object({
+  id: z.int().readonly(),
+  acknowledged: z.boolean(),
+  event_id: z.int(),
+  party_id: z.int(),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Notification about an event happening in the system.
+ * Notification Response
+ *
+ * Response schema - Notification about an event happening in the system.
  */
-export const zNotificationResponse = zNotification.and(z.unknown());
-
-/**
- * Request schema for update operations - Accounting point for a controllable unit.
- */
-export const zAccountingPointUpdateRequest = z.record(z.string(), z.unknown());
-
-/**
- * Data of the request schema for create operations - Accounting point for a controllable unit.
- */
-export const zAccountingPointCreateData = zAccountingPointUpdateRequest;
+export const zNotificationResponse = zNotification;
 
 /**
  * Data schema - Accounting point for a controllable unit.
  */
-export const zAccountingPoint = zAccountingPointCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-      business_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z
-            .string()
-            .regex(/^[1-9][0-9]{17}$/)
-            .readonly()
-            .optional(),
-        ),
-      ),
-      system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zAccountingPoint = z.object({
+  id: z.int().readonly(),
+  business_id: z
+    .string()
+    .regex(/^[1-9][0-9]{17}$/)
+    .readonly(),
+  system_operator_id: z.int().readonly(),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Accounting point for a controllable unit.
+ * Accounting Point Response
+ *
+ * Response schema - Accounting point for a controllable unit.
  */
-export const zAccountingPointResponse = zAccountingPoint.and(z.unknown());
+export const zAccountingPointResponse = zAccountingPoint;
 
 /**
- * Request schema for update operations - Relation linking a balance responsible party to an accounting point.
+ * Data schema - Relation linking a balance responsible party to an accounting point.
  */
-export const zAccountingPointBalanceResponsiblePartyUpdateRequest = z.object({
-  energy_direction: z.optional(
+export const zAccountingPointBalanceResponsibleParty = z.object({
+  accounting_point_id: z.int().readonly(),
+  balance_responsible_party_id: z.int().readonly(),
+  energy_direction: zAccountingPointBalanceResponsiblePartyEnergyDirection,
+  valid_from: z.string().readonly(),
+  valid_to: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      zAccountingPointBalanceResponsiblePartyEnergyDirection.optional(),
+      z.string().readonly().optional(),
     ),
   ),
 });
 
 /**
- * Data of the request schema for create operations - Relation linking a balance responsible party to an accounting point.
- */
-export const zAccountingPointBalanceResponsiblePartyCreateData =
-  zAccountingPointBalanceResponsiblePartyUpdateRequest;
-
-/**
- * Data schema - Relation linking a balance responsible party to an accounting point.
- */
-export const zAccountingPointBalanceResponsibleParty =
-  zAccountingPointBalanceResponsiblePartyCreateData.and(
-    z.object({
-      accounting_point_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-      balance_responsible_party_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-      valid_from: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().readonly().optional(),
-        ),
-      ),
-      valid_to: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().readonly().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
- * Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.
+ * Accounting Point Balance Responsible Party Response
+ *
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export const zAccountingPointBalanceResponsiblePartyResponse =
-  zAccountingPointBalanceResponsibleParty.and(z.unknown());
-
-/**
- * Request schema for update operations - Relation linking an energy supplier to an accounting point.
- */
-export const zAccountingPointEnergySupplierUpdateRequest = z.record(
-  z.string(),
-  z.unknown(),
-);
-
-/**
- * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
- */
-export const zAccountingPointEnergySupplierCreateData =
-  zAccountingPointEnergySupplierUpdateRequest;
+  zAccountingPointBalanceResponsibleParty;
 
 /**
  * Data schema - Relation linking an energy supplier to an accounting point.
  */
-export const zAccountingPointEnergySupplier =
-  zAccountingPointEnergySupplierCreateData.and(
-    z.object({
-      accounting_point_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-      energy_supplier_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-      valid_from: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().readonly().optional(),
-        ),
-      ),
-      valid_to: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().readonly().optional(),
-        ),
-      ),
-    }),
-  );
+export const zAccountingPointEnergySupplier = z.object({
+  accounting_point_id: z.int().readonly(),
+  energy_supplier_id: z.int().readonly(),
+  valid_from: z.string().readonly(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Relation linking an energy supplier to an accounting point.
+ * Accounting Point Energy Supplier Response
+ *
+ * Response schema - Relation linking an energy supplier to an accounting point.
  */
 export const zAccountingPointEnergySupplierResponse =
-  zAccountingPointEnergySupplier.and(z.unknown());
-
-/**
- * Request schema for update operations - Product type.
- */
-export const zProductTypeUpdateRequest = z.record(z.string(), z.unknown());
-
-/**
- * Data of the request schema for create operations - Product type.
- */
-export const zProductTypeCreateData = zProductTypeUpdateRequest;
+  zAccountingPointEnergySupplier;
 
 /**
  * Data schema - Product type.
  */
-export const zProductType = zProductTypeCreateData.and(
-  z.object({
-    id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().readonly().optional(),
-      ),
-    ),
-    business_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-    name: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().max(64).readonly().optional(),
-      ),
-    ),
-    service: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-    products: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.string().readonly().optional(),
-      ),
-    ),
-  }),
-);
+export const zProductType = z.object({
+  id: z.int().readonly(),
+  business_id: z.string().readonly(),
+  name: z.string().max(64).readonly(),
+  service: z.string().readonly(),
+  products: z.string().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Product type.
+ * Product Type Response
+ *
+ * Response schema - Product type.
  */
-export const zProductTypeResponse = zProductType.and(z.unknown());
+export const zProductTypeResponse = zProductType;
 
 /**
  * Request schema for update operations - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeUpdateRequest = z.object({
-  status: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zSystemOperatorProductTypeStatus.optional(),
-    ),
-  ),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zSystemOperatorProductTypeStatus.optional(),
+      ),
+    )
+    .default("active"),
 });
-
-/**
- * Data of the request schema for create operations - Relation between a system operator and a product type they want to buy.
- */
-export const zSystemOperatorProductTypeCreateData =
-  zSystemOperatorProductTypeUpdateRequest.and(
-    z.object({
-      system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      product_type_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
 
 /**
  * Request schema for create operations - Relation between a system operator and a product type they want to buy.
  */
-export const zSystemOperatorProductTypeCreateRequest =
-  zSystemOperatorProductTypeCreateData.and(z.unknown());
+export const zSystemOperatorProductTypeCreateRequest = z.object({
+  system_operator_id: z.int(),
+  product_type_id: z.int(),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zSystemOperatorProductTypeStatus.optional(),
+      ),
+    )
+    .default("active"),
+});
 
 /**
  * Data schema - Relation between a system operator and a product type they want to buy.
  */
-export const zSystemOperatorProductType = zSystemOperatorProductTypeCreateData
-  .and(
-    z.object({
-      id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().readonly().optional(),
-        ),
-      ),
-    }),
-  )
-  .and(zAuditFields);
+export const zSystemOperatorProductType = z.object({
+  id: z.int().readonly(),
+  system_operator_id: z.int(),
+  product_type_id: z.int(),
+  status: zSystemOperatorProductTypeStatus.default("active"),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Relation between a system operator and a product type they want to buy.
+ * System Operator Product Type Response
+ *
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
-export const zSystemOperatorProductTypeResponse =
-  zSystemOperatorProductType.and(z.unknown());
+export const zSystemOperatorProductTypeResponse = zSystemOperatorProductType;
 
 /**
  * Request schema for update operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
@@ -2120,12 +1907,14 @@ export const zServiceProviderProductApplicationUpdateRequest = z.object({
       z.array(z.int()).optional(),
     ),
   ),
-  status: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zServiceProviderProductApplicationStatus.optional(),
-    ),
-  ),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProviderProductApplicationStatus.optional(),
+      ),
+    )
+    .default("requested"),
   qualified_at: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2135,65 +1924,67 @@ export const zServiceProviderProductApplicationUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
- */
-export const zServiceProviderProductApplicationCreateData =
-  zServiceProviderProductApplicationUpdateRequest.and(
-    z.object({
-      service_provider_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
-export const zServiceProviderProductApplicationCreateRequest =
-  zServiceProviderProductApplicationCreateData.and(z.unknown());
+export const zServiceProviderProductApplicationCreateRequest = z.object({
+  service_provider_id: z.int(),
+  system_operator_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProviderProductApplicationStatus.optional(),
+      ),
+    )
+    .default("requested"),
+  qualified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
  * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
-export const zServiceProviderProductApplication =
-  zServiceProviderProductApplicationCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProviderProductApplication = z.object({
+  id: z.int().readonly(),
+  service_provider_id: z.int(),
+  system_operator_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  status: zServiceProviderProductApplicationStatus.default("requested"),
+  qualified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Service Provider Product Application Response
+ *
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationResponse =
-  zServiceProviderProductApplication.and(z.unknown());
+  zServiceProviderProductApplication;
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
-  visibility: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zServiceProviderProductApplicationCommentVisibility.optional(),
-    ),
-  ),
+  visibility: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProviderProductApplicationCommentVisibility.optional(),
+      ),
+    )
+    .default("same_party"),
   content: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2203,60 +1994,43 @@ export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service provider product application.
- */
-export const zServiceProviderProductApplicationCommentCreateData =
-  zServiceProviderProductApplicationCommentUpdateRequest.and(
-    z.object({
-      service_provider_product_application_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service provider product application.
  */
-export const zServiceProviderProductApplicationCommentCreateRequest =
-  zServiceProviderProductApplicationCommentCreateData.and(z.unknown());
+export const zServiceProviderProductApplicationCommentCreateRequest = z.object({
+  service_provider_product_application_id: z.int(),
+  visibility: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProviderProductApplicationCommentVisibility.optional(),
+      ),
+    )
+    .default("same_party"),
+  content: z.string().max(2048),
+});
 
 /**
  * Data schema - Comment made by a party involved in a service provider product application.
  */
-export const zServiceProviderProductApplicationComment =
-  zServiceProviderProductApplicationCommentCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_by: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_at: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProviderProductApplicationComment = z.object({
+  id: z.int().readonly(),
+  service_provider_product_application_id: z.int(),
+  created_by: z.int().readonly(),
+  created_at: z.string().readonly(),
+  visibility:
+    zServiceProviderProductApplicationCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product application.
+ * Service Provider Product Application Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentResponse =
-  zServiceProviderProductApplicationComment.and(z.unknown());
+  zServiceProviderProductApplicationComment;
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
@@ -2277,65 +2051,53 @@ export const zServiceProviderProductSuspensionUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
- */
-export const zServiceProviderProductSuspensionCreateData =
-  zServiceProviderProductSuspensionUpdateRequest.and(
-    z.object({
-      procuring_system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      service_provider_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
-export const zServiceProviderProductSuspensionCreateRequest =
-  zServiceProviderProductSuspensionCreateData.and(z.unknown());
+export const zServiceProviderProductSuspensionCreateRequest = z.object({
+  procuring_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().optional(),
+    ),
+  ),
+  service_provider_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  reason: zServiceProviderProductSuspensionReason,
+});
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
-export const zServiceProviderProductSuspension =
-  zServiceProviderProductSuspensionCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProviderProductSuspension = z.object({
+  id: z.int().readonly(),
+  procuring_system_operator_id: z.int(),
+  service_provider_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  reason: zServiceProviderProductSuspensionReason,
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ * Service Provider Product Suspension Response
+ *
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionResponse =
-  zServiceProviderProductSuspension.and(z.unknown());
+  zServiceProviderProductSuspension;
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
-  visibility: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zServiceProviderProductSuspensionCommentVisibility.optional(),
-    ),
-  ),
+  visibility: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProviderProductSuspensionCommentVisibility.optional(),
+      ),
+    )
+    .default("same_party"),
   content: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2345,60 +2107,43 @@ export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service provider product suspension.
- */
-export const zServiceProviderProductSuspensionCommentCreateData =
-  zServiceProviderProductSuspensionCommentUpdateRequest.and(
-    z.object({
-      service_provider_product_suspension_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service provider product suspension.
  */
-export const zServiceProviderProductSuspensionCommentCreateRequest =
-  zServiceProviderProductSuspensionCommentCreateData.and(z.unknown());
+export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
+  service_provider_product_suspension_id: z.int(),
+  visibility: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProviderProductSuspensionCommentVisibility.optional(),
+      ),
+    )
+    .default("same_party"),
+  content: z.string().max(2048),
+});
 
 /**
  * Data schema - Comment made by a party involved in a service provider product suspension.
  */
-export const zServiceProviderProductSuspensionComment =
-  zServiceProviderProductSuspensionCommentCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_by: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_at: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProviderProductSuspensionComment = z.object({
+  id: z.int().readonly(),
+  service_provider_product_suspension_id: z.int(),
+  created_by: z.int().readonly(),
+  created_at: z.string().readonly(),
+  visibility:
+    zServiceProviderProductSuspensionCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product suspension.
+ * Service Provider Product Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentResponse =
-  zServiceProviderProductSuspensionComment.and(z.unknown());
+  zServiceProviderProductSuspensionComment;
 
 /**
  * Request schema for update operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
@@ -2410,12 +2155,14 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
       z.array(z.int()).optional(),
     ),
   ),
-  status: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      zServiceProvidingGroupProductApplicationStatus.optional(),
-    ),
-  ),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationStatus.optional(),
+      ),
+    )
+    .default("requested"),
   notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2437,54 +2184,78 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
- */
-export const zServiceProvidingGroupProductApplicationCreateData =
-  zServiceProvidingGroupProductApplicationUpdateRequest.and(
-    z.object({
-      service_providing_group_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      procuring_system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
-export const zServiceProvidingGroupProductApplicationCreateRequest =
-  zServiceProvidingGroupProductApplicationCreateData.and(z.unknown());
+export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
+  service_providing_group_id: z.int(),
+  procuring_system_operator_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  status: z
+    .optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationStatus.optional(),
+      ),
+    )
+    .default("requested"),
+  notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  verified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
  * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
-export const zServiceProvidingGroupProductApplication =
-  zServiceProvidingGroupProductApplicationCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupProductApplication = z.object({
+  id: z.int().readonly(),
+  service_providing_group_id: z.int(),
+  procuring_system_operator_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  status: zServiceProvidingGroupProductApplicationStatus.default("requested"),
+  notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  verified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ * Service Providing Group Product Application Response
+ *
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationResponse =
-  zServiceProvidingGroupProductApplication.and(z.unknown());
+  zServiceProvidingGroupProductApplication;
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
@@ -2505,66 +2276,54 @@ export const zServiceProvidingGroupProductSuspensionUpdateRequest = z.object({
 });
 
 /**
- * Data of the request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
- */
-export const zServiceProvidingGroupProductSuspensionCreateData =
-  zServiceProvidingGroupProductSuspensionUpdateRequest.and(
-    z.object({
-      procuring_system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      service_providing_group_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
-export const zServiceProvidingGroupProductSuspensionCreateRequest =
-  zServiceProvidingGroupProductSuspensionCreateData.and(z.unknown());
+export const zServiceProvidingGroupProductSuspensionCreateRequest = z.object({
+  procuring_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().optional(),
+    ),
+  ),
+  service_providing_group_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  reason: zServiceProvidingGroupProductSuspensionReason,
+});
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
-export const zServiceProvidingGroupProductSuspension =
-  zServiceProvidingGroupProductSuspensionCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupProductSuspension = z.object({
+  id: z.int().readonly(),
+  procuring_system_operator_id: z.int(),
+  service_providing_group_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  reason: zServiceProvidingGroupProductSuspensionReason,
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ * Service Providing Group Product Suspension Response
+ *
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionResponse =
-  zServiceProvidingGroupProductSuspension.and(z.unknown());
+  zServiceProvidingGroupProductSuspension;
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentUpdateRequest =
   z.object({
-    visibility: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
-      ),
-    ),
+    visibility: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
+        ),
+      )
+      .default("same_party"),
     content: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -2574,110 +2333,73 @@ export const zServiceProvidingGroupProductSuspensionCommentUpdateRequest =
   });
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service providing group product suspension.
- */
-export const zServiceProvidingGroupProductSuspensionCommentCreateData =
-  zServiceProvidingGroupProductSuspensionCommentUpdateRequest.and(
-    z.object({
-      service_providing_group_product_suspension_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-    }),
-  );
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
-  zServiceProvidingGroupProductSuspensionCommentCreateData.and(z.unknown());
+  z.object({
+    service_providing_group_product_suspension_id: z.int(),
+    visibility: z
+      .optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
+        ),
+      )
+      .default("same_party"),
+    content: z.string().max(2048),
+  });
 
 /**
  * Data schema - Comment made by a party involved in a service providing group product suspension.
  */
-export const zServiceProvidingGroupProductSuspensionComment =
-  zServiceProvidingGroupProductSuspensionCommentCreateData
-    .and(
-      z.object({
-        id: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_by: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.int().readonly().optional(),
-          ),
-        ),
-        created_at: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().readonly().optional(),
-          ),
-        ),
-      }),
-    )
-    .and(zAuditFields);
+export const zServiceProvidingGroupProductSuspensionComment = z.object({
+  id: z.int().readonly(),
+  service_providing_group_product_suspension_id: z.int(),
+  created_by: z.int().readonly(),
+  created_at: z.string().readonly(),
+  visibility:
+    zServiceProvidingGroupProductSuspensionCommentVisibility.default(
+      "same_party",
+    ),
+  content: z.string().max(2048),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group product suspension.
+ * Service Providing Group Product Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentResponse =
-  zServiceProvidingGroupProductSuspensionComment.and(z.unknown());
-
-/**
- * Request schema for update operations - Notice to users about various issues or actions expected from them.
- */
-export const zNoticeUpdateRequest = z.record(z.string(), z.unknown());
-
-/**
- * Data of the request schema for create operations - Notice to users about various issues or actions expected from them.
- */
-export const zNoticeCreateData = zNoticeUpdateRequest;
+  zServiceProvidingGroupProductSuspensionComment;
 
 /**
  * Data schema - Notice to users about various issues or actions expected from them.
  */
-export const zNotice = zNoticeCreateData.and(
-  z.object({
-    party_id: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z.int().readonly().optional(),
-      ),
-    ),
-    type: z.optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        z
-          .string()
-          .regex(/^no.elhub.flex./)
-          .readonly()
-          .optional(),
-      ),
-    ),
-    source: z.optional(
-      z
-        .string()
-        .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
-        .readonly(),
-    ),
-  }),
-);
+export const zNotice = z.object({
+  party_id: z.int().readonly(),
+  type: z
+    .string()
+    .regex(/^no.elhub.flex./)
+    .readonly(),
+  source: z
+    .string()
+    .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
+    .readonly(),
+});
 
 /**
- * Response schema for operations with return values - Notice to users about various issues or actions expected from them.
+ * Notice Response
+ *
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
-export const zNoticeResponse = zNotice.and(z.unknown());
+export const zNoticeResponse = zNotice;
 
 /**
  * Controllable unit - history
  */
-export const zControllableUnitHistoryResponse = zControllableUnitResponse.and(
+export const zControllableUnitHistory = zControllableUnitResponse.and(
   z.object({
     controllable_unit_id: z.int(),
     replaced_by: z.optional(
@@ -2696,9 +2418,16 @@ export const zControllableUnitHistoryResponse = zControllableUnitResponse.and(
 );
 
 /**
+ * Controllable unit History Response
+ *
+ * History response schema - Controllable unit
+ */
+export const zControllableUnitHistoryResponse = zControllableUnitHistory;
+
+/**
  * Controllable Unit Suspension - history
  */
-export const zControllableUnitSuspensionHistoryResponse =
+export const zControllableUnitSuspensionHistory =
   zControllableUnitSuspensionResponse.and(
     z.object({
       controllable_unit_suspension_id: z.int(),
@@ -2718,9 +2447,17 @@ export const zControllableUnitSuspensionHistoryResponse =
   );
 
 /**
+ * Controllable Unit Suspension History Response
+ *
+ * History response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ */
+export const zControllableUnitSuspensionHistoryResponse =
+  zControllableUnitSuspensionHistory;
+
+/**
  * Controllable Unit Suspension Comment - history
  */
-export const zControllableUnitSuspensionCommentHistoryResponse =
+export const zControllableUnitSuspensionCommentHistory =
   zControllableUnitSuspensionCommentResponse.and(
     z.object({
       controllable_unit_suspension_comment_id: z.int(),
@@ -2740,9 +2477,17 @@ export const zControllableUnitSuspensionCommentHistoryResponse =
   );
 
 /**
+ * Controllable Unit Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a controllable unit suspension.
+ */
+export const zControllableUnitSuspensionCommentHistoryResponse =
+  zControllableUnitSuspensionCommentHistory;
+
+/**
  * Relation between controllable unit and service provider - history
  */
-export const zControllableUnitServiceProviderHistoryResponse =
+export const zControllableUnitServiceProviderHistory =
   zControllableUnitServiceProviderResponse.and(
     z.object({
       controllable_unit_service_provider_id: z.int(),
@@ -2762,31 +2507,46 @@ export const zControllableUnitServiceProviderHistoryResponse =
   );
 
 /**
+ * Relation between controllable unit and service provider History Response
+ *
+ * History response schema - Relation between controllable unit and service provider
+ */
+export const zControllableUnitServiceProviderHistoryResponse =
+  zControllableUnitServiceProviderHistory;
+
+/**
  * Service providing group - history
  */
+export const zServiceProvidingGroupHistory = zServiceProvidingGroupResponse.and(
+  z.object({
+    service_providing_group_id: z.int(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.int().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().optional(),
+      ),
+    ),
+  }),
+);
+
+/**
+ * Service providing group History Response
+ *
+ * History response schema - Group of controllable units
+ */
 export const zServiceProvidingGroupHistoryResponse =
-  zServiceProvidingGroupResponse.and(
-    z.object({
-      service_providing_group_id: z.int(),
-      replaced_by: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.int().optional(),
-        ),
-      ),
-      replaced_at: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-    }),
-  );
+  zServiceProvidingGroupHistory;
 
 /**
  * Membership relation of controllable unit in service providing group - history
  */
-export const zServiceProvidingGroupMembershipHistoryResponse =
+export const zServiceProvidingGroupMembershipHistory =
   zServiceProvidingGroupMembershipResponse.and(
     z.object({
       service_providing_group_membership_id: z.int(),
@@ -2806,9 +2566,17 @@ export const zServiceProvidingGroupMembershipHistoryResponse =
   );
 
 /**
+ * Membership relation of controllable unit in service providing group History Response
+ *
+ * History response schema - Membership relation of controllable unit in service providing group
+ */
+export const zServiceProvidingGroupMembershipHistoryResponse =
+  zServiceProvidingGroupMembershipHistory;
+
+/**
  * Grid prequalification for service providing group - history
  */
-export const zServiceProvidingGroupGridPrequalificationHistoryResponse =
+export const zServiceProvidingGroupGridPrequalificationHistory =
   zServiceProvidingGroupGridPrequalificationResponse.and(
     z.object({
       service_providing_group_grid_prequalification_id: z.int(),
@@ -2828,9 +2596,17 @@ export const zServiceProvidingGroupGridPrequalificationHistoryResponse =
   );
 
 /**
+ * Grid prequalification for service providing group History Response
+ *
+ * History response schema - Grid prequalification for service providing group
+ */
+export const zServiceProvidingGroupGridPrequalificationHistoryResponse =
+  zServiceProvidingGroupGridPrequalificationHistory;
+
+/**
  * Grid prequalification for service providing group Comment - history
  */
-export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
+export const zServiceProvidingGroupGridPrequalificationCommentHistory =
   zServiceProvidingGroupGridPrequalificationCommentResponse.and(
     z.object({
       service_providing_group_grid_prequalification_comment_id: z.int(),
@@ -2850,9 +2626,17 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
   );
 
 /**
+ * Grid prequalification for service providing group Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service providing group grid prequalification.
+ */
+export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
+  zServiceProvidingGroupGridPrequalificationCommentHistory;
+
+/**
  * Service Providing Group Grid Suspension - history
  */
-export const zServiceProvidingGroupGridSuspensionHistoryResponse =
+export const zServiceProvidingGroupGridSuspensionHistory =
   zServiceProvidingGroupGridSuspensionResponse.and(
     z.object({
       service_providing_group_grid_suspension_id: z.int(),
@@ -2872,9 +2656,17 @@ export const zServiceProvidingGroupGridSuspensionHistoryResponse =
   );
 
 /**
+ * Service Providing Group Grid Suspension History Response
+ *
+ * History response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ */
+export const zServiceProvidingGroupGridSuspensionHistoryResponse =
+  zServiceProvidingGroupGridSuspensionHistory;
+
+/**
  * Service Providing Group Grid Suspension Comment - history
  */
-export const zServiceProvidingGroupGridSuspensionCommentHistoryResponse =
+export const zServiceProvidingGroupGridSuspensionCommentHistory =
   zServiceProvidingGroupGridSuspensionCommentResponse.and(
     z.object({
       service_providing_group_grid_suspension_comment_id: z.int(),
@@ -2894,9 +2686,17 @@ export const zServiceProvidingGroupGridSuspensionCommentHistoryResponse =
   );
 
 /**
+ * Service Providing Group Grid Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service providing group grid suspension.
+ */
+export const zServiceProvidingGroupGridSuspensionCommentHistoryResponse =
+  zServiceProvidingGroupGridSuspensionCommentHistory;
+
+/**
  * Party - history
  */
-export const zPartyHistoryResponse = zPartyResponse.and(
+export const zPartyHistory = zPartyResponse.and(
   z.object({
     party_id: z.int(),
     replaced_by: z.optional(
@@ -2915,9 +2715,24 @@ export const zPartyHistoryResponse = zPartyResponse.and(
 );
 
 /**
+ * Party History Response
+ *
+ * History response schema - The body that interacts with the Flexibility Information System
+ *
+ * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
+ *
+ * Example party types:
+ *
+ * * Service Provider
+ * * System Operator
+ * * End User
+ */
+export const zPartyHistoryResponse = zPartyHistory;
+
+/**
  * Party Membership - history
  */
-export const zPartyMembershipHistoryResponse = zPartyMembershipResponse.and(
+export const zPartyMembershipHistory = zPartyMembershipResponse.and(
   z.object({
     party_membership_id: z.int(),
     replaced_by: z.optional(
@@ -2936,9 +2751,16 @@ export const zPartyMembershipHistoryResponse = zPartyMembershipResponse.and(
 );
 
 /**
+ * Party Membership History Response
+ *
+ * History response schema - The relation between a party and entity.
+ */
+export const zPartyMembershipHistoryResponse = zPartyMembershipHistory;
+
+/**
  * Technical Resource - history
  */
-export const zTechnicalResourceHistoryResponse = zTechnicalResourceResponse.and(
+export const zTechnicalResourceHistory = zTechnicalResourceResponse.and(
   z.object({
     technical_resource_id: z.int(),
     replaced_by: z.optional(
@@ -2957,9 +2779,16 @@ export const zTechnicalResourceHistoryResponse = zTechnicalResourceResponse.and(
 );
 
 /**
+ * Technical Resource History Response
+ *
+ * History response schema - Technical unit being part of a controllable unit.
+ */
+export const zTechnicalResourceHistoryResponse = zTechnicalResourceHistory;
+
+/**
  * System Operator Product Type - history
  */
-export const zSystemOperatorProductTypeHistoryResponse =
+export const zSystemOperatorProductTypeHistory =
   zSystemOperatorProductTypeResponse.and(
     z.object({
       system_operator_product_type_id: z.int(),
@@ -2979,9 +2808,17 @@ export const zSystemOperatorProductTypeHistoryResponse =
   );
 
 /**
+ * System Operator Product Type History Response
+ *
+ * History response schema - Relation between a system operator and a product type they want to buy.
+ */
+export const zSystemOperatorProductTypeHistoryResponse =
+  zSystemOperatorProductTypeHistory;
+
+/**
  * Service Provider Product Application - history
  */
-export const zServiceProviderProductApplicationHistoryResponse =
+export const zServiceProviderProductApplicationHistory =
   zServiceProviderProductApplicationResponse.and(
     z.object({
       service_provider_product_application_id: z.int(),
@@ -3001,9 +2838,17 @@ export const zServiceProviderProductApplicationHistoryResponse =
   );
 
 /**
+ * Service Provider Product Application History Response
+ *
+ * History response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ */
+export const zServiceProviderProductApplicationHistoryResponse =
+  zServiceProviderProductApplicationHistory;
+
+/**
  * Service Provider Product Application Comment - history
  */
-export const zServiceProviderProductApplicationCommentHistoryResponse =
+export const zServiceProviderProductApplicationCommentHistory =
   zServiceProviderProductApplicationCommentResponse.and(
     z.object({
       service_provider_product_application_comment_id: z.int(),
@@ -3023,9 +2868,17 @@ export const zServiceProviderProductApplicationCommentHistoryResponse =
   );
 
 /**
+ * Service Provider Product Application Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service provider product application.
+ */
+export const zServiceProviderProductApplicationCommentHistoryResponse =
+  zServiceProviderProductApplicationCommentHistory;
+
+/**
  * Service Provider Product Suspension - history
  */
-export const zServiceProviderProductSuspensionHistoryResponse =
+export const zServiceProviderProductSuspensionHistory =
   zServiceProviderProductSuspensionResponse.and(
     z.object({
       service_provider_product_suspension_id: z.int(),
@@ -3045,9 +2898,17 @@ export const zServiceProviderProductSuspensionHistoryResponse =
   );
 
 /**
+ * Service Provider Product Suspension History Response
+ *
+ * History response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ */
+export const zServiceProviderProductSuspensionHistoryResponse =
+  zServiceProviderProductSuspensionHistory;
+
+/**
  * Service Provider Product Suspension Comment - history
  */
-export const zServiceProviderProductSuspensionCommentHistoryResponse =
+export const zServiceProviderProductSuspensionCommentHistory =
   zServiceProviderProductSuspensionCommentResponse.and(
     z.object({
       service_provider_product_suspension_comment_id: z.int(),
@@ -3067,9 +2928,17 @@ export const zServiceProviderProductSuspensionCommentHistoryResponse =
   );
 
 /**
+ * Service Provider Product Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service provider product suspension.
+ */
+export const zServiceProviderProductSuspensionCommentHistoryResponse =
+  zServiceProviderProductSuspensionCommentHistory;
+
+/**
  * Service Providing Group Product Application - history
  */
-export const zServiceProvidingGroupProductApplicationHistoryResponse =
+export const zServiceProvidingGroupProductApplicationHistory =
   zServiceProvidingGroupProductApplicationResponse.and(
     z.object({
       service_providing_group_product_application_id: z.int(),
@@ -3089,9 +2958,17 @@ export const zServiceProvidingGroupProductApplicationHistoryResponse =
   );
 
 /**
+ * Service Providing Group Product Application History Response
+ *
+ * History response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ */
+export const zServiceProvidingGroupProductApplicationHistoryResponse =
+  zServiceProvidingGroupProductApplicationHistory;
+
+/**
  * Service Providing Group Product Suspension - history
  */
-export const zServiceProvidingGroupProductSuspensionHistoryResponse =
+export const zServiceProvidingGroupProductSuspensionHistory =
   zServiceProvidingGroupProductSuspensionResponse.and(
     z.object({
       service_providing_group_product_suspension_id: z.int(),
@@ -3111,9 +2988,17 @@ export const zServiceProvidingGroupProductSuspensionHistoryResponse =
   );
 
 /**
+ * Service Providing Group Product Suspension History Response
+ *
+ * History response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ */
+export const zServiceProvidingGroupProductSuspensionHistoryResponse =
+  zServiceProvidingGroupProductSuspensionHistory;
+
+/**
  * Service Providing Group Product Suspension Comment - history
  */
-export const zServiceProvidingGroupProductSuspensionCommentHistoryResponse =
+export const zServiceProvidingGroupProductSuspensionCommentHistory =
   zServiceProvidingGroupProductSuspensionCommentResponse.and(
     z.object({
       service_providing_group_product_suspension_comment_id: z.int(),
@@ -3133,6 +3018,14 @@ export const zServiceProvidingGroupProductSuspensionCommentHistoryResponse =
   );
 
 /**
+ * Service Providing Group Product Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service providing group product suspension.
+ */
+export const zServiceProvidingGroupProductSuspensionCommentHistoryResponse =
+  zServiceProvidingGroupProductSuspensionCommentHistory;
+
+/**
  * An empty object
  */
 export const zEmptyObjectWritable = z.record(z.string(), z.never());
@@ -3140,124 +3033,260 @@ export const zEmptyObjectWritable = z.record(z.string(), z.never());
 /**
  * Data schema - Controllable unit
  */
-export const zControllableUnitWritable = zControllableUnitCreateData.and(
-  z.unknown(),
-);
+export const zControllableUnitWritable = z.object({
+  name: z.string().max(512),
+  start_date: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.date().optional(),
+    ),
+  ),
+  status: zControllableUnitStatus.default("new"),
+  regulation_direction: zControllableUnitRegulationDirection,
+  maximum_available_capacity: z.number().gte(0).lte(999999.999),
+  minimum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  maximum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  recovery_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().gte(0).optional(),
+    ),
+  ),
+  ramp_rate: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.number().gte(0.001).optional(),
+    ),
+  ),
+  accounting_point_id: z.int(),
+  grid_node_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
+  grid_validation_status:
+    zControllableUnitGridValidationStatus.default("pending"),
+  grid_validation_notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  validated_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Controllable unit
+ * Controllable unit Response
+ *
+ * Response schema - Controllable unit
  */
-export const zControllableUnitResponseWritable = zControllableUnitWritable.and(
-  z.unknown(),
-);
+export const zControllableUnitResponseWritable = zControllableUnitWritable;
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export const zControllableUnitSuspensionWritable =
-  zControllableUnitSuspensionCreateData.and(z.unknown());
+export const zControllableUnitSuspensionWritable = z.object({
+  controllable_unit_id: z.int(),
+  impacted_system_operator_id: z.int(),
+  reason: zControllableUnitSuspensionReason,
+});
 
 /**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Controllable Unit Suspension Response
+ *
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionResponseWritable =
-  zControllableUnitSuspensionWritable.and(z.unknown());
+  zControllableUnitSuspensionWritable;
 
 /**
  * Data schema - Comment made by a party involved in a controllable unit suspension.
  */
-export const zControllableUnitSuspensionCommentWritable =
-  zControllableUnitSuspensionCommentCreateData.and(z.unknown());
+export const zControllableUnitSuspensionCommentWritable = z.object({
+  controllable_unit_suspension_id: z.int(),
+  visibility:
+    zControllableUnitSuspensionCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a controllable unit suspension.
+ * Controllable Unit Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentResponseWritable =
-  zControllableUnitSuspensionCommentWritable.and(z.unknown());
+  zControllableUnitSuspensionCommentWritable;
 
 /**
  * Data schema - Relation between controllable unit and service provider
  */
-export const zControllableUnitServiceProviderWritable =
-  zControllableUnitServiceProviderCreateData.and(z.unknown());
+export const zControllableUnitServiceProviderWritable = z.object({
+  controllable_unit_id: z.int(),
+  service_provider_id: z.int(),
+  end_user_id: z.int(),
+  contract_reference: z.string().max(128),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Relation between controllable unit and service provider
+ * Relation between controllable unit and service provider Response
+ *
+ * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderResponseWritable =
-  zControllableUnitServiceProviderWritable.and(z.unknown());
+  zControllableUnitServiceProviderWritable;
 
 /**
  * Data schema - Group of controllable units
  */
-export const zServiceProvidingGroupWritable =
-  zServiceProvidingGroupCreateData.and(z.unknown());
+export const zServiceProvidingGroupWritable = z.object({
+  name: z.string().max(128),
+  service_provider_id: z.int(),
+  bidding_zone: zServiceProvidingGroupBiddingZone,
+  status: zServiceProvidingGroupStatus.default("new"),
+});
 
 /**
- * Response schema for operations with return values - Group of controllable units
+ * Service providing group Response
+ *
+ * Response schema - Group of controllable units
  */
 export const zServiceProvidingGroupResponseWritable =
-  zServiceProvidingGroupWritable.and(z.unknown());
+  zServiceProvidingGroupWritable;
 
 /**
  * Data schema - Membership relation of controllable unit in service providing group
  */
-export const zServiceProvidingGroupMembershipWritable =
-  zServiceProvidingGroupMembershipCreateData.and(z.unknown());
+export const zServiceProvidingGroupMembershipWritable = z.object({
+  controllable_unit_id: z.int(),
+  service_providing_group_id: z.int(),
+  valid_from: z.string(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Membership relation of controllable unit in service providing group
+ * Membership relation of controllable unit in service providing group Response
+ *
+ * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipResponseWritable =
-  zServiceProvidingGroupMembershipWritable.and(z.unknown());
+  zServiceProvidingGroupMembershipWritable;
 
 /**
  * Data schema - Grid prequalification for service providing group
  */
-export const zServiceProvidingGroupGridPrequalificationWritable =
-  zServiceProvidingGroupGridPrequalificationCreateData.and(z.unknown());
+export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
+  service_providing_group_id: z.int(),
+  impacted_system_operator_id: z.int(),
+  status: zServiceProvidingGroupGridPrequalificationStatus.default("requested"),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Grid prequalification for service providing group
+ * Grid prequalification for service providing group Response
+ *
+ * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationResponseWritable =
-  zServiceProvidingGroupGridPrequalificationWritable.and(z.unknown());
+  zServiceProvidingGroupGridPrequalificationWritable;
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentWritable =
-  zServiceProvidingGroupGridPrequalificationCommentCreateData.and(z.unknown());
+  z.object({
+    service_providing_group_grid_prequalification_id: z.int(),
+    visibility:
+      zServiceProvidingGroupGridPrequalificationCommentVisibility.default(
+        "same_party",
+      ),
+    content: z.string().max(2048),
+  });
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid prequalification.
+ * Grid prequalification for service providing group Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentResponseWritable =
-  zServiceProvidingGroupGridPrequalificationCommentWritable.and(z.unknown());
+  zServiceProvidingGroupGridPrequalificationCommentWritable;
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
-export const zServiceProvidingGroupGridSuspensionWritable =
-  zServiceProvidingGroupGridSuspensionCreateData.and(z.unknown());
+export const zServiceProvidingGroupGridSuspensionWritable = z.object({
+  impacted_system_operator_id: z.int(),
+  service_providing_group_id: z.int(),
+  reason: zServiceProvidingGroupGridSuspensionReason,
+});
 
 /**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ * Service Providing Group Grid Suspension Response
+ *
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionResponseWritable =
-  zServiceProvidingGroupGridSuspensionWritable.and(z.unknown());
+  zServiceProvidingGroupGridSuspensionWritable;
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid suspension.
  */
-export const zServiceProvidingGroupGridSuspensionCommentWritable =
-  zServiceProvidingGroupGridSuspensionCommentCreateData.and(z.unknown());
+export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
+  service_providing_group_grid_suspension_id: z.int(),
+  visibility:
+    zServiceProvidingGroupGridSuspensionCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid suspension.
+ * Service Providing Group Grid Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentResponseWritable =
-  zServiceProvidingGroupGridSuspensionCommentWritable.and(z.unknown());
+  zServiceProvidingGroupGridSuspensionCommentWritable;
 
 /**
  * Data schema - Entity - Natural or legal person
@@ -3269,10 +3298,17 @@ export const zServiceProvidingGroupGridSuspensionCommentResponseWritable =
  * * Person
  * * Organisation
  */
-export const zEntityWritable = zEntityCreateData.and(z.unknown());
+export const zEntityWritable = z.object({
+  business_id: z.string(),
+  business_id_type: zEntityBusinessIdType,
+  name: z.string(),
+  type: zEntityType,
+});
 
 /**
- * Response schema for operations with return values - Entity - Natural or legal person
+ * Entity Response
+ *
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -3281,19 +3317,47 @@ export const zEntityWritable = zEntityCreateData.and(z.unknown());
  * * Person
  * * Organisation
  */
-export const zEntityResponseWritable = zEntityWritable.and(z.unknown());
+export const zEntityResponseWritable = zEntityWritable;
 
 /**
  * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export const zEntityClientWritable = zEntityClientCreateData.and(z.unknown());
+export const zEntityClientWritable = z.object({
+  entity_id: z.int(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(256).optional(),
+    ),
+  ),
+  client_id: z.string(),
+  party_id: z.int(),
+  scopes: z.array(zAuthScope),
+  client_secret: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().min(12).optional(),
+    ),
+  ),
+  public_key: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+        )
+        .optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Entity client Response
+ *
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export const zEntityClientResponseWritable = zEntityClientWritable.and(
-  z.unknown(),
-);
+export const zEntityClientResponseWritable = zEntityClientWritable;
 
 /**
  * Data schema - The body that interacts with the Flexibility Information System
@@ -3306,7 +3370,15 @@ export const zEntityClientResponseWritable = zEntityClientWritable.and(
  * * System Operator
  * * End User
  */
-export const zPartyWritable = zPartyCreateData.and(z.unknown());
+export const zPartyWritable = z.object({
+  business_id: z.string(),
+  business_id_type: zPartyBusinessIdType.default("uuid"),
+  entity_id: z.int(),
+  name: z.string(),
+  role: zPartyRole,
+  type: zPartyType,
+  status: zPartyStatus.default("new"),
+});
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.missing
@@ -3352,7 +3424,9 @@ export const zNoticeDataWritable = z.union([
 ]);
 
 /**
- * Response schema for operations with return values - The body that interacts with the Flexibility Information System
+ * Party Response
+ *
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -3362,212 +3436,262 @@ export const zNoticeDataWritable = z.union([
  * * System Operator
  * * End User
  */
-export const zPartyResponseWritable = zPartyWritable.and(z.unknown());
+export const zPartyResponseWritable = zPartyWritable;
 
 /**
  * Data schema - The relation between a party and entity.
  */
-export const zPartyMembershipWritable = zPartyMembershipCreateData.and(
-  z.unknown(),
-);
+export const zPartyMembershipWritable = z.object({
+  party_id: z.int(),
+  entity_id: z.int(),
+  scopes: z.array(zAuthScope),
+});
 
 /**
- * Response schema for operations with return values - The relation between a party and entity.
+ * Party Membership Response
+ *
+ * Response schema - The relation between a party and entity.
  */
-export const zPartyMembershipResponseWritable = zPartyMembershipWritable.and(
-  z.unknown(),
-);
-
-/**
- * Data of the request schema for create operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
- */
-export const zIdentityCreateDataWritable = zIdentityUpdateRequest;
+export const zPartyMembershipResponseWritable = zPartyMembershipWritable;
 
 /**
  * Data schema - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResourceWritable = zTechnicalResourceCreateData.and(
-  z.unknown(),
-);
+export const zTechnicalResourceWritable = z.object({
+  name: z.string(),
+  controllable_unit_id: z.int(),
+  details: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(1024).optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Technical unit being part of a controllable unit.
+ * Technical Resource Response
+ *
+ * Response schema - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResourceResponseWritable =
-  zTechnicalResourceWritable.and(z.unknown());
-
-/**
- * Data of the request schema for create operations - Event happening in the system.
- */
-export const zEventCreateDataWritable = zEventUpdateRequest;
+export const zTechnicalResourceResponseWritable = zTechnicalResourceWritable;
 
 /**
  * Data schema - Notification about an event happening in the system.
  */
-export const zNotificationWritable = zNotificationCreateData.and(z.unknown());
+export const zNotificationWritable = z.object({
+  acknowledged: z.boolean(),
+  event_id: z.int(),
+  party_id: z.int(),
+});
 
 /**
- * Response schema for operations with return values - Notification about an event happening in the system.
+ * Notification Response
+ *
+ * Response schema - Notification about an event happening in the system.
  */
-export const zNotificationResponseWritable = zNotificationWritable.and(
-  z.unknown(),
-);
-
-/**
- * Data of the request schema for create operations - Accounting point for a controllable unit.
- */
-export const zAccountingPointCreateDataWritable = zAccountingPointUpdateRequest;
-
-/**
- * Request schema for update operations - Relation linking a balance responsible party to an accounting point.
- */
-export const zAccountingPointBalanceResponsiblePartyUpdateRequestWritable =
-  z.record(z.string(), z.unknown());
-
-/**
- * Data of the request schema for create operations - Relation linking a balance responsible party to an accounting point.
- */
-export const zAccountingPointBalanceResponsiblePartyCreateDataWritable =
-  zAccountingPointBalanceResponsiblePartyUpdateRequestWritable;
+export const zNotificationResponseWritable = zNotificationWritable;
 
 /**
  * Data schema - Relation linking a balance responsible party to an accounting point.
  */
-export const zAccountingPointBalanceResponsiblePartyWritable =
-  zAccountingPointBalanceResponsiblePartyCreateDataWritable.and(z.unknown());
+export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
+  z.string(),
+  z.unknown(),
+);
 
 /**
- * Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.
+ * Accounting Point Balance Responsible Party Response
+ *
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export const zAccountingPointBalanceResponsiblePartyResponseWritable =
-  zAccountingPointBalanceResponsiblePartyWritable.and(z.unknown());
-
-/**
- * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
- */
-export const zAccountingPointEnergySupplierCreateDataWritable =
-  zAccountingPointEnergySupplierUpdateRequest;
-
-/**
- * Data of the request schema for create operations - Product type.
- */
-export const zProductTypeCreateDataWritable = zProductTypeUpdateRequest;
+  zAccountingPointBalanceResponsiblePartyWritable;
 
 /**
  * Data schema - Relation between a system operator and a product type they want to buy.
  */
-export const zSystemOperatorProductTypeWritable =
-  zSystemOperatorProductTypeCreateData.and(z.unknown());
+export const zSystemOperatorProductTypeWritable = z.object({
+  system_operator_id: z.int(),
+  product_type_id: z.int(),
+  status: zSystemOperatorProductTypeStatus.default("active"),
+});
 
 /**
- * Response schema for operations with return values - Relation between a system operator and a product type they want to buy.
+ * System Operator Product Type Response
+ *
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeResponseWritable =
-  zSystemOperatorProductTypeWritable.and(z.unknown());
+  zSystemOperatorProductTypeWritable;
 
 /**
  * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
-export const zServiceProviderProductApplicationWritable =
-  zServiceProviderProductApplicationCreateData.and(z.unknown());
+export const zServiceProviderProductApplicationWritable = z.object({
+  service_provider_id: z.int(),
+  system_operator_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  status: zServiceProviderProductApplicationStatus.default("requested"),
+  qualified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Service Provider Product Application Response
+ *
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationResponseWritable =
-  zServiceProviderProductApplicationWritable.and(z.unknown());
+  zServiceProviderProductApplicationWritable;
 
 /**
  * Data schema - Comment made by a party involved in a service provider product application.
  */
-export const zServiceProviderProductApplicationCommentWritable =
-  zServiceProviderProductApplicationCommentCreateData.and(z.unknown());
+export const zServiceProviderProductApplicationCommentWritable = z.object({
+  service_provider_product_application_id: z.int(),
+  visibility:
+    zServiceProviderProductApplicationCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product application.
+ * Service Provider Product Application Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentResponseWritable =
-  zServiceProviderProductApplicationCommentWritable.and(z.unknown());
+  zServiceProviderProductApplicationCommentWritable;
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
-export const zServiceProviderProductSuspensionWritable =
-  zServiceProviderProductSuspensionCreateData.and(z.unknown());
+export const zServiceProviderProductSuspensionWritable = z.object({
+  procuring_system_operator_id: z.int(),
+  service_provider_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  reason: zServiceProviderProductSuspensionReason,
+});
 
 /**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ * Service Provider Product Suspension Response
+ *
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionResponseWritable =
-  zServiceProviderProductSuspensionWritable.and(z.unknown());
+  zServiceProviderProductSuspensionWritable;
 
 /**
  * Data schema - Comment made by a party involved in a service provider product suspension.
  */
-export const zServiceProviderProductSuspensionCommentWritable =
-  zServiceProviderProductSuspensionCommentCreateData.and(z.unknown());
+export const zServiceProviderProductSuspensionCommentWritable = z.object({
+  service_provider_product_suspension_id: z.int(),
+  visibility:
+    zServiceProviderProductSuspensionCommentVisibility.default("same_party"),
+  content: z.string().max(2048),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product suspension.
+ * Service Provider Product Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentResponseWritable =
-  zServiceProviderProductSuspensionCommentWritable.and(z.unknown());
+  zServiceProviderProductSuspensionCommentWritable;
 
 /**
  * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
-export const zServiceProvidingGroupProductApplicationWritable =
-  zServiceProvidingGroupProductApplicationCreateData.and(z.unknown());
+export const zServiceProvidingGroupProductApplicationWritable = z.object({
+  service_providing_group_id: z.int(),
+  procuring_system_operator_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  status: zServiceProvidingGroupProductApplicationStatus.default("requested"),
+  notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  verified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+});
 
 /**
- * Response schema for operations with return values - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ * Service Providing Group Product Application Response
+ *
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationResponseWritable =
-  zServiceProvidingGroupProductApplicationWritable.and(z.unknown());
+  zServiceProvidingGroupProductApplicationWritable;
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
-export const zServiceProvidingGroupProductSuspensionWritable =
-  zServiceProvidingGroupProductSuspensionCreateData.and(z.unknown());
+export const zServiceProvidingGroupProductSuspensionWritable = z.object({
+  procuring_system_operator_id: z.int(),
+  service_providing_group_id: z.int(),
+  product_type_ids: z.array(z.int()),
+  reason: zServiceProvidingGroupProductSuspensionReason,
+});
 
 /**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ * Service Providing Group Product Suspension Response
+ *
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionResponseWritable =
-  zServiceProvidingGroupProductSuspensionWritable.and(z.unknown());
+  zServiceProvidingGroupProductSuspensionWritable;
 
 /**
  * Data schema - Comment made by a party involved in a service providing group product suspension.
  */
-export const zServiceProvidingGroupProductSuspensionCommentWritable =
-  zServiceProvidingGroupProductSuspensionCommentCreateData.and(z.unknown());
+export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
+  service_providing_group_product_suspension_id: z.int(),
+  visibility:
+    zServiceProvidingGroupProductSuspensionCommentVisibility.default(
+      "same_party",
+    ),
+  content: z.string().max(2048),
+});
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group product suspension.
+ * Service Providing Group Product Suspension Comment Response
+ *
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentResponseWritable =
-  zServiceProvidingGroupProductSuspensionCommentWritable.and(z.unknown());
-
-/**
- * Data of the request schema for create operations - Notice to users about various issues or actions expected from them.
- */
-export const zNoticeCreateDataWritable = zNoticeUpdateRequest;
+  zServiceProvidingGroupProductSuspensionCommentWritable;
 
 /**
  * Data schema - Notice to users about various issues or actions expected from them.
  */
-export const zNoticeWritable = zNoticeCreateDataWritable.and(z.unknown());
+export const zNoticeWritable = z.record(z.string(), z.unknown());
 
 /**
- * Response schema for operations with return values - Notice to users about various issues or actions expected from them.
+ * Notice Response
+ *
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
-export const zNoticeResponseWritable = zNoticeWritable.and(z.unknown());
+export const zNoticeResponseWritable = zNoticeWritable;
 
 /**
  * Controllable unit - history
  */
-export const zControllableUnitHistoryResponseWritable =
+export const zControllableUnitHistoryWritable =
   zControllableUnitResponseWritable.and(
     z.object({
       controllable_unit_id: z.int(),
@@ -3587,9 +3711,17 @@ export const zControllableUnitHistoryResponseWritable =
   );
 
 /**
+ * Controllable unit History Response
+ *
+ * History response schema - Controllable unit
+ */
+export const zControllableUnitHistoryResponseWritable =
+  zControllableUnitHistoryWritable;
+
+/**
  * Controllable Unit Suspension - history
  */
-export const zControllableUnitSuspensionHistoryResponseWritable =
+export const zControllableUnitSuspensionHistoryWritable =
   zControllableUnitSuspensionResponseWritable.and(
     z.object({
       controllable_unit_suspension_id: z.int(),
@@ -3609,9 +3741,17 @@ export const zControllableUnitSuspensionHistoryResponseWritable =
   );
 
 /**
+ * Controllable Unit Suspension History Response
+ *
+ * History response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ */
+export const zControllableUnitSuspensionHistoryResponseWritable =
+  zControllableUnitSuspensionHistoryWritable;
+
+/**
  * Controllable Unit Suspension Comment - history
  */
-export const zControllableUnitSuspensionCommentHistoryResponseWritable =
+export const zControllableUnitSuspensionCommentHistoryWritable =
   zControllableUnitSuspensionCommentResponseWritable.and(
     z.object({
       controllable_unit_suspension_comment_id: z.int(),
@@ -3631,9 +3771,17 @@ export const zControllableUnitSuspensionCommentHistoryResponseWritable =
   );
 
 /**
+ * Controllable Unit Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a controllable unit suspension.
+ */
+export const zControllableUnitSuspensionCommentHistoryResponseWritable =
+  zControllableUnitSuspensionCommentHistoryWritable;
+
+/**
  * Relation between controllable unit and service provider - history
  */
-export const zControllableUnitServiceProviderHistoryResponseWritable =
+export const zControllableUnitServiceProviderHistoryWritable =
   zControllableUnitServiceProviderResponseWritable.and(
     z.object({
       controllable_unit_service_provider_id: z.int(),
@@ -3653,9 +3801,17 @@ export const zControllableUnitServiceProviderHistoryResponseWritable =
   );
 
 /**
+ * Relation between controllable unit and service provider History Response
+ *
+ * History response schema - Relation between controllable unit and service provider
+ */
+export const zControllableUnitServiceProviderHistoryResponseWritable =
+  zControllableUnitServiceProviderHistoryWritable;
+
+/**
  * Service providing group - history
  */
-export const zServiceProvidingGroupHistoryResponseWritable =
+export const zServiceProvidingGroupHistoryWritable =
   zServiceProvidingGroupResponseWritable.and(
     z.object({
       service_providing_group_id: z.int(),
@@ -3675,9 +3831,17 @@ export const zServiceProvidingGroupHistoryResponseWritable =
   );
 
 /**
+ * Service providing group History Response
+ *
+ * History response schema - Group of controllable units
+ */
+export const zServiceProvidingGroupHistoryResponseWritable =
+  zServiceProvidingGroupHistoryWritable;
+
+/**
  * Membership relation of controllable unit in service providing group - history
  */
-export const zServiceProvidingGroupMembershipHistoryResponseWritable =
+export const zServiceProvidingGroupMembershipHistoryWritable =
   zServiceProvidingGroupMembershipResponseWritable.and(
     z.object({
       service_providing_group_membership_id: z.int(),
@@ -3697,9 +3861,17 @@ export const zServiceProvidingGroupMembershipHistoryResponseWritable =
   );
 
 /**
+ * Membership relation of controllable unit in service providing group History Response
+ *
+ * History response schema - Membership relation of controllable unit in service providing group
+ */
+export const zServiceProvidingGroupMembershipHistoryResponseWritable =
+  zServiceProvidingGroupMembershipHistoryWritable;
+
+/**
  * Grid prequalification for service providing group - history
  */
-export const zServiceProvidingGroupGridPrequalificationHistoryResponseWritable =
+export const zServiceProvidingGroupGridPrequalificationHistoryWritable =
   zServiceProvidingGroupGridPrequalificationResponseWritable.and(
     z.object({
       service_providing_group_grid_prequalification_id: z.int(),
@@ -3719,9 +3891,17 @@ export const zServiceProvidingGroupGridPrequalificationHistoryResponseWritable =
   );
 
 /**
+ * Grid prequalification for service providing group History Response
+ *
+ * History response schema - Grid prequalification for service providing group
+ */
+export const zServiceProvidingGroupGridPrequalificationHistoryResponseWritable =
+  zServiceProvidingGroupGridPrequalificationHistoryWritable;
+
+/**
  * Grid prequalification for service providing group Comment - history
  */
-export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponseWritable =
+export const zServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
   zServiceProvidingGroupGridPrequalificationCommentResponseWritable.and(
     z.object({
       service_providing_group_grid_prequalification_comment_id: z.int(),
@@ -3741,9 +3921,17 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponseWri
   );
 
 /**
+ * Grid prequalification for service providing group Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service providing group grid prequalification.
+ */
+export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponseWritable =
+  zServiceProvidingGroupGridPrequalificationCommentHistoryWritable;
+
+/**
  * Service Providing Group Grid Suspension - history
  */
-export const zServiceProvidingGroupGridSuspensionHistoryResponseWritable =
+export const zServiceProvidingGroupGridSuspensionHistoryWritable =
   zServiceProvidingGroupGridSuspensionResponseWritable.and(
     z.object({
       service_providing_group_grid_suspension_id: z.int(),
@@ -3763,9 +3951,17 @@ export const zServiceProvidingGroupGridSuspensionHistoryResponseWritable =
   );
 
 /**
+ * Service Providing Group Grid Suspension History Response
+ *
+ * History response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ */
+export const zServiceProvidingGroupGridSuspensionHistoryResponseWritable =
+  zServiceProvidingGroupGridSuspensionHistoryWritable;
+
+/**
  * Service Providing Group Grid Suspension Comment - history
  */
-export const zServiceProvidingGroupGridSuspensionCommentHistoryResponseWritable =
+export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
   zServiceProvidingGroupGridSuspensionCommentResponseWritable.and(
     z.object({
       service_providing_group_grid_suspension_comment_id: z.int(),
@@ -3785,9 +3981,17 @@ export const zServiceProvidingGroupGridSuspensionCommentHistoryResponseWritable 
   );
 
 /**
+ * Service Providing Group Grid Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service providing group grid suspension.
+ */
+export const zServiceProvidingGroupGridSuspensionCommentHistoryResponseWritable =
+  zServiceProvidingGroupGridSuspensionCommentHistoryWritable;
+
+/**
  * Party - history
  */
-export const zPartyHistoryResponseWritable = zPartyResponseWritable.and(
+export const zPartyHistoryWritable = zPartyResponseWritable.and(
   z.object({
     party_id: z.int(),
     replaced_by: z.optional(
@@ -3806,9 +4010,24 @@ export const zPartyHistoryResponseWritable = zPartyResponseWritable.and(
 );
 
 /**
+ * Party History Response
+ *
+ * History response schema - The body that interacts with the Flexibility Information System
+ *
+ * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
+ *
+ * Example party types:
+ *
+ * * Service Provider
+ * * System Operator
+ * * End User
+ */
+export const zPartyHistoryResponseWritable = zPartyHistoryWritable;
+
+/**
  * Party Membership - history
  */
-export const zPartyMembershipHistoryResponseWritable =
+export const zPartyMembershipHistoryWritable =
   zPartyMembershipResponseWritable.and(
     z.object({
       party_membership_id: z.int(),
@@ -3828,9 +4047,17 @@ export const zPartyMembershipHistoryResponseWritable =
   );
 
 /**
+ * Party Membership History Response
+ *
+ * History response schema - The relation between a party and entity.
+ */
+export const zPartyMembershipHistoryResponseWritable =
+  zPartyMembershipHistoryWritable;
+
+/**
  * Technical Resource - history
  */
-export const zTechnicalResourceHistoryResponseWritable =
+export const zTechnicalResourceHistoryWritable =
   zTechnicalResourceResponseWritable.and(
     z.object({
       technical_resource_id: z.int(),
@@ -3850,9 +4077,17 @@ export const zTechnicalResourceHistoryResponseWritable =
   );
 
 /**
+ * Technical Resource History Response
+ *
+ * History response schema - Technical unit being part of a controllable unit.
+ */
+export const zTechnicalResourceHistoryResponseWritable =
+  zTechnicalResourceHistoryWritable;
+
+/**
  * System Operator Product Type - history
  */
-export const zSystemOperatorProductTypeHistoryResponseWritable =
+export const zSystemOperatorProductTypeHistoryWritable =
   zSystemOperatorProductTypeResponseWritable.and(
     z.object({
       system_operator_product_type_id: z.int(),
@@ -3872,9 +4107,17 @@ export const zSystemOperatorProductTypeHistoryResponseWritable =
   );
 
 /**
+ * System Operator Product Type History Response
+ *
+ * History response schema - Relation between a system operator and a product type they want to buy.
+ */
+export const zSystemOperatorProductTypeHistoryResponseWritable =
+  zSystemOperatorProductTypeHistoryWritable;
+
+/**
  * Service Provider Product Application - history
  */
-export const zServiceProviderProductApplicationHistoryResponseWritable =
+export const zServiceProviderProductApplicationHistoryWritable =
   zServiceProviderProductApplicationResponseWritable.and(
     z.object({
       service_provider_product_application_id: z.int(),
@@ -3894,9 +4137,17 @@ export const zServiceProviderProductApplicationHistoryResponseWritable =
   );
 
 /**
+ * Service Provider Product Application History Response
+ *
+ * History response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ */
+export const zServiceProviderProductApplicationHistoryResponseWritable =
+  zServiceProviderProductApplicationHistoryWritable;
+
+/**
  * Service Provider Product Application Comment - history
  */
-export const zServiceProviderProductApplicationCommentHistoryResponseWritable =
+export const zServiceProviderProductApplicationCommentHistoryWritable =
   zServiceProviderProductApplicationCommentResponseWritable.and(
     z.object({
       service_provider_product_application_comment_id: z.int(),
@@ -3916,9 +4167,17 @@ export const zServiceProviderProductApplicationCommentHistoryResponseWritable =
   );
 
 /**
+ * Service Provider Product Application Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service provider product application.
+ */
+export const zServiceProviderProductApplicationCommentHistoryResponseWritable =
+  zServiceProviderProductApplicationCommentHistoryWritable;
+
+/**
  * Service Provider Product Suspension - history
  */
-export const zServiceProviderProductSuspensionHistoryResponseWritable =
+export const zServiceProviderProductSuspensionHistoryWritable =
   zServiceProviderProductSuspensionResponseWritable.and(
     z.object({
       service_provider_product_suspension_id: z.int(),
@@ -3938,9 +4197,17 @@ export const zServiceProviderProductSuspensionHistoryResponseWritable =
   );
 
 /**
+ * Service Provider Product Suspension History Response
+ *
+ * History response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ */
+export const zServiceProviderProductSuspensionHistoryResponseWritable =
+  zServiceProviderProductSuspensionHistoryWritable;
+
+/**
  * Service Provider Product Suspension Comment - history
  */
-export const zServiceProviderProductSuspensionCommentHistoryResponseWritable =
+export const zServiceProviderProductSuspensionCommentHistoryWritable =
   zServiceProviderProductSuspensionCommentResponseWritable.and(
     z.object({
       service_provider_product_suspension_comment_id: z.int(),
@@ -3960,9 +4227,17 @@ export const zServiceProviderProductSuspensionCommentHistoryResponseWritable =
   );
 
 /**
+ * Service Provider Product Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service provider product suspension.
+ */
+export const zServiceProviderProductSuspensionCommentHistoryResponseWritable =
+  zServiceProviderProductSuspensionCommentHistoryWritable;
+
+/**
  * Service Providing Group Product Application - history
  */
-export const zServiceProvidingGroupProductApplicationHistoryResponseWritable =
+export const zServiceProvidingGroupProductApplicationHistoryWritable =
   zServiceProvidingGroupProductApplicationResponseWritable.and(
     z.object({
       service_providing_group_product_application_id: z.int(),
@@ -3982,9 +4257,17 @@ export const zServiceProvidingGroupProductApplicationHistoryResponseWritable =
   );
 
 /**
+ * Service Providing Group Product Application History Response
+ *
+ * History response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ */
+export const zServiceProvidingGroupProductApplicationHistoryResponseWritable =
+  zServiceProvidingGroupProductApplicationHistoryWritable;
+
+/**
  * Service Providing Group Product Suspension - history
  */
-export const zServiceProvidingGroupProductSuspensionHistoryResponseWritable =
+export const zServiceProvidingGroupProductSuspensionHistoryWritable =
   zServiceProvidingGroupProductSuspensionResponseWritable.and(
     z.object({
       service_providing_group_product_suspension_id: z.int(),
@@ -4004,9 +4287,17 @@ export const zServiceProvidingGroupProductSuspensionHistoryResponseWritable =
   );
 
 /**
+ * Service Providing Group Product Suspension History Response
+ *
+ * History response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ */
+export const zServiceProvidingGroupProductSuspensionHistoryResponseWritable =
+  zServiceProvidingGroupProductSuspensionHistoryWritable;
+
+/**
  * Service Providing Group Product Suspension Comment - history
  */
-export const zServiceProvidingGroupProductSuspensionCommentHistoryResponseWritable =
+export const zServiceProvidingGroupProductSuspensionCommentHistoryWritable =
   zServiceProvidingGroupProductSuspensionCommentResponseWritable.and(
     z.object({
       service_providing_group_product_suspension_comment_id: z.int(),
@@ -4024,6 +4315,14 @@ export const zServiceProvidingGroupProductSuspensionCommentHistoryResponseWritab
       ),
     }),
   );
+
+/**
+ * Service Providing Group Product Suspension Comment History Response
+ *
+ * History response schema - Comment made by a party involved in a service providing group product suspension.
+ */
+export const zServiceProvidingGroupProductSuspensionCommentHistoryResponseWritable =
+  zServiceProvidingGroupProductSuspensionCommentHistoryWritable;
 
 export const zReadOpenapiJsonData = z.object({
   body: z.optional(

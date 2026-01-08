@@ -7,14 +7,14 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.system_operator_product_type import SystemOperatorProductType
 from ...models.system_operator_product_type_create_request import SystemOperatorProductTypeCreateRequest
-from ...models.system_operator_product_type_response import SystemOperatorProductTypeResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
+    body: SystemOperatorProductTypeCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/system_operator_product_type",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType | None:
     if response.status_code == 201:
-        response_201 = SystemOperatorProductTypeResponse.from_dict(response.json())
+        response_201 = SystemOperatorProductType.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,20 +110,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
+    body: SystemOperatorProductTypeCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
-            operations - Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
+            Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]
     """
 
     kwargs = _get_kwargs(
@@ -141,20 +140,20 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
+    body: SystemOperatorProductTypeCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType | None:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
-            operations - Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
+            Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse
+        EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType
     """
 
     return sync_detailed(
@@ -166,20 +165,20 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
+    body: SystemOperatorProductTypeCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
-            operations - Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
+            Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]
     """
 
     kwargs = _get_kwargs(
@@ -194,20 +193,20 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
+    body: SystemOperatorProductTypeCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType | None:
     """Create System Operator Product Type
 
     Args:
-        body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
-            operations - Relation between a system operator and a product type they want to buy.
+        body (SystemOperatorProductTypeCreateRequest): Request schema for create operations -
+            Relation between a system operator and a product type they want to buy.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse
+        EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType
     """
 
     return (

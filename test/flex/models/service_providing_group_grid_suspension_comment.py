@@ -9,7 +9,6 @@ from attrs import field as _attrs_field
 from ..models.service_providing_group_grid_suspension_comment_visibility import (
     ServiceProvidingGroupGridSuspensionCommentVisibility,
 )
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ServiceProvidingGroupGridSuspensionComment")
 
@@ -19,103 +18,91 @@ class ServiceProvidingGroupGridSuspensionComment:
     """Data schema - Comment made by a party involved in a service providing group grid suspension.
 
     Attributes:
-        visibility (ServiceProvidingGroupGridSuspensionCommentVisibility | Unset): The level of visibility of the
-            comment. Example: same_party.
-        content (str | Unset): Free text content of the comment. Example: Missing document..
-        service_providing_group_grid_suspension_id (int | Unset): Reference to the service providing group grid
-            suspension. Example: 7.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 9.
-        created_by (int | Unset): Reference to the identity that created the comment. Example: 94.
-        created_at (str | Unset): When the comment was added to the SPGGS. Example: 2022-08-08 12:00:00 CET.
+        id (int): Unique surrogate identifier. Example: 9.
+        service_providing_group_grid_suspension_id (int): Reference to the service providing group grid suspension.
+            Example: 7.
+        created_by (int): Reference to the identity that created the comment. Example: 94.
+        created_at (str): When the comment was added to the SPGGS. Example: 2022-08-08 12:00:00 CET.
+        visibility (ServiceProvidingGroupGridSuspensionCommentVisibility): The level of visibility of the comment.
+            Example: same_party.
+        content (str): Free text content of the comment. Example: Missing document..
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
-    visibility: ServiceProvidingGroupGridSuspensionCommentVisibility | Unset = UNSET
-    content: str | Unset = UNSET
-    service_providing_group_grid_suspension_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
-    created_by: int | Unset = UNSET
-    created_at: str | Unset = UNSET
+    id: int
+    service_providing_group_grid_suspension_id: int
+    created_by: int
+    created_at: str
+    visibility: ServiceProvidingGroupGridSuspensionCommentVisibility
+    content: str
+    recorded_at: str
+    recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        visibility: str | Unset = UNSET
-        if not isinstance(self.visibility, Unset):
-            visibility = self.visibility.value
-
-        content = self.content
+        id = self.id
 
         service_providing_group_grid_suspension_id = self.service_providing_group_grid_suspension_id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
-        id = self.id
 
         created_by = self.created_by
 
         created_at = self.created_at
 
+        visibility = self.visibility.value
+
+        content = self.content
+
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if visibility is not UNSET:
-            field_dict["visibility"] = visibility
-        if content is not UNSET:
-            field_dict["content"] = content
-        if service_providing_group_grid_suspension_id is not UNSET:
-            field_dict["service_providing_group_grid_suspension_id"] = service_providing_group_grid_suspension_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
-        if created_by is not UNSET:
-            field_dict["created_by"] = created_by
-        if created_at is not UNSET:
-            field_dict["created_at"] = created_at
+        field_dict.update(
+            {
+                "id": id,
+                "service_providing_group_grid_suspension_id": service_providing_group_grid_suspension_id,
+                "created_by": created_by,
+                "created_at": created_at,
+                "visibility": visibility,
+                "content": content,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        _visibility = d.pop("visibility", UNSET)
-        visibility: ServiceProvidingGroupGridSuspensionCommentVisibility | Unset
-        if isinstance(_visibility, Unset):
-            visibility = UNSET
-        else:
-            visibility = ServiceProvidingGroupGridSuspensionCommentVisibility(_visibility)
+        id = d.pop("id")
 
-        content = d.pop("content", UNSET)
+        service_providing_group_grid_suspension_id = d.pop("service_providing_group_grid_suspension_id")
 
-        service_providing_group_grid_suspension_id = d.pop("service_providing_group_grid_suspension_id", UNSET)
+        created_by = d.pop("created_by")
 
-        recorded_at = d.pop("recorded_at", UNSET)
+        created_at = d.pop("created_at")
 
-        recorded_by = d.pop("recorded_by", UNSET)
+        visibility = ServiceProvidingGroupGridSuspensionCommentVisibility(d.pop("visibility"))
 
-        id = d.pop("id", UNSET)
+        content = d.pop("content")
 
-        created_by = d.pop("created_by", UNSET)
+        recorded_at = d.pop("recorded_at")
 
-        created_at = d.pop("created_at", UNSET)
+        recorded_by = d.pop("recorded_by")
 
         service_providing_group_grid_suspension_comment = cls(
-            visibility=visibility,
-            content=content,
-            service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             id=id,
+            service_providing_group_grid_suspension_id=service_providing_group_grid_suspension_id,
             created_by=created_by,
             created_at=created_at,
+            visibility=visibility,
+            content=content,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
         )
 
         service_providing_group_grid_suspension_comment.additional_properties = d

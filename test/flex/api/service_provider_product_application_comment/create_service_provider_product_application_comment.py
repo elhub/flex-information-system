@@ -7,18 +7,16 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.service_provider_product_application_comment import ServiceProviderProductApplicationComment
 from ...models.service_provider_product_application_comment_create_request import (
     ServiceProviderProductApplicationCommentCreateRequest,
 )
-from ...models.service_provider_product_application_comment_response import (
-    ServiceProviderProductApplicationCommentResponse,
-)
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
+    body: ServiceProviderProductApplicationCommentCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,8 +25,7 @@ def _get_kwargs(
         "url": "/service_provider_product_application_comment",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -38,9 +35,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment | None:
     if response.status_code == 201:
-        response_201 = ServiceProviderProductApplicationCommentResponse.from_dict(response.json())
+        response_201 = ServiceProviderProductApplicationComment.from_dict(response.json())
 
         return response_201
 
@@ -103,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,21 +112,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
+    body: ServiceProviderProductApplicationCommentCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]
     """
 
     kwargs = _get_kwargs(
@@ -146,21 +142,20 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
+    body: ServiceProviderProductApplicationCommentCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment | None:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment
     """
 
     return sync_detailed(
@@ -172,21 +167,20 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
+    body: ServiceProviderProductApplicationCommentCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]
     """
 
     kwargs = _get_kwargs(
@@ -201,21 +195,20 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
+    body: ServiceProviderProductApplicationCommentCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment | None:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment
     """
 
     return (

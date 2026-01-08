@@ -17,41 +17,46 @@ class ControllableUnitSuspensionCommentCreateRequest:
     """Request schema for create operations - Comment made by a party involved in a controllable unit suspension.
 
     Attributes:
+        controllable_unit_suspension_id (int): Reference to the controllable unit suspension. Example: 7.
+        content (str): Free text content of the comment. Example: Missing document..
         visibility (ControllableUnitSuspensionCommentVisibility | Unset): The level of visibility of the comment.
             Example: same_party.
-        content (str | Unset): Free text content of the comment. Example: Missing document..
-        controllable_unit_suspension_id (int | Unset): Reference to the controllable unit suspension. Example: 7.
     """
 
+    controllable_unit_suspension_id: int
+    content: str
     visibility: ControllableUnitSuspensionCommentVisibility | Unset = UNSET
-    content: str | Unset = UNSET
-    controllable_unit_suspension_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        controllable_unit_suspension_id = self.controllable_unit_suspension_id
+
+        content = self.content
+
         visibility: str | Unset = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
-        content = self.content
-
-        controllable_unit_suspension_id = self.controllable_unit_suspension_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "controllable_unit_suspension_id": controllable_unit_suspension_id,
+                "content": content,
+            }
+        )
         if visibility is not UNSET:
             field_dict["visibility"] = visibility
-        if content is not UNSET:
-            field_dict["content"] = content
-        if controllable_unit_suspension_id is not UNSET:
-            field_dict["controllable_unit_suspension_id"] = controllable_unit_suspension_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        controllable_unit_suspension_id = d.pop("controllable_unit_suspension_id")
+
+        content = d.pop("content")
+
         _visibility = d.pop("visibility", UNSET)
         visibility: ControllableUnitSuspensionCommentVisibility | Unset
         if isinstance(_visibility, Unset):
@@ -59,14 +64,10 @@ class ControllableUnitSuspensionCommentCreateRequest:
         else:
             visibility = ControllableUnitSuspensionCommentVisibility(_visibility)
 
-        content = d.pop("content", UNSET)
-
-        controllable_unit_suspension_id = d.pop("controllable_unit_suspension_id", UNSET)
-
         controllable_unit_suspension_comment_create_request = cls(
-            visibility=visibility,
-            content=content,
             controllable_unit_suspension_id=controllable_unit_suspension_id,
+            content=content,
+            visibility=visibility,
         )
 
         controllable_unit_suspension_comment_create_request.additional_properties = d

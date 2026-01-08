@@ -17,16 +17,20 @@ class EntityClient:
     """Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
 
     Attributes:
-        name (None | str | Unset): Name of the client. Example: Laptop.
-        client_id (str | Unset): The identifier of the entity. For use with client credentials authentication method.
-            Example: addr@flex.test.
-        party_id (int | Unset): Reference to the party this client allows to assume. A null value means the client
-            cannot assume any party. Example: 30.
-        scopes (list[AuthScope] | Unset): List of scopes granted to the user when it logs in as an entity or when it
-            acts as the party. When assuming a party through party membership, the least privileged set of scopes will be
-            kept.
+        id (int): Unique surrogate identifier. Example: 14.
+        entity_id (int): Reference to the entity that this client is attached to. Example: 30.
+        client_id (str): The identifier of the entity. For use with client credentials authentication method. Example:
+            addr@flex.test.
+        party_id (int): Reference to the party this client allows to assume. A null value means the client cannot assume
+            any party. Example: 30.
+        scopes (list[AuthScope]): List of scopes granted to the user when it logs in as an entity or when it acts as the
+            party. When assuming a party through party membership, the least privileged set of scopes will be kept.
             Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
             Example: ['read:data'].
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        name (None | str | Unset): Name of the client. Example: Laptop.
         client_secret (None | str | Unset): The secret of the entity. For use with client credentials authentication
             method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
         public_key (None | str | Unset): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT
@@ -36,42 +40,43 @@ class EntityClient:
             kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
             0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
             -----END PUBLIC KEY-----.
-        entity_id (int | Unset): Reference to the entity that this client is attached to. Example: 30.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 14.
     """
 
+    id: int
+    entity_id: int
+    client_id: str
+    party_id: int
+    scopes: list[AuthScope]
+    recorded_at: str
+    recorded_by: int
     name: None | str | Unset = UNSET
-    client_id: str | Unset = UNSET
-    party_id: int | Unset = UNSET
-    scopes: list[AuthScope] | Unset = UNSET
     client_secret: None | str | Unset = UNSET
     public_key: None | str | Unset = UNSET
-    entity_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        name: None | str | Unset
-        if isinstance(self.name, Unset):
-            name = UNSET
-        else:
-            name = self.name
+        id = self.id
+
+        entity_id = self.entity_id
 
         client_id = self.client_id
 
         party_id = self.party_id
 
-        scopes: list[str] | Unset = UNSET
-        if not isinstance(self.scopes, Unset):
-            scopes = []
-            for scopes_item_data in self.scopes:
-                scopes_item = scopes_item_data.value
-                scopes.append(scopes_item)
+        scopes = []
+        for scopes_item_data in self.scopes:
+            scopes_item = scopes_item_data.value
+            scopes.append(scopes_item)
+
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
+        name: None | str | Unset
+        if isinstance(self.name, Unset):
+            name = UNSET
+        else:
+            name = self.name
 
         client_secret: None | str | Unset
         if isinstance(self.client_secret, Unset):
@@ -85,43 +90,49 @@ class EntityClient:
         else:
             public_key = self.public_key
 
-        entity_id = self.entity_id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
-        id = self.id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "id": id,
+                "entity_id": entity_id,
+                "client_id": client_id,
+                "party_id": party_id,
+                "scopes": scopes,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
         if name is not UNSET:
             field_dict["name"] = name
-        if client_id is not UNSET:
-            field_dict["client_id"] = client_id
-        if party_id is not UNSET:
-            field_dict["party_id"] = party_id
-        if scopes is not UNSET:
-            field_dict["scopes"] = scopes
         if client_secret is not UNSET:
             field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
             field_dict["public_key"] = public_key
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        id = d.pop("id")
+
+        entity_id = d.pop("entity_id")
+
+        client_id = d.pop("client_id")
+
+        party_id = d.pop("party_id")
+
+        scopes = []
+        _scopes = d.pop("scopes")
+        for scopes_item_data in _scopes:
+            scopes_item = AuthScope(scopes_item_data)
+
+            scopes.append(scopes_item)
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
 
         def _parse_name(data: object) -> None | str | Unset:
             if data is None:
@@ -131,19 +142,6 @@ class EntityClient:
             return cast(None | str | Unset, data)
 
         name = _parse_name(d.pop("name", UNSET))
-
-        client_id = d.pop("client_id", UNSET)
-
-        party_id = d.pop("party_id", UNSET)
-
-        _scopes = d.pop("scopes", UNSET)
-        scopes: list[AuthScope] | Unset = UNSET
-        if _scopes is not UNSET:
-            scopes = []
-            for scopes_item_data in _scopes:
-                scopes_item = AuthScope(scopes_item_data)
-
-                scopes.append(scopes_item)
 
         def _parse_client_secret(data: object) -> None | str | Unset:
             if data is None:
@@ -163,25 +161,17 @@ class EntityClient:
 
         public_key = _parse_public_key(d.pop("public_key", UNSET))
 
-        entity_id = d.pop("entity_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
-
         entity_client = cls(
-            name=name,
+            id=id,
+            entity_id=entity_id,
             client_id=client_id,
             party_id=party_id,
             scopes=scopes,
-            client_secret=client_secret,
-            public_key=public_key,
-            entity_id=entity_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
+            name=name,
+            client_secret=client_secret,
+            public_key=public_key,
         )
 
         entity_client.additional_properties = d

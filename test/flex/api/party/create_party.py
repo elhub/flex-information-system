@@ -7,14 +7,14 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.party import Party
 from ...models.party_create_request import PartyCreateRequest
-from ...models.party_response import PartyResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: PartyCreateRequest | Unset = UNSET,
+    body: PartyCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/party",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | Party | None:
     if response.status_code == 201:
-        response_201 = PartyResponse.from_dict(response.json())
+        response_201 = Party.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | Party]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,13 +110,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
+    body: PartyCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | Party]:
     """Create Party
 
     Args:
-        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
-            interacts with the Flexibility Information System
+        body (PartyCreateRequest): Request schema for create operations - The body that interacts
+            with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
@@ -133,7 +132,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | Party]
     """
 
     kwargs = _get_kwargs(
@@ -150,13 +149,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
+    body: PartyCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | Party | None:
     """Create Party
 
     Args:
-        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
-            interacts with the Flexibility Information System
+        body (PartyCreateRequest): Request schema for create operations - The body that interacts
+            with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
@@ -172,7 +171,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | PartyResponse
+        EmptyObject | ErrorMessage | ErrorMessage | Party
     """
 
     return sync_detailed(
@@ -184,13 +183,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
+    body: PartyCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | Party]:
     """Create Party
 
     Args:
-        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
-            interacts with the Flexibility Information System
+        body (PartyCreateRequest): Request schema for create operations - The body that interacts
+            with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
@@ -206,7 +205,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | Party]
     """
 
     kwargs = _get_kwargs(
@@ -221,13 +220,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
+    body: PartyCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | Party | None:
     """Create Party
 
     Args:
-        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
-            interacts with the Flexibility Information System
+        body (PartyCreateRequest): Request schema for create operations - The body that interacts
+            with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
@@ -243,7 +242,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | PartyResponse
+        EmptyObject | ErrorMessage | ErrorMessage | Party
     """
 
     return (

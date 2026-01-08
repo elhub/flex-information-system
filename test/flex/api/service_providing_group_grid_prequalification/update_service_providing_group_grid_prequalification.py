@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from typing import Any, cast
-from urllib.parse import quote
 
 import httpx
 
@@ -8,9 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_grid_prequalification_response import (
-    ServiceProvidingGroupGridPrequalificationResponse,
-)
+from ...models.service_providing_group_grid_prequalification import ServiceProvidingGroupGridPrequalification
 from ...models.service_providing_group_grid_prequalification_update_request import (
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
 )
@@ -26,9 +23,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "patch",
-        "url": "/service_providing_group_grid_prequalification/{id}".format(
-            id=quote(str(id), safe=""),
-        ),
+        "url": f"/service_providing_group_grid_prequalification/{id}",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -41,9 +36,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification | None:
     if response.status_code == 200:
-        response_200 = ServiceProvidingGroupGridPrequalificationResponse.from_dict(response.json())
+        response_200 = ServiceProvidingGroupGridPrequalification.from_dict(response.json())
 
         return response_200
 
@@ -105,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -119,7 +114,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification]:
     """Update Grid prequalification for service providing group
 
     Args:
@@ -132,7 +127,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification]
     """
 
     kwargs = _get_kwargs(
@@ -152,7 +147,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification | None:
     """Update Grid prequalification for service providing group
 
     Args:
@@ -165,7 +160,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification
     """
 
     return sync_detailed(
@@ -180,7 +175,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification]:
     """Update Grid prequalification for service providing group
 
     Args:
@@ -193,7 +188,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification]
     """
 
     kwargs = _get_kwargs(
@@ -211,7 +206,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification | None:
     """Update Grid prequalification for service providing group
 
     Args:
@@ -224,7 +219,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalification
     """
 
     return (

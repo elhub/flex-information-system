@@ -7,14 +7,14 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.service_provider_product_application import ServiceProviderProductApplication
 from ...models.service_provider_product_application_create_request import ServiceProviderProductApplicationCreateRequest
-from ...models.service_provider_product_application_response import ServiceProviderProductApplicationResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
+    body: ServiceProviderProductApplicationCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/service_provider_product_application",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication | None:
     if response.status_code == 201:
-        response_201 = ServiceProviderProductApplicationResponse.from_dict(response.json())
+        response_201 = ServiceProviderProductApplication.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,12 +110,12 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
+    body: ServiceProviderProductApplicationCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication]:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.
@@ -126,7 +125,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication]
     """
 
     kwargs = _get_kwargs(
@@ -143,12 +142,12 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
+    body: ServiceProviderProductApplicationCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication | None:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.
@@ -158,7 +157,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication
     """
 
     return sync_detailed(
@@ -170,12 +169,12 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
+    body: ServiceProviderProductApplicationCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication]:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.
@@ -185,7 +184,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication]
     """
 
     kwargs = _get_kwargs(
@@ -200,12 +199,12 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
+    body: ServiceProviderProductApplicationCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication | None:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.
@@ -215,7 +214,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplication
     """
 
     return (

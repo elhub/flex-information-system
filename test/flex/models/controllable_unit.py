@@ -21,15 +21,26 @@ class ControllableUnit:
     """Data schema - Controllable unit
 
     Attributes:
-        name (str | Unset): Free text name of the controllable unit. Example: Car Charger #34.
+        id (int): Unique surrogate key. Example: 12.
+        business_id (str): Unique business identifier for the controllable unit. Example:
+            53919b79-876f-4dad-8bde-b29368367604.
+        name (str): Free text name of the controllable unit. Example: Car Charger #34.
+        status (ControllableUnitStatus): The status of the controllable unit. Example: active.
+        regulation_direction (ControllableUnitRegulationDirection): The regulation direction of the controllable unit.
+            `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
+            production or increase consumption. Example: up.
+        maximum_available_capacity (float): Maximum continuous active power that the controllable unit can produce or
+            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        is_small (bool): Whether the controllable unit is small or not, following NCDR. Example: True.
+        accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
+            Example: 10289.
+        grid_validation_status (ControllableUnitGridValidationStatus): The grid validation status of the controllable
+            unit. Example: validated.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.
-        status (ControllableUnitStatus | Unset): The status of the controllable unit. Example: active.
-        regulation_direction (ControllableUnitRegulationDirection | Unset): The regulation direction of the controllable
-            unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
-            production or increase consumption. Example: up.
-        maximum_available_capacity (float | Unset): Maximum continuous active power that the controllable unit can
-            produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         minimum_duration (int | None | Unset): The minimum activation duration in seconds. Example: 30.
         maximum_duration (int | None | Unset): The maximum activation duration in seconds. Example: 1200.
         recovery_duration (int | None | Unset): The minimum recovery duration between activations in seconds. Example:
@@ -38,45 +49,54 @@ class ControllableUnit:
             controllable unit, in kilowatts per minute. Example: 0.1.
         grid_node_id (None | str | Unset): Reference to the node that the controllable unit is connected to. Example:
             53919b79-876f-4dad-8bde-b29368367604.
-        grid_validation_status (ControllableUnitGridValidationStatus | Unset): The grid validation status of the
-            controllable unit. Example: validated.
         grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
         validated_at (None | str | Unset): When the controllable unit was last validated. Example: 2022-08-08 12:00:00
             CET.
-        accounting_point_id (int | Unset): Reference to the accounting point that the controllable unit is connected to.
-            Example: 10289.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate key. Example: 12.
-        business_id (str | Unset): Unique business identifier for the controllable unit. Example:
-            53919b79-876f-4dad-8bde-b29368367604.
-        is_small (bool | Unset): Whether the controllable unit is small or not, following NCDR. Example: True.
     """
 
-    name: str | Unset = UNSET
+    id: int
+    business_id: str
+    name: str
+    status: ControllableUnitStatus
+    regulation_direction: ControllableUnitRegulationDirection
+    maximum_available_capacity: float
+    is_small: bool
+    accounting_point_id: int
+    grid_validation_status: ControllableUnitGridValidationStatus
+    recorded_at: str
+    recorded_by: int
     start_date: datetime.date | None | Unset = UNSET
-    status: ControllableUnitStatus | Unset = UNSET
-    regulation_direction: ControllableUnitRegulationDirection | Unset = UNSET
-    maximum_available_capacity: float | Unset = UNSET
     minimum_duration: int | None | Unset = UNSET
     maximum_duration: int | None | Unset = UNSET
     recovery_duration: int | None | Unset = UNSET
     ramp_rate: float | None | Unset = UNSET
     grid_node_id: None | str | Unset = UNSET
-    grid_validation_status: ControllableUnitGridValidationStatus | Unset = UNSET
     grid_validation_notes: None | str | Unset = UNSET
     validated_at: None | str | Unset = UNSET
-    accounting_point_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
-    business_id: str | Unset = UNSET
-    is_small: bool | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        id = self.id
+
+        business_id = self.business_id
+
         name = self.name
+
+        status = self.status.value
+
+        regulation_direction = self.regulation_direction.value
+
+        maximum_available_capacity = self.maximum_available_capacity
+
+        is_small = self.is_small
+
+        accounting_point_id = self.accounting_point_id
+
+        grid_validation_status = self.grid_validation_status.value
+
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
 
         start_date: None | str | Unset
         if isinstance(self.start_date, Unset):
@@ -85,16 +105,6 @@ class ControllableUnit:
             start_date = self.start_date.isoformat()
         else:
             start_date = self.start_date
-
-        status: str | Unset = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
-
-        regulation_direction: str | Unset = UNSET
-        if not isinstance(self.regulation_direction, Unset):
-            regulation_direction = self.regulation_direction.value
-
-        maximum_available_capacity = self.maximum_available_capacity
 
         minimum_duration: int | None | Unset
         if isinstance(self.minimum_duration, Unset):
@@ -126,10 +136,6 @@ class ControllableUnit:
         else:
             grid_node_id = self.grid_node_id
 
-        grid_validation_status: str | Unset = UNSET
-        if not isinstance(self.grid_validation_status, Unset):
-            grid_validation_status = self.grid_validation_status.value
-
         grid_validation_notes: None | str | Unset
         if isinstance(self.grid_validation_notes, Unset):
             grid_validation_notes = UNSET
@@ -142,31 +148,25 @@ class ControllableUnit:
         else:
             validated_at = self.validated_at
 
-        accounting_point_id = self.accounting_point_id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
-        id = self.id
-
-        business_id = self.business_id
-
-        is_small = self.is_small
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
+        field_dict.update(
+            {
+                "id": id,
+                "business_id": business_id,
+                "name": name,
+                "status": status,
+                "regulation_direction": regulation_direction,
+                "maximum_available_capacity": maximum_available_capacity,
+                "is_small": is_small,
+                "accounting_point_id": accounting_point_id,
+                "grid_validation_status": grid_validation_status,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
         if start_date is not UNSET:
             field_dict["start_date"] = start_date
-        if status is not UNSET:
-            field_dict["status"] = status
-        if regulation_direction is not UNSET:
-            field_dict["regulation_direction"] = regulation_direction
-        if maximum_available_capacity is not UNSET:
-            field_dict["maximum_available_capacity"] = maximum_available_capacity
         if minimum_duration is not UNSET:
             field_dict["minimum_duration"] = minimum_duration
         if maximum_duration is not UNSET:
@@ -177,31 +177,37 @@ class ControllableUnit:
             field_dict["ramp_rate"] = ramp_rate
         if grid_node_id is not UNSET:
             field_dict["grid_node_id"] = grid_node_id
-        if grid_validation_status is not UNSET:
-            field_dict["grid_validation_status"] = grid_validation_status
         if grid_validation_notes is not UNSET:
             field_dict["grid_validation_notes"] = grid_validation_notes
         if validated_at is not UNSET:
             field_dict["validated_at"] = validated_at
-        if accounting_point_id is not UNSET:
-            field_dict["accounting_point_id"] = accounting_point_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
-        if is_small is not UNSET:
-            field_dict["is_small"] = is_small
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        id = d.pop("id")
+
+        business_id = d.pop("business_id")
+
+        name = d.pop("name")
+
+        status = ControllableUnitStatus(d.pop("status"))
+
+        regulation_direction = ControllableUnitRegulationDirection(d.pop("regulation_direction"))
+
+        maximum_available_capacity = d.pop("maximum_available_capacity")
+
+        is_small = d.pop("is_small")
+
+        accounting_point_id = d.pop("accounting_point_id")
+
+        grid_validation_status = ControllableUnitGridValidationStatus(d.pop("grid_validation_status"))
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
 
         def _parse_start_date(data: object) -> datetime.date | None | Unset:
             if data is None:
@@ -219,22 +225,6 @@ class ControllableUnit:
             return cast(datetime.date | None | Unset, data)
 
         start_date = _parse_start_date(d.pop("start_date", UNSET))
-
-        _status = d.pop("status", UNSET)
-        status: ControllableUnitStatus | Unset
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = ControllableUnitStatus(_status)
-
-        _regulation_direction = d.pop("regulation_direction", UNSET)
-        regulation_direction: ControllableUnitRegulationDirection | Unset
-        if isinstance(_regulation_direction, Unset):
-            regulation_direction = UNSET
-        else:
-            regulation_direction = ControllableUnitRegulationDirection(_regulation_direction)
-
-        maximum_available_capacity = d.pop("maximum_available_capacity", UNSET)
 
         def _parse_minimum_duration(data: object) -> int | None | Unset:
             if data is None:
@@ -281,13 +271,6 @@ class ControllableUnit:
 
         grid_node_id = _parse_grid_node_id(d.pop("grid_node_id", UNSET))
 
-        _grid_validation_status = d.pop("grid_validation_status", UNSET)
-        grid_validation_status: ControllableUnitGridValidationStatus | Unset
-        if isinstance(_grid_validation_status, Unset):
-            grid_validation_status = UNSET
-        else:
-            grid_validation_status = ControllableUnitGridValidationStatus(_grid_validation_status)
-
         def _parse_grid_validation_notes(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -306,38 +289,26 @@ class ControllableUnit:
 
         validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
 
-        accounting_point_id = d.pop("accounting_point_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
-
-        business_id = d.pop("business_id", UNSET)
-
-        is_small = d.pop("is_small", UNSET)
-
         controllable_unit = cls(
+            id=id,
+            business_id=business_id,
             name=name,
-            start_date=start_date,
             status=status,
             regulation_direction=regulation_direction,
             maximum_available_capacity=maximum_available_capacity,
+            is_small=is_small,
+            accounting_point_id=accounting_point_id,
+            grid_validation_status=grid_validation_status,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
+            start_date=start_date,
             minimum_duration=minimum_duration,
             maximum_duration=maximum_duration,
             recovery_duration=recovery_duration,
             ramp_rate=ramp_rate,
             grid_node_id=grid_node_id,
-            grid_validation_status=grid_validation_status,
             grid_validation_notes=grid_validation_notes,
             validated_at=validated_at,
-            accounting_point_id=accounting_point_id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
-            id=id,
-            business_id=business_id,
-            is_small=is_small,
         )
 
         controllable_unit.additional_properties = d

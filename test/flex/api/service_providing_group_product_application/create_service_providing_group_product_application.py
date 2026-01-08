@@ -7,18 +7,16 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.service_providing_group_product_application import ServiceProvidingGroupProductApplication
 from ...models.service_providing_group_product_application_create_request import (
     ServiceProvidingGroupProductApplicationCreateRequest,
 )
-from ...models.service_providing_group_product_application_response import (
-    ServiceProvidingGroupProductApplicationResponse,
-)
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,8 +25,7 @@ def _get_kwargs(
         "url": "/service_providing_group_product_application",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -38,9 +35,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication | None:
     if response.status_code == 201:
-        response_201 = ServiceProvidingGroupProductApplicationResponse.from_dict(response.json())
+        response_201 = ServiceProvidingGroupProductApplication.from_dict(response.json())
 
         return response_201
 
@@ -103,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,13 +112,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
@@ -129,7 +126,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]
     """
 
     kwargs = _get_kwargs(
@@ -146,13 +143,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication | None:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
@@ -160,7 +157,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication
     """
 
     return sync_detailed(
@@ -172,13 +169,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
@@ -186,7 +183,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]
     """
 
     kwargs = _get_kwargs(
@@ -201,13 +198,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication | None:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
@@ -215,7 +212,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication
     """
 
     return (

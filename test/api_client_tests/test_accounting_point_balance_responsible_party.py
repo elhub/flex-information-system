@@ -3,7 +3,7 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
-    AccountingPointBalanceResponsiblePartyResponse,
+    AccountingPointBalanceResponsibleParty,
     AccountingPointBalanceResponsiblePartyEnergyDirection,
 )
 from flex.api.accounting_point_balance_responsible_party import (

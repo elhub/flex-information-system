@@ -7,16 +7,16 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.service_providing_group_product_suspension import ServiceProvidingGroupProductSuspension
 from ...models.service_providing_group_product_suspension_create_request import (
     ServiceProvidingGroupProductSuspensionCreateRequest,
 )
-from ...models.service_providing_group_product_suspension_response import ServiceProvidingGroupProductSuspensionResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupProductSuspensionCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupProductSuspensionCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -25,8 +25,7 @@ def _get_kwargs(
         "url": "/service_providing_group_product_suspension",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -36,9 +35,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension | None:
     if response.status_code == 201:
-        response_201 = ServiceProvidingGroupProductSuspensionResponse.from_dict(response.json())
+        response_201 = ServiceProvidingGroupProductSuspension.from_dict(response.json())
 
         return response_201
 
@@ -101,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -113,21 +112,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
+    body: ServiceProvidingGroupProductSuspensionCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]:
     """Create Service Providing Group Product Suspension
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for
-            create operations - The relation allowing a procuring system operator to temporarily
-            suspend a service providing group from delivering products of certain types.
+        body (ServiceProvidingGroupProductSuspensionCreateRequest): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service providing group from delivering products of certain types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]
     """
 
     kwargs = _get_kwargs(
@@ -144,21 +143,21 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
+    body: ServiceProvidingGroupProductSuspensionCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension | None:
     """Create Service Providing Group Product Suspension
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for
-            create operations - The relation allowing a procuring system operator to temporarily
-            suspend a service providing group from delivering products of certain types.
+        body (ServiceProvidingGroupProductSuspensionCreateRequest): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service providing group from delivering products of certain types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension
     """
 
     return sync_detailed(
@@ -170,21 +169,21 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
+    body: ServiceProvidingGroupProductSuspensionCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]:
     """Create Service Providing Group Product Suspension
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for
-            create operations - The relation allowing a procuring system operator to temporarily
-            suspend a service providing group from delivering products of certain types.
+        body (ServiceProvidingGroupProductSuspensionCreateRequest): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service providing group from delivering products of certain types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]
     """
 
     kwargs = _get_kwargs(
@@ -199,21 +198,21 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductSuspensionCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
+    body: ServiceProvidingGroupProductSuspensionCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension | None:
     """Create Service Providing Group Product Suspension
 
     Args:
-        body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for
-            create operations - The relation allowing a procuring system operator to temporarily
-            suspend a service providing group from delivering products of certain types.
+        body (ServiceProvidingGroupProductSuspensionCreateRequest): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service providing group from delivering products of certain types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension
     """
 
     return (

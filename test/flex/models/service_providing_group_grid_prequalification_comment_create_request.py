@@ -20,44 +20,47 @@ class ServiceProvidingGroupGridPrequalificationCommentCreateRequest:
     prequalification.
 
         Attributes:
+            service_providing_group_grid_prequalification_id (int): Reference to the service providing group grid
+                prequalification. Example: 7.
+            content (str): Free text content of the comment. Example: Missing document..
             visibility (ServiceProvidingGroupGridPrequalificationCommentVisibility | Unset): The level of visibility of the
                 comment. Example: same_party.
-            content (str | Unset): Free text content of the comment. Example: Missing document..
-            service_providing_group_grid_prequalification_id (int | Unset): Reference to the service providing group grid
-                prequalification. Example: 7.
     """
 
+    service_providing_group_grid_prequalification_id: int
+    content: str
     visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility | Unset = UNSET
-    content: str | Unset = UNSET
-    service_providing_group_grid_prequalification_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        service_providing_group_grid_prequalification_id = self.service_providing_group_grid_prequalification_id
+
+        content = self.content
+
         visibility: str | Unset = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
-        content = self.content
-
-        service_providing_group_grid_prequalification_id = self.service_providing_group_grid_prequalification_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "service_providing_group_grid_prequalification_id": service_providing_group_grid_prequalification_id,
+                "content": content,
+            }
+        )
         if visibility is not UNSET:
             field_dict["visibility"] = visibility
-        if content is not UNSET:
-            field_dict["content"] = content
-        if service_providing_group_grid_prequalification_id is not UNSET:
-            field_dict["service_providing_group_grid_prequalification_id"] = (
-                service_providing_group_grid_prequalification_id
-            )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        service_providing_group_grid_prequalification_id = d.pop("service_providing_group_grid_prequalification_id")
+
+        content = d.pop("content")
+
         _visibility = d.pop("visibility", UNSET)
         visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility | Unset
         if isinstance(_visibility, Unset):
@@ -65,16 +68,10 @@ class ServiceProvidingGroupGridPrequalificationCommentCreateRequest:
         else:
             visibility = ServiceProvidingGroupGridPrequalificationCommentVisibility(_visibility)
 
-        content = d.pop("content", UNSET)
-
-        service_providing_group_grid_prequalification_id = d.pop(
-            "service_providing_group_grid_prequalification_id", UNSET
-        )
-
         service_providing_group_grid_prequalification_comment_create_request = cls(
-            visibility=visibility,
-            content=content,
             service_providing_group_grid_prequalification_id=service_providing_group_grid_prequalification_id,
+            content=content,
+            visibility=visibility,
         )
 
         service_providing_group_grid_prequalification_comment_create_request.additional_properties = d

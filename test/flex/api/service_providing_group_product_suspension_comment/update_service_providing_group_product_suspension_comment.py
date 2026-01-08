@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from typing import Any, cast
-from urllib.parse import quote
 
 import httpx
 
@@ -8,9 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_product_suspension_comment_response import (
-    ServiceProvidingGroupProductSuspensionCommentResponse,
-)
+from ...models.service_providing_group_product_suspension_comment import ServiceProvidingGroupProductSuspensionComment
 from ...models.service_providing_group_product_suspension_comment_update_request import (
     ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
 )
@@ -26,9 +23,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "patch",
-        "url": "/service_providing_group_product_suspension_comment/{id}".format(
-            id=quote(str(id), safe=""),
-        ),
+        "url": f"/service_providing_group_product_suspension_comment/{id}",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -41,9 +36,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment | None:
     if response.status_code == 200:
-        response_200 = ServiceProvidingGroupProductSuspensionCommentResponse.from_dict(response.json())
+        response_200 = ServiceProvidingGroupProductSuspensionComment.from_dict(response.json())
 
         return response_200
 
@@ -105,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -119,7 +114,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment]:
     """Update Service Providing Group Product Suspension Comment
 
     Args:
@@ -133,7 +128,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment]
     """
 
     kwargs = _get_kwargs(
@@ -153,7 +148,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment | None:
     """Update Service Providing Group Product Suspension Comment
 
     Args:
@@ -167,7 +162,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment
     """
 
     return sync_detailed(
@@ -182,7 +177,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment]:
     """Update Service Providing Group Product Suspension Comment
 
     Args:
@@ -196,7 +191,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment]
     """
 
     kwargs = _get_kwargs(
@@ -214,7 +209,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment | None:
     """Update Service Providing Group Product Suspension Comment
 
     Args:
@@ -228,7 +223,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionComment
     """
 
     return (

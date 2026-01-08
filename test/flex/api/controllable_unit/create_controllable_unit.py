@@ -5,16 +5,16 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.controllable_unit import ControllableUnit
 from ...models.controllable_unit_create_request import ControllableUnitCreateRequest
-from ...models.controllable_unit_response import ControllableUnitResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ControllableUnitCreateRequest | Unset = UNSET,
+    body: ControllableUnitCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/controllable_unit",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage | None:
     if response.status_code == 201:
-        response_201 = ControllableUnitResponse.from_dict(response.json())
+        response_201 = ControllableUnit.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,20 +110,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest | Unset = UNSET,
-) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+    body: ControllableUnitCreateRequest,
+) -> Response[ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
-            Controllable unit
+        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
+            unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -141,20 +140,20 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest | Unset = UNSET,
-) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+    body: ControllableUnitCreateRequest,
+) -> ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
-            Controllable unit
+        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
+            unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage
+        ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return sync_detailed(
@@ -166,20 +165,20 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest | Unset = UNSET,
-) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+    body: ControllableUnitCreateRequest,
+) -> Response[ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
-            Controllable unit
+        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
+            unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -194,20 +193,20 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ControllableUnitCreateRequest | Unset = UNSET,
-) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+    body: ControllableUnitCreateRequest,
+) -> ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable unit
 
     Args:
-        body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
-            Controllable unit
+        body (ControllableUnitCreateRequest): Request schema for create operations - Controllable
+            unit
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage
+        ControllableUnit | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return (

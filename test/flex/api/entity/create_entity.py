@@ -6,15 +6,15 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
+from ...models.entity import Entity
 from ...models.entity_create_request import EntityCreateRequest
-from ...models.entity_response import EntityResponse
 from ...models.error_message import ErrorMessage
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: EntityCreateRequest | Unset = UNSET,
+    body: EntityCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/entity",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | EntityResponse | ErrorMessage | None:
+) -> EmptyObject | ErrorMessage | Entity | ErrorMessage | None:
     if response.status_code == 201:
-        response_201 = EntityResponse.from_dict(response.json())
+        response_201 = Entity.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | EntityResponse | ErrorMessage]:
+) -> Response[EmptyObject | ErrorMessage | Entity | ErrorMessage]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,13 +110,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: EntityCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | EntityResponse | ErrorMessage]:
+    body: EntityCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | Entity | ErrorMessage]:
     """Create Entity
 
     Args:
-        body (EntityCreateRequest | Unset): Request schema for create operations - Entity -
-            Natural or legal person
+        body (EntityCreateRequest): Request schema for create operations - Entity - Natural or
+            legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information
             System.
@@ -132,7 +131,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | EntityResponse | ErrorMessage]
+        Response[EmptyObject | ErrorMessage | Entity | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -149,13 +148,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: EntityCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | EntityResponse | ErrorMessage | None:
+    body: EntityCreateRequest,
+) -> EmptyObject | ErrorMessage | Entity | ErrorMessage | None:
     """Create Entity
 
     Args:
-        body (EntityCreateRequest | Unset): Request schema for create operations - Entity -
-            Natural or legal person
+        body (EntityCreateRequest): Request schema for create operations - Entity - Natural or
+            legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information
             System.
@@ -170,7 +169,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | EntityResponse | ErrorMessage
+        EmptyObject | ErrorMessage | Entity | ErrorMessage
     """
 
     return sync_detailed(
@@ -182,13 +181,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: EntityCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | EntityResponse | ErrorMessage]:
+    body: EntityCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | Entity | ErrorMessage]:
     """Create Entity
 
     Args:
-        body (EntityCreateRequest | Unset): Request schema for create operations - Entity -
-            Natural or legal person
+        body (EntityCreateRequest): Request schema for create operations - Entity - Natural or
+            legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information
             System.
@@ -203,7 +202,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | EntityResponse | ErrorMessage]
+        Response[EmptyObject | ErrorMessage | Entity | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -218,13 +217,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: EntityCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | EntityResponse | ErrorMessage | None:
+    body: EntityCreateRequest,
+) -> EmptyObject | ErrorMessage | Entity | ErrorMessage | None:
     """Create Entity
 
     Args:
-        body (EntityCreateRequest | Unset): Request schema for create operations - Entity -
-            Natural or legal person
+        body (EntityCreateRequest): Request schema for create operations - Entity - Natural or
+            legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information
             System.
@@ -239,7 +238,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | EntityResponse | ErrorMessage
+        EmptyObject | ErrorMessage | Entity | ErrorMessage
     """
 
     return (

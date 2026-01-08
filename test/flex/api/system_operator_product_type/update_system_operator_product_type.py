@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from typing import Any, cast
-from urllib.parse import quote
 
 import httpx
 
@@ -8,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.system_operator_product_type_response import SystemOperatorProductTypeResponse
+from ...models.system_operator_product_type import SystemOperatorProductType
 from ...models.system_operator_product_type_update_request import SystemOperatorProductTypeUpdateRequest
 from ...types import Response
 
@@ -22,9 +21,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "patch",
-        "url": "/system_operator_product_type/{id}".format(
-            id=quote(str(id), safe=""),
-        ),
+        "url": f"/system_operator_product_type/{id}",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -37,9 +34,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType | None:
     if response.status_code == 200:
-        response_200 = SystemOperatorProductTypeResponse.from_dict(response.json())
+        response_200 = SystemOperatorProductType.from_dict(response.json())
 
         return response_200
 
@@ -101,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,7 +112,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: SystemOperatorProductTypeUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]:
     """Update System Operator Product Type
 
     Args:
@@ -128,7 +125,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]
     """
 
     kwargs = _get_kwargs(
@@ -148,7 +145,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: SystemOperatorProductTypeUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType | None:
     """Update System Operator Product Type
 
     Args:
@@ -161,7 +158,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType
     """
 
     return sync_detailed(
@@ -176,7 +173,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: SystemOperatorProductTypeUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]:
     """Update System Operator Product Type
 
     Args:
@@ -189,7 +186,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType]
     """
 
     kwargs = _get_kwargs(
@@ -207,7 +204,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: SystemOperatorProductTypeUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType | None:
     """Update System Operator Product Type
 
     Args:
@@ -220,7 +217,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductType
     """
 
     return (

@@ -41,8 +41,10 @@ export const ControllableUnitServiceProviderInput = () => {
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
-  const overrideRecord =
-    zControllableUnitServiceProvider.safeParse(cusp).data || {};
+  const overrideRecord = cusp
+    ? zControllableUnitServiceProvider.safeParse(cusp).data
+    : undefined;
+
   const hasOverride = countDefinedValues(overrideRecord) > 0;
 
   const overridenRecord = {
@@ -100,7 +102,7 @@ const ControllableUnitServiceProviderForm = ({
     <SimpleForm
       record={recordWithPartyId}
       maxWidth={1280}
-      resolver={zodResolver(zControllableUnitServiceProvider)}
+      resolver={zodResolver(zControllableUnitServiceProvider) as any}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.
          In the case of a restore, we don't do any edit, as the modifications

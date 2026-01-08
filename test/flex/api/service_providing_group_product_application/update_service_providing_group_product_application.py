@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from typing import Any, cast
-from urllib.parse import quote
 
 import httpx
 
@@ -8,9 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_product_application_response import (
-    ServiceProvidingGroupProductApplicationResponse,
-)
+from ...models.service_providing_group_product_application import ServiceProvidingGroupProductApplication
 from ...models.service_providing_group_product_application_update_request import (
     ServiceProvidingGroupProductApplicationUpdateRequest,
 )
@@ -26,9 +23,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "patch",
-        "url": "/service_providing_group_product_application/{id}".format(
-            id=quote(str(id), safe=""),
-        ),
+        "url": f"/service_providing_group_product_application/{id}",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -41,9 +36,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication | None:
     if response.status_code == 200:
-        response_200 = ServiceProvidingGroupProductApplicationResponse.from_dict(response.json())
+        response_200 = ServiceProvidingGroupProductApplication.from_dict(response.json())
 
         return response_200
 
@@ -105,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -119,7 +114,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]:
     """Update Service Providing Group Product Application
 
     Args:
@@ -133,7 +128,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]
     """
 
     kwargs = _get_kwargs(
@@ -153,7 +148,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication | None:
     """Update Service Providing Group Product Application
 
     Args:
@@ -167,7 +162,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication
     """
 
     return sync_detailed(
@@ -182,7 +177,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]:
     """Update Service Providing Group Product Application
 
     Args:
@@ -196,7 +191,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication]
     """
 
     kwargs = _get_kwargs(
@@ -214,7 +209,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication | None:
     """Update Service Providing Group Product Application
 
     Args:
@@ -228,7 +223,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplication
     """
 
     return (

@@ -7,14 +7,14 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.technical_resource import TechnicalResource
 from ...models.technical_resource_create_request import TechnicalResourceCreateRequest
-from ...models.technical_resource_response import TechnicalResourceResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: TechnicalResourceCreateRequest | Unset = UNSET,
+    body: TechnicalResourceCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/technical_resource",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -34,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource | None:
     if response.status_code == 201:
-        response_201 = TechnicalResourceResponse.from_dict(response.json())
+        response_201 = TechnicalResource.from_dict(response.json())
 
         return response_201
 
@@ -99,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,20 +110,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: TechnicalResourceCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]:
+    body: TechnicalResourceCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource]:
     """Create Technical Resource
 
     Args:
-        body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -
-            Technical unit being part of a controllable unit.
+        body (TechnicalResourceCreateRequest): Request schema for create operations - Technical
+            unit being part of a controllable unit.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource]
     """
 
     kwargs = _get_kwargs(
@@ -141,20 +140,20 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: TechnicalResourceCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse | None:
+    body: TechnicalResourceCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource | None:
     """Create Technical Resource
 
     Args:
-        body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -
-            Technical unit being part of a controllable unit.
+        body (TechnicalResourceCreateRequest): Request schema for create operations - Technical
+            unit being part of a controllable unit.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse
+        EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource
     """
 
     return sync_detailed(
@@ -166,20 +165,20 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: TechnicalResourceCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]:
+    body: TechnicalResourceCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource]:
     """Create Technical Resource
 
     Args:
-        body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -
-            Technical unit being part of a controllable unit.
+        body (TechnicalResourceCreateRequest): Request schema for create operations - Technical
+            unit being part of a controllable unit.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource]
     """
 
     kwargs = _get_kwargs(
@@ -194,20 +193,20 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: TechnicalResourceCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse | None:
+    body: TechnicalResourceCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource | None:
     """Create Technical Resource
 
     Args:
-        body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -
-            Technical unit being part of a controllable unit.
+        body (TechnicalResourceCreateRequest): Request schema for create operations - Technical
+            unit being part of a controllable unit.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse
+        EmptyObject | ErrorMessage | ErrorMessage | TechnicalResource
     """
 
     return (

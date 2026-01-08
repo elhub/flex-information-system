@@ -7,18 +7,18 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.service_providing_group_grid_prequalification_comment import (
+    ServiceProvidingGroupGridPrequalificationComment,
+)
 from ...models.service_providing_group_grid_prequalification_comment_create_request import (
     ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
 )
-from ...models.service_providing_group_grid_prequalification_comment_response import (
-    ServiceProvidingGroupGridPrequalificationCommentResponse,
-)
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,8 +27,7 @@ def _get_kwargs(
         "url": "/service_providing_group_grid_prequalification_comment",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -38,9 +37,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment | None:
     if response.status_code == 201:
-        response_201 = ServiceProvidingGroupGridPrequalificationCommentResponse.from_dict(response.json())
+        response_201 = ServiceProvidingGroupGridPrequalificationComment.from_dict(response.json())
 
         return response_201
 
@@ -103,7 +102,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,21 +114,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
-            schema for create operations - Comment made by a party involved in a service providing
-            group grid prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
+            prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]
     """
 
     kwargs = _get_kwargs(
@@ -146,21 +145,21 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment | None:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
-            schema for create operations - Comment made by a party involved in a service providing
-            group grid prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
+            prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment
     """
 
     return sync_detailed(
@@ -172,21 +171,21 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
-            schema for create operations - Comment made by a party involved in a service providing
-            group grid prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
+            prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]
     """
 
     kwargs = _get_kwargs(
@@ -201,21 +200,21 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
+    body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment | None:
     """Create Grid prequalification for service providing group Comment
 
     Args:
-        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
-            schema for create operations - Comment made by a party involved in a service providing
-            group grid prequalification.
+        body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest): Request schema for
+            create operations - Comment made by a party involved in a service providing group grid
+            prequalification.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment
     """
 
     return (
