@@ -1,16 +1,20 @@
 import {
   ArrayField,
+  FieldProps,
+  Link,
   SelectArrayInput,
   SelectInput,
   useGetList,
+  useGetOne,
+  useRecordContext,
   WithListContext,
 } from "react-admin";
-import { Stack, Chip } from "@mui/material";
+import { Stack, Chip, Tooltip } from "@mui/material";
+import { ProductType } from "../generated-client";
 
 // display a product type with name and example products if present
-export const displayProductType = (productType: any) =>
-  productType?.name +
-  (productType?.products ? ` (${productType?.products})` : "");
+export const displayProductType = (productType: ProductType) =>
+  productType.name + (productType.products ? ` (${productType.products})` : "");
 
 // hook to get all possible product types sorted by ID
 function useGetAllProductTypes() {
@@ -26,6 +30,33 @@ function useGetAllProductTypes() {
 
   return productTypes;
 }
+
+export const ProductTypeField = ({ source }: FieldProps) => {
+  const record = useRecordContext()!;
+  const { data } = useGetOne("product_type", { id: record[source] });
+
+  return (
+    <Link
+      to={`/product_type/${record[source]}/show`}
+      // If this is not set and this component is in a list, the row click
+      // handler applies first, and then we are sent to this link after changing
+      // pages. This allows ignoring the potential row click.
+      // (cf ReferenceField's implementation in React-Admin)
+      onClick={(e) => e.stopPropagation()}
+    >
+      <Tooltip title={data?.service}>
+        <Chip
+          label={data ? displayProductType(data) : record[source]}
+          size="small"
+          sx={{
+            borderRadius: 2,
+            fontWeight: 500,
+          }}
+        />
+      </Tooltip>
+    </Link>
+  );
+};
 
 // input component to select ONE product type
 export const ProductTypeInput = (props: any) => {
@@ -47,9 +78,10 @@ export const ProductTypeArrayField = (props: any) => {
               <Chip
                 key={pt_id as any}
                 sx={{ marginBottom: 1 }}
-                label={displayProductType(
-                  productTypes?.find((productType) => productType.id == pt_id),
-                )}
+                label={
+                  productTypes?.find((productType) => productType.id == pt_id)
+                    ?.name
+                }
               />
             ))}
           </Stack>
