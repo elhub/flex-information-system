@@ -3,9 +3,9 @@ import { Typography, Stack } from "@mui/material";
 import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { Toolbar } from "../../components/Toolbar";
 import { zTechnicalResource } from "../../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { TechnicalResource } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
+import { unTypedZodResolver } from "../../util";
 
 export type TechnicalResourceInputLocationState = {
   technicalResource?: Partial<TechnicalResource>;
@@ -29,7 +29,7 @@ export const TechnicalResourceInput = () => {
     <SimpleForm
       record={overriddenRecord}
       maxWidth={1280}
-      resolver={zodResolver(zTechnicalResource)}
+      resolver={unTypedZodResolver(zTechnicalResource)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

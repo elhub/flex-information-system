@@ -11,8 +11,8 @@ import { Toolbar } from "../../components/Toolbar";
 import { DateTimeInput } from "../../components/datetime";
 import { useMemo } from "react";
 import { zServiceProvidingGroupGridPrequalification } from "../../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { EnumInput } from "../../components/enum";
+import { unTypedZodResolver } from "../../util";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -44,7 +44,7 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zServiceProvidingGroupGridPrequalification)}
+      resolver={unTypedZodResolver(zServiceProvidingGroupGridPrequalification)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

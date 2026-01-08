@@ -20,10 +20,9 @@ import {
   formatDateToMidnightISO,
   MidnightDateInput,
 } from "../../components/datetime";
-import { countDefinedValues } from "../../util";
+import { countDefinedValues, unTypedZodResolver } from "../../util";
 import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
 import { ControllableUnitServiceProvider } from "../../generated-client";
-import { zodResolver } from "@hookform/resolvers/zod";
 import useLocationState from "../../hooks/useLocationState";
 
 export type ControllableUnitServiceProviderLocationState = {
@@ -41,17 +40,15 @@ export const ControllableUnitServiceProviderInput = () => {
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
-  const overrideRecord = cusp
-    ? zControllableUnitServiceProvider.safeParse(cusp).data
-    : undefined;
+  const overrideRecord = zControllableUnitServiceProvider.partial().parse(cusp);
 
   const hasOverride = countDefinedValues(overrideRecord) > 0;
 
   const overridenRecord = {
     ...actualRecord,
     ...overrideRecord,
-    valid_from: overrideRecord.valid_from
-      ? formatDateToMidnightISO(overrideRecord.valid_from)
+    valid_from: overrideRecord?.valid_from
+      ? formatDateToMidnightISO(overrideRecord?.valid_from)
       : actualRecord?.valid_from,
   } as ControllableUnitServiceProvider;
 
@@ -102,7 +99,7 @@ const ControllableUnitServiceProviderForm = ({
     <SimpleForm
       record={recordWithPartyId}
       maxWidth={1280}
-      resolver={zodResolver(zControllableUnitServiceProvider) as any}
+      resolver={unTypedZodResolver(zControllableUnitServiceProvider)}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.
          In the case of a restore, we don't do any edit, as the modifications

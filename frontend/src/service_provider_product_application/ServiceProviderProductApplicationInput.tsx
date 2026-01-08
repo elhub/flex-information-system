@@ -13,8 +13,8 @@ import { DateTimeInput } from "../components/datetime";
 import { Toolbar } from "../components/Toolbar";
 import { ProductTypeArrayInput } from "../product_type/components";
 import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { EnumInput } from "../components/enum";
+import { unTypedZodResolver } from "../util";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -100,7 +100,7 @@ export const ServiceProviderProductApplicationInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zServiceProviderProductApplication)}
+      resolver={unTypedZodResolver(zServiceProviderProductApplication)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

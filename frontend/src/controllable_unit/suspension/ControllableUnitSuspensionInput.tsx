@@ -14,8 +14,8 @@ import {
 import { ControllableUnitSuspension } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import { zControllableUnitSuspension } from "../../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { EnumInput } from "../../components/enum";
+import { unTypedZodResolver } from "../../util";
 
 export type ControllableUnitSuspensionLocationState = {
   cus?: Partial<ControllableUnitSuspension>;
@@ -25,8 +25,9 @@ export type ControllableUnitSuspensionLocationState = {
 export const ControllableUnitSuspensionInput = () => {
   const locationState =
     useLocationState<ControllableUnitSuspensionLocationState>();
-  const overrideRecord =
-    zControllableUnitSuspension.safeParse(locationState?.cus).data || {};
+  const overrideRecord = zControllableUnitSuspension
+    .partial()
+    .parse(locationState?.cus);
   const actualRecord = useRecordContext();
   const { data: identity } = useGetIdentity();
   const isSystemOperator = identity?.role == "flex_system_operator";
@@ -40,7 +41,7 @@ export const ControllableUnitSuspensionInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zControllableUnitSuspension)}
+      resolver={unTypedZodResolver(zControllableUnitSuspension)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

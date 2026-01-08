@@ -9,8 +9,8 @@ import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { ProductTypeInput } from "../product_type/components";
 import { zSystemOperatorProductType } from "../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { EnumInput } from "../components/enum";
+import { unTypedZodResolver } from "../util";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -46,7 +46,7 @@ export const SystemOperatorProductTypeInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zSystemOperatorProductType)}
+      resolver={unTypedZodResolver(zSystemOperatorProductType)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

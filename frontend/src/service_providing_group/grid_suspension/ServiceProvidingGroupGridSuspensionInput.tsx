@@ -11,7 +11,6 @@ import {
   InputStack,
   AutocompleteReferenceInput,
 } from "../../auth";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ServiceProvidingGroupGridSuspension,
   ServiceProvidingGroupGridSuspensionCreateRequest,
@@ -20,6 +19,7 @@ import {
 import useLocationState from "../../hooks/useLocationState";
 import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
+import { unTypedZodResolver } from "../../util";
 
 export type ServiceProvidingGroupGridSuspensionLocationState = {
   spggs: Partial<ServiceProvidingGroupGridSuspension>;
@@ -48,7 +48,7 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zServiceProvidingGroupGridSuspension) as any}
+      resolver={unTypedZodResolver(zServiceProvidingGroupGridSuspension)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>
