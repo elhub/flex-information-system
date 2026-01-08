@@ -5,6 +5,7 @@ import { Toolbar } from "../../components/Toolbar";
 import { zTechnicalResource } from "../../generated-client/zod.gen";
 import { TechnicalResource } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
+import { zTechnicalResourceCreateRequest } from "../../generated-client/zod.gen";
 import { unTypedZodResolver } from "../../util";
 
 export type TechnicalResourceInputLocationState = {
@@ -29,7 +30,7 @@ export const TechnicalResourceInput = () => {
     <SimpleForm
       record={overriddenRecord}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zTechnicalResource)}
+      resolver={unTypedZodResolver(zTechnicalResourceCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

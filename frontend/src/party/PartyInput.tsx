@@ -9,7 +9,7 @@ import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { zParty } from "../generated-client/zod.gen";
+import { zPartyCreateRequest } from "../generated-client/zod.gen";
 import { EnumInput } from "../components/enum";
 import { unTypedZodResolver } from "../util";
 
@@ -107,7 +107,7 @@ export const PartyInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zParty)}
+      resolver={unTypedZodResolver(zPartyCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

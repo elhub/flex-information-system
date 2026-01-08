@@ -13,7 +13,10 @@ import {
 } from "../../auth";
 import { ControllableUnitSuspension } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
-import { zControllableUnitSuspension } from "../../generated-client/zod.gen";
+import {
+  zControllableUnitSuspension,
+  zControllableUnitSuspensionCreateRequest,
+} from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
 import { unTypedZodResolver } from "../../util";
 
@@ -41,7 +44,7 @@ export const ControllableUnitSuspensionInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zControllableUnitSuspension)}
+      resolver={unTypedZodResolver(zControllableUnitSuspensionCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

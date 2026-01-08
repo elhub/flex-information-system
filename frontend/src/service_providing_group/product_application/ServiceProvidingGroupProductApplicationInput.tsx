@@ -10,7 +10,7 @@ import {
 import { DateTimeInput } from "../../components/datetime";
 import { ProductTypeArrayInput } from "../../product_type/components";
 import { useMemo } from "react";
-import { zServiceProvidingGroupProductApplication } from "../../generated-client/zod.gen";
+import { zServiceProvidingGroupProductApplicationCreateRequest } from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
 import { unTypedZodResolver } from "../../util";
 
@@ -47,7 +47,9 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zServiceProvidingGroupProductApplication)}
+      resolver={unTypedZodResolver(
+        zServiceProvidingGroupProductApplicationCreateRequest,
+      )}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

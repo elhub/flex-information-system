@@ -23,7 +23,10 @@ import { UnitInput } from "../components/unitComponents";
 import { DateTimeInput } from "../components/datetime";
 import { ControllableUnit } from "../generated-client";
 import useLocationState from "../hooks/useLocationState";
-import { zControllableUnit } from "../generated-client/zod.gen";
+import {
+  zControllableUnit,
+  zControllableUnitCreateRequest,
+} from "../generated-client/zod.gen";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +47,7 @@ export const ControllableUnitInput = () => {
 
   const controllableUnitOverride: Partial<ControllableUnit> = zControllableUnit
     .partial()
-    .parse(locationState?.controllableUnit);
+    .parse(locationState?.controllableUnit ?? {});
 
   const record = useRecordContext<ControllableUnit>();
 
@@ -62,7 +65,7 @@ export const ControllableUnitInput = () => {
   } as ControllableUnit;
 
   const onCreate = (data: unknown) => {
-    const controllableUnit = zControllableUnit.partial().parse(data);
+    const controllableUnit = zControllableUnit.partial().parse(data ?? {});
     const cuspState: ControllableUnitServiceProviderLocationState = {
       cusp: {
         controllable_unit_id: controllableUnit.id,
@@ -82,7 +85,7 @@ export const ControllableUnitInput = () => {
   return (
     <SimpleForm
       record={overridenRecord}
-      resolver={zodResolver(zControllableUnit) as any}
+      resolver={zodResolver(zControllableUnitCreateRequest) as any}
       toolbar={
         <Toolbar
           onSuccess={createOrUpdate === "create" ? onCreate : undefined}

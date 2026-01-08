@@ -2,7 +2,7 @@ import { required, SimpleForm, TextInput, useGetIdentity } from "react-admin";
 import { InputStack, useCreateOrUpdate, PartyReferenceInput } from "../auth";
 import { Stack } from "@mui/material";
 import { Toolbar } from "../components/Toolbar";
-import { zServiceProvidingGroup } from "../generated-client/zod.gen";
+import { zServiceProvidingGroupCreateRequest } from "../generated-client/zod.gen";
 import { EnumInput } from "../components/enum";
 import { unTypedZodResolver } from "../util";
 
@@ -24,7 +24,7 @@ export const ServiceProvidingGroupInput = () => {
     <SimpleForm
       defaultValues={record}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zServiceProvidingGroup)}
+      resolver={unTypedZodResolver(zServiceProvidingGroupCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

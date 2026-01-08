@@ -21,7 +21,10 @@ import {
   MidnightDateInput,
 } from "../../components/datetime";
 import { countDefinedValues, unTypedZodResolver } from "../../util";
-import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
+import {
+  zControllableUnitServiceProvider,
+  zControllableUnitServiceProviderCreateRequest,
+} from "../../generated-client/zod.gen";
 import { ControllableUnitServiceProvider } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 
@@ -40,7 +43,9 @@ export const ControllableUnitServiceProviderInput = () => {
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
-  const overrideRecord = zControllableUnitServiceProvider.partial().parse(cusp);
+  const overrideRecord = zControllableUnitServiceProvider
+    .partial()
+    .parse(cusp ?? {});
 
   const hasOverride = countDefinedValues(overrideRecord) > 0;
 
@@ -99,7 +104,9 @@ const ControllableUnitServiceProviderForm = ({
     <SimpleForm
       record={recordWithPartyId}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zControllableUnitServiceProvider)}
+      resolver={unTypedZodResolver(
+        zControllableUnitServiceProviderCreateRequest,
+      )}
       /* By default, the save button waits for an edit to be done to become
          enabled. It was made to prevent empty edit calls.
          In the case of a restore, we don't do any edit, as the modifications

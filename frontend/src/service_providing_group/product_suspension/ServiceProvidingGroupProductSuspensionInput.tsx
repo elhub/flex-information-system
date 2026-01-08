@@ -14,7 +14,7 @@ import {
 } from "../../auth";
 import { useMemo } from "react";
 import { ProductTypeArrayInput } from "../../product_type/components";
-import { zServiceProvidingGroupProductSuspension } from "../../generated-client/zod.gen";
+import { zServiceProvidingGroupProductSuspensionCreateRequest } from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
 import { unTypedZodResolver } from "../../util";
 
@@ -45,7 +45,9 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zServiceProvidingGroupProductSuspension)}
+      resolver={unTypedZodResolver(
+        zServiceProvidingGroupProductSuspensionCreateRequest,
+      )}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

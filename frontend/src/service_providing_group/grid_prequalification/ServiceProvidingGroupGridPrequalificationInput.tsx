@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { DateTimeInput } from "../../components/datetime";
 import { useMemo } from "react";
-import { zServiceProvidingGroupGridPrequalification } from "../../generated-client/zod.gen";
+import { zServiceProvidingGroupGridPrequalificationCreateRequest } from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
 import { unTypedZodResolver } from "../../util";
 
@@ -44,7 +44,9 @@ export const ServiceProvidingGroupGridPrequalificationInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zServiceProvidingGroupGridPrequalification)}
+      resolver={unTypedZodResolver(
+        zServiceProvidingGroupGridPrequalificationCreateRequest,
+      )}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

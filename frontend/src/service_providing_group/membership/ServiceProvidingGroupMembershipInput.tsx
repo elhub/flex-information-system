@@ -6,7 +6,7 @@ import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
 import { useMemo } from "react";
-import { zServiceProvidingGroupMembership } from "../../generated-client/zod.gen";
+import { zServiceProvidingGroupMembershipCreateRequest } from "../../generated-client/zod.gen";
 import { unTypedZodResolver } from "../../util";
 
 // keep only the fields that map to the UI
@@ -38,7 +38,9 @@ export const ServiceProvidingGroupMembershipInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={unTypedZodResolver(zServiceProvidingGroupMembership)}
+      resolver={unTypedZodResolver(
+        zServiceProvidingGroupMembershipCreateRequest,
+      )}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>
