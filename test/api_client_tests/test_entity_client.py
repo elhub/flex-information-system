@@ -4,14 +4,14 @@ from security_token_service import (
 )
 from flex.models import (
     EntityClientCreateRequest,
-    EntityClientResponse,
+    EntityClient,
     EntityClientUpdateRequest,
     AuthScope,
     PartyMembershipCreateRequest,
-    PartyMembershipResponse,
+    PartyMembership,
     PartyCreateRequest,
     PartyBusinessIdType,
-    PartyResponse,
+    Party,
     PartyRole,
     PartyType,
     ErrorMessage,
@@ -70,11 +70,11 @@ def test_entity_client_fiso(sts):
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
         ),
     )
-    assert isinstance(clt, EntityClientResponse)
+    assert isinstance(clt, EntityClient)
 
     # endpoint: GET /entity_client/{id}
     clt = read_entity_client.sync(client=client_ent, id=cast(int, clt.id))
-    assert isinstance(clt, EntityClientResponse)
+    assert isinstance(clt, EntityClient)
 
     # min password length is 12
     e = update_entity_client.sync(
@@ -96,7 +96,7 @@ def test_entity_client_fiso(sts):
     # FISO can read everything
 
     clt = read_entity_client.sync(client=client_fiso, id=cast(int, clt.id))
-    assert isinstance(clt, EntityClientResponse)
+    assert isinstance(clt, EntityClient)
 
     # but FISO or other entity cannot modify the resource for this entity
 
@@ -106,6 +106,8 @@ def test_entity_client_fiso(sts):
             entity_id=ent_id,
             name="test client name",
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+            client_id="client - test entity client fiso",
+            party_id=client_other_ent.party_id,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -116,6 +118,8 @@ def test_entity_client_fiso(sts):
             entity_id=ent_id,
             name="test client name",
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+            client_id="client - test entity client fiso",
+            party_id=client_fiso.party_id,
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -135,7 +139,7 @@ def test_entity_client_fiso(sts):
             entity_id=ent_id,
         ),
     )
-    assert isinstance(p, PartyResponse)
+    assert isinstance(p, Party)
 
     p2 = create_party.sync(
         client=client_fiso,
@@ -148,7 +152,7 @@ def test_entity_client_fiso(sts):
             entity_id=other_ent_id,
         ),
     )
-    assert isinstance(p2, PartyResponse)
+    assert isinstance(p2, Party)
 
     # party ownership test
     # entity can assume an owned party, so it should be able to set up a client for it
@@ -180,7 +184,7 @@ def test_entity_client_fiso(sts):
             scopes=[AuthScope.MANAGEAUTH, AuthScope.MANAGEDATAENTITY_CLIENT],
         ),
     )
-    assert isinstance(pm, PartyMembershipResponse)
+    assert isinstance(pm, PartyMembership)
 
     u = update_entity_client.sync(
         client=client_ent,
@@ -224,7 +228,7 @@ def test_entity_client_org(sts):
     org_pty_id = org_info["party_id"]
 
     p = read_party.sync(client=client_fiso, id=cast(int, org_pty_id))
-    assert isinstance(p, PartyResponse)
+    assert isinstance(p, Party)
     org_ent_id = p.entity_id
 
     # RLS: ECL-ORG001
@@ -267,7 +271,7 @@ def test_entity_client_org(sts):
             scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
         ),
     )
-    assert isinstance(clt, EntityClientResponse)
+    assert isinstance(clt, EntityClient)
 
     e = update_entity_client.sync(
         client=client_org,

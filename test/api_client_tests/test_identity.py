@@ -2,7 +2,7 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
 )
-from flex.models import IdentityResponse, ErrorMessage
+from flex.models import Identity, ErrorMessage
 from flex.api.identity import (
     list_identity,
     read_identity,
@@ -40,7 +40,7 @@ def test_identity(sts):
 
         # endpoint: GET /identity/{id}
         id = read_identity.sync(client=client, id=cast(int, ids[0].id))
-        assert isinstance(id, IdentityResponse)
+        assert isinstance(id, Identity)
 
 
 def test_identity_anon(sts):

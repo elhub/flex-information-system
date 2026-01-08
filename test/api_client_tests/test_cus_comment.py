@@ -8,21 +8,21 @@ from flex.models import (
     ControllableUnitUpdateRequest,
     ControllableUnitStatus,
     ControllableUnitRegulationDirection,
-    ControllableUnitResponse,
+    ControllableUnit,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProviderResponse,
+    ControllableUnitServiceProvider,
     ControllableUnitSuspensionCommentCreateRequest,
     ControllableUnitSuspensionCommentUpdateRequest,
-    ControllableUnitSuspensionCommentResponse,
+    ControllableUnitSuspensionComment,
     ControllableUnitSuspensionCommentVisibility,
-    ControllableUnitSuspensionCommentHistoryResponse,
+    ControllableUnitSuspensionCommentHistory,
     TechnicalResourceCreateRequest,
-    TechnicalResourceResponse,
+    TechnicalResource,
     ErrorMessage,
 )
 from flex.models import (
     ControllableUnitSuspensionCreateRequest,
-    ControllableUnitSuspensionResponse,
+    ControllableUnitSuspension,
     ControllableUnitSuspensionReason,
 )
 from flex.api.controllable_unit_suspension import create_controllable_unit_suspension
@@ -71,7 +71,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     tr = create_technical_resource.sync(
         client=client_fiso,
@@ -80,7 +80,7 @@ def data():
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResourceResponse)
+    assert isinstance(tr, TechnicalResource)
 
     u = update_controllable_unit.sync(
         client=client_fiso,
@@ -101,7 +101,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp, ControllableUnitServiceProvider)
 
     yield (sts, cu.id, (client_so, so_id), (client_sp, sp_id))
 
@@ -125,7 +125,7 @@ def check_history(client, cusc_id):
     )
     assert isinstance(
         hist_cus,
-        ControllableUnitSuspensionCommentHistoryResponse,
+        ControllableUnitSuspensionCommentHistory,
     )
 
 
@@ -144,7 +144,7 @@ def test_cus_fiso(data):
             reason=ControllableUnitSuspensionReason.OTHER,
         ),
     )
-    assert isinstance(cus, ControllableUnitSuspensionResponse)
+    assert isinstance(cus, ControllableUnitSuspension)
 
     cusc = create_controllable_unit_suspension_comment.sync(
         client=client_fiso,
@@ -154,7 +154,7 @@ def test_cus_fiso(data):
             content="This is a test comment",
         ),
     )
-    assert isinstance(cusc, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(cusc, ControllableUnitSuspensionComment)
     # FISO can read and update both
     # endpoint: GET /controllable_unit_suspension_comment
     cuscs = list_controllable_unit_suspension_comment.sync(
@@ -168,7 +168,7 @@ def test_cus_fiso(data):
         client=client_fiso,
         id=cast(int, cusc.id),
     )
-    assert isinstance(cusc1, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(cusc1, ControllableUnitSuspensionComment)
 
     # endpoint: PATCH /controllable_unit_suspension_comment/{id}
     u = update_controllable_unit_suspension_comment.sync(
@@ -213,7 +213,7 @@ def test_cus_so_sp(data):
             reason=ControllableUnitSuspensionReason.OTHER,
         ),
     )
-    assert isinstance(cus, ControllableUnitSuspensionResponse)
+    assert isinstance(cus, ControllableUnitSuspension)
 
     cusc = create_controllable_unit_suspension_comment.sync(
         client=client_so,
@@ -223,7 +223,7 @@ def test_cus_so_sp(data):
             content="This is a test comment",
         ),
     )
-    assert isinstance(cusc, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(cusc, ControllableUnitSuspensionComment)
     # FISO can read and update both
     # endpoint: GET /controllable_unit_suspension_comment
     cuscs = list_controllable_unit_suspension_comment.sync(
@@ -237,7 +237,7 @@ def test_cus_so_sp(data):
         client=client_so,
         id=cast(int, cusc.id),
     )
-    assert isinstance(cusc1, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(cusc1, ControllableUnitSuspensionComment)
 
     so_comment_party_only = create_controllable_unit_suspension_comment.sync(
         client=client_so,
@@ -247,7 +247,7 @@ def test_cus_so_sp(data):
             content="This is a test comment from SO",
         ),
     )
-    assert isinstance(so_comment_party_only, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(so_comment_party_only, ControllableUnitSuspensionComment)
 
     sp_comment_party_only = create_controllable_unit_suspension_comment.sync(
         client=client_sp,
@@ -257,7 +257,7 @@ def test_cus_so_sp(data):
             content="This is a test comment from SP",
         ),
     )
-    assert isinstance(sp_comment_party_only, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(sp_comment_party_only, ControllableUnitSuspensionComment)
 
     # both can read both comments only when visibility allows
     # RLS: CUSC-SP002
@@ -267,13 +267,13 @@ def test_cus_so_sp(data):
         client=client_so,
         id=cast(int, so_comment_party_only.id),
     )
-    assert isinstance(r_so, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(r_so, ControllableUnitSuspensionComment)
 
     r_sp = read_controllable_unit_suspension_comment.sync(
         client=client_sp,
         id=cast(int, sp_comment_party_only.id),
     )
-    assert isinstance(r_sp, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(r_sp, ControllableUnitSuspensionComment)
 
     # both can update their own comments
 
@@ -317,9 +317,7 @@ def test_cus_so_sp(data):
             content="This is a test comment from SO that can be read by SP",
         ),
     )
-    assert isinstance(
-        so_comment_any_involved, ControllableUnitSuspensionCommentResponse
-    )
+    assert isinstance(so_comment_any_involved, ControllableUnitSuspensionComment)
 
     sp_comment_any_involved = create_controllable_unit_suspension_comment.sync(
         client=client_sp,
@@ -329,21 +327,19 @@ def test_cus_so_sp(data):
             content="This is a test comment from SP that can be read by SO",
         ),
     )
-    assert isinstance(
-        sp_comment_any_involved, ControllableUnitSuspensionCommentResponse
-    )
+    assert isinstance(sp_comment_any_involved, ControllableUnitSuspensionComment)
 
     r_so2 = read_controllable_unit_suspension_comment.sync(
         client=client_so,
         id=cast(int, sp_comment_any_involved.id),
     )
-    assert isinstance(r_so2, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(r_so2, ControllableUnitSuspensionComment)
 
     r_sp2 = read_controllable_unit_suspension_comment.sync(
         client=client_sp,
         id=cast(int, sp_comment_any_involved.id),
     )
-    assert isinstance(r_sp2, ControllableUnitSuspensionCommentResponse)
+    assert isinstance(r_sp2, ControllableUnitSuspensionComment)
 
     # but neither can update each other's comments
 

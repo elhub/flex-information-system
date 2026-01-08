@@ -5,13 +5,13 @@ from security_token_service import (
 )
 from flex.models import (
     SystemOperatorProductTypeCreateRequest,
-    SystemOperatorProductTypeResponse,
-    ServiceProviderProductApplicationResponse,
+    SystemOperatorProductType,
+    ServiceProviderProductApplication,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationCreateRequest,
     ServiceProviderProductApplicationStatus,
-    ServiceProviderProductSuspensionHistoryResponse,
-    ServiceProviderProductSuspensionResponse,
+    ServiceProviderProductSuspensionHistory,
+    ServiceProviderProductSuspension,
     ServiceProviderProductSuspensionUpdateRequest,
     ServiceProviderProductSuspensionCreateRequest,
     ServiceProviderProductSuspensionReason,
@@ -77,7 +77,7 @@ def data():
                     product_type_id=pt_id,
                 ),
             )
-            assert isinstance(sopt, SystemOperatorProductTypeResponse)
+            assert isinstance(sopt, SystemOperatorProductType)
 
         sppa = create_service_provider_product_application.sync(
             client=client_sp,
@@ -87,7 +87,7 @@ def data():
                 product_type_ids=pt_ids,
             ),
         )
-        assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+        assert isinstance(sppa, ServiceProviderProductApplication)
         sppa_ids.append(sppa.id)
 
         u = update_service_provider_product_application.sync(
@@ -127,7 +127,7 @@ def check_history(client, spps_id):
     )
     assert isinstance(
         hist_spps,
-        ServiceProviderProductSuspensionHistoryResponse,
+        ServiceProviderProductSuspensionHistory,
     )
 
 
@@ -147,7 +147,7 @@ def test_spps_fiso(data):
             reason=ServiceProviderProductSuspensionReason.CLEARING_ISSUES,
         ),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps, ServiceProviderProductSuspension)
 
     # endpoint: GET /service_provider_product_suspension
     sppss = list_service_provider_product_suspension.sync(client=client_fiso)
@@ -159,7 +159,7 @@ def test_spps_fiso(data):
         client=client_fiso,
         id=cast(int, sppss[0].id),
     )
-    assert isinstance(s, ServiceProviderProductSuspensionResponse)
+    assert isinstance(s, ServiceProviderProductSuspension)
 
     # RLS: SPPS-FISO002
     check_history(client_fiso, s.id)
@@ -197,7 +197,7 @@ def test_spps_sp(data):
             reason=ServiceProviderProductSuspensionReason.CLEARING_ISSUES,
         ),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps, ServiceProviderProductSuspension)
 
     # SP can read
 
@@ -205,7 +205,7 @@ def test_spps_sp(data):
         client=client_sp,
         id=cast(int, spps.id),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps, ServiceProviderProductSuspension)
 
     check_history(client_sp, spps.id)
 
@@ -234,7 +234,7 @@ def test_spps_so(data):
             reason=ServiceProviderProductSuspensionReason.CLEARING_ISSUES,
         ),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps, ServiceProviderProductSuspension)
 
     sppss = list_service_provider_product_suspension.sync(client=client_so)
     assert isinstance(sppss, list)
@@ -244,7 +244,7 @@ def test_spps_so(data):
         client=client_so,
         id=cast(int, sppss[0].id),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps, ServiceProviderProductSuspension)
 
     # RLS: SPPS-SO002
     check_history(client_so, spps.id)
@@ -279,13 +279,13 @@ def test_spps_so(data):
             reason=ServiceProviderProductSuspensionReason.FAILING_HEARTBEAT,
         ),
     )
-    assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps2, ServiceProviderProductSuspension)
 
     spps2 = read_service_provider_product_suspension.sync(
         client=client_so,
         id=cast(int, spps2.id),
     )
-    assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps2, ServiceProviderProductSuspension)
 
     # RLS: SPPS-SO004
     # history still readable after SPPS deletion / SPPA unqualification
@@ -332,7 +332,7 @@ def test_spps_so_003_negative(data):
                 product_type_id=pt_id,
             ),
         )
-        assert isinstance(sopt, SystemOperatorProductTypeResponse)
+        assert isinstance(sopt, SystemOperatorProductType)
 
         sppa = create_service_provider_product_application.sync(
             client=client_sp,
@@ -342,7 +342,7 @@ def test_spps_so_003_negative(data):
                 product_type_ids=[pt_id],
             ),
         )
-        assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+        assert isinstance(sppa, ServiceProviderProductApplication)
 
         u = update_service_provider_product_application.sync(
             client=clt,
@@ -363,7 +363,7 @@ def test_spps_so_003_negative(data):
             reason=ServiceProviderProductSuspensionReason.CLEARING_ISSUES,
         ),
     )
-    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
+    assert isinstance(spps, ServiceProviderProductSuspension)
 
     u = update_service_provider_product_suspension.sync(
         client=client_so,

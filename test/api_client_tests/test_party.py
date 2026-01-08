@@ -4,8 +4,8 @@ from security_token_service import (
 )
 from flex import AuthenticatedClient
 from flex.models import (
-    PartyResponse,
-    PartyHistoryResponse,
+    Party,
+    PartyHistory,
     PartyCreateRequest,
     PartyUpdateRequest,
     PartyBusinessIdType,
@@ -129,7 +129,7 @@ def test_party_fiso(sts):
             entity_id=ent_id,
         ),
     )
-    assert isinstance(p, PartyResponse)
+    assert isinstance(p, Party)
 
     # can create something else with an EIC
     p = create_party.sync(
@@ -146,7 +146,7 @@ def test_party_fiso(sts):
             entity_id=ent_id,
         ),
     )
-    assert isinstance(p, PartyResponse)
+    assert isinstance(p, Party)
 
     # can create something else with a GLN
     p = create_party.sync(
@@ -160,7 +160,7 @@ def test_party_fiso(sts):
             entity_id=ent_id,
         ),
     )
-    assert isinstance(p, PartyResponse)
+    assert isinstance(p, Party)
 
     # endpoint: PATCH /party/{id}
     u = update_party.sync(
@@ -174,7 +174,7 @@ def test_party_fiso(sts):
 
     # endpoint: GET /party/{id}
     p = read_party.sync(client=client_fiso, id=cast(int, p.id))
-    assert isinstance(p, PartyResponse)
+    assert isinstance(p, Party)
     p2 = list_party.sync(client=client_fiso, id=f"eq.{p.id}")
     assert isinstance(p2, list)
     assert len(p2) == 1
@@ -206,7 +206,7 @@ def test_party_common(sts):
 
             # endpoint: GET /party_history/{id}
             h = read_party_history.sync(client=client, id=cast(int, hist[0].id))
-            assert isinstance(h, PartyHistoryResponse)
+            assert isinstance(h, PartyHistory)
 
         # RLS: PTY-COM002
         # can read non end user parties
@@ -233,7 +233,7 @@ def test_party_ent(sts):
         # only checking a few entries is sufficient
         for pm in pms_visible[:5]:
             p = read_party.sync(client=client, id=cast(int, pm.party_id))
-            assert isinstance(p, PartyResponse)
+            assert isinstance(p, Party)
 
 
 # RLS: PTY-ENT002
@@ -250,7 +250,7 @@ def test_party_ent002(sts):
 
     for p in parties_owned_by_ent:
         p = read_party.sync(client=client_ent, id=cast(int, p.id))
-        assert isinstance(p, PartyResponse)
+        assert isinstance(p, Party)
 
 
 def test_rla_absence(sts):

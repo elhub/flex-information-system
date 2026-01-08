@@ -4,28 +4,28 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
-    ServiceProvidingGroupGridSuspensionResponse,
+    ServiceProvidingGroupGridSuspension,
     ServiceProvidingGroupGridSuspensionCreateRequest,
     ServiceProvidingGroupGridSuspensionReason,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
-    ServiceProvidingGroupResponse,
+    ServiceProvidingGroup,
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembershipResponse,
+    ServiceProvidingGroupMembership,
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
     ServiceProvidingGroupGridPrequalificationStatus,
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
-    ControllableUnitResponse,
+    ControllableUnit,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProviderResponse,
+    ControllableUnitServiceProvider,
     ServiceProvidingGroupGridSuspensionCommentCreateRequest,
     ServiceProvidingGroupGridSuspensionCommentVisibility,
-    ServiceProvidingGroupGridSuspensionCommentResponse,
+    ServiceProvidingGroupGridSuspensionComment,
     ServiceProvidingGroupGridSuspensionCommentUpdateRequest,
-    ServiceProvidingGroupGridSuspensionCommentHistoryResponse,
+    ServiceProvidingGroupGridSuspensionCommentHistory,
     ErrorMessage,
     EmptyObject,
 )
@@ -74,7 +74,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroupResponse)
+    assert isinstance(spg, ServiceProvidingGroup)
 
     cu = create_controllable_unit.sync(
         client=client_fiso,
@@ -85,7 +85,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -97,7 +97,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp, ControllableUnitServiceProvider)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -107,7 +107,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
+    assert isinstance(spgm, ServiceProvidingGroupMembership)
 
     # activate the SPG and get the SPGGP created automatically
 
@@ -146,7 +146,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
             reason=ServiceProvidingGroupGridSuspensionReason.BREACH_OF_CONDITIONS,
         ),
     )
-    assert isinstance(spggs, ServiceProvidingGroupGridSuspensionResponse)
+    assert isinstance(spggs, ServiceProvidingGroupGridSuspension)
 
     return spggs.id
 
@@ -216,7 +216,7 @@ def check_history(clt, spggsc_id):
     )
     return isinstance(
         h1,
-        ServiceProvidingGroupGridSuspensionCommentHistoryResponse,
+        ServiceProvidingGroupGridSuspensionCommentHistory,
     )
 
 
@@ -238,7 +238,7 @@ def test_spggsc_fiso(data):
             content="test1",
         ),
     )
-    assert isinstance(spggsc1, ServiceProvidingGroupGridSuspensionCommentResponse)
+    assert isinstance(spggsc1, ServiceProvidingGroupGridSuspensionComment)
 
     spggsc2 = create_service_providing_group_grid_suspension_comment.sync(
         client=client_so,
@@ -248,7 +248,7 @@ def test_spggsc_fiso(data):
             content="test2",
         ),
     )
-    assert isinstance(spggsc2, ServiceProvidingGroupGridSuspensionCommentResponse)
+    assert isinstance(spggsc2, ServiceProvidingGroupGridSuspensionComment)
 
     # FISO can read and update both
     # endpoint: GET /service_providing_group_grid_suspension_comment
@@ -263,7 +263,7 @@ def test_spggsc_fiso(data):
         client=client_fiso,
         id=cast(int, spggsc1.id),
     )
-    assert isinstance(spggsc1, ServiceProvidingGroupGridSuspensionCommentResponse)
+    assert isinstance(spggsc1, ServiceProvidingGroupGridSuspensionComment)
 
     # endpoint: PATCH /service_providing_group_grid_suspension_comment/{id}
     u = update_service_providing_group_grid_suspension_comment.sync(
@@ -327,7 +327,7 @@ def test_spggsc_so_sp(data):
             content="Comment SO",
         ),
     )
-    assert isinstance(spggsc_so, ServiceProvidingGroupGridSuspensionCommentResponse)
+    assert isinstance(spggsc_so, ServiceProvidingGroupGridSuspensionComment)
 
     spggsc_sp = create_service_providing_group_grid_suspension_comment.sync(
         client=client_sp,
@@ -337,7 +337,7 @@ def test_spggsc_so_sp(data):
             content="Comment SP",
         ),
     )
-    assert isinstance(spggsc_sp, ServiceProvidingGroupGridSuspensionCommentResponse)
+    assert isinstance(spggsc_sp, ServiceProvidingGroupGridSuspensionComment)
 
     # both can read each other's comments
 
@@ -345,17 +345,13 @@ def test_spggsc_so_sp(data):
         client=client_sp,
         id=cast(int, spggsc_so.id),
     )
-    assert isinstance(
-        spggsc_so_as_sp, ServiceProvidingGroupGridSuspensionCommentResponse
-    )
+    assert isinstance(spggsc_so_as_sp, ServiceProvidingGroupGridSuspensionComment)
 
     spggsc_sp_as_so = read_service_providing_group_grid_suspension_comment.sync(
         client=client_so,
         id=cast(int, spggsc_sp.id),
     )
-    assert isinstance(
-        spggsc_sp_as_so, ServiceProvidingGroupGridSuspensionCommentResponse
-    )
+    assert isinstance(spggsc_sp_as_so, ServiceProvidingGroupGridSuspensionComment)
 
     # SO's comment becomes open to this SO only
 

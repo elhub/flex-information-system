@@ -2,7 +2,7 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
 )
-from flex.models import AccountingPointResponse, ErrorMessage
+from flex.models import AccountingPoint, ErrorMessage
 from flex.api.accounting_point import (
     list_accounting_point,
     read_accounting_point,
@@ -28,11 +28,11 @@ def test_accounting_point_common(sts):
         )
         assert isinstance(ap, list)
         assert len(ap) == 1
-        assert isinstance(ap[0], AccountingPointResponse)
+        assert isinstance(ap[0], AccountingPoint)
 
         # endpoint: GET /accounting_point/{id}
         ap = read_accounting_point.sync(client=client, id=cast(int, ap[0].id))
-        assert isinstance(ap, AccountingPointResponse)
+        assert isinstance(ap, AccountingPoint)
 
 
 def test_accounting_point_anon(sts):

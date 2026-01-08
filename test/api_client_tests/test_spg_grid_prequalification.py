@@ -1,24 +1,24 @@
 from security_token_service import SecurityTokenService, TestEntity
 from flex import AuthenticatedClient
 from flex.models import (
-    ControllableUnitResponse,
+    ControllableUnit,
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProviderResponse,
-    ServiceProvidingGroupResponse,
+    ControllableUnitServiceProvider,
+    ServiceProvidingGroup,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
-    ServiceProvidingGroupGridPrequalificationResponse,
+    ServiceProvidingGroupGridPrequalification,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
-    ServiceProvidingGroupGridPrequalificationHistoryResponse,
+    ServiceProvidingGroupGridPrequalificationHistory,
     ServiceProvidingGroupGridPrequalificationStatus,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipUpdateRequest,
-    ServiceProvidingGroupMembershipResponse,
+    ServiceProvidingGroupMembership,
     ErrorMessage,
 )
 from flex.api.controllable_unit import (
@@ -72,7 +72,7 @@ def data():
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroupResponse)
+    assert isinstance(spg, ServiceProvidingGroup)
 
     # create new controllable units with different connecting system operators
 
@@ -89,7 +89,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu1, ControllableUnitResponse)
+    assert isinstance(cu1, ControllableUnit)
 
     cu2 = create_controllable_unit.sync(
         client=client_fiso,
@@ -100,7 +100,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu2, ControllableUnitResponse)
+    assert isinstance(cu2, ControllableUnit)
 
     cu3 = create_controllable_unit.sync(
         client=client_fiso,
@@ -111,7 +111,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu3, ControllableUnitResponse)
+    assert isinstance(cu3, ControllableUnit)
 
     # relate the CUs to the SP in charge of the test SPG
 
@@ -128,7 +128,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp1, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp1, ControllableUnitServiceProvider)
 
     cu_sp2 = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -140,7 +140,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp2, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp2, ControllableUnitServiceProvider)
 
     client_common_eu = cast(
         AuthenticatedClient, sts.get_client(TestEntity.COMMON, "EU")
@@ -157,7 +157,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp3, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp3, ControllableUnitServiceProvider)
 
     # put the CUs into the test SPG
     # 1 in the past, 2 now/future
@@ -170,7 +170,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm1, ServiceProvidingGroupMembershipResponse)
+    assert isinstance(spgm1, ServiceProvidingGroupMembership)
 
     spgm2 = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -180,7 +180,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm2, ServiceProvidingGroupMembershipResponse)
+    assert isinstance(spgm2, ServiceProvidingGroupMembership)
 
     spgm3 = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -191,7 +191,7 @@ def data():
             valid_to="2024-09-09 Europe/Oslo",
         ),
     )
-    assert isinstance(spgm3, ServiceProvidingGroupMembershipResponse)
+    assert isinstance(spgm3, ServiceProvidingGroupMembership)
 
     yield (sts, spg.id, so_id, other_so_id, spgm3.id)
 
@@ -224,7 +224,7 @@ def test_spggp_fiso(data):
             impacted_system_operator_id=so2_id,
         ),
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
 
     spggps_spg = list_service_providing_group_grid_prequalification.sync(
         client=client_fiso, service_providing_group_id=f"eq.{spg_id}"
@@ -236,7 +236,7 @@ def test_spggp_fiso(data):
     spggp = read_service_providing_group_grid_prequalification.sync(
         client=client_fiso, id=cast(int, spggps_spg[0].id)
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
 
     # check status can be updated but not reset to requested
     # endpoint: PATCH /service_providing_group_grid_prequalification/{id}
@@ -341,7 +341,7 @@ def test_spggp_sp(data):
             impacted_system_operator_id=so2_id,
         ),
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
 
     spggps_sp2 = list_service_providing_group_grid_prequalification.sync(
         client=client_sp,
@@ -353,7 +353,7 @@ def test_spggp_sp(data):
     spggp = read_service_providing_group_grid_prequalification.sync(
         client=client_sp, id=cast(int, spggps_sp[0].id)
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
 
 
 def test_spggp_so(data):
@@ -415,12 +415,12 @@ def test_spggp_so(data):
     spggp = read_service_providing_group_grid_prequalification.sync(
         client=client_so, id=cast(int, so_spggp.id)
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
 
     spggp2 = read_service_providing_group_grid_prequalification.sync(
         client=client_so, id=cast(int, other_spggp.id)
     )
-    assert isinstance(spggp2, ServiceProvidingGroupGridPrequalificationResponse)
+    assert isinstance(spggp2, ServiceProvidingGroupGridPrequalification)
 
     # RLS: SPGGP-SO001
     # SO can update SPGGP where they are impacted
@@ -487,7 +487,7 @@ def test_spggp_common(data):
                 )
             )
             assert isinstance(
-                hist_spggp, ServiceProvidingGroupGridPrequalificationHistoryResponse
+                hist_spggp, ServiceProvidingGroupGridPrequalificationHistory
             )
 
 

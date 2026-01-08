@@ -3,24 +3,24 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
-    ControllableUnitResponse,
+    ControllableUnit,
     ControllableUnitCreateRequest,
     ControllableUnitUpdateRequest,
-    ControllableUnitHistoryResponse,
-    ControllableUnitServiceProviderResponse,
+    ControllableUnitHistory,
+    ControllableUnitServiceProvider,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitStatus,
     ControllableUnitGridValidationStatus,
     ServiceProvidingGroupCreateRequest,
-    ServiceProvidingGroupResponse,
+    ServiceProvidingGroup,
     ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
-    ServiceProvidingGroupGridPrequalificationResponse,
+    ServiceProvidingGroupGridPrequalification,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembershipResponse,
+    ServiceProvidingGroupMembership,
     TechnicalResourceCreateRequest,
-    TechnicalResourceResponse,
+    TechnicalResource,
     ErrorMessage,
     EmptyObject,
 )
@@ -80,7 +80,7 @@ def test_controllable_unit_fiso(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     cus = list_controllable_unit.sync(
         client=client_fiso,
@@ -92,7 +92,7 @@ def test_controllable_unit_fiso(sts):
 
     # endpoint: GET /controllable_unit/{id}
     cu = read_controllable_unit.sync(client=client_fiso, id=cast(int, cu.id))
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     # update the CU and check the history is one record longer
 
@@ -127,7 +127,7 @@ def test_controllable_unit_fiso(sts):
         client=client_fiso,
         id=cast(int, hist[0].id),
     )
-    assert isinstance(h, ControllableUnitHistoryResponse)
+    assert isinstance(h, ControllableUnitHistory)
 
     # check status can be updated and un-terminated
     u = update_controllable_unit.sync(
@@ -158,7 +158,7 @@ def test_controllable_unit_fiso(sts):
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResourceResponse)
+    assert isinstance(tr, TechnicalResource)
 
     u = update_controllable_unit.sync(
         client=client_fiso,
@@ -283,7 +283,7 @@ def test_controllable_unit_so(sts):
             maximum_available_capacity=2,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     client_sp = sts.get_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
@@ -295,7 +295,7 @@ def test_controllable_unit_so(sts):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroupResponse)
+    assert isinstance(spg, ServiceProvidingGroup)
 
     client_eu = sts.get_client(TestEntity.TEST, "EU")
     eu_id = sts.get_userinfo(client_eu)["party_id"]
@@ -309,7 +309,7 @@ def test_controllable_unit_so(sts):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp, ControllableUnitServiceProvider)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_sp,
@@ -319,7 +319,7 @@ def test_controllable_unit_so(sts):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
+    assert isinstance(spgm, ServiceProvidingGroupMembership)
 
     spggp = create_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
@@ -328,7 +328,7 @@ def test_controllable_unit_so(sts):
             impacted_system_operator_id=iso_id,
         ),
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
 
     # check ISO can read the CU
     cus_iso2 = list_controllable_unit.sync(client=client_iso, limit="10000")
@@ -336,7 +336,7 @@ def test_controllable_unit_so(sts):
     assert len(cus_iso2) == len(cus_iso) + 1
 
     cu = read_controllable_unit.sync(client=client_iso, id=cast(int, cu.id))
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     # RLS: CU-SO003
     # NB: here checking on a few rows is sufficient
@@ -377,7 +377,7 @@ def test_controllable_unit_eu(sts):
         client=client_former_eu,
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
     # the latest they can see is the one last introduced before the EU changed
     assert "TEST-SP-2024-07" in cast(str, cu.name)
 
@@ -390,7 +390,7 @@ def test_controllable_unit_eu(sts):
         client=client_eu,
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     cuhs_eu = list_controllable_unit_history.sync(
         client=client_eu,
@@ -435,7 +435,7 @@ def test_controllable_unit_es(sts):
         client=client_former_es,
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
     assert "TEST-SP-2024-07" in cast(str, cu.name)
 
     # current AP energy supplier can see the current version of the CU,
@@ -447,7 +447,7 @@ def test_controllable_unit_es(sts):
         client=client_es,
         id=cast(int, old_cuhs[0].controllable_unit_id),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     cuhs_es = list_controllable_unit_history.sync(
         client=client_es,
@@ -512,7 +512,7 @@ def test_controllable_unit_brp(sts):
         client=client_brp,
         id=cast(int, cus_former_brp[0].id),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
     assert "2024" not in cast(str, cu.name)
 
     cuhs = list_controllable_unit_history.sync(
@@ -546,7 +546,7 @@ def test_controllable_unit_sp(sts):
             grid_node_id="92a7d3bf-fee5-4abc-9130-75c8067ea78c",
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     # RLS: CU-SP001
     # check that a fresh CU is invisible for an SP it is not linked to
@@ -565,11 +565,11 @@ def test_controllable_unit_sp(sts):
             valid_to=None,
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp, ControllableUnitServiceProvider)
 
     # now the CU-SP is there, the SP can read the CU
     r = read_controllable_unit.sync(client=client_sp1, id=cast(int, cu.id))
-    assert isinstance(r, ControllableUnitResponse)
+    assert isinstance(r, ControllableUnit)
 
     # but not true for another SP
     r = read_controllable_unit.sync(client=client_sp2, id=cast(int, cu.id))
@@ -591,12 +591,12 @@ def test_controllable_unit_sp(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     # RLS: CU-SP005
     # SP1 can read the CU they just created
     r = read_controllable_unit.sync(client=client_sp1, id=cast(int, cu.id))
-    assert isinstance(r, ControllableUnitResponse)
+    assert isinstance(r, ControllableUnit)
 
     # RLS: CU-SP003
     # create CU-SP in the distant future
@@ -611,7 +611,7 @@ def test_controllable_unit_sp(sts):
             valid_to=None,
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp, ControllableUnitServiceProvider)
 
     # create CU-SP now for the second SP
     cu_sp = create_controllable_unit_service_provider.sync(
@@ -625,7 +625,7 @@ def test_controllable_unit_sp(sts):
             valid_to="2090-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp, ControllableUnitServiceProvider)
 
     # SP1 should not be able to edit because its contract is in the future
     u = update_controllable_unit.sync(
@@ -657,7 +657,7 @@ def test_controllable_unit_sp(sts):
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResourceResponse)
+    assert isinstance(tr, TechnicalResource)
 
     u = update_controllable_unit.sync(
         client=client_sp2,
@@ -719,7 +719,7 @@ def test_controllable_unit_sp(sts):
         ),
     )
     assert not (isinstance(u, ErrorMessage))
-    assert isinstance(u, ControllableUnitResponse)
+    assert isinstance(u, ControllableUnit)
     assert (
         u.grid_validation_status
         == ControllableUnitGridValidationStatus.VALIDATION_FAILED
@@ -730,7 +730,7 @@ def test_controllable_unit_sp(sts):
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(maximum_available_capacity=500),
     )
-    assert isinstance(u, ControllableUnitResponse)
+    assert isinstance(u, ControllableUnit)
     assert u.grid_validation_status == ControllableUnitGridValidationStatus.PENDING
 
 

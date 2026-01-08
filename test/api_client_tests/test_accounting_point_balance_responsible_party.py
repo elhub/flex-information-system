@@ -77,7 +77,7 @@ def test_apbrp_sp(sts):
 
     apbrps_ap = sorted(
         [
-            cast(AccountingPointBalanceResponsiblePartyResponse, apbrp)
+            cast(AccountingPointBalanceResponsibleParty, apbrp)
             for apbrp in apbrps
             if apbrp.accounting_point_id == 1003
             and apbrp.energy_direction

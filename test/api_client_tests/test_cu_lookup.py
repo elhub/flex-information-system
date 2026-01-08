@@ -7,13 +7,13 @@ from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitLookupResponse,
     ControllableUnitRegulationDirection,
-    ControllableUnitResponse,
+    ControllableUnit,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProviderResponse,
+    ControllableUnitServiceProvider,
     EntityCreateRequest,
     EntityBusinessIdType,
     EntityType,
-    EntityResponse,
+    Entity,
     ErrorMessage,
 )
 from flex.api.controllable_unit import (
@@ -53,13 +53,13 @@ def test_cu_lookup_params(sts):
         client=client_fiso,
         id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
     )
-    assert isinstance(eu_entity, EntityResponse)
+    assert isinstance(eu_entity, Entity)
 
     other_eu_entity = read_entity.sync(
         client=client_fiso,
         id=sts.get_userinfo(sts.get_client(TestEntity.COMMON))["entity_id"],
     )
-    assert isinstance(other_eu_entity, EntityResponse)
+    assert isinstance(other_eu_entity, Entity)
 
     # ill formed requests
 
@@ -116,7 +116,7 @@ def test_cu_lookup_params(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     # too much data
     e = call_controllable_unit_lookup.sync(
@@ -221,7 +221,7 @@ def test_cu_lookup_params(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     # check lookup catches the newly created one as well
     cul = call_controllable_unit_lookup.sync(
@@ -243,7 +243,7 @@ def test_cu_lookup_remote(sts):
         client=client_fiso,
         id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
     )
-    assert isinstance(eu_entity, EntityResponse)
+    assert isinstance(eu_entity, Entity)
 
     def gs1_check_digit(partialgs1):
         s = sum(
@@ -293,7 +293,7 @@ def test_cu_lookup_remote(sts):
             type_=EntityType.PERSON,
         ),
     )
-    assert isinstance(e, EntityResponse)
+    assert isinstance(e, Entity)
 
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
@@ -371,7 +371,7 @@ def test_cu_lookup_flow(sts):
         client=client_fiso,
         id=eu_userinfo["entity_id"],
     )
-    assert isinstance(eu_entity, EntityResponse)
+    assert isinstance(eu_entity, Entity)
 
     # create a CU and check SP cannot see it but they can lookup
 
@@ -384,7 +384,7 @@ def test_cu_lookup_flow(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnitResponse)
+    assert isinstance(cu, ControllableUnit)
 
     client_sp = sts.get_client(TestEntity.TEST, "SP")
 
@@ -426,4 +426,4 @@ def test_cu_lookup_flow(sts):
             valid_from=midnight_n_days_diff(20),
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+    assert isinstance(cu_sp, ControllableUnitServiceProvider)
