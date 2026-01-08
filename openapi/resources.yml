@@ -1084,6 +1084,7 @@ resources:
           authentication method.
         format: text
         type: string
+        readOnly: true
         example: addr@flex.test
         x-intl:
           en: Client ID
@@ -1095,6 +1096,7 @@ resources:
           means the client cannot assume any party.
         format: bigint
         type: integer
+        nullable: true
         x-foreign-key:
           resource: party
           field: id

@@ -70,8 +70,6 @@ def data(request):
             scopes=[AuthScope.USEDATA, AuthScope.MANAGEAUTH],
             client_secret=client_secret,
             public_key=pubkey,
-            client_id="client - test scopes",
-            party_id=1,
         ),
     )
     assert isinstance(clt, EntityClient)

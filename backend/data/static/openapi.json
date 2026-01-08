@@ -2433,16 +2433,11 @@
                         "nullable": true,
                         "example": "Laptop"
                     },
-                    "client_id": {
-                        "description": "The identifier of the entity. For use with client credentials authentication method.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "addr@flex.test"
-                    },
                     "party_id": {
                         "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
                         "format": "bigint",
                         "type": "integer",
+                        "nullable": true,
                         "example": 30
                     },
                     "scopes": {
@@ -2493,16 +2488,11 @@
                         "nullable": true,
                         "example": "Laptop"
                     },
-                    "client_id": {
-                        "description": "The identifier of the entity. For use with client credentials authentication method.",
-                        "format": "text",
-                        "type": "string",
-                        "example": "addr@flex.test"
-                    },
                     "party_id": {
                         "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
                         "format": "bigint",
                         "type": "integer",
+                        "nullable": true,
                         "example": 30
                     },
                     "scopes": {
@@ -2535,8 +2525,6 @@
                 },
                 "required": [
                     "entity_id",
-                    "client_id",
-                    "party_id",
                     "scopes"
                 ]
             },
@@ -2570,12 +2558,14 @@
                         "description": "The identifier of the entity. For use with client credentials authentication method.",
                         "format": "text",
                         "type": "string",
+                        "readOnly": true,
                         "example": "addr@flex.test"
                     },
                     "party_id": {
                         "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
                         "format": "bigint",
                         "type": "integer",
+                        "nullable": true,
                         "example": 30
                     },
                     "scopes": {
@@ -2624,7 +2614,6 @@
                     "id",
                     "entity_id",
                     "client_id",
-                    "party_id",
                     "scopes",
                     "recorded_at",
                     "recorded_by"

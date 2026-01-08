@@ -21,8 +21,6 @@ class EntityClient:
         entity_id (int): Reference to the entity that this client is attached to. Example: 30.
         client_id (str): The identifier of the entity. For use with client credentials authentication method. Example:
             addr@flex.test.
-        party_id (int): Reference to the party this client allows to assume. A null value means the client cannot assume
-            any party. Example: 30.
         scopes (list[AuthScope]): List of scopes granted to the user when it logs in as an entity or when it acts as the
             party. When assuming a party through party membership, the least privileged set of scopes will be kept.
             Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
@@ -31,6 +29,8 @@ class EntityClient:
             23:59:00 CET.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         name (None | str | Unset): Name of the client. Example: Laptop.
+        party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
+            client cannot assume any party. Example: 30.
         client_secret (None | str | Unset): The secret of the entity. For use with client credentials authentication
             method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
         public_key (None | str | Unset): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT
@@ -45,11 +45,11 @@ class EntityClient:
     id: int
     entity_id: int
     client_id: str
-    party_id: int
     scopes: list[AuthScope]
     recorded_at: str
     recorded_by: int
     name: None | str | Unset = UNSET
+    party_id: int | None | Unset = UNSET
     client_secret: None | str | Unset = UNSET
     public_key: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -60,8 +60,6 @@ class EntityClient:
         entity_id = self.entity_id
 
         client_id = self.client_id
-
-        party_id = self.party_id
 
         scopes = []
         for scopes_item_data in self.scopes:
@@ -77,6 +75,12 @@ class EntityClient:
             name = UNSET
         else:
             name = self.name
+
+        party_id: int | None | Unset
+        if isinstance(self.party_id, Unset):
+            party_id = UNSET
+        else:
+            party_id = self.party_id
 
         client_secret: None | str | Unset
         if isinstance(self.client_secret, Unset):
@@ -97,7 +101,6 @@ class EntityClient:
                 "id": id,
                 "entity_id": entity_id,
                 "client_id": client_id,
-                "party_id": party_id,
                 "scopes": scopes,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
@@ -105,6 +108,8 @@ class EntityClient:
         )
         if name is not UNSET:
             field_dict["name"] = name
+        if party_id is not UNSET:
+            field_dict["party_id"] = party_id
         if client_secret is not UNSET:
             field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
@@ -120,8 +125,6 @@ class EntityClient:
         entity_id = d.pop("entity_id")
 
         client_id = d.pop("client_id")
-
-        party_id = d.pop("party_id")
 
         scopes = []
         _scopes = d.pop("scopes")
@@ -142,6 +145,15 @@ class EntityClient:
             return cast(None | str | Unset, data)
 
         name = _parse_name(d.pop("name", UNSET))
+
+        def _parse_party_id(data: object) -> int | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(int | None | Unset, data)
+
+        party_id = _parse_party_id(d.pop("party_id", UNSET))
 
         def _parse_client_secret(data: object) -> None | str | Unset:
             if data is None:
@@ -165,11 +177,11 @@ class EntityClient:
             id=id,
             entity_id=entity_id,
             client_id=client_id,
-            party_id=party_id,
             scopes=scopes,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             name=name,
+            party_id=party_id,
             client_secret=client_secret,
             public_key=public_key,
         )

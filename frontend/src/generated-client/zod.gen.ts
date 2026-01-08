@@ -1288,12 +1288,6 @@ export const zEntityClientUpdateRequest = z.object({
       z.string().max(256).optional(),
     ),
   ),
-  client_id: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      z.string().optional(),
-    ),
-  ),
   party_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1336,8 +1330,12 @@ export const zEntityClientCreateRequest = z.object({
       z.string().max(256).optional(),
     ),
   ),
-  client_id: z.string(),
-  party_id: z.int(),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().optional(),
+    ),
+  ),
   scopes: z.array(zAuthScope),
   client_secret: z.optional(
     z.preprocess(
@@ -1370,8 +1368,13 @@ export const zEntityClient = z.object({
       z.string().max(256).optional(),
     ),
   ),
-  client_id: z.string(),
-  party_id: z.int(),
+  client_id: z.string().readonly(),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().optional(),
+    ),
+  ),
   scopes: z.array(zAuthScope),
   client_secret: z.optional(
     z.preprocess(
@@ -3330,8 +3333,12 @@ export const zEntityClientWritable = z.object({
       z.string().max(256).optional(),
     ),
   ),
-  client_id: z.string(),
-  party_id: z.int(),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.int().optional(),
+    ),
+  ),
   scopes: z.array(zAuthScope),
   client_secret: z.optional(
     z.preprocess(

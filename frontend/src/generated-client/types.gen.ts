@@ -1351,10 +1351,6 @@ export type EntityClientUpdateRequest = {
    */
   name?: string;
   /**
-   * The identifier of the entity. For use with client credentials authentication method.
-   */
-  client_id?: string;
-  /**
    * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
    */
   party_id?: number;
@@ -1386,13 +1382,9 @@ export type EntityClientCreateRequest = {
    */
   name?: string;
   /**
-   * The identifier of the entity. For use with client credentials authentication method.
-   */
-  client_id: string;
-  /**
    * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
    */
-  party_id: number;
+  party_id?: number;
   /**
    * List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
@@ -1427,11 +1419,11 @@ export type EntityClient = {
   /**
    * The identifier of the entity. For use with client credentials authentication method.
    */
-  client_id: string;
+  readonly client_id: string;
   /**
    * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
    */
-  party_id: number;
+  party_id?: number;
   /**
    * List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
@@ -3515,13 +3507,9 @@ export type EntityClientWritable = {
    */
   name?: string;
   /**
-   * The identifier of the entity. For use with client credentials authentication method.
-   */
-  client_id: string;
-  /**
    * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
    */
-  party_id: number;
+  party_id?: number;
   /**
    * List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.
    * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.

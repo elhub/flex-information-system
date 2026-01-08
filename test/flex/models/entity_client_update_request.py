@@ -19,10 +19,8 @@ class EntityClientUpdateRequest:
 
         Attributes:
             name (None | str | Unset): Name of the client. Example: Laptop.
-            client_id (str | Unset): The identifier of the entity. For use with client credentials authentication method.
-                Example: addr@flex.test.
-            party_id (int | Unset): Reference to the party this client allows to assume. A null value means the client
-                cannot assume any party. Example: 30.
+            party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
+                client cannot assume any party. Example: 30.
             scopes (list[AuthScope] | Unset): List of scopes granted to the user when it logs in as an entity or when it
                 acts as the party. When assuming a party through party membership, the least privileged set of scopes will be
                 kept.
@@ -40,8 +38,7 @@ class EntityClientUpdateRequest:
     """
 
     name: None | str | Unset = UNSET
-    client_id: str | Unset = UNSET
-    party_id: int | Unset = UNSET
+    party_id: int | None | Unset = UNSET
     scopes: list[AuthScope] | Unset = UNSET
     client_secret: None | str | Unset = UNSET
     public_key: None | str | Unset = UNSET
@@ -54,9 +51,11 @@ class EntityClientUpdateRequest:
         else:
             name = self.name
 
-        client_id = self.client_id
-
-        party_id = self.party_id
+        party_id: int | None | Unset
+        if isinstance(self.party_id, Unset):
+            party_id = UNSET
+        else:
+            party_id = self.party_id
 
         scopes: list[str] | Unset = UNSET
         if not isinstance(self.scopes, Unset):
@@ -82,8 +81,6 @@ class EntityClientUpdateRequest:
         field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
-        if client_id is not UNSET:
-            field_dict["client_id"] = client_id
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
         if scopes is not UNSET:
@@ -108,9 +105,14 @@ class EntityClientUpdateRequest:
 
         name = _parse_name(d.pop("name", UNSET))
 
-        client_id = d.pop("client_id", UNSET)
+        def _parse_party_id(data: object) -> int | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(int | None | Unset, data)
 
-        party_id = d.pop("party_id", UNSET)
+        party_id = _parse_party_id(d.pop("party_id", UNSET))
 
         _scopes = d.pop("scopes", UNSET)
         scopes: list[AuthScope] | Unset = UNSET
@@ -141,7 +143,6 @@ class EntityClientUpdateRequest:
 
         entity_client_update_request = cls(
             name=name,
-            client_id=client_id,
             party_id=party_id,
             scopes=scopes,
             client_secret=client_secret,
