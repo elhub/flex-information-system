@@ -106,8 +106,10 @@ func NewAPIHandler(
 	mux.Handle("GET /accounting_point/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /accounting_point_balance_responsible_party", dataListPostgRESTHandler)
-
+	mux.Handle("GET /accounting_point_bidding_zone", dataListPostgRESTHandler)
+	mux.Handle("GET /accounting_point_end_user", dataListPostgRESTHandler)
 	mux.Handle("GET /accounting_point_energy_supplier", dataListPostgRESTHandler)
+	mux.Handle("GET /accounting_point_metering_grid_area", dataListPostgRESTHandler)
 
 	mux.Handle("GET /controllable_unit", dataListPostgRESTHandler)
 	mux.Handle("POST /controllable_unit", dataPostgRESTHandler)
