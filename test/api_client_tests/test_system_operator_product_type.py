@@ -6,8 +6,8 @@ from flex.models import (
     SystemOperatorProductTypeStatus,
     SystemOperatorProductTypeCreateRequest,
     SystemOperatorProductTypeUpdateRequest,
-    SystemOperatorProductType,
-    SystemOperatorProductTypeHistory,
+    SystemOperatorProductTypeResponse,
+    SystemOperatorProductTypeHistoryResponse,
     ErrorMessage,
 )
 from flex.api.product_type import (
@@ -58,7 +58,7 @@ def test_sopt_common(sts):
             client=client,
             id=cast(int, sopt_visible[0].id),
         )
-        assert isinstance(sopt, SystemOperatorProductType)
+        assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
         # RLS: SOPT-COM001
         # can read history on SOPT they can read
@@ -77,7 +77,7 @@ def test_sopt_common(sts):
                 client=client,
                 id=cast(int, hist[0].id),
             )
-            assert isinstance(hist_sopt, SystemOperatorProductTypeHistory)
+            assert isinstance(hist_sopt, SystemOperatorProductTypeHistoryResponse)
 
 
 # RLS: SOPT-FISO001
@@ -95,7 +95,7 @@ def test_sopt_fiso(sts):
         client=client_fiso,
         id=cast(int, sopts[0].id),
     )
-    assert isinstance(sopt, SystemOperatorProductType)
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     so_id = sts.get_userinfo(
         sts.fresh_client(TestEntity.TEST, "SO"),
@@ -109,7 +109,7 @@ def test_sopt_fiso(sts):
             product_type_id=cast(int, pts[4].id),
         ),
     )
-    assert isinstance(sopt, SystemOperatorProductType)
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     # endpoint: PATCH /system_operator_product_type/{id}
     u = update_system_operator_product_type.sync(
@@ -152,7 +152,7 @@ def test_sopt_so(sts):
             product_type_id=cast(int, pts[2].id),
         ),
     )
-    assert isinstance(sopt, SystemOperatorProductType)
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     # SO2 updates the SOPT of SO1: ko
     u = update_system_operator_product_type.sync(

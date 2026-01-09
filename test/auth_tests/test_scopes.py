@@ -13,15 +13,15 @@ from security_token_service import (
 )
 from flex.models import (
     EntityClientCreateRequest,
-    EntityClient,
+    EntityClientResponse,
     AuthScope,
     PartyMembershipCreateRequest,
-    PartyMembership,
+    PartyMembershipResponse,
     PartyCreateRequest,
     PartyRole,
     PartyType,
     PartyBusinessIdType,
-    Party,
+    PartyResponse,
     EmptyObject,
 )
 from flex.api.entity_client import (
@@ -72,7 +72,7 @@ def data(request):
             public_key=pubkey,
         ),
     )
-    assert isinstance(clt, EntityClient)
+    assert isinstance(clt, EntityClientResponse)
 
     # create party owned by entity
     p1 = create_party.sync(
@@ -86,7 +86,7 @@ def data(request):
             entity_id=ent_id,
         ),
     )
-    assert isinstance(p1, Party)
+    assert isinstance(p1, PartyResponse)
 
     # create party and put entity in it with 2 scopes
     p2 = create_party.sync(
@@ -100,7 +100,7 @@ def data(request):
             entity_id=other_ent_id,
         ),
     )
-    assert isinstance(p2, Party)
+    assert isinstance(p2, PartyResponse)
 
     pm = create_party_membership.sync(
         client=client_fiso,
@@ -114,7 +114,7 @@ def data(request):
             ],
         ),
     )
-    assert isinstance(pm, PartyMembership)
+    assert isinstance(pm, PartyMembershipResponse)
 
     def teardown():
         _d = delete_party_membership.sync(
@@ -136,7 +136,7 @@ def data(request):
 def test_scopes_client_credentials(data):
     entity_clt, _, owned_party_id, _, membership_party_id, _ = data
 
-    entity_clt = cast(EntityClient, entity_clt)
+    entity_clt = cast(EntityClientResponse, entity_clt)
 
     # log in as entity through entity client secret
     response = requests.post(

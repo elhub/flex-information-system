@@ -4,20 +4,20 @@ from security_token_service import (
     AuthenticatedClient,
 )
 from flex.models import (
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitCreateRequest,
-    ControllableUnitServiceProvider,
+    ControllableUnitServiceProviderResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitRegulationDirection,
-    ServiceProvidingGroup,
+    ServiceProvidingGroupResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupBiddingZone,
-    ServiceProvidingGroupMembership,
+    ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipUpdateRequest,
-    ServiceProvidingGroupMembershipHistory,
+    ServiceProvidingGroupMembershipHistoryResponse,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
-    ServiceProvidingGroupGridPrequalification,
+    ServiceProvidingGroupGridPrequalificationResponse,
     ErrorMessage,
     EmptyObject,
 )
@@ -68,7 +68,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     # NB: the AP there is linked to Test SO in the test data
 
@@ -80,7 +80,7 @@ def data():
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     yield (sts, cu.id, spg.id, eu_id)
 
@@ -110,7 +110,7 @@ def test_cusp_spgm_consistency_not_ok(data):
             valid_to="2024-01-12T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     # Put the CU into the SPG from 07.01.2024 to 11.01.2024
     spgm = create_service_providing_group_membership.sync(
@@ -175,7 +175,7 @@ def test_spgm_sp002(data):
             valid_to="2024-01-12T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     # Put the CU into the SPG from 09.01.2024 to 11.01.2024
     # (fully in the validity of the CU-SP contract)
@@ -190,7 +190,7 @@ def test_spgm_sp002(data):
             valid_to="2024-01-11T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     # try to update as another SP
     client_sp2 = sts.get_client(TestEntity.COMMON, "SP")
@@ -236,7 +236,7 @@ def test_spgm(data):
             valid_to="2024-01-12T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     # RLS: SPGM-FISO001
     # RLS: SPGM-SP001
@@ -257,7 +257,7 @@ def test_spgm(data):
             valid_to="2024-01-11T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     spgms_cu = list_service_providing_group_membership.sync(
         client=client_sp, controllable_unit_id=f"eq.{cu_id}"
@@ -275,11 +275,11 @@ def test_spgm(data):
     spgm = read_service_providing_group_membership.sync(
         client=client_sp, id=cast(int, spgms_cu[0].id)
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
     spgm = read_service_providing_group_membership.sync(
         client=client_fiso, id=cast(int, spgms_cu[0].id)
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     u = update_service_providing_group_membership.sync(
         client=client_fiso,
@@ -306,7 +306,7 @@ def test_spgm(data):
     h1 = read_service_providing_group_membership_history.sync(
         client=client_sp, id=cast(int, h[0].id)
     )
-    assert isinstance(h1, ServiceProvidingGroupMembershipHistory)
+    assert isinstance(h1, ServiceProvidingGroupMembershipHistoryResponse)
 
     # --------------------------------------------------------------------------
 
@@ -338,7 +338,7 @@ def test_spgm(data):
             valid_to="2024-01-11T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     d = delete_service_providing_group_membership.sync(
         client=client_sp,
@@ -365,7 +365,7 @@ def test_spgm_so(data):
             valid_from="2024-01-09T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_sp,
@@ -376,7 +376,7 @@ def test_spgm_so(data):
             valid_to="2024-01-11 Europe/Oslo",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     # add update to have some history
     u = update_service_providing_group_membership.sync(
@@ -415,7 +415,7 @@ def test_spgm_so(data):
             impacted_system_operator_id=so_id,
         ),
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     # SO can now see the new SPGM
     spgms_spg2 = list_service_providing_group_membership.sync(
@@ -427,7 +427,7 @@ def test_spgm_so(data):
     spg = read_service_providing_group_membership.sync(
         client=client_so, id=cast(int, spgms_spg2[0].id)
     )
-    assert isinstance(spg, ServiceProvidingGroupMembership)
+    assert isinstance(spg, ServiceProvidingGroupMembershipResponse)
 
     # RLS: SPGM-SO002
     # they can also read history
@@ -442,7 +442,7 @@ def test_spgm_so(data):
     h1 = read_service_providing_group_membership_history.sync(
         client=client_so, id=cast(int, h[0].id)
     )
-    assert isinstance(h1, ServiceProvidingGroupMembershipHistory)
+    assert isinstance(h1, ServiceProvidingGroupMembershipHistoryResponse)
 
     # --------------------------------------------------------------------------
 

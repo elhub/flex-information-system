@@ -5,47 +5,47 @@ from security_token_service import (
 from flex.models import (
     ErrorMessage,
     EmptyObject,
-    Event,
+    EventResponse,
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProvider,
+    ControllableUnitServiceProviderResponse,
     ControllableUnitLookupRequest,
     ControllableUnitLookupResponse,
     TechnicalResourceCreateRequest,
-    TechnicalResource,
+    TechnicalResourceResponse,
     SystemOperatorProductTypeCreateRequest,
-    SystemOperatorProductType,
+    SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
-    ServiceProviderProductApplication,
+    ServiceProviderProductApplicationResponse,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
     ServiceProviderProductApplicationCommentCreateRequest,
     ServiceProviderProductApplicationCommentVisibility,
-    ServiceProviderProductApplicationComment,
+    ServiceProviderProductApplicationCommentResponse,
     ServiceProviderProductSuspensionCreateRequest,
     ServiceProviderProductSuspensionReason,
-    ServiceProviderProductSuspension,
+    ServiceProviderProductSuspensionResponse,
     ServiceProviderProductSuspensionCommentCreateRequest,
     ServiceProviderProductSuspensionCommentVisibility,
-    ServiceProviderProductSuspensionComment,
+    ServiceProviderProductSuspensionCommentResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
-    ServiceProvidingGroup,
+    ServiceProvidingGroupResponse,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembership,
+    ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
     ServiceProvidingGroupGridPrequalificationStatus,
-    ServiceProvidingGroupGridPrequalification,
+    ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProvidingGroupGridSuspensionCreateRequest,
     ServiceProvidingGroupGridSuspensionReason,
-    ServiceProvidingGroupGridSuspension,
+    ServiceProvidingGroupGridSuspensionResponse,
     ServiceProvidingGroupProductApplicationCreateRequest,
-    ServiceProvidingGroupProductApplication,
+    ServiceProvidingGroupProductApplicationResponse,
 )
 from flex.api.event import (
     list_event,
@@ -122,7 +122,7 @@ def test_event_eu(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     sp_id = sts.get_userinfo(sts.get_client(TestEntity.TEST, "SP"))["party_id"]
     eu_id = sts.get_userinfo(client_eu)["party_id"]
@@ -138,7 +138,7 @@ def test_event_eu(sts):
             valid_to=None,
         ),
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     tr = create_technical_resource.sync(
         client=client_fiso,
@@ -147,7 +147,7 @@ def test_event_eu(sts):
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     def check(client):
         # endpoint: GET /event
@@ -224,7 +224,7 @@ def test_event_sp(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     tr = create_technical_resource.sync(
         client=client_fiso,
@@ -233,7 +233,7 @@ def test_event_sp(sts):
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     events = list_event.sync(client=client_sp, limit="10000")
     assert isinstance(events, list)
@@ -263,7 +263,7 @@ def test_event_sp(sts):
             valid_to=None,
         ),
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     lookup = call_controllable_unit_lookup.sync(
         client=client_fiso,
@@ -292,7 +292,7 @@ def test_event_sp(sts):
                 product_type_id=1,
             ),
         )
-    assert isinstance(sopt, SystemOperatorProductType)
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     sppa = create_service_provider_product_application.sync(
         client=client_sp,
@@ -302,7 +302,7 @@ def test_event_sp(sts):
             product_type_ids=[1],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(
         client=client_fiso,
@@ -322,7 +322,7 @@ def test_event_sp(sts):
             visibility=ServiceProviderProductApplicationCommentVisibility.SAME_PARTY,
         ),
     )
-    assert isinstance(sppac_hidden, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac_hidden, ServiceProviderProductApplicationCommentResponse)
 
     sppac_public = create_service_provider_product_application_comment.sync(
         client=client_fiso,
@@ -332,7 +332,7 @@ def test_event_sp(sts):
             visibility=ServiceProviderProductApplicationCommentVisibility.ANY_INVOLVED_PARTY,
         ),
     )
-    assert isinstance(sppac_public, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac_public, ServiceProviderProductApplicationCommentResponse)
 
     spps = create_service_provider_product_suspension.sync(
         client=client_fiso,
@@ -343,7 +343,7 @@ def test_event_sp(sts):
             reason=ServiceProviderProductSuspensionReason.COMMUNICATION_ISSUES,
         ),
     )
-    assert isinstance(spps, ServiceProviderProductSuspension)
+    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
 
     sppsc_hidden = create_service_provider_product_suspension_comment.sync(
         client=client_fiso,
@@ -353,7 +353,7 @@ def test_event_sp(sts):
             visibility=ServiceProviderProductSuspensionCommentVisibility.SAME_PARTY,
         ),
     )
-    assert isinstance(sppsc_hidden, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc_hidden, ServiceProviderProductSuspensionCommentResponse)
 
     sppsc_public = create_service_provider_product_suspension_comment.sync(
         client=client_fiso,
@@ -363,7 +363,7 @@ def test_event_sp(sts):
             visibility=ServiceProviderProductSuspensionCommentVisibility.ANY_INVOLVED_PARTY,
         ),
     )
-    assert isinstance(sppsc_public, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc_public, ServiceProviderProductSuspensionCommentResponse)
 
     spg = create_service_providing_group.sync(
         client=client_fiso,
@@ -373,7 +373,7 @@ def test_event_sp(sts):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -383,7 +383,7 @@ def test_event_sp(sts):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     u = update_service_providing_group.sync(
         client=client_fiso,
@@ -410,7 +410,7 @@ def test_event_sp(sts):
         assert isinstance(spggps, list)
         assert len(spggps) == 1
         spggp = spggps[0]
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     u = update_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
@@ -430,7 +430,7 @@ def test_event_sp(sts):
             reason=ServiceProvidingGroupGridSuspensionReason.BREACH_OF_CONDITIONS,
         ),
     )
-    assert isinstance(spggs, ServiceProvidingGroupGridSuspension)
+    assert isinstance(spggs, ServiceProvidingGroupGridSuspensionResponse)
 
     spgpa = create_service_providing_group_product_application.sync(
         client=client_sp,
@@ -440,7 +440,7 @@ def test_event_sp(sts):
             product_type_ids=[1],
         ),
     )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplication)
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
     events = list_event.sync(client=client_sp, limit="10000")
     assert isinstance(events, list)
@@ -448,7 +448,7 @@ def test_event_sp(sts):
 
     # endpoint: GET /event/{id}
     e = read_event.sync(client=client_sp, id=cast(int, events[0].id))
-    assert isinstance(e, Event)
+    assert isinstance(e, EventResponse)
 
     # now SP can see CU/TR creation events
     assert any(

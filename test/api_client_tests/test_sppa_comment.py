@@ -5,10 +5,10 @@ from security_token_service import (
 )
 from flex.models import (
     SystemOperatorProductTypeCreateRequest,
-    ServiceProviderProductApplication,
+    ServiceProviderProductApplicationResponse,
     ServiceProviderProductApplicationCreateRequest,
-    ServiceProviderProductApplicationCommentHistory,
-    ServiceProviderProductApplicationComment,
+    ServiceProviderProductApplicationCommentHistoryResponse,
+    ServiceProviderProductApplicationCommentResponse,
     ServiceProviderProductApplicationCommentUpdateRequest,
     ServiceProviderProductApplicationCommentCreateRequest,
     ServiceProviderProductApplicationCommentVisibility,
@@ -71,7 +71,7 @@ def data():
             product_type_ids=[cast(int, pts[4].id)],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     yield (sts, client_so, client_sp, sppa.id)
 
@@ -95,7 +95,7 @@ def check_history(clt, sppsc_id):
     )
     return isinstance(
         h1,
-        ServiceProviderProductApplicationCommentHistory,
+        ServiceProviderProductApplicationCommentHistoryResponse,
     )
 
 
@@ -117,7 +117,7 @@ def test_sppac_fiso(data):
             content="test1",
         ),
     )
-    assert isinstance(sppac1, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac1, ServiceProviderProductApplicationCommentResponse)
 
     sppac2 = create_service_provider_product_application_comment.sync(
         client=client_so,
@@ -127,7 +127,7 @@ def test_sppac_fiso(data):
             content="test2",
         ),
     )
-    assert isinstance(sppac2, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac2, ServiceProviderProductApplicationCommentResponse)
 
     # FISO can read and update both
     # endpoint: GET /service_provider_product_application_comment
@@ -142,7 +142,7 @@ def test_sppac_fiso(data):
         client=client_fiso,
         id=cast(int, sppac1.id),
     )
-    assert isinstance(sppac1, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac1, ServiceProviderProductApplicationCommentResponse)
 
     # endpoint: PATCH /service_provider_product_application_comment/{id}
     u = update_service_provider_product_application_comment.sync(
@@ -189,7 +189,7 @@ def test_sppac_so_sp(data):
             content="Comment SO",
         ),
     )
-    assert isinstance(sppac_so, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac_so, ServiceProviderProductApplicationCommentResponse)
 
     sppac_sp = create_service_provider_product_application_comment.sync(
         client=client_sp,
@@ -199,7 +199,7 @@ def test_sppac_so_sp(data):
             content="Comment SP",
         ),
     )
-    assert isinstance(sppac_sp, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac_sp, ServiceProviderProductApplicationCommentResponse)
 
     # both can read each other's comments
 
@@ -207,13 +207,13 @@ def test_sppac_so_sp(data):
         client=client_sp,
         id=cast(int, sppac_so.id),
     )
-    assert isinstance(sppac_so_as_sp, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac_so_as_sp, ServiceProviderProductApplicationCommentResponse)
 
     sppac_sp_as_so = read_service_provider_product_application_comment.sync(
         client=client_so,
         id=cast(int, sppac_sp.id),
     )
-    assert isinstance(sppac_sp_as_so, ServiceProviderProductApplicationComment)
+    assert isinstance(sppac_sp_as_so, ServiceProviderProductApplicationCommentResponse)
 
     # SO's comment becomes open to this SO only
 
@@ -286,5 +286,5 @@ def test_sppa_common(data):
             )
             assert isinstance(
                 hist_sppac,
-                ServiceProviderProductApplicationCommentHistory,
+                ServiceProviderProductApplicationCommentHistoryResponse,
             )

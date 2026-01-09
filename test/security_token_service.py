@@ -3,10 +3,10 @@ from flex.models import (
     AuthScope,
     PartyType,
     PartyRole,
-    Party,
+    PartyResponse,
     PartyCreateRequest,
     PartyBusinessIdType,
-    PartyMembership,
+    PartyMembershipResponse,
     PartyMembershipCreateRequest,
 )
 from flex.api.party import (
@@ -45,7 +45,7 @@ def _find_party_id(entity_client, party_name) -> int:
     Find a party id by name
     """
     party = cast(
-        List[Party],
+        List[PartyResponse],
         list_party.sync(
             client=entity_client,
             name=f"ilike.{party_name.replace(' ', '*')}",
@@ -256,7 +256,7 @@ class SecurityTokenService:
                 entity_id=ent_id,
             ),
         )
-        assert isinstance(party, Party)
+        assert isinstance(party, PartyResponse)
 
         pm = create_party_membership.sync(
             client=client_fiso,
@@ -266,7 +266,7 @@ class SecurityTokenService:
                 scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
             ),
         )
-        assert isinstance(pm, PartyMembership)
+        assert isinstance(pm, PartyMembershipResponse)
 
         # now get a client for the new party
 

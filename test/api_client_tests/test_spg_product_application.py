@@ -5,25 +5,25 @@ from security_token_service import (
 from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProvider,
+    ControllableUnitServiceProviderResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
-    ServiceProvidingGroup,
+    ServiceProvidingGroupResponse,
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
-    SystemOperatorProductType,
+    SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
-    ServiceProviderProductApplication,
+    ServiceProviderProductApplicationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembership,
+    ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupProductApplicationCreateRequest,
-    ServiceProvidingGroupProductApplication,
-    ServiceProvidingGroupProductApplicationHistory,
+    ServiceProvidingGroupProductApplicationResponse,
+    ServiceProvidingGroupProductApplicationHistoryResponse,
     ServiceProvidingGroupProductApplicationUpdateRequest,
     ServiceProvidingGroupProductApplicationStatus,
     ErrorMessage,
@@ -107,7 +107,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -119,7 +119,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     spg = create_service_providing_group.sync(
         client=client_fiso,
@@ -129,7 +129,7 @@ def data():
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     spg2 = create_service_providing_group.sync(
         client=client_fiso,
@@ -139,7 +139,7 @@ def data():
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg2, ServiceProvidingGroup)
+    assert isinstance(spg2, ServiceProvidingGroupResponse)
 
     # SO cannot read the SPG yet (cf SPG RLS below)
     err = read_service_providing_group.sync(
@@ -158,7 +158,7 @@ def data():
                 valid_from="2024-01-01T00:00:00+1",
             ),
         )
-        assert isinstance(spgm, ServiceProvidingGroupMembership)
+        assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
         spgm_ids.append(spgm.id)
 
         u = update_service_providing_group.sync(
@@ -184,7 +184,7 @@ def data():
                     product_type_id=pt_id,
                 ),
             )
-            assert isinstance(sopt, SystemOperatorProductType)
+            assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
         sppa = create_service_provider_product_application.sync(
             client=client_sp,
@@ -194,7 +194,7 @@ def data():
                 product_type_ids=pt_ids,
             ),
         )
-        assert isinstance(sppa, ServiceProviderProductApplication)
+        assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
         u = update_service_provider_product_application.sync(
             client=clt,
@@ -251,19 +251,19 @@ def test_spgpa_fiso_sp_so(data):
             product_type_ids=[pt_ids[0]],
         ),
     )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplication)
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
     # endpoint: GET /service_providing_group_product_application/{id}
     spgpa = read_service_providing_group_product_application.sync(
         client=client_sp,
         id=cast(int, spgpa.id),
     )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplication)
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
     # RLS: SPG-SO002
     # BTW now SO can read the SPG
     spg = read_service_providing_group.sync(client=client_so, id=spg_ids[0])
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     # create 2 other SPGPAs:
 
@@ -276,7 +276,7 @@ def test_spgpa_fiso_sp_so(data):
             product_type_ids=[pt_ids[1]],
         ),
     )
-    assert isinstance(spgpa2, ServiceProvidingGroupProductApplication)
+    assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
 
     # - one from another SPG to the first SO
     spgpa3 = create_service_providing_group_product_application.sync(
@@ -287,7 +287,7 @@ def test_spgpa_fiso_sp_so(data):
             product_type_ids=[pt_ids[1]],
         ),
     )
-    assert isinstance(spgpa3, ServiceProvidingGroupProductApplication)
+    assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)
 
     assert so_id != other_so_id
 
@@ -298,7 +298,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_other_so,
         id=cast(int, spgpa2.id),
     )
-    assert isinstance(s, ServiceProvidingGroupProductApplication)
+    assert isinstance(s, ServiceProvidingGroupProductApplicationResponse)
 
     # since they have one application, they can also read applications from the
     # same SPG even if they are not targeted
@@ -306,7 +306,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_other_so,
         id=cast(int, spgpa.id),
     )
-    assert isinstance(s, ServiceProvidingGroupProductApplication)
+    assert isinstance(s, ServiceProvidingGroupProductApplicationResponse)
 
     # but they cannot read applications they have nothing to do with
     s = read_service_providing_group_product_application.sync(
@@ -524,5 +524,5 @@ def test_spgpa_common(data):
             )
             assert isinstance(
                 hist_spgpa,
-                ServiceProvidingGroupProductApplicationHistory,
+                ServiceProvidingGroupProductApplicationHistoryResponse,
             )

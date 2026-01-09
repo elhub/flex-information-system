@@ -2,7 +2,7 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
 )
-from flex.models import ProductType, ErrorMessage
+from flex.models import ProductTypeResponse, ErrorMessage
 from flex.api.product_type import (
     list_product_type,
     read_product_type,
@@ -29,7 +29,7 @@ def test_product_type_common(sts):
 
         # endpoint: GET /product_type/{id}
         pt = read_product_type.sync(client=client, id=cast(int, pts[0].id))
-        assert isinstance(pt, ProductType)
+        assert isinstance(pt, ProductTypeResponse)
 
 
 def test_product_type_anon(sts):

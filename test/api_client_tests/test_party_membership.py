@@ -4,13 +4,13 @@ from security_token_service import (
 )
 from flex.models import (
     AuthScope,
-    PartyMembership,
+    PartyMembershipResponse,
     PartyMembershipCreateRequest,
     PartyMembershipUpdateRequest,
-    PartyMembershipHistory,
+    PartyMembershipHistoryResponse,
     PartyCreateRequest,
     PartyBusinessIdType,
-    Party,
+    PartyResponse,
     PartyRole,
     PartyType,
     ErrorMessage,
@@ -72,7 +72,7 @@ def test_ptym_fiso(sts):
             scopes=[AuthScope.MANAGEAUTH],
         ),
     )
-    assert isinstance(pm, PartyMembership)
+    assert isinstance(pm, PartyMembershipResponse)
 
     # RLS: PTYM-FISO002
     # endpoint: GET /party_membership_history/{id}
@@ -80,11 +80,11 @@ def test_ptym_fiso(sts):
         client=client_fiso,
         id=cast(int, pm.id),
     )
-    assert isinstance(pmh, PartyMembershipHistory)
+    assert isinstance(pmh, PartyMembershipHistoryResponse)
 
     # endpoint: GET /party_membership/{id}
     p = read_party_membership.sync(client=client_fiso, id=cast(int, pm.id))
-    assert isinstance(p, PartyMembership)
+    assert isinstance(p, PartyMembershipResponse)
     p2 = list_party_membership.sync(
         client=client_fiso,
         id=f"eq.{cast(int, pm.id)}",
@@ -141,7 +141,7 @@ def test_ptym_ent(sts):
     for pm in all_pms:
         if pm.party_id in parties_owned_by_ent:
             pm = read_party_membership.sync(client=client_ent, id=cast(int, pm.id))
-            assert isinstance(pm, PartyMembership)
+            assert isinstance(pm, PartyMembershipResponse)
 
 
 # RLS: PTYM-ORG001
@@ -153,7 +153,7 @@ def test_ptym_org(sts):
     org_pty_id = org_info["party_id"]
 
     p = read_party.sync(client=client_fiso, id=cast(int, org_pty_id))
-    assert isinstance(p, Party)
+    assert isinstance(p, PartyResponse)
     org_ent_id = p.entity_id
 
     # create party owned by the org entity
@@ -169,7 +169,7 @@ def test_ptym_org(sts):
             business_id=unique_gln(),
         ),
     )
-    assert isinstance(p, Party)
+    assert isinstance(p, PartyResponse)
 
     # add the other entity as a member
 
@@ -253,7 +253,7 @@ def test_ptym_org(sts):
             scopes=[AuthScope.READAUTH],
         ),
     )
-    assert isinstance(pm, PartyMembership)
+    assert isinstance(pm, PartyMembershipResponse)
 
     # remove admin scope
 

@@ -8,14 +8,14 @@ from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitUpdateRequest,
     ControllableUnitRegulationDirection,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProvider,
+    ControllableUnitServiceProviderResponse,
     ControllableUnitGridValidationStatus,
-    TechnicalResource,
+    TechnicalResourceResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceUpdateRequest,
-    TechnicalResourceHistory,
+    TechnicalResourceHistoryResponse,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
@@ -68,7 +68,7 @@ def test_tr_brp(sts):
             client=client_fiso,
             id=cast(int, tr.controllable_unit_id),
         )
-        assert isinstance(cu, ControllableUnit)
+        assert isinstance(cu, ControllableUnitResponse)
         return (
             cast(int, cu.accounting_point_id) > 1000
             and cast(int, cu.accounting_point_id) < 2000
@@ -105,7 +105,7 @@ def test_tr_brp(sts):
         client=client_brp,
         id=cast(int, trs_former_brp[0].id),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
     assert "COMMON-SP-AS-OF-2024" not in cast(str, tr.name)
 
     trhs = list_technical_resource_history.sync(client=client_brp)
@@ -141,7 +141,7 @@ def test_tr_eu(sts):
         client=client_former_eu,
         id=cast(int, old_trhs[0].technical_resource_id),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
     assert "TEST-SP-2024-07" in cast(str, tr.name)
 
     # current AP EU can see the current version of the TR,
@@ -153,7 +153,7 @@ def test_tr_eu(sts):
         client=client_eu,
         id=cast(int, old_trhs[0].technical_resource_id),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     trhs_eu = list_technical_resource_history.sync(client=client_eu)
     assert isinstance(trhs_eu, list)
@@ -192,7 +192,7 @@ def test_tr_es(sts):
         client=client_former_es,
         id=cast(int, old_trhs[0].technical_resource_id),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
     assert "TEST-SP-2024-07" in cast(str, tr.name)
 
     # current AP ES can see the current version of the TR,
@@ -204,7 +204,7 @@ def test_tr_es(sts):
         client=client_es,
         id=cast(int, old_trhs[0].technical_resource_id),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     trhs_es = list_technical_resource_history.sync(client=client_es)
     assert isinstance(trhs_es, list)
@@ -244,7 +244,7 @@ def test_tr_fiso(sts):
             details="Details of the new TR",
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     # endpoint: PATCH /technical_resource/{id}
     u = update_technical_resource.sync(
@@ -294,7 +294,7 @@ def test_tr_so(sts):
             client=client_so,
             id=cast(int, trs_so[0].id),
         )
-        assert isinstance(tr, TechnicalResource)
+        assert isinstance(tr, TechnicalResourceResponse)
 
         # RLS: TR-SO002
         # check SO can read history on these TR
@@ -311,7 +311,7 @@ def test_tr_so(sts):
             hist_tr = read_technical_resource_history.sync(
                 client=client_so, id=cast(int, hist[0].id)
             )
-            assert isinstance(hist_tr, TechnicalResourceHistory)
+            assert isinstance(hist_tr, TechnicalResourceHistoryResponse)
 
 
 # RLS: TR-SP001
@@ -357,7 +357,7 @@ def test_tr_sp(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     cu_id = cast(int, cu.id)
 
@@ -369,7 +369,7 @@ def test_tr_sp(sts):
             details="Details of the new TR",
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
     tr_id = cast(int, tr.id)
 
     # no SP can create or update TR
@@ -417,7 +417,7 @@ def test_tr_sp(sts):
             valid_from=f"{date.today().isoformat()} Europe/Oslo",
         ),
     )
-    assert isinstance(cusp_common, ControllableUnitServiceProvider)
+    assert isinstance(cusp_common, ControllableUnitServiceProviderResponse)
 
     # now Common SP can create/update TR
 
@@ -429,7 +429,7 @@ def test_tr_sp(sts):
             details="Details of the new TR",
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     u = update_technical_resource.sync(
         client=client_common_sp,
@@ -472,7 +472,7 @@ def test_tr_sp(sts):
             grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
         ),
     )
-    assert isinstance(u, ControllableUnit)
+    assert isinstance(u, ControllableUnitResponse)
     assert (
         u.grid_validation_status
         == ControllableUnitGridValidationStatus.VALIDATION_FAILED
@@ -492,7 +492,7 @@ def test_tr_sp(sts):
         client=client_fiso,
         id=cu_id,
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
     assert cu.grid_validation_status == ControllableUnitGridValidationStatus.PENDING
 
     # SP can delete their TR

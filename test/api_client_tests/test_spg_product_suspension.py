@@ -5,31 +5,31 @@ from security_token_service import (
 from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProvider,
+    ControllableUnitServiceProviderResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
-    ServiceProvidingGroup,
+    ServiceProvidingGroupResponse,
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
-    SystemOperatorProductType,
+    SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
-    ServiceProviderProductApplication,
+    ServiceProviderProductApplicationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembership,
+    ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupProductApplicationCreateRequest,
-    ServiceProvidingGroupProductApplication,
+    ServiceProvidingGroupProductApplicationResponse,
     ServiceProvidingGroupProductApplicationUpdateRequest,
     ServiceProvidingGroupProductApplicationStatus,
     ServiceProvidingGroupProductSuspensionCreateRequest,
-    ServiceProvidingGroupProductSuspension,
+    ServiceProvidingGroupProductSuspensionResponse,
     ServiceProvidingGroupProductSuspensionUpdateRequest,
     ServiceProvidingGroupProductSuspensionReason,
-    ServiceProvidingGroupProductSuspensionHistory,
+    ServiceProvidingGroupProductSuspensionHistoryResponse,
     ErrorMessage,
     EmptyObject,
 )
@@ -99,7 +99,7 @@ def data():
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     cu = create_controllable_unit.sync(
         client=client_fiso,
@@ -110,7 +110,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -122,7 +122,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -132,7 +132,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     u = update_service_providing_group.sync(
         client=client_sp,
@@ -154,7 +154,7 @@ def data():
                     product_type_id=pt_id,
                 ),
             )
-            assert isinstance(sopt, SystemOperatorProductType)
+            assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
         sppa = create_service_provider_product_application.sync(
             client=client_sp,
@@ -164,7 +164,7 @@ def data():
                 product_type_ids=pt_ids,
             ),
         )
-        assert isinstance(sppa, ServiceProviderProductApplication)
+        assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
         u = update_service_provider_product_application.sync(
             client=client_so,
@@ -186,7 +186,7 @@ def data():
                 product_type_ids=pt_ids,
             ),
         )
-        assert isinstance(spgpa, ServiceProvidingGroupProductApplication)
+        assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
         u = update_service_providing_group_product_application.sync(
             client=client_so,
@@ -246,7 +246,7 @@ def check_history(client, spgps_id):
     )
     assert isinstance(
         hist_spgps,
-        ServiceProvidingGroupProductSuspensionHistory,
+        ServiceProvidingGroupProductSuspensionHistoryResponse,
     )
 
 
@@ -279,7 +279,7 @@ def test_spgps_fiso(data):
             reason=ServiceProvidingGroupProductSuspensionReason.FAILED_VERIFICATION,
         ),
     )
-    assert isinstance(spgps, ServiceProvidingGroupProductSuspension)
+    assert isinstance(spgps, ServiceProvidingGroupProductSuspensionResponse)
 
     # endpoint: GET /service_providing_group_product_suspension
     spgpss = list_service_providing_group_product_suspension.sync(client=client_fiso)
@@ -291,7 +291,7 @@ def test_spgps_fiso(data):
         client=client_fiso,
         id=cast(int, spgpss[0].id),
     )
-    assert isinstance(s, ServiceProvidingGroupProductSuspension)
+    assert isinstance(s, ServiceProvidingGroupProductSuspensionResponse)
 
     # RLS: SPGPS-FISO002
     check_history(client_fiso, s.id)
@@ -328,7 +328,7 @@ def test_spgps_sp(data):
             reason=ServiceProvidingGroupProductSuspensionReason.OTHER,
         ),
     )
-    assert isinstance(spgps, ServiceProvidingGroupProductSuspension)
+    assert isinstance(spgps, ServiceProvidingGroupProductSuspensionResponse)
 
     # SP can read
 
@@ -336,7 +336,7 @@ def test_spgps_sp(data):
         client=client_sp,
         id=cast(int, spgps.id),
     )
-    assert isinstance(spgps, ServiceProvidingGroupProductSuspension)
+    assert isinstance(spgps, ServiceProvidingGroupProductSuspensionResponse)
 
     check_history(client_sp, spgps.id)
 
@@ -371,7 +371,7 @@ def test_spgps_so(data):
             product_type_ids=[common_pt_id],
         ),
     )
-    assert isinstance(s, ServiceProvidingGroupProductSuspension)
+    assert isinstance(s, ServiceProvidingGroupProductSuspensionResponse)
 
     spgpss = list_service_providing_group_product_suspension.sync(client=client_so)
     assert isinstance(spgpss, list)
@@ -381,7 +381,7 @@ def test_spgps_so(data):
         client=client_so,
         id=cast(int, spgpss[0].id),
     )
-    assert isinstance(spgps, ServiceProvidingGroupProductSuspension)
+    assert isinstance(spgps, ServiceProvidingGroupProductSuspensionResponse)
 
     # RLS: SPGPS-SO002
     check_history(client_so, s.id)
@@ -401,7 +401,7 @@ def test_spgps_so(data):
         client=client_other_so,
         id=cast(int, s.id),
     )
-    assert isinstance(spgps, ServiceProvidingGroupProductSuspension)
+    assert isinstance(spgps, ServiceProvidingGroupProductSuspensionResponse)
 
     # RLS: SPGPS-SO004
     check_history(client_other_so, s.id)
@@ -426,7 +426,7 @@ def test_spgps_so(data):
             product_type_ids=[first_pt_id],
         ),
     )
-    assert isinstance(s, ServiceProvidingGroupProductSuspension)
+    assert isinstance(s, ServiceProvidingGroupProductSuspensionResponse)
 
     # the other SO should not be able to read
     e = read_service_providing_group_product_suspension.sync(

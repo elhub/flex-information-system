@@ -16,21 +16,21 @@ from flex.api.service_providing_group_grid_prequalification_comment import (
 from flex.models.service_providing_group_create_request import (
     ServiceProvidingGroupCreateRequest,
 )
-from flex.models.service_providing_group import ServiceProvidingGroup
+from flex.models.service_providing_group_response import ServiceProvidingGroupResponse
 from flex.models.service_providing_group_bidding_zone import (
     ServiceProvidingGroupBiddingZone,
 )
 from flex.models.service_providing_group_grid_prequalification_create_request import (
     ServiceProvidingGroupGridPrequalificationCreateRequest,
 )
-from flex.models.service_providing_group_grid_prequalification import (
-    ServiceProvidingGroupGridPrequalification,
+from flex.models.service_providing_group_grid_prequalification_response import (
+    ServiceProvidingGroupGridPrequalificationResponse,
 )
 from flex.models.service_providing_group_grid_prequalification_comment_create_request import (
     ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
 )
-from flex.models.service_providing_group_grid_prequalification_comment import (
-    ServiceProvidingGroupGridPrequalificationComment,
+from flex.models.service_providing_group_grid_prequalification_comment_response import (
+    ServiceProvidingGroupGridPrequalificationCommentResponse,
 )
 from flex.models.service_providing_group_grid_prequalification_comment_update_request import (
     ServiceProvidingGroupGridPrequalificationCommentUpdateRequest,
@@ -38,8 +38,8 @@ from flex.models.service_providing_group_grid_prequalification_comment_update_re
 from flex.models.service_providing_group_grid_prequalification_comment_visibility import (
     ServiceProvidingGroupGridPrequalificationCommentVisibility,
 )
-from flex.models.service_providing_group_grid_prequalification_comment_history import (
-    ServiceProvidingGroupGridPrequalificationCommentHistory,
+from flex.models.service_providing_group_grid_prequalification_comment_history_response import (
+    ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
 )
 from flex.models.error_message import ErrorMessage
 from flex.client import AuthenticatedClient
@@ -61,7 +61,7 @@ def create_spggp(client_fiso, sp, so):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     spgps = create_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
@@ -72,7 +72,7 @@ def create_spggp(client_fiso, sp, so):
     )
 
     # Need to set prequalified at and status in update  call
-    assert isinstance(spgps, ServiceProvidingGroupGridPrequalification)
+    assert isinstance(spgps, ServiceProvidingGroupGridPrequalificationResponse)
 
     return spgps.id
 
@@ -131,7 +131,7 @@ def check_history(clt, spggpc_id):
     )
     return isinstance(
         h1,
-        ServiceProvidingGroupGridPrequalificationCommentHistory,
+        ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
     )
 
 
@@ -153,7 +153,7 @@ def test_spggp_comment_fiso(data):
             content="test1",
         ),
     )
-    assert isinstance(spggpc1, ServiceProvidingGroupGridPrequalificationComment)
+    assert isinstance(spggpc1, ServiceProvidingGroupGridPrequalificationCommentResponse)
 
     spggpc2 = create_service_providing_group_grid_prequalification_comment.sync(
         client=client_so,
@@ -163,7 +163,7 @@ def test_spggp_comment_fiso(data):
             content="test2",
         ),
     )
-    assert isinstance(spggpc2, ServiceProvidingGroupGridPrequalificationComment)
+    assert isinstance(spggpc2, ServiceProvidingGroupGridPrequalificationCommentResponse)
 
     # FISO can read and update both
     # endpoint: GET /service_providing_group_grid_prequalification_comment
@@ -178,7 +178,7 @@ def test_spggp_comment_fiso(data):
         client=client_fiso,
         id=cast(int, spggpc1.id),
     )
-    assert isinstance(spggpc1, ServiceProvidingGroupGridPrequalificationComment)
+    assert isinstance(spggpc1, ServiceProvidingGroupGridPrequalificationCommentResponse)
 
     # endpoint: PATCH /service_providing_group_grid_prequalification_comment/{id}
     u = update_service_providing_group_grid_prequalification_comment.sync(
@@ -197,7 +197,7 @@ def test_spggp_comment_fiso(data):
             content="test2 EDITED",
         ),
     )
-    assert isinstance(u, ServiceProvidingGroupGridPrequalificationComment)
+    assert isinstance(u, ServiceProvidingGroupGridPrequalificationCommentResponse)
     assert u.content == "test2 EDITED"
 
     # RLS: SPGGPC-FISO002
@@ -225,7 +225,7 @@ def test_spggp_comment_so_sp(data):
         ),
     )
     assert isinstance(
-        spggp_comment_so, ServiceProvidingGroupGridPrequalificationComment
+        spggp_comment_so, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
     spggp_comment_sp = create_service_providing_group_grid_prequalification_comment.sync(
@@ -237,7 +237,7 @@ def test_spggp_comment_so_sp(data):
         ),
     )
     assert isinstance(
-        spggp_comment_sp, ServiceProvidingGroupGridPrequalificationComment
+        spggp_comment_sp, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
     # both can read each other's comments
@@ -249,7 +249,7 @@ def test_spggp_comment_so_sp(data):
         )
     )
     assert isinstance(
-        spggp_comment_so_as_sp, ServiceProvidingGroupGridPrequalificationComment
+        spggp_comment_so_as_sp, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
     spggp_comment_sp_as_so = (
@@ -259,7 +259,7 @@ def test_spggp_comment_so_sp(data):
         )
     )
     assert isinstance(
-        spggp_comment_sp_as_so, ServiceProvidingGroupGridPrequalificationComment
+        spggp_comment_sp_as_so, ServiceProvidingGroupGridPrequalificationCommentResponse
     )
 
     # SO's comment becomes open to this SO only

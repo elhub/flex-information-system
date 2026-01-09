@@ -5,19 +5,19 @@ from security_token_service import (
 from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProvider,
-    ServiceProvidingGroup,
+    ControllableUnitServiceProviderResponse,
+    ServiceProvidingGroupResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
-    ServiceProvidingGroupHistory,
+    ServiceProvidingGroupHistoryResponse,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembership,
+    ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
-    ServiceProvidingGroupGridPrequalification,
+    ServiceProvidingGroupGridPrequalificationResponse,
     ErrorMessage,
 )
 from flex.api.service_providing_group import (
@@ -77,7 +77,7 @@ def test_spg_fiso_sp(sts):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     spg2 = create_service_providing_group.sync(
         client=client_sp,
@@ -87,15 +87,15 @@ def test_spg_fiso_sp(sts):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg2, ServiceProvidingGroup)
+    assert isinstance(spg2, ServiceProvidingGroupResponse)
 
     # endpoint: GET /service_providing_group/{id}
     spg_fiso = read_service_providing_group.sync(
         client=client_fiso, id=cast(int, spg.id)
     )
-    assert isinstance(spg_fiso, ServiceProvidingGroup)
+    assert isinstance(spg_fiso, ServiceProvidingGroupResponse)
     spg_sp = read_service_providing_group.sync(client=client_sp, id=cast(int, spg.id))
-    assert isinstance(spg_sp, ServiceProvidingGroup)
+    assert isinstance(spg_sp, ServiceProvidingGroupResponse)
 
     # check SPG grid prequalification resources are created on SPG activation
 
@@ -108,7 +108,7 @@ def test_spg_fiso_sp(sts):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -120,7 +120,7 @@ def test_spg_fiso_sp(sts):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     # before the update, no grid prequalification resources
     spggp = list_service_providing_group_grid_prequalification.sync(
@@ -148,7 +148,7 @@ def test_spg_fiso_sp(sts):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     # endpoint: PATCH /service_providing_group/{id}
     u = update_service_providing_group.sync(
@@ -225,7 +225,7 @@ def test_spg_so(sts):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     # SO does not see anything by default
     spgs = list_service_providing_group.sync(client=client_so)
@@ -239,7 +239,7 @@ def test_spg_so(sts):
             impacted_system_operator_id=so_id,
         ),
     )
-    assert isinstance(spggp, ServiceProvidingGroupGridPrequalification)
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     # SO can now see the SPG
     spgs2 = list_service_providing_group.sync(client=client_so)
@@ -247,7 +247,7 @@ def test_spg_so(sts):
     assert len(spgs2) == len(spgs) + 1
 
     spg = read_service_providing_group.sync(client=client_so, id=cast(int, spgs2[0].id))
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
 
 # RLS: SPG-COM001
@@ -275,7 +275,7 @@ def test_spg_common(sts):
             hist_spg = read_service_providing_group_history.sync(
                 client=client, id=cast(int, hist[0].id)
             )
-            assert isinstance(hist_spg, ServiceProvidingGroupHistory)
+            assert isinstance(hist_spg, ServiceProvidingGroupHistoryResponse)
 
 
 def test_rla_absence(sts):

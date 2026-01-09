@@ -4,7 +4,7 @@ from security_token_service import (
 )
 from flex.models import (
     PartyCreateRequest,
-    Party,
+    PartyResponse,
     PartyRole,
     PartyType,
 )
@@ -192,7 +192,7 @@ def test_token_exchange_ok_ent(sts):
             name="Auth Test EU",
         ),
     )
-    assert isinstance(p, Party)
+    assert isinstance(p, PartyResponse)
 
     actor_token = client_ent.token
 

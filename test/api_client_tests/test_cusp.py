@@ -4,13 +4,13 @@ from security_token_service import (
     AuthenticatedClient,
 )
 from flex.models import (
-    ControllableUnitServiceProvider,
+    ControllableUnitServiceProviderResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderUpdateRequest,
-    ControllableUnitServiceProviderHistory,
+    ControllableUnitServiceProviderHistoryResponse,
     ErrorMessage,
     EmptyObject,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
 )
@@ -47,7 +47,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
     eu_id = sts.get_userinfo(client_eu)["party_id"]
@@ -102,13 +102,13 @@ def test_cusp_fiso(data):
             valid_to=None,
         ),
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     # endpoint: GET /controllable_unit_service_provider/{id}
     cusp = read_controllable_unit_service_provider.sync(
         client=client_fiso, id=cast(int, cusp.id)
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     cusp2 = list_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -130,10 +130,14 @@ def test_cusp_fiso(data):
         list(
             filter(
                 lambda h: cast(
-                    ControllableUnitServiceProviderHistory, h
+                    ControllableUnitServiceProviderHistoryResponse, h
                 ).controllable_unit_id
-                == cast(ControllableUnitServiceProvider, cusp).controllable_unit_id
-                and cast(ControllableUnitServiceProviderHistory, h).service_provider_id
+                == cast(
+                    ControllableUnitServiceProviderResponse, cusp
+                ).controllable_unit_id
+                and cast(
+                    ControllableUnitServiceProviderHistoryResponse, h
+                ).service_provider_id
                 == sp_id,
                 hist,
             )
@@ -169,10 +173,14 @@ def test_cusp_fiso(data):
         list(
             filter(
                 lambda h: cast(
-                    ControllableUnitServiceProviderHistory, h
+                    ControllableUnitServiceProviderHistoryResponse, h
                 ).controllable_unit_id
-                == cast(ControllableUnitServiceProvider, cusp).controllable_unit_id
-                and cast(ControllableUnitServiceProviderHistory, h).service_provider_id
+                == cast(
+                    ControllableUnitServiceProviderResponse, cusp
+                ).controllable_unit_id
+                and cast(
+                    ControllableUnitServiceProviderHistoryResponse, h
+                ).service_provider_id
                 == sp_id,
                 hist,
             )
@@ -184,7 +192,7 @@ def test_cusp_fiso(data):
     h = read_controllable_unit_service_provider_history.sync(
         client=client_fiso, id=cast(int, hist[0].id)
     )
-    assert isinstance(h, ControllableUnitServiceProviderHistory)
+    assert isinstance(h, ControllableUnitServiceProviderHistoryResponse)
 
     h2 = list_controllable_unit_service_provider_history.sync(
         client=client_fiso,
@@ -241,7 +249,7 @@ def test_cusp_sp(data):
             valid_from=midnight_n_days_diff(-5),
         ),
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     # but not if there is already a CU-SP relation
 
@@ -308,7 +316,7 @@ def test_cusp_sp(data):
             valid_from=midnight_n_days_diff(16),
         ),
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     # they can update in the past
 
@@ -341,7 +349,7 @@ def test_cusp_sp(data):
     # but they cannot touch the old records
 
     cusp = cusps_sp[0]
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     u = update_controllable_unit_service_provider.sync(
         client=sp1_client,
@@ -372,7 +380,7 @@ def test_cusp_so(data):
         cu = read_controllable_unit.sync(
             client=client_fiso, id=cast(int, cusp.controllable_unit_id)
         )
-        assert isinstance(cu, ControllableUnit)
+        assert isinstance(cu, ControllableUnitResponse)
 
         if (
             cast(int, cu.accounting_point_id) > 1000
@@ -381,7 +389,7 @@ def test_cusp_so(data):
             cusp = read_controllable_unit_service_provider.sync(
                 client=client_so, id=cast(int, cusp.id)
             )
-            assert isinstance(cusp, ControllableUnitServiceProvider)
+            assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
 
 # RLS: CUSP-FISO002
@@ -448,7 +456,7 @@ def test_cusp_eu(data):
         client=client_eu,
         id=cast(int, old_cusphs[0].controllable_unit_service_provider_id),
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     cusphs_eu = list_controllable_unit_service_provider_history.sync(
         client=client_eu,

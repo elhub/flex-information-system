@@ -8,12 +8,12 @@ from flex.models import (
     ServiceProviderProductApplicationCreateRequest,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
-    ServiceProviderProductApplication,
+    ServiceProviderProductApplicationResponse,
     ServiceProviderProductSuspensionReason,
-    ServiceProviderProductSuspension,
+    ServiceProviderProductSuspensionResponse,
     ServiceProviderProductSuspensionCreateRequest,
-    ServiceProviderProductSuspensionCommentHistory,
-    ServiceProviderProductSuspensionComment,
+    ServiceProviderProductSuspensionCommentHistoryResponse,
+    ServiceProviderProductSuspensionCommentResponse,
     ServiceProviderProductSuspensionCommentUpdateRequest,
     ServiceProviderProductSuspensionCommentCreateRequest,
     ServiceProviderProductSuspensionCommentVisibility,
@@ -79,7 +79,7 @@ def data():
             product_type_ids=[2],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     # SO approves the SPPA
     u = update_service_provider_product_application.sync(
@@ -101,7 +101,7 @@ def data():
             reason=ServiceProviderProductSuspensionReason.CLEARING_ISSUES,
         ),
     )
-    assert isinstance(spps, ServiceProviderProductSuspension)
+    assert isinstance(spps, ServiceProviderProductSuspensionResponse)
 
     # create another, completely unrelated SPPS to check comments are
     # unreachable there
@@ -129,7 +129,7 @@ def data():
             product_type_ids=[6],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(
         client=client_so2,
@@ -149,7 +149,7 @@ def data():
             reason=ServiceProviderProductSuspensionReason.BREACH_OF_CONDITIONS,
         ),
     )
-    assert isinstance(spps2, ServiceProviderProductSuspension)
+    assert isinstance(spps2, ServiceProviderProductSuspensionResponse)
 
     yield (sts, client_so, client_sp, spps.id, spps2.id)
 
@@ -173,7 +173,7 @@ def check_history(clt, sppsc_id):
     )
     return isinstance(
         h1,
-        ServiceProviderProductSuspensionCommentHistory,
+        ServiceProviderProductSuspensionCommentHistoryResponse,
     )
 
 
@@ -195,7 +195,7 @@ def test_sppsc_fiso(data):
             content="test1",
         ),
     )
-    assert isinstance(sppsc1, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc1, ServiceProviderProductSuspensionCommentResponse)
 
     sppsc2 = create_service_provider_product_suspension_comment.sync(
         client=client_so,
@@ -205,7 +205,7 @@ def test_sppsc_fiso(data):
             content="test2",
         ),
     )
-    assert isinstance(sppsc2, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc2, ServiceProviderProductSuspensionCommentResponse)
 
     # FISO can read and update both
     # endpoint: GET /service_provider_product_suspension_comment
@@ -220,7 +220,7 @@ def test_sppsc_fiso(data):
         client=client_fiso,
         id=cast(int, sppsc1.id),
     )
-    assert isinstance(sppsc1, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc1, ServiceProviderProductSuspensionCommentResponse)
 
     # endpoint: PATCH /service_provider_product_suspension_comment/{id}
     u = update_service_provider_product_suspension_comment.sync(
@@ -282,7 +282,7 @@ def test_sppsc_so_sp(data):
             content="Comment SO",
         ),
     )
-    assert isinstance(sppsc_so, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc_so, ServiceProviderProductSuspensionCommentResponse)
 
     sppsc_sp = create_service_provider_product_suspension_comment.sync(
         client=client_sp,
@@ -292,7 +292,7 @@ def test_sppsc_so_sp(data):
             content="Comment SP",
         ),
     )
-    assert isinstance(sppsc_sp, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc_sp, ServiceProviderProductSuspensionCommentResponse)
 
     # both can read each other's comments
 
@@ -300,13 +300,13 @@ def test_sppsc_so_sp(data):
         client=client_sp,
         id=cast(int, sppsc_so.id),
     )
-    assert isinstance(sppsc_so_as_sp, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc_so_as_sp, ServiceProviderProductSuspensionCommentResponse)
 
     sppsc_sp_as_so = read_service_provider_product_suspension_comment.sync(
         client=client_so,
         id=cast(int, sppsc_sp.id),
     )
-    assert isinstance(sppsc_sp_as_so, ServiceProviderProductSuspensionComment)
+    assert isinstance(sppsc_sp_as_so, ServiceProviderProductSuspensionCommentResponse)
 
     # SO's comment becomes open to this SO only
 

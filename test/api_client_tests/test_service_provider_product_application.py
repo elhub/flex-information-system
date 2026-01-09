@@ -4,9 +4,9 @@ from security_token_service import (
 )
 from flex.models import (
     SystemOperatorProductTypeCreateRequest,
-    SystemOperatorProductType,
-    ServiceProviderProductApplicationHistory,
-    ServiceProviderProductApplication,
+    SystemOperatorProductTypeResponse,
+    ServiceProviderProductApplicationHistoryResponse,
+    ServiceProviderProductApplicationResponse,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationCreateRequest,
     ServiceProviderProductApplicationStatus,
@@ -61,7 +61,7 @@ def test_sppa_fiso(sts):
                 product_type_id=cast(int, pt_id),
             ),
         )
-        assert isinstance(sopt, SystemOperatorProductType)
+        assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     # create one SPPA so that we can read something
     # endpoint: POST /service_provider_product_application
@@ -73,7 +73,7 @@ def test_sppa_fiso(sts):
             product_type_ids=[cast(int, pt.id) for pt in pts[:2]],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     # endpoint: GET /service_provider_product_application
     sppas = list_service_provider_product_application.sync(client=client_fiso)
@@ -85,7 +85,7 @@ def test_sppa_fiso(sts):
         client=client_fiso,
         id=cast(int, sppas[0].id),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     # endpoint: PATCH /service_provider_product_application/{id}
     u = update_service_provider_product_application.sync(
@@ -122,7 +122,7 @@ def test_sppa_sp(sts):
                 product_type_id=cast(int, pt_id),
             ),
         )
-        assert isinstance(sopt, SystemOperatorProductType)
+        assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     sppa = create_service_provider_product_application.sync(
         client=client_sp,
@@ -132,7 +132,7 @@ def test_sppa_sp(sts):
             product_type_ids=[cast(int, pts[0].id)],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     # RLS: SPPA-SP002
     # still requested, update OK
@@ -223,7 +223,7 @@ def test_sppa_sp(sts):
                 product_type_id=pt_id,
             ),
         )
-        assert isinstance(sopt, SystemOperatorProductType)
+        assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     # not allowed to create for another SP
     client_other_sp = sts.fresh_client(TestEntity.COMMON, "SP")
@@ -246,7 +246,7 @@ def test_sppa_sp(sts):
             product_type_ids=[cast(int, pt.id) for pt in pts[:2]],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     # simple read test
     sppas = list_service_provider_product_application.sync(client=client_sp)
@@ -315,7 +315,7 @@ def test_sppa_so(sts):
             product_type_id=cast(int, pts[0].id),
         ),
     )
-    assert isinstance(sopt, SystemOperatorProductType)
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     sppa = create_service_provider_product_application.sync(
         client=client_sp,
@@ -325,7 +325,7 @@ def test_sppa_so(sts):
             product_type_ids=[cast(int, pts[0].id)],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(
         client=client_so,
@@ -377,5 +377,5 @@ def test_sppa_common(sts):
             )
             assert isinstance(
                 hist_sppa,
-                ServiceProviderProductApplicationHistory,
+                ServiceProviderProductApplicationHistoryResponse,
             )

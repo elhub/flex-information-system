@@ -5,34 +5,34 @@ from security_token_service import (
 from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProvider,
+    ControllableUnitServiceProviderResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupUpdateRequest,
-    ServiceProvidingGroup,
+    ServiceProvidingGroupResponse,
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
-    SystemOperatorProductType,
+    SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
-    ServiceProviderProductApplication,
+    ServiceProviderProductApplicationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembership,
+    ServiceProvidingGroupMembershipResponse,
     ServiceProvidingGroupProductApplicationCreateRequest,
-    ServiceProvidingGroupProductApplication,
+    ServiceProvidingGroupProductApplicationResponse,
     ServiceProvidingGroupProductApplicationUpdateRequest,
     ServiceProvidingGroupProductApplicationStatus,
     ServiceProvidingGroupProductSuspensionCreateRequest,
-    ServiceProvidingGroupProductSuspension,
+    ServiceProvidingGroupProductSuspensionResponse,
     ServiceProvidingGroupProductSuspensionReason,
     ServiceProvidingGroupProductSuspensionCommentCreateRequest,
     ServiceProvidingGroupProductSuspensionCommentVisibility,
-    ServiceProvidingGroupProductSuspensionComment,
+    ServiceProvidingGroupProductSuspensionCommentResponse,
     ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
-    ServiceProvidingGroupProductSuspensionCommentHistory,
+    ServiceProvidingGroupProductSuspensionCommentHistoryResponse,
     ErrorMessage,
     EmptyObject,
 )
@@ -92,7 +92,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     cu = create_controllable_unit.sync(
         client=client_fiso,
@@ -103,7 +103,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -115,7 +115,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -125,7 +125,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     u = update_service_providing_group.sync(
         client=client_sp,
@@ -144,7 +144,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             product_type_id=4,
         ),
     )
-    assert isinstance(sopt, SystemOperatorProductType)
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     sppa = create_service_provider_product_application.sync(
         client=client_sp,
@@ -154,7 +154,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             product_type_ids=[4],
         ),
     )
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(
         client=client_so,
@@ -176,7 +176,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             product_type_ids=[4],
         ),
     )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplication)
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
     u = update_service_providing_group_product_application.sync(
         client=client_so,
@@ -197,7 +197,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             reason=ServiceProvidingGroupProductSuspensionReason.FAILED_VERIFICATION,
         ),
     )
-    assert isinstance(spgps, ServiceProvidingGroupProductSuspension)
+    assert isinstance(spgps, ServiceProvidingGroupProductSuspensionResponse)
 
     return spgps.id
 
@@ -263,7 +263,7 @@ def check_history(clt, spggsc_id):
     )
     return isinstance(
         h1,
-        ServiceProvidingGroupProductSuspensionCommentHistory,
+        ServiceProvidingGroupProductSuspensionCommentHistoryResponse,
     )
 
 
@@ -285,7 +285,7 @@ def test_spgpsc_fiso(data):
             content="test1",
         ),
     )
-    assert isinstance(spgpsc1, ServiceProvidingGroupProductSuspensionComment)
+    assert isinstance(spgpsc1, ServiceProvidingGroupProductSuspensionCommentResponse)
 
     spgpsc2 = create_service_providing_group_product_suspension_comment.sync(
         client=client_so,
@@ -295,7 +295,7 @@ def test_spgpsc_fiso(data):
             content="test2",
         ),
     )
-    assert isinstance(spgpsc2, ServiceProvidingGroupProductSuspensionComment)
+    assert isinstance(spgpsc2, ServiceProvidingGroupProductSuspensionCommentResponse)
 
     # FISO can read and update both
     # endpoint: GET /service_providing_group_product_suspension_comment
@@ -310,7 +310,7 @@ def test_spgpsc_fiso(data):
         client=client_fiso,
         id=cast(int, spgpsc1.id),
     )
-    assert isinstance(spgpsc1, ServiceProvidingGroupProductSuspensionComment)
+    assert isinstance(spgpsc1, ServiceProvidingGroupProductSuspensionCommentResponse)
 
     # endpoint: PATCH /service_providing_group_product_suspension_comment/{id}
     u = update_service_providing_group_product_suspension_comment.sync(
@@ -374,7 +374,7 @@ def test_spgpsc_so_sp(data):
             content="Comment SO",
         ),
     )
-    assert isinstance(spgpsc_so, ServiceProvidingGroupProductSuspensionComment)
+    assert isinstance(spgpsc_so, ServiceProvidingGroupProductSuspensionCommentResponse)
 
     spgpsc_sp = create_service_providing_group_product_suspension_comment.sync(
         client=client_sp,
@@ -384,7 +384,7 @@ def test_spgpsc_so_sp(data):
             content="Comment SP",
         ),
     )
-    assert isinstance(spgpsc_sp, ServiceProvidingGroupProductSuspensionComment)
+    assert isinstance(spgpsc_sp, ServiceProvidingGroupProductSuspensionCommentResponse)
 
     # both can read each other's comments
 
@@ -392,13 +392,17 @@ def test_spgpsc_so_sp(data):
         client=client_sp,
         id=cast(int, spgpsc_so.id),
     )
-    assert isinstance(spgpsc_so_as_sp, ServiceProvidingGroupProductSuspensionComment)
+    assert isinstance(
+        spgpsc_so_as_sp, ServiceProvidingGroupProductSuspensionCommentResponse
+    )
 
     spgpsc_sp_as_so = read_service_providing_group_product_suspension_comment.sync(
         client=client_so,
         id=cast(int, spgpsc_sp.id),
     )
-    assert isinstance(spgpsc_sp_as_so, ServiceProvidingGroupProductSuspensionComment)
+    assert isinstance(
+        spgpsc_sp_as_so, ServiceProvidingGroupProductSuspensionCommentResponse
+    )
 
     # SO's comment becomes open to this SO only
 

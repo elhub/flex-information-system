@@ -8,26 +8,26 @@ from flex.models import (
     ControllableUnitUpdateRequest,
     ControllableUnitStatus,
     ControllableUnitRegulationDirection,
-    ControllableUnit,
+    ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
-    ControllableUnitServiceProvider,
-    ServiceProvidingGroup,
+    ControllableUnitServiceProviderResponse,
+    ServiceProvidingGroupResponse,
     ErrorMessage,
     EmptyObject,
     TechnicalResourceCreateRequest,
-    TechnicalResource,
+    TechnicalResourceResponse,
 )
 from flex.models import (
     ControllableUnitSuspensionCreateRequest,
-    ControllableUnitSuspension,
+    ControllableUnitSuspensionResponse,
     ControllableUnitSuspensionReason,
     ControllableUnitSuspensionUpdateRequest,
-    ControllableUnitSuspensionHistory,
+    ControllableUnitSuspensionHistoryResponse,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupProductApplicationCreateRequest,
-    ServiceProvidingGroupProductApplication,
+    ServiceProvidingGroupProductApplicationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembership,
+    ServiceProvidingGroupMembershipResponse,
 )
 from flex.api.controllable_unit_suspension import (
     list_controllable_unit_suspension,
@@ -50,9 +50,9 @@ from flex.models import (
     ServiceProvidingGroupStatus,
     ServiceProvidingGroupBiddingZone,
     SystemOperatorProductTypeCreateRequest,
-    SystemOperatorProductType,
+    SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
-    ServiceProviderProductApplication,
+    ServiceProviderProductApplicationResponse,
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
 )
@@ -111,7 +111,7 @@ def data():
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -123,7 +123,7 @@ def data():
             valid_from="2024-01-01T00:00:00+1",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     # activate cu
     tr = create_technical_resource.sync(
@@ -133,7 +133,7 @@ def data():
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     u = update_controllable_unit.sync(
         client=client_fiso,
@@ -166,7 +166,7 @@ def check_history(client, cus_id):
     )
     assert isinstance(
         hist_cus,
-        ControllableUnitSuspensionHistory,
+        ControllableUnitSuspensionHistoryResponse,
     )
 
 
@@ -185,7 +185,7 @@ def test_cus_fiso(data):
             reason=ControllableUnitSuspensionReason.OTHER,
         ),
     )
-    assert isinstance(cus, ControllableUnitSuspension)
+    assert isinstance(cus, ControllableUnitSuspensionResponse)
 
     # endpoint: GET /service_providing_group_grid_suspension
     cuss = list_controllable_unit_suspension.sync(client=client_fiso)
@@ -197,7 +197,7 @@ def test_cus_fiso(data):
         client=client_fiso,
         id=cast(int, cuss[0].id),
     )
-    assert isinstance(s, ControllableUnitSuspension)
+    assert isinstance(s, ControllableUnitSuspensionResponse)
 
     # RLS: CUS-FISO002
     check_history(client_fiso, s.id)
@@ -235,7 +235,7 @@ def test_cus_so(data):
             reason=ControllableUnitSuspensionReason.OTHER,
         ),
     )
-    assert isinstance(cus, ControllableUnitSuspension)
+    assert isinstance(cus, ControllableUnitSuspensionResponse)
 
     cuss = list_controllable_unit_suspension.sync(client=client_so)
     assert isinstance(cuss, list)
@@ -245,7 +245,7 @@ def test_cus_so(data):
         client=client_so,
         id=cast(int, cuss[0].id),
     )
-    assert isinstance(s, ControllableUnitSuspension)
+    assert isinstance(s, ControllableUnitSuspensionResponse)
 
     # RLS: CUS-SO002
     check_history(client_so, s.id)
@@ -283,7 +283,7 @@ def test_cus_so(data):
             maximum_available_capacity=2,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     tr = create_technical_resource.sync(
         client=client_fiso,
@@ -292,7 +292,7 @@ def test_cus_so(data):
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     u = update_controllable_unit.sync(
         client=client_fiso,
@@ -311,7 +311,7 @@ def test_cus_so(data):
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
     )
-    assert isinstance(spg, ServiceProvidingGroup)
+    assert isinstance(spg, ServiceProvidingGroupResponse)
 
     cus = create_controllable_unit_suspension.sync(
         client=client_so,
@@ -321,7 +321,7 @@ def test_cus_so(data):
             reason=ControllableUnitSuspensionReason.OTHER,
         ),
     )
-    assert isinstance(cus, ControllableUnitSuspension)
+    assert isinstance(cus, ControllableUnitSuspensionResponse)
 
     # Validation: CUS-VAL002
     # Only one active suspension per CU per SO
@@ -352,7 +352,7 @@ def test_cus_so(data):
             valid_from="2024-01-02 Europe/Oslo",
         ),
     )
-    assert isinstance(cusp, ControllableUnitServiceProvider)
+    assert isinstance(cusp, ControllableUnitServiceProviderResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
@@ -362,7 +362,7 @@ def test_cus_so(data):
             valid_from="2024-01-02 Europe/Oslo",
         ),
     )
-    assert isinstance(spgm, ServiceProvidingGroupMembership)
+    assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
     u = update_service_providing_group.sync(
         client=client_fiso,
@@ -382,7 +382,7 @@ def test_cus_so(data):
             product_type_id=5,
         ),
     )
-    assert isinstance(sopt5, SystemOperatorProductType)
+    assert isinstance(sopt5, SystemOperatorProductTypeResponse)
 
     sopt7 = create_system_operator_product_type.sync(
         client=client_so2,
@@ -391,7 +391,7 @@ def test_cus_so(data):
             product_type_id=7,
         ),
     )
-    assert isinstance(sopt7, SystemOperatorProductType)
+    assert isinstance(sopt7, SystemOperatorProductTypeResponse)
 
     sppa = create_service_provider_product_application.sync(
         client=client_sp,
@@ -402,7 +402,7 @@ def test_cus_so(data):
         ),
     )
 
-    assert isinstance(sppa, ServiceProviderProductApplication)
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(
         client=client_so2,
@@ -423,7 +423,7 @@ def test_cus_so(data):
             product_type_ids=pt_ids,
         ),
     )
-    assert isinstance(spgpa, ServiceProvidingGroupProductApplication)
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
     u = update_service_provider_product_application.sync(
         client=client_so2,
@@ -440,7 +440,7 @@ def test_cus_so(data):
         client=client_so2,
         id=cast(int, cus.id),
     )
-    assert isinstance(s, ControllableUnitSuspension)
+    assert isinstance(s, ControllableUnitSuspensionResponse)
 
     # RLS: CUS-SO004
     check_history(client_so2, s.id)
@@ -470,7 +470,7 @@ def test_cus_sp(data):
             maximum_available_capacity=3.5,
         ),
     )
-    assert isinstance(cu, ControllableUnit)
+    assert isinstance(cu, ControllableUnitResponse)
 
     old_cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
@@ -483,7 +483,7 @@ def test_cus_sp(data):
             valid_to="2024-06-01 Europe/Oslo",
         ),
     )
-    assert isinstance(old_cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(old_cu_sp, ControllableUnitServiceProviderResponse)
 
     # Validation: CUS-VAL001
     cus = create_controllable_unit_suspension.sync(
@@ -505,7 +505,7 @@ def test_cus_sp(data):
             controllable_unit_id=cast(int, cu.id),
         ),
     )
-    assert isinstance(tr, TechnicalResource)
+    assert isinstance(tr, TechnicalResourceResponse)
 
     u = update_controllable_unit.sync(
         client=client_fiso,
@@ -524,7 +524,7 @@ def test_cus_sp(data):
             reason=ControllableUnitSuspensionReason.OTHER,
         ),
     )
-    assert isinstance(cus, ControllableUnitSuspension)
+    assert isinstance(cus, ControllableUnitSuspensionResponse)
 
     r = read_controllable_unit_suspension.sync(
         client=client_old_sp,
@@ -542,13 +542,13 @@ def test_cus_sp(data):
             valid_from="2024-07-01 Europe/Oslo",
         ),
     )
-    assert isinstance(cu_sp, ControllableUnitServiceProvider)
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
     r = read_controllable_unit_suspension.sync(
         client=client_sp,
         id=cast(int, cus.id),
     )
-    assert isinstance(r, ControllableUnitSuspension)
+    assert isinstance(r, ControllableUnitSuspensionResponse)
 
     d = delete_controllable_unit_suspension.sync(
         client=client_sp,

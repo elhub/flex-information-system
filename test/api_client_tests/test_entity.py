@@ -6,14 +6,14 @@ from flex.models import (
     AuthScope,
     EntityCreateRequest,
     EntityUpdateRequest,
-    Entity,
+    EntityResponse,
     EntityBusinessIdType,
     EntityType,
     ErrorMessage,
     PartyMembershipCreateRequest,
-    PartyMembership,
+    PartyMembershipResponse,
     EmptyObject,
-    Party,
+    PartyResponse,
 )
 from flex.api.entity import (
     read_entity,
@@ -76,7 +76,7 @@ def test_entity_fiso(sts):
 
     # endpoint: GET /entity/{id}
     e = read_entity.sync(client=client_fiso, id=ent_id)
-    assert isinstance(e, Entity)
+    assert isinstance(e, EntityResponse)
     assert e.name == "Test Suite"
     e2 = list_entity.sync(client=client_fiso, id=f"eq.{ent_id}")
     assert isinstance(e2, list)
@@ -139,7 +139,7 @@ def test_entity_fiso(sts):
             type_=EntityType.ORGANISATION,
         ),
     )
-    assert isinstance(e, Entity)
+    assert isinstance(e, EntityResponse)
 
     # person -> email or pid
 
@@ -207,7 +207,7 @@ def test_entity_fiso(sts):
             type_=EntityType.PERSON,
         ),
     )
-    assert isinstance(e, Entity)
+    assert isinstance(e, EntityResponse)
 
     e = create_entity.sync(
         client=client_fiso,
@@ -218,7 +218,7 @@ def test_entity_fiso(sts):
             type_=EntityType.PERSON,
         ),
     )
-    assert isinstance(e, Entity)
+    assert isinstance(e, EntityResponse)
 
     # update OK
 
@@ -241,7 +241,7 @@ def test_entity_org(sts):
         client=client_org,
         id=sts.get_userinfo(client_org)["party_id"],
     )
-    assert isinstance(pty_org, Party)
+    assert isinstance(pty_org, PartyResponse)
 
     # entity ID of the organisation
     org_ent_id = cast(int, pty_org.entity_id)
@@ -263,7 +263,7 @@ def test_entity_org(sts):
             type_=EntityType.PERSON,
         ),
     )
-    assert isinstance(ent, Entity)
+    assert isinstance(ent, EntityResponse)
 
     # RLS: ENT-ORG001
 
@@ -280,11 +280,11 @@ def test_entity_org(sts):
             scopes=[AuthScope.READDATA, AuthScope.MANAGEAUTH],
         ),
     )
-    assert isinstance(pm, PartyMembership)
+    assert isinstance(pm, PartyMembershipResponse)
 
     # organisation should see the new entity
     ent = read_entity.sync(client=client_org, id=cast(int, ent.id))
-    assert isinstance(ent, Entity)
+    assert isinstance(ent, EntityResponse)
 
     # teardown
     d = delete_party_membership.sync(
@@ -336,7 +336,7 @@ def test_entity_com(sts):
             scopes=[AuthScope.READDATA, AuthScope.READAUTH],
         ),
     )
-    assert isinstance(pm, PartyMembership)
+    assert isinstance(pm, PartyMembershipResponse)
 
     # SO should now see both entities
     so_entities = list_entity.sync(client=client_so)
@@ -355,13 +355,13 @@ def test_entity_com(sts):
         client=client_fiso,
         id=so_id,
     )
-    assert isinstance(p, Party)
+    assert isinstance(p, PartyResponse)
 
     e = read_entity.sync(
         client=client_so,
         id=cast(int, p.entity_id),
     )
-    assert isinstance(e, Entity)
+    assert isinstance(e, EntityResponse)
 
 
 # RLS: ENT-ENT001
