@@ -585,6 +585,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             "description": f"Response schema - {resource['description']}",
             "allOf": [
                 {"$ref": f"#/components/schemas/{resource['id']}"},
+                # The python lib removes aliases to data schemas, so we need to add the empty object schema. So it understands its different.
                 {"type": "object", "additionalProperties": False},
             ],
         }
@@ -602,6 +603,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "description": f"History response schema - {resource['description']}",
                 "allOf": [
                     {"$ref": f"#/components/schemas/{resource['id']}_history"},
+                    # The python lib removes aliases to data schemas, so we need to add the empty object schema. So it understands its different.
                     {"type": "object", "additionalProperties": False},
                 ],
             }
