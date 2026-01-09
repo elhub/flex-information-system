@@ -584,7 +584,6 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             "title": f"{resource['summary']} Response",
             "type": "object",
             "description": f"Response schema - {resource['description']}",
-            # To allow the python lib to alias this schema to the data schema, we need to add the empty object schema. If we update the imports in the test code, we can remove this.
             "allOf": [
                 {"$ref": f"#/components/schemas/{resource['id']}"},
             ],

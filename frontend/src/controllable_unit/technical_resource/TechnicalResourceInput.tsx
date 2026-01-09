@@ -15,9 +15,9 @@ export type TechnicalResourceInputLocationState = {
 // common layout to create and edit pages
 export const TechnicalResourceInput = () => {
   const locationState = useLocationState<TechnicalResourceInputLocationState>();
-  const technicalResourceOverride = locationState?.technicalResource
-    ? zTechnicalResource.parse(locationState?.technicalResource)
-    : {};
+  const technicalResourceOverride = zTechnicalResource
+    .partial()
+    .parse(locationState?.technicalResource ?? {});
 
   const record = useRecordContext<TechnicalResource>();
 
