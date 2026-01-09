@@ -287,18 +287,6 @@ list_parameters_template = [
     },
     {
         "description": "Limiting and Pagination",
-        "in": "header",
-        "name": "Range",
-        "schema": {"type": "string"},
-    },
-    {
-        "description": "Limiting and Pagination",
-        "in": "header",
-        "name": "Range-Unit",
-        "schema": {"default": "items", "type": "string"},
-    },
-    {
-        "description": "Limiting and Pagination",
         "in": "query",
         "name": "offset",
         "schema": {"type": "string"},
@@ -308,12 +296,6 @@ list_parameters_template = [
         "in": "query",
         "name": "limit",
         "schema": {"type": "string"},
-    },
-    {
-        "description": "Preference",
-        "in": "header",
-        "name": "Prefer",
-        "schema": {"enum": ["count=none"], "type": "string"},
     },
 ]
 
