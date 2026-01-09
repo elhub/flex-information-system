@@ -108,11 +108,20 @@ import type {
   ListAccountingPointBalanceResponsiblePartyData,
   ListAccountingPointBalanceResponsiblePartyErrors,
   ListAccountingPointBalanceResponsiblePartyResponses,
+  ListAccountingPointBiddingZoneData,
+  ListAccountingPointBiddingZoneErrors,
+  ListAccountingPointBiddingZoneResponses,
   ListAccountingPointData,
+  ListAccountingPointEndUserData,
+  ListAccountingPointEndUserErrors,
+  ListAccountingPointEndUserResponses,
   ListAccountingPointEnergySupplierData,
   ListAccountingPointEnergySupplierErrors,
   ListAccountingPointEnergySupplierResponses,
   ListAccountingPointErrors,
+  ListAccountingPointMeteringGridAreaData,
+  ListAccountingPointMeteringGridAreaErrors,
+  ListAccountingPointMeteringGridAreaResponses,
   ListAccountingPointResponses,
   ListControllableUnitData,
   ListControllableUnitErrors,
@@ -2577,6 +2586,42 @@ export const listAccountingPointBalanceResponsibleParty = <
   });
 
 /**
+ * List Accounting Point Bidding Zone
+ */
+export const listAccountingPointBiddingZone = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointBiddingZoneData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointBiddingZoneResponses,
+    ListAccountingPointBiddingZoneErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_bidding_zone",
+    ...options,
+  });
+
+/**
+ * List Accounting Point End User
+ */
+export const listAccountingPointEndUser = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointEndUserData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointEndUserResponses,
+    ListAccountingPointEndUserErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_end_user",
+    ...options,
+  });
+
+/**
  * List Accounting Point Energy Supplier
  */
 export const listAccountingPointEnergySupplier = <
@@ -2591,6 +2636,24 @@ export const listAccountingPointEnergySupplier = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/accounting_point_energy_supplier",
+    ...options,
+  });
+
+/**
+ * List Accounting Point Metering Grid Area
+ */
+export const listAccountingPointMeteringGridArea = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointMeteringGridAreaData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointMeteringGridAreaResponses,
+    ListAccountingPointMeteringGridAreaErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_metering_grid_area",
     ...options,
   });
 

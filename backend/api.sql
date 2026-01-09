@@ -366,9 +366,27 @@ CREATE TABLE api.accounting_point_balance_responsible_party (
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL
 );
+CREATE TABLE api.accounting_point_bidding_zone (
+    accounting_point_id bigint NOT NULL,
+    bidding_zone text NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL
+);
+CREATE TABLE api.accounting_point_end_user (
+    accounting_point_id bigint NOT NULL,
+    end_user_id bigint NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL
+);
 CREATE TABLE api.accounting_point_energy_supplier (
     accounting_point_id bigint NOT NULL,
     energy_supplier_id bigint NOT NULL,
+    valid_from timestamp with time zone NOT NULL,
+    valid_to timestamp with time zone NULL
+);
+CREATE TABLE api.accounting_point_metering_grid_area (
+    accounting_point_id bigint NOT NULL,
+    metering_grid_area_id bigint NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL
 );

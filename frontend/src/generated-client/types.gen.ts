@@ -384,6 +384,16 @@ export type AccountingPointBalanceResponsiblePartyEnergyDirection =
   | "production";
 
 /**
+ * The bidding zone of the accounting point.
+ */
+export type AccountingPointBiddingZoneBiddingZone =
+  | "NO1"
+  | "NO2"
+  | "NO3"
+  | "NO4"
+  | "NO5";
+
+/**
  * The status of the relation.
  */
 export type SystemOperatorProductTypeStatus = "active" | "inactive";
@@ -1520,6 +1530,84 @@ export type AccountingPointBalanceResponsiblePartyResponse =
   AccountingPointBalanceResponsibleParty & unknown;
 
 /**
+ * Request schema for update operations - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneUpdateRequest = {
+  bidding_zone?: AccountingPointBiddingZoneBiddingZone;
+};
+
+/**
+ * Data of the request schema for create operations - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneCreateData =
+  AccountingPointBiddingZoneUpdateRequest;
+
+/**
+ * Data schema - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZone =
+  AccountingPointBiddingZoneCreateData & {
+    /**
+     * The ID of the accounting point.
+     */
+    readonly accounting_point_id?: number;
+    /**
+     * The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    readonly valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    readonly valid_to?: string;
+  };
+
+/**
+ * Response schema for operations with return values - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneResponse = AccountingPointBiddingZone &
+  unknown;
+
+/**
+ * Request schema for update operations - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserUpdateRequest = {
+  [key: string]: unknown;
+};
+
+/**
+ * Data of the request schema for create operations - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserCreateData =
+  AccountingPointEndUserUpdateRequest;
+
+/**
+ * Data schema - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUser = AccountingPointEndUserCreateData & {
+  /**
+   * The ID of the accounting point.
+   */
+  readonly accounting_point_id?: number;
+  /**
+   * The end user on the accounting point.
+   */
+  readonly end_user_id?: number;
+  /**
+   * The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_from?: string;
+  /**
+   * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_to?: string;
+};
+
+/**
+ * Response schema for operations with return values - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserResponse = AccountingPointEndUser & unknown;
+
+/**
  * Request schema for update operations - Relation linking an energy supplier to an accounting point.
  */
 export type AccountingPointEnergySupplierUpdateRequest = {
@@ -1560,6 +1648,48 @@ export type AccountingPointEnergySupplier =
  */
 export type AccountingPointEnergySupplierResponse =
   AccountingPointEnergySupplier & unknown;
+
+/**
+ * Request schema for update operations - Relation telling which metering grid area an accounting point belongs to.
+ */
+export type AccountingPointMeteringGridAreaUpdateRequest = {
+  [key: string]: unknown;
+};
+
+/**
+ * Data of the request schema for create operations - Relation telling which metering grid area an accounting point belongs to.
+ */
+export type AccountingPointMeteringGridAreaCreateData =
+  AccountingPointMeteringGridAreaUpdateRequest;
+
+/**
+ * Data schema - Relation telling which metering grid area an accounting point belongs to.
+ */
+export type AccountingPointMeteringGridArea =
+  AccountingPointMeteringGridAreaCreateData & {
+    /**
+     * The ID of the accounting point.
+     */
+    readonly accounting_point_id?: number;
+    /**
+     * The metering grid area of the accounting point.
+     */
+    readonly metering_grid_area_id?: number;
+    /**
+     * The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
+     */
+    readonly valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
+     */
+    readonly valid_to?: string;
+  };
+
+/**
+ * Response schema for operations with return values - Relation telling which metering grid area an accounting point belongs to.
+ */
+export type AccountingPointMeteringGridAreaResponse =
+  AccountingPointMeteringGridArea & unknown;
 
 /**
  * Request schema for update operations - Product type.
@@ -2741,10 +2871,34 @@ export type AccountingPointBalanceResponsiblePartyResponseWritable =
   AccountingPointBalanceResponsiblePartyWritable & unknown;
 
 /**
+ * Data schema - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneWritable =
+  AccountingPointBiddingZoneCreateData & unknown;
+
+/**
+ * Response schema for operations with return values - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneResponseWritable =
+  AccountingPointBiddingZoneWritable & unknown;
+
+/**
+ * Data of the request schema for create operations - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserCreateDataWritable =
+  AccountingPointEndUserUpdateRequest;
+
+/**
  * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
  */
 export type AccountingPointEnergySupplierCreateDataWritable =
   AccountingPointEnergySupplierUpdateRequest;
+
+/**
+ * Data of the request schema for create operations - Relation telling which metering grid area an accounting point belongs to.
+ */
+export type AccountingPointMeteringGridAreaCreateDataWritable =
+  AccountingPointMeteringGridAreaUpdateRequest;
 
 /**
  * Data of the request schema for create operations - Product type.
@@ -10277,6 +10431,190 @@ export type ListAccountingPointBalanceResponsiblePartyResponses = {
 export type ListAccountingPointBalanceResponsiblePartyResponse =
   ListAccountingPointBalanceResponsiblePartyResponses[keyof ListAccountingPointBalanceResponsiblePartyResponses];
 
+export type ListAccountingPointBiddingZoneData = {
+  body?: never;
+  headers?: {
+    /**
+     * Limiting and Pagination
+     */
+    Range?: string;
+    /**
+     * Limiting and Pagination
+     */
+    "Range-Unit"?: string;
+    /**
+     * Preference
+     */
+    Prefer?: "count=none";
+  };
+  path?: never;
+  query?: {
+    /**
+     * The ID of the accounting point.
+     */
+    accounting_point_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_bidding_zone";
+};
+
+export type ListAccountingPointBiddingZoneErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointBiddingZoneError =
+  ListAccountingPointBiddingZoneErrors[keyof ListAccountingPointBiddingZoneErrors];
+
+export type ListAccountingPointBiddingZoneResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointBiddingZoneResponse>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointBiddingZoneResponse>;
+};
+
+export type ListAccountingPointBiddingZoneResponse =
+  ListAccountingPointBiddingZoneResponses[keyof ListAccountingPointBiddingZoneResponses];
+
+export type ListAccountingPointEndUserData = {
+  body?: never;
+  headers?: {
+    /**
+     * Limiting and Pagination
+     */
+    Range?: string;
+    /**
+     * Limiting and Pagination
+     */
+    "Range-Unit"?: string;
+    /**
+     * Preference
+     */
+    Prefer?: "count=none";
+  };
+  path?: never;
+  query?: {
+    /**
+     * The ID of the accounting point.
+     */
+    accounting_point_id?: string;
+    /**
+     * The end user on the accounting point.
+     */
+    end_user_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_end_user";
+};
+
+export type ListAccountingPointEndUserErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointEndUserError =
+  ListAccountingPointEndUserErrors[keyof ListAccountingPointEndUserErrors];
+
+export type ListAccountingPointEndUserResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointEndUserResponse>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointEndUserResponse>;
+};
+
+export type ListAccountingPointEndUserResponse =
+  ListAccountingPointEndUserResponses[keyof ListAccountingPointEndUserResponses];
+
 export type ListAccountingPointEnergySupplierData = {
   body?: never;
   headers?: {
@@ -10370,6 +10708,100 @@ export type ListAccountingPointEnergySupplierResponses = {
 
 export type ListAccountingPointEnergySupplierResponse =
   ListAccountingPointEnergySupplierResponses[keyof ListAccountingPointEnergySupplierResponses];
+
+export type ListAccountingPointMeteringGridAreaData = {
+  body?: never;
+  headers?: {
+    /**
+     * Limiting and Pagination
+     */
+    Range?: string;
+    /**
+     * Limiting and Pagination
+     */
+    "Range-Unit"?: string;
+    /**
+     * Preference
+     */
+    Prefer?: "count=none";
+  };
+  path?: never;
+  query?: {
+    /**
+     * The ID of the accounting point.
+     */
+    accounting_point_id?: string;
+    /**
+     * The metering grid area of the accounting point.
+     */
+    metering_grid_area_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_metering_grid_area";
+};
+
+export type ListAccountingPointMeteringGridAreaErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointMeteringGridAreaError =
+  ListAccountingPointMeteringGridAreaErrors[keyof ListAccountingPointMeteringGridAreaErrors];
+
+export type ListAccountingPointMeteringGridAreaResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointMeteringGridAreaResponse>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointMeteringGridAreaResponse>;
+};
+
+export type ListAccountingPointMeteringGridAreaResponse =
+  ListAccountingPointMeteringGridAreaResponses[keyof ListAccountingPointMeteringGridAreaResponses];
 
 export type ListProductTypeData = {
   body?: never;

@@ -27,11 +27,26 @@ export type PermissionTarget =
   | "accounting_point_balance_responsible_party.energy_direction"
   | "accounting_point_balance_responsible_party.valid_from"
   | "accounting_point_balance_responsible_party.valid_to"
+  | "accounting_point_bidding_zone"
+  | "accounting_point_bidding_zone.accounting_point_id"
+  | "accounting_point_bidding_zone.bidding_zone"
+  | "accounting_point_bidding_zone.valid_from"
+  | "accounting_point_bidding_zone.valid_to"
+  | "accounting_point_end_user"
+  | "accounting_point_end_user.accounting_point_id"
+  | "accounting_point_end_user.end_user_id"
+  | "accounting_point_end_user.valid_from"
+  | "accounting_point_end_user.valid_to"
   | "accounting_point_energy_supplier"
   | "accounting_point_energy_supplier.accounting_point_id"
   | "accounting_point_energy_supplier.energy_supplier_id"
   | "accounting_point_energy_supplier.valid_from"
   | "accounting_point_energy_supplier.valid_to"
+  | "accounting_point_metering_grid_area"
+  | "accounting_point_metering_grid_area.accounting_point_id"
+  | "accounting_point_metering_grid_area.metering_grid_area_id"
+  | "accounting_point_metering_grid_area.valid_from"
+  | "accounting_point_metering_grid_area.valid_to"
   | "controllable_unit"
   | "controllable_unit.accounting_point_id"
   | "controllable_unit.business_id"
@@ -594,6 +609,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -611,6 +666,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -2739,6 +2814,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -2756,6 +2871,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -4884,6 +5019,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -4901,6 +5076,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -7029,6 +7224,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -7046,6 +7281,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -9925,6 +10180,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -9942,6 +10237,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -12070,6 +12385,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -12087,6 +12442,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -14608,6 +14983,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -14625,6 +15040,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -17215,6 +17650,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_bidding_zone.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -17232,6 +17707,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_energy_supplier.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.metering_grid_area_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_metering_grid_area.valid_to",
       operation: "read",
     },
     {
