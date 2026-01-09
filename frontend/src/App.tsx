@@ -282,6 +282,10 @@ const MainMenu = () => (
         name="service_providing_group_grid_prequalification"
         label="SPG grid prequalifications"
       />
+      <LabelledResourceMenuItem
+        name="system_operator_product_type"
+        label="SO product type registrations"
+      />
     </SubMenu>
     <SubMenu text="Product application" defaultOpen>
       <LabelledResourceMenuItem
@@ -309,13 +313,6 @@ const MainMenu = () => (
       <LabelledResourceMenuItem
         name="service_providing_group_product_suspension"
         label="SPG product suspensions"
-      />
-    </SubMenu>
-    <SubMenu text="Product type">
-      <Menu.ResourceItem name="product_type" />
-      <LabelledResourceMenuItem
-        name="system_operator_product_type"
-        label="SO product types"
       />
     </SubMenu>
     <SubMenu text="Identity">

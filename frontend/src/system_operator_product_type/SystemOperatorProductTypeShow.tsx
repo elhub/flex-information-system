@@ -12,6 +12,7 @@ import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
 import { EnumField } from "../components/enum";
+import { ProductTypeField } from "../product_type/components";
 
 export const SystemOperatorProductTypeShow = () => {
   const resource = useResourceContext()!;
@@ -41,11 +42,7 @@ export const SystemOperatorProductTypeShow = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField
-              reference="product_type"
-              source="product_type_id"
-              label="field.system_operator_product_type.product_type_id"
-            />
+            <ProductTypeField source="product_type_id" />
             <EnumField
               source="status"
               enumKey="system_operator_product_type.status"
