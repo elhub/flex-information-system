@@ -59,7 +59,7 @@ No policies.
 
 | Policy key    | Policy         | Status |
 |---------------|----------------|--------|
-| APES-FISO001  | Read all APES. | DONE   |
+| APEU-FISO001  | Read all APEU. | DONE   |
 
 #### Market Operator
 

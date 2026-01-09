@@ -57,9 +57,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-| Policy key    | Policy         | Status |
-|---------------|----------------|--------|
-| APES-FISO001  | Read all APES. | DONE   |
+| Policy key     | Policy          | Status |
+|----------------|-----------------|--------|
+| APMGA-FISO001  | Read all APMGA. | DONE   |
 
 #### Market Operator
 

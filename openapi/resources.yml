@@ -1951,7 +1951,7 @@ resources:
       nn: Avregningspunktsbudområde
     operations:
       - list
-    generate_views: true
+    generate_views: false
     audit: false
     properties:
       accounting_point_id:
@@ -2038,7 +2038,7 @@ resources:
       nn: Avregningspunktssluttbrukar
     operations:
       - list
-    generate_views: true
+    generate_views: false
     audit: false
     properties:
       accounting_point_id:
