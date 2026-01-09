@@ -108,6 +108,9 @@ import type {
   ListAccountingPointBalanceResponsiblePartyData,
   ListAccountingPointBalanceResponsiblePartyErrors,
   ListAccountingPointBalanceResponsiblePartyResponses,
+  ListAccountingPointBiddingZoneData,
+  ListAccountingPointBiddingZoneErrors,
+  ListAccountingPointBiddingZoneResponses,
   ListAccountingPointData,
   ListAccountingPointEnergySupplierData,
   ListAccountingPointEnergySupplierErrors,
@@ -2573,6 +2576,24 @@ export const listAccountingPointBalanceResponsibleParty = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/accounting_point_balance_responsible_party",
+    ...options,
+  });
+
+/**
+ * List Accounting Point Bidding Zone
+ */
+export const listAccountingPointBiddingZone = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointBiddingZoneData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointBiddingZoneResponses,
+    ListAccountingPointBiddingZoneErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_bidding_zone",
     ...options,
   });
 

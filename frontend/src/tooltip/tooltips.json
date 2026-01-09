@@ -157,6 +157,12 @@
         "valid_from": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
         "valid_to": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
     },
+    "accounting_point_bidding_zone": {
+        "accounting_point_id": "The ID of the accounting point.",
+        "bidding_zone": "The bidding zone of the accounting point.",
+        "valid_from": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
+        "valid_to": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
+    },
     "accounting_point_energy_supplier": {
         "accounting_point_id": "The ID of the accounting point.",
         "energy_supplier_id": "The energy supplier of the accounting point.",

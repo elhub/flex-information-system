@@ -384,6 +384,16 @@ export type AccountingPointBalanceResponsiblePartyEnergyDirection =
   | "production";
 
 /**
+ * The bidding zone of the accounting point.
+ */
+export type AccountingPointBiddingZoneBiddingZone =
+  | "NO1"
+  | "NO2"
+  | "NO3"
+  | "NO4"
+  | "NO5";
+
+/**
  * The status of the relation.
  */
 export type SystemOperatorProductTypeStatus = "active" | "inactive";
@@ -1518,6 +1528,44 @@ export type AccountingPointBalanceResponsibleParty =
  */
 export type AccountingPointBalanceResponsiblePartyResponse =
   AccountingPointBalanceResponsibleParty & unknown;
+
+/**
+ * Request schema for update operations - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneUpdateRequest = {
+  bidding_zone?: AccountingPointBiddingZoneBiddingZone;
+};
+
+/**
+ * Data of the request schema for create operations - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneCreateData =
+  AccountingPointBiddingZoneUpdateRequest;
+
+/**
+ * Data schema - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZone =
+  AccountingPointBiddingZoneCreateData & {
+    /**
+     * The ID of the accounting point.
+     */
+    readonly accounting_point_id?: number;
+    /**
+     * The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    readonly valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    readonly valid_to?: string;
+  };
+
+/**
+ * Response schema for operations with return values - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneResponse = AccountingPointBiddingZone &
+  unknown;
 
 /**
  * Request schema for update operations - Relation linking an energy supplier to an accounting point.
@@ -2739,6 +2787,18 @@ export type AccountingPointBalanceResponsiblePartyWritable =
  */
 export type AccountingPointBalanceResponsiblePartyResponseWritable =
   AccountingPointBalanceResponsiblePartyWritable & unknown;
+
+/**
+ * Data schema - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneWritable =
+  AccountingPointBiddingZoneCreateData & unknown;
+
+/**
+ * Response schema for operations with return values - Relation telling which bidding zone an accounting point belongs to.
+ */
+export type AccountingPointBiddingZoneResponseWritable =
+  AccountingPointBiddingZoneWritable & unknown;
 
 /**
  * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
@@ -10276,6 +10336,96 @@ export type ListAccountingPointBalanceResponsiblePartyResponses = {
 
 export type ListAccountingPointBalanceResponsiblePartyResponse =
   ListAccountingPointBalanceResponsiblePartyResponses[keyof ListAccountingPointBalanceResponsiblePartyResponses];
+
+export type ListAccountingPointBiddingZoneData = {
+  body?: never;
+  headers?: {
+    /**
+     * Limiting and Pagination
+     */
+    Range?: string;
+    /**
+     * Limiting and Pagination
+     */
+    "Range-Unit"?: string;
+    /**
+     * Preference
+     */
+    Prefer?: "count=none";
+  };
+  path?: never;
+  query?: {
+    /**
+     * The ID of the accounting point.
+     */
+    accounting_point_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_bidding_zone";
+};
+
+export type ListAccountingPointBiddingZoneErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointBiddingZoneError =
+  ListAccountingPointBiddingZoneErrors[keyof ListAccountingPointBiddingZoneErrors];
+
+export type ListAccountingPointBiddingZoneResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointBiddingZoneResponse>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointBiddingZoneResponse>;
+};
+
+export type ListAccountingPointBiddingZoneResponse =
+  ListAccountingPointBiddingZoneResponses[keyof ListAccountingPointBiddingZoneResponses];
 
 export type ListAccountingPointEnergySupplierData = {
   body?: never;

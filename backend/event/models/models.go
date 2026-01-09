@@ -24,6 +24,13 @@ type ApiAccountingPointBalanceResponsibleParty struct {
 	ValidTo                   pgtype.Timestamptz
 }
 
+type ApiAccountingPointBiddingZone struct {
+	AccountingPointID int
+	BiddingZone       string
+	ValidFrom         pgtype.Timestamptz
+	ValidTo           pgtype.Timestamptz
+}
+
 type ApiAccountingPointEnergySupplier struct {
 	AccountingPointID int
 	EnergySupplierID  int

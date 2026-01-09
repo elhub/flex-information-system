@@ -5024,6 +5024,86 @@ GRANT SELECT (
 api.accounting_point_balance_responsible_party
 TO flex_third_party;
 
+-- changeset flex:api-grant-accounting-point-bidding-zone-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-accounting-point-bidding-zone-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-accounting-point-bidding-zone-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_end_user;
+
+-- changeset flex:api-grant-accounting-point-bidding-zone-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-accounting-point-bidding-zone-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_market_operator;
+
+-- changeset flex:api-grant-accounting-point-bidding-zone-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_system_operator;
+
+-- changeset flex:api-grant-accounting-point-bidding-zone-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_service_provider;
+
+-- changeset flex:api-grant-accounting-point-bidding-zone-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    bidding_zone,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_bidding_zone
+TO flex_third_party;
+
 -- changeset flex:api-grant-accounting-point-energy-supplier-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     accounting_point_id,

@@ -101,6 +101,10 @@
             "description": "Accounting Point Balance Responsible Party"
         },
         {
+            "name": "accounting_point_bidding_zone",
+            "description": "Accounting Point Bidding Zone"
+        },
+        {
             "name": "accounting_point_energy_supplier",
             "description": "Accounting Point Energy Supplier"
         },
@@ -738,6 +742,19 @@
                     "consumption",
                     "production"
                 ]
+            },
+            "accounting_point_bidding_zone_bidding_zone": {
+                "description": "The bidding zone of the accounting point.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "NO1",
+                    "NO2",
+                    "NO3",
+                    "NO4",
+                    "NO5"
+                ],
+                "example": "NO3"
             },
             "system_operator_product_type_status": {
                 "description": "The status of the relation.",
@@ -2985,6 +3002,79 @@
                             "accounting_point_id",
                             "balance_responsible_party_id",
                             "energy_direction",
+                            "valid_from"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_bidding_zone_update_request": {
+                "summary": "Update - Accounting Point Bidding Zone",
+                "description": "Request schema for update operations - Relation telling which bidding zone an accounting point belongs to.",
+                "type": "object",
+                "properties": {
+                    "bidding_zone": {
+                        "$ref": "#/components/schemas/accounting_point_bidding_zone_bidding_zone"
+                    }
+                }
+            },
+            "accounting_point_bidding_zone_create_data": {
+                "summary": "Create data - Accounting Point Bidding Zone",
+                "description": "Data of the request schema for create operations - Relation telling which bidding zone an accounting point belongs to.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_bidding_zone_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_bidding_zone": {
+                "summary": "Data - Accounting Point Bidding Zone",
+                "description": "Data schema - Relation telling which bidding zone an accounting point belongs to.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_bidding_zone_create_data"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_id": {
+                                "description": "The ID of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 245
+                            },
+                            "valid_from": {
+                                "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2022-08-08 00:00:00 CET"
+                            },
+                            "valid_to": {
+                                "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "nullable": true,
+                                "example": null
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_bidding_zone_response": {
+                "summary": "Response - Accounting Point Bidding Zone",
+                "description": "Response schema for operations with return values - Relation telling which bidding zone an accounting point belongs to.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_bidding_zone"
+                    },
+                    {
+                        "required": [
+                            "accounting_point_id",
+                            "bidding_zone",
                             "valid_from"
                         ]
                     }
@@ -20435,6 +20525,203 @@
                     {
                         "bearerAuth": [
                             "read:data:accounting_point_balance_responsible_party"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/accounting_point_bidding_zone": {
+            "summary": "Accounting Point Bidding Zone",
+            "description": "",
+            "get": {
+                "operationId": "list_accounting_point_bidding_zone",
+                "summary": "List Accounting Point Bidding Zone",
+                "description": "",
+                "tags": [
+                    "accounting_point_bidding_zone"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The ID of the accounting point.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "default": "items",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_bidding_zone_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_bidding_zone_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_bidding_zone"
                         ]
                     },
                     {}
