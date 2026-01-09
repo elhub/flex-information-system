@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.notification import Notification
+from ...models.notification_response import NotificationResponse
 from ...types import Response
 
 
@@ -24,9 +24,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | Notification | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse | None:
     if response.status_code == 200:
-        response_200 = Notification.from_dict(response.json())
+        response_200 = NotificationResponse.from_dict(response.json())
 
         return response_200
 
@@ -84,7 +84,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | Notification]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,7 +97,7 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | Notification]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse]:
     """Read Notification
 
     Args:
@@ -108,7 +108,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | Notification]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse]
     """
 
     kwargs = _get_kwargs(
@@ -126,7 +126,7 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | Notification | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse | None:
     """Read Notification
 
     Args:
@@ -137,7 +137,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | Notification
+        EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse
     """
 
     return sync_detailed(
@@ -150,7 +150,7 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | Notification]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse]:
     """Read Notification
 
     Args:
@@ -161,7 +161,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | Notification]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse]
     """
 
     kwargs = _get_kwargs(
@@ -177,7 +177,7 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | Notification | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse | None:
     """Read Notification
 
     Args:
@@ -188,7 +188,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | Notification
+        EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse
     """
 
     return (

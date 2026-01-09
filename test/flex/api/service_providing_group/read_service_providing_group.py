@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group import ServiceProvidingGroup
+from ...models.service_providing_group_response import ServiceProvidingGroupResponse
 from ...types import Response
 
 
@@ -24,9 +24,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     if response.status_code == 200:
-        response_200 = ServiceProvidingGroup.from_dict(response.json())
+        response_200 = ServiceProvidingGroupResponse.from_dict(response.json())
 
         return response_200
 
@@ -84,7 +84,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,7 +97,7 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Read Service providing group
 
     Args:
@@ -108,7 +108,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -126,7 +126,7 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Read Service providing group
 
     Args:
@@ -137,7 +137,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse
     """
 
     return sync_detailed(
@@ -150,7 +150,7 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Read Service providing group
 
     Args:
@@ -161,7 +161,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -177,7 +177,7 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Read Service providing group
 
     Args:
@@ -188,7 +188,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse
     """
 
     return (

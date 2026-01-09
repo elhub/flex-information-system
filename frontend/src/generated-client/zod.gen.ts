@@ -643,11 +643,9 @@ export const zControllableUnit = z.object({
 });
 
 /**
- * Controllable unit Response
- *
  * Response schema - Controllable unit
  */
-export const zControllableUnitResponse = zControllableUnit;
+export const zControllableUnitResponse = zControllableUnit.and(z.object({}));
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
@@ -688,11 +686,10 @@ export const zControllableUnitSuspension = z.object({
 });
 
 /**
- * Controllable Unit Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export const zControllableUnitSuspensionResponse = zControllableUnitSuspension;
+export const zControllableUnitSuspensionResponse =
+  zControllableUnitSuspension.and(z.object({}));
 
 /**
  * Request schema for update operations - Comment made by a party involved in a controllable unit suspension.
@@ -746,12 +743,10 @@ export const zControllableUnitSuspensionComment = z.object({
 });
 
 /**
- * Controllable Unit Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentResponse =
-  zControllableUnitSuspensionComment;
+  zControllableUnitSuspensionComment.and(z.object({}));
 
 /**
  * Request schema for update operations - Relation between controllable unit and service provider
@@ -825,12 +820,10 @@ export const zControllableUnitServiceProvider = z.object({
 });
 
 /**
- * Relation between controllable unit and service provider Response
- *
  * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderResponse =
-  zControllableUnitServiceProvider;
+  zControllableUnitServiceProvider.and(z.object({}));
 
 /**
  * Request schema for update operations - Group of controllable units
@@ -889,11 +882,11 @@ export const zServiceProvidingGroup = z.object({
 });
 
 /**
- * Service providing group Response
- *
  * Response schema - Group of controllable units
  */
-export const zServiceProvidingGroupResponse = zServiceProvidingGroup;
+export const zServiceProvidingGroupResponse = zServiceProvidingGroup.and(
+  z.object({}),
+);
 
 /**
  * Request schema for update operations - Membership relation of controllable unit in service providing group
@@ -947,12 +940,10 @@ export const zServiceProvidingGroupMembership = z.object({
 });
 
 /**
- * Membership relation of controllable unit in service providing group Response
- *
  * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipResponse =
-  zServiceProvidingGroupMembership;
+  zServiceProvidingGroupMembership.and(z.object({}));
 
 /**
  * Request schema for update operations - Grid prequalification for service providing group
@@ -1019,12 +1010,10 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
 });
 
 /**
- * Grid prequalification for service providing group Response
- *
  * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationResponse =
-  zServiceProvidingGroupGridPrequalification;
+  zServiceProvidingGroupGridPrequalification.and(z.object({}));
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid prequalification.
@@ -1082,12 +1071,10 @@ export const zServiceProvidingGroupGridPrequalificationComment = z.object({
 });
 
 /**
- * Grid prequalification for service providing group Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentResponse =
-  zServiceProvidingGroupGridPrequalificationComment;
+  zServiceProvidingGroupGridPrequalificationComment.and(z.object({}));
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
@@ -1128,12 +1115,10 @@ export const zServiceProvidingGroupGridSuspension = z.object({
 });
 
 /**
- * Service Providing Group Grid Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionResponse =
-  zServiceProvidingGroupGridSuspension;
+  zServiceProvidingGroupGridSuspension.and(z.object({}));
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid suspension.
@@ -1189,12 +1174,10 @@ export const zServiceProvidingGroupGridSuspensionComment = z.object({
 });
 
 /**
- * Service Providing Group Grid Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentResponse =
-  zServiceProvidingGroupGridSuspensionComment;
+  zServiceProvidingGroupGridSuspensionComment.and(z.object({}));
 
 /**
  * Request schema for update operations - Entity - Natural or legal person
@@ -1265,8 +1248,6 @@ export const zEntity = z.object({
 });
 
 /**
- * Entity Response
- *
  * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
@@ -1276,7 +1257,7 @@ export const zEntity = z.object({
  * * Person
  * * Organisation
  */
-export const zEntityResponse = zEntity;
+export const zEntityResponse = zEntity.and(z.object({}));
 
 /**
  * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
@@ -1398,11 +1379,9 @@ export const zEntityClient = z.object({
 });
 
 /**
- * Entity client Response
- *
  * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export const zEntityClientResponse = zEntityClient;
+export const zEntityClientResponse = zEntityClient.and(z.object({}));
 
 /**
  * Request schema for update operations - The body that interacts with the Flexibility Information System
@@ -1560,8 +1539,6 @@ export const zNoticeData = z.union([
 ]);
 
 /**
- * Party Response
- *
  * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -1572,7 +1549,7 @@ export const zNoticeData = z.union([
  * * System Operator
  * * End User
  */
-export const zPartyResponse = zParty;
+export const zPartyResponse = zParty.and(z.object({}));
 
 /**
  * Request schema for update operations - The relation between a party and entity.
@@ -1608,11 +1585,9 @@ export const zPartyMembership = z.object({
 });
 
 /**
- * Party Membership Response
- *
  * Response schema - The relation between a party and entity.
  */
-export const zPartyMembershipResponse = zPartyMembership;
+export const zPartyMembershipResponse = zPartyMembership.and(z.object({}));
 
 /**
  * Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
@@ -1636,11 +1611,9 @@ export const zIdentity = z.object({
 });
 
 /**
- * Identity Response
- *
  * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
-export const zIdentityResponse = zIdentity;
+export const zIdentityResponse = zIdentity.and(z.object({}));
 
 /**
  * Request schema for update operations - Technical unit being part of a controllable unit.
@@ -1692,11 +1665,9 @@ export const zTechnicalResource = z.object({
 });
 
 /**
- * Technical Resource Response
- *
  * Response schema - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResourceResponse = zTechnicalResource;
+export const zTechnicalResourceResponse = zTechnicalResource.and(z.object({}));
 
 /**
  * Data schema - Event happening in the system.
@@ -1728,11 +1699,9 @@ export const zEvent = z.object({
 });
 
 /**
- * Event Response
- *
  * Response schema - Event happening in the system.
  */
-export const zEventResponse = zEvent;
+export const zEventResponse = zEvent.and(z.object({}));
 
 /**
  * Request schema for update operations - Notification about an event happening in the system.
@@ -1759,11 +1728,9 @@ export const zNotification = z.object({
 });
 
 /**
- * Notification Response
- *
  * Response schema - Notification about an event happening in the system.
  */
-export const zNotificationResponse = zNotification;
+export const zNotificationResponse = zNotification.and(z.object({}));
 
 /**
  * Data schema - Accounting point for a controllable unit.
@@ -1780,11 +1747,9 @@ export const zAccountingPoint = z.object({
 });
 
 /**
- * Accounting Point Response
- *
  * Response schema - Accounting point for a controllable unit.
  */
-export const zAccountingPointResponse = zAccountingPoint;
+export const zAccountingPointResponse = zAccountingPoint.and(z.object({}));
 
 /**
  * Data schema - Relation linking a balance responsible party to an accounting point.
@@ -1803,12 +1768,10 @@ export const zAccountingPointBalanceResponsibleParty = z.object({
 });
 
 /**
- * Accounting Point Balance Responsible Party Response
- *
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export const zAccountingPointBalanceResponsiblePartyResponse =
-  zAccountingPointBalanceResponsibleParty;
+  zAccountingPointBalanceResponsibleParty.and(z.object({}));
 
 /**
  * Data schema - Relation linking an energy supplier to an accounting point.
@@ -1826,12 +1789,10 @@ export const zAccountingPointEnergySupplier = z.object({
 });
 
 /**
- * Accounting Point Energy Supplier Response
- *
  * Response schema - Relation linking an energy supplier to an accounting point.
  */
 export const zAccountingPointEnergySupplierResponse =
-  zAccountingPointEnergySupplier;
+  zAccountingPointEnergySupplier.and(z.object({}));
 
 /**
  * Data schema - Product type.
@@ -1845,11 +1806,9 @@ export const zProductType = z.object({
 });
 
 /**
- * Product Type Response
- *
  * Response schema - Product type.
  */
-export const zProductTypeResponse = zProductType;
+export const zProductTypeResponse = zProductType.and(z.object({}));
 
 /**
  * Request schema for update operations - Relation between a system operator and a product type they want to buy.
@@ -1894,11 +1853,10 @@ export const zSystemOperatorProductType = z.object({
 });
 
 /**
- * System Operator Product Type Response
- *
  * Response schema - Relation between a system operator and a product type they want to buy.
  */
-export const zSystemOperatorProductTypeResponse = zSystemOperatorProductType;
+export const zSystemOperatorProductTypeResponse =
+  zSystemOperatorProductType.and(z.object({}));
 
 /**
  * Request schema for update operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
@@ -1969,12 +1927,10 @@ export const zServiceProviderProductApplication = z.object({
 });
 
 /**
- * Service Provider Product Application Response
- *
  * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationResponse =
-  zServiceProviderProductApplication;
+  zServiceProviderProductApplication.and(z.object({}));
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product application.
@@ -2028,12 +1984,10 @@ export const zServiceProviderProductApplicationComment = z.object({
 });
 
 /**
- * Service Provider Product Application Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentResponse =
-  zServiceProviderProductApplicationComment;
+  zServiceProviderProductApplicationComment.and(z.object({}));
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
@@ -2082,12 +2036,10 @@ export const zServiceProviderProductSuspension = z.object({
 });
 
 /**
- * Service Provider Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionResponse =
-  zServiceProviderProductSuspension;
+  zServiceProviderProductSuspension.and(z.object({}));
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product suspension.
@@ -2141,12 +2093,10 @@ export const zServiceProviderProductSuspensionComment = z.object({
 });
 
 /**
- * Service Provider Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentResponse =
-  zServiceProviderProductSuspensionComment;
+  zServiceProviderProductSuspensionComment.and(z.object({}));
 
 /**
  * Request schema for update operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
@@ -2253,12 +2203,10 @@ export const zServiceProvidingGroupProductApplication = z.object({
 });
 
 /**
- * Service Providing Group Product Application Response
- *
  * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationResponse =
-  zServiceProvidingGroupProductApplication;
+  zServiceProvidingGroupProductApplication.and(z.object({}));
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
@@ -2307,12 +2255,10 @@ export const zServiceProvidingGroupProductSuspension = z.object({
 });
 
 /**
- * Service Providing Group Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionResponse =
-  zServiceProvidingGroupProductSuspension;
+  zServiceProvidingGroupProductSuspension.and(z.object({}));
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group product suspension.
@@ -2370,12 +2316,10 @@ export const zServiceProvidingGroupProductSuspensionComment = z.object({
 });
 
 /**
- * Service Providing Group Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentResponse =
-  zServiceProvidingGroupProductSuspensionComment;
+  zServiceProvidingGroupProductSuspensionComment.and(z.object({}));
 
 /**
  * Data schema - Notice to users about various issues or actions expected from them.
@@ -2393,11 +2337,9 @@ export const zNotice = z.object({
 });
 
 /**
- * Notice Response
- *
  * Response schema - Notice to users about various issues or actions expected from them.
  */
-export const zNoticeResponse = zNotice;
+export const zNoticeResponse = zNotice.and(z.object({}));
 
 /**
  * Controllable unit - history
@@ -2421,11 +2363,11 @@ export const zControllableUnitHistory = zControllableUnitResponse.and(
 );
 
 /**
- * Controllable unit History Response
- *
  * History response schema - Controllable unit
  */
-export const zControllableUnitHistoryResponse = zControllableUnitHistory;
+export const zControllableUnitHistoryResponse = zControllableUnitHistory.and(
+  z.object({}),
+);
 
 /**
  * Controllable Unit Suspension - history
@@ -2450,12 +2392,10 @@ export const zControllableUnitSuspensionHistory =
   );
 
 /**
- * Controllable Unit Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionHistoryResponse =
-  zControllableUnitSuspensionHistory;
+  zControllableUnitSuspensionHistory.and(z.object({}));
 
 /**
  * Controllable Unit Suspension Comment - history
@@ -2480,12 +2420,10 @@ export const zControllableUnitSuspensionCommentHistory =
   );
 
 /**
- * Controllable Unit Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentHistoryResponse =
-  zControllableUnitSuspensionCommentHistory;
+  zControllableUnitSuspensionCommentHistory.and(z.object({}));
 
 /**
  * Relation between controllable unit and service provider - history
@@ -2510,12 +2448,10 @@ export const zControllableUnitServiceProviderHistory =
   );
 
 /**
- * Relation between controllable unit and service provider History Response
- *
  * History response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderHistoryResponse =
-  zControllableUnitServiceProviderHistory;
+  zControllableUnitServiceProviderHistory.and(z.object({}));
 
 /**
  * Service providing group - history
@@ -2539,12 +2475,10 @@ export const zServiceProvidingGroupHistory = zServiceProvidingGroupResponse.and(
 );
 
 /**
- * Service providing group History Response
- *
  * History response schema - Group of controllable units
  */
 export const zServiceProvidingGroupHistoryResponse =
-  zServiceProvidingGroupHistory;
+  zServiceProvidingGroupHistory.and(z.object({}));
 
 /**
  * Membership relation of controllable unit in service providing group - history
@@ -2569,12 +2503,10 @@ export const zServiceProvidingGroupMembershipHistory =
   );
 
 /**
- * Membership relation of controllable unit in service providing group History Response
- *
  * History response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipHistoryResponse =
-  zServiceProvidingGroupMembershipHistory;
+  zServiceProvidingGroupMembershipHistory.and(z.object({}));
 
 /**
  * Grid prequalification for service providing group - history
@@ -2599,12 +2531,10 @@ export const zServiceProvidingGroupGridPrequalificationHistory =
   );
 
 /**
- * Grid prequalification for service providing group History Response
- *
  * History response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationHistoryResponse =
-  zServiceProvidingGroupGridPrequalificationHistory;
+  zServiceProvidingGroupGridPrequalificationHistory.and(z.object({}));
 
 /**
  * Grid prequalification for service providing group Comment - history
@@ -2629,12 +2559,10 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistory =
   );
 
 /**
- * Grid prequalification for service providing group Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
-  zServiceProvidingGroupGridPrequalificationCommentHistory;
+  zServiceProvidingGroupGridPrequalificationCommentHistory.and(z.object({}));
 
 /**
  * Service Providing Group Grid Suspension - history
@@ -2659,12 +2587,10 @@ export const zServiceProvidingGroupGridSuspensionHistory =
   );
 
 /**
- * Service Providing Group Grid Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionHistoryResponse =
-  zServiceProvidingGroupGridSuspensionHistory;
+  zServiceProvidingGroupGridSuspensionHistory.and(z.object({}));
 
 /**
  * Service Providing Group Grid Suspension Comment - history
@@ -2689,12 +2615,10 @@ export const zServiceProvidingGroupGridSuspensionCommentHistory =
   );
 
 /**
- * Service Providing Group Grid Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentHistoryResponse =
-  zServiceProvidingGroupGridSuspensionCommentHistory;
+  zServiceProvidingGroupGridSuspensionCommentHistory.and(z.object({}));
 
 /**
  * Party - history
@@ -2718,8 +2642,6 @@ export const zPartyHistory = zPartyResponse.and(
 );
 
 /**
- * Party History Response
- *
  * History response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -2730,7 +2652,7 @@ export const zPartyHistory = zPartyResponse.and(
  * * System Operator
  * * End User
  */
-export const zPartyHistoryResponse = zPartyHistory;
+export const zPartyHistoryResponse = zPartyHistory.and(z.object({}));
 
 /**
  * Party Membership - history
@@ -2754,11 +2676,11 @@ export const zPartyMembershipHistory = zPartyMembershipResponse.and(
 );
 
 /**
- * Party Membership History Response
- *
  * History response schema - The relation between a party and entity.
  */
-export const zPartyMembershipHistoryResponse = zPartyMembershipHistory;
+export const zPartyMembershipHistoryResponse = zPartyMembershipHistory.and(
+  z.object({}),
+);
 
 /**
  * Technical Resource - history
@@ -2782,11 +2704,11 @@ export const zTechnicalResourceHistory = zTechnicalResourceResponse.and(
 );
 
 /**
- * Technical Resource History Response
- *
  * History response schema - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResourceHistoryResponse = zTechnicalResourceHistory;
+export const zTechnicalResourceHistoryResponse = zTechnicalResourceHistory.and(
+  z.object({}),
+);
 
 /**
  * System Operator Product Type - history
@@ -2811,12 +2733,10 @@ export const zSystemOperatorProductTypeHistory =
   );
 
 /**
- * System Operator Product Type History Response
- *
  * History response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeHistoryResponse =
-  zSystemOperatorProductTypeHistory;
+  zSystemOperatorProductTypeHistory.and(z.object({}));
 
 /**
  * Service Provider Product Application - history
@@ -2841,12 +2761,10 @@ export const zServiceProviderProductApplicationHistory =
   );
 
 /**
- * Service Provider Product Application History Response
- *
  * History response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationHistoryResponse =
-  zServiceProviderProductApplicationHistory;
+  zServiceProviderProductApplicationHistory.and(z.object({}));
 
 /**
  * Service Provider Product Application Comment - history
@@ -2871,12 +2789,10 @@ export const zServiceProviderProductApplicationCommentHistory =
   );
 
 /**
- * Service Provider Product Application Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentHistoryResponse =
-  zServiceProviderProductApplicationCommentHistory;
+  zServiceProviderProductApplicationCommentHistory.and(z.object({}));
 
 /**
  * Service Provider Product Suspension - history
@@ -2901,12 +2817,10 @@ export const zServiceProviderProductSuspensionHistory =
   );
 
 /**
- * Service Provider Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionHistoryResponse =
-  zServiceProviderProductSuspensionHistory;
+  zServiceProviderProductSuspensionHistory.and(z.object({}));
 
 /**
  * Service Provider Product Suspension Comment - history
@@ -2931,12 +2845,10 @@ export const zServiceProviderProductSuspensionCommentHistory =
   );
 
 /**
- * Service Provider Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentHistoryResponse =
-  zServiceProviderProductSuspensionCommentHistory;
+  zServiceProviderProductSuspensionCommentHistory.and(z.object({}));
 
 /**
  * Service Providing Group Product Application - history
@@ -2961,12 +2873,10 @@ export const zServiceProvidingGroupProductApplicationHistory =
   );
 
 /**
- * Service Providing Group Product Application History Response
- *
  * History response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationHistoryResponse =
-  zServiceProvidingGroupProductApplicationHistory;
+  zServiceProvidingGroupProductApplicationHistory.and(z.object({}));
 
 /**
  * Service Providing Group Product Suspension - history
@@ -2991,12 +2901,10 @@ export const zServiceProvidingGroupProductSuspensionHistory =
   );
 
 /**
- * Service Providing Group Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionHistoryResponse =
-  zServiceProvidingGroupProductSuspensionHistory;
+  zServiceProvidingGroupProductSuspensionHistory.and(z.object({}));
 
 /**
  * Service Providing Group Product Suspension Comment - history
@@ -3021,12 +2929,10 @@ export const zServiceProvidingGroupProductSuspensionCommentHistory =
   );
 
 /**
- * Service Providing Group Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentHistoryResponse =
-  zServiceProvidingGroupProductSuspensionCommentHistory;
+  zServiceProvidingGroupProductSuspensionCommentHistory.and(z.object({}));
 
 /**
  * An empty object
@@ -3100,11 +3006,11 @@ export const zControllableUnitWritable = z.object({
 });
 
 /**
- * Controllable unit Response
- *
  * Response schema - Controllable unit
  */
-export const zControllableUnitResponseWritable = zControllableUnitWritable;
+export const zControllableUnitResponseWritable = zControllableUnitWritable.and(
+  z.object({}),
+);
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
@@ -3116,12 +3022,10 @@ export const zControllableUnitSuspensionWritable = z.object({
 });
 
 /**
- * Controllable Unit Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionResponseWritable =
-  zControllableUnitSuspensionWritable;
+  zControllableUnitSuspensionWritable.and(z.object({}));
 
 /**
  * Data schema - Comment made by a party involved in a controllable unit suspension.
@@ -3134,12 +3038,10 @@ export const zControllableUnitSuspensionCommentWritable = z.object({
 });
 
 /**
- * Controllable Unit Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentResponseWritable =
-  zControllableUnitSuspensionCommentWritable;
+  zControllableUnitSuspensionCommentWritable.and(z.object({}));
 
 /**
  * Data schema - Relation between controllable unit and service provider
@@ -3164,12 +3066,10 @@ export const zControllableUnitServiceProviderWritable = z.object({
 });
 
 /**
- * Relation between controllable unit and service provider Response
- *
  * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderResponseWritable =
-  zControllableUnitServiceProviderWritable;
+  zControllableUnitServiceProviderWritable.and(z.object({}));
 
 /**
  * Data schema - Group of controllable units
@@ -3182,12 +3082,10 @@ export const zServiceProvidingGroupWritable = z.object({
 });
 
 /**
- * Service providing group Response
- *
  * Response schema - Group of controllable units
  */
 export const zServiceProvidingGroupResponseWritable =
-  zServiceProvidingGroupWritable;
+  zServiceProvidingGroupWritable.and(z.object({}));
 
 /**
  * Data schema - Membership relation of controllable unit in service providing group
@@ -3205,12 +3103,10 @@ export const zServiceProvidingGroupMembershipWritable = z.object({
 });
 
 /**
- * Membership relation of controllable unit in service providing group Response
- *
  * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipResponseWritable =
-  zServiceProvidingGroupMembershipWritable;
+  zServiceProvidingGroupMembershipWritable.and(z.object({}));
 
 /**
  * Data schema - Grid prequalification for service providing group
@@ -3228,12 +3124,10 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
 });
 
 /**
- * Grid prequalification for service providing group Response
- *
  * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationResponseWritable =
-  zServiceProvidingGroupGridPrequalificationWritable;
+  zServiceProvidingGroupGridPrequalificationWritable.and(z.object({}));
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid prequalification.
@@ -3249,12 +3143,10 @@ export const zServiceProvidingGroupGridPrequalificationCommentWritable =
   });
 
 /**
- * Grid prequalification for service providing group Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentResponseWritable =
-  zServiceProvidingGroupGridPrequalificationCommentWritable;
+  zServiceProvidingGroupGridPrequalificationCommentWritable.and(z.object({}));
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
@@ -3266,12 +3158,10 @@ export const zServiceProvidingGroupGridSuspensionWritable = z.object({
 });
 
 /**
- * Service Providing Group Grid Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionResponseWritable =
-  zServiceProvidingGroupGridSuspensionWritable;
+  zServiceProvidingGroupGridSuspensionWritable.and(z.object({}));
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid suspension.
@@ -3284,12 +3174,10 @@ export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
 });
 
 /**
- * Service Providing Group Grid Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentResponseWritable =
-  zServiceProvidingGroupGridSuspensionCommentWritable;
+  zServiceProvidingGroupGridSuspensionCommentWritable.and(z.object({}));
 
 /**
  * Data schema - Entity - Natural or legal person
@@ -3309,8 +3197,6 @@ export const zEntityWritable = z.object({
 });
 
 /**
- * Entity Response
- *
  * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
@@ -3320,7 +3206,7 @@ export const zEntityWritable = z.object({
  * * Person
  * * Organisation
  */
-export const zEntityResponseWritable = zEntityWritable;
+export const zEntityResponseWritable = zEntityWritable.and(z.object({}));
 
 /**
  * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
@@ -3360,11 +3246,11 @@ export const zEntityClientWritable = z.object({
 });
 
 /**
- * Entity client Response
- *
  * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export const zEntityClientResponseWritable = zEntityClientWritable;
+export const zEntityClientResponseWritable = zEntityClientWritable.and(
+  z.object({}),
+);
 
 /**
  * Data schema - The body that interacts with the Flexibility Information System
@@ -3431,8 +3317,6 @@ export const zNoticeDataWritable = z.union([
 ]);
 
 /**
- * Party Response
- *
  * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -3443,7 +3327,7 @@ export const zNoticeDataWritable = z.union([
  * * System Operator
  * * End User
  */
-export const zPartyResponseWritable = zPartyWritable;
+export const zPartyResponseWritable = zPartyWritable.and(z.object({}));
 
 /**
  * Data schema - The relation between a party and entity.
@@ -3455,11 +3339,11 @@ export const zPartyMembershipWritable = z.object({
 });
 
 /**
- * Party Membership Response
- *
  * Response schema - The relation between a party and entity.
  */
-export const zPartyMembershipResponseWritable = zPartyMembershipWritable;
+export const zPartyMembershipResponseWritable = zPartyMembershipWritable.and(
+  z.object({}),
+);
 
 /**
  * Data schema - Technical unit being part of a controllable unit.
@@ -3476,11 +3360,10 @@ export const zTechnicalResourceWritable = z.object({
 });
 
 /**
- * Technical Resource Response
- *
  * Response schema - Technical unit being part of a controllable unit.
  */
-export const zTechnicalResourceResponseWritable = zTechnicalResourceWritable;
+export const zTechnicalResourceResponseWritable =
+  zTechnicalResourceWritable.and(z.object({}));
 
 /**
  * Data schema - Notification about an event happening in the system.
@@ -3492,11 +3375,11 @@ export const zNotificationWritable = z.object({
 });
 
 /**
- * Notification Response
- *
  * Response schema - Notification about an event happening in the system.
  */
-export const zNotificationResponseWritable = zNotificationWritable;
+export const zNotificationResponseWritable = zNotificationWritable.and(
+  z.object({}),
+);
 
 /**
  * Data schema - Relation linking a balance responsible party to an accounting point.
@@ -3507,12 +3390,10 @@ export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
 );
 
 /**
- * Accounting Point Balance Responsible Party Response
- *
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export const zAccountingPointBalanceResponsiblePartyResponseWritable =
-  zAccountingPointBalanceResponsiblePartyWritable;
+  zAccountingPointBalanceResponsiblePartyWritable.and(z.object({}));
 
 /**
  * Data schema - Relation between a system operator and a product type they want to buy.
@@ -3524,12 +3405,10 @@ export const zSystemOperatorProductTypeWritable = z.object({
 });
 
 /**
- * System Operator Product Type Response
- *
  * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeResponseWritable =
-  zSystemOperatorProductTypeWritable;
+  zSystemOperatorProductTypeWritable.and(z.object({}));
 
 /**
  * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
@@ -3548,12 +3427,10 @@ export const zServiceProviderProductApplicationWritable = z.object({
 });
 
 /**
- * Service Provider Product Application Response
- *
  * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationResponseWritable =
-  zServiceProviderProductApplicationWritable;
+  zServiceProviderProductApplicationWritable.and(z.object({}));
 
 /**
  * Data schema - Comment made by a party involved in a service provider product application.
@@ -3566,12 +3443,10 @@ export const zServiceProviderProductApplicationCommentWritable = z.object({
 });
 
 /**
- * Service Provider Product Application Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentResponseWritable =
-  zServiceProviderProductApplicationCommentWritable;
+  zServiceProviderProductApplicationCommentWritable.and(z.object({}));
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
@@ -3584,12 +3459,10 @@ export const zServiceProviderProductSuspensionWritable = z.object({
 });
 
 /**
- * Service Provider Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionResponseWritable =
-  zServiceProviderProductSuspensionWritable;
+  zServiceProviderProductSuspensionWritable.and(z.object({}));
 
 /**
  * Data schema - Comment made by a party involved in a service provider product suspension.
@@ -3602,12 +3475,10 @@ export const zServiceProviderProductSuspensionCommentWritable = z.object({
 });
 
 /**
- * Service Provider Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentResponseWritable =
-  zServiceProviderProductSuspensionCommentWritable;
+  zServiceProviderProductSuspensionCommentWritable.and(z.object({}));
 
 /**
  * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
@@ -3638,12 +3509,10 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
 });
 
 /**
- * Service Providing Group Product Application Response
- *
  * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationResponseWritable =
-  zServiceProvidingGroupProductApplicationWritable;
+  zServiceProvidingGroupProductApplicationWritable.and(z.object({}));
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
@@ -3656,12 +3525,10 @@ export const zServiceProvidingGroupProductSuspensionWritable = z.object({
 });
 
 /**
- * Service Providing Group Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionResponseWritable =
-  zServiceProvidingGroupProductSuspensionWritable;
+  zServiceProvidingGroupProductSuspensionWritable.and(z.object({}));
 
 /**
  * Data schema - Comment made by a party involved in a service providing group product suspension.
@@ -3676,12 +3543,10 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
 });
 
 /**
- * Service Providing Group Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentResponseWritable =
-  zServiceProvidingGroupProductSuspensionCommentWritable;
+  zServiceProvidingGroupProductSuspensionCommentWritable.and(z.object({}));
 
 /**
  * Data schema - Notice to users about various issues or actions expected from them.
@@ -3689,11 +3554,9 @@ export const zServiceProvidingGroupProductSuspensionCommentResponseWritable =
 export const zNoticeWritable = z.record(z.string(), z.unknown());
 
 /**
- * Notice Response
- *
  * Response schema - Notice to users about various issues or actions expected from them.
  */
-export const zNoticeResponseWritable = zNoticeWritable;
+export const zNoticeResponseWritable = zNoticeWritable.and(z.object({}));
 
 /**
  * Controllable unit - history
@@ -3718,12 +3581,10 @@ export const zControllableUnitHistoryWritable =
   );
 
 /**
- * Controllable unit History Response
- *
  * History response schema - Controllable unit
  */
 export const zControllableUnitHistoryResponseWritable =
-  zControllableUnitHistoryWritable;
+  zControllableUnitHistoryWritable.and(z.object({}));
 
 /**
  * Controllable Unit Suspension - history
@@ -3748,12 +3609,10 @@ export const zControllableUnitSuspensionHistoryWritable =
   );
 
 /**
- * Controllable Unit Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionHistoryResponseWritable =
-  zControllableUnitSuspensionHistoryWritable;
+  zControllableUnitSuspensionHistoryWritable.and(z.object({}));
 
 /**
  * Controllable Unit Suspension Comment - history
@@ -3778,12 +3637,10 @@ export const zControllableUnitSuspensionCommentHistoryWritable =
   );
 
 /**
- * Controllable Unit Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentHistoryResponseWritable =
-  zControllableUnitSuspensionCommentHistoryWritable;
+  zControllableUnitSuspensionCommentHistoryWritable.and(z.object({}));
 
 /**
  * Relation between controllable unit and service provider - history
@@ -3808,12 +3665,10 @@ export const zControllableUnitServiceProviderHistoryWritable =
   );
 
 /**
- * Relation between controllable unit and service provider History Response
- *
  * History response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderHistoryResponseWritable =
-  zControllableUnitServiceProviderHistoryWritable;
+  zControllableUnitServiceProviderHistoryWritable.and(z.object({}));
 
 /**
  * Service providing group - history
@@ -3838,12 +3693,10 @@ export const zServiceProvidingGroupHistoryWritable =
   );
 
 /**
- * Service providing group History Response
- *
  * History response schema - Group of controllable units
  */
 export const zServiceProvidingGroupHistoryResponseWritable =
-  zServiceProvidingGroupHistoryWritable;
+  zServiceProvidingGroupHistoryWritable.and(z.object({}));
 
 /**
  * Membership relation of controllable unit in service providing group - history
@@ -3868,12 +3721,10 @@ export const zServiceProvidingGroupMembershipHistoryWritable =
   );
 
 /**
- * Membership relation of controllable unit in service providing group History Response
- *
  * History response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipHistoryResponseWritable =
-  zServiceProvidingGroupMembershipHistoryWritable;
+  zServiceProvidingGroupMembershipHistoryWritable.and(z.object({}));
 
 /**
  * Grid prequalification for service providing group - history
@@ -3898,12 +3749,10 @@ export const zServiceProvidingGroupGridPrequalificationHistoryWritable =
   );
 
 /**
- * Grid prequalification for service providing group History Response
- *
  * History response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationHistoryResponseWritable =
-  zServiceProvidingGroupGridPrequalificationHistoryWritable;
+  zServiceProvidingGroupGridPrequalificationHistoryWritable.and(z.object({}));
 
 /**
  * Grid prequalification for service providing group Comment - history
@@ -3928,12 +3777,12 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
   );
 
 /**
- * Grid prequalification for service providing group Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentHistoryResponseWritable =
-  zServiceProvidingGroupGridPrequalificationCommentHistoryWritable;
+  zServiceProvidingGroupGridPrequalificationCommentHistoryWritable.and(
+    z.object({}),
+  );
 
 /**
  * Service Providing Group Grid Suspension - history
@@ -3958,12 +3807,10 @@ export const zServiceProvidingGroupGridSuspensionHistoryWritable =
   );
 
 /**
- * Service Providing Group Grid Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionHistoryResponseWritable =
-  zServiceProvidingGroupGridSuspensionHistoryWritable;
+  zServiceProvidingGroupGridSuspensionHistoryWritable.and(z.object({}));
 
 /**
  * Service Providing Group Grid Suspension Comment - history
@@ -3988,12 +3835,10 @@ export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
   );
 
 /**
- * Service Providing Group Grid Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentHistoryResponseWritable =
-  zServiceProvidingGroupGridSuspensionCommentHistoryWritable;
+  zServiceProvidingGroupGridSuspensionCommentHistoryWritable.and(z.object({}));
 
 /**
  * Party - history
@@ -4017,8 +3862,6 @@ export const zPartyHistoryWritable = zPartyResponseWritable.and(
 );
 
 /**
- * Party History Response
- *
  * History response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -4029,7 +3872,9 @@ export const zPartyHistoryWritable = zPartyResponseWritable.and(
  * * System Operator
  * * End User
  */
-export const zPartyHistoryResponseWritable = zPartyHistoryWritable;
+export const zPartyHistoryResponseWritable = zPartyHistoryWritable.and(
+  z.object({}),
+);
 
 /**
  * Party Membership - history
@@ -4054,12 +3899,10 @@ export const zPartyMembershipHistoryWritable =
   );
 
 /**
- * Party Membership History Response
- *
  * History response schema - The relation between a party and entity.
  */
 export const zPartyMembershipHistoryResponseWritable =
-  zPartyMembershipHistoryWritable;
+  zPartyMembershipHistoryWritable.and(z.object({}));
 
 /**
  * Technical Resource - history
@@ -4084,12 +3927,10 @@ export const zTechnicalResourceHistoryWritable =
   );
 
 /**
- * Technical Resource History Response
- *
  * History response schema - Technical unit being part of a controllable unit.
  */
 export const zTechnicalResourceHistoryResponseWritable =
-  zTechnicalResourceHistoryWritable;
+  zTechnicalResourceHistoryWritable.and(z.object({}));
 
 /**
  * System Operator Product Type - history
@@ -4114,12 +3955,10 @@ export const zSystemOperatorProductTypeHistoryWritable =
   );
 
 /**
- * System Operator Product Type History Response
- *
  * History response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeHistoryResponseWritable =
-  zSystemOperatorProductTypeHistoryWritable;
+  zSystemOperatorProductTypeHistoryWritable.and(z.object({}));
 
 /**
  * Service Provider Product Application - history
@@ -4144,12 +3983,10 @@ export const zServiceProviderProductApplicationHistoryWritable =
   );
 
 /**
- * Service Provider Product Application History Response
- *
  * History response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationHistoryResponseWritable =
-  zServiceProviderProductApplicationHistoryWritable;
+  zServiceProviderProductApplicationHistoryWritable.and(z.object({}));
 
 /**
  * Service Provider Product Application Comment - history
@@ -4174,12 +4011,10 @@ export const zServiceProviderProductApplicationCommentHistoryWritable =
   );
 
 /**
- * Service Provider Product Application Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentHistoryResponseWritable =
-  zServiceProviderProductApplicationCommentHistoryWritable;
+  zServiceProviderProductApplicationCommentHistoryWritable.and(z.object({}));
 
 /**
  * Service Provider Product Suspension - history
@@ -4204,12 +4039,10 @@ export const zServiceProviderProductSuspensionHistoryWritable =
   );
 
 /**
- * Service Provider Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionHistoryResponseWritable =
-  zServiceProviderProductSuspensionHistoryWritable;
+  zServiceProviderProductSuspensionHistoryWritable.and(z.object({}));
 
 /**
  * Service Provider Product Suspension Comment - history
@@ -4234,12 +4067,10 @@ export const zServiceProviderProductSuspensionCommentHistoryWritable =
   );
 
 /**
- * Service Provider Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentHistoryResponseWritable =
-  zServiceProviderProductSuspensionCommentHistoryWritable;
+  zServiceProviderProductSuspensionCommentHistoryWritable.and(z.object({}));
 
 /**
  * Service Providing Group Product Application - history
@@ -4264,12 +4095,10 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable =
   );
 
 /**
- * Service Providing Group Product Application History Response
- *
  * History response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationHistoryResponseWritable =
-  zServiceProvidingGroupProductApplicationHistoryWritable;
+  zServiceProvidingGroupProductApplicationHistoryWritable.and(z.object({}));
 
 /**
  * Service Providing Group Product Suspension - history
@@ -4294,12 +4123,10 @@ export const zServiceProvidingGroupProductSuspensionHistoryWritable =
   );
 
 /**
- * Service Providing Group Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionHistoryResponseWritable =
-  zServiceProvidingGroupProductSuspensionHistoryWritable;
+  zServiceProvidingGroupProductSuspensionHistoryWritable.and(z.object({}));
 
 /**
  * Service Providing Group Product Suspension Comment - history
@@ -4324,12 +4151,12 @@ export const zServiceProvidingGroupProductSuspensionCommentHistoryWritable =
   );
 
 /**
- * Service Providing Group Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentHistoryResponseWritable =
-  zServiceProvidingGroupProductSuspensionCommentHistoryWritable;
+  zServiceProvidingGroupProductSuspensionCommentHistoryWritable.and(
+    z.object({}),
+  );
 
 export const zReadOpenapiJsonData = z.object({
   body: z.optional(

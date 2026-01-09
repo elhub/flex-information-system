@@ -7,8 +7,8 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_provider_product_suspension import ServiceProviderProductSuspension
 from ...models.service_provider_product_suspension_create_request import ServiceProviderProductSuspensionCreateRequest
+from ...models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
 from ...types import Response
 
 
@@ -33,9 +33,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     if response.status_code == 201:
-        response_201 = ServiceProviderProductSuspension.from_dict(response.json())
+        response_201 = ServiceProviderProductSuspensionResponse.from_dict(response.json())
 
         return response_201
 
@@ -98,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -111,7 +111,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductSuspensionCreateRequest,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Create Service Provider Product Suspension
 
     Args:
@@ -124,7 +124,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -142,7 +142,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductSuspensionCreateRequest,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Create Service Provider Product Suspension
 
     Args:
@@ -155,7 +155,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse
     """
 
     return sync_detailed(
@@ -168,7 +168,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductSuspensionCreateRequest,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Create Service Provider Product Suspension
 
     Args:
@@ -181,7 +181,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -197,7 +197,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProviderProductSuspensionCreateRequest,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Create Service Provider Product Suspension
 
     Args:
@@ -210,7 +210,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspension
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse
     """
 
     return (

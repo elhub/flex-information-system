@@ -10,8 +10,8 @@ from ...models.error_message import ErrorMessage
 from ...models.list_service_providing_group_grid_prequalification_comment_history_prefer import (
     ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer,
 )
-from ...models.service_providing_group_grid_prequalification_comment_history import (
-    ServiceProvidingGroupGridPrequalificationCommentHistory,
+from ...models.service_providing_group_grid_prequalification_comment_history_response import (
+    ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
 )
 from ...types import UNSET, Response, Unset
 
@@ -71,12 +71,18 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory] | None:
+) -> (
+    EmptyObject
+    | ErrorMessage
+    | ErrorMessage
+    | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    | None
+):
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ServiceProvidingGroupGridPrequalificationCommentHistory.from_dict(
+            response_200_item = ServiceProvidingGroupGridPrequalificationCommentHistoryResponse.from_dict(
                 response_200_item_data
             )
 
@@ -88,7 +94,7 @@ def _parse_response(
         response_206 = []
         _response_206 = response.json()
         for response_206_item_data in _response_206:
-            response_206_item = ServiceProvidingGroupGridPrequalificationCommentHistory.from_dict(
+            response_206_item = ServiceProvidingGroupGridPrequalificationCommentHistoryResponse.from_dict(
                 response_206_item_data
             )
 
@@ -156,7 +162,7 @@ def _parse_response(
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory]
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
 ]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -180,7 +186,7 @@ def sync_detailed(
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer | Unset = UNSET,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory]
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
 ]:
     """List Grid prequalification for service providing group Comment - history
 
@@ -201,7 +207,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -237,7 +243,13 @@ def sync(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory] | None:
+) -> (
+    EmptyObject
+    | ErrorMessage
+    | ErrorMessage
+    | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    | None
+):
     """List Grid prequalification for service providing group Comment - history
 
     Args:
@@ -257,7 +269,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
     """
 
     return sync_detailed(
@@ -289,7 +301,7 @@ async def asyncio_detailed(
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer | Unset = UNSET,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory]
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
 ]:
     """List Grid prequalification for service providing group Comment - history
 
@@ -310,7 +322,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -344,7 +356,13 @@ async def asyncio(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory] | None:
+) -> (
+    EmptyObject
+    | ErrorMessage
+    | ErrorMessage
+    | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    | None
+):
     """List Grid prequalification for service providing group Comment - history
 
     Args:
@@ -364,7 +382,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistory]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
     """
 
     return (

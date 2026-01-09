@@ -7,10 +7,10 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_product_suspension import ServiceProvidingGroupProductSuspension
 from ...models.service_providing_group_product_suspension_create_request import (
     ServiceProvidingGroupProductSuspensionCreateRequest,
 )
+from ...models.service_providing_group_product_suspension_response import ServiceProvidingGroupProductSuspensionResponse
 from ...types import Response
 
 
@@ -35,9 +35,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
     if response.status_code == 201:
-        response_201 = ServiceProvidingGroupProductSuspension.from_dict(response.json())
+        response_201 = ServiceProvidingGroupProductSuspensionResponse.from_dict(response.json())
 
         return response_201
 
@@ -100,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -113,7 +113,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCreateRequest,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
     """Create Service Providing Group Product Suspension
 
     Args:
@@ -126,7 +126,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -144,7 +144,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCreateRequest,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
     """Create Service Providing Group Product Suspension
 
     Args:
@@ -157,7 +157,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse
     """
 
     return sync_detailed(
@@ -170,7 +170,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCreateRequest,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
     """Create Service Providing Group Product Suspension
 
     Args:
@@ -183,7 +183,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -199,7 +199,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupProductSuspensionCreateRequest,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
     """Create Service Providing Group Product Suspension
 
     Args:
@@ -212,7 +212,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspension
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse
     """
 
     return (

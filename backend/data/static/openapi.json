@@ -1181,12 +1181,15 @@
             },
             "controllable_unit_response": {
                 "summary": "Response - Controllable unit",
-                "title": "Controllable unit Response",
                 "type": "object",
                 "description": "Response schema - Controllable unit",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -1279,12 +1282,15 @@
             },
             "controllable_unit_suspension_response": {
                 "summary": "Response - Controllable Unit Suspension",
-                "title": "Controllable Unit Suspension Response",
                 "type": "object",
                 "description": "Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -1405,12 +1411,15 @@
             },
             "controllable_unit_suspension_comment_response": {
                 "summary": "Response - Controllable Unit Suspension Comment",
-                "title": "Controllable Unit Suspension Comment Response",
                 "type": "object",
                 "description": "Response schema - Comment made by a party involved in a controllable unit suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension_comment"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -1573,12 +1582,15 @@
             },
             "controllable_unit_service_provider_response": {
                 "summary": "Response - Relation between controllable unit and service provider",
-                "title": "Relation between controllable unit and service provider Response",
                 "type": "object",
                 "description": "Response schema - Relation between controllable unit and service provider",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_service_provider"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -1694,12 +1706,15 @@
             },
             "service_providing_group_response": {
                 "summary": "Response - Service providing group",
-                "title": "Service providing group Response",
                 "type": "object",
                 "description": "Response schema - Group of controllable units",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -1823,12 +1838,15 @@
             },
             "service_providing_group_membership_response": {
                 "summary": "Response - Membership relation of controllable unit in service providing group",
-                "title": "Membership relation of controllable unit in service providing group Response",
                 "type": "object",
                 "description": "Response schema - Membership relation of controllable unit in service providing group",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_membership"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -1945,12 +1963,15 @@
             },
             "service_providing_group_grid_prequalification_response": {
                 "summary": "Response - Grid prequalification for service providing group",
-                "title": "Grid prequalification for service providing group Response",
                 "type": "object",
                 "description": "Response schema - Grid prequalification for service providing group",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_prequalification"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2071,12 +2092,15 @@
             },
             "service_providing_group_grid_prequalification_comment_response": {
                 "summary": "Response - Grid prequalification for service providing group Comment",
-                "title": "Grid prequalification for service providing group Comment Response",
                 "type": "object",
                 "description": "Response schema - Comment made by a party involved in a service providing group grid prequalification.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2169,12 +2193,15 @@
             },
             "service_providing_group_grid_suspension_response": {
                 "summary": "Response - Service Providing Group Grid Suspension",
-                "title": "Service Providing Group Grid Suspension Response",
                 "type": "object",
                 "description": "Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2295,12 +2322,15 @@
             },
             "service_providing_group_grid_suspension_comment_response": {
                 "summary": "Response - Service Providing Group Grid Suspension Comment",
-                "title": "Service Providing Group Grid Suspension Comment Response",
                 "type": "object",
                 "description": "Response schema - Comment made by a party involved in a service providing group grid suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2411,12 +2441,15 @@
             },
             "entity_response": {
                 "summary": "Response - Entity",
-                "title": "Entity Response",
                 "type": "object",
                 "description": "Response schema - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/entity"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2621,12 +2654,15 @@
             },
             "entity_client_response": {
                 "summary": "Response - Entity client",
-                "title": "Entity client Response",
                 "type": "object",
                 "description": "Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/entity_client"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2776,12 +2812,15 @@
             },
             "party_response": {
                 "summary": "Response - Party",
-                "title": "Party Response",
                 "type": "object",
                 "description": "Response schema - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/party"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2899,12 +2938,15 @@
             },
             "party_membership_response": {
                 "summary": "Response - Party Membership",
-                "title": "Party Membership Response",
                 "type": "object",
                 "description": "Response schema - The relation between a party and entity.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/party_membership"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -2959,12 +3001,15 @@
             },
             "identity_response": {
                 "summary": "Response - Identity",
-                "title": "Identity Response",
                 "type": "object",
                 "description": "Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/identity"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3077,12 +3122,15 @@
             },
             "technical_resource_response": {
                 "summary": "Response - Technical Resource",
-                "title": "Technical Resource Response",
                 "type": "object",
                 "description": "Response schema - Technical unit being part of a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/technical_resource"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3155,12 +3203,15 @@
             },
             "event_response": {
                 "summary": "Response - Event",
-                "title": "Event Response",
                 "type": "object",
                 "description": "Response schema - Event happening in the system.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/event"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3233,12 +3284,15 @@
             },
             "notification_response": {
                 "summary": "Response - Notification",
-                "title": "Notification Response",
                 "type": "object",
                 "description": "Response schema - Notification about an event happening in the system.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/notification"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3293,12 +3347,15 @@
             },
             "accounting_point_response": {
                 "summary": "Response - Accounting Point",
-                "title": "Accounting Point Response",
                 "type": "object",
                 "description": "Response schema - Accounting point for a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/accounting_point"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3349,12 +3406,15 @@
             },
             "accounting_point_balance_responsible_party_response": {
                 "summary": "Response - Accounting Point Balance Responsible Party",
-                "title": "Accounting Point Balance Responsible Party Response",
                 "type": "object",
                 "description": "Response schema - Relation linking a balance responsible party to an accounting point.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/accounting_point_balance_responsible_party"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3401,12 +3461,15 @@
             },
             "accounting_point_energy_supplier_response": {
                 "summary": "Response - Accounting Point Energy Supplier",
-                "title": "Accounting Point Energy Supplier Response",
                 "type": "object",
                 "description": "Response schema - Relation linking an energy supplier to an accounting point.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/accounting_point_energy_supplier"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3462,12 +3525,15 @@
             },
             "product_type_response": {
                 "summary": "Response - Product Type",
-                "title": "Product Type Response",
                 "type": "object",
                 "description": "Response schema - Product type.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/product_type"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3563,12 +3629,15 @@
             },
             "system_operator_product_type_response": {
                 "summary": "Response - System Operator Product Type",
-                "title": "System Operator Product Type Response",
                 "type": "object",
                 "description": "Response schema - Relation between a system operator and a product type they want to buy.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/system_operator_product_type"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3726,12 +3795,15 @@
             },
             "service_provider_product_application_response": {
                 "summary": "Response - Service Provider Product Application",
-                "title": "Service Provider Product Application Response",
                 "type": "object",
                 "description": "Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_application"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3852,12 +3924,15 @@
             },
             "service_provider_product_application_comment_response": {
                 "summary": "Response - Service Provider Product Application Comment",
-                "title": "Service Provider Product Application Comment Response",
                 "type": "object",
                 "description": "Response schema - Comment made by a party involved in a service provider product application.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_application_comment"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -3988,12 +4063,15 @@
             },
             "service_provider_product_suspension_response": {
                 "summary": "Response - Service Provider Product Suspension",
-                "title": "Service Provider Product Suspension Response",
                 "type": "object",
                 "description": "Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_suspension"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4114,12 +4192,15 @@
             },
             "service_provider_product_suspension_comment_response": {
                 "summary": "Response - Service Provider Product Suspension Comment",
-                "title": "Service Provider Product Suspension Comment Response",
                 "type": "object",
                 "description": "Response schema - Comment made by a party involved in a service provider product suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_suspension_comment"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4322,12 +4403,15 @@
             },
             "service_providing_group_product_application_response": {
                 "summary": "Response - Service Providing Group Product Application",
-                "title": "Service Providing Group Product Application Response",
                 "type": "object",
                 "description": "Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_product_application"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4458,12 +4542,15 @@
             },
             "service_providing_group_product_suspension_response": {
                 "summary": "Response - Service Providing Group Product Suspension",
-                "title": "Service Providing Group Product Suspension Response",
                 "type": "object",
                 "description": "Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_product_suspension"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4584,12 +4671,15 @@
             },
             "service_providing_group_product_suspension_comment_response": {
                 "summary": "Response - Service Providing Group Product Suspension Comment",
-                "title": "Service Providing Group Product Suspension Comment Response",
                 "type": "object",
                 "description": "Response schema - Comment made by a party involved in a service providing group product suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_product_suspension_comment"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4638,12 +4728,15 @@
             },
             "notice_response": {
                 "summary": "Response - Notice",
-                "title": "Notice Response",
                 "type": "object",
                 "description": "Response schema - Notice to users about various issues or actions expected from them.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/notice"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4685,12 +4778,15 @@
             },
             "controllable_unit_history_response": {
                 "summary": "History Response - Controllable unit",
-                "title": "Controllable unit History Response",
                 "type": "object",
                 "description": "History response schema - Controllable unit",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4732,12 +4828,15 @@
             },
             "controllable_unit_suspension_history_response": {
                 "summary": "History Response - Controllable Unit Suspension",
-                "title": "Controllable Unit Suspension History Response",
                 "type": "object",
                 "description": "History response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4779,12 +4878,15 @@
             },
             "controllable_unit_suspension_comment_history_response": {
                 "summary": "History Response - Controllable Unit Suspension Comment",
-                "title": "Controllable Unit Suspension Comment History Response",
                 "type": "object",
                 "description": "History response schema - Comment made by a party involved in a controllable unit suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_suspension_comment_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4826,12 +4928,15 @@
             },
             "controllable_unit_service_provider_history_response": {
                 "summary": "History Response - Relation between controllable unit and service provider",
-                "title": "Relation between controllable unit and service provider History Response",
                 "type": "object",
                 "description": "History response schema - Relation between controllable unit and service provider",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/controllable_unit_service_provider_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4873,12 +4978,15 @@
             },
             "service_providing_group_history_response": {
                 "summary": "History Response - Service providing group",
-                "title": "Service providing group History Response",
                 "type": "object",
                 "description": "History response schema - Group of controllable units",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4920,12 +5028,15 @@
             },
             "service_providing_group_membership_history_response": {
                 "summary": "History Response - Membership relation of controllable unit in service providing group",
-                "title": "Membership relation of controllable unit in service providing group History Response",
                 "type": "object",
                 "description": "History response schema - Membership relation of controllable unit in service providing group",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_membership_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -4967,12 +5078,15 @@
             },
             "service_providing_group_grid_prequalification_history_response": {
                 "summary": "History Response - Grid prequalification for service providing group",
-                "title": "Grid prequalification for service providing group History Response",
                 "type": "object",
                 "description": "History response schema - Grid prequalification for service providing group",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_prequalification_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5014,12 +5128,15 @@
             },
             "service_providing_group_grid_prequalification_comment_history_response": {
                 "summary": "History Response - Grid prequalification for service providing group Comment",
-                "title": "Grid prequalification for service providing group Comment History Response",
                 "type": "object",
                 "description": "History response schema - Comment made by a party involved in a service providing group grid prequalification.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5061,12 +5178,15 @@
             },
             "service_providing_group_grid_suspension_history_response": {
                 "summary": "History Response - Service Providing Group Grid Suspension",
-                "title": "Service Providing Group Grid Suspension History Response",
                 "type": "object",
                 "description": "History response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5108,12 +5228,15 @@
             },
             "service_providing_group_grid_suspension_comment_history_response": {
                 "summary": "History Response - Service Providing Group Grid Suspension Comment",
-                "title": "Service Providing Group Grid Suspension Comment History Response",
                 "type": "object",
                 "description": "History response schema - Comment made by a party involved in a service providing group grid suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5155,12 +5278,15 @@
             },
             "party_history_response": {
                 "summary": "History Response - Party",
-                "title": "Party History Response",
                 "type": "object",
                 "description": "History response schema - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/party_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5202,12 +5328,15 @@
             },
             "party_membership_history_response": {
                 "summary": "History Response - Party Membership",
-                "title": "Party Membership History Response",
                 "type": "object",
                 "description": "History response schema - The relation between a party and entity.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/party_membership_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5249,12 +5378,15 @@
             },
             "technical_resource_history_response": {
                 "summary": "History Response - Technical Resource",
-                "title": "Technical Resource History Response",
                 "type": "object",
                 "description": "History response schema - Technical unit being part of a controllable unit.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/technical_resource_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5296,12 +5428,15 @@
             },
             "system_operator_product_type_history_response": {
                 "summary": "History Response - System Operator Product Type",
-                "title": "System Operator Product Type History Response",
                 "type": "object",
                 "description": "History response schema - Relation between a system operator and a product type they want to buy.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/system_operator_product_type_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5343,12 +5478,15 @@
             },
             "service_provider_product_application_history_response": {
                 "summary": "History Response - Service Provider Product Application",
-                "title": "Service Provider Product Application History Response",
                 "type": "object",
                 "description": "History response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_application_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5390,12 +5528,15 @@
             },
             "service_provider_product_application_comment_history_response": {
                 "summary": "History Response - Service Provider Product Application Comment",
-                "title": "Service Provider Product Application Comment History Response",
                 "type": "object",
                 "description": "History response schema - Comment made by a party involved in a service provider product application.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_application_comment_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5437,12 +5578,15 @@
             },
             "service_provider_product_suspension_history_response": {
                 "summary": "History Response - Service Provider Product Suspension",
-                "title": "Service Provider Product Suspension History Response",
                 "type": "object",
                 "description": "History response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_suspension_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5484,12 +5628,15 @@
             },
             "service_provider_product_suspension_comment_history_response": {
                 "summary": "History Response - Service Provider Product Suspension Comment",
-                "title": "Service Provider Product Suspension Comment History Response",
                 "type": "object",
                 "description": "History response schema - Comment made by a party involved in a service provider product suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_provider_product_suspension_comment_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5531,12 +5678,15 @@
             },
             "service_providing_group_product_application_history_response": {
                 "summary": "History Response - Service Providing Group Product Application",
-                "title": "Service Providing Group Product Application History Response",
                 "type": "object",
                 "description": "History response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_product_application_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5578,12 +5728,15 @@
             },
             "service_providing_group_product_suspension_history_response": {
                 "summary": "History Response - Service Providing Group Product Suspension",
-                "title": "Service Providing Group Product Suspension History Response",
                 "type": "object",
                 "description": "History response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_product_suspension_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             },
@@ -5625,12 +5778,15 @@
             },
             "service_providing_group_product_suspension_comment_history_response": {
                 "summary": "History Response - Service Providing Group Product Suspension Comment",
-                "title": "Service Providing Group Product Suspension Comment History Response",
                 "type": "object",
                 "description": "History response schema - Comment made by a party involved in a service providing group product suspension.",
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_history"
+                    },
+                    {
+                        "type": "object",
+                        "additionalProperties": false
                     }
                 ]
             }

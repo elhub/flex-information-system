@@ -7,7 +7,9 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_provider_product_application_comment import ServiceProviderProductApplicationComment
+from ...models.service_provider_product_application_comment_response import (
+    ServiceProviderProductApplicationCommentResponse,
+)
 from ...types import Response
 
 
@@ -24,9 +26,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     if response.status_code == 200:
-        response_200 = ServiceProviderProductApplicationComment.from_dict(response.json())
+        response_200 = ServiceProviderProductApplicationCommentResponse.from_dict(response.json())
 
         return response_200
 
@@ -84,7 +86,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,7 +99,7 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Read Service Provider Product Application Comment
 
     Args:
@@ -108,7 +110,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]
     """
 
     kwargs = _get_kwargs(
@@ -126,7 +128,7 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Read Service Provider Product Application Comment
 
     Args:
@@ -137,7 +139,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse
     """
 
     return sync_detailed(
@@ -150,7 +152,7 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Read Service Provider Product Application Comment
 
     Args:
@@ -161,7 +163,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]
     """
 
     kwargs = _get_kwargs(
@@ -177,7 +179,7 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Read Service Provider Product Application Comment
 
     Args:
@@ -188,7 +190,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationComment
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse
     """
 
     return (

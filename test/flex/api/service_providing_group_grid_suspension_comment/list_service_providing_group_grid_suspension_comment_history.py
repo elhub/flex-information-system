@@ -10,8 +10,8 @@ from ...models.error_message import ErrorMessage
 from ...models.list_service_providing_group_grid_suspension_comment_history_prefer import (
     ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer,
 )
-from ...models.service_providing_group_grid_suspension_comment_history import (
-    ServiceProvidingGroupGridSuspensionCommentHistory,
+from ...models.service_providing_group_grid_suspension_comment_history_response import (
+    ServiceProvidingGroupGridSuspensionCommentHistoryResponse,
 )
 from ...types import UNSET, Response, Unset
 
@@ -69,12 +69,14 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ServiceProvidingGroupGridSuspensionCommentHistory.from_dict(response_200_item_data)
+            response_200_item = ServiceProvidingGroupGridSuspensionCommentHistoryResponse.from_dict(
+                response_200_item_data
+            )
 
             response_200.append(response_200_item)
 
@@ -84,7 +86,9 @@ def _parse_response(
         response_206 = []
         _response_206 = response.json()
         for response_206_item_data in _response_206:
-            response_206_item = ServiceProvidingGroupGridSuspensionCommentHistory.from_dict(response_206_item_data)
+            response_206_item = ServiceProvidingGroupGridSuspensionCommentHistoryResponse.from_dict(
+                response_206_item_data
+            )
 
             response_206.append(response_206_item)
 
@@ -149,7 +153,9 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory]]:
+) -> Response[
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
+]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -171,7 +177,9 @@ def sync_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory]]:
+) -> Response[
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
+]:
     """List Service Providing Group Grid Suspension Comment - history
 
     Args:
@@ -191,7 +199,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -227,7 +235,7 @@ def sync(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
 
     Args:
@@ -247,7 +255,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
     """
 
     return sync_detailed(
@@ -278,7 +286,9 @@ async def asyncio_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory]]:
+) -> Response[
+    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
+]:
     """List Service Providing Group Grid Suspension Comment - history
 
     Args:
@@ -298,7 +308,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -332,7 +342,7 @@ async def asyncio(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridSuspensionCommentHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
 
     Args:
@@ -352,7 +362,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistory]
+        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
     """
 
     return (

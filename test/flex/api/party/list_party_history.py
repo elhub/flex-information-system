@@ -8,7 +8,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...models.list_party_history_prefer import ListPartyHistoryPrefer
-from ...models.party_history import PartyHistory
+from ...models.party_history_response import PartyHistoryResponse
 from ...types import UNSET, Response, Unset
 
 
@@ -74,12 +74,12 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = PartyHistory.from_dict(response_200_item_data)
+            response_200_item = PartyHistoryResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
@@ -89,7 +89,7 @@ def _parse_response(
         response_206 = []
         _response_206 = response.json()
         for response_206_item_data in _response_206:
-            response_206_item = PartyHistory.from_dict(response_206_item_data)
+            response_206_item = PartyHistoryResponse.from_dict(response_206_item_data)
 
             response_206.append(response_206_item)
 
@@ -154,7 +154,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -179,7 +179,7 @@ def sync_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListPartyHistoryPrefer | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]]:
     """List Party - history
 
     Args:
@@ -202,7 +202,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -244,7 +244,7 @@ def sync(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListPartyHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse] | None:
     """List Party - history
 
     Args:
@@ -267,7 +267,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory]
+        EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]
     """
 
     return sync_detailed(
@@ -304,7 +304,7 @@ async def asyncio_detailed(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListPartyHistoryPrefer | Unset = UNSET,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory]]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]]:
     """List Party - history
 
     Args:
@@ -327,7 +327,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -367,7 +367,7 @@ async def asyncio(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListPartyHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory] | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse] | None:
     """List Party - history
 
     Args:
@@ -390,7 +390,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistory]
+        EmptyObject | ErrorMessage | ErrorMessage | list[PartyHistoryResponse]
     """
 
     return (

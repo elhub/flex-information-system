@@ -5,7 +5,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.controllable_unit_service_provider import ControllableUnitServiceProvider
+from ...models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
 from ...models.controllable_unit_service_provider_update_request import ControllableUnitServiceProviderUpdateRequest
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
@@ -34,9 +34,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     if response.status_code == 200:
-        response_200 = ControllableUnitServiceProvider.from_dict(response.json())
+        response_200 = ControllableUnitServiceProviderResponse.from_dict(response.json())
 
         return response_200
 
@@ -98,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -112,7 +112,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Response[Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -125,7 +125,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -145,7 +145,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -158,7 +158,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage
+        Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return sync_detailed(
@@ -173,7 +173,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Response[Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -186,7 +186,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -204,7 +204,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -217,7 +217,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage
+        Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return (

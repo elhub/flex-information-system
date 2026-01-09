@@ -581,11 +581,11 @@ def generate_openapi_document(base_file, resources_file, servers_file):
         schemas[resource["id"]] = data_schema
         schemas[f"{resource['id']}_response"] = {
             "summary": f"Response - {resource['summary']}",
-            "title": f"{resource['summary']} Response",
             "type": "object",
             "description": f"Response schema - {resource['description']}",
             "allOf": [
                 {"$ref": f"#/components/schemas/{resource['id']}"},
+                {"type": "object", "additionalProperties": False},
             ],
         }
 
@@ -598,11 +598,11 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             )
             schemas[f"{resource['id']}_history_response"] = {
                 "summary": f"History Response - {resource['summary']}",
-                "title": f"{resource['summary']} History Response",
                 "type": "object",
                 "description": f"History response schema - {resource['description']}",
                 "allOf": [
                     {"$ref": f"#/components/schemas/{resource['id']}_history"},
+                    {"type": "object", "additionalProperties": False},
                 ],
             }
 

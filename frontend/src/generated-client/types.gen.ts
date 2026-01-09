@@ -614,11 +614,9 @@ export type ControllableUnit = {
 };
 
 /**
- * Controllable unit Response
- *
  * Response schema - Controllable unit
  */
-export type ControllableUnitResponse = ControllableUnit;
+export type ControllableUnitResponse = ControllableUnit & {};
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
@@ -670,11 +668,10 @@ export type ControllableUnitSuspension = {
 };
 
 /**
- * Controllable Unit Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export type ControllableUnitSuspensionResponse = ControllableUnitSuspension;
+export type ControllableUnitSuspensionResponse =
+  ControllableUnitSuspension & {};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a controllable unit suspension.
@@ -738,12 +735,10 @@ export type ControllableUnitSuspensionComment = {
 };
 
 /**
- * Controllable Unit Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export type ControllableUnitSuspensionCommentResponse =
-  ControllableUnitSuspensionComment;
+  ControllableUnitSuspensionComment & {};
 
 /**
  * Request schema for update operations - Relation between controllable unit and service provider
@@ -836,12 +831,10 @@ export type ControllableUnitServiceProvider = {
 };
 
 /**
- * Relation between controllable unit and service provider Response
- *
  * Response schema - Relation between controllable unit and service provider
  */
 export type ControllableUnitServiceProviderResponse =
-  ControllableUnitServiceProvider;
+  ControllableUnitServiceProvider & {};
 
 /**
  * Request schema for update operations - Group of controllable units
@@ -900,11 +893,9 @@ export type ServiceProvidingGroup = {
 };
 
 /**
- * Service providing group Response
- *
  * Response schema - Group of controllable units
  */
-export type ServiceProvidingGroupResponse = ServiceProvidingGroup;
+export type ServiceProvidingGroupResponse = ServiceProvidingGroup & {};
 
 /**
  * Request schema for update operations - Membership relation of controllable unit in service providing group
@@ -977,12 +968,10 @@ export type ServiceProvidingGroupMembership = {
 };
 
 /**
- * Membership relation of controllable unit in service providing group Response
- *
  * Response schema - Membership relation of controllable unit in service providing group
  */
 export type ServiceProvidingGroupMembershipResponse =
-  ServiceProvidingGroupMembership;
+  ServiceProvidingGroupMembership & {};
 
 /**
  * Request schema for update operations - Grid prequalification for service providing group
@@ -1046,12 +1035,10 @@ export type ServiceProvidingGroupGridPrequalification = {
 };
 
 /**
- * Grid prequalification for service providing group Response
- *
  * Response schema - Grid prequalification for service providing group
  */
 export type ServiceProvidingGroupGridPrequalificationResponse =
-  ServiceProvidingGroupGridPrequalification;
+  ServiceProvidingGroupGridPrequalification & {};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid prequalification.
@@ -1115,12 +1102,10 @@ export type ServiceProvidingGroupGridPrequalificationComment = {
 };
 
 /**
- * Grid prequalification for service providing group Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export type ServiceProvidingGroupGridPrequalificationCommentResponse =
-  ServiceProvidingGroupGridPrequalificationComment;
+  ServiceProvidingGroupGridPrequalificationComment & {};
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
@@ -1172,12 +1157,10 @@ export type ServiceProvidingGroupGridSuspension = {
 };
 
 /**
- * Service Providing Group Grid Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export type ServiceProvidingGroupGridSuspensionResponse =
-  ServiceProvidingGroupGridSuspension;
+  ServiceProvidingGroupGridSuspension & {};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid suspension.
@@ -1241,12 +1224,10 @@ export type ServiceProvidingGroupGridSuspensionComment = {
 };
 
 /**
- * Service Providing Group Grid Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export type ServiceProvidingGroupGridSuspensionCommentResponse =
-  ServiceProvidingGroupGridSuspensionComment;
+  ServiceProvidingGroupGridSuspensionComment & {};
 
 /**
  * Request schema for update operations - Entity - Natural or legal person
@@ -1329,8 +1310,6 @@ export type Entity = {
 };
 
 /**
- * Entity Response
- *
  * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
@@ -1340,7 +1319,7 @@ export type Entity = {
  * * Person
  * * Organisation
  */
-export type EntityResponse = Entity;
+export type EntityResponse = Entity & {};
 
 /**
  * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
@@ -1448,11 +1427,9 @@ export type EntityClient = {
 };
 
 /**
- * Entity client Response
- *
  * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export type EntityClientResponse = EntityClient;
+export type EntityClientResponse = EntityClient & {};
 
 /**
  * Request schema for update operations - The body that interacts with the Flexibility Information System
@@ -1549,8 +1526,6 @@ export type Party = {
 };
 
 /**
- * Party Response
- *
  * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -1561,7 +1536,7 @@ export type Party = {
  * * System Operator
  * * End User
  */
-export type PartyResponse = Party;
+export type PartyResponse = Party & {};
 
 /**
  * Request schema for update operations - The relation between a party and entity.
@@ -1622,11 +1597,9 @@ export type PartyMembership = {
 };
 
 /**
- * Party Membership Response
- *
  * Response schema - The relation between a party and entity.
  */
-export type PartyMembershipResponse = PartyMembership;
+export type PartyMembershipResponse = PartyMembership & {};
 
 /**
  * Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
@@ -1655,11 +1628,9 @@ export type Identity = {
 };
 
 /**
- * Identity Response
- *
  * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
-export type IdentityResponse = Identity;
+export type IdentityResponse = Identity & {};
 
 /**
  * Request schema for update operations - Technical unit being part of a controllable unit.
@@ -1724,11 +1695,9 @@ export type TechnicalResource = {
 };
 
 /**
- * Technical Resource Response
- *
  * Response schema - Technical unit being part of a controllable unit.
  */
-export type TechnicalResourceResponse = TechnicalResource;
+export type TechnicalResourceResponse = TechnicalResource & {};
 
 /**
  * Data schema - Event happening in the system.
@@ -1765,11 +1734,9 @@ export type Event = {
 };
 
 /**
- * Event Response
- *
  * Response schema - Event happening in the system.
  */
-export type EventResponse = Event;
+export type EventResponse = Event & {};
 
 /**
  * Request schema for update operations - Notification about an event happening in the system.
@@ -1812,11 +1779,9 @@ export type Notification = {
 };
 
 /**
- * Notification Response
- *
  * Response schema - Notification about an event happening in the system.
  */
-export type NotificationResponse = Notification;
+export type NotificationResponse = Notification & {};
 
 /**
  * Data schema - Accounting point for a controllable unit.
@@ -1845,11 +1810,9 @@ export type AccountingPoint = {
 };
 
 /**
- * Accounting Point Response
- *
  * Response schema - Accounting point for a controllable unit.
  */
-export type AccountingPointResponse = AccountingPoint;
+export type AccountingPointResponse = AccountingPoint & {};
 
 /**
  * Data schema - Relation linking a balance responsible party to an accounting point.
@@ -1875,12 +1838,10 @@ export type AccountingPointBalanceResponsibleParty = {
 };
 
 /**
- * Accounting Point Balance Responsible Party Response
- *
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export type AccountingPointBalanceResponsiblePartyResponse =
-  AccountingPointBalanceResponsibleParty;
+  AccountingPointBalanceResponsibleParty & {};
 
 /**
  * Data schema - Relation linking an energy supplier to an accounting point.
@@ -1905,12 +1866,10 @@ export type AccountingPointEnergySupplier = {
 };
 
 /**
- * Accounting Point Energy Supplier Response
- *
  * Response schema - Relation linking an energy supplier to an accounting point.
  */
 export type AccountingPointEnergySupplierResponse =
-  AccountingPointEnergySupplier;
+  AccountingPointEnergySupplier & {};
 
 /**
  * Data schema - Product type.
@@ -1939,11 +1898,9 @@ export type ProductType = {
 };
 
 /**
- * Product Type Response
- *
  * Response schema - Product type.
  */
-export type ProductTypeResponse = ProductType;
+export type ProductTypeResponse = ProductType & {};
 
 /**
  * Request schema for update operations - Relation between a system operator and a product type they want to buy.
@@ -1995,11 +1952,9 @@ export type SystemOperatorProductType = {
 };
 
 /**
- * System Operator Product Type Response
- *
  * Response schema - Relation between a system operator and a product type they want to buy.
  */
-export type SystemOperatorProductTypeResponse = SystemOperatorProductType;
+export type SystemOperatorProductTypeResponse = SystemOperatorProductType & {};
 
 /**
  * Request schema for update operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
@@ -2075,12 +2030,10 @@ export type ServiceProviderProductApplication = {
 };
 
 /**
- * Service Provider Product Application Response
- *
  * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export type ServiceProviderProductApplicationResponse =
-  ServiceProviderProductApplication;
+  ServiceProviderProductApplication & {};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product application.
@@ -2144,12 +2097,10 @@ export type ServiceProviderProductApplicationComment = {
 };
 
 /**
- * Service Provider Product Application Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product application.
  */
 export type ServiceProviderProductApplicationCommentResponse =
-  ServiceProviderProductApplicationComment;
+  ServiceProviderProductApplicationComment & {};
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
@@ -2213,12 +2164,10 @@ export type ServiceProviderProductSuspension = {
 };
 
 /**
- * Service Provider Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export type ServiceProviderProductSuspensionResponse =
-  ServiceProviderProductSuspension;
+  ServiceProviderProductSuspension & {};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product suspension.
@@ -2282,12 +2231,10 @@ export type ServiceProviderProductSuspensionComment = {
 };
 
 /**
- * Service Provider Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export type ServiceProviderProductSuspensionCommentResponse =
-  ServiceProviderProductSuspensionComment;
+  ServiceProviderProductSuspensionComment & {};
 
 /**
  * Request schema for update operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
@@ -2387,12 +2334,10 @@ export type ServiceProvidingGroupProductApplication = {
 };
 
 /**
- * Service Providing Group Product Application Response
- *
  * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export type ServiceProvidingGroupProductApplicationResponse =
-  ServiceProvidingGroupProductApplication;
+  ServiceProvidingGroupProductApplication & {};
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
@@ -2456,12 +2401,10 @@ export type ServiceProvidingGroupProductSuspension = {
 };
 
 /**
- * Service Providing Group Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export type ServiceProvidingGroupProductSuspensionResponse =
-  ServiceProvidingGroupProductSuspension;
+  ServiceProvidingGroupProductSuspension & {};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group product suspension.
@@ -2525,12 +2468,10 @@ export type ServiceProvidingGroupProductSuspensionComment = {
 };
 
 /**
- * Service Providing Group Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export type ServiceProvidingGroupProductSuspensionCommentResponse =
-  ServiceProvidingGroupProductSuspensionComment;
+  ServiceProvidingGroupProductSuspensionComment & {};
 
 /**
  * Data schema - Notice to users about various issues or actions expected from them.
@@ -2551,11 +2492,9 @@ export type Notice = {
 };
 
 /**
- * Notice Response
- *
  * Response schema - Notice to users about various issues or actions expected from them.
  */
-export type NoticeResponse = Notice;
+export type NoticeResponse = Notice & {};
 
 /**
  * Controllable unit - history
@@ -2576,11 +2515,9 @@ export type ControllableUnitHistory = ControllableUnitResponse & {
 };
 
 /**
- * Controllable unit History Response
- *
  * History response schema - Controllable unit
  */
-export type ControllableUnitHistoryResponse = ControllableUnitHistory;
+export type ControllableUnitHistoryResponse = ControllableUnitHistory & {};
 
 /**
  * Controllable Unit Suspension - history
@@ -2602,12 +2539,10 @@ export type ControllableUnitSuspensionHistory =
   };
 
 /**
- * Controllable Unit Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export type ControllableUnitSuspensionHistoryResponse =
-  ControllableUnitSuspensionHistory;
+  ControllableUnitSuspensionHistory & {};
 
 /**
  * Controllable Unit Suspension Comment - history
@@ -2629,12 +2564,10 @@ export type ControllableUnitSuspensionCommentHistory =
   };
 
 /**
- * Controllable Unit Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export type ControllableUnitSuspensionCommentHistoryResponse =
-  ControllableUnitSuspensionCommentHistory;
+  ControllableUnitSuspensionCommentHistory & {};
 
 /**
  * Relation between controllable unit and service provider - history
@@ -2656,12 +2589,10 @@ export type ControllableUnitServiceProviderHistory =
   };
 
 /**
- * Relation between controllable unit and service provider History Response
- *
  * History response schema - Relation between controllable unit and service provider
  */
 export type ControllableUnitServiceProviderHistoryResponse =
-  ControllableUnitServiceProviderHistory;
+  ControllableUnitServiceProviderHistory & {};
 
 /**
  * Service providing group - history
@@ -2682,11 +2613,10 @@ export type ServiceProvidingGroupHistory = ServiceProvidingGroupResponse & {
 };
 
 /**
- * Service providing group History Response
- *
  * History response schema - Group of controllable units
  */
-export type ServiceProvidingGroupHistoryResponse = ServiceProvidingGroupHistory;
+export type ServiceProvidingGroupHistoryResponse =
+  ServiceProvidingGroupHistory & {};
 
 /**
  * Membership relation of controllable unit in service providing group - history
@@ -2708,12 +2638,10 @@ export type ServiceProvidingGroupMembershipHistory =
   };
 
 /**
- * Membership relation of controllable unit in service providing group History Response
- *
  * History response schema - Membership relation of controllable unit in service providing group
  */
 export type ServiceProvidingGroupMembershipHistoryResponse =
-  ServiceProvidingGroupMembershipHistory;
+  ServiceProvidingGroupMembershipHistory & {};
 
 /**
  * Grid prequalification for service providing group - history
@@ -2735,12 +2663,10 @@ export type ServiceProvidingGroupGridPrequalificationHistory =
   };
 
 /**
- * Grid prequalification for service providing group History Response
- *
  * History response schema - Grid prequalification for service providing group
  */
 export type ServiceProvidingGroupGridPrequalificationHistoryResponse =
-  ServiceProvidingGroupGridPrequalificationHistory;
+  ServiceProvidingGroupGridPrequalificationHistory & {};
 
 /**
  * Grid prequalification for service providing group Comment - history
@@ -2762,12 +2688,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistory =
   };
 
 /**
- * Grid prequalification for service providing group Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export type ServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
-  ServiceProvidingGroupGridPrequalificationCommentHistory;
+  ServiceProvidingGroupGridPrequalificationCommentHistory & {};
 
 /**
  * Service Providing Group Grid Suspension - history
@@ -2789,12 +2713,10 @@ export type ServiceProvidingGroupGridSuspensionHistory =
   };
 
 /**
- * Service Providing Group Grid Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export type ServiceProvidingGroupGridSuspensionHistoryResponse =
-  ServiceProvidingGroupGridSuspensionHistory;
+  ServiceProvidingGroupGridSuspensionHistory & {};
 
 /**
  * Service Providing Group Grid Suspension Comment - history
@@ -2816,12 +2738,10 @@ export type ServiceProvidingGroupGridSuspensionCommentHistory =
   };
 
 /**
- * Service Providing Group Grid Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export type ServiceProvidingGroupGridSuspensionCommentHistoryResponse =
-  ServiceProvidingGroupGridSuspensionCommentHistory;
+  ServiceProvidingGroupGridSuspensionCommentHistory & {};
 
 /**
  * Party - history
@@ -2842,8 +2762,6 @@ export type PartyHistory = PartyResponse & {
 };
 
 /**
- * Party History Response
- *
  * History response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -2854,7 +2772,7 @@ export type PartyHistory = PartyResponse & {
  * * System Operator
  * * End User
  */
-export type PartyHistoryResponse = PartyHistory;
+export type PartyHistoryResponse = PartyHistory & {};
 
 /**
  * Party Membership - history
@@ -2875,11 +2793,9 @@ export type PartyMembershipHistory = PartyMembershipResponse & {
 };
 
 /**
- * Party Membership History Response
- *
  * History response schema - The relation between a party and entity.
  */
-export type PartyMembershipHistoryResponse = PartyMembershipHistory;
+export type PartyMembershipHistoryResponse = PartyMembershipHistory & {};
 
 /**
  * Technical Resource - history
@@ -2900,11 +2816,9 @@ export type TechnicalResourceHistory = TechnicalResourceResponse & {
 };
 
 /**
- * Technical Resource History Response
- *
  * History response schema - Technical unit being part of a controllable unit.
  */
-export type TechnicalResourceHistoryResponse = TechnicalResourceHistory;
+export type TechnicalResourceHistoryResponse = TechnicalResourceHistory & {};
 
 /**
  * System Operator Product Type - history
@@ -2926,12 +2840,10 @@ export type SystemOperatorProductTypeHistory =
   };
 
 /**
- * System Operator Product Type History Response
- *
  * History response schema - Relation between a system operator and a product type they want to buy.
  */
 export type SystemOperatorProductTypeHistoryResponse =
-  SystemOperatorProductTypeHistory;
+  SystemOperatorProductTypeHistory & {};
 
 /**
  * Service Provider Product Application - history
@@ -2953,12 +2865,10 @@ export type ServiceProviderProductApplicationHistory =
   };
 
 /**
- * Service Provider Product Application History Response
- *
  * History response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export type ServiceProviderProductApplicationHistoryResponse =
-  ServiceProviderProductApplicationHistory;
+  ServiceProviderProductApplicationHistory & {};
 
 /**
  * Service Provider Product Application Comment - history
@@ -2980,12 +2890,10 @@ export type ServiceProviderProductApplicationCommentHistory =
   };
 
 /**
- * Service Provider Product Application Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product application.
  */
 export type ServiceProviderProductApplicationCommentHistoryResponse =
-  ServiceProviderProductApplicationCommentHistory;
+  ServiceProviderProductApplicationCommentHistory & {};
 
 /**
  * Service Provider Product Suspension - history
@@ -3007,12 +2915,10 @@ export type ServiceProviderProductSuspensionHistory =
   };
 
 /**
- * Service Provider Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export type ServiceProviderProductSuspensionHistoryResponse =
-  ServiceProviderProductSuspensionHistory;
+  ServiceProviderProductSuspensionHistory & {};
 
 /**
  * Service Provider Product Suspension Comment - history
@@ -3034,12 +2940,10 @@ export type ServiceProviderProductSuspensionCommentHistory =
   };
 
 /**
- * Service Provider Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product suspension.
  */
 export type ServiceProviderProductSuspensionCommentHistoryResponse =
-  ServiceProviderProductSuspensionCommentHistory;
+  ServiceProviderProductSuspensionCommentHistory & {};
 
 /**
  * Service Providing Group Product Application - history
@@ -3061,12 +2965,10 @@ export type ServiceProvidingGroupProductApplicationHistory =
   };
 
 /**
- * Service Providing Group Product Application History Response
- *
  * History response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export type ServiceProvidingGroupProductApplicationHistoryResponse =
-  ServiceProvidingGroupProductApplicationHistory;
+  ServiceProvidingGroupProductApplicationHistory & {};
 
 /**
  * Service Providing Group Product Suspension - history
@@ -3088,12 +2990,10 @@ export type ServiceProvidingGroupProductSuspensionHistory =
   };
 
 /**
- * Service Providing Group Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export type ServiceProvidingGroupProductSuspensionHistoryResponse =
-  ServiceProvidingGroupProductSuspensionHistory;
+  ServiceProvidingGroupProductSuspensionHistory & {};
 
 /**
  * Service Providing Group Product Suspension Comment - history
@@ -3115,12 +3015,10 @@ export type ServiceProvidingGroupProductSuspensionCommentHistory =
   };
 
 /**
- * Service Providing Group Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export type ServiceProvidingGroupProductSuspensionCommentHistoryResponse =
-  ServiceProvidingGroupProductSuspensionCommentHistory;
+  ServiceProvidingGroupProductSuspensionCommentHistory & {};
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.missing
@@ -3217,11 +3115,9 @@ export type ControllableUnitWritable = {
 };
 
 /**
- * Controllable unit Response
- *
  * Response schema - Controllable unit
  */
-export type ControllableUnitResponseWritable = ControllableUnitWritable;
+export type ControllableUnitResponseWritable = ControllableUnitWritable & {};
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
@@ -3239,12 +3135,10 @@ export type ControllableUnitSuspensionWritable = {
 };
 
 /**
- * Controllable Unit Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export type ControllableUnitSuspensionResponseWritable =
-  ControllableUnitSuspensionWritable;
+  ControllableUnitSuspensionWritable & {};
 
 /**
  * Data schema - Comment made by a party involved in a controllable unit suspension.
@@ -3262,12 +3156,10 @@ export type ControllableUnitSuspensionCommentWritable = {
 };
 
 /**
- * Controllable Unit Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export type ControllableUnitSuspensionCommentResponseWritable =
-  ControllableUnitSuspensionCommentWritable;
+  ControllableUnitSuspensionCommentWritable & {};
 
 /**
  * Data schema - Relation between controllable unit and service provider
@@ -3300,12 +3192,10 @@ export type ControllableUnitServiceProviderWritable = {
 };
 
 /**
- * Relation between controllable unit and service provider Response
- *
  * Response schema - Relation between controllable unit and service provider
  */
 export type ControllableUnitServiceProviderResponseWritable =
-  ControllableUnitServiceProviderWritable;
+  ControllableUnitServiceProviderWritable & {};
 
 /**
  * Data schema - Group of controllable units
@@ -3324,12 +3214,10 @@ export type ServiceProvidingGroupWritable = {
 };
 
 /**
- * Service providing group Response
- *
  * Response schema - Group of controllable units
  */
 export type ServiceProvidingGroupResponseWritable =
-  ServiceProvidingGroupWritable;
+  ServiceProvidingGroupWritable & {};
 
 /**
  * Data schema - Membership relation of controllable unit in service providing group
@@ -3354,12 +3242,10 @@ export type ServiceProvidingGroupMembershipWritable = {
 };
 
 /**
- * Membership relation of controllable unit in service providing group Response
- *
  * Response schema - Membership relation of controllable unit in service providing group
  */
 export type ServiceProvidingGroupMembershipResponseWritable =
-  ServiceProvidingGroupMembershipWritable;
+  ServiceProvidingGroupMembershipWritable & {};
 
 /**
  * Data schema - Grid prequalification for service providing group
@@ -3381,12 +3267,10 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
 };
 
 /**
- * Grid prequalification for service providing group Response
- *
  * Response schema - Grid prequalification for service providing group
  */
 export type ServiceProvidingGroupGridPrequalificationResponseWritable =
-  ServiceProvidingGroupGridPrequalificationWritable;
+  ServiceProvidingGroupGridPrequalificationWritable & {};
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid prequalification.
@@ -3404,12 +3288,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentWritable = {
 };
 
 /**
- * Grid prequalification for service providing group Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export type ServiceProvidingGroupGridPrequalificationCommentResponseWritable =
-  ServiceProvidingGroupGridPrequalificationCommentWritable;
+  ServiceProvidingGroupGridPrequalificationCommentWritable & {};
 
 /**
  * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
@@ -3427,12 +3309,10 @@ export type ServiceProvidingGroupGridSuspensionWritable = {
 };
 
 /**
- * Service Providing Group Grid Suspension Response
- *
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export type ServiceProvidingGroupGridSuspensionResponseWritable =
-  ServiceProvidingGroupGridSuspensionWritable;
+  ServiceProvidingGroupGridSuspensionWritable & {};
 
 /**
  * Data schema - Comment made by a party involved in a service providing group grid suspension.
@@ -3450,12 +3330,10 @@ export type ServiceProvidingGroupGridSuspensionCommentWritable = {
 };
 
 /**
- * Service Providing Group Grid Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export type ServiceProvidingGroupGridSuspensionCommentResponseWritable =
-  ServiceProvidingGroupGridSuspensionCommentWritable;
+  ServiceProvidingGroupGridSuspensionCommentWritable & {};
 
 /**
  * Data schema - Entity - Natural or legal person
@@ -3481,8 +3359,6 @@ export type EntityWritable = {
 };
 
 /**
- * Entity Response
- *
  * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
@@ -3492,7 +3368,7 @@ export type EntityWritable = {
  * * Person
  * * Organisation
  */
-export type EntityResponseWritable = EntityWritable;
+export type EntityResponseWritable = EntityWritable & {};
 
 /**
  * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
@@ -3526,11 +3402,9 @@ export type EntityClientWritable = {
 };
 
 /**
- * Entity client Response
- *
  * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export type EntityClientResponseWritable = EntityClientWritable;
+export type EntityClientResponseWritable = EntityClientWritable & {};
 
 /**
  * Data schema - The body that interacts with the Flexibility Information System
@@ -3563,8 +3437,6 @@ export type PartyWritable = {
 };
 
 /**
- * Party Response
- *
  * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -3575,7 +3447,7 @@ export type PartyWritable = {
  * * System Operator
  * * End User
  */
-export type PartyResponseWritable = PartyWritable;
+export type PartyResponseWritable = PartyWritable & {};
 
 /**
  * Data schema - The relation between a party and entity.
@@ -3596,11 +3468,9 @@ export type PartyMembershipWritable = {
 };
 
 /**
- * Party Membership Response
- *
  * Response schema - The relation between a party and entity.
  */
-export type PartyMembershipResponseWritable = PartyMembershipWritable;
+export type PartyMembershipResponseWritable = PartyMembershipWritable & {};
 
 /**
  * Data schema - Technical unit being part of a controllable unit.
@@ -3621,11 +3491,9 @@ export type TechnicalResourceWritable = {
 };
 
 /**
- * Technical Resource Response
- *
  * Response schema - Technical unit being part of a controllable unit.
  */
-export type TechnicalResourceResponseWritable = TechnicalResourceWritable;
+export type TechnicalResourceResponseWritable = TechnicalResourceWritable & {};
 
 /**
  * Data schema - Notification about an event happening in the system.
@@ -3646,11 +3514,9 @@ export type NotificationWritable = {
 };
 
 /**
- * Notification Response
- *
  * Response schema - Notification about an event happening in the system.
  */
-export type NotificationResponseWritable = NotificationWritable;
+export type NotificationResponseWritable = NotificationWritable & {};
 
 /**
  * Data schema - Relation linking a balance responsible party to an accounting point.
@@ -3660,12 +3526,10 @@ export type AccountingPointBalanceResponsiblePartyWritable = {
 };
 
 /**
- * Accounting Point Balance Responsible Party Response
- *
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export type AccountingPointBalanceResponsiblePartyResponseWritable =
-  AccountingPointBalanceResponsiblePartyWritable;
+  AccountingPointBalanceResponsiblePartyWritable & {};
 
 /**
  * Data schema - Relation between a system operator and a product type they want to buy.
@@ -3683,12 +3547,10 @@ export type SystemOperatorProductTypeWritable = {
 };
 
 /**
- * System Operator Product Type Response
- *
  * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export type SystemOperatorProductTypeResponseWritable =
-  SystemOperatorProductTypeWritable;
+  SystemOperatorProductTypeWritable & {};
 
 /**
  * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
@@ -3714,12 +3576,10 @@ export type ServiceProviderProductApplicationWritable = {
 };
 
 /**
- * Service Provider Product Application Response
- *
  * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export type ServiceProviderProductApplicationResponseWritable =
-  ServiceProviderProductApplicationWritable;
+  ServiceProviderProductApplicationWritable & {};
 
 /**
  * Data schema - Comment made by a party involved in a service provider product application.
@@ -3737,12 +3597,10 @@ export type ServiceProviderProductApplicationCommentWritable = {
 };
 
 /**
- * Service Provider Product Application Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product application.
  */
 export type ServiceProviderProductApplicationCommentResponseWritable =
-  ServiceProviderProductApplicationCommentWritable;
+  ServiceProviderProductApplicationCommentWritable & {};
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
@@ -3764,12 +3622,10 @@ export type ServiceProviderProductSuspensionWritable = {
 };
 
 /**
- * Service Provider Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export type ServiceProviderProductSuspensionResponseWritable =
-  ServiceProviderProductSuspensionWritable;
+  ServiceProviderProductSuspensionWritable & {};
 
 /**
  * Data schema - Comment made by a party involved in a service provider product suspension.
@@ -3787,12 +3643,10 @@ export type ServiceProviderProductSuspensionCommentWritable = {
 };
 
 /**
- * Service Provider Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export type ServiceProviderProductSuspensionCommentResponseWritable =
-  ServiceProviderProductSuspensionCommentWritable;
+  ServiceProviderProductSuspensionCommentWritable & {};
 
 /**
  * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
@@ -3826,12 +3680,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
 };
 
 /**
- * Service Providing Group Product Application Response
- *
  * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export type ServiceProvidingGroupProductApplicationResponseWritable =
-  ServiceProvidingGroupProductApplicationWritable;
+  ServiceProvidingGroupProductApplicationWritable & {};
 
 /**
  * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
@@ -3853,12 +3705,10 @@ export type ServiceProvidingGroupProductSuspensionWritable = {
 };
 
 /**
- * Service Providing Group Product Suspension Response
- *
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export type ServiceProvidingGroupProductSuspensionResponseWritable =
-  ServiceProvidingGroupProductSuspensionWritable;
+  ServiceProvidingGroupProductSuspensionWritable & {};
 
 /**
  * Data schema - Comment made by a party involved in a service providing group product suspension.
@@ -3876,12 +3726,10 @@ export type ServiceProvidingGroupProductSuspensionCommentWritable = {
 };
 
 /**
- * Service Providing Group Product Suspension Comment Response
- *
  * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export type ServiceProvidingGroupProductSuspensionCommentResponseWritable =
-  ServiceProvidingGroupProductSuspensionCommentWritable;
+  ServiceProvidingGroupProductSuspensionCommentWritable & {};
 
 /**
  * Data schema - Notice to users about various issues or actions expected from them.
@@ -3891,11 +3739,9 @@ export type NoticeWritable = {
 };
 
 /**
- * Notice Response
- *
  * Response schema - Notice to users about various issues or actions expected from them.
  */
-export type NoticeResponseWritable = NoticeWritable;
+export type NoticeResponseWritable = NoticeWritable & {};
 
 /**
  * Controllable unit - history
@@ -3917,12 +3763,10 @@ export type ControllableUnitHistoryWritable =
   };
 
 /**
- * Controllable unit History Response
- *
  * History response schema - Controllable unit
  */
 export type ControllableUnitHistoryResponseWritable =
-  ControllableUnitHistoryWritable;
+  ControllableUnitHistoryWritable & {};
 
 /**
  * Controllable Unit Suspension - history
@@ -3944,12 +3788,10 @@ export type ControllableUnitSuspensionHistoryWritable =
   };
 
 /**
- * Controllable Unit Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export type ControllableUnitSuspensionHistoryResponseWritable =
-  ControllableUnitSuspensionHistoryWritable;
+  ControllableUnitSuspensionHistoryWritable & {};
 
 /**
  * Controllable Unit Suspension Comment - history
@@ -3971,12 +3813,10 @@ export type ControllableUnitSuspensionCommentHistoryWritable =
   };
 
 /**
- * Controllable Unit Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export type ControllableUnitSuspensionCommentHistoryResponseWritable =
-  ControllableUnitSuspensionCommentHistoryWritable;
+  ControllableUnitSuspensionCommentHistoryWritable & {};
 
 /**
  * Relation between controllable unit and service provider - history
@@ -3998,12 +3838,10 @@ export type ControllableUnitServiceProviderHistoryWritable =
   };
 
 /**
- * Relation between controllable unit and service provider History Response
- *
  * History response schema - Relation between controllable unit and service provider
  */
 export type ControllableUnitServiceProviderHistoryResponseWritable =
-  ControllableUnitServiceProviderHistoryWritable;
+  ControllableUnitServiceProviderHistoryWritable & {};
 
 /**
  * Service providing group - history
@@ -4025,12 +3863,10 @@ export type ServiceProvidingGroupHistoryWritable =
   };
 
 /**
- * Service providing group History Response
- *
  * History response schema - Group of controllable units
  */
 export type ServiceProvidingGroupHistoryResponseWritable =
-  ServiceProvidingGroupHistoryWritable;
+  ServiceProvidingGroupHistoryWritable & {};
 
 /**
  * Membership relation of controllable unit in service providing group - history
@@ -4052,12 +3888,10 @@ export type ServiceProvidingGroupMembershipHistoryWritable =
   };
 
 /**
- * Membership relation of controllable unit in service providing group History Response
- *
  * History response schema - Membership relation of controllable unit in service providing group
  */
 export type ServiceProvidingGroupMembershipHistoryResponseWritable =
-  ServiceProvidingGroupMembershipHistoryWritable;
+  ServiceProvidingGroupMembershipHistoryWritable & {};
 
 /**
  * Grid prequalification for service providing group - history
@@ -4079,12 +3913,10 @@ export type ServiceProvidingGroupGridPrequalificationHistoryWritable =
   };
 
 /**
- * Grid prequalification for service providing group History Response
- *
  * History response schema - Grid prequalification for service providing group
  */
 export type ServiceProvidingGroupGridPrequalificationHistoryResponseWritable =
-  ServiceProvidingGroupGridPrequalificationHistoryWritable;
+  ServiceProvidingGroupGridPrequalificationHistoryWritable & {};
 
 /**
  * Grid prequalification for service providing group Comment - history
@@ -4106,12 +3938,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
   };
 
 /**
- * Grid prequalification for service providing group Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export type ServiceProvidingGroupGridPrequalificationCommentHistoryResponseWritable =
-  ServiceProvidingGroupGridPrequalificationCommentHistoryWritable;
+  ServiceProvidingGroupGridPrequalificationCommentHistoryWritable & {};
 
 /**
  * Service Providing Group Grid Suspension - history
@@ -4133,12 +3963,10 @@ export type ServiceProvidingGroupGridSuspensionHistoryWritable =
   };
 
 /**
- * Service Providing Group Grid Suspension History Response
- *
  * History response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export type ServiceProvidingGroupGridSuspensionHistoryResponseWritable =
-  ServiceProvidingGroupGridSuspensionHistoryWritable;
+  ServiceProvidingGroupGridSuspensionHistoryWritable & {};
 
 /**
  * Service Providing Group Grid Suspension Comment - history
@@ -4160,12 +3988,10 @@ export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable =
   };
 
 /**
- * Service Providing Group Grid Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export type ServiceProvidingGroupGridSuspensionCommentHistoryResponseWritable =
-  ServiceProvidingGroupGridSuspensionCommentHistoryWritable;
+  ServiceProvidingGroupGridSuspensionCommentHistoryWritable & {};
 
 /**
  * Party - history
@@ -4186,8 +4012,6 @@ export type PartyHistoryWritable = PartyResponseWritable & {
 };
 
 /**
- * Party History Response
- *
  * History response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -4198,7 +4022,7 @@ export type PartyHistoryWritable = PartyResponseWritable & {
  * * System Operator
  * * End User
  */
-export type PartyHistoryResponseWritable = PartyHistoryWritable;
+export type PartyHistoryResponseWritable = PartyHistoryWritable & {};
 
 /**
  * Party Membership - history
@@ -4219,12 +4043,10 @@ export type PartyMembershipHistoryWritable = PartyMembershipResponseWritable & {
 };
 
 /**
- * Party Membership History Response
- *
  * History response schema - The relation between a party and entity.
  */
 export type PartyMembershipHistoryResponseWritable =
-  PartyMembershipHistoryWritable;
+  PartyMembershipHistoryWritable & {};
 
 /**
  * Technical Resource - history
@@ -4246,12 +4068,10 @@ export type TechnicalResourceHistoryWritable =
   };
 
 /**
- * Technical Resource History Response
- *
  * History response schema - Technical unit being part of a controllable unit.
  */
 export type TechnicalResourceHistoryResponseWritable =
-  TechnicalResourceHistoryWritable;
+  TechnicalResourceHistoryWritable & {};
 
 /**
  * System Operator Product Type - history
@@ -4273,12 +4093,10 @@ export type SystemOperatorProductTypeHistoryWritable =
   };
 
 /**
- * System Operator Product Type History Response
- *
  * History response schema - Relation between a system operator and a product type they want to buy.
  */
 export type SystemOperatorProductTypeHistoryResponseWritable =
-  SystemOperatorProductTypeHistoryWritable;
+  SystemOperatorProductTypeHistoryWritable & {};
 
 /**
  * Service Provider Product Application - history
@@ -4300,12 +4118,10 @@ export type ServiceProviderProductApplicationHistoryWritable =
   };
 
 /**
- * Service Provider Product Application History Response
- *
  * History response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export type ServiceProviderProductApplicationHistoryResponseWritable =
-  ServiceProviderProductApplicationHistoryWritable;
+  ServiceProviderProductApplicationHistoryWritable & {};
 
 /**
  * Service Provider Product Application Comment - history
@@ -4327,12 +4143,10 @@ export type ServiceProviderProductApplicationCommentHistoryWritable =
   };
 
 /**
- * Service Provider Product Application Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product application.
  */
 export type ServiceProviderProductApplicationCommentHistoryResponseWritable =
-  ServiceProviderProductApplicationCommentHistoryWritable;
+  ServiceProviderProductApplicationCommentHistoryWritable & {};
 
 /**
  * Service Provider Product Suspension - history
@@ -4354,12 +4168,10 @@ export type ServiceProviderProductSuspensionHistoryWritable =
   };
 
 /**
- * Service Provider Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export type ServiceProviderProductSuspensionHistoryResponseWritable =
-  ServiceProviderProductSuspensionHistoryWritable;
+  ServiceProviderProductSuspensionHistoryWritable & {};
 
 /**
  * Service Provider Product Suspension Comment - history
@@ -4381,12 +4193,10 @@ export type ServiceProviderProductSuspensionCommentHistoryWritable =
   };
 
 /**
- * Service Provider Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service provider product suspension.
  */
 export type ServiceProviderProductSuspensionCommentHistoryResponseWritable =
-  ServiceProviderProductSuspensionCommentHistoryWritable;
+  ServiceProviderProductSuspensionCommentHistoryWritable & {};
 
 /**
  * Service Providing Group Product Application - history
@@ -4408,12 +4218,10 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable =
   };
 
 /**
- * Service Providing Group Product Application History Response
- *
  * History response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export type ServiceProvidingGroupProductApplicationHistoryResponseWritable =
-  ServiceProvidingGroupProductApplicationHistoryWritable;
+  ServiceProvidingGroupProductApplicationHistoryWritable & {};
 
 /**
  * Service Providing Group Product Suspension - history
@@ -4435,12 +4243,10 @@ export type ServiceProvidingGroupProductSuspensionHistoryWritable =
   };
 
 /**
- * Service Providing Group Product Suspension History Response
- *
  * History response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export type ServiceProvidingGroupProductSuspensionHistoryResponseWritable =
-  ServiceProvidingGroupProductSuspensionHistoryWritable;
+  ServiceProvidingGroupProductSuspensionHistoryWritable & {};
 
 /**
  * Service Providing Group Product Suspension Comment - history
@@ -4462,12 +4268,10 @@ export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable =
   };
 
 /**
- * Service Providing Group Product Suspension Comment History Response
- *
  * History response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export type ServiceProvidingGroupProductSuspensionCommentHistoryResponseWritable =
-  ServiceProvidingGroupProductSuspensionCommentHistoryWritable;
+  ServiceProvidingGroupProductSuspensionCommentHistoryWritable & {};
 
 export type ReadOpenapiJsonData = {
   body?: never;

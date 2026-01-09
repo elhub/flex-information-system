@@ -5,7 +5,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.controllable_unit_service_provider import ControllableUnitServiceProvider
+from ...models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...types import Response
@@ -24,9 +24,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     if response.status_code == 200:
-        response_200 = ControllableUnitServiceProvider.from_dict(response.json())
+        response_200 = ControllableUnitServiceProviderResponse.from_dict(response.json())
 
         return response_200
 
@@ -84,7 +84,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,7 +97,7 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Relation between controllable unit and service provider
 
     Args:
@@ -108,7 +108,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -126,7 +126,7 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Relation between controllable unit and service provider
 
     Args:
@@ -137,7 +137,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage
+        ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return sync_detailed(
@@ -150,7 +150,7 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Relation between controllable unit and service provider
 
     Args:
@@ -161,7 +161,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -177,7 +177,7 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Relation between controllable unit and service provider
 
     Args:
@@ -188,7 +188,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        ControllableUnitServiceProvider | EmptyObject | ErrorMessage | ErrorMessage
+        ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage
     """
 
     return (

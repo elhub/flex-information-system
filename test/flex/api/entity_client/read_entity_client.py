@@ -6,7 +6,7 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
-from ...models.entity_client import EntityClient
+from ...models.entity_client_response import EntityClientResponse
 from ...models.error_message import ErrorMessage
 from ...types import Response
 
@@ -24,9 +24,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | EntityClient | ErrorMessage | None:
+) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     if response.status_code == 200:
-        response_200 = EntityClient.from_dict(response.json())
+        response_200 = EntityClientResponse.from_dict(response.json())
 
         return response_200
 
@@ -84,7 +84,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]:
+) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,7 +97,7 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]:
+) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Read Entity client
 
     Args:
@@ -108,7 +108,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]
+        Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -126,7 +126,7 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | EntityClient | ErrorMessage | None:
+) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Read Entity client
 
     Args:
@@ -137,7 +137,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | EntityClient | ErrorMessage
+        EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage
     """
 
     return sync_detailed(
@@ -150,7 +150,7 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]:
+) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Read Entity client
 
     Args:
@@ -161,7 +161,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | EntityClient | ErrorMessage]
+        Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]
     """
 
     kwargs = _get_kwargs(
@@ -177,7 +177,7 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | EntityClient | ErrorMessage | None:
+) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Read Entity client
 
     Args:
@@ -188,7 +188,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | EntityClient | ErrorMessage
+        EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage
     """
 
     return (

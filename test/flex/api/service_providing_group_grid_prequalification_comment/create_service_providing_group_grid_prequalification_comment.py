@@ -7,11 +7,11 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_grid_prequalification_comment import (
-    ServiceProvidingGroupGridPrequalificationComment,
-)
 from ...models.service_providing_group_grid_prequalification_comment_create_request import (
     ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
+)
+from ...models.service_providing_group_grid_prequalification_comment_response import (
+    ServiceProvidingGroupGridPrequalificationCommentResponse,
 )
 from ...types import Response
 
@@ -37,9 +37,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     if response.status_code == 201:
-        response_201 = ServiceProvidingGroupGridPrequalificationComment.from_dict(response.json())
+        response_201 = ServiceProvidingGroupGridPrequalificationCommentResponse.from_dict(response.json())
 
         return response_201
 
@@ -102,7 +102,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,7 +115,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
     """Create Grid prequalification for service providing group Comment
 
     Args:
@@ -128,7 +128,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]
     """
 
     kwargs = _get_kwargs(
@@ -146,7 +146,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Create Grid prequalification for service providing group Comment
 
     Args:
@@ -159,7 +159,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse
     """
 
     return sync_detailed(
@@ -172,7 +172,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
-) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]:
+) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
     """Create Grid prequalification for service providing group Comment
 
     Args:
@@ -185,7 +185,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]
     """
 
     kwargs = _get_kwargs(
@@ -201,7 +201,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment | None:
+) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Create Grid prequalification for service providing group Comment
 
     Args:
@@ -214,7 +214,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationComment
+        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse
     """
 
     return (

@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group import ServiceProvidingGroup
+from ...models.service_providing_group_response import ServiceProvidingGroupResponse
 from ...models.service_providing_group_update_request import ServiceProvidingGroupUpdateRequest
 from ...types import Response
 
@@ -34,9 +34,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     if response.status_code == 200:
-        response_200 = ServiceProvidingGroup.from_dict(response.json())
+        response_200 = ServiceProvidingGroupResponse.from_dict(response.json())
 
         return response_200
 
@@ -98,7 +98,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -112,7 +112,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Update Service providing group
 
     Args:
@@ -125,7 +125,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -145,7 +145,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Update Service providing group
 
     Args:
@@ -158,7 +158,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse
     """
 
     return sync_detailed(
@@ -173,7 +173,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Update Service providing group
 
     Args:
@@ -186,7 +186,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]
     """
 
     kwargs = _get_kwargs(
@@ -204,7 +204,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Update Service providing group
 
     Args:
@@ -217,7 +217,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroup
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse
     """
 
     return (

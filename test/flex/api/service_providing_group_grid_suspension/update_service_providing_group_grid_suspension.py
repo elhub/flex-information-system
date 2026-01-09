@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_grid_suspension import ServiceProvidingGroupGridSuspension
+from ...models.service_providing_group_grid_suspension_response import ServiceProvidingGroupGridSuspensionResponse
 from ...models.service_providing_group_grid_suspension_update_request import (
     ServiceProvidingGroupGridSuspensionUpdateRequest,
 )
@@ -36,9 +36,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     if response.status_code == 200:
-        response_200 = ServiceProvidingGroupGridSuspension.from_dict(response.json())
+        response_200 = ServiceProvidingGroupGridSuspensionResponse.from_dict(response.json())
 
         return response_200
 
@@ -100,7 +100,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -114,7 +114,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridSuspensionUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Update Service Providing Group Grid Suspension
 
     Args:
@@ -128,7 +128,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -148,7 +148,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridSuspensionUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Update Service Providing Group Grid Suspension
 
     Args:
@@ -162,7 +162,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse
     """
 
     return sync_detailed(
@@ -177,7 +177,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridSuspensionUpdateRequest,
-) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension]:
+) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Update Service Providing Group Grid Suspension
 
     Args:
@@ -191,7 +191,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]
     """
 
     kwargs = _get_kwargs(
@@ -209,7 +209,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ServiceProvidingGroupGridSuspensionUpdateRequest,
-) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Update Service Providing Group Grid Suspension
 
     Args:
@@ -223,7 +223,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspension
+        Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse
     """
 
     return (
