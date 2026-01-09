@@ -9,12 +9,12 @@ from ...models.empty_object import EmptyObject
 from ...models.entity_client_create_request import EntityClientCreateRequest
 from ...models.entity_client_response import EntityClientResponse
 from ...models.error_message import ErrorMessage
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: EntityClientCreateRequest | Unset = UNSET,
+    body: EntityClientCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/entity_client",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -111,13 +110,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
+    body: EntityClientCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -141,13 +140,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
+    body: EntityClientCreateRequest,
 ) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -166,13 +165,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
+    body: EntityClientCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -194,13 +193,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: EntityClientCreateRequest | Unset = UNSET,
+    body: EntityClientCreateRequest,
 ) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Create Entity client
 
     Args:
-        body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
-            linked to an entity for client credentials and JWT grant authentication methods.
+        body (EntityClientCreateRequest): Request schema for create operations - Client linked to
+            an entity for client credentials and JWT grant authentication methods.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

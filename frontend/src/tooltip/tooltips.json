@@ -245,10 +245,6 @@
         "message": "The error message."
     },
     "auth_scope": null,
-    "audit_fields": {
-        "recorded_at": "When the resource was recorded (created or updated) in the system.",
-        "recorded_by": "The identity that recorded the resource."
-    },
     "controllable_unit_lookup_request": {
         "end_user": "Birth number or organisation number of the end user.",
         "controllable_unit": "The business ID of the controllable unit to lookup.",

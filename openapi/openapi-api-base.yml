@@ -70,21 +70,6 @@ components:
         - "read:auth"
         - "use:auth"
         - "manage:auth"
-    audit_fields:
-      properties:
-        recorded_at:
-          description: >-
-            When the resource was recorded (created or updated) in the system.
-          format: timestamp with time zone
-          type: string
-          readOnly: true
-          example: 2023-12-31 23:59:00 CET
-        recorded_by:
-          description: The identity that recorded the resource.
-          format: bigint
-          type: integer
-          readOnly: true
-          example: 145
     controllable_unit_lookup_request:
       summary: Controllable unit lookup
       description: Request schema for controllable unit lookup operations

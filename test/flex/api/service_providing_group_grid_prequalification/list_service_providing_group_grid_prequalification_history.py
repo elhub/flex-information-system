@@ -7,11 +7,11 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.grid_prequalification_for_service_providing_group_history_response import (
+    GridPrequalificationForServiceProvidingGroupHistoryResponse,
+)
 from ...models.list_service_providing_group_grid_prequalification_history_prefer import (
     ListServiceProvidingGroupGridPrequalificationHistoryPrefer,
-)
-from ...models.service_providing_group_grid_prequalification_history_response import (
-    ServiceProvidingGroupGridPrequalificationHistoryResponse,
 )
 from ...types import UNSET, Response, Unset
 
@@ -72,12 +72,14 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None:
+) -> (
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse] | None
+):
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ServiceProvidingGroupGridPrequalificationHistoryResponse.from_dict(
+            response_200_item = GridPrequalificationForServiceProvidingGroupHistoryResponse.from_dict(
                 response_200_item_data
             )
 
@@ -89,7 +91,7 @@ def _parse_response(
         response_206 = []
         _response_206 = response.json()
         for response_206_item_data in _response_206:
-            response_206_item = ServiceProvidingGroupGridPrequalificationHistoryResponse.from_dict(
+            response_206_item = GridPrequalificationForServiceProvidingGroupHistoryResponse.from_dict(
                 response_206_item_data
             )
 
@@ -157,7 +159,7 @@ def _parse_response(
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse]
 ]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -182,7 +184,7 @@ def sync_detailed(
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationHistoryPrefer | Unset = UNSET,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse]
 ]:
     """List Grid prequalification for service providing group - history
 
@@ -204,7 +206,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -242,7 +244,9 @@ def sync(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None:
+) -> (
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse] | None
+):
     """List Grid prequalification for service providing group - history
 
     Args:
@@ -263,7 +267,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse]
     """
 
     return sync_detailed(
@@ -297,7 +301,7 @@ async def asyncio_detailed(
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationHistoryPrefer | Unset = UNSET,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse]
 ]:
     """List Grid prequalification for service providing group - history
 
@@ -319,7 +323,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -355,7 +359,9 @@ async def asyncio(
     range_: str | Unset = UNSET,
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationHistoryPrefer | Unset = UNSET,
-) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse] | None:
+) -> (
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse] | None
+):
     """List Grid prequalification for service providing group - history
 
     Args:
@@ -376,7 +382,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationHistoryResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupHistoryResponse]
     """
 
     return (

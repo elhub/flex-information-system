@@ -479,42 +479,41 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 data["enum"] = [e["id"] for e in data["enum"]]
                 schemas[enum_name] = data
                 resource["properties"][field] = {
-                    "$ref": f"#/components/schemas/{enum_name}"
+                    "$ref": f"#/components/schemas/{enum_name}",
                 }
+                if data.get("default") is not None:
+                    resource["properties"][field]["default"] = data["default"]
 
     # complete the non-history schemas
 
     for resource in resources:
-        # update schema: no readOnly or non-updatable properties
-        properties_without_non_updatable_or_readonly = deepcopy(resource["properties"])
-        # keep a copy of these properties (for the other schemas)
-        non_updatable_properties = {}
-        readonly_properties = {}
-        # keep a list of required properties (for the create schema)
+        all_properties = deepcopy(resource["properties"])
+        readonly_properties = []
+        non_updatable_properties = []
         required_properties = []
-        # keep a list of non-nullable properties (for the response schema)
         non_nullable_properties = []
 
-        for field, data in resource["properties"].items():
-            is_nonupdatable = data.get("x-no-update", False)
-            is_readonly = data.get("readOnly", False)
-            is_nullable = data.get("nullable", False)
-            has_default = data.get("default") is not None
+        for field in all_properties.keys():
+            data = all_properties[field]
+            original_data = resource["properties"][field]
+
+            is_nonupdatable = original_data.get("x-no-update", False)
+            is_readonly = original_data.get("readOnly", False)
+            is_nullable = original_data.get("nullable", False)
+            has_default = original_data.get("default") is not None
 
             if not is_nullable:
                 non_nullable_properties.append(field)
 
-            required = data.get("required")
+            required = original_data.get("required")
             is_not_required = required is not None and not required
-            if required is not None:
+            if "required" in data:
                 del data["required"]
 
             if is_nonupdatable:
-                non_updatable_properties[field] = data
+                non_updatable_properties.append(field)
             if is_readonly:
-                readonly_properties[field] = data
-            if is_nonupdatable or is_readonly:
-                del properties_without_non_updatable_or_readonly[field]
+                readonly_properties.append(field)
             if (
                 not is_readonly
                 and not is_nullable
@@ -523,84 +522,91 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             ):
                 required_properties.append(field)
 
-        # add update schema (no non-updatable or read-only properties)
-        update_schema = {
-            "summary": f"Update - {resource['summary']}",
-            "description": f"Request schema for update operations - {resource['description']}",
-            "type": "object",
-        }
-        # do not add properties if empty
-        if len(properties_without_non_updatable_or_readonly) > 0:
-            update_schema["properties"] = properties_without_non_updatable_or_readonly
-        schemas[f"{resource['id']}_update_request"] = update_schema
-
-        create_data_subschemas: list[dict] = [
-            {"$ref": f"#/components/schemas/{resource['id']}_update_request"},
-        ]
-        # do not add properties if empty
-        if len(non_updatable_properties) > 0:
-            create_data_subschemas.append({"properties": non_updatable_properties})
-
-        # add create data schema (update schema + non-updatable)
-        schemas[f"{resource['id']}_create_data"] = {
-            "summary": f"Create data - {resource['summary']}",
-            "description": f"Data of the request schema for create operations - {resource['description']}",
-            "allOf": create_data_subschemas,
-            "type": "object",
+        updatable_properties = {
+            k: v
+            for k, v in all_properties.items()
+            if k not in non_updatable_properties and k not in readonly_properties
         }
 
-        if "create" in resource["operations"]:
-            create_subschemas: list[dict] = [
-                {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
-            ]
-            # add schemas with required list only if non empty
-            # (empty lists make the OpenAPI spec ill formed)
-            if len(required_properties) > 0:
-                create_subschemas.append({"required": required_properties})
-
-            # add create schema (create_data schema [+ required])
-            schemas[f"{resource['id']}_create_request"] = {
-                "summary": f"Create - {resource['summary']}",
-                "description": f"Request schema for create operations - {resource['description']}",
-                "allOf": create_subschemas,
+        if "update" in resource["operations"]:
+            update_schema: dict[str, Any] = {
+                "summary": f"Update - {resource['summary']}",
+                "description": f"Request schema for update operations - {resource['description']}",
                 "type": "object",
             }
+            if len(updatable_properties) > 0:
+                update_schema["properties"] = updatable_properties
+            schemas[f"{resource['id']}_update_request"] = update_schema
 
-        data_subschemas: list[dict] = [
-            {"$ref": f"#/components/schemas/{resource['id']}_create_data"},
-            {"properties": readonly_properties},
-        ]
-
+        if "create" in resource["operations"]:
+            create_properties = {
+                k: v for k, v in all_properties.items() if k not in readonly_properties
+            }
+            create_schema = {
+                "summary": f"Create - {resource['summary']}",
+                "description": f"Request schema for create operations - {resource['description']}",
+                "type": "object",
+                "properties": create_properties,
+            }
+            if len(required_properties) > 0:
+                create_schema["required"] = required_properties
+            schemas[f"{resource['id']}_create_request"] = create_schema
         if resource.get("audit"):
-            data_subschemas.append({"$ref": "#/components/schemas/audit_fields"})
+            # Adding these directly instead of using a reference, since the generator did not like allOf + defined properties
+            all_properties["recorded_at"] = {
+                "description": "When the resource was recorded (created or updated) in the system.",
+                "format": "timestamp with time zone",
+                "type": "string",
+                "readOnly": True,
+                "example": "2023-12-31 23:59:00 CET",
+            }
+            all_properties["recorded_by"] = {
+                "description": "The identity that recorded the resource.",
+                "format": "bigint",
+                "type": "integer",
+                "readOnly": True,
+                "example": 145,
+            }
             non_nullable_properties += ["recorded_at", "recorded_by"]
 
-        # add data schema (create schema + read-only)
-        schemas[resource["id"]] = {
+        data_schema = {
             "summary": f"Data - {resource['summary']}",
             "description": f"Data schema - {resource['description']}",
-            "allOf": data_subschemas,
             "type": "object",
+            "properties": all_properties,
         }
+        if len(non_nullable_properties) > 0:
+            data_schema["required"] = non_nullable_properties
 
-        # add response schema (data schema + marking all fields required except the nullable ones)
+        schemas[resource["id"]] = data_schema
         schemas[f"{resource['id']}_response"] = {
             "summary": f"Response - {resource['summary']}",
-            "description": f"Response schema for operations with return values - {resource['description']}",
+            "title": f"{resource['summary']} Response",
+            "type": "object",
+            "description": f"Response schema - {resource['description']}",
             "allOf": [
                 {"$ref": f"#/components/schemas/{resource['id']}"},
-                {"required": non_nullable_properties},
+                {"type": "object", "additionalProperties": False},
             ],
-            "type": "object",
         }
 
     # generate the history schemas from the template
 
     for resource in resources:
         if resource.get("history"):
-            schemas[f"{resource['id']}_history_response"] = history_schema_template(
+            schemas[f"{resource['id']}_history"] = history_schema_template(
                 resource["id"], resource["summary"]
             )
+            schemas[f"{resource['id']}_history_response"] = {
+                "summary": f"History Response - {resource['summary']}",
+                "title": f"{resource['summary']} History Response",
+                "type": "object",
+                "description": f"History response schema - {resource['description']}",
+                "allOf": [
+                    {"$ref": f"#/components/schemas/{resource['id']}_history"},
+                    {"type": "object", "additionalProperties": False},
+                ],
+            }
 
     # ---- ENDPOINTS (under paths) ----
 

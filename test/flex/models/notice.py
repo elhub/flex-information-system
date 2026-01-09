@@ -23,18 +23,17 @@ class Notice:
     """Data schema - Notice to users about various issues or actions expected from them.
 
     Attributes:
-        party_id (int | Unset): Reference to the party targeted by the notice. Example: 18.
-        type_ (str | Unset): The type of the notice. Example:
+        party_id (int): Reference to the party targeted by the notice. Example: 18.
+        type_ (str): The type of the notice. Example:
             no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
-        source (str | Unset): The URI of the resource concerned by the event. Example:
-            /service_providing_group_membership/4.
+        source (str): The URI of the resource concerned by the event. Example: /service_providing_group_membership/4.
         data (NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
             NoticeDataValidTimeOutsideContract | Unset):
     """
 
-    party_id: int | Unset = UNSET
-    type_: str | Unset = UNSET
-    source: str | Unset = UNSET
+    party_id: int
+    type_: str
+    source: str
     data: (
         NoticeDataPartyMissing
         | NoticeDataPartyOutdated
@@ -69,13 +68,13 @@ class Notice:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if party_id is not UNSET:
-            field_dict["party_id"] = party_id
-        if type_ is not UNSET:
-            field_dict["type"] = type_
-        if source is not UNSET:
-            field_dict["source"] = source
+        field_dict.update(
+            {
+                "party_id": party_id,
+                "type": type_,
+                "source": source,
+            }
+        )
         if data is not UNSET:
             field_dict["data"] = data
 
@@ -89,11 +88,11 @@ class Notice:
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
 
         d = dict(src_dict)
-        party_id = d.pop("party_id", UNSET)
+        party_id = d.pop("party_id")
 
-        type_ = d.pop("type", UNSET)
+        type_ = d.pop("type")
 
-        source = d.pop("source", UNSET)
+        source = d.pop("source")
 
         def _parse_data(
             data: object,

@@ -7,11 +7,11 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.grid_prequalification_for_service_providing_group_comment_history_response import (
+    GridPrequalificationForServiceProvidingGroupCommentHistoryResponse,
+)
 from ...models.list_service_providing_group_grid_prequalification_comment_history_prefer import (
     ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer,
-)
-from ...models.service_providing_group_grid_prequalification_comment_history_response import (
-    ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
 )
 from ...types import UNSET, Response, Unset
 
@@ -75,14 +75,14 @@ def _parse_response(
     EmptyObject
     | ErrorMessage
     | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
     | None
 ):
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = ServiceProvidingGroupGridPrequalificationCommentHistoryResponse.from_dict(
+            response_200_item = GridPrequalificationForServiceProvidingGroupCommentHistoryResponse.from_dict(
                 response_200_item_data
             )
 
@@ -94,7 +94,7 @@ def _parse_response(
         response_206 = []
         _response_206 = response.json()
         for response_206_item_data in _response_206:
-            response_206_item = ServiceProvidingGroupGridPrequalificationCommentHistoryResponse.from_dict(
+            response_206_item = GridPrequalificationForServiceProvidingGroupCommentHistoryResponse.from_dict(
                 response_206_item_data
             )
 
@@ -162,7 +162,7 @@ def _parse_response(
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
 ]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -186,7 +186,7 @@ def sync_detailed(
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer | Unset = UNSET,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
 ]:
     """List Grid prequalification for service providing group Comment - history
 
@@ -207,7 +207,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -247,7 +247,7 @@ def sync(
     EmptyObject
     | ErrorMessage
     | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
     | None
 ):
     """List Grid prequalification for service providing group Comment - history
@@ -269,7 +269,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
     """
 
     return sync_detailed(
@@ -301,7 +301,7 @@ async def asyncio_detailed(
     range_unit: str | Unset = UNSET,
     prefer: ListServiceProvidingGroupGridPrequalificationCommentHistoryPrefer | Unset = UNSET,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
 ]:
     """List Grid prequalification for service providing group Comment - history
 
@@ -322,7 +322,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -360,7 +360,7 @@ async def asyncio(
     EmptyObject
     | ErrorMessage
     | ErrorMessage
-    | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+    | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
     | None
 ):
     """List Grid prequalification for service providing group Comment - history
@@ -382,7 +382,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+        EmptyObject | ErrorMessage | ErrorMessage | list[GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
     """
 
     return (

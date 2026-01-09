@@ -11,12 +11,12 @@ from ...models.service_providing_group_grid_suspension_create_request import (
     ServiceProvidingGroupGridSuspensionCreateRequest,
 )
 from ...models.service_providing_group_grid_suspension_response import ServiceProvidingGroupGridSuspensionResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupGridSuspensionCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupGridSuspensionCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -25,8 +25,7 @@ def _get_kwargs(
         "url": "/service_providing_group_grid_suspension",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -113,12 +112,12 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupGridSuspensionCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Create Service Providing Group Grid Suspension
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create
+        body (ServiceProvidingGroupGridSuspensionCreateRequest): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
             service providing group from delivering services.
 
@@ -144,12 +143,12 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupGridSuspensionCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Create Service Providing Group Grid Suspension
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create
+        body (ServiceProvidingGroupGridSuspensionCreateRequest): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
             service providing group from delivering services.
 
@@ -170,12 +169,12 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupGridSuspensionCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Create Service Providing Group Grid Suspension
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create
+        body (ServiceProvidingGroupGridSuspensionCreateRequest): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
             service providing group from delivering services.
 
@@ -199,12 +198,12 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupGridSuspensionCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupGridSuspensionCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Create Service Providing Group Grid Suspension
 
     Args:
-        body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create
+        body (ServiceProvidingGroupGridSuspensionCreateRequest): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
             service providing group from delivering services.
 

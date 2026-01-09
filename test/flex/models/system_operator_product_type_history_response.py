@@ -14,49 +14,47 @@ T = TypeVar("T", bound="SystemOperatorProductTypeHistoryResponse")
 
 @_attrs_define
 class SystemOperatorProductTypeHistoryResponse:
-    """System Operator Product Type - history
+    """History response schema - Relation between a system operator and a product type they want to buy.
 
     Attributes:
+        id (int): Unique surrogate identifier. Example: 89.
+        system_operator_id (int): Reference to the system operator. Example: 37.
+        product_type_id (int): Reference to the product type. Example: 8.
+        status (SystemOperatorProductTypeStatus): The status of the relation. Example: active.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         system_operator_product_type_id (int): Reference to the resource that was updated. Example: 48.
-        status (SystemOperatorProductTypeStatus | Unset): The status of the relation. Example: active.
-        system_operator_id (int | Unset): Reference to the system operator. Example: 37.
-        product_type_id (int | Unset): Reference to the product type. Example: 8.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 89.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
             CET.
     """
 
+    id: int
+    system_operator_id: int
+    product_type_id: int
+    status: SystemOperatorProductTypeStatus
+    recorded_at: str
+    recorded_by: int
     system_operator_product_type_id: int
-    status: SystemOperatorProductTypeStatus | Unset = UNSET
-    system_operator_id: int | Unset = UNSET
-    product_type_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        system_operator_product_type_id = self.system_operator_product_type_id
-
-        status: str | Unset = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
+        id = self.id
 
         system_operator_id = self.system_operator_id
 
         product_type_id = self.product_type_id
 
+        status = self.status.value
+
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
 
-        id = self.id
+        system_operator_product_type_id = self.system_operator_product_type_id
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -74,21 +72,15 @@ class SystemOperatorProductTypeHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
+                "system_operator_id": system_operator_id,
+                "product_type_id": product_type_id,
+                "status": status,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
                 "system_operator_product_type_id": system_operator_product_type_id,
             }
         )
-        if status is not UNSET:
-            field_dict["status"] = status
-        if system_operator_id is not UNSET:
-            field_dict["system_operator_id"] = system_operator_id
-        if product_type_id is not UNSET:
-            field_dict["product_type_id"] = product_type_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -99,24 +91,19 @@ class SystemOperatorProductTypeHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        id = d.pop("id")
+
+        system_operator_id = d.pop("system_operator_id")
+
+        product_type_id = d.pop("product_type_id")
+
+        status = SystemOperatorProductTypeStatus(d.pop("status"))
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
         system_operator_product_type_id = d.pop("system_operator_product_type_id")
-
-        _status = d.pop("status", UNSET)
-        status: SystemOperatorProductTypeStatus | Unset
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = SystemOperatorProductTypeStatus(_status)
-
-        system_operator_id = d.pop("system_operator_id", UNSET)
-
-        product_type_id = d.pop("product_type_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -137,13 +124,13 @@ class SystemOperatorProductTypeHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         system_operator_product_type_history_response = cls(
-            system_operator_product_type_id=system_operator_product_type_id,
-            status=status,
+            id=id,
             system_operator_id=system_operator_id,
             product_type_id=product_type_id,
+            status=status,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
+            system_operator_product_type_id=system_operator_product_type_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

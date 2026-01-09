@@ -13,12 +13,12 @@ from ...models.service_provider_product_application_comment_create_request impor
 from ...models.service_provider_product_application_comment_response import (
     ServiceProviderProductApplicationCommentResponse,
 )
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
+    body: ServiceProviderProductApplicationCommentCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,8 +27,7 @@ def _get_kwargs(
         "url": "/service_provider_product_application_comment",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -115,14 +114,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
+    body: ServiceProviderProductApplicationCommentCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -146,14 +144,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
+    body: ServiceProviderProductApplicationCommentCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -172,14 +169,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
+    body: ServiceProviderProductApplicationCommentCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -201,14 +197,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
+    body: ServiceProviderProductApplicationCommentCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Create Service Provider Product Application Comment
 
     Args:
-        body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
-            create operations - Comment made by a party involved in a service provider product
-            application.
+        body (ServiceProviderProductApplicationCommentCreateRequest): Request schema for create
+            operations - Comment made by a party involved in a service provider product application.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

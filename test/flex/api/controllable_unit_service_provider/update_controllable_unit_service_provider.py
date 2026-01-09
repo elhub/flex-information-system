@@ -1,15 +1,16 @@
 from http import HTTPStatus
 from typing import Any, cast
-from urllib.parse import quote
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
 from ...models.controllable_unit_service_provider_update_request import ControllableUnitServiceProviderUpdateRequest
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
+from ...models.relation_between_controllable_unit_and_service_provider_response import (
+    RelationBetweenControllableUnitAndServiceProviderResponse,
+)
 from ...types import Response
 
 
@@ -22,9 +23,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "patch",
-        "url": "/controllable_unit_service_provider/{id}".format(
-            id=quote(str(id), safe=""),
-        ),
+        "url": f"/controllable_unit_service_provider/{id}",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -37,9 +36,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse | None:
     if response.status_code == 200:
-        response_200 = ControllableUnitServiceProviderResponse.from_dict(response.json())
+        response_200 = RelationBetweenControllableUnitAndServiceProviderResponse.from_dict(response.json())
 
         return response_200
 
@@ -101,7 +100,9 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[
+    Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse
+]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -115,7 +116,9 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[
+    Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse
+]:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -128,7 +131,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse]
     """
 
     kwargs = _get_kwargs(
@@ -148,7 +151,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse | None:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -161,7 +164,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage
+        Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse
     """
 
     return sync_detailed(
@@ -176,7 +179,9 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
+) -> Response[
+    Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse
+]:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -189,7 +194,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]
+        Response[Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse]
     """
 
     kwargs = _get_kwargs(
@@ -207,7 +212,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ControllableUnitServiceProviderUpdateRequest,
-) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
+) -> Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse | None:
     """Update Relation between controllable unit and service provider
 
     Args:
@@ -220,7 +225,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage
+        Any | EmptyObject | ErrorMessage | ErrorMessage | RelationBetweenControllableUnitAndServiceProviderResponse
     """
 
     return (

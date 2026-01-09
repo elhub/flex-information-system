@@ -9,12 +9,12 @@ from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...models.service_providing_group_create_request import ServiceProvidingGroupCreateRequest
 from ...models.service_providing_group_response import ServiceProvidingGroupResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/service_providing_group",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -111,13 +110,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -141,13 +140,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -166,13 +165,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -194,13 +193,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Create Service providing group
 
     Args:
-        body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
-            Group of controllable units
+        body (ServiceProvidingGroupCreateRequest): Request schema for create operations - Group of
+            controllable units
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

@@ -9,12 +9,12 @@ from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...models.party_membership_create_request import PartyMembershipCreateRequest
 from ...models.party_membership_response import PartyMembershipResponse
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: PartyMembershipCreateRequest | Unset = UNSET,
+    body: PartyMembershipCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,8 +23,7 @@ def _get_kwargs(
         "url": "/party_membership",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -111,13 +110,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: PartyMembershipCreateRequest | Unset = UNSET,
+    body: PartyMembershipCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse]:
     """Create Party Membership
 
     Args:
-        body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The
-            relation between a party and entity.
+        body (PartyMembershipCreateRequest): Request schema for create operations - The relation
+            between a party and entity.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -141,13 +140,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: PartyMembershipCreateRequest | Unset = UNSET,
+    body: PartyMembershipCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse | None:
     """Create Party Membership
 
     Args:
-        body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The
-            relation between a party and entity.
+        body (PartyMembershipCreateRequest): Request schema for create operations - The relation
+            between a party and entity.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -166,13 +165,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: PartyMembershipCreateRequest | Unset = UNSET,
+    body: PartyMembershipCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse]:
     """Create Party Membership
 
     Args:
-        body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The
-            relation between a party and entity.
+        body (PartyMembershipCreateRequest): Request schema for create operations - The relation
+            between a party and entity.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -194,13 +193,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: PartyMembershipCreateRequest | Unset = UNSET,
+    body: PartyMembershipCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse | None:
     """Create Party Membership
 
     Args:
-        body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The
-            relation between a party and entity.
+        body (PartyMembershipCreateRequest): Request schema for create operations - The relation
+            between a party and entity.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

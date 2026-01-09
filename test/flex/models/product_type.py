@@ -6,8 +6,6 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 T = TypeVar("T", bound="ProductType")
 
 
@@ -16,18 +14,18 @@ class ProductType:
     """Data schema - Product type.
 
     Attributes:
-        id (int | Unset): Unique surrogate identifier. Example: 4.
-        business_id (str | Unset): The code for this product type. Example: manual_congestion.
-        name (str | Unset): The name of the product type. Example: Manual Congestion.
-        service (str | Unset): The service offered by the product type. Example: congestion management.
-        products (str | Unset): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
+        id (int): Unique surrogate identifier. Example: 4.
+        business_id (str): The code for this product type. Example: manual_congestion.
+        name (str): The name of the product type. Example: Manual Congestion.
+        service (str): The service offered by the product type. Example: congestion management.
+        products (str): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
     """
 
-    id: int | Unset = UNSET
-    business_id: str | Unset = UNSET
-    name: str | Unset = UNSET
-    service: str | Unset = UNSET
-    products: str | Unset = UNSET
+    id: int
+    business_id: str
+    name: str
+    service: str
+    products: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -43,32 +41,30 @@ class ProductType:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if id is not UNSET:
-            field_dict["id"] = id
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
-        if name is not UNSET:
-            field_dict["name"] = name
-        if service is not UNSET:
-            field_dict["service"] = service
-        if products is not UNSET:
-            field_dict["products"] = products
+        field_dict.update(
+            {
+                "id": id,
+                "business_id": business_id,
+                "name": name,
+                "service": service,
+                "products": products,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        id = d.pop("id", UNSET)
+        id = d.pop("id")
 
-        business_id = d.pop("business_id", UNSET)
+        business_id = d.pop("business_id")
 
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
 
-        service = d.pop("service", UNSET)
+        service = d.pop("service")
 
-        products = d.pop("products", UNSET)
+        products = d.pop("products")
 
         product_type = cls(
             id=id,

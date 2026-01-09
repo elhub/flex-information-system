@@ -18,7 +18,9 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
     product type, for the SPG to deliver a product to the SO later.
 
         Attributes:
-            product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
+            service_providing_group_id (int): Reference to the service providing group. Example: 18.
+            procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
+            product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 in_progress.
             notes (None | str | Unset): Free text notes on the current product application status.
@@ -26,23 +28,23 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 12:00:00 CET.
             verified_at (None | str | Unset): When the product application was last verified. Example: 2021-08-08 10:00:00
                 CET.
-            service_providing_group_id (int | Unset): Reference to the service providing group. Example: 18.
-            procuring_system_operator_id (int | Unset): Reference to the procuring system operator. Example: 39.
     """
 
-    product_type_ids: list[int] | Unset = UNSET
+    service_providing_group_id: int
+    procuring_system_operator_id: int
+    product_type_ids: list[int]
     status: ServiceProvidingGroupProductApplicationStatus | Unset = UNSET
     notes: None | str | Unset = UNSET
     prequalified_at: None | str | Unset = UNSET
     verified_at: None | str | Unset = UNSET
-    service_providing_group_id: int | Unset = UNSET
-    procuring_system_operator_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        product_type_ids: list[int] | Unset = UNSET
-        if not isinstance(self.product_type_ids, Unset):
-            product_type_ids = self.product_type_ids
+        service_providing_group_id = self.service_providing_group_id
+
+        procuring_system_operator_id = self.procuring_system_operator_id
+
+        product_type_ids = self.product_type_ids
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
@@ -66,15 +68,15 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         else:
             verified_at = self.verified_at
 
-        service_providing_group_id = self.service_providing_group_id
-
-        procuring_system_operator_id = self.procuring_system_operator_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if product_type_ids is not UNSET:
-            field_dict["product_type_ids"] = product_type_ids
+        field_dict.update(
+            {
+                "service_providing_group_id": service_providing_group_id,
+                "procuring_system_operator_id": procuring_system_operator_id,
+                "product_type_ids": product_type_ids,
+            }
+        )
         if status is not UNSET:
             field_dict["status"] = status
         if notes is not UNSET:
@@ -83,17 +85,17 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
             field_dict["verified_at"] = verified_at
-        if service_providing_group_id is not UNSET:
-            field_dict["service_providing_group_id"] = service_providing_group_id
-        if procuring_system_operator_id is not UNSET:
-            field_dict["procuring_system_operator_id"] = procuring_system_operator_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
+        service_providing_group_id = d.pop("service_providing_group_id")
+
+        procuring_system_operator_id = d.pop("procuring_system_operator_id")
+
+        product_type_ids = cast(list[int], d.pop("product_type_ids"))
 
         _status = d.pop("status", UNSET)
         status: ServiceProvidingGroupProductApplicationStatus | Unset
@@ -129,18 +131,14 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
-        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
-
-        procuring_system_operator_id = d.pop("procuring_system_operator_id", UNSET)
-
         service_providing_group_product_application_create_request = cls(
+            service_providing_group_id=service_providing_group_id,
+            procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
             notes=notes,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
-            service_providing_group_id=service_providing_group_id,
-            procuring_system_operator_id=procuring_system_operator_id,
         )
 
         service_providing_group_product_application_create_request.additional_properties = d

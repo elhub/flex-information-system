@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from typing import Any
-from urllib.parse import quote
 
 import httpx
 
@@ -8,8 +7,8 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.service_providing_group_grid_prequalification_comment_history_response import (
-    ServiceProvidingGroupGridPrequalificationCommentHistoryResponse,
+from ...models.grid_prequalification_for_service_providing_group_comment_history_response import (
+    GridPrequalificationForServiceProvidingGroupCommentHistoryResponse,
 )
 from ...types import Response
 
@@ -19,9 +18,7 @@ def _get_kwargs(
 ) -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/service_providing_group_grid_prequalification_comment_history/{id}".format(
-            id=quote(str(id), safe=""),
-        ),
+        "url": f"/service_providing_group_grid_prequalification_comment_history/{id}",
     }
 
     return _kwargs
@@ -29,9 +26,15 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse | None:
+) -> (
+    EmptyObject
+    | ErrorMessage
+    | ErrorMessage
+    | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
+    | None
+):
     if response.status_code == 200:
-        response_200 = ServiceProvidingGroupGridPrequalificationCommentHistoryResponse.from_dict(response.json())
+        response_200 = GridPrequalificationForServiceProvidingGroupCommentHistoryResponse.from_dict(response.json())
 
         return response_200
 
@@ -90,7 +93,7 @@ def _parse_response(
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse
+    EmptyObject | ErrorMessage | ErrorMessage | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
 ]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -105,7 +108,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse
+    EmptyObject | ErrorMessage | ErrorMessage | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
 ]:
     """Read Grid prequalification for service providing group Comment - history
 
@@ -117,7 +120,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
     """
 
     kwargs = _get_kwargs(
@@ -135,7 +138,13 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse | None:
+) -> (
+    EmptyObject
+    | ErrorMessage
+    | ErrorMessage
+    | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
+    | None
+):
     """Read Grid prequalification for service providing group Comment - history
 
     Args:
@@ -146,7 +155,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse
+        EmptyObject | ErrorMessage | ErrorMessage | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
     """
 
     return sync_detailed(
@@ -160,7 +169,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[
-    EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse
+    EmptyObject | ErrorMessage | ErrorMessage | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
 ]:
     """Read Grid prequalification for service providing group Comment - history
 
@@ -172,7 +181,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
+        Response[EmptyObject | ErrorMessage | ErrorMessage | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse]
     """
 
     kwargs = _get_kwargs(
@@ -188,7 +197,13 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse | None:
+) -> (
+    EmptyObject
+    | ErrorMessage
+    | ErrorMessage
+    | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
+    | None
+):
     """Read Grid prequalification for service providing group Comment - history
 
     Args:
@@ -199,7 +214,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse
+        EmptyObject | ErrorMessage | ErrorMessage | GridPrequalificationForServiceProvidingGroupCommentHistoryResponse
     """
 
     return (

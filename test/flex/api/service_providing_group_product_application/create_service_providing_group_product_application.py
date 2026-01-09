@@ -13,12 +13,12 @@ from ...models.service_providing_group_product_application_create_request import
 from ...models.service_providing_group_product_application_response import (
     ServiceProvidingGroupProductApplicationResponse,
 )
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -27,8 +27,7 @@ def _get_kwargs(
         "url": "/service_providing_group_product_application",
     }
 
-    if not isinstance(body, Unset):
-        _kwargs["json"] = body.to_dict()
+    _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -115,13 +114,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
@@ -146,13 +145,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
@@ -172,13 +171,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
@@ -201,13 +200,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
+    body: ServiceProvidingGroupProductApplicationCreateRequest,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
     """Create Service Providing Group Product Application
 
     Args:
-        body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
-            create operations - Relation between a service providing group and a system operator for a
+        body (ServiceProvidingGroupProductApplicationCreateRequest): Request schema for create
+            operations - Relation between a service providing group and a system operator for a
             product type, for the SPG to deliver a product to the SO later.
 
     Raises:
