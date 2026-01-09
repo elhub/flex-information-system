@@ -1,7 +1,7 @@
 import {
   AccountingPoint,
   ControllableUnit,
-  ControllableUnitHistoryResponse,
+  ControllableUnitHistory,
   ControllableUnitServiceProvider,
   ControllableUnitSuspension,
   EmptyObject,
@@ -37,7 +37,7 @@ const throwOnError = <T>(response: Response<T>): T => {
 };
 
 export type ControllableUnitShowViewModel = {
-  controllableUnit: ControllableUnit | ControllableUnitHistoryResponse;
+  controllableUnit: ControllableUnit | ControllableUnitHistory;
   serviceProvider: Party | undefined;
   controllableUnitServiceProvider: ControllableUnitServiceProvider | undefined;
   technicalResources: TechnicalResource[] | undefined;
@@ -178,10 +178,7 @@ export const controllableUnitViewModelQueryKey = (
   controllableUnitId: number | undefined,
 ) => ["controllableUnitViewModel", controllableUnitId];
 export const useControllableUnitViewModel = (
-  controllableUnit:
-    | ControllableUnit
-    | ControllableUnitHistoryResponse
-    | undefined,
+  controllableUnit: ControllableUnit | ControllableUnitHistory | undefined,
 ): UseQueryResult<ControllableUnitShowViewModel> => {
   const query = useQuery({
     queryKey: controllableUnitViewModelQueryKey(controllableUnit?.id),
