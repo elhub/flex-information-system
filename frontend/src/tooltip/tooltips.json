@@ -163,6 +163,12 @@
         "valid_from": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
         "valid_to": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
     },
+    "accounting_point_end_user": {
+        "accounting_point_id": "The ID of the accounting point.",
+        "end_user_id": "The end user on the accounting point.",
+        "valid_from": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
+        "valid_to": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone."
+    },
     "accounting_point_energy_supplier": {
         "accounting_point_id": "The ID of the accounting point.",
         "energy_supplier_id": "The energy supplier of the accounting point.",

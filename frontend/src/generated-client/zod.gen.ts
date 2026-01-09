@@ -2006,6 +2006,59 @@ export const zAccountingPointBiddingZoneResponse =
   zAccountingPointBiddingZone.and(z.unknown());
 
 /**
+ * Request schema for update operations - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUserUpdateRequest = z.record(
+  z.string(),
+  z.unknown(),
+);
+
+/**
+ * Data of the request schema for create operations - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUserCreateData =
+  zAccountingPointEndUserUpdateRequest;
+
+/**
+ * Data schema - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUser = zAccountingPointEndUserCreateData.and(
+  z.object({
+    accounting_point_id: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.int().readonly().optional(),
+      ),
+    ),
+    end_user_id: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.int().readonly().optional(),
+      ),
+    ),
+    valid_from: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().readonly().optional(),
+      ),
+    ),
+    valid_to: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().readonly().optional(),
+      ),
+    ),
+  }),
+);
+
+/**
+ * Response schema for operations with return values - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUserResponse = zAccountingPointEndUser.and(
+  z.unknown(),
+);
+
+/**
  * Request schema for update operations - Relation linking an energy supplier to an accounting point.
  */
 export const zAccountingPointEnergySupplierUpdateRequest = z.record(
@@ -3515,6 +3568,12 @@ export const zAccountingPointBiddingZoneWritable =
  */
 export const zAccountingPointBiddingZoneResponseWritable =
   zAccountingPointBiddingZoneWritable.and(z.unknown());
+
+/**
+ * Data of the request schema for create operations - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUserCreateDataWritable =
+  zAccountingPointEndUserUpdateRequest;
 
 /**
  * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
@@ -9212,6 +9271,96 @@ export const zListAccountingPointBiddingZoneData = z.object({
 export const zListAccountingPointBiddingZoneResponse = z.union([
   z.array(zAccountingPointBiddingZoneResponse),
   z.array(zAccountingPointBiddingZoneResponse),
+]);
+
+export const zListAccountingPointEndUserData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      end_user_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
+  headers: z.optional(
+    z.object({
+      Range: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      "Range-Unit": z
+        .optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        )
+        .default("items"),
+      Prefer: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.enum(["count=none"]).optional(),
+        ),
+      ),
+    }),
+  ),
+});
+
+export const zListAccountingPointEndUserResponse = z.union([
+  z.array(zAccountingPointEndUserResponse),
+  z.array(zAccountingPointEndUserResponse),
 ]);
 
 export const zListAccountingPointEnergySupplierData = z.object({

@@ -112,6 +112,9 @@ import type {
   ListAccountingPointBiddingZoneErrors,
   ListAccountingPointBiddingZoneResponses,
   ListAccountingPointData,
+  ListAccountingPointEndUserData,
+  ListAccountingPointEndUserErrors,
+  ListAccountingPointEndUserResponses,
   ListAccountingPointEnergySupplierData,
   ListAccountingPointEnergySupplierErrors,
   ListAccountingPointEnergySupplierResponses,
@@ -2594,6 +2597,24 @@ export const listAccountingPointBiddingZone = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/accounting_point_bidding_zone",
+    ...options,
+  });
+
+/**
+ * List Accounting Point End User
+ */
+export const listAccountingPointEndUser = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointEndUserData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointEndUserResponses,
+    ListAccountingPointEndUserErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_end_user",
     ...options,
   });
 

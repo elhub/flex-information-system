@@ -2028,6 +2028,71 @@ resources:
           nb: Gyldig til
           nn: Gyldig til
 
+  - id: accounting_point_end_user
+    acronym: APEU
+    summary: Accounting Point End User
+    description: Relation telling which end user an accounting point belongs to.
+    x-intl:
+      en: Accounting Point End User
+      nb: Avregningspunktssluttbruker
+      nn: Avregningspunktssluttbrukar
+    operations:
+      - list
+    generate_views: true
+    audit: false
+    properties:
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 245
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+        x-intl:
+          en: Accounting point
+          nb: Avregningspunkt
+          nn: Avregningspunkt
+      end_user_id:
+        description: The end user on the accounting point.
+        format: bigint
+        type: integer
+        example: 12
+        readOnly: true
+        x-foreign-key:
+          resource: party
+          field: id
+        x-intl:
+          en: End User
+          nb: Sluttbruker
+          nn: Sluttbrukar
+      valid_from:
+        description: >-
+          The date from which the accounting point belongs to the end user.
+          Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2022-08-08 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
+      valid_to:
+        description: >-
+          The date until which the accounting point belongs to the end user.
+          Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
+
   - id: accounting_point_energy_supplier
     acronym: APES
     summary: Accounting Point Energy Supplier

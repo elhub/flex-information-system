@@ -31,6 +31,13 @@ type ApiAccountingPointBiddingZone struct {
 	ValidTo           pgtype.Timestamptz
 }
 
+type ApiAccountingPointEndUser struct {
+	AccountingPointID int
+	EndUserID         int
+	ValidFrom         pgtype.Timestamptz
+	ValidTo           pgtype.Timestamptz
+}
+
 type ApiAccountingPointEnergySupplier struct {
 	AccountingPointID int
 	EnergySupplierID  int

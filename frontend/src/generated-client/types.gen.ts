@@ -1568,6 +1568,46 @@ export type AccountingPointBiddingZoneResponse = AccountingPointBiddingZone &
   unknown;
 
 /**
+ * Request schema for update operations - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserUpdateRequest = {
+  [key: string]: unknown;
+};
+
+/**
+ * Data of the request schema for create operations - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserCreateData =
+  AccountingPointEndUserUpdateRequest;
+
+/**
+ * Data schema - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUser = AccountingPointEndUserCreateData & {
+  /**
+   * The ID of the accounting point.
+   */
+  readonly accounting_point_id?: number;
+  /**
+   * The end user on the accounting point.
+   */
+  readonly end_user_id?: number;
+  /**
+   * The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_from?: string;
+  /**
+   * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_to?: string;
+};
+
+/**
+ * Response schema for operations with return values - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserResponse = AccountingPointEndUser & unknown;
+
+/**
  * Request schema for update operations - Relation linking an energy supplier to an accounting point.
  */
 export type AccountingPointEnergySupplierUpdateRequest = {
@@ -2799,6 +2839,12 @@ export type AccountingPointBiddingZoneWritable =
  */
 export type AccountingPointBiddingZoneResponseWritable =
   AccountingPointBiddingZoneWritable & unknown;
+
+/**
+ * Data of the request schema for create operations - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserCreateDataWritable =
+  AccountingPointEndUserUpdateRequest;
 
 /**
  * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
@@ -10426,6 +10472,100 @@ export type ListAccountingPointBiddingZoneResponses = {
 
 export type ListAccountingPointBiddingZoneResponse =
   ListAccountingPointBiddingZoneResponses[keyof ListAccountingPointBiddingZoneResponses];
+
+export type ListAccountingPointEndUserData = {
+  body?: never;
+  headers?: {
+    /**
+     * Limiting and Pagination
+     */
+    Range?: string;
+    /**
+     * Limiting and Pagination
+     */
+    "Range-Unit"?: string;
+    /**
+     * Preference
+     */
+    Prefer?: "count=none";
+  };
+  path?: never;
+  query?: {
+    /**
+     * The ID of the accounting point.
+     */
+    accounting_point_id?: string;
+    /**
+     * The end user on the accounting point.
+     */
+    end_user_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_end_user";
+};
+
+export type ListAccountingPointEndUserErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointEndUserError =
+  ListAccountingPointEndUserErrors[keyof ListAccountingPointEndUserErrors];
+
+export type ListAccountingPointEndUserResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointEndUserResponse>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointEndUserResponse>;
+};
+
+export type ListAccountingPointEndUserResponse =
+  ListAccountingPointEndUserResponses[keyof ListAccountingPointEndUserResponses];
 
 export type ListAccountingPointEnergySupplierData = {
   body?: never;

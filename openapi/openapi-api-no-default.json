@@ -105,6 +105,10 @@
             "description": "Accounting Point Bidding Zone"
         },
         {
+            "name": "accounting_point_end_user",
+            "description": "Accounting Point End User"
+        },
+        {
             "name": "accounting_point_energy_supplier",
             "description": "Accounting Point Energy Supplier"
         },
@@ -3060,6 +3064,81 @@
                         "required": [
                             "accounting_point_id",
                             "bidding_zone",
+                            "valid_from"
+                        ]
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_end_user_update_request": {
+                "summary": "Update - Accounting Point End User",
+                "description": "Request schema for update operations - Relation telling which end user an accounting point belongs to.",
+                "type": "object"
+            },
+            "accounting_point_end_user_create_data": {
+                "summary": "Create data - Accounting Point End User",
+                "description": "Data of the request schema for create operations - Relation telling which end user an accounting point belongs to.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_end_user_update_request"
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_end_user": {
+                "summary": "Data - Accounting Point End User",
+                "description": "Data schema - Relation telling which end user an accounting point belongs to.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_end_user_create_data"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_id": {
+                                "description": "The ID of the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "readOnly": true,
+                                "example": 245
+                            },
+                            "end_user_id": {
+                                "description": "The end user on the accounting point.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 12,
+                                "readOnly": true
+                            },
+                            "valid_from": {
+                                "description": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "example": "2022-08-08 00:00:00 CET"
+                            },
+                            "valid_to": {
+                                "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
+                                "format": "timestamp with time zone",
+                                "type": "string",
+                                "readOnly": true,
+                                "nullable": true,
+                                "example": null
+                            }
+                        }
+                    }
+                ],
+                "type": "object"
+            },
+            "accounting_point_end_user_response": {
+                "summary": "Response - Accounting Point End User",
+                "description": "Response schema for operations with return values - Relation telling which end user an accounting point belongs to.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_end_user"
+                    },
+                    {
+                        "required": [
+                            "accounting_point_id",
+                            "end_user_id",
                             "valid_from"
                         ]
                     }
@@ -20673,6 +20752,212 @@
                     {
                         "bearerAuth": [
                             "read:data:accounting_point_bidding_zone"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/accounting_point_end_user": {
+            "summary": "Accounting Point End User",
+            "description": "",
+            "get": {
+                "operationId": "list_accounting_point_end_user",
+                "summary": "List Accounting Point End User",
+                "description": "",
+                "tags": [
+                    "accounting_point_end_user"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The ID of the accounting point.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The end user on the accounting point.",
+                        "name": "end_user_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "header",
+                        "name": "Range-Unit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Preference",
+                        "in": "header",
+                        "name": "Prefer",
+                        "schema": {
+                            "enum": [
+                                "count=none"
+                            ],
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_end_user_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_end_user_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_end_user"
                         ]
                     },
                     {}

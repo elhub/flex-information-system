@@ -15,6 +15,10 @@ export type FieldLabel =
   | "accounting_point_bidding_zone.bidding_zone"
   | "accounting_point_bidding_zone.valid_from"
   | "accounting_point_bidding_zone.valid_to"
+  | "accounting_point_end_user.accounting_point_id"
+  | "accounting_point_end_user.end_user_id"
+  | "accounting_point_end_user.valid_from"
+  | "accounting_point_end_user.valid_to"
   | "accounting_point_energy_supplier.accounting_point_id"
   | "accounting_point_energy_supplier.energy_supplier_id"
   | "accounting_point_energy_supplier.valid_from"
@@ -770,6 +774,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone": "Bidding zone",
     "accounting_point_bidding_zone.valid_from": "Valid from",
     "accounting_point_bidding_zone.valid_to": "Valid to",
+    "accounting_point_end_user.accounting_point_id": "Accounting point",
+    "accounting_point_end_user.end_user_id": "End User",
+    "accounting_point_end_user.valid_from": "Valid from",
+    "accounting_point_end_user.valid_to": "Valid to",
     "accounting_point_energy_supplier.accounting_point_id": "Accounting point",
     "accounting_point_energy_supplier.energy_supplier_id": "Energy supplier",
     "accounting_point_energy_supplier.valid_from": "Valid from",
@@ -1235,6 +1243,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone": "Budområde",
     "accounting_point_bidding_zone.valid_from": "Gyldig fra",
     "accounting_point_bidding_zone.valid_to": "Gyldig til",
+    "accounting_point_end_user.accounting_point_id": "Avregningspunkt",
+    "accounting_point_end_user.end_user_id": "Sluttbruker",
+    "accounting_point_end_user.valid_from": "Gyldig fra",
+    "accounting_point_end_user.valid_to": "Gyldig til",
     "accounting_point_energy_supplier.accounting_point_id": "Avregningspunkt",
     "accounting_point_energy_supplier.energy_supplier_id": "Kraftleverandør",
     "accounting_point_energy_supplier.valid_from": "Gyldig fra",
@@ -1700,6 +1712,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone": "Budområde",
     "accounting_point_bidding_zone.valid_from": "Gyldig frå",
     "accounting_point_bidding_zone.valid_to": "Gyldig til",
+    "accounting_point_end_user.accounting_point_id": "Avregningspunkt",
+    "accounting_point_end_user.end_user_id": "Sluttbrukar",
+    "accounting_point_end_user.valid_from": "Gyldig frå",
+    "accounting_point_end_user.valid_to": "Gyldig til",
     "accounting_point_energy_supplier.accounting_point_id": "Avregningspunkt",
     "accounting_point_energy_supplier.energy_supplier_id": "Kraftleverandør",
     "accounting_point_energy_supplier.valid_from": "Gyldig frå",

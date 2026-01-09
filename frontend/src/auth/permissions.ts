@@ -32,6 +32,11 @@ export type PermissionTarget =
   | "accounting_point_bidding_zone.bidding_zone"
   | "accounting_point_bidding_zone.valid_from"
   | "accounting_point_bidding_zone.valid_to"
+  | "accounting_point_end_user"
+  | "accounting_point_end_user.accounting_point_id"
+  | "accounting_point_end_user.end_user_id"
+  | "accounting_point_end_user.valid_from"
+  | "accounting_point_end_user.valid_to"
   | "accounting_point_energy_supplier"
   | "accounting_point_energy_supplier.accounting_point_id"
   | "accounting_point_energy_supplier.energy_supplier_id"
@@ -616,6 +621,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
       operation: "read",
     },
     {
@@ -2784,6 +2809,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -4949,6 +4994,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -7111,6 +7176,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
       operation: "read",
     },
     {
@@ -10030,6 +10115,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
+      operation: "read",
+    },
+    {
       target: "accounting_point_energy_supplier.accounting_point_id",
       operation: "read",
     },
@@ -12192,6 +12297,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
       operation: "read",
     },
     {
@@ -14750,6 +14875,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
       operation: "read",
     },
     {
@@ -17377,6 +17522,26 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_bidding_zone.valid_to",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.end_user_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_from",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_end_user.valid_to",
       operation: "read",
     },
     {
