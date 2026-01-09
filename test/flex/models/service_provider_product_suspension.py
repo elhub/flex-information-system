@@ -7,7 +7,6 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.service_provider_product_suspension_reason import ServiceProviderProductSuspensionReason
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ServiceProviderProductSuspension")
 
@@ -18,96 +17,82 @@ class ServiceProviderProductSuspension:
     delivering them products of the given types.
 
         Attributes:
-            product_type_ids (list[int] | Unset): References to the suspended product types. Example: [1, 7].
-            reason (ServiceProviderProductSuspensionReason | Unset): The reason for the suspension. Example:
-                communication_issues.
-            procuring_system_operator_id (int | Unset): Reference to the procuring system operator suspending the service
-                provider. Example: 9.
-            service_provider_id (int | Unset): Reference to the service provider being suspended. Example: 52.
-            recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31 23:59:00 CET.
-            recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-            id (int | Unset): Unique surrogate identifier. Example: 74.
+            id (int): Unique surrogate identifier. Example: 74.
+            procuring_system_operator_id (int): Reference to the procuring system operator suspending the service provider.
+                Example: 9.
+            service_provider_id (int): Reference to the service provider being suspended. Example: 52.
+            product_type_ids (list[int]): References to the suspended product types. Example: [1, 7].
+            reason (ServiceProviderProductSuspensionReason): The reason for the suspension. Example: communication_issues.
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+                23:59:00 CET.
+            recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
-    product_type_ids: list[int] | Unset = UNSET
-    reason: ServiceProviderProductSuspensionReason | Unset = UNSET
-    procuring_system_operator_id: int | Unset = UNSET
-    service_provider_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
+    id: int
+    procuring_system_operator_id: int
+    service_provider_id: int
+    product_type_ids: list[int]
+    reason: ServiceProviderProductSuspensionReason
+    recorded_at: str
+    recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        product_type_ids: list[int] | Unset = UNSET
-        if not isinstance(self.product_type_ids, Unset):
-            product_type_ids = self.product_type_ids
-
-        reason: str | Unset = UNSET
-        if not isinstance(self.reason, Unset):
-            reason = self.reason.value
+        id = self.id
 
         procuring_system_operator_id = self.procuring_system_operator_id
 
         service_provider_id = self.service_provider_id
 
+        product_type_ids = self.product_type_ids
+
+        reason = self.reason.value
+
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
 
-        id = self.id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if product_type_ids is not UNSET:
-            field_dict["product_type_ids"] = product_type_ids
-        if reason is not UNSET:
-            field_dict["reason"] = reason
-        if procuring_system_operator_id is not UNSET:
-            field_dict["procuring_system_operator_id"] = procuring_system_operator_id
-        if service_provider_id is not UNSET:
-            field_dict["service_provider_id"] = service_provider_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
+        field_dict.update(
+            {
+                "id": id,
+                "procuring_system_operator_id": procuring_system_operator_id,
+                "service_provider_id": service_provider_id,
+                "product_type_ids": product_type_ids,
+                "reason": reason,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
+        id = d.pop("id")
 
-        _reason = d.pop("reason", UNSET)
-        reason: ServiceProviderProductSuspensionReason | Unset
-        if isinstance(_reason, Unset):
-            reason = UNSET
-        else:
-            reason = ServiceProviderProductSuspensionReason(_reason)
+        procuring_system_operator_id = d.pop("procuring_system_operator_id")
 
-        procuring_system_operator_id = d.pop("procuring_system_operator_id", UNSET)
+        service_provider_id = d.pop("service_provider_id")
 
-        service_provider_id = d.pop("service_provider_id", UNSET)
+        product_type_ids = cast(list[int], d.pop("product_type_ids"))
 
-        recorded_at = d.pop("recorded_at", UNSET)
+        reason = ServiceProviderProductSuspensionReason(d.pop("reason"))
 
-        recorded_by = d.pop("recorded_by", UNSET)
+        recorded_at = d.pop("recorded_at")
 
-        id = d.pop("id", UNSET)
+        recorded_by = d.pop("recorded_by")
 
         service_provider_product_suspension = cls(
-            product_type_ids=product_type_ids,
-            reason=reason,
+            id=id,
             procuring_system_operator_id=procuring_system_operator_id,
             service_provider_id=service_provider_id,
+            product_type_ids=product_type_ids,
+            reason=reason,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
         )
 
         service_provider_product_suspension.additional_properties = d

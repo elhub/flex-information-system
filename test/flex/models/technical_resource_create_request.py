@@ -16,20 +16,22 @@ class TechnicalResourceCreateRequest:
     """Request schema for create operations - Technical unit being part of a controllable unit.
 
     Attributes:
-        name (str | Unset): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
+        name (str): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
+        controllable_unit_id (int): Reference to the controllable unit that this technical resource belongs to. Example:
+            37.
         details (None | str | Unset): Free text details about the technical resource. Example: Make: ACME
             Model: Car Charger 3000.
-        controllable_unit_id (int | Unset): Reference to the controllable unit that this technical resource belongs to.
-            Example: 37.
     """
 
-    name: str | Unset = UNSET
+    name: str
+    controllable_unit_id: int
     details: None | str | Unset = UNSET
-    controllable_unit_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
+
+        controllable_unit_id = self.controllable_unit_id
 
         details: None | str | Unset
         if isinstance(self.details, Unset):
@@ -37,24 +39,25 @@ class TechnicalResourceCreateRequest:
         else:
             details = self.details
 
-        controllable_unit_id = self.controllable_unit_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if name is not UNSET:
-            field_dict["name"] = name
+        field_dict.update(
+            {
+                "name": name,
+                "controllable_unit_id": controllable_unit_id,
+            }
+        )
         if details is not UNSET:
             field_dict["details"] = details
-        if controllable_unit_id is not UNSET:
-            field_dict["controllable_unit_id"] = controllable_unit_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
+
+        controllable_unit_id = d.pop("controllable_unit_id")
 
         def _parse_details(data: object) -> None | str | Unset:
             if data is None:
@@ -65,12 +68,10 @@ class TechnicalResourceCreateRequest:
 
         details = _parse_details(d.pop("details", UNSET))
 
-        controllable_unit_id = d.pop("controllable_unit_id", UNSET)
-
         technical_resource_create_request = cls(
             name=name,
-            details=details,
             controllable_unit_id=controllable_unit_id,
+            details=details,
         )
 
         technical_resource_create_request.additional_properties = d

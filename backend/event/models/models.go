@@ -166,7 +166,7 @@ type ApiEntityClient struct {
 	EntityID     int
 	Name         *string
 	ClientID     string
-	PartyID      int
+	PartyID      *int
 	Scopes       []string
 	ClientSecret *string
 	PublicKey    *string

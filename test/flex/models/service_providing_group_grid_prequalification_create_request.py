@@ -19,23 +19,26 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
     """Request schema for create operations - Grid prequalification for service providing group
 
     Attributes:
+        service_providing_group_id (int): Reference to the service providing group whose grid prequalification is
+            tracked by the current resource. Example: 55.
+        impacted_system_operator_id (int): Reference to the `party` that is the impacted system operator. Example: 7.
         status (ServiceProvidingGroupGridPrequalificationStatus | Unset): The status of the grid prequalification for
             this service providing group. Example: in_progress.
         prequalified_at (None | str | Unset): When the current grid prequalification was last approved. Example:
             2023-01-08 10:00:00 CET.
-        service_providing_group_id (int | Unset): Reference to the service providing group whose grid prequalification
-            is tracked by the current resource. Example: 55.
-        impacted_system_operator_id (int | Unset): Reference to the `party` that is the impacted system operator.
-            Example: 7.
     """
 
+    service_providing_group_id: int
+    impacted_system_operator_id: int
     status: ServiceProvidingGroupGridPrequalificationStatus | Unset = UNSET
     prequalified_at: None | str | Unset = UNSET
-    service_providing_group_id: int | Unset = UNSET
-    impacted_system_operator_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        service_providing_group_id = self.service_providing_group_id
+
+        impacted_system_operator_id = self.impacted_system_operator_id
+
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
@@ -46,27 +49,28 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
         else:
             prequalified_at = self.prequalified_at
 
-        service_providing_group_id = self.service_providing_group_id
-
-        impacted_system_operator_id = self.impacted_system_operator_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "service_providing_group_id": service_providing_group_id,
+                "impacted_system_operator_id": impacted_system_operator_id,
+            }
+        )
         if status is not UNSET:
             field_dict["status"] = status
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
-        if service_providing_group_id is not UNSET:
-            field_dict["service_providing_group_id"] = service_providing_group_id
-        if impacted_system_operator_id is not UNSET:
-            field_dict["impacted_system_operator_id"] = impacted_system_operator_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        service_providing_group_id = d.pop("service_providing_group_id")
+
+        impacted_system_operator_id = d.pop("impacted_system_operator_id")
+
         _status = d.pop("status", UNSET)
         status: ServiceProvidingGroupGridPrequalificationStatus | Unset
         if isinstance(_status, Unset):
@@ -83,15 +87,11 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
 
         prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 
-        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
-
-        impacted_system_operator_id = d.pop("impacted_system_operator_id", UNSET)
-
         service_providing_group_grid_prequalification_create_request = cls(
-            status=status,
-            prequalified_at=prequalified_at,
             service_providing_group_id=service_providing_group_id,
             impacted_system_operator_id=impacted_system_operator_id,
+            status=status,
+            prequalified_at=prequalified_at,
         )
 
         service_providing_group_grid_prequalification_create_request.additional_properties = d

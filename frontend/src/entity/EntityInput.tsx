@@ -4,8 +4,8 @@ import { InputStack } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
-import { zEntity } from "../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zEntityCreateRequest } from "../generated-client/zod.gen";
+import { unTypedZodResolver } from "../util";
 import { EnumInput } from "../components/enum";
 
 const businessIDTypeOfEntityType = (entityType: string) => {
@@ -74,7 +74,7 @@ export const EntityInput = () => {
   return (
     <SimpleForm
       maxWidth={1280}
-      resolver={zodResolver(zEntity)}
+      resolver={unTypedZodResolver(zEntityCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

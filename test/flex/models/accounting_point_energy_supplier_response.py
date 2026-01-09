@@ -13,20 +13,20 @@ T = TypeVar("T", bound="AccountingPointEnergySupplierResponse")
 
 @_attrs_define
 class AccountingPointEnergySupplierResponse:
-    """Response schema for operations with return values - Relation linking an energy supplier to an accounting point.
+    """Response schema - Relation linking an energy supplier to an accounting point.
 
     Attributes:
-        accounting_point_id (int | Unset): The ID of the accounting point. Example: 45.
-        energy_supplier_id (int | Unset): The energy supplier of the accounting point. Example: 7.
-        valid_from (str | Unset): The date from which the relation between the accounting point and the energy supplier
-            is valid. Midnight aligned on Norwegian timezone. Example: 2023-09-09 00:00:00 CET.
+        accounting_point_id (int): The ID of the accounting point. Example: 45.
+        energy_supplier_id (int): The energy supplier of the accounting point. Example: 7.
+        valid_from (str): The date from which the relation between the accounting point and the energy supplier is
+            valid. Midnight aligned on Norwegian timezone. Example: 2023-09-09 00:00:00 CET.
         valid_to (None | str | Unset): The date until which the relation between the accounting point and the energy
             supplier is valid. Midnight aligned on Norwegian timezone.
     """
 
-    accounting_point_id: int | Unset = UNSET
-    energy_supplier_id: int | Unset = UNSET
-    valid_from: str | Unset = UNSET
+    accounting_point_id: int
+    energy_supplier_id: int
+    valid_from: str
     valid_to: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -45,13 +45,13 @@ class AccountingPointEnergySupplierResponse:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if accounting_point_id is not UNSET:
-            field_dict["accounting_point_id"] = accounting_point_id
-        if energy_supplier_id is not UNSET:
-            field_dict["energy_supplier_id"] = energy_supplier_id
-        if valid_from is not UNSET:
-            field_dict["valid_from"] = valid_from
+        field_dict.update(
+            {
+                "accounting_point_id": accounting_point_id,
+                "energy_supplier_id": energy_supplier_id,
+                "valid_from": valid_from,
+            }
+        )
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
 
@@ -60,11 +60,11 @@ class AccountingPointEnergySupplierResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        accounting_point_id = d.pop("accounting_point_id", UNSET)
+        accounting_point_id = d.pop("accounting_point_id")
 
-        energy_supplier_id = d.pop("energy_supplier_id", UNSET)
+        energy_supplier_id = d.pop("energy_supplier_id")
 
-        valid_from = d.pop("valid_from", UNSET)
+        valid_from = d.pop("valid_from")
 
         def _parse_valid_to(data: object) -> None | str | Unset:
             if data is None:

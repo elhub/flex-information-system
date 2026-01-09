@@ -1,3 +1,6 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Resolver } from "react-hook-form";
+
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
   const chunks = [];
@@ -27,3 +30,9 @@ export function countDefinedValues(obj: any): number {
     return acc;
   }, 0);
 }
+
+// this is the type react admin uses internally for the form values
+type FieldValues = Record<string, any>;
+// React admin does not support required fields in the schema, so we need to untype the resolver
+export const unTypedZodResolver = (schema: Parameters<typeof zodResolver>[0]) =>
+  zodResolver(schema) as Resolver<FieldValues>;

@@ -18,57 +18,51 @@ class ServiceProvidingGroupGridSuspensionCreateRequest:
     service providing group from delivering services.
 
         Attributes:
-            reason (ServiceProvidingGroupGridSuspensionReason | Unset): The reason for the suspension. Example:
+            service_providing_group_id (int): Reference to the service providing group being suspended. Example: 13.
+            reason (ServiceProvidingGroupGridSuspensionReason): The reason for the suspension. Example:
                 significant_group_change.
             impacted_system_operator_id (int | Unset): Reference to the impacted system operator suspending the service
                 providing group. Example: 7.
-            service_providing_group_id (int | Unset): Reference to the service providing group being suspended. Example: 13.
     """
 
-    reason: ServiceProvidingGroupGridSuspensionReason | Unset = UNSET
+    service_providing_group_id: int
+    reason: ServiceProvidingGroupGridSuspensionReason
     impacted_system_operator_id: int | Unset = UNSET
-    service_providing_group_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        reason: str | Unset = UNSET
-        if not isinstance(self.reason, Unset):
-            reason = self.reason.value
+        service_providing_group_id = self.service_providing_group_id
+
+        reason = self.reason.value
 
         impacted_system_operator_id = self.impacted_system_operator_id
 
-        service_providing_group_id = self.service_providing_group_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if reason is not UNSET:
-            field_dict["reason"] = reason
+        field_dict.update(
+            {
+                "service_providing_group_id": service_providing_group_id,
+                "reason": reason,
+            }
+        )
         if impacted_system_operator_id is not UNSET:
             field_dict["impacted_system_operator_id"] = impacted_system_operator_id
-        if service_providing_group_id is not UNSET:
-            field_dict["service_providing_group_id"] = service_providing_group_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        _reason = d.pop("reason", UNSET)
-        reason: ServiceProvidingGroupGridSuspensionReason | Unset
-        if isinstance(_reason, Unset):
-            reason = UNSET
-        else:
-            reason = ServiceProvidingGroupGridSuspensionReason(_reason)
+        service_providing_group_id = d.pop("service_providing_group_id")
+
+        reason = ServiceProvidingGroupGridSuspensionReason(d.pop("reason"))
 
         impacted_system_operator_id = d.pop("impacted_system_operator_id", UNSET)
 
-        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
-
         service_providing_group_grid_suspension_create_request = cls(
+            service_providing_group_id=service_providing_group_id,
             reason=reason,
             impacted_system_operator_id=impacted_system_operator_id,
-            service_providing_group_id=service_providing_group_id,
         )
 
         service_providing_group_grid_suspension_create_request.additional_properties = d

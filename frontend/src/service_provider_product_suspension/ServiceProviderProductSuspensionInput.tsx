@@ -3,8 +3,8 @@ import { Typography, Stack } from "@mui/material";
 import { PartyReferenceInput, InputStack } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { ProductTypeArrayInput } from "../product_type/components";
-import { zServiceProviderProductSuspension } from "../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zServiceProviderProductSuspensionCreateRequest } from "../generated-client/zod.gen";
+import { unTypedZodResolver } from "../util";
 import { EnumInput } from "../components/enum";
 
 export const ServiceProviderProductSuspensionInput = () => {
@@ -16,7 +16,9 @@ export const ServiceProviderProductSuspensionInput = () => {
   return (
     <SimpleForm
       maxWidth={1280}
-      resolver={zodResolver(zServiceProviderProductSuspension)}
+      resolver={unTypedZodResolver(
+        zServiceProviderProductSuspensionCreateRequest,
+      )}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

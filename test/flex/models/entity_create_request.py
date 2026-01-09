@@ -8,7 +8,6 @@ from attrs import field as _attrs_field
 
 from ..models.entity_business_id_type import EntityBusinessIdType
 from ..models.entity_type import EntityType
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="EntityCreateRequest")
 
@@ -25,72 +24,57 @@ class EntityCreateRequest:
     * Organisation
 
         Attributes:
-            business_id_type (EntityBusinessIdType | Unset): The type of the business identifier. Example: pid.
-            name (str | Unset): Name of the entity. Maximum 128 characters. Example: John Smith.
-            type_ (EntityType | Unset): The type of the entity, e.g Person, Organisation Example: person.
-            business_id (str | Unset): The business identifier of the entity. Format depends on `business_id_type`. Example:
+            business_id (str): The business identifier of the entity. Format depends on `business_id_type`. Example:
                 13370000000.
+            business_id_type (EntityBusinessIdType): The type of the business identifier. Example: pid.
+            name (str): Name of the entity. Maximum 128 characters. Example: John Smith.
+            type_ (EntityType): The type of the entity, e.g Person, Organisation Example: person.
     """
 
-    business_id_type: EntityBusinessIdType | Unset = UNSET
-    name: str | Unset = UNSET
-    type_: EntityType | Unset = UNSET
-    business_id: str | Unset = UNSET
+    business_id: str
+    business_id_type: EntityBusinessIdType
+    name: str
+    type_: EntityType
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        business_id_type: str | Unset = UNSET
-        if not isinstance(self.business_id_type, Unset):
-            business_id_type = self.business_id_type.value
+        business_id = self.business_id
+
+        business_id_type = self.business_id_type.value
 
         name = self.name
 
-        type_: str | Unset = UNSET
-        if not isinstance(self.type_, Unset):
-            type_ = self.type_.value
-
-        business_id = self.business_id
+        type_ = self.type_.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if business_id_type is not UNSET:
-            field_dict["business_id_type"] = business_id_type
-        if name is not UNSET:
-            field_dict["name"] = name
-        if type_ is not UNSET:
-            field_dict["type"] = type_
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
+        field_dict.update(
+            {
+                "business_id": business_id,
+                "business_id_type": business_id_type,
+                "name": name,
+                "type": type_,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        _business_id_type = d.pop("business_id_type", UNSET)
-        business_id_type: EntityBusinessIdType | Unset
-        if isinstance(_business_id_type, Unset):
-            business_id_type = UNSET
-        else:
-            business_id_type = EntityBusinessIdType(_business_id_type)
+        business_id = d.pop("business_id")
 
-        name = d.pop("name", UNSET)
+        business_id_type = EntityBusinessIdType(d.pop("business_id_type"))
 
-        _type_ = d.pop("type", UNSET)
-        type_: EntityType | Unset
-        if isinstance(_type_, Unset):
-            type_ = UNSET
-        else:
-            type_ = EntityType(_type_)
+        name = d.pop("name")
 
-        business_id = d.pop("business_id", UNSET)
+        type_ = EntityType(d.pop("type"))
 
         entity_create_request = cls(
+            business_id=business_id,
             business_id_type=business_id_type,
             name=name,
             type_=type_,
-            business_id=business_id,
         )
 
         entity_create_request.additional_properties = d

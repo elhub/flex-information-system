@@ -9,8 +9,8 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ScopesInput } from "../../components/scopes";
 import { useMemo } from "react";
-import { zPartyMembership } from "../../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zPartyMembershipCreateRequest } from "../../generated-client/zod.gen";
+import { unTypedZodResolver } from "../../util";
 
 // keep only the fields that map to the UI
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
@@ -35,7 +35,7 @@ export const PartyMembershipInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zPartyMembership)}
+      resolver={unTypedZodResolver(zPartyMembershipCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

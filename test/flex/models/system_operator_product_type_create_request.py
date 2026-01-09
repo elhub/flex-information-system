@@ -17,40 +17,45 @@ class SystemOperatorProductTypeCreateRequest:
     """Request schema for create operations - Relation between a system operator and a product type they want to buy.
 
     Attributes:
+        system_operator_id (int): Reference to the system operator. Example: 37.
+        product_type_id (int): Reference to the product type. Example: 8.
         status (SystemOperatorProductTypeStatus | Unset): The status of the relation. Example: active.
-        system_operator_id (int | Unset): Reference to the system operator. Example: 37.
-        product_type_id (int | Unset): Reference to the product type. Example: 8.
     """
 
+    system_operator_id: int
+    product_type_id: int
     status: SystemOperatorProductTypeStatus | Unset = UNSET
-    system_operator_id: int | Unset = UNSET
-    product_type_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        status: str | Unset = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
-
         system_operator_id = self.system_operator_id
 
         product_type_id = self.product_type_id
 
+        status: str | Unset = UNSET
+        if not isinstance(self.status, Unset):
+            status = self.status.value
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "system_operator_id": system_operator_id,
+                "product_type_id": product_type_id,
+            }
+        )
         if status is not UNSET:
             field_dict["status"] = status
-        if system_operator_id is not UNSET:
-            field_dict["system_operator_id"] = system_operator_id
-        if product_type_id is not UNSET:
-            field_dict["product_type_id"] = product_type_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        system_operator_id = d.pop("system_operator_id")
+
+        product_type_id = d.pop("product_type_id")
+
         _status = d.pop("status", UNSET)
         status: SystemOperatorProductTypeStatus | Unset
         if isinstance(_status, Unset):
@@ -58,14 +63,10 @@ class SystemOperatorProductTypeCreateRequest:
         else:
             status = SystemOperatorProductTypeStatus(_status)
 
-        system_operator_id = d.pop("system_operator_id", UNSET)
-
-        product_type_id = d.pop("product_type_id", UNSET)
-
         system_operator_product_type_create_request = cls(
-            status=status,
             system_operator_id=system_operator_id,
             product_type_id=product_type_id,
+            status=status,
         )
 
         system_operator_product_type_create_request.additional_properties = d

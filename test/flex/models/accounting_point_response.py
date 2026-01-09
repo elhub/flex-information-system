@@ -6,77 +6,73 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 T = TypeVar("T", bound="AccountingPointResponse")
 
 
 @_attrs_define
 class AccountingPointResponse:
-    """Response schema for operations with return values - Accounting point for a controllable unit.
+    """Response schema - Accounting point for a controllable unit.
 
     Attributes:
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 89.
-        business_id (str | Unset): The GSRN metering point id of the accounting point. Example: 709000000000000057.
-        system_operator_id (int | Unset): The system operator of the accounting point.
+        id (int): Unique surrogate identifier. Example: 89.
+        business_id (str): The GSRN metering point id of the accounting point. Example: 709000000000000057.
+        system_operator_id (int): The system operator of the accounting point.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
-    business_id: str | Unset = UNSET
-    system_operator_id: int | Unset = UNSET
+    id: int
+    business_id: str
+    system_operator_id: int
+    recorded_at: str
+    recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
         id = self.id
 
         business_id = self.business_id
 
         system_operator_id = self.system_operator_id
 
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
-        if system_operator_id is not UNSET:
-            field_dict["system_operator_id"] = system_operator_id
+        field_dict.update(
+            {
+                "id": id,
+                "business_id": business_id,
+                "system_operator_id": system_operator_id,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        recorded_at = d.pop("recorded_at", UNSET)
+        id = d.pop("id")
 
-        recorded_by = d.pop("recorded_by", UNSET)
+        business_id = d.pop("business_id")
 
-        id = d.pop("id", UNSET)
+        system_operator_id = d.pop("system_operator_id")
 
-        business_id = d.pop("business_id", UNSET)
+        recorded_at = d.pop("recorded_at")
 
-        system_operator_id = d.pop("system_operator_id", UNSET)
+        recorded_by = d.pop("recorded_by")
 
         accounting_point_response = cls(
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
             id=id,
             business_id=business_id,
             system_operator_id=system_operator_id,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
         )
 
         accounting_point_response.additional_properties = d

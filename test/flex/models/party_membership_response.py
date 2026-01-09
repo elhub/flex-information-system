@@ -7,100 +7,92 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.auth_scope import AuthScope
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyMembershipResponse")
 
 
 @_attrs_define
 class PartyMembershipResponse:
-    """Response schema for operations with return values - The relation between a party and entity.
+    """Response schema - The relation between a party and entity.
 
     Attributes:
-        scopes (list[AuthScope] | Unset): List of scopes granted to the entity when it acts as the party. Scopes are
-            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+        id (int): Unique surrogate identifier. Example: 44.
+        party_id (int): Reference to the party that the membership links to an entity. Example: 379.
+        entity_id (int): Reference to the entity that the party represents. Example: 30.
+        scopes (list[AuthScope]): List of scopes granted to the entity when it acts as the party. Scopes are inspired
+            from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
-        party_id (int | Unset): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (int | Unset): Reference to the entity that the party represents. Example: 30.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 44.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
-    scopes: list[AuthScope] | Unset = UNSET
-    party_id: int | Unset = UNSET
-    entity_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
+    id: int
+    party_id: int
+    entity_id: int
+    scopes: list[AuthScope]
+    recorded_at: str
+    recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        scopes: list[str] | Unset = UNSET
-        if not isinstance(self.scopes, Unset):
-            scopes = []
-            for scopes_item_data in self.scopes:
-                scopes_item = scopes_item_data.value
-                scopes.append(scopes_item)
+        id = self.id
 
         party_id = self.party_id
 
         entity_id = self.entity_id
 
+        scopes = []
+        for scopes_item_data in self.scopes:
+            scopes_item = scopes_item_data.value
+            scopes.append(scopes_item)
+
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
 
-        id = self.id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if scopes is not UNSET:
-            field_dict["scopes"] = scopes
-        if party_id is not UNSET:
-            field_dict["party_id"] = party_id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
+        field_dict.update(
+            {
+                "id": id,
+                "party_id": party_id,
+                "entity_id": entity_id,
+                "scopes": scopes,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        _scopes = d.pop("scopes", UNSET)
-        scopes: list[AuthScope] | Unset = UNSET
-        if _scopes is not UNSET:
-            scopes = []
-            for scopes_item_data in _scopes:
-                scopes_item = AuthScope(scopes_item_data)
+        id = d.pop("id")
 
-                scopes.append(scopes_item)
+        party_id = d.pop("party_id")
 
-        party_id = d.pop("party_id", UNSET)
+        entity_id = d.pop("entity_id")
 
-        entity_id = d.pop("entity_id", UNSET)
+        scopes = []
+        _scopes = d.pop("scopes")
+        for scopes_item_data in _scopes:
+            scopes_item = AuthScope(scopes_item_data)
 
-        recorded_at = d.pop("recorded_at", UNSET)
+            scopes.append(scopes_item)
 
-        recorded_by = d.pop("recorded_by", UNSET)
+        recorded_at = d.pop("recorded_at")
 
-        id = d.pop("id", UNSET)
+        recorded_by = d.pop("recorded_by")
 
         party_membership_response = cls(
-            scopes=scopes,
+            id=id,
             party_id=party_id,
             entity_id=entity_id,
+            scopes=scopes,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
         )
 
         party_membership_response.additional_properties = d

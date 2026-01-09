@@ -145,8 +145,9 @@ export const ControllableUnitLookupResult = () => {
   const {
     state: { result },
   } = useLocation();
-  const controllableUnitLookUpResult =
-    zControllableUnitLookupResponse.parse(result);
+  const controllableUnitLookUpResult = zControllableUnitLookupResponse.parse(
+    result ?? {},
+  );
 
   return (
     <RecordContextProvider value={controllableUnitLookUpResult}>

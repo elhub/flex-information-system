@@ -18,68 +18,58 @@ class ServiceProviderProductSuspensionCreateRequest:
     service provider from delivering them products of the given types.
 
         Attributes:
-            product_type_ids (list[int] | Unset): References to the suspended product types. Example: [1, 7].
-            reason (ServiceProviderProductSuspensionReason | Unset): The reason for the suspension. Example:
-                communication_issues.
+            service_provider_id (int): Reference to the service provider being suspended. Example: 52.
+            product_type_ids (list[int]): References to the suspended product types. Example: [1, 7].
+            reason (ServiceProviderProductSuspensionReason): The reason for the suspension. Example: communication_issues.
             procuring_system_operator_id (int | Unset): Reference to the procuring system operator suspending the service
                 provider. Example: 9.
-            service_provider_id (int | Unset): Reference to the service provider being suspended. Example: 52.
     """
 
-    product_type_ids: list[int] | Unset = UNSET
-    reason: ServiceProviderProductSuspensionReason | Unset = UNSET
+    service_provider_id: int
+    product_type_ids: list[int]
+    reason: ServiceProviderProductSuspensionReason
     procuring_system_operator_id: int | Unset = UNSET
-    service_provider_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        product_type_ids: list[int] | Unset = UNSET
-        if not isinstance(self.product_type_ids, Unset):
-            product_type_ids = self.product_type_ids
+        service_provider_id = self.service_provider_id
 
-        reason: str | Unset = UNSET
-        if not isinstance(self.reason, Unset):
-            reason = self.reason.value
+        product_type_ids = self.product_type_ids
+
+        reason = self.reason.value
 
         procuring_system_operator_id = self.procuring_system_operator_id
 
-        service_provider_id = self.service_provider_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if product_type_ids is not UNSET:
-            field_dict["product_type_ids"] = product_type_ids
-        if reason is not UNSET:
-            field_dict["reason"] = reason
+        field_dict.update(
+            {
+                "service_provider_id": service_provider_id,
+                "product_type_ids": product_type_ids,
+                "reason": reason,
+            }
+        )
         if procuring_system_operator_id is not UNSET:
             field_dict["procuring_system_operator_id"] = procuring_system_operator_id
-        if service_provider_id is not UNSET:
-            field_dict["service_provider_id"] = service_provider_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
+        service_provider_id = d.pop("service_provider_id")
 
-        _reason = d.pop("reason", UNSET)
-        reason: ServiceProviderProductSuspensionReason | Unset
-        if isinstance(_reason, Unset):
-            reason = UNSET
-        else:
-            reason = ServiceProviderProductSuspensionReason(_reason)
+        product_type_ids = cast(list[int], d.pop("product_type_ids"))
+
+        reason = ServiceProviderProductSuspensionReason(d.pop("reason"))
 
         procuring_system_operator_id = d.pop("procuring_system_operator_id", UNSET)
 
-        service_provider_id = d.pop("service_provider_id", UNSET)
-
         service_provider_product_suspension_create_request = cls(
+            service_provider_id=service_provider_id,
             product_type_ids=product_type_ids,
             reason=reason,
             procuring_system_operator_id=procuring_system_operator_id,
-            service_provider_id=service_provider_id,
         )
 
         service_provider_product_suspension_create_request.additional_properties = d

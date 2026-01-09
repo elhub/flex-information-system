@@ -16,16 +16,16 @@ class Identity:
     """Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
 
     Attributes:
-        id (int | Unset): Unique surrogate identifier. Example: 44.
-        entity_id (int | Unset): Reference to the entity using the identity. Example: 3.
-        entity_name (str | Unset): Name of the entity using the identity. Example: Martin Andersen.
+        id (int): Unique surrogate identifier. Example: 44.
+        entity_id (int): Reference to the entity using the identity. Example: 3.
+        entity_name (str): Name of the entity using the identity. Example: Martin Andersen.
         party_id (int | None | Unset): Reference to the party assumed by the entity. Example: 17.
         party_name (None | str | Unset): Name of the party assumed by the entity. Example: Andersen SO.
     """
 
-    id: int | Unset = UNSET
-    entity_id: int | Unset = UNSET
-    entity_name: str | Unset = UNSET
+    id: int
+    entity_id: int
+    entity_name: str
     party_id: int | None | Unset = UNSET
     party_name: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -51,13 +51,13 @@ class Identity:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if id is not UNSET:
-            field_dict["id"] = id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
-        if entity_name is not UNSET:
-            field_dict["entity_name"] = entity_name
+        field_dict.update(
+            {
+                "id": id,
+                "entity_id": entity_id,
+                "entity_name": entity_name,
+            }
+        )
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
         if party_name is not UNSET:
@@ -68,11 +68,11 @@ class Identity:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        id = d.pop("id", UNSET)
+        id = d.pop("id")
 
-        entity_id = d.pop("entity_id", UNSET)
+        entity_id = d.pop("entity_id")
 
-        entity_name = d.pop("entity_name", UNSET)
+        entity_name = d.pop("entity_name")
 
         def _parse_party_id(data: object) -> int | None | Unset:
             if data is None:

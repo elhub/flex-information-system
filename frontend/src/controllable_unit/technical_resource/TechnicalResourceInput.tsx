@@ -3,9 +3,10 @@ import { Typography, Stack } from "@mui/material";
 import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { Toolbar } from "../../components/Toolbar";
 import { zTechnicalResource } from "../../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { TechnicalResource } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
+import { zTechnicalResourceCreateRequest } from "../../generated-client/zod.gen";
+import { unTypedZodResolver } from "../../util";
 
 export type TechnicalResourceInputLocationState = {
   technicalResource?: Partial<TechnicalResource>;
@@ -14,9 +15,9 @@ export type TechnicalResourceInputLocationState = {
 // common layout to create and edit pages
 export const TechnicalResourceInput = () => {
   const locationState = useLocationState<TechnicalResourceInputLocationState>();
-  const technicalResourceOverride = locationState?.technicalResource
-    ? zTechnicalResource.parse(locationState?.technicalResource)
-    : {};
+  const technicalResourceOverride = zTechnicalResource
+    .partial()
+    .parse(locationState?.technicalResource ?? {});
 
   const record = useRecordContext<TechnicalResource>();
 
@@ -29,7 +30,7 @@ export const TechnicalResourceInput = () => {
     <SimpleForm
       record={overriddenRecord}
       maxWidth={1280}
-      resolver={zodResolver(zTechnicalResource)}
+      resolver={unTypedZodResolver(zTechnicalResourceCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

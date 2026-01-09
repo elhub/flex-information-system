@@ -18,16 +18,14 @@ class EntityClientCreateRequest:
     authentication methods.
 
         Attributes:
-            name (None | str | Unset): Name of the client. Example: Laptop.
-            client_id (str | Unset): The identifier of the entity. For use with client credentials authentication method.
-                Example: addr@flex.test.
-            party_id (int | Unset): Reference to the party this client allows to assume. A null value means the client
-                cannot assume any party. Example: 30.
-            scopes (list[AuthScope] | Unset): List of scopes granted to the user when it logs in as an entity or when it
-                acts as the party. When assuming a party through party membership, the least privileged set of scopes will be
-                kept.
+            entity_id (int): Reference to the entity that this client is attached to. Example: 30.
+            scopes (list[AuthScope]): List of scopes granted to the user when it logs in as an entity or when it acts as the
+                party. When assuming a party through party membership, the least privileged set of scopes will be kept.
                 Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
                 Example: ['read:data'].
+            name (None | str | Unset): Name of the client. Example: Laptop.
+            party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
+                client cannot assume any party. Example: 30.
             client_secret (None | str | Unset): The secret of the entity. For use with client credentials authentication
                 method. Input as plain text but stored encrypted. Example: mysupersecretpassword.
             public_key (None | str | Unset): The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT
@@ -37,35 +35,35 @@ class EntityClientCreateRequest:
                 kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
                 0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
                 -----END PUBLIC KEY-----.
-            entity_id (int | Unset): Reference to the entity that this client is attached to. Example: 30.
     """
 
+    entity_id: int
+    scopes: list[AuthScope]
     name: None | str | Unset = UNSET
-    client_id: str | Unset = UNSET
-    party_id: int | Unset = UNSET
-    scopes: list[AuthScope] | Unset = UNSET
+    party_id: int | None | Unset = UNSET
     client_secret: None | str | Unset = UNSET
     public_key: None | str | Unset = UNSET
-    entity_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        entity_id = self.entity_id
+
+        scopes = []
+        for scopes_item_data in self.scopes:
+            scopes_item = scopes_item_data.value
+            scopes.append(scopes_item)
+
         name: None | str | Unset
         if isinstance(self.name, Unset):
             name = UNSET
         else:
             name = self.name
 
-        client_id = self.client_id
-
-        party_id = self.party_id
-
-        scopes: list[str] | Unset = UNSET
-        if not isinstance(self.scopes, Unset):
-            scopes = []
-            for scopes_item_data in self.scopes:
-                scopes_item = scopes_item_data.value
-                scopes.append(scopes_item)
+        party_id: int | None | Unset
+        if isinstance(self.party_id, Unset):
+            party_id = UNSET
+        else:
+            party_id = self.party_id
 
         client_secret: None | str | Unset
         if isinstance(self.client_secret, Unset):
@@ -79,31 +77,36 @@ class EntityClientCreateRequest:
         else:
             public_key = self.public_key
 
-        entity_id = self.entity_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "entity_id": entity_id,
+                "scopes": scopes,
+            }
+        )
         if name is not UNSET:
             field_dict["name"] = name
-        if client_id is not UNSET:
-            field_dict["client_id"] = client_id
         if party_id is not UNSET:
             field_dict["party_id"] = party_id
-        if scopes is not UNSET:
-            field_dict["scopes"] = scopes
         if client_secret is not UNSET:
             field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
             field_dict["public_key"] = public_key
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        entity_id = d.pop("entity_id")
+
+        scopes = []
+        _scopes = d.pop("scopes")
+        for scopes_item_data in _scopes:
+            scopes_item = AuthScope(scopes_item_data)
+
+            scopes.append(scopes_item)
 
         def _parse_name(data: object) -> None | str | Unset:
             if data is None:
@@ -114,18 +117,14 @@ class EntityClientCreateRequest:
 
         name = _parse_name(d.pop("name", UNSET))
 
-        client_id = d.pop("client_id", UNSET)
+        def _parse_party_id(data: object) -> int | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(int | None | Unset, data)
 
-        party_id = d.pop("party_id", UNSET)
-
-        _scopes = d.pop("scopes", UNSET)
-        scopes: list[AuthScope] | Unset = UNSET
-        if _scopes is not UNSET:
-            scopes = []
-            for scopes_item_data in _scopes:
-                scopes_item = AuthScope(scopes_item_data)
-
-                scopes.append(scopes_item)
+        party_id = _parse_party_id(d.pop("party_id", UNSET))
 
         def _parse_client_secret(data: object) -> None | str | Unset:
             if data is None:
@@ -145,16 +144,13 @@ class EntityClientCreateRequest:
 
         public_key = _parse_public_key(d.pop("public_key", UNSET))
 
-        entity_id = d.pop("entity_id", UNSET)
-
         entity_client_create_request = cls(
-            name=name,
-            client_id=client_id,
-            party_id=party_id,
+            entity_id=entity_id,
             scopes=scopes,
+            name=name,
+            party_id=party_id,
             client_secret=client_secret,
             public_key=public_key,
-            entity_id=entity_id,
         )
 
         entity_client_create_request.additional_properties = d

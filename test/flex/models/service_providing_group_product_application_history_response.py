@@ -14,54 +14,60 @@ T = TypeVar("T", bound="ServiceProvidingGroupProductApplicationHistoryResponse")
 
 @_attrs_define
 class ServiceProvidingGroupProductApplicationHistoryResponse:
-    """Service Providing Group Product Application - history
+    """History response schema - Relation between a service providing group and a system operator for a product type, for
+    the SPG to deliver a product to the SO later.
 
-    Attributes:
-        service_providing_group_product_application_id (int): Reference to the resource that was updated. Example: 48.
-        product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
-        status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
-            in_progress.
-        notes (None | str | Unset): Free text notes on the current product application status.
-        prequalified_at (None | str | Unset): When the product application was last prequalified. Example: 2022-08-08
-            12:00:00 CET.
-        verified_at (None | str | Unset): When the product application was last verified. Example: 2021-08-08 10:00:00
-            CET.
-        service_providing_group_id (int | Unset): Reference to the service providing group. Example: 18.
-        procuring_system_operator_id (int | Unset): Reference to the procuring system operator. Example: 39.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 89.
-        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-            CET.
+        Attributes:
+            id (int): Unique surrogate identifier. Example: 89.
+            service_providing_group_id (int): Reference to the service providing group. Example: 18.
+            procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
+            product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
+            status (ServiceProvidingGroupProductApplicationStatus): The status of the application. Example: in_progress.
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+                23:59:00 CET.
+            recorded_by (int): The identity that recorded the resource. Example: 145.
+            service_providing_group_product_application_id (int): Reference to the resource that was updated. Example: 48.
+            notes (None | str | Unset): Free text notes on the current product application status.
+            prequalified_at (None | str | Unset): When the product application was last prequalified. Example: 2022-08-08
+                12:00:00 CET.
+            verified_at (None | str | Unset): When the product application was last verified. Example: 2021-08-08 10:00:00
+                CET.
+            replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
+            replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
+                CET.
     """
 
+    id: int
+    service_providing_group_id: int
+    procuring_system_operator_id: int
+    product_type_ids: list[int]
+    status: ServiceProvidingGroupProductApplicationStatus
+    recorded_at: str
+    recorded_by: int
     service_providing_group_product_application_id: int
-    product_type_ids: list[int] | Unset = UNSET
-    status: ServiceProvidingGroupProductApplicationStatus | Unset = UNSET
     notes: None | str | Unset = UNSET
     prequalified_at: None | str | Unset = UNSET
     verified_at: None | str | Unset = UNSET
-    service_providing_group_id: int | Unset = UNSET
-    procuring_system_operator_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        id = self.id
+
+        service_providing_group_id = self.service_providing_group_id
+
+        procuring_system_operator_id = self.procuring_system_operator_id
+
+        product_type_ids = self.product_type_ids
+
+        status = self.status.value
+
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
         service_providing_group_product_application_id = self.service_providing_group_product_application_id
-
-        product_type_ids: list[int] | Unset = UNSET
-        if not isinstance(self.product_type_ids, Unset):
-            product_type_ids = self.product_type_ids
-
-        status: str | Unset = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
 
         notes: None | str | Unset
         if isinstance(self.notes, Unset):
@@ -81,16 +87,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         else:
             verified_at = self.verified_at
 
-        service_providing_group_id = self.service_providing_group_id
-
-        procuring_system_operator_id = self.procuring_system_operator_id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
-        id = self.id
-
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
@@ -107,29 +103,22 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
+                "service_providing_group_id": service_providing_group_id,
+                "procuring_system_operator_id": procuring_system_operator_id,
+                "product_type_ids": product_type_ids,
+                "status": status,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
                 "service_providing_group_product_application_id": service_providing_group_product_application_id,
             }
         )
-        if product_type_ids is not UNSET:
-            field_dict["product_type_ids"] = product_type_ids
-        if status is not UNSET:
-            field_dict["status"] = status
         if notes is not UNSET:
             field_dict["notes"] = notes
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
             field_dict["verified_at"] = verified_at
-        if service_providing_group_id is not UNSET:
-            field_dict["service_providing_group_id"] = service_providing_group_id
-        if procuring_system_operator_id is not UNSET:
-            field_dict["procuring_system_operator_id"] = procuring_system_operator_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -140,16 +129,21 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        id = d.pop("id")
+
+        service_providing_group_id = d.pop("service_providing_group_id")
+
+        procuring_system_operator_id = d.pop("procuring_system_operator_id")
+
+        product_type_ids = cast(list[int], d.pop("product_type_ids"))
+
+        status = ServiceProvidingGroupProductApplicationStatus(d.pop("status"))
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
         service_providing_group_product_application_id = d.pop("service_providing_group_product_application_id")
-
-        product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
-
-        _status = d.pop("status", UNSET)
-        status: ServiceProvidingGroupProductApplicationStatus | Unset
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = ServiceProvidingGroupProductApplicationStatus(_status)
 
         def _parse_notes(data: object) -> None | str | Unset:
             if data is None:
@@ -178,16 +172,6 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
-        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
-
-        procuring_system_operator_id = d.pop("procuring_system_operator_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
-
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -207,17 +191,17 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_providing_group_product_application_history_response = cls(
-            service_providing_group_product_application_id=service_providing_group_product_application_id,
+            id=id,
+            service_providing_group_id=service_providing_group_id,
+            procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
+            service_providing_group_product_application_id=service_providing_group_product_application_id,
             notes=notes,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
-            service_providing_group_id=service_providing_group_id,
-            procuring_system_operator_id=procuring_system_operator_id,
-            recorded_at=recorded_at,
-            recorded_by=recorded_by,
-            id=id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

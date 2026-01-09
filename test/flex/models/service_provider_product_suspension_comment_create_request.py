@@ -19,42 +19,46 @@ class ServiceProviderProductSuspensionCommentCreateRequest:
     """Request schema for create operations - Comment made by a party involved in a service provider product suspension.
 
     Attributes:
+        service_provider_product_suspension_id (int): Reference to the service provider product suspension. Example: 7.
+        content (str): Free text content of the comment. Example: Missing document..
         visibility (ServiceProviderProductSuspensionCommentVisibility | Unset): The level of visibility of the comment.
             Example: same_party.
-        content (str | Unset): Free text content of the comment. Example: Missing document..
-        service_provider_product_suspension_id (int | Unset): Reference to the service provider product suspension.
-            Example: 7.
     """
 
+    service_provider_product_suspension_id: int
+    content: str
     visibility: ServiceProviderProductSuspensionCommentVisibility | Unset = UNSET
-    content: str | Unset = UNSET
-    service_provider_product_suspension_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        service_provider_product_suspension_id = self.service_provider_product_suspension_id
+
+        content = self.content
+
         visibility: str | Unset = UNSET
         if not isinstance(self.visibility, Unset):
             visibility = self.visibility.value
 
-        content = self.content
-
-        service_provider_product_suspension_id = self.service_provider_product_suspension_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "service_provider_product_suspension_id": service_provider_product_suspension_id,
+                "content": content,
+            }
+        )
         if visibility is not UNSET:
             field_dict["visibility"] = visibility
-        if content is not UNSET:
-            field_dict["content"] = content
-        if service_provider_product_suspension_id is not UNSET:
-            field_dict["service_provider_product_suspension_id"] = service_provider_product_suspension_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        service_provider_product_suspension_id = d.pop("service_provider_product_suspension_id")
+
+        content = d.pop("content")
+
         _visibility = d.pop("visibility", UNSET)
         visibility: ServiceProviderProductSuspensionCommentVisibility | Unset
         if isinstance(_visibility, Unset):
@@ -62,14 +66,10 @@ class ServiceProviderProductSuspensionCommentCreateRequest:
         else:
             visibility = ServiceProviderProductSuspensionCommentVisibility(_visibility)
 
-        content = d.pop("content", UNSET)
-
-        service_provider_product_suspension_id = d.pop("service_provider_product_suspension_id", UNSET)
-
         service_provider_product_suspension_comment_create_request = cls(
-            visibility=visibility,
-            content=content,
             service_provider_product_suspension_id=service_provider_product_suspension_id,
+            content=content,
+            visibility=visibility,
         )
 
         service_provider_product_suspension_comment_create_request.additional_properties = d

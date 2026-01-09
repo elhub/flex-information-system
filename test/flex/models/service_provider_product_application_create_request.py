@@ -18,25 +18,27 @@ class ServiceProviderProductApplicationCreateRequest:
     apply for delivering the SO some of the types of product they want to buy on a flexibility market.
 
         Attributes:
-            product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
+            service_provider_id (int): Reference to the service provider. Example: 18.
+            system_operator_id (int): Reference to the system operator. Example: 39.
+            product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
             status (ServiceProviderProductApplicationStatus | Unset): The status of the application. Example: in_progress.
             qualified_at (None | str | Unset): When the product application was last validated. Example: 2022-08-08 12:00:00
                 CET.
-            service_provider_id (int | Unset): Reference to the service provider. Example: 18.
-            system_operator_id (int | Unset): Reference to the system operator. Example: 39.
     """
 
-    product_type_ids: list[int] | Unset = UNSET
+    service_provider_id: int
+    system_operator_id: int
+    product_type_ids: list[int]
     status: ServiceProviderProductApplicationStatus | Unset = UNSET
     qualified_at: None | str | Unset = UNSET
-    service_provider_id: int | Unset = UNSET
-    system_operator_id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        product_type_ids: list[int] | Unset = UNSET
-        if not isinstance(self.product_type_ids, Unset):
-            product_type_ids = self.product_type_ids
+        service_provider_id = self.service_provider_id
+
+        system_operator_id = self.system_operator_id
+
+        product_type_ids = self.product_type_ids
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
@@ -48,30 +50,30 @@ class ServiceProviderProductApplicationCreateRequest:
         else:
             qualified_at = self.qualified_at
 
-        service_provider_id = self.service_provider_id
-
-        system_operator_id = self.system_operator_id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if product_type_ids is not UNSET:
-            field_dict["product_type_ids"] = product_type_ids
+        field_dict.update(
+            {
+                "service_provider_id": service_provider_id,
+                "system_operator_id": system_operator_id,
+                "product_type_ids": product_type_ids,
+            }
+        )
         if status is not UNSET:
             field_dict["status"] = status
         if qualified_at is not UNSET:
             field_dict["qualified_at"] = qualified_at
-        if service_provider_id is not UNSET:
-            field_dict["service_provider_id"] = service_provider_id
-        if system_operator_id is not UNSET:
-            field_dict["system_operator_id"] = system_operator_id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
+        service_provider_id = d.pop("service_provider_id")
+
+        system_operator_id = d.pop("system_operator_id")
+
+        product_type_ids = cast(list[int], d.pop("product_type_ids"))
 
         _status = d.pop("status", UNSET)
         status: ServiceProviderProductApplicationStatus | Unset
@@ -89,16 +91,12 @@ class ServiceProviderProductApplicationCreateRequest:
 
         qualified_at = _parse_qualified_at(d.pop("qualified_at", UNSET))
 
-        service_provider_id = d.pop("service_provider_id", UNSET)
-
-        system_operator_id = d.pop("system_operator_id", UNSET)
-
         service_provider_product_application_create_request = cls(
+            service_provider_id=service_provider_id,
+            system_operator_id=system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
             qualified_at=qualified_at,
-            service_provider_id=service_provider_id,
-            system_operator_id=system_operator_id,
         )
 
         service_provider_product_application_create_request.additional_properties = d
