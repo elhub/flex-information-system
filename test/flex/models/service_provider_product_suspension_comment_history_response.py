@@ -16,7 +16,7 @@ T = TypeVar("T", bound="ServiceProviderProductSuspensionCommentHistoryResponse")
 
 @_attrs_define
 class ServiceProviderProductSuspensionCommentHistoryResponse:
-    """History response schema - Comment made by a party involved in a service provider product suspension.
+    """Service Provider Product Suspension Comment - history
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 9.

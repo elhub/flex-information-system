@@ -13,7 +13,7 @@ T = TypeVar("T", bound="ControllableUnitSuspensionResponse")
 
 @_attrs_define
 class ControllableUnitSuspensionResponse:
-    """Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+    """Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 74.

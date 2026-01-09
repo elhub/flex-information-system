@@ -13,7 +13,7 @@ T = TypeVar("T", bound="ServiceProvidingGroupProductSuspensionResponse")
 
 @_attrs_define
 class ServiceProvidingGroupProductSuspensionResponse:
-    """Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group
+    """Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group
     from delivering products of certain types.
 
         Attributes:

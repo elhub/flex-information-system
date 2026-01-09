@@ -14,24 +14,23 @@ T = TypeVar("T", bound="ServiceProviderProductApplicationHistoryResponse")
 
 @_attrs_define
 class ServiceProviderProductApplicationHistoryResponse:
-    """History response schema - Relation between a service provider and a system operator, for the SP to apply for
-    delivering the SO some of the types of product they want to buy on a flexibility market.
+    """Service Provider Product Application - history
 
-        Attributes:
-            id (int): Unique surrogate identifier. Example: 89.
-            service_provider_id (int): Reference to the service provider. Example: 18.
-            system_operator_id (int): Reference to the system operator. Example: 39.
-            product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
-            status (ServiceProviderProductApplicationStatus): The status of the application. Example: in_progress.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
-            service_provider_product_application_id (int): Reference to the resource that was updated. Example: 48.
-            qualified_at (None | str | Unset): When the product application was last validated. Example: 2022-08-08 12:00:00
-                CET.
-            replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-            replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-                CET.
+    Attributes:
+        id (int): Unique surrogate identifier. Example: 89.
+        service_provider_id (int): Reference to the service provider. Example: 18.
+        system_operator_id (int): Reference to the system operator. Example: 39.
+        product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
+        status (ServiceProviderProductApplicationStatus): The status of the application. Example: in_progress.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        service_provider_product_application_id (int): Reference to the resource that was updated. Example: 48.
+        qualified_at (None | str | Unset): When the product application was last validated. Example: 2022-08-08 12:00:00
+            CET.
+        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
+            CET.
     """
 
     id: int

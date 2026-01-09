@@ -269,10 +269,10 @@ components:
       properties:
         entity:
           description: Details about the entity owning the missing party.
-          $ref: "#/components/schemas/entity"
+          $ref: "#/components/schemas/entity_response"
         party:
           description: Details about the missing party.
-          $ref: "#/components/schemas/party"
+          $ref: "#/components/schemas/party_response"
     notice_data_party_outdated:
       description: >-
         Format of the data field in a notice of type
@@ -280,10 +280,10 @@ components:
       properties:
         entity:
           description: Details about the possibly new entity owning the party.
-          $ref: "#/components/schemas/entity"
+          $ref: "#/components/schemas/entity_response"
         party:
           description: Updated fields of the party.
-          $ref: "#/components/schemas/party"
+          $ref: "#/components/schemas/party_response"
     notice_data_product_type_not_qualified:
       description: >-
         Format of the data field in a notice of type

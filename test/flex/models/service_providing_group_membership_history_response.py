@@ -13,7 +13,7 @@ T = TypeVar("T", bound="ServiceProvidingGroupMembershipHistoryResponse")
 
 @_attrs_define
 class ServiceProvidingGroupMembershipHistoryResponse:
-    """History response schema - Membership relation of controllable unit in service providing group
+    """Membership relation of controllable unit in service providing group - history
 
     Attributes:
         id (int): Unique surrogate key. Example: 27.

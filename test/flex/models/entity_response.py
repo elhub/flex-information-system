@@ -14,7 +14,7 @@ T = TypeVar("T", bound="EntityResponse")
 
 @_attrs_define
 class EntityResponse:
-    """Response schema - Entity - Natural or legal person
+    """Data schema - Entity - Natural or legal person
 
     An entity is a natural or legal person that can be a party in the Flexibility Information System.
 

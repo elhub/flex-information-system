@@ -16,7 +16,7 @@ T = TypeVar("T", bound="PartyResponse")
 
 @_attrs_define
 class PartyResponse:
-    """Response schema - The body that interacts with the Flexibility Information System
+    """Data schema - The body that interacts with the Flexibility Information System
 
     A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
 

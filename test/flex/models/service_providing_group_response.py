@@ -14,7 +14,7 @@ T = TypeVar("T", bound="ServiceProvidingGroupResponse")
 
 @_attrs_define
 class ServiceProvidingGroupResponse:
-    """Response schema - Group of controllable units
+    """Data schema - Group of controllable units
 
     Attributes:
         id (int): Unique surrogate key. Example: 4.

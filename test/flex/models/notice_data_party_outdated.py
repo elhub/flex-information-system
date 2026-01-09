@@ -9,8 +9,8 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.entity import Entity
-    from ..models.party import Party
+    from ..models.entity_response import EntityResponse
+    from ..models.party_response import PartyResponse
 
 
 T = TypeVar("T", bound="NoticeDataPartyOutdated")
@@ -21,7 +21,7 @@ class NoticeDataPartyOutdated:
     """Format of the data field in a notice of type no.elhub.flex.party.outdated
 
     Attributes:
-        entity (Entity | Unset): Data schema - Entity - Natural or legal person
+        entity (EntityResponse | Unset): Data schema - Entity - Natural or legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information System.
 
@@ -29,7 +29,7 @@ class NoticeDataPartyOutdated:
 
             * Person
             * Organisation
-        party (Party | Unset): Data schema - The body that interacts with the Flexibility Information System
+        party (PartyResponse | Unset): Data schema - The body that interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
 
@@ -40,8 +40,8 @@ class NoticeDataPartyOutdated:
             * End User
     """
 
-    entity: Entity | Unset = UNSET
-    party: Party | Unset = UNSET
+    entity: EntityResponse | Unset = UNSET
+    party: PartyResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -65,23 +65,23 @@ class NoticeDataPartyOutdated:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.entity import Entity
-        from ..models.party import Party
+        from ..models.entity_response import EntityResponse
+        from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
         _entity = d.pop("entity", UNSET)
-        entity: Entity | Unset
+        entity: EntityResponse | Unset
         if isinstance(_entity, Unset):
             entity = UNSET
         else:
-            entity = Entity.from_dict(_entity)
+            entity = EntityResponse.from_dict(_entity)
 
         _party = d.pop("party", UNSET)
-        party: Party | Unset
+        party: PartyResponse | Unset
         if isinstance(_party, Unset):
             party = UNSET
         else:
-            party = Party.from_dict(_party)
+            party = PartyResponse.from_dict(_party)
 
         notice_data_party_outdated = cls(
             entity=entity,

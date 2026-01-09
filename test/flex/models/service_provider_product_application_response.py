@@ -14,8 +14,8 @@ T = TypeVar("T", bound="ServiceProviderProductApplicationResponse")
 
 @_attrs_define
 class ServiceProviderProductApplicationResponse:
-    """Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the
-    SO some of the types of product they want to buy on a flexibility market.
+    """Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO
+    some of the types of product they want to buy on a flexibility market.
 
         Attributes:
             id (int): Unique surrogate identifier. Example: 89.

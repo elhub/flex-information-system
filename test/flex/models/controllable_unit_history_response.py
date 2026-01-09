@@ -18,7 +18,7 @@ T = TypeVar("T", bound="ControllableUnitHistoryResponse")
 
 @_attrs_define
 class ControllableUnitHistoryResponse:
-    """History response schema - Controllable unit
+    """Controllable unit - history
 
     Attributes:
         id (int): Unique surrogate key. Example: 12.

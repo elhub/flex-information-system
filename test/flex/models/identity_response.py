@@ -13,7 +13,7 @@ T = TypeVar("T", bound="IdentityResponse")
 
 @_attrs_define
 class IdentityResponse:
-    """Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+    """Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 44.

@@ -20,7 +20,7 @@ T = TypeVar("T", bound="NoticeResponse")
 
 @_attrs_define
 class NoticeResponse:
-    """Response schema - Notice to users about various issues or actions expected from them.
+    """Data schema - Notice to users about various issues or actions expected from them.
 
     Attributes:
         party_id (int): Reference to the party targeted by the notice. Example: 18.

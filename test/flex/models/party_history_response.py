@@ -17,34 +17,26 @@ T = TypeVar("T", bound="PartyHistoryResponse")
 
 @_attrs_define
 class PartyHistoryResponse:
-    """History response schema - The body that interacts with the Flexibility Information System
+    """Party - history
 
-    A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
-
-    Example party types:
-
-    * Service Provider
-    * System Operator
-    * End User
-
-        Attributes:
-            id (int): Unique surrogate identifier. Example: 11.
-            business_id (str): The business identifier of the party. Format depends on `business_id_type`. Example:
-                1337099000000.
-            business_id_type (PartyBusinessIdType): The type of the business identifier. Example: gln.
-            entity_id (int): Reference to the entity that is the parent of the party. Example: 30.
-            name (str): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
-            role (PartyRole): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
-                service_provider. Example: flex_energy_supplier.
-            type_ (PartyType): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
-            status (PartyStatus): The status of the party. Example: active.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
-            party_id (int): Reference to the resource that was updated. Example: 48.
-            replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-            replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-                CET.
+    Attributes:
+        id (int): Unique surrogate identifier. Example: 11.
+        business_id (str): The business identifier of the party. Format depends on `business_id_type`. Example:
+            1337099000000.
+        business_id_type (PartyBusinessIdType): The type of the business identifier. Example: gln.
+        entity_id (int): Reference to the entity that is the parent of the party. Example: 30.
+        name (str): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
+        role (PartyRole): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
+            service_provider. Example: flex_energy_supplier.
+        type_ (PartyType): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
+        status (PartyStatus): The status of the party. Example: active.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        party_id (int): Reference to the resource that was updated. Example: 48.
+        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
+            CET.
     """
 
     id: int

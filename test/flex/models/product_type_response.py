@@ -11,7 +11,7 @@ T = TypeVar("T", bound="ProductTypeResponse")
 
 @_attrs_define
 class ProductTypeResponse:
-    """Response schema - Product type.
+    """Data schema - Product type.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 4.

@@ -13,7 +13,7 @@ T = TypeVar("T", bound="AccountingPointEnergySupplierResponse")
 
 @_attrs_define
 class AccountingPointEnergySupplierResponse:
-    """Response schema - Relation linking an energy supplier to an accounting point.
+    """Data schema - Relation linking an energy supplier to an accounting point.
 
     Attributes:
         accounting_point_id (int): The ID of the accounting point. Example: 45.

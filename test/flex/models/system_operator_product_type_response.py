@@ -13,7 +13,7 @@ T = TypeVar("T", bound="SystemOperatorProductTypeResponse")
 
 @_attrs_define
 class SystemOperatorProductTypeResponse:
-    """Response schema - Relation between a system operator and a product type they want to buy.
+    """Data schema - Relation between a system operator and a product type they want to buy.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.

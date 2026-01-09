@@ -578,35 +578,15 @@ def generate_openapi_document(base_file, resources_file, servers_file):
         if len(non_nullable_properties) > 0:
             data_schema["required"] = non_nullable_properties
 
-        schemas[resource["id"]] = data_schema
-        schemas[f"{resource['id']}_response"] = {
-            "summary": f"Response - {resource['summary']}",
-            "type": "object",
-            "description": f"Response schema - {resource['description']}",
-            "allOf": [
-                {"$ref": f"#/components/schemas/{resource['id']}"},
-                # The python lib removes aliases to data schemas, so we need to add the empty object schema. So it understands its different.
-                {"type": "object", "additionalProperties": False},
-            ],
-        }
+        schemas[f"{resource['id']}_response"] = data_schema
 
     # generate the history schemas from the template
 
     for resource in resources:
         if resource.get("history"):
-            schemas[f"{resource['id']}_history"] = history_schema_template(
+            schemas[f"{resource['id']}_history_response"] = history_schema_template(
                 resource["id"], resource["summary"]
             )
-            schemas[f"{resource['id']}_history_response"] = {
-                "summary": f"History Response - {resource['summary']}",
-                "type": "object",
-                "description": f"History response schema - {resource['description']}",
-                "allOf": [
-                    {"$ref": f"#/components/schemas/{resource['id']}_history"},
-                    # The python lib removes aliases to data schemas, so we need to add the empty object schema. So it understands its different.
-                    {"type": "object", "additionalProperties": False},
-                ],
-            }
 
     # ---- ENDPOINTS (under paths) ----
 

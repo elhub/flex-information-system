@@ -13,7 +13,7 @@ T = TypeVar("T", bound="TechnicalResourceHistoryResponse")
 
 @_attrs_define
 class TechnicalResourceHistoryResponse:
-    """History response schema - Technical unit being part of a controllable unit.
+    """Technical Resource - history
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.

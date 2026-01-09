@@ -16,7 +16,7 @@ T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationCommentHistoryR
 
 @_attrs_define
 class ServiceProvidingGroupGridPrequalificationCommentHistoryResponse:
-    """History response schema - Comment made by a party involved in a service providing group grid prequalification.
+    """Grid prequalification for service providing group Comment - history
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 9.

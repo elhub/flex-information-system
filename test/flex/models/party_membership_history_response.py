@@ -14,7 +14,7 @@ T = TypeVar("T", bound="PartyMembershipHistoryResponse")
 
 @_attrs_define
 class PartyMembershipHistoryResponse:
-    """History response schema - The relation between a party and entity.
+    """Party Membership - history
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 44.

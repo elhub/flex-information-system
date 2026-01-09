@@ -13,7 +13,7 @@ T = TypeVar("T", bound="ControllableUnitServiceProviderResponse")
 
 @_attrs_define
 class ControllableUnitServiceProviderResponse:
-    """Response schema - Relation between controllable unit and service provider
+    """Data schema - Relation between controllable unit and service provider
 
     Attributes:
         id (int): Unique surrogate key. Example: 7.

@@ -14,24 +14,23 @@ T = TypeVar("T", bound="ServiceProvidingGroupProductSuspensionHistoryResponse")
 
 @_attrs_define
 class ServiceProvidingGroupProductSuspensionHistoryResponse:
-    """History response schema - The relation allowing a procuring system operator to temporarily suspend a service
-    providing group from delivering products of certain types.
+    """Service Providing Group Product Suspension - history
 
-        Attributes:
-            id (int): Unique surrogate identifier. Example: 12.
-            procuring_system_operator_id (int): Reference to the procuring system operator suspending the service providing
-                group. Example: 91.
-            service_providing_group_id (int): Reference to the service providing group being suspended. Example: 7.
-            product_type_ids (list[int]): References to the suspended product types. Example: [3, 6].
-            reason (ServiceProvidingGroupProductSuspensionReason): The reason for the suspension. Example:
-                failed_verification.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
-            service_providing_group_product_suspension_id (int): Reference to the resource that was updated. Example: 48.
-            replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-            replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-                CET.
+    Attributes:
+        id (int): Unique surrogate identifier. Example: 12.
+        procuring_system_operator_id (int): Reference to the procuring system operator suspending the service providing
+            group. Example: 91.
+        service_providing_group_id (int): Reference to the service providing group being suspended. Example: 7.
+        product_type_ids (list[int]): References to the suspended product types. Example: [3, 6].
+        reason (ServiceProvidingGroupProductSuspensionReason): The reason for the suspension. Example:
+            failed_verification.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        service_providing_group_product_suspension_id (int): Reference to the resource that was updated. Example: 48.
+        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
+            CET.
     """
 
     id: int

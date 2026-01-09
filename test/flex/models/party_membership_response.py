@@ -13,7 +13,7 @@ T = TypeVar("T", bound="PartyMembershipResponse")
 
 @_attrs_define
 class PartyMembershipResponse:
-    """Response schema - The relation between a party and entity.
+    """Data schema - The relation between a party and entity.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 44.

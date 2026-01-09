@@ -14,23 +14,22 @@ T = TypeVar("T", bound="ServiceProvidingGroupGridSuspensionHistoryResponse")
 
 @_attrs_define
 class ServiceProvidingGroupGridSuspensionHistoryResponse:
-    """History response schema - The relation allowing an impacted system operator to temporarily suspend a service
-    providing group from delivering services.
+    """Service Providing Group Grid Suspension - history
 
-        Attributes:
-            id (int): Unique surrogate identifier. Example: 49.
-            impacted_system_operator_id (int): Reference to the impacted system operator suspending the service providing
-                group. Example: 7.
-            service_providing_group_id (int): Reference to the service providing group being suspended. Example: 13.
-            reason (ServiceProvidingGroupGridSuspensionReason): The reason for the suspension. Example:
-                significant_group_change.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
-            recorded_by (int): The identity that recorded the resource. Example: 145.
-            service_providing_group_grid_suspension_id (int): Reference to the resource that was updated. Example: 48.
-            replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-            replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-                CET.
+    Attributes:
+        id (int): Unique surrogate identifier. Example: 49.
+        impacted_system_operator_id (int): Reference to the impacted system operator suspending the service providing
+            group. Example: 7.
+        service_providing_group_id (int): Reference to the service providing group being suspended. Example: 13.
+        reason (ServiceProvidingGroupGridSuspensionReason): The reason for the suspension. Example:
+            significant_group_change.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        service_providing_group_grid_suspension_id (int): Reference to the resource that was updated. Example: 48.
+        replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
+            CET.
     """
 
     id: int
