@@ -1,5 +1,6 @@
 from http import HTTPStatus
 from typing import Any, cast
+from urllib.parse import quote
 
 import httpx
 
@@ -7,22 +8,25 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     id: int,
     *,
-    body: EmptyObject,
+    body: EmptyObject | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
     _kwargs: dict[str, Any] = {
         "method": "delete",
-        "url": f"/entity_client/{id}",
+        "url": "/entity_client/{id}".format(
+            id=quote(str(id), safe=""),
+        ),
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -99,13 +103,13 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject,
+    body: EmptyObject | Unset = UNSET,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Entity client
 
     Args:
         id (int):
-        body (EmptyObject): An empty object
+        body (EmptyObject | Unset): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -131,13 +135,13 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject,
+    body: EmptyObject | Unset = UNSET,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Entity client
 
     Args:
         id (int):
-        body (EmptyObject): An empty object
+        body (EmptyObject | Unset): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -158,13 +162,13 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject,
+    body: EmptyObject | Unset = UNSET,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Entity client
 
     Args:
         id (int):
-        body (EmptyObject): An empty object
+        body (EmptyObject | Unset): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -188,13 +192,13 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
-    body: EmptyObject,
+    body: EmptyObject | Unset = UNSET,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Entity client
 
     Args:
         id (int):
-        body (EmptyObject): An empty object
+        body (EmptyObject | Unset): An empty object
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

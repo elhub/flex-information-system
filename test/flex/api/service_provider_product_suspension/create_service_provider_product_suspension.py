@@ -9,12 +9,12 @@ from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...models.service_provider_product_suspension_create_request import ServiceProviderProductSuspensionCreateRequest
 from ...models.service_provider_product_suspension_response import ServiceProviderProductSuspensionResponse
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ServiceProviderProductSuspensionCreateRequest,
+    body: ServiceProviderProductSuspensionCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,7 +23,8 @@ def _get_kwargs(
         "url": "/service_provider_product_suspension",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -110,14 +111,14 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductSuspensionCreateRequest,
+    body: ServiceProviderProductSuspensionCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Create Service Provider Product Suspension
 
     Args:
-        body (ServiceProviderProductSuspensionCreateRequest): Request schema for create operations
-            - The relation allowing a procuring system operator to temporarily suspend a service
-            provider from delivering them products of the given types.
+        body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service provider from delivering them products of the given types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -141,14 +142,14 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductSuspensionCreateRequest,
+    body: ServiceProviderProductSuspensionCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Create Service Provider Product Suspension
 
     Args:
-        body (ServiceProviderProductSuspensionCreateRequest): Request schema for create operations
-            - The relation allowing a procuring system operator to temporarily suspend a service
-            provider from delivering them products of the given types.
+        body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service provider from delivering them products of the given types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -167,14 +168,14 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductSuspensionCreateRequest,
+    body: ServiceProviderProductSuspensionCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Create Service Provider Product Suspension
 
     Args:
-        body (ServiceProviderProductSuspensionCreateRequest): Request schema for create operations
-            - The relation allowing a procuring system operator to temporarily suspend a service
-            provider from delivering them products of the given types.
+        body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service provider from delivering them products of the given types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -196,14 +197,14 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductSuspensionCreateRequest,
+    body: ServiceProviderProductSuspensionCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Create Service Provider Product Suspension
 
     Args:
-        body (ServiceProviderProductSuspensionCreateRequest): Request schema for create operations
-            - The relation allowing a procuring system operator to temporarily suspend a service
-            provider from delivering them products of the given types.
+        body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create
+            operations - The relation allowing a procuring system operator to temporarily suspend a
+            service provider from delivering them products of the given types.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

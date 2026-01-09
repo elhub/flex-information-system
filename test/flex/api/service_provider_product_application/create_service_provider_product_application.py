@@ -9,12 +9,12 @@ from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...models.service_provider_product_application_create_request import ServiceProviderProductApplicationCreateRequest
 from ...models.service_provider_product_application_response import ServiceProviderProductApplicationResponse
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: ServiceProviderProductApplicationCreateRequest,
+    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,7 +23,8 @@ def _get_kwargs(
         "url": "/service_provider_product_application",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -110,12 +111,12 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest,
+    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.
@@ -142,12 +143,12 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest,
+    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.
@@ -169,12 +170,12 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest,
+    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.
@@ -199,12 +200,12 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ServiceProviderProductApplicationCreateRequest,
+    body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Create Service Provider Product Application
 
     Args:
-        body (ServiceProviderProductApplicationCreateRequest): Request schema for create
+        body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
             apply for delivering the SO some of the types of product they want to buy on a flexibility
             market.

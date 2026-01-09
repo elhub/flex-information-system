@@ -9,12 +9,12 @@ from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
 from ...models.party_create_request import PartyCreateRequest
 from ...models.party_response import PartyResponse
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    body: PartyCreateRequest,
+    body: PartyCreateRequest | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
 
@@ -23,7 +23,8 @@ def _get_kwargs(
         "url": "/party",
     }
 
-    _kwargs["json"] = body.to_dict()
+    if not isinstance(body, Unset):
+        _kwargs["json"] = body.to_dict()
 
     headers["Content-Type"] = "application/json"
 
@@ -110,13 +111,13 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest,
+    body: PartyCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
     """Create Party
 
     Args:
-        body (PartyCreateRequest): Request schema for create operations - The body that interacts
-            with the Flexibility Information System
+        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
+            interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
@@ -149,13 +150,13 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest,
+    body: PartyCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
     """Create Party
 
     Args:
-        body (PartyCreateRequest): Request schema for create operations - The body that interacts
-            with the Flexibility Information System
+        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
+            interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
@@ -183,13 +184,13 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest,
+    body: PartyCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
     """Create Party
 
     Args:
-        body (PartyCreateRequest): Request schema for create operations - The body that interacts
-            with the Flexibility Information System
+        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
+            interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
@@ -220,13 +221,13 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: PartyCreateRequest,
+    body: PartyCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
     """Create Party
 
     Args:
-        body (PartyCreateRequest): Request schema for create operations - The body that interacts
-            with the Flexibility Information System
+        body (PartyCreateRequest | Unset): Request schema for create operations - The body that
+            interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity
             Information System.
