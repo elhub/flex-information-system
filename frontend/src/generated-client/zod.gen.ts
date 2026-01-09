@@ -2112,6 +2112,59 @@ export const zAccountingPointEnergySupplierResponse =
   zAccountingPointEnergySupplier.and(z.unknown());
 
 /**
+ * Request schema for update operations - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridAreaUpdateRequest = z.record(
+  z.string(),
+  z.unknown(),
+);
+
+/**
+ * Data of the request schema for create operations - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridAreaCreateData =
+  zAccountingPointMeteringGridAreaUpdateRequest;
+
+/**
+ * Data schema - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridArea =
+  zAccountingPointMeteringGridAreaCreateData.and(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.int().readonly().optional(),
+        ),
+      ),
+      metering_grid_area_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.int().readonly().optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().readonly().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().readonly().optional(),
+        ),
+      ),
+    }),
+  );
+
+/**
+ * Response schema for operations with return values - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridAreaResponse =
+  zAccountingPointMeteringGridArea.and(z.unknown());
+
+/**
  * Request schema for update operations - Product type.
  */
 export const zProductTypeUpdateRequest = z.record(z.string(), z.unknown());
@@ -3580,6 +3633,12 @@ export const zAccountingPointEndUserCreateDataWritable =
  */
 export const zAccountingPointEnergySupplierCreateDataWritable =
   zAccountingPointEnergySupplierUpdateRequest;
+
+/**
+ * Data of the request schema for create operations - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridAreaCreateDataWritable =
+  zAccountingPointMeteringGridAreaUpdateRequest;
 
 /**
  * Data of the request schema for create operations - Product type.
@@ -9451,6 +9510,96 @@ export const zListAccountingPointEnergySupplierData = z.object({
 export const zListAccountingPointEnergySupplierResponse = z.union([
   z.array(zAccountingPointEnergySupplierResponse),
   z.array(zAccountingPointEnergySupplierResponse),
+]);
+
+export const zListAccountingPointMeteringGridAreaData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      metering_grid_area_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
+  headers: z.optional(
+    z.object({
+      Range: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      "Range-Unit": z
+        .optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        )
+        .default("items"),
+      Prefer: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.enum(["count=none"]).optional(),
+        ),
+      ),
+    }),
+  ),
+});
+
+export const zListAccountingPointMeteringGridAreaResponse = z.union([
+  z.array(zAccountingPointMeteringGridAreaResponse),
+  z.array(zAccountingPointMeteringGridAreaResponse),
 ]);
 
 export const zListProductTypeData = z.object({

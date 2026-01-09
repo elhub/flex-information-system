@@ -5264,6 +5264,86 @@ GRANT SELECT (
 api.accounting_point_energy_supplier
 TO flex_third_party;
 
+-- changeset flex:api-grant-accounting-point-metering-grid-area-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_balance_responsible_party;
+
+-- changeset flex:api-grant-accounting-point-metering-grid-area-es-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_energy_supplier;
+
+-- changeset flex:api-grant-accounting-point-metering-grid-area-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_end_user;
+
+-- changeset flex:api-grant-accounting-point-metering-grid-area-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:api-grant-accounting-point-metering-grid-area-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_market_operator;
+
+-- changeset flex:api-grant-accounting-point-metering-grid-area-so-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_system_operator;
+
+-- changeset flex:api-grant-accounting-point-metering-grid-area-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_service_provider;
+
+-- changeset flex:api-grant-accounting-point-metering-grid-area-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT (
+    accounting_point_id,
+    metering_grid_area_id,
+    valid_from,
+    valid_to
+) ON TABLE
+api.accounting_point_metering_grid_area
+TO flex_third_party;
+
 -- changeset flex:api-grant-product-type-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
     id,

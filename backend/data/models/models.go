@@ -45,6 +45,13 @@ type ApiAccountingPointEnergySupplier struct {
 	ValidTo           pgtype.Timestamptz
 }
 
+type ApiAccountingPointMeteringGridArea struct {
+	AccountingPointID  int
+	MeteringGridAreaID int
+	ValidFrom          pgtype.Timestamptz
+	ValidTo            pgtype.Timestamptz
+}
+
 type ApiControllableUnit struct {
 	ID                       int
 	BusinessID               string

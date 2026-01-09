@@ -119,6 +119,9 @@ import type {
   ListAccountingPointEnergySupplierErrors,
   ListAccountingPointEnergySupplierResponses,
   ListAccountingPointErrors,
+  ListAccountingPointMeteringGridAreaData,
+  ListAccountingPointMeteringGridAreaErrors,
+  ListAccountingPointMeteringGridAreaResponses,
   ListAccountingPointResponses,
   ListControllableUnitData,
   ListControllableUnitErrors,
@@ -2633,6 +2636,24 @@ export const listAccountingPointEnergySupplier = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/accounting_point_energy_supplier",
+    ...options,
+  });
+
+/**
+ * List Accounting Point Metering Grid Area
+ */
+export const listAccountingPointMeteringGridArea = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointMeteringGridAreaData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointMeteringGridAreaResponses,
+    ListAccountingPointMeteringGridAreaErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_metering_grid_area",
     ...options,
   });
 

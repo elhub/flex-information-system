@@ -2159,6 +2159,72 @@ resources:
           nb: Gyldig til
           nn: Gyldig til
 
+  - id: accounting_point_metering_grid_area
+    acronym: APMGA
+    summary: Accounting Point Metering Grid Area
+    description: >-
+      Relation telling which metering grid area an accounting point belongs to.
+    x-intl:
+      en: Accounting Point Metering Grid Area
+      nb: Avregningspunktsnettområde
+      nn: Avregningspunktsnettområde
+    operations:
+      - list
+    generate_views: false
+    audit: false
+    properties:
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 45
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+        x-intl:
+          en: Accounting point
+          nb: Avregningspunkt
+          nn: Avregningspunkt
+      metering_grid_area_id:
+        description: The metering grid area of the accounting point.
+        format: bigint
+        type: integer
+        example: 3
+        readOnly: true
+        x-foreign-key:
+          resource: metering_grid_area
+          field: id
+        x-intl:
+          en: Metering Grid Area
+          nb: Nettområde
+          nn: Nettområde
+      valid_from:
+        description: >-
+          The date from which the accounting point belongs to the metering grid
+          area. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2023-09-09 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
+      valid_to:
+        description: >-
+          The date until which the accounting point belongs to the metering grid
+          area. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
+
   - id: product_type
     acronym: PT
     summary: Product Type
