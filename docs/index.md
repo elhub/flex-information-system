@@ -1,9 +1,16 @@
 # Flexibility Information System
 
 This is the documentation for the Flexibility Information System (FIS) concept
-that is being developed in the context of the
-[EuroFlex project](https://www.euroflex.no/) in Norway.
-[Elhub](https://elhub.no/) is leading the work as part of work package 4.
+that is being developed in the context of the [EuroFlex
+project](https://www.euroflex.no/) in Norway. [Elhub](https://elhub.no/) is
+leading the work as part of work package 4. This work is [funded by Enova
+SF](https://www.euroflex.no/aktuelt/enova-gir-100-millioner-til-a-etablere-fremtidens-stromnett).
+
+## License
+
+This documentation is licensed under the [CC-BY-4.0
+License](https://github.com/elhub/flex-information-system/blob/main/LICENSE-CC-BY-4.0).
+Attribution should be made to Statnett SF and Elhub AS.
 
 ## How to use the documentation
 
@@ -15,11 +22,11 @@ that is being developed in the context of the
 Learn more about how FIS works and how to use it:
 
 * [Concepts](concepts/index.md) – understand the main ideas and terms used
-in FIS.  
+in FIS.
 * [Processes](processes/index.md) – the business processes in the flexibility
 value chain.
-* [Resources](resources/index.md) – explore API endpoints and data structures.  
-* [Guides](guides/index.md) – how to use and test FIS.  
+* [Resources](resources/index.md) – explore API endpoints and data structures.
+* [Guides](guides/index.md) – how to use and test FIS.
 * Technical – read about system architecture and integrations.
 
 ## About the Flexibility Information System
