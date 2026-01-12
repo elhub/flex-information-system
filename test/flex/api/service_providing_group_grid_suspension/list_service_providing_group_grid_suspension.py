@@ -7,7 +7,6 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.list_service_providing_group_grid_suspension_prefer import ListServiceProvidingGroupGridSuspensionPrefer
 from ...models.service_providing_group_grid_suspension_response import ServiceProvidingGroupGridSuspensionResponse
 from ...types import UNSET, Response, Unset
 
@@ -21,20 +20,7 @@ def _get_kwargs(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionPrefer | Unset = UNSET,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-    if not isinstance(range_, Unset):
-        headers["Range"] = range_
-
-    if not isinstance(range_unit, Unset):
-        headers["Range-Unit"] = range_unit
-
-    if not isinstance(prefer, Unset):
-        headers["Prefer"] = str(prefer)
-
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -59,7 +45,6 @@ def _get_kwargs(
         "params": params,
     }
 
-    _kwargs["headers"] = headers
     return _kwargs
 
 
@@ -164,9 +149,6 @@ def sync_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse]]:
     """List Service Providing Group Grid Suspension
 
@@ -178,9 +160,6 @@ def sync_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -198,9 +177,6 @@ def sync_detailed(
         order=order,
         offset=offset,
         limit=limit,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = client.get_httpx_client().request(
@@ -220,9 +196,6 @@ def sync(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse] | None:
     """List Service Providing Group Grid Suspension
 
@@ -234,9 +207,6 @@ def sync(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -255,9 +225,6 @@ def sync(
         order=order,
         offset=offset,
         limit=limit,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     ).parsed
 
 
@@ -271,9 +238,6 @@ async def asyncio_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse]]:
     """List Service Providing Group Grid Suspension
 
@@ -285,9 +249,6 @@ async def asyncio_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -305,9 +266,6 @@ async def asyncio_detailed(
         order=order,
         offset=offset,
         limit=limit,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -325,9 +283,6 @@ async def asyncio(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridSuspensionPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse] | None:
     """List Service Providing Group Grid Suspension
 
@@ -339,9 +294,6 @@ async def asyncio(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridSuspensionPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -361,8 +313,5 @@ async def asyncio(
             order=order,
             offset=offset,
             limit=limit,
-            range_=range_,
-            range_unit=range_unit,
-            prefer=prefer,
         )
     ).parsed

@@ -541,7 +541,7 @@ export type ControllableUnitCreateRequest = {
 };
 
 /**
- * Data schema - Controllable unit
+ * Response schema - Controllable unit
  */
 export type ControllableUnit = {
   /**
@@ -636,7 +636,7 @@ export type ControllableUnitSuspensionCreateRequest = {
 };
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export type ControllableUnitSuspension = {
   /**
@@ -689,7 +689,7 @@ export type ControllableUnitSuspensionCommentCreateRequest = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a controllable unit suspension.
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export type ControllableUnitSuspensionComment = {
   /**
@@ -772,7 +772,7 @@ export type ControllableUnitServiceProviderCreateRequest = {
 };
 
 /**
- * Data schema - Relation between controllable unit and service provider
+ * Response schema - Relation between controllable unit and service provider
  */
 export type ControllableUnitServiceProvider = {
   /**
@@ -842,7 +842,7 @@ export type ServiceProvidingGroupCreateRequest = {
 };
 
 /**
- * Data schema - Group of controllable units
+ * Response schema - Group of controllable units
  */
 export type ServiceProvidingGroup = {
   /**
@@ -906,7 +906,7 @@ export type ServiceProvidingGroupMembershipCreateRequest = {
 };
 
 /**
- * Data schema - Membership relation of controllable unit in service providing group
+ * Response schema - Membership relation of controllable unit in service providing group
  */
 export type ServiceProvidingGroupMembership = {
   /**
@@ -970,7 +970,7 @@ export type ServiceProvidingGroupGridPrequalificationCreateRequest = {
 };
 
 /**
- * Data schema - Grid prequalification for service providing group
+ * Response schema - Grid prequalification for service providing group
  */
 export type ServiceProvidingGroupGridPrequalification = {
   /**
@@ -1027,7 +1027,7 @@ export type ServiceProvidingGroupGridPrequalificationCommentCreateRequest = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid prequalification.
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export type ServiceProvidingGroupGridPrequalificationComment = {
   /**
@@ -1084,7 +1084,7 @@ export type ServiceProvidingGroupGridSuspensionCreateRequest = {
 };
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export type ServiceProvidingGroupGridSuspension = {
   /**
@@ -1137,7 +1137,7 @@ export type ServiceProvidingGroupGridSuspensionCommentCreateRequest = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid suspension.
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export type ServiceProvidingGroupGridSuspensionComment = {
   /**
@@ -1214,7 +1214,7 @@ export type EntityCreateRequest = {
 };
 
 /**
- * Data schema - Entity - Natural or legal person
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -1310,7 +1310,7 @@ export type EntityClientCreateRequest = {
 };
 
 /**
- * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export type EntityClient = {
   /**
@@ -1409,7 +1409,7 @@ export type PartyCreateRequest = {
 };
 
 /**
- * Data schema - The body that interacts with the Flexibility Information System
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -1479,7 +1479,7 @@ export type PartyMembershipCreateRequest = {
 };
 
 /**
- * Data schema - The relation between a party and entity.
+ * Response schema - The relation between a party and entity.
  */
 export type PartyMembership = {
   /**
@@ -1509,7 +1509,7 @@ export type PartyMembership = {
 };
 
 /**
- * Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
 export type Identity = {
   /**
@@ -1567,7 +1567,7 @@ export type TechnicalResourceCreateRequest = {
 };
 
 /**
- * Data schema - Technical unit being part of a controllable unit.
+ * Response schema - Technical unit being part of a controllable unit.
  */
 export type TechnicalResource = {
   /**
@@ -1597,7 +1597,7 @@ export type TechnicalResource = {
 };
 
 /**
- * Data schema - Event happening in the system.
+ * Response schema - Event happening in the system.
  */
 export type Event = {
   /**
@@ -1641,7 +1641,7 @@ export type NotificationUpdateRequest = {
 };
 
 /**
- * Data schema - Notification about an event happening in the system.
+ * Response schema - Notification about an event happening in the system.
  */
 export type Notification = {
   /**
@@ -1671,7 +1671,7 @@ export type Notification = {
 };
 
 /**
- * Data schema - Accounting point for a controllable unit.
+ * Response schema - Accounting point for a controllable unit.
  */
 export type AccountingPoint = {
   /**
@@ -1697,7 +1697,7 @@ export type AccountingPoint = {
 };
 
 /**
- * Data schema - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export type AccountingPointBalanceResponsibleParty = {
   /**
@@ -1720,7 +1720,7 @@ export type AccountingPointBalanceResponsibleParty = {
 };
 
 /**
- * Data schema - Relation linking an energy supplier to an accounting point.
+ * Response schema - Relation linking an energy supplier to an accounting point.
  */
 export type AccountingPointEnergySupplier = {
   /**
@@ -1742,7 +1742,7 @@ export type AccountingPointEnergySupplier = {
 };
 
 /**
- * Data schema - Product type.
+ * Response schema - Product type.
  */
 export type ProductType = {
   /**
@@ -1790,7 +1790,7 @@ export type SystemOperatorProductTypeCreateRequest = {
 };
 
 /**
- * Data schema - Relation between a system operator and a product type they want to buy.
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export type SystemOperatorProductType = {
   /**
@@ -1855,7 +1855,7 @@ export type ServiceProviderProductApplicationCreateRequest = {
 };
 
 /**
- * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export type ServiceProviderProductApplication = {
   /**
@@ -1916,7 +1916,7 @@ export type ServiceProviderProductApplicationCommentCreateRequest = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service provider product application.
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
 export type ServiceProviderProductApplicationComment = {
   /**
@@ -1981,7 +1981,7 @@ export type ServiceProviderProductSuspensionCreateRequest = {
 };
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export type ServiceProviderProductSuspension = {
   /**
@@ -2038,7 +2038,7 @@ export type ServiceProviderProductSuspensionCommentCreateRequest = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service provider product suspension.
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export type ServiceProviderProductSuspensionComment = {
   /**
@@ -2127,7 +2127,7 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
 };
 
 /**
- * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export type ServiceProvidingGroupProductApplication = {
   /**
@@ -2200,7 +2200,7 @@ export type ServiceProvidingGroupProductSuspensionCreateRequest = {
 };
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export type ServiceProvidingGroupProductSuspension = {
   /**
@@ -2257,7 +2257,7 @@ export type ServiceProvidingGroupProductSuspensionCommentCreateRequest = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service providing group product suspension.
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export type ServiceProvidingGroupProductSuspensionComment = {
   /**
@@ -2292,7 +2292,7 @@ export type ServiceProvidingGroupProductSuspensionComment = {
 };
 
 /**
- * Data schema - Notice to users about various issues or actions expected from them.
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
 export type Notice = {
   /**
@@ -2743,7 +2743,7 @@ export type EmptyObjectWritable = {
 };
 
 /**
- * Data schema - Controllable unit
+ * Response schema - Controllable unit
  */
 export type ControllableUnitWritable = {
   /**
@@ -2796,7 +2796,7 @@ export type ControllableUnitWritable = {
 };
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export type ControllableUnitSuspensionWritable = {
   /**
@@ -2811,7 +2811,7 @@ export type ControllableUnitSuspensionWritable = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a controllable unit suspension.
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export type ControllableUnitSuspensionCommentWritable = {
   /**
@@ -2826,7 +2826,7 @@ export type ControllableUnitSuspensionCommentWritable = {
 };
 
 /**
- * Data schema - Relation between controllable unit and service provider
+ * Response schema - Relation between controllable unit and service provider
  */
 export type ControllableUnitServiceProviderWritable = {
   /**
@@ -2856,7 +2856,7 @@ export type ControllableUnitServiceProviderWritable = {
 };
 
 /**
- * Data schema - Group of controllable units
+ * Response schema - Group of controllable units
  */
 export type ServiceProvidingGroupWritable = {
   /**
@@ -2872,7 +2872,7 @@ export type ServiceProvidingGroupWritable = {
 };
 
 /**
- * Data schema - Membership relation of controllable unit in service providing group
+ * Response schema - Membership relation of controllable unit in service providing group
  */
 export type ServiceProvidingGroupMembershipWritable = {
   /**
@@ -2894,7 +2894,7 @@ export type ServiceProvidingGroupMembershipWritable = {
 };
 
 /**
- * Data schema - Grid prequalification for service providing group
+ * Response schema - Grid prequalification for service providing group
  */
 export type ServiceProvidingGroupGridPrequalificationWritable = {
   /**
@@ -2913,7 +2913,7 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid prequalification.
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export type ServiceProvidingGroupGridPrequalificationCommentWritable = {
   /**
@@ -2928,7 +2928,7 @@ export type ServiceProvidingGroupGridPrequalificationCommentWritable = {
 };
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export type ServiceProvidingGroupGridSuspensionWritable = {
   /**
@@ -2943,7 +2943,7 @@ export type ServiceProvidingGroupGridSuspensionWritable = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid suspension.
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export type ServiceProvidingGroupGridSuspensionCommentWritable = {
   /**
@@ -2958,7 +2958,7 @@ export type ServiceProvidingGroupGridSuspensionCommentWritable = {
 };
 
 /**
- * Data schema - Entity - Natural or legal person
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -2981,7 +2981,7 @@ export type EntityWritable = {
 };
 
 /**
- * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export type EntityClientWritable = {
   /**
@@ -3012,7 +3012,7 @@ export type EntityClientWritable = {
 };
 
 /**
- * Data schema - The body that interacts with the Flexibility Information System
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -3042,7 +3042,7 @@ export type PartyWritable = {
 };
 
 /**
- * Data schema - The relation between a party and entity.
+ * Response schema - The relation between a party and entity.
  */
 export type PartyMembershipWritable = {
   /**
@@ -3060,7 +3060,7 @@ export type PartyMembershipWritable = {
 };
 
 /**
- * Data schema - Technical unit being part of a controllable unit.
+ * Response schema - Technical unit being part of a controllable unit.
  */
 export type TechnicalResourceWritable = {
   /**
@@ -3078,7 +3078,7 @@ export type TechnicalResourceWritable = {
 };
 
 /**
- * Data schema - Notification about an event happening in the system.
+ * Response schema - Notification about an event happening in the system.
  */
 export type NotificationWritable = {
   /**
@@ -3096,14 +3096,14 @@ export type NotificationWritable = {
 };
 
 /**
- * Data schema - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export type AccountingPointBalanceResponsiblePartyWritable = {
   [key: string]: unknown;
 };
 
 /**
- * Data schema - Relation between a system operator and a product type they want to buy.
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export type SystemOperatorProductTypeWritable = {
   /**
@@ -3118,7 +3118,7 @@ export type SystemOperatorProductTypeWritable = {
 };
 
 /**
- * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export type ServiceProviderProductApplicationWritable = {
   /**
@@ -3141,7 +3141,7 @@ export type ServiceProviderProductApplicationWritable = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service provider product application.
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
 export type ServiceProviderProductApplicationCommentWritable = {
   /**
@@ -3156,7 +3156,7 @@ export type ServiceProviderProductApplicationCommentWritable = {
 };
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export type ServiceProviderProductSuspensionWritable = {
   /**
@@ -3175,7 +3175,7 @@ export type ServiceProviderProductSuspensionWritable = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service provider product suspension.
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export type ServiceProviderProductSuspensionCommentWritable = {
   /**
@@ -3190,7 +3190,7 @@ export type ServiceProviderProductSuspensionCommentWritable = {
 };
 
 /**
- * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export type ServiceProvidingGroupProductApplicationWritable = {
   /**
@@ -3221,7 +3221,7 @@ export type ServiceProvidingGroupProductApplicationWritable = {
 };
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export type ServiceProvidingGroupProductSuspensionWritable = {
   /**
@@ -3240,7 +3240,7 @@ export type ServiceProvidingGroupProductSuspensionWritable = {
 };
 
 /**
- * Data schema - Comment made by a party involved in a service providing group product suspension.
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export type ServiceProvidingGroupProductSuspensionCommentWritable = {
   /**
@@ -3255,7 +3255,7 @@ export type ServiceProvidingGroupProductSuspensionCommentWritable = {
 };
 
 /**
- * Data schema - Notice to users about various issues or actions expected from them.
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
 export type NoticeWritable = {
   [key: string]: unknown;
@@ -3769,20 +3769,6 @@ export type CallEntityLookupResponse =
 
 export type ListControllableUnitData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4030,20 +4016,6 @@ export type UpdateControllableUnitResponse =
 
 export type ListControllableUnitHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4188,20 +4160,6 @@ export type ReadControllableUnitHistoryResponse =
 
 export type ListControllableUnitSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4490,20 +4448,6 @@ export type UpdateControllableUnitSuspensionResponse =
 
 export type ListControllableUnitSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4644,20 +4588,6 @@ export type ReadControllableUnitSuspensionHistoryResponse =
 
 export type ListControllableUnitSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4897,20 +4827,6 @@ export type UpdateControllableUnitSuspensionCommentResponse =
 
 export type ListControllableUnitSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5047,20 +4963,6 @@ export type ReadControllableUnitSuspensionCommentHistoryResponse =
 
 export type ListControllableUnitServiceProviderData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5353,20 +5255,6 @@ export type UpdateControllableUnitServiceProviderResponse =
 
 export type ListControllableUnitServiceProviderHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5511,20 +5399,6 @@ export type ReadControllableUnitServiceProviderHistoryResponse =
 
 export type ListServiceProvidingGroupData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5768,20 +5642,6 @@ export type UpdateServiceProvidingGroupResponse =
 
 export type ListServiceProvidingGroupHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5922,20 +5782,6 @@ export type ReadServiceProvidingGroupHistoryResponse =
 
 export type ListServiceProvidingGroupMembershipData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6224,20 +6070,6 @@ export type UpdateServiceProvidingGroupMembershipResponse =
 
 export type ListServiceProvidingGroupMembershipHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6378,20 +6210,6 @@ export type ReadServiceProvidingGroupMembershipHistoryResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6635,20 +6453,6 @@ export type UpdateServiceProvidingGroupGridPrequalificationResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6789,20 +6593,6 @@ export type ReadServiceProvidingGroupGridPrequalificationHistoryResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7042,20 +6832,6 @@ export type UpdateServiceProvidingGroupGridPrequalificationCommentResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7196,20 +6972,6 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentHistoryResponse 
 
 export type ListServiceProvidingGroupGridSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7498,20 +7260,6 @@ export type UpdateServiceProvidingGroupGridSuspensionResponse =
 
 export type ListServiceProvidingGroupGridSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7652,20 +7400,6 @@ export type ReadServiceProvidingGroupGridSuspensionHistoryResponse =
 
 export type ListServiceProvidingGroupGridSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7905,20 +7639,6 @@ export type UpdateServiceProvidingGroupGridSuspensionCommentResponse =
 
 export type ListServiceProvidingGroupGridSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8055,20 +7775,6 @@ export type ReadServiceProvidingGroupGridSuspensionCommentHistoryResponse =
 
 export type ListEntityData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8310,20 +8016,6 @@ export type UpdateEntityResponse =
 
 export type ListEntityClientData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8616,20 +8308,6 @@ export type UpdateEntityClientResponse =
 
 export type ListPartyData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8872,20 +8550,6 @@ export type UpdatePartyResponse =
 
 export type ListPartyHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9031,20 +8695,6 @@ export type ReadPartyHistoryResponse =
 
 export type ListPartyMembershipData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9333,20 +8983,6 @@ export type UpdatePartyMembershipResponse =
 
 export type ListPartyMembershipHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9487,20 +9123,6 @@ export type ReadPartyMembershipHistoryResponse =
 
 export type ListIdentityData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9640,20 +9262,6 @@ export type ReadIdentityResponse =
 
 export type ListTechnicalResourceData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9942,20 +9550,6 @@ export type UpdateTechnicalResourceResponse =
 
 export type ListTechnicalResourceHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10096,20 +9690,6 @@ export type ReadTechnicalResourceHistoryResponse =
 
 export type ListEventData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10231,20 +9811,6 @@ export type ReadEventResponse = ReadEventResponses[keyof ReadEventResponses];
 
 export type ListNotificationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10434,20 +10000,6 @@ export type UpdateNotificationResponse =
 
 export type ListAccountingPointData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10581,20 +10133,6 @@ export type ReadAccountingPointResponse =
 
 export type ListAccountingPointBalanceResponsiblePartyData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10675,20 +10213,6 @@ export type ListAccountingPointBalanceResponsiblePartyResponse =
 
 export type ListAccountingPointEnergySupplierData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10769,20 +10293,6 @@ export type ListAccountingPointEnergySupplierResponse =
 
 export type ListProductTypeData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10916,20 +10426,6 @@ export type ReadProductTypeResponse =
 
 export type ListSystemOperatorProductTypeData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11173,20 +10669,6 @@ export type UpdateSystemOperatorProductTypeResponse =
 
 export type ListSystemOperatorProductTypeHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11327,20 +10809,6 @@ export type ReadSystemOperatorProductTypeHistoryResponse =
 
 export type ListServiceProviderProductApplicationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11588,20 +11056,6 @@ export type UpdateServiceProviderProductApplicationResponse =
 
 export type ListServiceProviderProductApplicationHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11746,20 +11200,6 @@ export type ReadServiceProviderProductApplicationHistoryResponse =
 
 export type ListServiceProviderProductApplicationCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11999,20 +11439,6 @@ export type UpdateServiceProviderProductApplicationCommentResponse =
 
 export type ListServiceProviderProductApplicationCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12149,20 +11575,6 @@ export type ReadServiceProviderProductApplicationCommentHistoryResponse =
 
 export type ListServiceProviderProductSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12455,20 +11867,6 @@ export type UpdateServiceProviderProductSuspensionResponse =
 
 export type ListServiceProviderProductSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12613,20 +12011,6 @@ export type ReadServiceProviderProductSuspensionHistoryResponse =
 
 export type ListServiceProviderProductSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12866,20 +12250,6 @@ export type UpdateServiceProviderProductSuspensionCommentResponse =
 
 export type ListServiceProviderProductSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13016,20 +12386,6 @@ export type ReadServiceProviderProductSuspensionCommentHistoryResponse =
 
 export type ListServiceProvidingGroupProductApplicationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13277,20 +12633,6 @@ export type UpdateServiceProvidingGroupProductApplicationResponse =
 
 export type ListServiceProvidingGroupProductApplicationHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13435,20 +12777,6 @@ export type ReadServiceProvidingGroupProductApplicationHistoryResponse =
 
 export type ListServiceProvidingGroupProductSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13741,20 +13069,6 @@ export type UpdateServiceProvidingGroupProductSuspensionResponse =
 
 export type ListServiceProvidingGroupProductSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13899,20 +13213,6 @@ export type ReadServiceProvidingGroupProductSuspensionHistoryResponse =
 
 export type ListServiceProvidingGroupProductSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -14152,20 +13452,6 @@ export type UpdateServiceProvidingGroupProductSuspensionCommentResponse =
 
 export type ListServiceProvidingGroupProductSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -14304,20 +13590,6 @@ export type ReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
 
 export type ListNoticeData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**

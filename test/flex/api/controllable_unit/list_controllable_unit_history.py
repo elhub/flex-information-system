@@ -8,7 +8,6 @@ from ...client import AuthenticatedClient, Client
 from ...models.controllable_unit_history_response import ControllableUnitHistoryResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.list_controllable_unit_history_prefer import ListControllableUnitHistoryPrefer
 from ...types import UNSET, Response, Unset
 
 
@@ -23,20 +22,7 @@ def _get_kwargs(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitHistoryPrefer | Unset = UNSET,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-    if not isinstance(range_, Unset):
-        headers["Range"] = range_
-
-    if not isinstance(range_unit, Unset):
-        headers["Range-Unit"] = range_unit
-
-    if not isinstance(prefer, Unset):
-        headers["Prefer"] = str(prefer)
-
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -65,7 +51,6 @@ def _get_kwargs(
         "params": params,
     }
 
-    _kwargs["headers"] = headers
     return _kwargs
 
 
@@ -172,9 +157,6 @@ def sync_detailed(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitHistoryPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse]]:
     """List Controllable unit - history
 
@@ -188,9 +170,6 @@ def sync_detailed(
         offset (str | Unset):
         limit (str | Unset):
         controllable_unit_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListControllableUnitHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -210,9 +189,6 @@ def sync_detailed(
         offset=offset,
         limit=limit,
         controllable_unit_id=controllable_unit_id,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = client.get_httpx_client().request(
@@ -234,9 +210,6 @@ def sync(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitHistoryPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse] | None:
     """List Controllable unit - history
 
@@ -250,9 +223,6 @@ def sync(
         offset (str | Unset):
         limit (str | Unset):
         controllable_unit_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListControllableUnitHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -273,9 +243,6 @@ def sync(
         offset=offset,
         limit=limit,
         controllable_unit_id=controllable_unit_id,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     ).parsed
 
 
@@ -291,9 +258,6 @@ async def asyncio_detailed(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitHistoryPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse]]:
     """List Controllable unit - history
 
@@ -307,9 +271,6 @@ async def asyncio_detailed(
         offset (str | Unset):
         limit (str | Unset):
         controllable_unit_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListControllableUnitHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -329,9 +290,6 @@ async def asyncio_detailed(
         offset=offset,
         limit=limit,
         controllable_unit_id=controllable_unit_id,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -351,9 +309,6 @@ async def asyncio(
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListControllableUnitHistoryPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse] | None:
     """List Controllable unit - history
 
@@ -367,9 +322,6 @@ async def asyncio(
         offset (str | Unset):
         limit (str | Unset):
         controllable_unit_id (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListControllableUnitHistoryPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -391,8 +343,5 @@ async def asyncio(
             offset=offset,
             limit=limit,
             controllable_unit_id=controllable_unit_id,
-            range_=range_,
-            range_unit=range_unit,
-            prefer=prefer,
         )
     ).parsed

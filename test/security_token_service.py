@@ -49,7 +49,6 @@ def _find_party_id(entity_client, party_name) -> int:
         list_party.sync(
             client=entity_client,
             name=f"ilike.{party_name.replace(' ', '*')}",
-            range_unit=UNSET,
             entity_id=UNSET,
         ),
     )[0]

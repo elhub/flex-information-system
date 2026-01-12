@@ -567,7 +567,7 @@ export const zControllableUnitCreateRequest = z.object({
 });
 
 /**
- * Data schema - Controllable unit
+ * Response schema - Controllable unit
  */
 export const zControllableUnit = z.object({
   id: z.int().readonly(),
@@ -669,7 +669,7 @@ export const zControllableUnitSuspensionCreateRequest = z.object({
 });
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspension = z.object({
   id: z.int().readonly(),
@@ -717,7 +717,7 @@ export const zControllableUnitSuspensionCommentCreateRequest = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a controllable unit suspension.
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionComment = z.object({
   id: z.int().readonly(),
@@ -778,7 +778,7 @@ export const zControllableUnitServiceProviderCreateRequest = z.object({
 });
 
 /**
- * Data schema - Relation between controllable unit and service provider
+ * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProvider = z.object({
   id: z.int().readonly(),
@@ -846,7 +846,7 @@ export const zServiceProvidingGroupCreateRequest = z.object({
 });
 
 /**
- * Data schema - Group of controllable units
+ * Response schema - Group of controllable units
  */
 export const zServiceProvidingGroup = z.object({
   id: z.int().readonly(),
@@ -892,7 +892,7 @@ export const zServiceProvidingGroupMembershipCreateRequest = z.object({
 });
 
 /**
- * Data schema - Membership relation of controllable unit in service providing group
+ * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembership = z.object({
   id: z.int().readonly(),
@@ -956,7 +956,7 @@ export const zServiceProvidingGroupGridPrequalificationCreateRequest = z.object(
 );
 
 /**
- * Data schema - Grid prequalification for service providing group
+ * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalification = z.object({
   id: z.int().readonly(),
@@ -1012,7 +1012,7 @@ export const zServiceProvidingGroupGridPrequalificationCommentCreateRequest =
   });
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid prequalification.
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationComment = z.object({
   id: z.int().readonly(),
@@ -1055,7 +1055,7 @@ export const zServiceProvidingGroupGridSuspensionCreateRequest = z.object({
 });
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspension = z.object({
   id: z.int().readonly(),
@@ -1105,7 +1105,7 @@ export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
   });
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid suspension.
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionComment = z.object({
   id: z.int().readonly(),
@@ -1168,7 +1168,7 @@ export const zEntityCreateRequest = z.object({
 });
 
 /**
- * Data schema - Entity - Natural or legal person
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -1266,7 +1266,7 @@ export const zEntityClientCreateRequest = z.object({
 });
 
 /**
- * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export const zEntityClient = z.object({
   id: z.int().readonly(),
@@ -1395,7 +1395,7 @@ export const zPartyCreateRequest = z.object({
 });
 
 /**
- * Data schema - The body that interacts with the Flexibility Information System
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -1483,7 +1483,7 @@ export const zPartyMembershipCreateRequest = z.object({
 });
 
 /**
- * Data schema - The relation between a party and entity.
+ * Response schema - The relation between a party and entity.
  */
 export const zPartyMembership = z.object({
   id: z.int().readonly(),
@@ -1495,7 +1495,7 @@ export const zPartyMembership = z.object({
 });
 
 /**
- * Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
 export const zIdentity = z.object({
   id: z.int().readonly(),
@@ -1548,7 +1548,7 @@ export const zTechnicalResourceCreateRequest = z.object({
 });
 
 /**
- * Data schema - Technical unit being part of a controllable unit.
+ * Response schema - Technical unit being part of a controllable unit.
  */
 export const zTechnicalResource = z.object({
   id: z.int().readonly(),
@@ -1565,7 +1565,7 @@ export const zTechnicalResource = z.object({
 });
 
 /**
- * Data schema - Event happening in the system.
+ * Response schema - Event happening in the system.
  */
 export const zEvent = z.object({
   id: z.int().readonly(),
@@ -1606,7 +1606,7 @@ export const zNotificationUpdateRequest = z.object({
 });
 
 /**
- * Data schema - Notification about an event happening in the system.
+ * Response schema - Notification about an event happening in the system.
  */
 export const zNotification = z.object({
   id: z.int().readonly(),
@@ -1618,7 +1618,7 @@ export const zNotification = z.object({
 });
 
 /**
- * Data schema - Accounting point for a controllable unit.
+ * Response schema - Accounting point for a controllable unit.
  */
 export const zAccountingPoint = z.object({
   id: z.int().readonly(),
@@ -1632,7 +1632,7 @@ export const zAccountingPoint = z.object({
 });
 
 /**
- * Data schema - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export const zAccountingPointBalanceResponsibleParty = z.object({
   accounting_point_id: z.int().readonly(),
@@ -1648,7 +1648,7 @@ export const zAccountingPointBalanceResponsibleParty = z.object({
 });
 
 /**
- * Data schema - Relation linking an energy supplier to an accounting point.
+ * Response schema - Relation linking an energy supplier to an accounting point.
  */
 export const zAccountingPointEnergySupplier = z.object({
   accounting_point_id: z.int().readonly(),
@@ -1663,7 +1663,7 @@ export const zAccountingPointEnergySupplier = z.object({
 });
 
 /**
- * Data schema - Product type.
+ * Response schema - Product type.
  */
 export const zProductType = z.object({
   id: z.int().readonly(),
@@ -1704,7 +1704,7 @@ export const zSystemOperatorProductTypeCreateRequest = z.object({
 });
 
 /**
- * Data schema - Relation between a system operator and a product type they want to buy.
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductType = z.object({
   id: z.int().readonly(),
@@ -1765,7 +1765,7 @@ export const zServiceProviderProductApplicationCreateRequest = z.object({
 });
 
 /**
- * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplication = z.object({
   id: z.int().readonly(),
@@ -1820,7 +1820,7 @@ export const zServiceProviderProductApplicationCommentCreateRequest = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a service provider product application.
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationComment = z.object({
   id: z.int().readonly(),
@@ -1868,7 +1868,7 @@ export const zServiceProviderProductSuspensionCreateRequest = z.object({
 });
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspension = z.object({
   id: z.int().readonly(),
@@ -1917,7 +1917,7 @@ export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a service provider product suspension.
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionComment = z.object({
   id: z.int().readonly(),
@@ -2005,7 +2005,7 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
 });
 
 /**
- * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplication = z.object({
   id: z.int().readonly(),
@@ -2069,7 +2069,7 @@ export const zServiceProvidingGroupProductSuspensionCreateRequest = z.object({
 });
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspension = z.object({
   id: z.int().readonly(),
@@ -2120,7 +2120,7 @@ export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
   });
 
 /**
- * Data schema - Comment made by a party involved in a service providing group product suspension.
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionComment = z.object({
   id: z.int().readonly(),
@@ -2137,7 +2137,7 @@ export const zServiceProvidingGroupProductSuspensionComment = z.object({
 });
 
 /**
- * Data schema - Notice to users about various issues or actions expected from them.
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
 export const zNotice = z.object({
   party_id: z.int().readonly(),
@@ -2613,7 +2613,7 @@ export const zServiceProvidingGroupProductSuspensionCommentHistory =
 export const zEmptyObjectWritable = z.record(z.string(), z.never());
 
 /**
- * Data schema - Controllable unit
+ * Response schema - Controllable unit
  */
 export const zControllableUnitWritable = z.object({
   name: z.string().max(512),
@@ -2679,7 +2679,7 @@ export const zControllableUnitWritable = z.object({
 });
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionWritable = z.object({
   controllable_unit_id: z.int(),
@@ -2688,7 +2688,7 @@ export const zControllableUnitSuspensionWritable = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a controllable unit suspension.
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentWritable = z.object({
   controllable_unit_suspension_id: z.int(),
@@ -2698,7 +2698,7 @@ export const zControllableUnitSuspensionCommentWritable = z.object({
 });
 
 /**
- * Data schema - Relation between controllable unit and service provider
+ * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderWritable = z.object({
   controllable_unit_id: z.int(),
@@ -2720,7 +2720,7 @@ export const zControllableUnitServiceProviderWritable = z.object({
 });
 
 /**
- * Data schema - Group of controllable units
+ * Response schema - Group of controllable units
  */
 export const zServiceProvidingGroupWritable = z.object({
   name: z.string().max(128),
@@ -2730,7 +2730,7 @@ export const zServiceProvidingGroupWritable = z.object({
 });
 
 /**
- * Data schema - Membership relation of controllable unit in service providing group
+ * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipWritable = z.object({
   controllable_unit_id: z.int(),
@@ -2745,7 +2745,7 @@ export const zServiceProvidingGroupMembershipWritable = z.object({
 });
 
 /**
- * Data schema - Grid prequalification for service providing group
+ * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   service_providing_group_id: z.int(),
@@ -2760,7 +2760,7 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid prequalification.
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentWritable =
   z.object({
@@ -2773,7 +2773,7 @@ export const zServiceProvidingGroupGridPrequalificationCommentWritable =
   });
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionWritable = z.object({
   impacted_system_operator_id: z.int(),
@@ -2782,7 +2782,7 @@ export const zServiceProvidingGroupGridSuspensionWritable = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid suspension.
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
   service_providing_group_grid_suspension_id: z.int(),
@@ -2792,7 +2792,7 @@ export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
 });
 
 /**
- * Data schema - Entity - Natural or legal person
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -2809,7 +2809,7 @@ export const zEntityWritable = z.object({
 });
 
 /**
- * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export const zEntityClientWritable = z.object({
   entity_id: z.int(),
@@ -2846,7 +2846,7 @@ export const zEntityClientWritable = z.object({
 });
 
 /**
- * Data schema - The body that interacts with the Flexibility Information System
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -2910,7 +2910,7 @@ export const zNoticeDataWritable = z.union([
 ]);
 
 /**
- * Data schema - The relation between a party and entity.
+ * Response schema - The relation between a party and entity.
  */
 export const zPartyMembershipWritable = z.object({
   party_id: z.int(),
@@ -2919,7 +2919,7 @@ export const zPartyMembershipWritable = z.object({
 });
 
 /**
- * Data schema - Technical unit being part of a controllable unit.
+ * Response schema - Technical unit being part of a controllable unit.
  */
 export const zTechnicalResourceWritable = z.object({
   name: z.string(),
@@ -2933,7 +2933,7 @@ export const zTechnicalResourceWritable = z.object({
 });
 
 /**
- * Data schema - Notification about an event happening in the system.
+ * Response schema - Notification about an event happening in the system.
  */
 export const zNotificationWritable = z.object({
   acknowledged: z.boolean(),
@@ -2942,7 +2942,7 @@ export const zNotificationWritable = z.object({
 });
 
 /**
- * Data schema - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
   z.string(),
@@ -2950,7 +2950,7 @@ export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
 );
 
 /**
- * Data schema - Relation between a system operator and a product type they want to buy.
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeWritable = z.object({
   system_operator_id: z.int(),
@@ -2959,7 +2959,7 @@ export const zSystemOperatorProductTypeWritable = z.object({
 });
 
 /**
- * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationWritable = z.object({
   service_provider_id: z.int(),
@@ -2975,7 +2975,7 @@ export const zServiceProviderProductApplicationWritable = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a service provider product application.
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentWritable = z.object({
   service_provider_product_application_id: z.int(),
@@ -2985,7 +2985,7 @@ export const zServiceProviderProductApplicationCommentWritable = z.object({
 });
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionWritable = z.object({
   procuring_system_operator_id: z.int(),
@@ -2995,7 +2995,7 @@ export const zServiceProviderProductSuspensionWritable = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a service provider product suspension.
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentWritable = z.object({
   service_provider_product_suspension_id: z.int(),
@@ -3005,7 +3005,7 @@ export const zServiceProviderProductSuspensionCommentWritable = z.object({
 });
 
 /**
- * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationWritable = z.object({
   service_providing_group_id: z.int(),
@@ -3033,7 +3033,7 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
 });
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionWritable = z.object({
   procuring_system_operator_id: z.int(),
@@ -3043,7 +3043,7 @@ export const zServiceProvidingGroupProductSuspensionWritable = z.object({
 });
 
 /**
- * Data schema - Comment made by a party involved in a service providing group product suspension.
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
   service_providing_group_product_suspension_id: z.int(),
@@ -3055,7 +3055,7 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
 });
 
 /**
- * Data schema - Notice to users about various issues or actions expected from them.
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
 export const zNoticeWritable = z.record(z.string(), z.unknown());
 
@@ -3656,30 +3656,6 @@ export const zListControllableUnitData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitResponse = z.union([
@@ -3834,30 +3810,6 @@ export const zListControllableUnitHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitHistoryResponse = z.union([
@@ -3952,30 +3904,6 @@ export const zListControllableUnitSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -4156,30 +4084,6 @@ export const zListControllableUnitSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitSuspensionHistoryResponse = z.union([
@@ -4266,30 +4170,6 @@ export const zListControllableUnitSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -4438,30 +4318,6 @@ export const zListControllableUnitSuspensionCommentHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitSuspensionCommentHistoryResponse = z.union([
@@ -4566,30 +4422,6 @@ export const zListControllableUnitServiceProviderData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -4779,30 +4611,6 @@ export const zListControllableUnitServiceProviderHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListControllableUnitServiceProviderHistoryResponse = z.union([
@@ -4895,30 +4703,6 @@ export const zListServiceProvidingGroupData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -5071,30 +4855,6 @@ export const zListServiceProvidingGroupHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupHistoryResponse = z.union([
@@ -5190,30 +4950,6 @@ export const zListServiceProvidingGroupMembershipData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -5394,30 +5130,6 @@ export const zListServiceProvidingGroupMembershipHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupMembershipHistoryResponse = z.union([
@@ -5513,30 +5225,6 @@ export const zListServiceProvidingGroupGridPrequalificationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -5694,30 +5382,6 @@ export const zListServiceProvidingGroupGridPrequalificationHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationHistoryResponse =
@@ -5807,30 +5471,6 @@ export const zListServiceProvidingGroupGridPrequalificationCommentData =
           z.preprocess(
             (value) => (value === null ? undefined : value),
             z.string().optional(),
-          ),
-        ),
-      }),
-    ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
           ),
         ),
       }),
@@ -5982,30 +5622,6 @@ export const zListServiceProvidingGroupGridPrequalificationCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
@@ -6103,30 +5719,6 @@ export const zListServiceProvidingGroupGridSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -6307,30 +5899,6 @@ export const zListServiceProvidingGroupGridSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupGridSuspensionHistoryResponse = z.union([
@@ -6417,30 +5985,6 @@ export const zListServiceProvidingGroupGridSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -6588,30 +6132,6 @@ export const zListServiceProvidingGroupGridSuspensionCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
@@ -6709,30 +6229,6 @@ export const zListEntityData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -6878,30 +6374,6 @@ export const zListEntityClientData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -7077,30 +6549,6 @@ export const zListPartyData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListPartyResponse = z.union([z.array(zParty), z.array(zParty)]);
@@ -7255,30 +6703,6 @@ export const zListPartyHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListPartyHistoryResponse = z.union([
@@ -7373,30 +6797,6 @@ export const zListPartyMembershipData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -7575,30 +6975,6 @@ export const zListPartyMembershipHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListPartyMembershipHistoryResponse = z.union([
@@ -7715,30 +7091,6 @@ export const zListIdentityData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListIdentityResponse = z.union([
@@ -7830,30 +7182,6 @@ export const zListTechnicalResourceData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8029,30 +7357,6 @@ export const zListTechnicalResourceHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListTechnicalResourceHistoryResponse = z.union([
@@ -8129,30 +7433,6 @@ export const zListEventData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8248,30 +7528,6 @@ export const zListNotificationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8386,30 +7642,6 @@ export const zListAccountingPointData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListAccountingPointResponse = z.union([
@@ -8499,30 +7731,6 @@ export const zListAccountingPointBalanceResponsiblePartyData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListAccountingPointBalanceResponsiblePartyResponse = z.union([
@@ -8585,30 +7793,6 @@ export const zListAccountingPointEnergySupplierData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8678,30 +7862,6 @@ export const zListProductTypeData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8800,30 +7960,6 @@ export const zListSystemOperatorProductTypeData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -8981,30 +8117,6 @@ export const zListSystemOperatorProductTypeHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListSystemOperatorProductTypeHistoryResponse = z.union([
@@ -9109,30 +8221,6 @@ export const zListServiceProviderProductApplicationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -9299,30 +8387,6 @@ export const zListServiceProviderProductApplicationHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProviderProductApplicationHistoryResponse = z.union([
@@ -9409,30 +8473,6 @@ export const zListServiceProviderProductApplicationCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -9582,30 +8622,6 @@ export const zListServiceProviderProductApplicationCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProviderProductApplicationCommentHistoryResponse =
@@ -9712,30 +8728,6 @@ export const zListServiceProviderProductSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -9925,30 +8917,6 @@ export const zListServiceProviderProductSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProviderProductSuspensionHistoryResponse = z.union([
@@ -10035,30 +9003,6 @@ export const zListServiceProviderProductSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -10208,30 +9152,6 @@ export const zListServiceProviderProductSuspensionCommentHistoryData = z.object(
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   },
 );
 
@@ -10340,30 +9260,6 @@ export const zListServiceProvidingGroupProductApplicationData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -10531,30 +9427,6 @@ export const zListServiceProvidingGroupProductApplicationHistoryData = z.object(
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   },
 );
 
@@ -10663,30 +9535,6 @@ export const zListServiceProvidingGroupProductSuspensionData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -10876,30 +9724,6 @@ export const zListServiceProvidingGroupProductSuspensionHistoryData = z.object({
       ),
     }),
   ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
-        ),
-      ),
-    }),
-  ),
 });
 
 export const zListServiceProvidingGroupProductSuspensionHistoryResponse =
@@ -10987,30 +9811,6 @@ export const zListServiceProvidingGroupProductSuspensionCommentData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
@@ -11161,30 +9961,6 @@ export const zListServiceProvidingGroupProductSuspensionCommentHistoryData =
         ),
       }),
     ),
-    headers: z.optional(
-      z.object({
-        Range: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        ),
-        "Range-Unit": z
-          .optional(
-            z.preprocess(
-              (value) => (value === null ? undefined : value),
-              z.string().optional(),
-            ),
-          )
-          .default("items"),
-        Prefer: z.optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.enum(["count=none"]).optional(),
-          ),
-        ),
-      }),
-    ),
   });
 
 export const zListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
@@ -11264,30 +10040,6 @@ export const zListNoticeData = z.object({
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
-        ),
-      ),
-    }),
-  ),
-  headers: z.optional(
-    z.object({
-      Range: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      "Range-Unit": z
-        .optional(
-          z.preprocess(
-            (value) => (value === null ? undefined : value),
-            z.string().optional(),
-          ),
-        )
-        .default("items"),
-      Prefer: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.enum(["count=none"]).optional(),
         ),
       ),
     }),
