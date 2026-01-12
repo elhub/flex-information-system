@@ -20,7 +20,7 @@ import { createAccountingPointResources } from "./accountingPointResources";
 export const createAllResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
 
-  const apResources = createAccountingPointResources();
+  const apResources = createAccountingPointResources(permissions);
   resources.push(...apResources);
 
   // Entity resources

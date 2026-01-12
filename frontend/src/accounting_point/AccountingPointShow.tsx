@@ -4,8 +4,8 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  useGetIdentity,
   useGetList,
-  useGetOne,
   useRecordContext,
 } from "react-admin";
 import { FieldStack } from "../auth";
@@ -42,14 +42,7 @@ const findCurrentlyValidRecord = <
   });
 };
 
-// TODO: reduce code duplication in fields extracting a party name (BRP, ES, EU)
-const BalanceResponsiblePartyInfo = ({
-  source,
-  label,
-}: {
-  source: string;
-  label: string;
-}) => {
+const AccountingPointConnections = () => {
   const record = useRecordContext()!;
 
   const { data: brpData } = useGetList(
@@ -64,32 +57,6 @@ const BalanceResponsiblePartyInfo = ({
   const currentBRP =
     findCurrentlyValidRecord<AccountingPointBalanceResponsibleParty>(brpData);
 
-  const { data: brpPartyData } = useGetOne("party", {
-    id: currentBRP?.balance_responsible_party_id,
-  });
-
-  console.log(JSON.stringify(brpPartyData));
-
-  return (
-    // we could do one more manual hop with useGetOne here,
-    // but we can also just put it in the record so that React-Admin handles fetching for us
-    // (also gives us i18n + link on click automatically for instance)
-    <RecordContextProvider
-      value={{
-        ...record,
-        balance_responsible_party_id: currentBRP?.balance_responsible_party_id,
-      }}
-    >
-      <ReferenceField source={source} reference="party" label={label}>
-        <TextField source="name" />
-      </ReferenceField>
-    </RecordContextProvider>
-  );
-};
-
-const BiddingZoneInfo = () => {
-  const record = useRecordContext()!;
-
   const { data: biddingZoneData } = useGetList(
     "accounting_point_bidding_zone",
     {
@@ -100,21 +67,6 @@ const BiddingZoneInfo = () => {
   const currentBiddingZone =
     findCurrentlyValidRecord<AccountingPointBiddingZone>(biddingZoneData);
 
-  return (
-    <RecordContextProvider
-      value={{ ...record, bidding_zone: currentBiddingZone?.bidding_zone }}
-    >
-      <EnumField
-        source="bidding_zone"
-        enumKey="accounting_point_bidding_zone.bidding_zone"
-      />
-    </RecordContextProvider>
-  );
-};
-
-const EndUserInfo = () => {
-  const record = useRecordContext()!;
-
   const { data: endUserData } = useGetList("accounting_point_end_user", {
     filter: { accounting_point_id: record.id },
     sort: { field: "accounting_point_id", order: "ASC" },
@@ -122,51 +74,12 @@ const EndUserInfo = () => {
   const currentEndUser =
     findCurrentlyValidRecord<AccountingPointEndUser>(endUserData);
 
-  return (
-    <RecordContextProvider
-      value={{ ...record, end_user_id: currentEndUser?.end_user_id }}
-    >
-      <ReferenceField
-        source="end_user_id"
-        reference="party"
-        label="field.accounting_point_end_user.end_user_id"
-      >
-        <TextField source="name" />
-      </ReferenceField>
-    </RecordContextProvider>
-  );
-};
-
-const EnergySupplierInfo = () => {
-  const record = useRecordContext()!;
-
   const { data: esData } = useGetList("accounting_point_energy_supplier", {
     filter: { accounting_point_id: record.id },
     sort: { field: "accounting_point_id", order: "ASC" },
   });
   const currentEnergySupplier =
     findCurrentlyValidRecord<AccountingPointEnergySupplier>(esData);
-
-  return (
-    <RecordContextProvider
-      value={{
-        ...record,
-        energy_supplier_id: currentEnergySupplier?.energy_supplier_id,
-      }}
-    >
-      <ReferenceField
-        source="energy_supplier_id"
-        reference="party"
-        label="field.accounting_point_energy_supplier.energy_supplier_id"
-      >
-        <TextField source="name" />
-      </ReferenceField>
-    </RecordContextProvider>
-  );
-};
-
-const MeteringGridAreaInfo = () => {
-  const record = useRecordContext()!;
 
   const { data: mgaData } = useGetList("accounting_point_metering_grid_area", {
     filter: { accounting_point_id: record.id },
@@ -179,53 +92,87 @@ const MeteringGridAreaInfo = () => {
     <RecordContextProvider
       value={{
         ...record,
+        balance_responsible_party_id: currentBRP?.balance_responsible_party_id,
+        bidding_zone: currentBiddingZone?.bidding_zone,
+        end_user_id: currentEndUser?.end_user_id,
+        energy_supplier_id: currentEnergySupplier?.energy_supplier_id,
         metering_grid_area_id: currentMGA?.metering_grid_area_id,
       }}
     >
-      <ReferenceField
-        source="metering_grid_area_id"
-        reference="metering_grid_area"
-        label="field.accounting_point_metering_grid_area.metering_grid_area_id"
-      >
-        <EnumField
-          source="price_area"
-          enumKey="metering_grid_area.price_area"
-        />
-      </ReferenceField>
-    </RecordContextProvider>
-  );
-};
-
-export const AccountingPointShow = () => (
-  <Show>
-    <SimpleShowLayout>
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" gutterBottom>
-          Basic information
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="id" label="field.accounting_point.id" />
-          <TextField
-            source="business_id"
-            label="field.accounting_point.business_id"
-          />
-        </FieldStack>
-
-        <Typography variant="h6" gutterBottom>
-          Connections
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          {/* cannot use ReferenceField for the following fields because we need
-              to manually filter valid time to extract the active record */}
-          <BalanceResponsiblePartyInfo
+      {/* NB: we need a FieldStack for each field because data is picked from several resources and
+              we need to change the resource context of the tooltip everytime */}
+      <Stack direction="row" spacing={2}>
+        <FieldStack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          resource="accounting_point_balance_responsible_party"
+        >
+          <ReferenceField
+            reference="party"
             source="balance_responsible_party_id"
             label="field.accounting_point_balance_responsible_party.balance_responsible_party_id"
+          >
+            <TextField source="name" />
+          </ReferenceField>
+        </FieldStack>
+        <FieldStack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          resource="accounting_point_bidding_zone"
+        >
+          <EnumField
+            source="bidding_zone"
+            enumKey="accounting_point_bidding_zone.bidding_zone"
           />
-          <BiddingZoneInfo />
-          <EndUserInfo />
-          <EnergySupplierInfo />
-          <MeteringGridAreaInfo />
-          {/* current SO is already part of AP resource */}
+        </FieldStack>
+        <FieldStack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          resource="accounting_point_bidding_zone"
+        >
+          <ReferenceField
+            source="end_user_id"
+            reference="party"
+            label="field.accounting_point_end_user.end_user_id"
+          >
+            <TextField source="name" />
+          </ReferenceField>
+        </FieldStack>
+        <FieldStack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          resource="accounting_point_energy_supplier"
+        >
+          <ReferenceField
+            source="energy_supplier_id"
+            reference="party"
+            label="field.accounting_point_energy_supplier.energy_supplier_id"
+          >
+            <TextField source="name" />
+          </ReferenceField>
+        </FieldStack>
+        <FieldStack
+          direction="row"
+          flexWrap="wrap"
+          spacing={2}
+          resource="accounting_point_metering_grid_area"
+        >
+          <ReferenceField
+            source="metering_grid_area_id"
+            reference="metering_grid_area"
+            label="field.accounting_point_metering_grid_area.metering_grid_area_id"
+          >
+            <EnumField
+              source="price_area"
+              enumKey="metering_grid_area.price_area"
+            />
+          </ReferenceField>
+        </FieldStack>
+        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
           <ReferenceField
             source="system_operator_id"
             reference="party"
@@ -234,18 +181,54 @@ export const AccountingPointShow = () => (
             <TextField source="name" />
           </ReferenceField>
         </FieldStack>
-
-        <Typography variant="h6" gutterBottom>
-          Registration
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <DateField
-            source="recorded_at"
-            showTime
-            label="field.accounting_point.recorded_at"
-          />
-        </FieldStack>
       </Stack>
-    </SimpleShowLayout>
-  </Show>
-);
+    </RecordContextProvider>
+  );
+};
+
+export const AccountingPointShow = () => {
+  const { identity, isPending } = useGetIdentity();
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <Show>
+      <SimpleShowLayout>
+        <Stack direction="column" spacing={2}>
+          <Typography variant="h6" gutterBottom>
+            Basic information
+          </Typography>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
+            <TextField source="id" label="field.accounting_point.id" />
+            <TextField
+              source="business_id"
+              label="field.accounting_point.business_id"
+            />
+          </FieldStack>
+
+          {identity?.role == "flex_flexibility_information_system_operator" && (
+            <>
+              <Typography variant="h6" gutterBottom>
+                Connections
+              </Typography>
+              <AccountingPointConnections />
+            </>
+          )}
+
+          <Typography variant="h6" gutterBottom>
+            Registration
+          </Typography>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
+            <DateField
+              source="recorded_at"
+              showTime
+              label="field.accounting_point.recorded_at"
+            />
+          </FieldStack>
+        </Stack>
+      </SimpleShowLayout>
+    </Show>
+  );
+};
