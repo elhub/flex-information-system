@@ -34,11 +34,11 @@ const findCurrentlyValidRecord = <
     const validTo = record.valid_to ? new Date(record.valid_to) : null;
 
     // deleted or in the future -> skip
-    if (validFrom === null || validFrom > now) return undefined;
+    if (validFrom === null || validFrom > now) return false;
     // expired -> skip
-    if (validTo !== null && validTo <= now) return undefined;
+    if (validTo !== null && validTo <= now) return false;
     // remaining case: currently valid
-    return record;
+    return true;
   });
 };
 
