@@ -569,16 +569,16 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             }
             non_nullable_properties += ["recorded_at", "recorded_by"]
 
-        data_schema = {
-            "summary": f"Data - {resource['summary']}",
-            "description": f"Data schema - {resource['description']}",
+        response_schema = {
+            "summary": f"Response - {resource['summary']}",
+            "description": f"Response schema - {resource['description']}",
             "type": "object",
             "properties": all_properties,
         }
         if len(non_nullable_properties) > 0:
-            data_schema["required"] = non_nullable_properties
+            response_schema["required"] = non_nullable_properties
 
-        schemas[f"{resource['id']}_response"] = data_schema
+        schemas[f"{resource['id']}_response"] = response_schema
 
     # generate the history schemas from the template
 
