@@ -3373,20 +3373,6 @@ export type CallEntityLookupResponse =
 
 export type ListControllableUnitData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -3634,20 +3620,6 @@ export type UpdateControllableUnitResponse =
 
 export type ListControllableUnitHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -3792,20 +3764,6 @@ export type ReadControllableUnitHistoryResponse =
 
 export type ListControllableUnitSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4094,20 +4052,6 @@ export type UpdateControllableUnitSuspensionResponse =
 
 export type ListControllableUnitSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4248,20 +4192,6 @@ export type ReadControllableUnitSuspensionHistoryResponse =
 
 export type ListControllableUnitSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4501,20 +4431,6 @@ export type UpdateControllableUnitSuspensionCommentResponse =
 
 export type ListControllableUnitSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4651,20 +4567,6 @@ export type ReadControllableUnitSuspensionCommentHistoryResponse =
 
 export type ListControllableUnitServiceProviderData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -4957,20 +4859,6 @@ export type UpdateControllableUnitServiceProviderResponse =
 
 export type ListControllableUnitServiceProviderHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5115,20 +5003,6 @@ export type ReadControllableUnitServiceProviderHistoryResponse =
 
 export type ListServiceProvidingGroupData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5372,20 +5246,6 @@ export type UpdateServiceProvidingGroupResponse =
 
 export type ListServiceProvidingGroupHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5526,20 +5386,6 @@ export type ReadServiceProvidingGroupHistoryResponse =
 
 export type ListServiceProvidingGroupMembershipData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5828,20 +5674,6 @@ export type UpdateServiceProvidingGroupMembershipResponse =
 
 export type ListServiceProvidingGroupMembershipHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -5982,20 +5814,6 @@ export type ReadServiceProvidingGroupMembershipHistoryResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6239,20 +6057,6 @@ export type UpdateServiceProvidingGroupGridPrequalificationResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6393,20 +6197,6 @@ export type ReadServiceProvidingGroupGridPrequalificationHistoryResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6646,20 +6436,6 @@ export type UpdateServiceProvidingGroupGridPrequalificationCommentResponse =
 
 export type ListServiceProvidingGroupGridPrequalificationCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -6800,20 +6576,6 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentHistoryResponse 
 
 export type ListServiceProvidingGroupGridSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7102,20 +6864,6 @@ export type UpdateServiceProvidingGroupGridSuspensionResponse =
 
 export type ListServiceProvidingGroupGridSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7256,20 +7004,6 @@ export type ReadServiceProvidingGroupGridSuspensionHistoryResponse =
 
 export type ListServiceProvidingGroupGridSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7509,20 +7243,6 @@ export type UpdateServiceProvidingGroupGridSuspensionCommentResponse =
 
 export type ListServiceProvidingGroupGridSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7659,20 +7379,6 @@ export type ReadServiceProvidingGroupGridSuspensionCommentHistoryResponse =
 
 export type ListEntityData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -7914,20 +7620,6 @@ export type UpdateEntityResponse =
 
 export type ListEntityClientData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8220,20 +7912,6 @@ export type UpdateEntityClientResponse =
 
 export type ListPartyData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8476,20 +8154,6 @@ export type UpdatePartyResponse =
 
 export type ListPartyHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8635,20 +8299,6 @@ export type ReadPartyHistoryResponse =
 
 export type ListPartyMembershipData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -8937,20 +8587,6 @@ export type UpdatePartyMembershipResponse =
 
 export type ListPartyMembershipHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9091,20 +8727,6 @@ export type ReadPartyMembershipHistoryResponse =
 
 export type ListIdentityData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9244,20 +8866,6 @@ export type ReadIdentityResponse =
 
 export type ListTechnicalResourceData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9546,20 +9154,6 @@ export type UpdateTechnicalResourceResponse =
 
 export type ListTechnicalResourceHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9700,20 +9294,6 @@ export type ReadTechnicalResourceHistoryResponse =
 
 export type ListEventData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -9835,20 +9415,6 @@ export type ReadEventResponse = ReadEventResponses[keyof ReadEventResponses];
 
 export type ListNotificationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10038,20 +9604,6 @@ export type UpdateNotificationResponse =
 
 export type ListAccountingPointData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10185,20 +9737,6 @@ export type ReadAccountingPointResponse =
 
 export type ListAccountingPointBalanceResponsiblePartyData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10279,20 +9817,6 @@ export type ListAccountingPointBalanceResponsiblePartyResponse =
 
 export type ListAccountingPointEnergySupplierData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10373,20 +9897,6 @@ export type ListAccountingPointEnergySupplierResponse =
 
 export type ListProductTypeData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10520,20 +10030,6 @@ export type ReadProductTypeResponse =
 
 export type ListSystemOperatorProductTypeData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10777,20 +10273,6 @@ export type UpdateSystemOperatorProductTypeResponse =
 
 export type ListSystemOperatorProductTypeHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -10931,20 +10413,6 @@ export type ReadSystemOperatorProductTypeHistoryResponse =
 
 export type ListServiceProviderProductApplicationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11192,20 +10660,6 @@ export type UpdateServiceProviderProductApplicationResponse =
 
 export type ListServiceProviderProductApplicationHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11350,20 +10804,6 @@ export type ReadServiceProviderProductApplicationHistoryResponse =
 
 export type ListServiceProviderProductApplicationCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11603,20 +11043,6 @@ export type UpdateServiceProviderProductApplicationCommentResponse =
 
 export type ListServiceProviderProductApplicationCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -11753,20 +11179,6 @@ export type ReadServiceProviderProductApplicationCommentHistoryResponse =
 
 export type ListServiceProviderProductSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12059,20 +11471,6 @@ export type UpdateServiceProviderProductSuspensionResponse =
 
 export type ListServiceProviderProductSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12217,20 +11615,6 @@ export type ReadServiceProviderProductSuspensionHistoryResponse =
 
 export type ListServiceProviderProductSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12470,20 +11854,6 @@ export type UpdateServiceProviderProductSuspensionCommentResponse =
 
 export type ListServiceProviderProductSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12620,20 +11990,6 @@ export type ReadServiceProviderProductSuspensionCommentHistoryResponse =
 
 export type ListServiceProvidingGroupProductApplicationData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -12881,20 +12237,6 @@ export type UpdateServiceProvidingGroupProductApplicationResponse =
 
 export type ListServiceProvidingGroupProductApplicationHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13039,20 +12381,6 @@ export type ReadServiceProvidingGroupProductApplicationHistoryResponse =
 
 export type ListServiceProvidingGroupProductSuspensionData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13345,20 +12673,6 @@ export type UpdateServiceProvidingGroupProductSuspensionResponse =
 
 export type ListServiceProvidingGroupProductSuspensionHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13503,20 +12817,6 @@ export type ReadServiceProvidingGroupProductSuspensionHistoryResponse =
 
 export type ListServiceProvidingGroupProductSuspensionCommentData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13756,20 +13056,6 @@ export type UpdateServiceProvidingGroupProductSuspensionCommentResponse =
 
 export type ListServiceProvidingGroupProductSuspensionCommentHistoryData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**
@@ -13908,20 +13194,6 @@ export type ReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
 
 export type ListNoticeData = {
   body?: never;
-  headers?: {
-    /**
-     * Limiting and Pagination
-     */
-    Range?: string;
-    /**
-     * Limiting and Pagination
-     */
-    "Range-Unit"?: string;
-    /**
-     * Preference
-     */
-    Prefer?: "count=none";
-  };
   path?: never;
   query?: {
     /**

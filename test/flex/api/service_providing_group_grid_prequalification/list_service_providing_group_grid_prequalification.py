@@ -7,9 +7,6 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...models.list_service_providing_group_grid_prequalification_prefer import (
-    ListServiceProvidingGroupGridPrequalificationPrefer,
-)
 from ...models.service_providing_group_grid_prequalification_response import (
     ServiceProvidingGroupGridPrequalificationResponse,
 )
@@ -25,20 +22,7 @@ def _get_kwargs(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-    if not isinstance(range_, Unset):
-        headers["Range"] = range_
-
-    if not isinstance(range_unit, Unset):
-        headers["Range-Unit"] = range_unit
-
-    if not isinstance(prefer, Unset):
-        headers["Prefer"] = str(prefer)
-
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -63,7 +47,6 @@ def _get_kwargs(
         "params": params,
     }
 
-    _kwargs["headers"] = headers
     return _kwargs
 
 
@@ -168,9 +151,6 @@ def sync_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]]:
     """List Grid prequalification for service providing group
 
@@ -182,9 +162,6 @@ def sync_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -202,9 +179,6 @@ def sync_detailed(
         order=order,
         offset=offset,
         limit=limit,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = client.get_httpx_client().request(
@@ -224,9 +198,6 @@ def sync(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse] | None:
     """List Grid prequalification for service providing group
 
@@ -238,9 +209,6 @@ def sync(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -259,9 +227,6 @@ def sync(
         order=order,
         offset=offset,
         limit=limit,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     ).parsed
 
 
@@ -275,9 +240,6 @@ async def asyncio_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]]:
     """List Grid prequalification for service providing group
 
@@ -289,9 +251,6 @@ async def asyncio_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -309,9 +268,6 @@ async def asyncio_detailed(
         order=order,
         offset=offset,
         limit=limit,
-        range_=range_,
-        range_unit=range_unit,
-        prefer=prefer,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -329,9 +285,6 @@ async def asyncio(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
-    range_: str | Unset = UNSET,
-    range_unit: str | Unset = UNSET,
-    prefer: ListServiceProvidingGroupGridPrequalificationPrefer | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse] | None:
     """List Grid prequalification for service providing group
 
@@ -343,9 +296,6 @@ async def asyncio(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
-        range_ (str | Unset):
-        range_unit (str | Unset):
-        prefer (ListServiceProvidingGroupGridPrequalificationPrefer | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -365,8 +315,5 @@ async def asyncio(
             order=order,
             offset=offset,
             limit=limit,
-            range_=range_,
-            range_unit=range_unit,
-            prefer=prefer,
         )
     ).parsed
