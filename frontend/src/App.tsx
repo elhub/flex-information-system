@@ -284,7 +284,7 @@ const MainMenu = () => (
       />
       <LabelledResourceMenuItem
         name="system_operator_product_type"
-        label="SO product type registrations"
+        label="System operator product listings"
       />
     </SubMenu>
     <SubMenu text="Product application" defaultOpen>

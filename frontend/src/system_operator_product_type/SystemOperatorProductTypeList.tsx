@@ -36,6 +36,7 @@ export const SystemOperatorProductTypeList = () => {
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={SystemOperatorProductTypeListFilters}
+      title="System operator product listings"
     >
       <Datagrid>
         <TextField source="id" label="field.system_operator_product_type.id" />
