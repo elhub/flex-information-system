@@ -12,8 +12,8 @@ const ListActions = () => {
 export const AccountingPointList = () => {
   const filters = [
     <AutocompleteReferenceInput
-      key="accounting_point_id"
-      source="accounting_point_id@eq"
+      key="id"
+      source="id@eq"
       reference="accounting_point"
       label="field.controllable_unit.accounting_point_id"
       fieldName="business_id"

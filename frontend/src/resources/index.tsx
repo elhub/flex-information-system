@@ -3,7 +3,6 @@
  * This enables better code organization
  */
 
-import { Resource } from "react-admin";
 import { JSX } from "react";
 import { createEntityResources } from "./entityResources";
 import { createPartyResources } from "./partyResources";
@@ -13,8 +12,7 @@ import { createServiceProviderResources } from "./serviceProviderResources";
 import { createProductResources } from "./productResources";
 import { createSystemResources } from "./systemResources";
 import { Permissions } from "../auth/permissions";
-import { AccountingPointList } from "../accounting_point/AccountingPointList";
-import { AccountingPointShow } from "../accounting_point/AccountingPointShow";
+import { createAccountingPointResources } from "./accountingPointResources";
 
 /**
  * Creates all resources based on user permissions
@@ -22,15 +20,8 @@ import { AccountingPointShow } from "../accounting_point/AccountingPointShow";
 export const createAllResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
 
-  resources.push(
-    <Resource
-      key="accounting_point"
-      name="accounting_point"
-      list={AccountingPointList}
-      show={AccountingPointShow}
-      recordRepresentation="business_id"
-    />,
-  );
+  const apResources = createAccountingPointResources();
+  resources.push(...apResources);
 
   // Entity resources
   const entityResource = createEntityResources(permissions);

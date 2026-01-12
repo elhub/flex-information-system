@@ -5,6 +5,7 @@ import {
   SimpleShowLayout,
   TextField,
   useGetList,
+  useGetOne,
   useRecordContext,
 } from "react-admin";
 import { FieldStack } from "../auth";
@@ -42,17 +43,32 @@ const findCurrentlyValidRecord = <
 };
 
 // TODO: reduce code duplication in fields extracting a party name (BRP, ES, EU)
-const BalanceResponsiblePartyInfo = () => {
+const BalanceResponsiblePartyInfo = ({
+  source,
+  label,
+}: {
+  source: string;
+  label: string;
+}) => {
   const record = useRecordContext()!;
 
   const { data: brpData } = useGetList(
     "accounting_point_balance_responsible_party",
     {
       filter: { accounting_point_id: record.id },
+      // NB: `sort` required because the resource does not have an `id` field,
+      // and the default sort in RA uses it (same for similar resources below)
+      sort: { field: "accounting_point_id", order: "ASC" },
     },
   );
   const currentBRP =
     findCurrentlyValidRecord<AccountingPointBalanceResponsibleParty>(brpData);
+
+  const { data: brpPartyData } = useGetOne("party", {
+    id: currentBRP?.balance_responsible_party_id,
+  });
+
+  console.log(JSON.stringify(brpPartyData));
 
   return (
     // we could do one more manual hop with useGetOne here,
@@ -64,11 +80,7 @@ const BalanceResponsiblePartyInfo = () => {
         balance_responsible_party_id: currentBRP?.balance_responsible_party_id,
       }}
     >
-      <ReferenceField
-        source="balance_responsible_party_id"
-        reference="party"
-        label="field.accounting_point_balance_responsible_party.balance_responsible_party_id"
-      >
+      <ReferenceField source={source} reference="party" label={label}>
         <TextField source="name" />
       </ReferenceField>
     </RecordContextProvider>
@@ -82,6 +94,7 @@ const BiddingZoneInfo = () => {
     "accounting_point_bidding_zone",
     {
       filter: { accounting_point_id: record.id },
+      sort: { field: "accounting_point_id", order: "ASC" },
     },
   );
   const currentBiddingZone =
@@ -104,6 +117,7 @@ const EndUserInfo = () => {
 
   const { data: endUserData } = useGetList("accounting_point_end_user", {
     filter: { accounting_point_id: record.id },
+    sort: { field: "accounting_point_id", order: "ASC" },
   });
   const currentEndUser =
     findCurrentlyValidRecord<AccountingPointEndUser>(endUserData);
@@ -128,6 +142,7 @@ const EnergySupplierInfo = () => {
 
   const { data: esData } = useGetList("accounting_point_energy_supplier", {
     filter: { accounting_point_id: record.id },
+    sort: { field: "accounting_point_id", order: "ASC" },
   });
   const currentEnergySupplier =
     findCurrentlyValidRecord<AccountingPointEnergySupplier>(esData);
@@ -155,6 +170,7 @@ const MeteringGridAreaInfo = () => {
 
   const { data: mgaData } = useGetList("accounting_point_metering_grid_area", {
     filter: { accounting_point_id: record.id },
+    sort: { field: "accounting_point_id", order: "ASC" },
   });
   const currentMGA =
     findCurrentlyValidRecord<AccountingPointMeteringGridArea>(mgaData);
@@ -171,7 +187,10 @@ const MeteringGridAreaInfo = () => {
         reference="metering_grid_area"
         label="field.accounting_point_metering_grid_area.metering_grid_area_id"
       >
-        <TextField source="price_area" />
+        <EnumField
+          source="price_area"
+          enumKey="metering_grid_area.price_area"
+        />
       </ReferenceField>
     </RecordContextProvider>
   );
@@ -198,7 +217,10 @@ export const AccountingPointShow = () => (
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
           {/* cannot use ReferenceField for the following fields because we need
               to manually filter valid time to extract the active record */}
-          <BalanceResponsiblePartyInfo />
+          <BalanceResponsiblePartyInfo
+            source="balance_responsible_party_id"
+            label="field.accounting_point_balance_responsible_party.balance_responsible_party_id"
+          />
           <BiddingZoneInfo />
           <EndUserInfo />
           <EnergySupplierInfo />
