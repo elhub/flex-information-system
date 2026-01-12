@@ -16,36 +16,43 @@ T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationResponse")
 
 @_attrs_define
 class ServiceProvidingGroupGridPrequalificationResponse:
-    """Response schema for operations with return values - Grid prequalification for service providing group
+    """Response schema - Grid prequalification for service providing group
 
     Attributes:
-        status (ServiceProvidingGroupGridPrequalificationStatus | Unset): The status of the grid prequalification for
-            this service providing group. Example: in_progress.
+        id (int): Unique surrogate key. Example: 27.
+        service_providing_group_id (int): Reference to the service providing group whose grid prequalification is
+            tracked by the current resource. Example: 55.
+        impacted_system_operator_id (int): Reference to the `party` that is the impacted system operator. Example: 7.
+        status (ServiceProvidingGroupGridPrequalificationStatus): The status of the grid prequalification for this
+            service providing group. Example: in_progress.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         prequalified_at (None | str | Unset): When the current grid prequalification was last approved. Example:
             2023-01-08 10:00:00 CET.
-        service_providing_group_id (int | Unset): Reference to the service providing group whose grid prequalification
-            is tracked by the current resource. Example: 55.
-        impacted_system_operator_id (int | Unset): Reference to the `party` that is the impacted system operator.
-            Example: 7.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate key. Example: 27.
     """
 
-    status: ServiceProvidingGroupGridPrequalificationStatus | Unset = UNSET
+    id: int
+    service_providing_group_id: int
+    impacted_system_operator_id: int
+    status: ServiceProvidingGroupGridPrequalificationStatus
+    recorded_at: str
+    recorded_by: int
     prequalified_at: None | str | Unset = UNSET
-    service_providing_group_id: int | Unset = UNSET
-    impacted_system_operator_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        status: str | Unset = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
+        id = self.id
+
+        service_providing_group_id = self.service_providing_group_id
+
+        impacted_system_operator_id = self.impacted_system_operator_id
+
+        status = self.status.value
+
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
 
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
@@ -53,45 +60,37 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         else:
             prequalified_at = self.prequalified_at
 
-        service_providing_group_id = self.service_providing_group_id
-
-        impacted_system_operator_id = self.impacted_system_operator_id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
-        id = self.id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if status is not UNSET:
-            field_dict["status"] = status
+        field_dict.update(
+            {
+                "id": id,
+                "service_providing_group_id": service_providing_group_id,
+                "impacted_system_operator_id": impacted_system_operator_id,
+                "status": status,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
-        if service_providing_group_id is not UNSET:
-            field_dict["service_providing_group_id"] = service_providing_group_id
-        if impacted_system_operator_id is not UNSET:
-            field_dict["impacted_system_operator_id"] = impacted_system_operator_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        _status = d.pop("status", UNSET)
-        status: ServiceProvidingGroupGridPrequalificationStatus | Unset
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = ServiceProvidingGroupGridPrequalificationStatus(_status)
+        id = d.pop("id")
+
+        service_providing_group_id = d.pop("service_providing_group_id")
+
+        impacted_system_operator_id = d.pop("impacted_system_operator_id")
+
+        status = ServiceProvidingGroupGridPrequalificationStatus(d.pop("status"))
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
 
         def _parse_prequalified_at(data: object) -> None | str | Unset:
             if data is None:
@@ -102,24 +101,14 @@ class ServiceProvidingGroupGridPrequalificationResponse:
 
         prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 
-        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
-
-        impacted_system_operator_id = d.pop("impacted_system_operator_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
-
         service_providing_group_grid_prequalification_response = cls(
-            status=status,
-            prequalified_at=prequalified_at,
+            id=id,
             service_providing_group_id=service_providing_group_id,
             impacted_system_operator_id=impacted_system_operator_id,
+            status=status,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
+            prequalified_at=prequalified_at,
         )
 
         service_providing_group_grid_prequalification_response.additional_properties = d

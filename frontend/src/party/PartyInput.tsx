@@ -9,9 +9,9 @@ import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { zParty } from "../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zPartyCreateRequest } from "../generated-client/zod.gen";
 import { EnumInput } from "../components/enum";
+import { unTypedZodResolver } from "../util";
 
 // component updating the role field automatically based on the type field
 const PartyTypeInput = (props: any) => {
@@ -107,7 +107,7 @@ export const PartyInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zParty)}
+      resolver={unTypedZodResolver(zPartyCreateRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>

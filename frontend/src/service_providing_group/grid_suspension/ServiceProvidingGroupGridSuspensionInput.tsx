@@ -11,11 +11,18 @@ import {
   InputStack,
   AutocompleteReferenceInput,
 } from "../../auth";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ServiceProvidingGroupGridSuspension } from "../../generated-client";
+import {
+  ServiceProvidingGroupGridSuspension,
+  ServiceProvidingGroupGridSuspensionCreateRequest,
+  ServiceProvidingGroupGridSuspensionUpdateRequest,
+} from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
-import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
+import {
+  zServiceProvidingGroupGridSuspension,
+  zServiceProvidingGroupGridSuspensionCreateRequest,
+} from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
+import { unTypedZodResolver } from "../../util";
 
 export type ServiceProvidingGroupGridSuspensionLocationState = {
   spggs: Partial<ServiceProvidingGroupGridSuspension>;
@@ -25,15 +32,17 @@ export type ServiceProvidingGroupGridSuspensionLocationState = {
 export const ServiceProvidingGroupGridSuspensionInput = () => {
   const locationState =
     useLocationState<ServiceProvidingGroupGridSuspensionLocationState>();
-  const overrideRecord =
-    zServiceProvidingGroupGridSuspension.safeParse(locationState?.spggs).data ||
-    {};
+  const overrideRecord = zServiceProvidingGroupGridSuspension
+    .partial()
+    .safeParse(locationState?.spggs ?? {});
 
   const actualRecord = useRecordContext<ServiceProvidingGroupGridSuspension>();
   const { data: identity } = useGetIdentity();
   const isSystemOperator = identity?.role == "flex_system_operator";
 
-  const record: ServiceProvidingGroupGridSuspension = {
+  const record:
+    | ServiceProvidingGroupGridSuspensionCreateRequest
+    | ServiceProvidingGroupGridSuspensionUpdateRequest = {
     ...actualRecord,
     ...overrideRecord,
   };
@@ -42,7 +51,9 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zServiceProvidingGroupGridSuspension)}
+      resolver={unTypedZodResolver(
+        zServiceProvidingGroupGridSuspensionCreateRequest,
+      )}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>
@@ -54,7 +65,10 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
             source="service_providing_group_id"
             reference="service_providing_group"
             label="field.service_providing_group_grid_suspension.service_providing_group_id"
-            readOnly={!!record?.service_providing_group_id}
+            readOnly={
+              "service_providing_group_id" in record &&
+              !!record.service_providing_group_id
+            }
           />
         </InputStack>
         <InputStack direction="row" flexWrap="wrap">

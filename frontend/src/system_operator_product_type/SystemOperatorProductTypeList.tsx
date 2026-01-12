@@ -2,7 +2,10 @@ import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { QuickFilter } from "../components/QuickFilter";
-import { ProductTypeArrayInput } from "../product_type/components";
+import {
+  ProductTypeArrayInput,
+  ProductTypeField,
+} from "../product_type/components";
 import { EnumField } from "../components/enum";
 
 export const SystemOperatorProductTypeList = () => {
@@ -33,6 +36,7 @@ export const SystemOperatorProductTypeList = () => {
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={SystemOperatorProductTypeListFilters}
+      title="System operator product listings"
     >
       <Datagrid>
         <TextField source="id" label="field.system_operator_product_type.id" />
@@ -44,8 +48,7 @@ export const SystemOperatorProductTypeList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField
-          reference="product_type"
+        <ProductTypeField
           source="product_type_id"
           sortable={false}
           label="field.system_operator_product_type.product_type_id"
