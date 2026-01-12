@@ -8,7 +8,7 @@ import {
 import { Box, Stack } from "@mui/material";
 import {
   ControllableUnit,
-  ControllableUnitHistoryResponse,
+  ControllableUnitHistory,
 } from "../../generated-client";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useParams } from "react-router-dom";
@@ -22,9 +22,7 @@ import { LabelValue } from "../../components/LabelValue";
 import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
 
 const Layout = () => {
-  const record = useRecordContext<
-    ControllableUnit | ControllableUnitHistoryResponse
-  >();
+  const record = useRecordContext<ControllableUnit | ControllableUnitHistory>();
   const {
     data: controllableUnitViewModel,
     isPending,

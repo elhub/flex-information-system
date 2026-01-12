@@ -10,14 +10,13 @@ from ..models.party_business_id_type import PartyBusinessIdType
 from ..models.party_role import PartyRole
 from ..models.party_status import PartyStatus
 from ..models.party_type import PartyType
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyResponse")
 
 
 @_attrs_define
 class PartyResponse:
-    """Response schema for operations with return values - The body that interacts with the Flexibility Information System
+    """Response schema - The body that interacts with the Flexibility Information System
 
     A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
 
@@ -28,142 +27,107 @@ class PartyResponse:
     * End User
 
         Attributes:
-            business_id_type (PartyBusinessIdType | Unset): The type of the business identifier. Example: gln.
-            name (str | Unset): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
-            role (PartyRole | Unset): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
-                service_provider. Example: flex_energy_supplier.
-            type_ (PartyType | Unset): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
-            status (PartyStatus | Unset): The status of the party. Example: active.
-            business_id (str | Unset): The business identifier of the party. Format depends on `business_id_type`. Example:
+            id (int): Unique surrogate identifier. Example: 11.
+            business_id (str): The business identifier of the party. Format depends on `business_id_type`. Example:
                 1337099000000.
-            entity_id (int | Unset): Reference to the entity that is the parent of the party. Example: 30.
-            recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31 23:59:00 CET.
-            recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-            id (int | Unset): Unique surrogate identifier. Example: 11.
+            business_id_type (PartyBusinessIdType): The type of the business identifier. Example: gln.
+            entity_id (int): Reference to the entity that is the parent of the party. Example: 30.
+            name (str): Name of the party. Maximum 128 characters. Example: Flex Energy Supplier.
+            role (PartyRole): The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator,
+                service_provider. Example: flex_energy_supplier.
+            type_ (PartyType): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
+            status (PartyStatus): The status of the party. Example: active.
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+                23:59:00 CET.
+            recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
-    business_id_type: PartyBusinessIdType | Unset = UNSET
-    name: str | Unset = UNSET
-    role: PartyRole | Unset = UNSET
-    type_: PartyType | Unset = UNSET
-    status: PartyStatus | Unset = UNSET
-    business_id: str | Unset = UNSET
-    entity_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
+    id: int
+    business_id: str
+    business_id_type: PartyBusinessIdType
+    entity_id: int
+    name: str
+    role: PartyRole
+    type_: PartyType
+    status: PartyStatus
+    recorded_at: str
+    recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        business_id_type: str | Unset = UNSET
-        if not isinstance(self.business_id_type, Unset):
-            business_id_type = self.business_id_type.value
-
-        name = self.name
-
-        role: str | Unset = UNSET
-        if not isinstance(self.role, Unset):
-            role = self.role.value
-
-        type_: str | Unset = UNSET
-        if not isinstance(self.type_, Unset):
-            type_ = self.type_.value
-
-        status: str | Unset = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
+        id = self.id
 
         business_id = self.business_id
 
+        business_id_type = self.business_id_type.value
+
         entity_id = self.entity_id
+
+        name = self.name
+
+        role = self.role.value
+
+        type_ = self.type_.value
+
+        status = self.status.value
 
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
 
-        id = self.id
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if business_id_type is not UNSET:
-            field_dict["business_id_type"] = business_id_type
-        if name is not UNSET:
-            field_dict["name"] = name
-        if role is not UNSET:
-            field_dict["role"] = role
-        if type_ is not UNSET:
-            field_dict["type"] = type_
-        if status is not UNSET:
-            field_dict["status"] = status
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
+        field_dict.update(
+            {
+                "id": id,
+                "business_id": business_id,
+                "business_id_type": business_id_type,
+                "entity_id": entity_id,
+                "name": name,
+                "role": role,
+                "type": type_,
+                "status": status,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        _business_id_type = d.pop("business_id_type", UNSET)
-        business_id_type: PartyBusinessIdType | Unset
-        if isinstance(_business_id_type, Unset):
-            business_id_type = UNSET
-        else:
-            business_id_type = PartyBusinessIdType(_business_id_type)
+        id = d.pop("id")
 
-        name = d.pop("name", UNSET)
+        business_id = d.pop("business_id")
 
-        _role = d.pop("role", UNSET)
-        role: PartyRole | Unset
-        if isinstance(_role, Unset):
-            role = UNSET
-        else:
-            role = PartyRole(_role)
+        business_id_type = PartyBusinessIdType(d.pop("business_id_type"))
 
-        _type_ = d.pop("type", UNSET)
-        type_: PartyType | Unset
-        if isinstance(_type_, Unset):
-            type_ = UNSET
-        else:
-            type_ = PartyType(_type_)
+        entity_id = d.pop("entity_id")
 
-        _status = d.pop("status", UNSET)
-        status: PartyStatus | Unset
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = PartyStatus(_status)
+        name = d.pop("name")
 
-        business_id = d.pop("business_id", UNSET)
+        role = PartyRole(d.pop("role"))
 
-        entity_id = d.pop("entity_id", UNSET)
+        type_ = PartyType(d.pop("type"))
 
-        recorded_at = d.pop("recorded_at", UNSET)
+        status = PartyStatus(d.pop("status"))
 
-        recorded_by = d.pop("recorded_by", UNSET)
+        recorded_at = d.pop("recorded_at")
 
-        id = d.pop("id", UNSET)
+        recorded_by = d.pop("recorded_by")
 
         party_response = cls(
+            id=id,
+            business_id=business_id,
             business_id_type=business_id_type,
+            entity_id=entity_id,
             name=name,
             role=role,
             type_=type_,
             status=status,
-            business_id=business_id,
-            entity_id=entity_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
         )
 
         party_response.additional_properties = d

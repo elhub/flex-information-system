@@ -8,8 +8,8 @@ import { AutocompleteReferenceInput, InputStack } from "../../auth";
 import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ScopesInput } from "../../components/scopes";
-import { zEntityClient } from "../../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zEntityClientCreateRequest } from "../../generated-client/zod.gen";
+import { unTypedZodResolver } from "../../util";
 
 // common layout to create and edit pages
 export const EntityClientInput = () => {
@@ -21,7 +21,7 @@ export const EntityClientInput = () => {
     <SimpleForm
       record={record}
       maxWidth={1280}
-      resolver={zodResolver(zEntityClient)}
+      resolver={unTypedZodResolver(zEntityClientCreateRequest)}
       toolbar={<Toolbar />}
     >
       <InputStack>

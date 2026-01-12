@@ -40,17 +40,6 @@ export type AuthScope =
   | "use:auth"
   | "manage:auth";
 
-export type AuditFields = {
-  /**
-   * When the resource was recorded (created or updated) in the system.
-   */
-  readonly recorded_at?: string;
-  /**
-   * The identity that recorded the resource.
-   */
-  readonly recorded_by?: number;
-};
-
 /**
  * Request schema for controllable unit lookup operations
  */
@@ -72,7 +61,7 @@ export type ControllableUnitLookupRequest = {
 /**
  * Response schema for controllable unit lookup operations
  */
-export type ControllableUnitLookupResponse = {
+export type ControllableUnitLookup = {
   /**
    * The accounting point behind which the controllable units are located.
    */
@@ -152,7 +141,7 @@ export type EntityLookupRequest = {
 /**
  * Response schema for entity lookup operations
  */
-export type EntityLookupResponse = {
+export type EntityLookup = {
   /**
    * The surrogate key of the entity.
    */
@@ -499,43 +488,130 @@ export type ControllableUnitUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Controllable unit
+ * Request schema for create operations - Controllable unit
  */
-export type ControllableUnitCreateData = ControllableUnitUpdateRequest & {
+export type ControllableUnitCreateRequest = {
+  /**
+   * Free text name of the controllable unit.
+   */
+  name: string;
+  /**
+   * The usage date when the controllable unit is first active.
+   */
+  start_date?: string;
+  status?: ControllableUnitStatus;
+  regulation_direction: ControllableUnitRegulationDirection;
+  /**
+   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   */
+  maximum_available_capacity: number;
+  /**
+   * The minimum activation duration in seconds.
+   */
+  minimum_duration?: number;
+  /**
+   * The maximum activation duration in seconds.
+   */
+  maximum_duration?: number;
+  /**
+   * The minimum recovery duration between activations in seconds.
+   */
+  recovery_duration?: number;
+  /**
+   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
+   */
+  ramp_rate?: number;
   /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
-  accounting_point_id?: number;
+  accounting_point_id: number;
+  /**
+   * Reference to the node that the controllable unit is connected to.
+   */
+  grid_node_id?: string;
+  grid_validation_status?: ControllableUnitGridValidationStatus;
+  /**
+   * Free text notes on the current grid validation status.
+   */
+  grid_validation_notes?: string;
+  /**
+   * When the controllable unit was last validated.
+   */
+  validated_at?: string;
 };
 
 /**
- * Request schema for create operations - Controllable unit
+ * Response schema - Controllable unit
  */
-export type ControllableUnitCreateRequest = ControllableUnitCreateData &
-  unknown;
-
-/**
- * Data schema - Controllable unit
- */
-export type ControllableUnit = ControllableUnitCreateData & {
+export type ControllableUnit = {
   /**
    * Unique surrogate key.
    */
-  readonly id?: number;
+  readonly id: number;
   /**
    * Unique business identifier for the controllable unit.
    */
-  readonly business_id?: string;
+  readonly business_id: string;
+  /**
+   * Free text name of the controllable unit.
+   */
+  name: string;
+  /**
+   * The usage date when the controllable unit is first active.
+   */
+  start_date?: string;
+  status: ControllableUnitStatus;
+  regulation_direction: ControllableUnitRegulationDirection;
+  /**
+   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   */
+  maximum_available_capacity: number;
   /**
    * Whether the controllable unit is small or not, following NCDR.
    */
-  readonly is_small?: boolean;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Controllable unit
- */
-export type ControllableUnitResponse = ControllableUnit & unknown;
+  readonly is_small: boolean;
+  /**
+   * The minimum activation duration in seconds.
+   */
+  minimum_duration?: number;
+  /**
+   * The maximum activation duration in seconds.
+   */
+  maximum_duration?: number;
+  /**
+   * The minimum recovery duration between activations in seconds.
+   */
+  recovery_duration?: number;
+  /**
+   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
+   */
+  ramp_rate?: number;
+  /**
+   * Reference to the accounting point that the controllable unit is connected to.
+   */
+  accounting_point_id: number;
+  /**
+   * Reference to the node that the controllable unit is connected to.
+   */
+  grid_node_id?: string;
+  grid_validation_status: ControllableUnitGridValidationStatus;
+  /**
+   * Free text notes on the current grid validation status.
+   */
+  grid_validation_notes?: string;
+  /**
+   * When the controllable unit was last validated.
+   */
+  validated_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
@@ -545,42 +621,46 @@ export type ControllableUnitSuspensionUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
- */
-export type ControllableUnitSuspensionCreateData =
-  ControllableUnitSuspensionUpdateRequest & {
-    /**
-     * Reference to the suspended controllable unit.
-     */
-    controllable_unit_id?: number;
-    /**
-     * Reference to the impacted system operator suspending the controllable unit.
-     */
-    impacted_system_operator_id?: number;
-  };
-
-/**
  * Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export type ControllableUnitSuspensionCreateRequest =
-  ControllableUnitSuspensionCreateData & unknown;
+export type ControllableUnitSuspensionCreateRequest = {
+  /**
+   * Reference to the suspended controllable unit.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the impacted system operator suspending the controllable unit.
+   */
+  impacted_system_operator_id?: number;
+  reason: ControllableUnitSuspensionReason;
+};
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export type ControllableUnitSuspension =
-  ControllableUnitSuspensionCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
- */
-export type ControllableUnitSuspensionResponse = ControllableUnitSuspension &
-  unknown;
+export type ControllableUnitSuspension = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the suspended controllable unit.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the impacted system operator suspending the controllable unit.
+   */
+  impacted_system_operator_id: number;
+  reason: ControllableUnitSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a controllable unit suspension.
@@ -594,46 +674,54 @@ export type ControllableUnitSuspensionCommentUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a controllable unit suspension.
- */
-export type ControllableUnitSuspensionCommentCreateData =
-  ControllableUnitSuspensionCommentUpdateRequest & {
-    /**
-     * Reference to the controllable unit suspension.
-     */
-    controllable_unit_suspension_id?: number;
-  };
-
-/**
  * Request schema for create operations - Comment made by a party involved in a controllable unit suspension.
  */
-export type ControllableUnitSuspensionCommentCreateRequest =
-  ControllableUnitSuspensionCommentCreateData & unknown;
+export type ControllableUnitSuspensionCommentCreateRequest = {
+  /**
+   * Reference to the controllable unit suspension.
+   */
+  controllable_unit_suspension_id: number;
+  visibility?: ControllableUnitSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Comment made by a party involved in a controllable unit suspension.
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
-export type ControllableUnitSuspensionComment =
-  ControllableUnitSuspensionCommentCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-    /**
-     * Reference to the identity that created the comment.
-     */
-    readonly created_by?: number;
-    /**
-     * When the comment was added to the CUS.
-     */
-    readonly created_at?: string;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a controllable unit suspension.
- */
-export type ControllableUnitSuspensionCommentResponse =
-  ControllableUnitSuspensionComment & unknown;
+export type ControllableUnitSuspensionComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit suspension.
+   */
+  controllable_unit_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the CUS.
+   */
+  readonly created_at: string;
+  visibility: ControllableUnitSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Relation between controllable unit and service provider
@@ -654,46 +742,76 @@ export type ControllableUnitServiceProviderUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Relation between controllable unit and service provider
- */
-export type ControllableUnitServiceProviderCreateData =
-  ControllableUnitServiceProviderUpdateRequest & {
-    /**
-     * Reference to the controllable unit this relation links to a service provider.
-     */
-    controllable_unit_id?: number;
-    /**
-     * Reference to the `party` (service provider) this relation links to a controllable unit.
-     */
-    service_provider_id?: number;
-    /**
-     * Technical ID of the end user behind the accounting point.
-     */
-    end_user_id?: number;
-  };
-
-/**
  * Request schema for create operations - Relation between controllable unit and service provider
  */
-export type ControllableUnitServiceProviderCreateRequest =
-  ControllableUnitServiceProviderCreateData & unknown;
+export type ControllableUnitServiceProviderCreateRequest = {
+  /**
+   * Reference to the controllable unit this relation links to a service provider.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the `party` (service provider) this relation links to a controllable unit.
+   */
+  service_provider_id: number;
+  /**
+   * Technical ID of the end user behind the accounting point.
+   */
+  end_user_id: number;
+  /**
+   * The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
+   */
+  contract_reference: string;
+  /**
+   * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from?: string;
+  /**
+   * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+};
 
 /**
- * Data schema - Relation between controllable unit and service provider
+ * Response schema - Relation between controllable unit and service provider
  */
-export type ControllableUnitServiceProvider =
-  ControllableUnitServiceProviderCreateData & {
-    /**
-     * Unique surrogate key.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Relation between controllable unit and service provider
- */
-export type ControllableUnitServiceProviderResponse =
-  ControllableUnitServiceProvider & unknown;
+export type ControllableUnitServiceProvider = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit this relation links to a service provider.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the `party` (service provider) this relation links to a controllable unit.
+   */
+  service_provider_id: number;
+  /**
+   * Technical ID of the end user behind the accounting point.
+   */
+  end_user_id: number;
+  /**
+   * The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
+   */
+  contract_reference: string;
+  /**
+   * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from?: string;
+  /**
+   * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Group of controllable units
@@ -708,36 +826,48 @@ export type ServiceProvidingGroupUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Group of controllable units
- */
-export type ServiceProvidingGroupCreateData =
-  ServiceProvidingGroupUpdateRequest & {
-    /**
-     * Reference to the `party` (service provider) managing the group.
-     */
-    service_provider_id?: number;
-  };
-
-/**
  * Request schema for create operations - Group of controllable units
  */
-export type ServiceProvidingGroupCreateRequest =
-  ServiceProvidingGroupCreateData & unknown;
+export type ServiceProvidingGroupCreateRequest = {
+  /**
+   * Free text name of the service providing group.
+   */
+  name: string;
+  /**
+   * Reference to the `party` (service provider) managing the group.
+   */
+  service_provider_id: number;
+  bidding_zone: ServiceProvidingGroupBiddingZone;
+  status?: ServiceProvidingGroupStatus;
+};
 
 /**
- * Data schema - Group of controllable units
+ * Response schema - Group of controllable units
  */
-export type ServiceProvidingGroup = ServiceProvidingGroupCreateData & {
+export type ServiceProvidingGroup = {
   /**
    * Unique surrogate key.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Group of controllable units
- */
-export type ServiceProvidingGroupResponse = ServiceProvidingGroup & unknown;
+  readonly id: number;
+  /**
+   * Free text name of the service providing group.
+   */
+  name: string;
+  /**
+   * Reference to the `party` (service provider) managing the group.
+   */
+  service_provider_id: number;
+  bidding_zone: ServiceProvidingGroupBiddingZone;
+  status: ServiceProvidingGroupStatus;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Membership relation of controllable unit in service providing group
@@ -754,42 +884,60 @@ export type ServiceProvidingGroupMembershipUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Membership relation of controllable unit in service providing group
- */
-export type ServiceProvidingGroupMembershipCreateData =
-  ServiceProvidingGroupMembershipUpdateRequest & {
-    /**
-     * Reference to the controllable unit this relation links to a service providing group.
-     */
-    controllable_unit_id?: number;
-    /**
-     * Reference to the service providing group this relation links to a controllable unit.
-     */
-    service_providing_group_id?: number;
-  };
-
-/**
  * Request schema for create operations - Membership relation of controllable unit in service providing group
  */
-export type ServiceProvidingGroupMembershipCreateRequest =
-  ServiceProvidingGroupMembershipCreateData & unknown;
+export type ServiceProvidingGroupMembershipCreateRequest = {
+  /**
+   * Reference to the controllable unit this relation links to a service providing group.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the service providing group this relation links to a controllable unit.
+   */
+  service_providing_group_id: number;
+  /**
+   * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from: string;
+  /**
+   * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+};
 
 /**
- * Data schema - Membership relation of controllable unit in service providing group
+ * Response schema - Membership relation of controllable unit in service providing group
  */
-export type ServiceProvidingGroupMembership =
-  ServiceProvidingGroupMembershipCreateData & {
-    /**
-     * Unique surrogate key.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Membership relation of controllable unit in service providing group
- */
-export type ServiceProvidingGroupMembershipResponse =
-  ServiceProvidingGroupMembership & unknown;
+export type ServiceProvidingGroupMembership = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit this relation links to a service providing group.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the service providing group this relation links to a controllable unit.
+   */
+  service_providing_group_id: number;
+  /**
+   * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from: string;
+  /**
+   * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Grid prequalification for service providing group
@@ -803,42 +951,54 @@ export type ServiceProvidingGroupGridPrequalificationUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Grid prequalification for service providing group
- */
-export type ServiceProvidingGroupGridPrequalificationCreateData =
-  ServiceProvidingGroupGridPrequalificationUpdateRequest & {
-    /**
-     * Reference to the service providing group whose grid prequalification is tracked by the current resource.
-     */
-    service_providing_group_id?: number;
-    /**
-     * Reference to the `party` that is the impacted system operator.
-     */
-    impacted_system_operator_id?: number;
-  };
-
-/**
  * Request schema for create operations - Grid prequalification for service providing group
  */
-export type ServiceProvidingGroupGridPrequalificationCreateRequest =
-  ServiceProvidingGroupGridPrequalificationCreateData & unknown;
+export type ServiceProvidingGroupGridPrequalificationCreateRequest = {
+  /**
+   * Reference to the service providing group whose grid prequalification is tracked by the current resource.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the `party` that is the impacted system operator.
+   */
+  impacted_system_operator_id: number;
+  status?: ServiceProvidingGroupGridPrequalificationStatus;
+  /**
+   * When the current grid prequalification was last approved.
+   */
+  prequalified_at?: string;
+};
 
 /**
- * Data schema - Grid prequalification for service providing group
+ * Response schema - Grid prequalification for service providing group
  */
-export type ServiceProvidingGroupGridPrequalification =
-  ServiceProvidingGroupGridPrequalificationCreateData & {
-    /**
-     * Unique surrogate key.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Grid prequalification for service providing group
- */
-export type ServiceProvidingGroupGridPrequalificationResponse =
-  ServiceProvidingGroupGridPrequalification & unknown;
+export type ServiceProvidingGroupGridPrequalification = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group whose grid prequalification is tracked by the current resource.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the `party` that is the impacted system operator.
+   */
+  impacted_system_operator_id: number;
+  status: ServiceProvidingGroupGridPrequalificationStatus;
+  /**
+   * When the current grid prequalification was last approved.
+   */
+  prequalified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid prequalification.
@@ -852,46 +1012,54 @@ export type ServiceProvidingGroupGridPrequalificationCommentUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service providing group grid prequalification.
- */
-export type ServiceProvidingGroupGridPrequalificationCommentCreateData =
-  ServiceProvidingGroupGridPrequalificationCommentUpdateRequest & {
-    /**
-     * Reference to the service providing group grid prequalification.
-     */
-    service_providing_group_grid_prequalification_id?: number;
-  };
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service providing group grid prequalification.
  */
-export type ServiceProvidingGroupGridPrequalificationCommentCreateRequest =
-  ServiceProvidingGroupGridPrequalificationCommentCreateData & unknown;
+export type ServiceProvidingGroupGridPrequalificationCommentCreateRequest = {
+  /**
+   * Reference to the service providing group grid prequalification.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  visibility?: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid prequalification.
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
-export type ServiceProvidingGroupGridPrequalificationComment =
-  ServiceProvidingGroupGridPrequalificationCommentCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-    /**
-     * Reference to the identity that created the comment.
-     */
-    readonly created_by?: number;
-    /**
-     * When the comment was added to the SPGGP.
-     */
-    readonly created_at?: string;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid prequalification.
- */
-export type ServiceProvidingGroupGridPrequalificationCommentResponse =
-  ServiceProvidingGroupGridPrequalificationComment & unknown;
+export type ServiceProvidingGroupGridPrequalificationComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group grid prequalification.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGGP.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
@@ -901,42 +1069,46 @@ export type ServiceProvidingGroupGridSuspensionUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
- */
-export type ServiceProvidingGroupGridSuspensionCreateData =
-  ServiceProvidingGroupGridSuspensionUpdateRequest & {
-    /**
-     * Reference to the impacted system operator suspending the service providing group.
-     */
-    impacted_system_operator_id?: number;
-    /**
-     * Reference to the service providing group being suspended.
-     */
-    service_providing_group_id?: number;
-  };
-
-/**
  * Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
-export type ServiceProvidingGroupGridSuspensionCreateRequest =
-  ServiceProvidingGroupGridSuspensionCreateData & unknown;
+export type ServiceProvidingGroupGridSuspensionCreateRequest = {
+  /**
+   * Reference to the impacted system operator suspending the service providing group.
+   */
+  impacted_system_operator_id?: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  reason: ServiceProvidingGroupGridSuspensionReason;
+};
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
-export type ServiceProvidingGroupGridSuspension =
-  ServiceProvidingGroupGridSuspensionCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
- */
-export type ServiceProvidingGroupGridSuspensionResponse =
-  ServiceProvidingGroupGridSuspension & unknown;
+export type ServiceProvidingGroupGridSuspension = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the impacted system operator suspending the service providing group.
+   */
+  impacted_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  reason: ServiceProvidingGroupGridSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid suspension.
@@ -950,46 +1122,54 @@ export type ServiceProvidingGroupGridSuspensionCommentUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service providing group grid suspension.
- */
-export type ServiceProvidingGroupGridSuspensionCommentCreateData =
-  ServiceProvidingGroupGridSuspensionCommentUpdateRequest & {
-    /**
-     * Reference to the service providing group grid suspension.
-     */
-    service_providing_group_grid_suspension_id?: number;
-  };
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service providing group grid suspension.
  */
-export type ServiceProvidingGroupGridSuspensionCommentCreateRequest =
-  ServiceProvidingGroupGridSuspensionCommentCreateData & unknown;
+export type ServiceProvidingGroupGridSuspensionCommentCreateRequest = {
+  /**
+   * Reference to the service providing group grid suspension.
+   */
+  service_providing_group_grid_suspension_id: number;
+  visibility?: ServiceProvidingGroupGridSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Comment made by a party involved in a service providing group grid suspension.
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
-export type ServiceProvidingGroupGridSuspensionComment =
-  ServiceProvidingGroupGridSuspensionCommentCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-    /**
-     * Reference to the identity that created the comment.
-     */
-    readonly created_by?: number;
-    /**
-     * When the comment was added to the SPGGS.
-     */
-    readonly created_at?: string;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid suspension.
- */
-export type ServiceProvidingGroupGridSuspensionCommentResponse =
-  ServiceProvidingGroupGridSuspensionComment & unknown;
+export type ServiceProvidingGroupGridSuspensionComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group grid suspension.
+   */
+  service_providing_group_grid_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGGS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupGridSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Entity - Natural or legal person
@@ -1011,23 +1191,6 @@ export type EntityUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Entity - Natural or legal person
- *
- * An entity is a natural or legal person that can be a party in the Flexibility Information System.
- *
- * Example entity types:
- *
- * * Person
- * * Organisation
- */
-export type EntityCreateData = EntityUpdateRequest & {
-  /**
-   * The business identifier of the entity. Format depends on `business_id_type`.
-   */
-  business_id?: string;
-};
-
-/**
  * Request schema for create operations - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
@@ -1037,10 +1200,21 @@ export type EntityCreateData = EntityUpdateRequest & {
  * * Person
  * * Organisation
  */
-export type EntityCreateRequest = EntityCreateData & unknown;
+export type EntityCreateRequest = {
+  /**
+   * The business identifier of the entity. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: EntityBusinessIdType;
+  /**
+   * Name of the entity. Maximum 128 characters.
+   */
+  name: string;
+  type: EntityType;
+};
 
 /**
- * Data schema - Entity - Natural or legal person
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -1049,27 +1223,33 @@ export type EntityCreateRequest = EntityCreateData & unknown;
  * * Person
  * * Organisation
  */
-export type Entity = EntityCreateData & {
+export type Entity = {
   /**
    * Unique surrogate identifier.
    *
    * Note:
    * This is a Primary Key.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Entity - Natural or legal person
- *
- * An entity is a natural or legal person that can be a party in the Flexibility Information System.
- *
- * Example entity types:
- *
- * * Person
- * * Organisation
- */
-export type EntityResponse = Entity & unknown;
+  readonly id: number;
+  /**
+   * The business identifier of the entity. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: EntityBusinessIdType;
+  /**
+   * Name of the entity. Maximum 128 characters.
+   */
+  name: string;
+  type: EntityType;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
@@ -1079,10 +1259,6 @@ export type EntityClientUpdateRequest = {
    * Name of the client.
    */
   name?: string;
-  /**
-   * The identifier of the entity. For use with client credentials authentication method.
-   */
-  client_id?: string;
   /**
    * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
    */
@@ -1103,34 +1279,82 @@ export type EntityClientUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export type EntityClientCreateData = EntityClientUpdateRequest & {
+export type EntityClientCreateRequest = {
   /**
    * Reference to the entity that this client is attached to.
    */
-  entity_id?: number;
+  entity_id: number;
+  /**
+   * Name of the client.
+   */
+  name?: string;
+  /**
+   * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
+   */
+  party_id?: number;
+  /**
+   * List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.
+   * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
+  /**
+   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
+   */
+  client_secret?: string;
+  /**
+   * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
+   */
+  public_key?: string;
 };
 
 /**
- * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export type EntityClientCreateRequest = EntityClientCreateData & unknown;
-
-/**
- * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
- */
-export type EntityClient = EntityClientCreateData & {
+export type EntityClient = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.
- */
-export type EntityClientResponse = EntityClient & unknown;
+  readonly id: number;
+  /**
+   * Reference to the entity that this client is attached to.
+   */
+  entity_id: number;
+  /**
+   * Name of the client.
+   */
+  name?: string;
+  /**
+   * The identifier of the entity. For use with client credentials authentication method.
+   */
+  readonly client_id: string;
+  /**
+   * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
+   */
+  party_id?: number;
+  /**
+   * List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.
+   * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
+  /**
+   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
+   */
+  client_secret?: string;
+  /**
+   * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
+   */
+  public_key?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - The body that interacts with the Flexibility Information System
@@ -1155,28 +1379,6 @@ export type PartyUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - The body that interacts with the Flexibility Information System
- *
- * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
- *
- * Example party types:
- *
- * * Service Provider
- * * System Operator
- * * End User
- */
-export type PartyCreateData = PartyUpdateRequest & {
-  /**
-   * The business identifier of the party. Format depends on `business_id_type`.
-   */
-  business_id?: string;
-  /**
-   * Reference to the entity that is the parent of the party.
-   */
-  entity_id?: number;
-};
-
-/**
  * Request schema for create operations - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
@@ -1187,10 +1389,27 @@ export type PartyCreateData = PartyUpdateRequest & {
  * * System Operator
  * * End User
  */
-export type PartyCreateRequest = PartyCreateData & unknown;
+export type PartyCreateRequest = {
+  /**
+   * The business identifier of the party. Format depends on `business_id_type`.
+   */
+  business_id?: string;
+  business_id_type?: PartyBusinessIdType;
+  /**
+   * Reference to the entity that is the parent of the party.
+   */
+  entity_id: number;
+  /**
+   * Name of the party. Maximum 128 characters.
+   */
+  name: string;
+  role: PartyRole;
+  type: PartyType;
+  status?: PartyStatus;
+};
 
 /**
- * Data schema - The body that interacts with the Flexibility Information System
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -1200,25 +1419,36 @@ export type PartyCreateRequest = PartyCreateData & unknown;
  * * System Operator
  * * End User
  */
-export type Party = PartyCreateData & {
+export type Party = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - The body that interacts with the Flexibility Information System
- *
- * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
- *
- * Example party types:
- *
- * * Service Provider
- * * System Operator
- * * End User
- */
-export type PartyResponse = Party & unknown;
+  readonly id: number;
+  /**
+   * The business identifier of the party. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: PartyBusinessIdType;
+  /**
+   * Reference to the entity that is the parent of the party.
+   */
+  entity_id: number;
+  /**
+   * Name of the party. Maximum 128 characters.
+   */
+  name: string;
+  role: PartyRole;
+  type: PartyType;
+  status: PartyStatus;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - The relation between a party and entity.
@@ -1231,67 +1461,69 @@ export type PartyMembershipUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - The relation between a party and entity.
+ * Request schema for create operations - The relation between a party and entity.
  */
-export type PartyMembershipCreateData = PartyMembershipUpdateRequest & {
+export type PartyMembershipCreateRequest = {
   /**
    * Reference to the party that the membership links to an entity.
    */
-  party_id?: number;
+  party_id: number;
   /**
    * Reference to the entity that the party represents.
    */
-  entity_id?: number;
+  entity_id: number;
+  /**
+   * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
 };
 
 /**
- * Request schema for create operations - The relation between a party and entity.
+ * Response schema - The relation between a party and entity.
  */
-export type PartyMembershipCreateRequest = PartyMembershipCreateData & unknown;
-
-/**
- * Data schema - The relation between a party and entity.
- */
-export type PartyMembership = PartyMembershipCreateData & {
+export type PartyMembership = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - The relation between a party and entity.
- */
-export type PartyMembershipResponse = PartyMembership & unknown;
-
-/**
- * Request schema for update operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
- */
-export type IdentityUpdateRequest = {
-  [key: string]: unknown;
+  readonly id: number;
+  /**
+   * Reference to the party that the membership links to an entity.
+   */
+  party_id: number;
+  /**
+   * Reference to the entity that the party represents.
+   */
+  entity_id: number;
+  /**
+   * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
 };
 
 /**
- * Data of the request schema for create operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
-export type IdentityCreateData = IdentityUpdateRequest;
-
-/**
- * Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
- */
-export type Identity = IdentityCreateData & {
+export type Identity = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
+  readonly id: number;
   /**
    * Reference to the entity using the identity.
    */
-  readonly entity_id?: number;
+  readonly entity_id: number;
   /**
    * Name of the entity using the identity.
    */
-  readonly entity_name?: string;
+  readonly entity_name: string;
   /**
    * Reference to the party assumed by the entity.
    */
@@ -1301,11 +1533,6 @@ export type Identity = IdentityCreateData & {
    */
   readonly party_name?: string;
 };
-
-/**
- * Response schema for operations with return values - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
- */
-export type IdentityResponse = Identity & unknown;
 
 /**
  * Request schema for update operations - Technical unit being part of a controllable unit.
@@ -1322,72 +1549,77 @@ export type TechnicalResourceUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Technical unit being part of a controllable unit.
+ * Request schema for create operations - Technical unit being part of a controllable unit.
  */
-export type TechnicalResourceCreateData = TechnicalResourceUpdateRequest & {
+export type TechnicalResourceCreateRequest = {
+  /**
+   * Name of the technical resource. Maximum 128 characters.
+   */
+  name: string;
   /**
    * Reference to the controllable unit that this technical resource belongs to.
    */
-  controllable_unit_id?: number;
+  controllable_unit_id: number;
+  /**
+   * Free text details about the technical resource.
+   */
+  details?: string;
 };
 
 /**
- * Request schema for create operations - Technical unit being part of a controllable unit.
+ * Response schema - Technical unit being part of a controllable unit.
  */
-export type TechnicalResourceCreateRequest = TechnicalResourceCreateData &
-  unknown;
-
-/**
- * Data schema - Technical unit being part of a controllable unit.
- */
-export type TechnicalResource = TechnicalResourceCreateData & {
+export type TechnicalResource = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Technical unit being part of a controllable unit.
- */
-export type TechnicalResourceResponse = TechnicalResource & unknown;
-
-/**
- * Request schema for update operations - Event happening in the system.
- */
-export type EventUpdateRequest = {
-  [key: string]: unknown;
+  readonly id: number;
+  /**
+   * Name of the technical resource. Maximum 128 characters.
+   */
+  name: string;
+  /**
+   * Reference to the controllable unit that this technical resource belongs to.
+   */
+  controllable_unit_id: number;
+  /**
+   * Free text details about the technical resource.
+   */
+  details?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
 };
 
 /**
- * Data of the request schema for create operations - Event happening in the system.
+ * Response schema - Event happening in the system.
  */
-export type EventCreateData = EventUpdateRequest;
-
-/**
- * Data schema - Event happening in the system.
- */
-export type Event = EventCreateData & {
+export type Event = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
+  readonly id: number;
   /**
    * The version of the CloudEvents specification followed by the resource.
    */
-  readonly specversion?: string;
+  readonly specversion: string;
   /**
    * The time at which the event was generated.
    */
-  readonly time?: string;
+  readonly time: string;
   /**
    * The type of the event.
    */
-  readonly type?: string;
+  readonly type: string;
   /**
    * The URI of the resource concerned by the event.
    */
-  readonly source?: string;
+  readonly source: string;
   /**
    * The URI of the specific subject of the event within the resource pointed by `source`.
    */
@@ -1397,11 +1629,6 @@ export type Event = EventCreateData & {
    */
   readonly data?: string;
 };
-
-/**
- * Response schema for operations with return values - Event happening in the system.
- */
-export type EventResponse = Event & unknown;
 
 /**
  * Request schema for update operations - Notification about an event happening in the system.
@@ -1414,195 +1641,131 @@ export type NotificationUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Notification about an event happening in the system.
+ * Response schema - Notification about an event happening in the system.
  */
-export type NotificationCreateData = NotificationUpdateRequest & {
+export type Notification = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Whether the notification was acknowledged by the target user.
+   */
+  acknowledged: boolean;
   /**
    * Reference to the event notified by this resource.
    */
-  event_id?: number;
+  event_id: number;
   /**
    * Reference to the party concerned by this notification.
    */
-  party_id?: number;
+  party_id: number;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
 };
 
 /**
- * Data schema - Notification about an event happening in the system.
+ * Response schema - Accounting point for a controllable unit.
  */
-export type Notification = NotificationCreateData & {
+export type AccountingPoint = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Notification about an event happening in the system.
- */
-export type NotificationResponse = Notification & unknown;
-
-/**
- * Request schema for update operations - Accounting point for a controllable unit.
- */
-export type AccountingPointUpdateRequest = {
-  [key: string]: unknown;
-};
-
-/**
- * Data of the request schema for create operations - Accounting point for a controllable unit.
- */
-export type AccountingPointCreateData = AccountingPointUpdateRequest;
-
-/**
- * Data schema - Accounting point for a controllable unit.
- */
-export type AccountingPoint = AccountingPointCreateData & {
-  /**
-   * Unique surrogate identifier.
-   */
-  readonly id?: number;
+  readonly id: number;
   /**
    * The GSRN metering point id of the accounting point.
    */
-  readonly business_id?: string;
+  readonly business_id: string;
   /**
    * The system operator of the accounting point.
    */
-  readonly system_operator_id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Accounting point for a controllable unit.
- */
-export type AccountingPointResponse = AccountingPoint & unknown;
-
-/**
- * Request schema for update operations - Relation linking a balance responsible party to an accounting point.
- */
-export type AccountingPointBalanceResponsiblePartyUpdateRequest = {
-  energy_direction?: AccountingPointBalanceResponsiblePartyEnergyDirection;
+  readonly system_operator_id: number;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
 };
 
 /**
- * Data of the request schema for create operations - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
-export type AccountingPointBalanceResponsiblePartyCreateData =
-  AccountingPointBalanceResponsiblePartyUpdateRequest;
-
-/**
- * Data schema - Relation linking a balance responsible party to an accounting point.
- */
-export type AccountingPointBalanceResponsibleParty =
-  AccountingPointBalanceResponsiblePartyCreateData & {
-    /**
-     * The ID of the accounting point.
-     */
-    readonly accounting_point_id?: number;
-    /**
-     * The balance responsible party of the accounting point.
-     */
-    readonly balance_responsible_party_id?: number;
-    /**
-     * The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
-     */
-    readonly valid_from?: string;
-    /**
-     * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
-     */
-    readonly valid_to?: string;
-  };
-
-/**
- * Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.
- */
-export type AccountingPointBalanceResponsiblePartyResponse =
-  AccountingPointBalanceResponsibleParty & unknown;
-
-/**
- * Request schema for update operations - Relation linking an energy supplier to an accounting point.
- */
-export type AccountingPointEnergySupplierUpdateRequest = {
-  [key: string]: unknown;
+export type AccountingPointBalanceResponsibleParty = {
+  /**
+   * The ID of the accounting point.
+   */
+  readonly accounting_point_id: number;
+  /**
+   * The balance responsible party of the accounting point.
+   */
+  readonly balance_responsible_party_id: number;
+  energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection;
+  /**
+   * The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_from: string;
+  /**
+   * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_to?: string;
 };
 
 /**
- * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
+ * Response schema - Relation linking an energy supplier to an accounting point.
  */
-export type AccountingPointEnergySupplierCreateData =
-  AccountingPointEnergySupplierUpdateRequest;
-
-/**
- * Data schema - Relation linking an energy supplier to an accounting point.
- */
-export type AccountingPointEnergySupplier =
-  AccountingPointEnergySupplierCreateData & {
-    /**
-     * The ID of the accounting point.
-     */
-    readonly accounting_point_id?: number;
-    /**
-     * The energy supplier of the accounting point.
-     */
-    readonly energy_supplier_id?: number;
-    /**
-     * The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
-     */
-    readonly valid_from?: string;
-    /**
-     * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
-     */
-    readonly valid_to?: string;
-  };
-
-/**
- * Response schema for operations with return values - Relation linking an energy supplier to an accounting point.
- */
-export type AccountingPointEnergySupplierResponse =
-  AccountingPointEnergySupplier & unknown;
-
-/**
- * Request schema for update operations - Product type.
- */
-export type ProductTypeUpdateRequest = {
-  [key: string]: unknown;
+export type AccountingPointEnergySupplier = {
+  /**
+   * The ID of the accounting point.
+   */
+  readonly accounting_point_id: number;
+  /**
+   * The energy supplier of the accounting point.
+   */
+  readonly energy_supplier_id: number;
+  /**
+   * The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_from: string;
+  /**
+   * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_to?: string;
 };
 
 /**
- * Data of the request schema for create operations - Product type.
+ * Response schema - Product type.
  */
-export type ProductTypeCreateData = ProductTypeUpdateRequest;
-
-/**
- * Data schema - Product type.
- */
-export type ProductType = ProductTypeCreateData & {
+export type ProductType = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
+  readonly id: number;
   /**
    * The code for this product type.
    */
-  readonly business_id?: string;
+  readonly business_id: string;
   /**
    * The name of the product type.
    */
-  readonly name?: string;
+  readonly name: string;
   /**
    * The service offered by the product type.
    */
-  readonly service?: string;
+  readonly service: string;
   /**
    * Examples of products belonging to this product type.
    */
-  readonly products?: string;
+  readonly products: string;
 };
-
-/**
- * Response schema for operations with return values - Product type.
- */
-export type ProductTypeResponse = ProductType & unknown;
 
 /**
  * Request schema for update operations - Relation between a system operator and a product type they want to buy.
@@ -1612,41 +1775,46 @@ export type SystemOperatorProductTypeUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Relation between a system operator and a product type they want to buy.
- */
-export type SystemOperatorProductTypeCreateData =
-  SystemOperatorProductTypeUpdateRequest & {
-    /**
-     * Reference to the system operator.
-     */
-    system_operator_id?: number;
-    /**
-     * Reference to the product type.
-     */
-    product_type_id?: number;
-  };
-
-/**
  * Request schema for create operations - Relation between a system operator and a product type they want to buy.
  */
-export type SystemOperatorProductTypeCreateRequest =
-  SystemOperatorProductTypeCreateData & unknown;
+export type SystemOperatorProductTypeCreateRequest = {
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * Reference to the product type.
+   */
+  product_type_id: number;
+  status?: SystemOperatorProductTypeStatus;
+};
 
 /**
- * Data schema - Relation between a system operator and a product type they want to buy.
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
-export type SystemOperatorProductType = SystemOperatorProductTypeCreateData & {
+export type SystemOperatorProductType = {
   /**
    * Unique surrogate identifier.
    */
-  readonly id?: number;
-} & AuditFields;
-
-/**
- * Response schema for operations with return values - Relation between a system operator and a product type they want to buy.
- */
-export type SystemOperatorProductTypeResponse = SystemOperatorProductType &
-  unknown;
+  readonly id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * Reference to the product type.
+   */
+  product_type_id: number;
+  status: SystemOperatorProductTypeStatus;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
@@ -1664,42 +1832,62 @@ export type ServiceProviderProductApplicationUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
- */
-export type ServiceProviderProductApplicationCreateData =
-  ServiceProviderProductApplicationUpdateRequest & {
-    /**
-     * Reference to the service provider.
-     */
-    service_provider_id?: number;
-    /**
-     * Reference to the system operator.
-     */
-    system_operator_id?: number;
-  };
-
-/**
  * Request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
-export type ServiceProviderProductApplicationCreateRequest =
-  ServiceProviderProductApplicationCreateData & unknown;
+export type ServiceProviderProductApplicationCreateRequest = {
+  /**
+   * Reference to the service provider.
+   */
+  service_provider_id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status?: ServiceProviderProductApplicationStatus;
+  /**
+   * When the product application was last validated.
+   */
+  qualified_at?: string;
+};
 
 /**
- * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
-export type ServiceProviderProductApplication =
-  ServiceProviderProductApplicationCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
- */
-export type ServiceProviderProductApplicationResponse =
-  ServiceProviderProductApplication & unknown;
+export type ServiceProviderProductApplication = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider.
+   */
+  service_provider_id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProviderProductApplicationStatus;
+  /**
+   * When the product application was last validated.
+   */
+  qualified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product application.
@@ -1713,46 +1901,54 @@ export type ServiceProviderProductApplicationCommentUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service provider product application.
- */
-export type ServiceProviderProductApplicationCommentCreateData =
-  ServiceProviderProductApplicationCommentUpdateRequest & {
-    /**
-     * Reference to the service provider product application.
-     */
-    service_provider_product_application_id?: number;
-  };
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service provider product application.
  */
-export type ServiceProviderProductApplicationCommentCreateRequest =
-  ServiceProviderProductApplicationCommentCreateData & unknown;
+export type ServiceProviderProductApplicationCommentCreateRequest = {
+  /**
+   * Reference to the service provider product application.
+   */
+  service_provider_product_application_id: number;
+  visibility?: ServiceProviderProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Comment made by a party involved in a service provider product application.
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
-export type ServiceProviderProductApplicationComment =
-  ServiceProviderProductApplicationCommentCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-    /**
-     * Reference to the identity that created the comment.
-     */
-    readonly created_by?: number;
-    /**
-     * When the comment was added to the SPPA.
-     */
-    readonly created_at?: string;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product application.
- */
-export type ServiceProviderProductApplicationCommentResponse =
-  ServiceProviderProductApplicationComment & unknown;
+export type ServiceProviderProductApplicationComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider product application.
+   */
+  service_provider_product_application_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPPA.
+   */
+  readonly created_at: string;
+  visibility: ServiceProviderProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
@@ -1766,42 +1962,54 @@ export type ServiceProviderProductSuspensionUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
- */
-export type ServiceProviderProductSuspensionCreateData =
-  ServiceProviderProductSuspensionUpdateRequest & {
-    /**
-     * Reference to the procuring system operator suspending the service provider.
-     */
-    procuring_system_operator_id?: number;
-    /**
-     * Reference to the service provider being suspended.
-     */
-    service_provider_id?: number;
-  };
-
-/**
  * Request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
-export type ServiceProviderProductSuspensionCreateRequest =
-  ServiceProviderProductSuspensionCreateData & unknown;
+export type ServiceProviderProductSuspensionCreateRequest = {
+  /**
+   * Reference to the procuring system operator suspending the service provider.
+   */
+  procuring_system_operator_id?: number;
+  /**
+   * Reference to the service provider being suspended.
+   */
+  service_provider_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProviderProductSuspensionReason;
+};
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
-export type ServiceProviderProductSuspension =
-  ServiceProviderProductSuspensionCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
- */
-export type ServiceProviderProductSuspensionResponse =
-  ServiceProviderProductSuspension & unknown;
+export type ServiceProviderProductSuspension = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the procuring system operator suspending the service provider.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service provider being suspended.
+   */
+  service_provider_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProviderProductSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service provider product suspension.
@@ -1815,46 +2023,54 @@ export type ServiceProviderProductSuspensionCommentUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service provider product suspension.
- */
-export type ServiceProviderProductSuspensionCommentCreateData =
-  ServiceProviderProductSuspensionCommentUpdateRequest & {
-    /**
-     * Reference to the service provider product suspension.
-     */
-    service_provider_product_suspension_id?: number;
-  };
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service provider product suspension.
  */
-export type ServiceProviderProductSuspensionCommentCreateRequest =
-  ServiceProviderProductSuspensionCommentCreateData & unknown;
+export type ServiceProviderProductSuspensionCommentCreateRequest = {
+  /**
+   * Reference to the service provider product suspension.
+   */
+  service_provider_product_suspension_id: number;
+  visibility?: ServiceProviderProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Comment made by a party involved in a service provider product suspension.
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
-export type ServiceProviderProductSuspensionComment =
-  ServiceProviderProductSuspensionCommentCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-    /**
-     * Reference to the identity that created the comment.
-     */
-    readonly created_by?: number;
-    /**
-     * When the comment was added to the SPPS.
-     */
-    readonly created_at?: string;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product suspension.
- */
-export type ServiceProviderProductSuspensionCommentResponse =
-  ServiceProviderProductSuspensionComment & unknown;
+export type ServiceProviderProductSuspensionComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider product suspension.
+   */
+  service_provider_product_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPPS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProviderProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
@@ -1880,42 +2096,78 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
- */
-export type ServiceProvidingGroupProductApplicationCreateData =
-  ServiceProvidingGroupProductApplicationUpdateRequest & {
-    /**
-     * Reference to the service providing group.
-     */
-    service_providing_group_id?: number;
-    /**
-     * Reference to the procuring system operator.
-     */
-    procuring_system_operator_id?: number;
-  };
-
-/**
  * Request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
-export type ServiceProvidingGroupProductApplicationCreateRequest =
-  ServiceProvidingGroupProductApplicationCreateData & unknown;
+export type ServiceProvidingGroupProductApplicationCreateRequest = {
+  /**
+   * Reference to the service providing group.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the procuring system operator.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status?: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * Free text notes on the current product application status.
+   */
+  notes?: string;
+  /**
+   * When the product application was last prequalified.
+   */
+  prequalified_at?: string;
+  /**
+   * When the product application was last verified.
+   */
+  verified_at?: string;
+};
 
 /**
- * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
-export type ServiceProvidingGroupProductApplication =
-  ServiceProvidingGroupProductApplicationCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
- */
-export type ServiceProvidingGroupProductApplicationResponse =
-  ServiceProvidingGroupProductApplication & unknown;
+export type ServiceProvidingGroupProductApplication = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the procuring system operator.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * Free text notes on the current product application status.
+   */
+  notes?: string;
+  /**
+   * When the product application was last prequalified.
+   */
+  prequalified_at?: string;
+  /**
+   * When the product application was last verified.
+   */
+  verified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
@@ -1929,42 +2181,54 @@ export type ServiceProvidingGroupProductSuspensionUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
- */
-export type ServiceProvidingGroupProductSuspensionCreateData =
-  ServiceProvidingGroupProductSuspensionUpdateRequest & {
-    /**
-     * Reference to the procuring system operator suspending the service providing group.
-     */
-    procuring_system_operator_id?: number;
-    /**
-     * Reference to the service providing group being suspended.
-     */
-    service_providing_group_id?: number;
-  };
-
-/**
  * Request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
-export type ServiceProvidingGroupProductSuspensionCreateRequest =
-  ServiceProvidingGroupProductSuspensionCreateData & unknown;
+export type ServiceProvidingGroupProductSuspensionCreateRequest = {
+  /**
+   * Reference to the procuring system operator suspending the service providing group.
+   */
+  procuring_system_operator_id?: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProvidingGroupProductSuspensionReason;
+};
 
 /**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
-export type ServiceProvidingGroupProductSuspension =
-  ServiceProvidingGroupProductSuspensionCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
- */
-export type ServiceProvidingGroupProductSuspensionResponse =
-  ServiceProvidingGroupProductSuspension & unknown;
+export type ServiceProvidingGroupProductSuspension = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the procuring system operator suspending the service providing group.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProvidingGroupProductSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
  * Request schema for update operations - Comment made by a party involved in a service providing group product suspension.
@@ -1978,86 +2242,77 @@ export type ServiceProvidingGroupProductSuspensionCommentUpdateRequest = {
 };
 
 /**
- * Data of the request schema for create operations - Comment made by a party involved in a service providing group product suspension.
- */
-export type ServiceProvidingGroupProductSuspensionCommentCreateData =
-  ServiceProvidingGroupProductSuspensionCommentUpdateRequest & {
-    /**
-     * Reference to the service providing group product suspension.
-     */
-    service_providing_group_product_suspension_id?: number;
-  };
-
-/**
  * Request schema for create operations - Comment made by a party involved in a service providing group product suspension.
  */
-export type ServiceProvidingGroupProductSuspensionCommentCreateRequest =
-  ServiceProvidingGroupProductSuspensionCommentCreateData & unknown;
-
-/**
- * Data schema - Comment made by a party involved in a service providing group product suspension.
- */
-export type ServiceProvidingGroupProductSuspensionComment =
-  ServiceProvidingGroupProductSuspensionCommentCreateData & {
-    /**
-     * Unique surrogate identifier.
-     */
-    readonly id?: number;
-    /**
-     * Reference to the identity that created the comment.
-     */
-    readonly created_by?: number;
-    /**
-     * When the comment was added to the SPGPS.
-     */
-    readonly created_at?: string;
-  } & AuditFields;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group product suspension.
- */
-export type ServiceProvidingGroupProductSuspensionCommentResponse =
-  ServiceProvidingGroupProductSuspensionComment & unknown;
-
-/**
- * Request schema for update operations - Notice to users about various issues or actions expected from them.
- */
-export type NoticeUpdateRequest = {
-  [key: string]: unknown;
+export type ServiceProvidingGroupProductSuspensionCommentCreateRequest = {
+  /**
+   * Reference to the service providing group product suspension.
+   */
+  service_providing_group_product_suspension_id: number;
+  visibility?: ServiceProvidingGroupProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
 };
 
 /**
- * Data of the request schema for create operations - Notice to users about various issues or actions expected from them.
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
-export type NoticeCreateData = NoticeUpdateRequest;
+export type ServiceProvidingGroupProductSuspensionComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product suspension.
+   */
+  service_providing_group_product_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGPS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
 
 /**
- * Data schema - Notice to users about various issues or actions expected from them.
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
-export type Notice = NoticeCreateData & {
+export type Notice = {
   /**
    * Reference to the party targeted by the notice.
    */
-  readonly party_id?: number;
+  readonly party_id: number;
   /**
    * The type of the notice.
    */
-  readonly type?: string;
+  readonly type: string;
   /**
    * The URI of the resource concerned by the event.
    */
-  readonly source?: string;
+  readonly source: string;
 };
-
-/**
- * Response schema for operations with return values - Notice to users about various issues or actions expected from them.
- */
-export type NoticeResponse = Notice & unknown;
 
 /**
  * Controllable unit - history
  */
-export type ControllableUnitHistoryResponse = ControllableUnitResponse & {
+export type ControllableUnitHistory = ControllableUnit & {
   /**
    * Reference to the resource that was updated.
    */
@@ -2075,27 +2330,26 @@ export type ControllableUnitHistoryResponse = ControllableUnitResponse & {
 /**
  * Controllable Unit Suspension - history
  */
-export type ControllableUnitSuspensionHistoryResponse =
-  ControllableUnitSuspensionResponse & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitSuspensionHistory = ControllableUnitSuspension & {
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Controllable Unit Suspension Comment - history
  */
-export type ControllableUnitSuspensionCommentHistoryResponse =
-  ControllableUnitSuspensionCommentResponse & {
+export type ControllableUnitSuspensionCommentHistory =
+  ControllableUnitSuspensionComment & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2113,8 +2367,8 @@ export type ControllableUnitSuspensionCommentHistoryResponse =
 /**
  * Relation between controllable unit and service provider - history
  */
-export type ControllableUnitServiceProviderHistoryResponse =
-  ControllableUnitServiceProviderResponse & {
+export type ControllableUnitServiceProviderHistory =
+  ControllableUnitServiceProvider & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2132,27 +2386,26 @@ export type ControllableUnitServiceProviderHistoryResponse =
 /**
  * Service providing group - history
  */
-export type ServiceProvidingGroupHistoryResponse =
-  ServiceProvidingGroupResponse & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupHistory = ServiceProvidingGroup & {
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Membership relation of controllable unit in service providing group - history
  */
-export type ServiceProvidingGroupMembershipHistoryResponse =
-  ServiceProvidingGroupMembershipResponse & {
+export type ServiceProvidingGroupMembershipHistory =
+  ServiceProvidingGroupMembership & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2170,8 +2423,8 @@ export type ServiceProvidingGroupMembershipHistoryResponse =
 /**
  * Grid prequalification for service providing group - history
  */
-export type ServiceProvidingGroupGridPrequalificationHistoryResponse =
-  ServiceProvidingGroupGridPrequalificationResponse & {
+export type ServiceProvidingGroupGridPrequalificationHistory =
+  ServiceProvidingGroupGridPrequalification & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2189,8 +2442,8 @@ export type ServiceProvidingGroupGridPrequalificationHistoryResponse =
 /**
  * Grid prequalification for service providing group Comment - history
  */
-export type ServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
-  ServiceProvidingGroupGridPrequalificationCommentResponse & {
+export type ServiceProvidingGroupGridPrequalificationCommentHistory =
+  ServiceProvidingGroupGridPrequalificationComment & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2208,8 +2461,8 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
 /**
  * Service Providing Group Grid Suspension - history
  */
-export type ServiceProvidingGroupGridSuspensionHistoryResponse =
-  ServiceProvidingGroupGridSuspensionResponse & {
+export type ServiceProvidingGroupGridSuspensionHistory =
+  ServiceProvidingGroupGridSuspension & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2227,8 +2480,8 @@ export type ServiceProvidingGroupGridSuspensionHistoryResponse =
 /**
  * Service Providing Group Grid Suspension Comment - history
  */
-export type ServiceProvidingGroupGridSuspensionCommentHistoryResponse =
-  ServiceProvidingGroupGridSuspensionCommentResponse & {
+export type ServiceProvidingGroupGridSuspensionCommentHistory =
+  ServiceProvidingGroupGridSuspensionComment & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2246,7 +2499,7 @@ export type ServiceProvidingGroupGridSuspensionCommentHistoryResponse =
 /**
  * Party - history
  */
-export type PartyHistoryResponse = PartyResponse & {
+export type PartyHistory = Party & {
   /**
    * Reference to the resource that was updated.
    */
@@ -2264,7 +2517,7 @@ export type PartyHistoryResponse = PartyResponse & {
 /**
  * Party Membership - history
  */
-export type PartyMembershipHistoryResponse = PartyMembershipResponse & {
+export type PartyMembershipHistory = PartyMembership & {
   /**
    * Reference to the resource that was updated.
    */
@@ -2282,7 +2535,7 @@ export type PartyMembershipHistoryResponse = PartyMembershipResponse & {
 /**
  * Technical Resource - history
  */
-export type TechnicalResourceHistoryResponse = TechnicalResourceResponse & {
+export type TechnicalResourceHistory = TechnicalResource & {
   /**
    * Reference to the resource that was updated.
    */
@@ -2300,27 +2553,26 @@ export type TechnicalResourceHistoryResponse = TechnicalResourceResponse & {
 /**
  * System Operator Product Type - history
  */
-export type SystemOperatorProductTypeHistoryResponse =
-  SystemOperatorProductTypeResponse & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    system_operator_product_type_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type SystemOperatorProductTypeHistory = SystemOperatorProductType & {
+  /**
+   * Reference to the resource that was updated.
+   */
+  system_operator_product_type_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Application - history
  */
-export type ServiceProviderProductApplicationHistoryResponse =
-  ServiceProviderProductApplicationResponse & {
+export type ServiceProviderProductApplicationHistory =
+  ServiceProviderProductApplication & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2338,8 +2590,8 @@ export type ServiceProviderProductApplicationHistoryResponse =
 /**
  * Service Provider Product Application Comment - history
  */
-export type ServiceProviderProductApplicationCommentHistoryResponse =
-  ServiceProviderProductApplicationCommentResponse & {
+export type ServiceProviderProductApplicationCommentHistory =
+  ServiceProviderProductApplicationComment & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2357,8 +2609,8 @@ export type ServiceProviderProductApplicationCommentHistoryResponse =
 /**
  * Service Provider Product Suspension - history
  */
-export type ServiceProviderProductSuspensionHistoryResponse =
-  ServiceProviderProductSuspensionResponse & {
+export type ServiceProviderProductSuspensionHistory =
+  ServiceProviderProductSuspension & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2376,8 +2628,8 @@ export type ServiceProviderProductSuspensionHistoryResponse =
 /**
  * Service Provider Product Suspension Comment - history
  */
-export type ServiceProviderProductSuspensionCommentHistoryResponse =
-  ServiceProviderProductSuspensionCommentResponse & {
+export type ServiceProviderProductSuspensionCommentHistory =
+  ServiceProviderProductSuspensionComment & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2395,8 +2647,8 @@ export type ServiceProviderProductSuspensionCommentHistoryResponse =
 /**
  * Service Providing Group Product Application - history
  */
-export type ServiceProvidingGroupProductApplicationHistoryResponse =
-  ServiceProvidingGroupProductApplicationResponse & {
+export type ServiceProvidingGroupProductApplicationHistory =
+  ServiceProvidingGroupProductApplication & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2414,8 +2666,8 @@ export type ServiceProvidingGroupProductApplicationHistoryResponse =
 /**
  * Service Providing Group Product Suspension - history
  */
-export type ServiceProvidingGroupProductSuspensionHistoryResponse =
-  ServiceProvidingGroupProductSuspensionResponse & {
+export type ServiceProvidingGroupProductSuspensionHistory =
+  ServiceProvidingGroupProductSuspension & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2433,8 +2685,8 @@ export type ServiceProvidingGroupProductSuspensionHistoryResponse =
 /**
  * Service Providing Group Product Suspension Comment - history
  */
-export type ServiceProvidingGroupProductSuspensionCommentHistoryResponse =
-  ServiceProvidingGroupProductSuspensionCommentResponse & {
+export type ServiceProvidingGroupProductSuspensionCommentHistory =
+  ServiceProvidingGroupProductSuspensionComment & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2491,126 +2743,222 @@ export type EmptyObjectWritable = {
 };
 
 /**
- * Data schema - Controllable unit
+ * Response schema - Controllable unit
  */
-export type ControllableUnitWritable = ControllableUnitCreateData & unknown;
+export type ControllableUnitWritable = {
+  /**
+   * Free text name of the controllable unit.
+   */
+  name: string;
+  /**
+   * The usage date when the controllable unit is first active.
+   */
+  start_date?: string;
+  status: ControllableUnitStatus;
+  regulation_direction: ControllableUnitRegulationDirection;
+  /**
+   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   */
+  maximum_available_capacity: number;
+  /**
+   * The minimum activation duration in seconds.
+   */
+  minimum_duration?: number;
+  /**
+   * The maximum activation duration in seconds.
+   */
+  maximum_duration?: number;
+  /**
+   * The minimum recovery duration between activations in seconds.
+   */
+  recovery_duration?: number;
+  /**
+   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
+   */
+  ramp_rate?: number;
+  /**
+   * Reference to the accounting point that the controllable unit is connected to.
+   */
+  accounting_point_id: number;
+  /**
+   * Reference to the node that the controllable unit is connected to.
+   */
+  grid_node_id?: string;
+  grid_validation_status: ControllableUnitGridValidationStatus;
+  /**
+   * Free text notes on the current grid validation status.
+   */
+  grid_validation_notes?: string;
+  /**
+   * When the controllable unit was last validated.
+   */
+  validated_at?: string;
+};
 
 /**
- * Response schema for operations with return values - Controllable unit
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
-export type ControllableUnitResponseWritable = ControllableUnitWritable &
-  unknown;
+export type ControllableUnitSuspensionWritable = {
+  /**
+   * Reference to the suspended controllable unit.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the impacted system operator suspending the controllable unit.
+   */
+  impacted_system_operator_id: number;
+  reason: ControllableUnitSuspensionReason;
+};
 
 /**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
-export type ControllableUnitSuspensionWritable =
-  ControllableUnitSuspensionCreateData & unknown;
+export type ControllableUnitSuspensionCommentWritable = {
+  /**
+   * Reference to the controllable unit suspension.
+   */
+  controllable_unit_suspension_id: number;
+  visibility: ControllableUnitSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ * Response schema - Relation between controllable unit and service provider
  */
-export type ControllableUnitSuspensionResponseWritable =
-  ControllableUnitSuspensionWritable & unknown;
+export type ControllableUnitServiceProviderWritable = {
+  /**
+   * Reference to the controllable unit this relation links to a service provider.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the `party` (service provider) this relation links to a controllable unit.
+   */
+  service_provider_id: number;
+  /**
+   * Technical ID of the end user behind the accounting point.
+   */
+  end_user_id: number;
+  /**
+   * The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
+   */
+  contract_reference: string;
+  /**
+   * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from?: string;
+  /**
+   * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+};
 
 /**
- * Data schema - Comment made by a party involved in a controllable unit suspension.
+ * Response schema - Group of controllable units
  */
-export type ControllableUnitSuspensionCommentWritable =
-  ControllableUnitSuspensionCommentCreateData & unknown;
+export type ServiceProvidingGroupWritable = {
+  /**
+   * Free text name of the service providing group.
+   */
+  name: string;
+  /**
+   * Reference to the `party` (service provider) managing the group.
+   */
+  service_provider_id: number;
+  bidding_zone: ServiceProvidingGroupBiddingZone;
+  status: ServiceProvidingGroupStatus;
+};
 
 /**
- * Response schema for operations with return values - Comment made by a party involved in a controllable unit suspension.
+ * Response schema - Membership relation of controllable unit in service providing group
  */
-export type ControllableUnitSuspensionCommentResponseWritable =
-  ControllableUnitSuspensionCommentWritable & unknown;
+export type ServiceProvidingGroupMembershipWritable = {
+  /**
+   * Reference to the controllable unit this relation links to a service providing group.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the service providing group this relation links to a controllable unit.
+   */
+  service_providing_group_id: number;
+  /**
+   * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from: string;
+  /**
+   * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+};
 
 /**
- * Data schema - Relation between controllable unit and service provider
+ * Response schema - Grid prequalification for service providing group
  */
-export type ControllableUnitServiceProviderWritable =
-  ControllableUnitServiceProviderCreateData & unknown;
+export type ServiceProvidingGroupGridPrequalificationWritable = {
+  /**
+   * Reference to the service providing group whose grid prequalification is tracked by the current resource.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the `party` that is the impacted system operator.
+   */
+  impacted_system_operator_id: number;
+  status: ServiceProvidingGroupGridPrequalificationStatus;
+  /**
+   * When the current grid prequalification was last approved.
+   */
+  prequalified_at?: string;
+};
 
 /**
- * Response schema for operations with return values - Relation between controllable unit and service provider
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
-export type ControllableUnitServiceProviderResponseWritable =
-  ControllableUnitServiceProviderWritable & unknown;
+export type ServiceProvidingGroupGridPrequalificationCommentWritable = {
+  /**
+   * Reference to the service providing group grid prequalification.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Group of controllable units
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
-export type ServiceProvidingGroupWritable = ServiceProvidingGroupCreateData &
-  unknown;
+export type ServiceProvidingGroupGridSuspensionWritable = {
+  /**
+   * Reference to the impacted system operator suspending the service providing group.
+   */
+  impacted_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  reason: ServiceProvidingGroupGridSuspensionReason;
+};
 
 /**
- * Response schema for operations with return values - Group of controllable units
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
-export type ServiceProvidingGroupResponseWritable =
-  ServiceProvidingGroupWritable & unknown;
+export type ServiceProvidingGroupGridSuspensionCommentWritable = {
+  /**
+   * Reference to the service providing group grid suspension.
+   */
+  service_providing_group_grid_suspension_id: number;
+  visibility: ServiceProvidingGroupGridSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Membership relation of controllable unit in service providing group
- */
-export type ServiceProvidingGroupMembershipWritable =
-  ServiceProvidingGroupMembershipCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Membership relation of controllable unit in service providing group
- */
-export type ServiceProvidingGroupMembershipResponseWritable =
-  ServiceProvidingGroupMembershipWritable & unknown;
-
-/**
- * Data schema - Grid prequalification for service providing group
- */
-export type ServiceProvidingGroupGridPrequalificationWritable =
-  ServiceProvidingGroupGridPrequalificationCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Grid prequalification for service providing group
- */
-export type ServiceProvidingGroupGridPrequalificationResponseWritable =
-  ServiceProvidingGroupGridPrequalificationWritable & unknown;
-
-/**
- * Data schema - Comment made by a party involved in a service providing group grid prequalification.
- */
-export type ServiceProvidingGroupGridPrequalificationCommentWritable =
-  ServiceProvidingGroupGridPrequalificationCommentCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid prequalification.
- */
-export type ServiceProvidingGroupGridPrequalificationCommentResponseWritable =
-  ServiceProvidingGroupGridPrequalificationCommentWritable & unknown;
-
-/**
- * Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
- */
-export type ServiceProvidingGroupGridSuspensionWritable =
-  ServiceProvidingGroupGridSuspensionCreateData & unknown;
-
-/**
- * Response schema for operations with return values - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
- */
-export type ServiceProvidingGroupGridSuspensionResponseWritable =
-  ServiceProvidingGroupGridSuspensionWritable & unknown;
-
-/**
- * Data schema - Comment made by a party involved in a service providing group grid suspension.
- */
-export type ServiceProvidingGroupGridSuspensionCommentWritable =
-  ServiceProvidingGroupGridSuspensionCommentCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group grid suspension.
- */
-export type ServiceProvidingGroupGridSuspensionCommentResponseWritable =
-  ServiceProvidingGroupGridSuspensionCommentWritable & unknown;
-
-/**
- * Data schema - Entity - Natural or legal person
+ * Response schema - Entity - Natural or legal person
  *
  * An entity is a natural or legal person that can be a party in the Flexibility Information System.
  *
@@ -2619,32 +2967,52 @@ export type ServiceProvidingGroupGridSuspensionCommentResponseWritable =
  * * Person
  * * Organisation
  */
-export type EntityWritable = EntityCreateData & unknown;
+export type EntityWritable = {
+  /**
+   * The business identifier of the entity. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: EntityBusinessIdType;
+  /**
+   * Name of the entity. Maximum 128 characters.
+   */
+  name: string;
+  type: EntityType;
+};
 
 /**
- * Response schema for operations with return values - Entity - Natural or legal person
- *
- * An entity is a natural or legal person that can be a party in the Flexibility Information System.
- *
- * Example entity types:
- *
- * * Person
- * * Organisation
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
-export type EntityResponseWritable = EntityWritable & unknown;
+export type EntityClientWritable = {
+  /**
+   * Reference to the entity that this client is attached to.
+   */
+  entity_id: number;
+  /**
+   * Name of the client.
+   */
+  name?: string;
+  /**
+   * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
+   */
+  party_id?: number;
+  /**
+   * List of scopes granted to the user when it logs in as an entity or when it acts as the party. When assuming a party through party membership, the least privileged set of scopes will be kept.
+   * Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
+  /**
+   * The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
+   */
+  client_secret?: string;
+  /**
+   * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
+   */
+  public_key?: string;
+};
 
 /**
- * Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
- */
-export type EntityClientWritable = EntityClientCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Client linked to an entity for client credentials and JWT grant authentication methods.
- */
-export type EntityClientResponseWritable = EntityClientWritable & unknown;
-
-/**
- * Data schema - The body that interacts with the Flexibility Information System
+ * Response schema - The body that interacts with the Flexibility Information System
  *
  * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
  *
@@ -2654,238 +3022,268 @@ export type EntityClientResponseWritable = EntityClientWritable & unknown;
  * * System Operator
  * * End User
  */
-export type PartyWritable = PartyCreateData & unknown;
+export type PartyWritable = {
+  /**
+   * The business identifier of the party. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: PartyBusinessIdType;
+  /**
+   * Reference to the entity that is the parent of the party.
+   */
+  entity_id: number;
+  /**
+   * Name of the party. Maximum 128 characters.
+   */
+  name: string;
+  role: PartyRole;
+  type: PartyType;
+  status: PartyStatus;
+};
 
 /**
- * Response schema for operations with return values - The body that interacts with the Flexibility Information System
- *
- * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
- *
- * Example party types:
- *
- * * Service Provider
- * * System Operator
- * * End User
+ * Response schema - The relation between a party and entity.
  */
-export type PartyResponseWritable = PartyWritable & unknown;
+export type PartyMembershipWritable = {
+  /**
+   * Reference to the party that the membership links to an entity.
+   */
+  party_id: number;
+  /**
+   * Reference to the entity that the party represents.
+   */
+  entity_id: number;
+  /**
+   * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
+};
 
 /**
- * Data schema - The relation between a party and entity.
+ * Response schema - Technical unit being part of a controllable unit.
  */
-export type PartyMembershipWritable = PartyMembershipCreateData & unknown;
+export type TechnicalResourceWritable = {
+  /**
+   * Name of the technical resource. Maximum 128 characters.
+   */
+  name: string;
+  /**
+   * Reference to the controllable unit that this technical resource belongs to.
+   */
+  controllable_unit_id: number;
+  /**
+   * Free text details about the technical resource.
+   */
+  details?: string;
+};
 
 /**
- * Response schema for operations with return values - The relation between a party and entity.
+ * Response schema - Notification about an event happening in the system.
  */
-export type PartyMembershipResponseWritable = PartyMembershipWritable & unknown;
+export type NotificationWritable = {
+  /**
+   * Whether the notification was acknowledged by the target user.
+   */
+  acknowledged: boolean;
+  /**
+   * Reference to the event notified by this resource.
+   */
+  event_id: number;
+  /**
+   * Reference to the party concerned by this notification.
+   */
+  party_id: number;
+};
 
 /**
- * Data of the request schema for create operations - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ * Response schema - Relation linking a balance responsible party to an accounting point.
  */
-export type IdentityCreateDataWritable = IdentityUpdateRequest;
-
-/**
- * Data schema - Technical unit being part of a controllable unit.
- */
-export type TechnicalResourceWritable = TechnicalResourceCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Technical unit being part of a controllable unit.
- */
-export type TechnicalResourceResponseWritable = TechnicalResourceWritable &
-  unknown;
-
-/**
- * Data of the request schema for create operations - Event happening in the system.
- */
-export type EventCreateDataWritable = EventUpdateRequest;
-
-/**
- * Data schema - Notification about an event happening in the system.
- */
-export type NotificationWritable = NotificationCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Notification about an event happening in the system.
- */
-export type NotificationResponseWritable = NotificationWritable & unknown;
-
-/**
- * Data of the request schema for create operations - Accounting point for a controllable unit.
- */
-export type AccountingPointCreateDataWritable = AccountingPointUpdateRequest;
-
-/**
- * Request schema for update operations - Relation linking a balance responsible party to an accounting point.
- */
-export type AccountingPointBalanceResponsiblePartyUpdateRequestWritable = {
+export type AccountingPointBalanceResponsiblePartyWritable = {
   [key: string]: unknown;
 };
 
 /**
- * Data of the request schema for create operations - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Relation between a system operator and a product type they want to buy.
  */
-export type AccountingPointBalanceResponsiblePartyCreateDataWritable =
-  AccountingPointBalanceResponsiblePartyUpdateRequestWritable;
+export type SystemOperatorProductTypeWritable = {
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * Reference to the product type.
+   */
+  product_type_id: number;
+  status: SystemOperatorProductTypeStatus;
+};
 
 /**
- * Data schema - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
-export type AccountingPointBalanceResponsiblePartyWritable =
-  AccountingPointBalanceResponsiblePartyCreateDataWritable & unknown;
+export type ServiceProviderProductApplicationWritable = {
+  /**
+   * Reference to the service provider.
+   */
+  service_provider_id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProviderProductApplicationStatus;
+  /**
+   * When the product application was last validated.
+   */
+  qualified_at?: string;
+};
 
 /**
- * Response schema for operations with return values - Relation linking a balance responsible party to an accounting point.
+ * Response schema - Comment made by a party involved in a service provider product application.
  */
-export type AccountingPointBalanceResponsiblePartyResponseWritable =
-  AccountingPointBalanceResponsiblePartyWritable & unknown;
+export type ServiceProviderProductApplicationCommentWritable = {
+  /**
+   * Reference to the service provider product application.
+   */
+  service_provider_product_application_id: number;
+  visibility: ServiceProviderProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data of the request schema for create operations - Relation linking an energy supplier to an accounting point.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
-export type AccountingPointEnergySupplierCreateDataWritable =
-  AccountingPointEnergySupplierUpdateRequest;
+export type ServiceProviderProductSuspensionWritable = {
+  /**
+   * Reference to the procuring system operator suspending the service provider.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service provider being suspended.
+   */
+  service_provider_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProviderProductSuspensionReason;
+};
 
 /**
- * Data of the request schema for create operations - Product type.
+ * Response schema - Comment made by a party involved in a service provider product suspension.
  */
-export type ProductTypeCreateDataWritable = ProductTypeUpdateRequest;
+export type ServiceProviderProductSuspensionCommentWritable = {
+  /**
+   * Reference to the service provider product suspension.
+   */
+  service_provider_product_suspension_id: number;
+  visibility: ServiceProviderProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Data schema - Relation between a system operator and a product type they want to buy.
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
-export type SystemOperatorProductTypeWritable =
-  SystemOperatorProductTypeCreateData & unknown;
+export type ServiceProvidingGroupProductApplicationWritable = {
+  /**
+   * Reference to the service providing group.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the procuring system operator.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * Free text notes on the current product application status.
+   */
+  notes?: string;
+  /**
+   * When the product application was last prequalified.
+   */
+  prequalified_at?: string;
+  /**
+   * When the product application was last verified.
+   */
+  verified_at?: string;
+};
 
 /**
- * Response schema for operations with return values - Relation between a system operator and a product type they want to buy.
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
-export type SystemOperatorProductTypeResponseWritable =
-  SystemOperatorProductTypeWritable & unknown;
+export type ServiceProvidingGroupProductSuspensionWritable = {
+  /**
+   * Reference to the procuring system operator suspending the service providing group.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProvidingGroupProductSuspensionReason;
+};
 
 /**
- * Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
-export type ServiceProviderProductApplicationWritable =
-  ServiceProviderProductApplicationCreateData & unknown;
+export type ServiceProvidingGroupProductSuspensionCommentWritable = {
+  /**
+   * Reference to the service providing group product suspension.
+   */
+  service_providing_group_product_suspension_id: number;
+  visibility: ServiceProvidingGroupProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
 
 /**
- * Response schema for operations with return values - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ * Response schema - Notice to users about various issues or actions expected from them.
  */
-export type ServiceProviderProductApplicationResponseWritable =
-  ServiceProviderProductApplicationWritable & unknown;
-
-/**
- * Data schema - Comment made by a party involved in a service provider product application.
- */
-export type ServiceProviderProductApplicationCommentWritable =
-  ServiceProviderProductApplicationCommentCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product application.
- */
-export type ServiceProviderProductApplicationCommentResponseWritable =
-  ServiceProviderProductApplicationCommentWritable & unknown;
-
-/**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
- */
-export type ServiceProviderProductSuspensionWritable =
-  ServiceProviderProductSuspensionCreateData & unknown;
-
-/**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
- */
-export type ServiceProviderProductSuspensionResponseWritable =
-  ServiceProviderProductSuspensionWritable & unknown;
-
-/**
- * Data schema - Comment made by a party involved in a service provider product suspension.
- */
-export type ServiceProviderProductSuspensionCommentWritable =
-  ServiceProviderProductSuspensionCommentCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service provider product suspension.
- */
-export type ServiceProviderProductSuspensionCommentResponseWritable =
-  ServiceProviderProductSuspensionCommentWritable & unknown;
-
-/**
- * Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
- */
-export type ServiceProvidingGroupProductApplicationWritable =
-  ServiceProvidingGroupProductApplicationCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
- */
-export type ServiceProvidingGroupProductApplicationResponseWritable =
-  ServiceProvidingGroupProductApplicationWritable & unknown;
-
-/**
- * Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
- */
-export type ServiceProvidingGroupProductSuspensionWritable =
-  ServiceProvidingGroupProductSuspensionCreateData & unknown;
-
-/**
- * Response schema for operations with return values - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
- */
-export type ServiceProvidingGroupProductSuspensionResponseWritable =
-  ServiceProvidingGroupProductSuspensionWritable & unknown;
-
-/**
- * Data schema - Comment made by a party involved in a service providing group product suspension.
- */
-export type ServiceProvidingGroupProductSuspensionCommentWritable =
-  ServiceProvidingGroupProductSuspensionCommentCreateData & unknown;
-
-/**
- * Response schema for operations with return values - Comment made by a party involved in a service providing group product suspension.
- */
-export type ServiceProvidingGroupProductSuspensionCommentResponseWritable =
-  ServiceProvidingGroupProductSuspensionCommentWritable & unknown;
-
-/**
- * Data of the request schema for create operations - Notice to users about various issues or actions expected from them.
- */
-export type NoticeCreateDataWritable = NoticeUpdateRequest;
-
-/**
- * Data schema - Notice to users about various issues or actions expected from them.
- */
-export type NoticeWritable = NoticeCreateDataWritable & unknown;
-
-/**
- * Response schema for operations with return values - Notice to users about various issues or actions expected from them.
- */
-export type NoticeResponseWritable = NoticeWritable & unknown;
+export type NoticeWritable = {
+  [key: string]: unknown;
+};
 
 /**
  * Controllable unit - history
  */
-export type ControllableUnitHistoryResponseWritable =
-  ControllableUnitResponseWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitHistoryWritable = ControllableUnitWritable & {
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Controllable Unit Suspension - history
  */
-export type ControllableUnitSuspensionHistoryResponseWritable =
-  ControllableUnitSuspensionResponseWritable & {
+export type ControllableUnitSuspensionHistoryWritable =
+  ControllableUnitSuspensionWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2903,8 +3301,8 @@ export type ControllableUnitSuspensionHistoryResponseWritable =
 /**
  * Controllable Unit Suspension Comment - history
  */
-export type ControllableUnitSuspensionCommentHistoryResponseWritable =
-  ControllableUnitSuspensionCommentResponseWritable & {
+export type ControllableUnitSuspensionCommentHistoryWritable =
+  ControllableUnitSuspensionCommentWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2922,8 +3320,8 @@ export type ControllableUnitSuspensionCommentHistoryResponseWritable =
 /**
  * Relation between controllable unit and service provider - history
  */
-export type ControllableUnitServiceProviderHistoryResponseWritable =
-  ControllableUnitServiceProviderResponseWritable & {
+export type ControllableUnitServiceProviderHistoryWritable =
+  ControllableUnitServiceProviderWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2941,8 +3339,8 @@ export type ControllableUnitServiceProviderHistoryResponseWritable =
 /**
  * Service providing group - history
  */
-export type ServiceProvidingGroupHistoryResponseWritable =
-  ServiceProvidingGroupResponseWritable & {
+export type ServiceProvidingGroupHistoryWritable =
+  ServiceProvidingGroupWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2960,8 +3358,8 @@ export type ServiceProvidingGroupHistoryResponseWritable =
 /**
  * Membership relation of controllable unit in service providing group - history
  */
-export type ServiceProvidingGroupMembershipHistoryResponseWritable =
-  ServiceProvidingGroupMembershipResponseWritable & {
+export type ServiceProvidingGroupMembershipHistoryWritable =
+  ServiceProvidingGroupMembershipWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2979,8 +3377,8 @@ export type ServiceProvidingGroupMembershipHistoryResponseWritable =
 /**
  * Grid prequalification for service providing group - history
  */
-export type ServiceProvidingGroupGridPrequalificationHistoryResponseWritable =
-  ServiceProvidingGroupGridPrequalificationResponseWritable & {
+export type ServiceProvidingGroupGridPrequalificationHistoryWritable =
+  ServiceProvidingGroupGridPrequalificationWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -2998,8 +3396,8 @@ export type ServiceProvidingGroupGridPrequalificationHistoryResponseWritable =
 /**
  * Grid prequalification for service providing group Comment - history
  */
-export type ServiceProvidingGroupGridPrequalificationCommentHistoryResponseWritable =
-  ServiceProvidingGroupGridPrequalificationCommentResponseWritable & {
+export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
+  ServiceProvidingGroupGridPrequalificationCommentWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3017,8 +3415,8 @@ export type ServiceProvidingGroupGridPrequalificationCommentHistoryResponseWrita
 /**
  * Service Providing Group Grid Suspension - history
  */
-export type ServiceProvidingGroupGridSuspensionHistoryResponseWritable =
-  ServiceProvidingGroupGridSuspensionResponseWritable & {
+export type ServiceProvidingGroupGridSuspensionHistoryWritable =
+  ServiceProvidingGroupGridSuspensionWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3036,8 +3434,8 @@ export type ServiceProvidingGroupGridSuspensionHistoryResponseWritable =
 /**
  * Service Providing Group Grid Suspension Comment - history
  */
-export type ServiceProvidingGroupGridSuspensionCommentHistoryResponseWritable =
-  ServiceProvidingGroupGridSuspensionCommentResponseWritable & {
+export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable =
+  ServiceProvidingGroupGridSuspensionCommentWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3055,7 +3453,7 @@ export type ServiceProvidingGroupGridSuspensionCommentHistoryResponseWritable =
 /**
  * Party - history
  */
-export type PartyHistoryResponseWritable = PartyResponseWritable & {
+export type PartyHistoryWritable = PartyWritable & {
   /**
    * Reference to the resource that was updated.
    */
@@ -3073,46 +3471,44 @@ export type PartyHistoryResponseWritable = PartyResponseWritable & {
 /**
  * Party Membership - history
  */
-export type PartyMembershipHistoryResponseWritable =
-  PartyMembershipResponseWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    party_membership_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type PartyMembershipHistoryWritable = PartyMembershipWritable & {
+  /**
+   * Reference to the resource that was updated.
+   */
+  party_membership_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Technical Resource - history
  */
-export type TechnicalResourceHistoryResponseWritable =
-  TechnicalResourceResponseWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    technical_resource_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type TechnicalResourceHistoryWritable = TechnicalResourceWritable & {
+  /**
+   * Reference to the resource that was updated.
+   */
+  technical_resource_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * System Operator Product Type - history
  */
-export type SystemOperatorProductTypeHistoryResponseWritable =
-  SystemOperatorProductTypeResponseWritable & {
+export type SystemOperatorProductTypeHistoryWritable =
+  SystemOperatorProductTypeWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3130,8 +3526,8 @@ export type SystemOperatorProductTypeHistoryResponseWritable =
 /**
  * Service Provider Product Application - history
  */
-export type ServiceProviderProductApplicationHistoryResponseWritable =
-  ServiceProviderProductApplicationResponseWritable & {
+export type ServiceProviderProductApplicationHistoryWritable =
+  ServiceProviderProductApplicationWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3149,8 +3545,8 @@ export type ServiceProviderProductApplicationHistoryResponseWritable =
 /**
  * Service Provider Product Application Comment - history
  */
-export type ServiceProviderProductApplicationCommentHistoryResponseWritable =
-  ServiceProviderProductApplicationCommentResponseWritable & {
+export type ServiceProviderProductApplicationCommentHistoryWritable =
+  ServiceProviderProductApplicationCommentWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3168,8 +3564,8 @@ export type ServiceProviderProductApplicationCommentHistoryResponseWritable =
 /**
  * Service Provider Product Suspension - history
  */
-export type ServiceProviderProductSuspensionHistoryResponseWritable =
-  ServiceProviderProductSuspensionResponseWritable & {
+export type ServiceProviderProductSuspensionHistoryWritable =
+  ServiceProviderProductSuspensionWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3187,8 +3583,8 @@ export type ServiceProviderProductSuspensionHistoryResponseWritable =
 /**
  * Service Provider Product Suspension Comment - history
  */
-export type ServiceProviderProductSuspensionCommentHistoryResponseWritable =
-  ServiceProviderProductSuspensionCommentResponseWritable & {
+export type ServiceProviderProductSuspensionCommentHistoryWritable =
+  ServiceProviderProductSuspensionCommentWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3206,8 +3602,8 @@ export type ServiceProviderProductSuspensionCommentHistoryResponseWritable =
 /**
  * Service Providing Group Product Application - history
  */
-export type ServiceProvidingGroupProductApplicationHistoryResponseWritable =
-  ServiceProvidingGroupProductApplicationResponseWritable & {
+export type ServiceProvidingGroupProductApplicationHistoryWritable =
+  ServiceProvidingGroupProductApplicationWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3225,8 +3621,8 @@ export type ServiceProvidingGroupProductApplicationHistoryResponseWritable =
 /**
  * Service Providing Group Product Suspension - history
  */
-export type ServiceProvidingGroupProductSuspensionHistoryResponseWritable =
-  ServiceProvidingGroupProductSuspensionResponseWritable & {
+export type ServiceProvidingGroupProductSuspensionHistoryWritable =
+  ServiceProvidingGroupProductSuspensionWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3244,8 +3640,8 @@ export type ServiceProvidingGroupProductSuspensionHistoryResponseWritable =
 /**
  * Service Providing Group Product Suspension Comment - history
  */
-export type ServiceProvidingGroupProductSuspensionCommentHistoryResponseWritable =
-  ServiceProvidingGroupProductSuspensionCommentResponseWritable & {
+export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable =
+  ServiceProvidingGroupProductSuspensionCommentWritable & {
     /**
      * Reference to the resource that was updated.
      */
@@ -3326,7 +3722,7 @@ export type CallControllableUnitLookupResponses = {
   /**
    * OK
    */
-  200: ControllableUnitLookupResponse;
+  200: ControllableUnitLookup;
 };
 
 export type CallControllableUnitLookupResponse =
@@ -3361,11 +3757,11 @@ export type CallEntityLookupResponses = {
   /**
    * OK
    */
-  200: EntityLookupResponse;
+  200: EntityLookup;
   /**
    * Created
    */
-  201: EntityLookupResponse;
+  201: EntityLookup;
 };
 
 export type CallEntityLookupResponse =
@@ -3449,11 +3845,11 @@ export type ListControllableUnitResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitResponse>;
+  200: Array<ControllableUnit>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitResponse>;
+  206: Array<ControllableUnit>;
 };
 
 export type ListControllableUnitResponse =
@@ -3507,7 +3903,7 @@ export type CreateControllableUnitResponses = {
   /**
    * Created
    */
-  201: ControllableUnitResponse;
+  201: ControllableUnit;
 };
 
 export type CreateControllableUnitResponse =
@@ -3556,7 +3952,7 @@ export type ReadControllableUnitResponses = {
   /**
    * OK
    */
-  200: ControllableUnitResponse;
+  200: ControllableUnit;
 };
 
 export type ReadControllableUnitResponse =
@@ -3608,7 +4004,7 @@ export type UpdateControllableUnitResponses = {
   /**
    * OK
    */
-  200: ControllableUnitResponse;
+  200: ControllableUnit;
   /**
    * No Content
    */
@@ -3700,11 +4096,11 @@ export type ListControllableUnitHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitHistoryResponse>;
+  200: Array<ControllableUnitHistory>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitHistoryResponse>;
+  206: Array<ControllableUnitHistory>;
 };
 
 export type ListControllableUnitHistoryResponse =
@@ -3756,7 +4152,7 @@ export type ReadControllableUnitHistoryResponses = {
   /**
    * OK
    */
-  200: ControllableUnitHistoryResponse;
+  200: ControllableUnitHistory;
 };
 
 export type ReadControllableUnitHistoryResponse =
@@ -3836,11 +4232,11 @@ export type ListControllableUnitSuspensionResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitSuspensionResponse>;
+  200: Array<ControllableUnitSuspension>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitSuspensionResponse>;
+  206: Array<ControllableUnitSuspension>;
 };
 
 export type ListControllableUnitSuspensionResponse =
@@ -3894,7 +4290,7 @@ export type CreateControllableUnitSuspensionResponses = {
   /**
    * Created
    */
-  201: ControllableUnitSuspensionResponse;
+  201: ControllableUnitSuspension;
 };
 
 export type CreateControllableUnitSuspensionResponse =
@@ -3988,7 +4384,7 @@ export type ReadControllableUnitSuspensionResponses = {
   /**
    * OK
    */
-  200: ControllableUnitSuspensionResponse;
+  200: ControllableUnitSuspension;
 };
 
 export type ReadControllableUnitSuspensionResponse =
@@ -4040,7 +4436,7 @@ export type UpdateControllableUnitSuspensionResponses = {
   /**
    * OK
    */
-  200: ControllableUnitSuspensionResponse;
+  200: ControllableUnitSuspension;
   /**
    * No Content
    */
@@ -4128,11 +4524,11 @@ export type ListControllableUnitSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitSuspensionHistoryResponse>;
+  200: Array<ControllableUnitSuspensionHistory>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitSuspensionHistoryResponse>;
+  206: Array<ControllableUnitSuspensionHistory>;
 };
 
 export type ListControllableUnitSuspensionHistoryResponse =
@@ -4184,7 +4580,7 @@ export type ReadControllableUnitSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: ControllableUnitSuspensionHistoryResponse;
+  200: ControllableUnitSuspensionHistory;
 };
 
 export type ReadControllableUnitSuspensionHistoryResponse =
@@ -4260,11 +4656,11 @@ export type ListControllableUnitSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitSuspensionCommentResponse>;
+  200: Array<ControllableUnitSuspensionComment>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitSuspensionCommentResponse>;
+  206: Array<ControllableUnitSuspensionComment>;
 };
 
 export type ListControllableUnitSuspensionCommentResponse =
@@ -4318,7 +4714,7 @@ export type CreateControllableUnitSuspensionCommentResponses = {
   /**
    * Created
    */
-  201: ControllableUnitSuspensionCommentResponse;
+  201: ControllableUnitSuspensionComment;
 };
 
 export type CreateControllableUnitSuspensionCommentResponse =
@@ -4367,7 +4763,7 @@ export type ReadControllableUnitSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ControllableUnitSuspensionCommentResponse;
+  200: ControllableUnitSuspensionComment;
 };
 
 export type ReadControllableUnitSuspensionCommentResponse =
@@ -4419,7 +4815,7 @@ export type UpdateControllableUnitSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ControllableUnitSuspensionCommentResponse;
+  200: ControllableUnitSuspensionComment;
   /**
    * No Content
    */
@@ -4503,11 +4899,11 @@ export type ListControllableUnitSuspensionCommentHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitSuspensionCommentHistoryResponse>;
+  200: Array<ControllableUnitSuspensionCommentHistory>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitSuspensionCommentHistoryResponse>;
+  206: Array<ControllableUnitSuspensionCommentHistory>;
 };
 
 export type ListControllableUnitSuspensionCommentHistoryResponse =
@@ -4559,7 +4955,7 @@ export type ReadControllableUnitSuspensionCommentHistoryResponses = {
   /**
    * OK
    */
-  200: ControllableUnitSuspensionCommentHistoryResponse;
+  200: ControllableUnitSuspensionCommentHistory;
 };
 
 export type ReadControllableUnitSuspensionCommentHistoryResponse =
@@ -4643,11 +5039,11 @@ export type ListControllableUnitServiceProviderResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitServiceProviderResponse>;
+  200: Array<ControllableUnitServiceProvider>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitServiceProviderResponse>;
+  206: Array<ControllableUnitServiceProvider>;
 };
 
 export type ListControllableUnitServiceProviderResponse =
@@ -4701,7 +5097,7 @@ export type CreateControllableUnitServiceProviderResponses = {
   /**
    * Created
    */
-  201: ControllableUnitServiceProviderResponse;
+  201: ControllableUnitServiceProvider;
 };
 
 export type CreateControllableUnitServiceProviderResponse =
@@ -4795,7 +5191,7 @@ export type ReadControllableUnitServiceProviderResponses = {
   /**
    * OK
    */
-  200: ControllableUnitServiceProviderResponse;
+  200: ControllableUnitServiceProvider;
 };
 
 export type ReadControllableUnitServiceProviderResponse =
@@ -4847,7 +5243,7 @@ export type UpdateControllableUnitServiceProviderResponses = {
   /**
    * OK
    */
-  200: ControllableUnitServiceProviderResponse;
+  200: ControllableUnitServiceProvider;
   /**
    * No Content
    */
@@ -4939,11 +5335,11 @@ export type ListControllableUnitServiceProviderHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ControllableUnitServiceProviderHistoryResponse>;
+  200: Array<ControllableUnitServiceProviderHistory>;
   /**
    * Partial Content
    */
-  206: Array<ControllableUnitServiceProviderHistoryResponse>;
+  206: Array<ControllableUnitServiceProviderHistory>;
 };
 
 export type ListControllableUnitServiceProviderHistoryResponse =
@@ -4995,7 +5391,7 @@ export type ReadControllableUnitServiceProviderHistoryResponses = {
   /**
    * OK
    */
-  200: ControllableUnitServiceProviderHistoryResponse;
+  200: ControllableUnitServiceProviderHistory;
 };
 
 export type ReadControllableUnitServiceProviderHistoryResponse =
@@ -5075,11 +5471,11 @@ export type ListServiceProvidingGroupResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupResponse>;
+  200: Array<ServiceProvidingGroup>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupResponse>;
+  206: Array<ServiceProvidingGroup>;
 };
 
 export type ListServiceProvidingGroupResponse =
@@ -5133,7 +5529,7 @@ export type CreateServiceProvidingGroupResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupResponse;
+  201: ServiceProvidingGroup;
 };
 
 export type CreateServiceProvidingGroupResponse =
@@ -5182,7 +5578,7 @@ export type ReadServiceProvidingGroupResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupResponse;
+  200: ServiceProvidingGroup;
 };
 
 export type ReadServiceProvidingGroupResponse =
@@ -5234,7 +5630,7 @@ export type UpdateServiceProvidingGroupResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupResponse;
+  200: ServiceProvidingGroup;
   /**
    * No Content
    */
@@ -5322,11 +5718,11 @@ export type ListServiceProvidingGroupHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupHistoryResponse>;
+  200: Array<ServiceProvidingGroupHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupHistoryResponse>;
+  206: Array<ServiceProvidingGroupHistory>;
 };
 
 export type ListServiceProvidingGroupHistoryResponse =
@@ -5378,7 +5774,7 @@ export type ReadServiceProvidingGroupHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupHistoryResponse;
+  200: ServiceProvidingGroupHistory;
 };
 
 export type ReadServiceProvidingGroupHistoryResponse =
@@ -5458,11 +5854,11 @@ export type ListServiceProvidingGroupMembershipResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupMembershipResponse>;
+  200: Array<ServiceProvidingGroupMembership>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupMembershipResponse>;
+  206: Array<ServiceProvidingGroupMembership>;
 };
 
 export type ListServiceProvidingGroupMembershipResponse =
@@ -5516,7 +5912,7 @@ export type CreateServiceProvidingGroupMembershipResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupMembershipResponse;
+  201: ServiceProvidingGroupMembership;
 };
 
 export type CreateServiceProvidingGroupMembershipResponse =
@@ -5610,7 +6006,7 @@ export type ReadServiceProvidingGroupMembershipResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupMembershipResponse;
+  200: ServiceProvidingGroupMembership;
 };
 
 export type ReadServiceProvidingGroupMembershipResponse =
@@ -5662,7 +6058,7 @@ export type UpdateServiceProvidingGroupMembershipResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupMembershipResponse;
+  200: ServiceProvidingGroupMembership;
   /**
    * No Content
    */
@@ -5750,11 +6146,11 @@ export type ListServiceProvidingGroupMembershipHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupMembershipHistoryResponse>;
+  200: Array<ServiceProvidingGroupMembershipHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupMembershipHistoryResponse>;
+  206: Array<ServiceProvidingGroupMembershipHistory>;
 };
 
 export type ListServiceProvidingGroupMembershipHistoryResponse =
@@ -5806,7 +6202,7 @@ export type ReadServiceProvidingGroupMembershipHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupMembershipHistoryResponse;
+  200: ServiceProvidingGroupMembershipHistory;
 };
 
 export type ReadServiceProvidingGroupMembershipHistoryResponse =
@@ -5886,11 +6282,11 @@ export type ListServiceProvidingGroupGridPrequalificationResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupGridPrequalificationResponse>;
+  200: Array<ServiceProvidingGroupGridPrequalification>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupGridPrequalificationResponse>;
+  206: Array<ServiceProvidingGroupGridPrequalification>;
 };
 
 export type ListServiceProvidingGroupGridPrequalificationResponse =
@@ -5944,7 +6340,7 @@ export type CreateServiceProvidingGroupGridPrequalificationResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupGridPrequalificationResponse;
+  201: ServiceProvidingGroupGridPrequalification;
 };
 
 export type CreateServiceProvidingGroupGridPrequalificationResponse =
@@ -5993,7 +6389,7 @@ export type ReadServiceProvidingGroupGridPrequalificationResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridPrequalificationResponse;
+  200: ServiceProvidingGroupGridPrequalification;
 };
 
 export type ReadServiceProvidingGroupGridPrequalificationResponse =
@@ -6045,7 +6441,7 @@ export type UpdateServiceProvidingGroupGridPrequalificationResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridPrequalificationResponse;
+  200: ServiceProvidingGroupGridPrequalification;
   /**
    * No Content
    */
@@ -6133,11 +6529,11 @@ export type ListServiceProvidingGroupGridPrequalificationHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupGridPrequalificationHistoryResponse>;
+  200: Array<ServiceProvidingGroupGridPrequalificationHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupGridPrequalificationHistoryResponse>;
+  206: Array<ServiceProvidingGroupGridPrequalificationHistory>;
 };
 
 export type ListServiceProvidingGroupGridPrequalificationHistoryResponse =
@@ -6189,7 +6585,7 @@ export type ReadServiceProvidingGroupGridPrequalificationHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridPrequalificationHistoryResponse;
+  200: ServiceProvidingGroupGridPrequalificationHistory;
 };
 
 export type ReadServiceProvidingGroupGridPrequalificationHistoryResponse =
@@ -6265,11 +6661,11 @@ export type ListServiceProvidingGroupGridPrequalificationCommentResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupGridPrequalificationCommentResponse>;
+  200: Array<ServiceProvidingGroupGridPrequalificationComment>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupGridPrequalificationCommentResponse>;
+  206: Array<ServiceProvidingGroupGridPrequalificationComment>;
 };
 
 export type ListServiceProvidingGroupGridPrequalificationCommentResponse =
@@ -6323,7 +6719,7 @@ export type CreateServiceProvidingGroupGridPrequalificationCommentResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupGridPrequalificationCommentResponse;
+  201: ServiceProvidingGroupGridPrequalificationComment;
 };
 
 export type CreateServiceProvidingGroupGridPrequalificationCommentResponse =
@@ -6372,7 +6768,7 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridPrequalificationCommentResponse;
+  200: ServiceProvidingGroupGridPrequalificationComment;
 };
 
 export type ReadServiceProvidingGroupGridPrequalificationCommentResponse =
@@ -6424,7 +6820,7 @@ export type UpdateServiceProvidingGroupGridPrequalificationCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridPrequalificationCommentResponse;
+  200: ServiceProvidingGroupGridPrequalificationComment;
   /**
    * No Content
    */
@@ -6510,11 +6906,11 @@ export type ListServiceProvidingGroupGridPrequalificationCommentHistoryResponses
     /**
      * OK
      */
-    200: Array<ServiceProvidingGroupGridPrequalificationCommentHistoryResponse>;
+    200: Array<ServiceProvidingGroupGridPrequalificationCommentHistory>;
     /**
      * Partial Content
      */
-    206: Array<ServiceProvidingGroupGridPrequalificationCommentHistoryResponse>;
+    206: Array<ServiceProvidingGroupGridPrequalificationCommentHistory>;
   };
 
 export type ListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
@@ -6568,7 +6964,7 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentHistoryResponses
     /**
      * OK
      */
-    200: ServiceProvidingGroupGridPrequalificationCommentHistoryResponse;
+    200: ServiceProvidingGroupGridPrequalificationCommentHistory;
   };
 
 export type ReadServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
@@ -6648,11 +7044,11 @@ export type ListServiceProvidingGroupGridSuspensionResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupGridSuspensionResponse>;
+  200: Array<ServiceProvidingGroupGridSuspension>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupGridSuspensionResponse>;
+  206: Array<ServiceProvidingGroupGridSuspension>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionResponse =
@@ -6706,7 +7102,7 @@ export type CreateServiceProvidingGroupGridSuspensionResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupGridSuspensionResponse;
+  201: ServiceProvidingGroupGridSuspension;
 };
 
 export type CreateServiceProvidingGroupGridSuspensionResponse =
@@ -6800,7 +7196,7 @@ export type ReadServiceProvidingGroupGridSuspensionResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridSuspensionResponse;
+  200: ServiceProvidingGroupGridSuspension;
 };
 
 export type ReadServiceProvidingGroupGridSuspensionResponse =
@@ -6852,7 +7248,7 @@ export type UpdateServiceProvidingGroupGridSuspensionResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridSuspensionResponse;
+  200: ServiceProvidingGroupGridSuspension;
   /**
    * No Content
    */
@@ -6940,11 +7336,11 @@ export type ListServiceProvidingGroupGridSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupGridSuspensionHistoryResponse>;
+  200: Array<ServiceProvidingGroupGridSuspensionHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupGridSuspensionHistoryResponse>;
+  206: Array<ServiceProvidingGroupGridSuspensionHistory>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionHistoryResponse =
@@ -6996,7 +7392,7 @@ export type ReadServiceProvidingGroupGridSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridSuspensionHistoryResponse;
+  200: ServiceProvidingGroupGridSuspensionHistory;
 };
 
 export type ReadServiceProvidingGroupGridSuspensionHistoryResponse =
@@ -7072,11 +7468,11 @@ export type ListServiceProvidingGroupGridSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupGridSuspensionCommentResponse>;
+  200: Array<ServiceProvidingGroupGridSuspensionComment>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupGridSuspensionCommentResponse>;
+  206: Array<ServiceProvidingGroupGridSuspensionComment>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionCommentResponse =
@@ -7130,7 +7526,7 @@ export type CreateServiceProvidingGroupGridSuspensionCommentResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupGridSuspensionCommentResponse;
+  201: ServiceProvidingGroupGridSuspensionComment;
 };
 
 export type CreateServiceProvidingGroupGridSuspensionCommentResponse =
@@ -7179,7 +7575,7 @@ export type ReadServiceProvidingGroupGridSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridSuspensionCommentResponse;
+  200: ServiceProvidingGroupGridSuspensionComment;
 };
 
 export type ReadServiceProvidingGroupGridSuspensionCommentResponse =
@@ -7231,7 +7627,7 @@ export type UpdateServiceProvidingGroupGridSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridSuspensionCommentResponse;
+  200: ServiceProvidingGroupGridSuspensionComment;
   /**
    * No Content
    */
@@ -7315,11 +7711,11 @@ export type ListServiceProvidingGroupGridSuspensionCommentHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupGridSuspensionCommentHistoryResponse>;
+  200: Array<ServiceProvidingGroupGridSuspensionCommentHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupGridSuspensionCommentHistoryResponse>;
+  206: Array<ServiceProvidingGroupGridSuspensionCommentHistory>;
 };
 
 export type ListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
@@ -7371,7 +7767,7 @@ export type ReadServiceProvidingGroupGridSuspensionCommentHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupGridSuspensionCommentHistoryResponse;
+  200: ServiceProvidingGroupGridSuspensionCommentHistory;
 };
 
 export type ReadServiceProvidingGroupGridSuspensionCommentHistoryResponse =
@@ -7454,11 +7850,11 @@ export type ListEntityResponses = {
   /**
    * OK
    */
-  200: Array<EntityResponse>;
+  200: Array<Entity>;
   /**
    * Partial Content
    */
-  206: Array<EntityResponse>;
+  206: Array<Entity>;
 };
 
 export type ListEntityResponse = ListEntityResponses[keyof ListEntityResponses];
@@ -7510,7 +7906,7 @@ export type CreateEntityResponses = {
   /**
    * Created
    */
-  201: EntityResponse;
+  201: Entity;
 };
 
 export type CreateEntityResponse =
@@ -7558,7 +7954,7 @@ export type ReadEntityResponses = {
   /**
    * OK
    */
-  200: EntityResponse;
+  200: Entity;
 };
 
 export type ReadEntityResponse = ReadEntityResponses[keyof ReadEntityResponses];
@@ -7608,7 +8004,7 @@ export type UpdateEntityResponses = {
   /**
    * OK
    */
-  200: EntityResponse;
+  200: Entity;
   /**
    * No Content
    */
@@ -7696,11 +8092,11 @@ export type ListEntityClientResponses = {
   /**
    * OK
    */
-  200: Array<EntityClientResponse>;
+  200: Array<EntityClient>;
   /**
    * Partial Content
    */
-  206: Array<EntityClientResponse>;
+  206: Array<EntityClient>;
 };
 
 export type ListEntityClientResponse =
@@ -7754,7 +8150,7 @@ export type CreateEntityClientResponses = {
   /**
    * Created
    */
-  201: EntityClientResponse;
+  201: EntityClient;
 };
 
 export type CreateEntityClientResponse =
@@ -7848,7 +8244,7 @@ export type ReadEntityClientResponses = {
   /**
    * OK
    */
-  200: EntityClientResponse;
+  200: EntityClient;
 };
 
 export type ReadEntityClientResponse =
@@ -7900,7 +8296,7 @@ export type UpdateEntityClientResponses = {
   /**
    * OK
    */
-  200: EntityClientResponse;
+  200: EntityClient;
   /**
    * No Content
    */
@@ -7988,11 +8384,11 @@ export type ListPartyResponses = {
   /**
    * OK
    */
-  200: Array<PartyResponse>;
+  200: Array<Party>;
   /**
    * Partial Content
    */
-  206: Array<PartyResponse>;
+  206: Array<Party>;
 };
 
 export type ListPartyResponse = ListPartyResponses[keyof ListPartyResponses];
@@ -8044,7 +8440,7 @@ export type CreatePartyResponses = {
   /**
    * Created
    */
-  201: PartyResponse;
+  201: Party;
 };
 
 export type CreatePartyResponse =
@@ -8092,7 +8488,7 @@ export type ReadPartyResponses = {
   /**
    * OK
    */
-  200: PartyResponse;
+  200: Party;
 };
 
 export type ReadPartyResponse = ReadPartyResponses[keyof ReadPartyResponses];
@@ -8142,7 +8538,7 @@ export type UpdatePartyResponses = {
   /**
    * OK
    */
-  200: PartyResponse;
+  200: Party;
   /**
    * No Content
    */
@@ -8235,11 +8631,11 @@ export type ListPartyHistoryResponses = {
   /**
    * OK
    */
-  200: Array<PartyHistoryResponse>;
+  200: Array<PartyHistory>;
   /**
    * Partial Content
    */
-  206: Array<PartyHistoryResponse>;
+  206: Array<PartyHistory>;
 };
 
 export type ListPartyHistoryResponse =
@@ -8291,7 +8687,7 @@ export type ReadPartyHistoryResponses = {
   /**
    * OK
    */
-  200: PartyHistoryResponse;
+  200: PartyHistory;
 };
 
 export type ReadPartyHistoryResponse =
@@ -8371,11 +8767,11 @@ export type ListPartyMembershipResponses = {
   /**
    * OK
    */
-  200: Array<PartyMembershipResponse>;
+  200: Array<PartyMembership>;
   /**
    * Partial Content
    */
-  206: Array<PartyMembershipResponse>;
+  206: Array<PartyMembership>;
 };
 
 export type ListPartyMembershipResponse =
@@ -8429,7 +8825,7 @@ export type CreatePartyMembershipResponses = {
   /**
    * Created
    */
-  201: PartyMembershipResponse;
+  201: PartyMembership;
 };
 
 export type CreatePartyMembershipResponse =
@@ -8523,7 +8919,7 @@ export type ReadPartyMembershipResponses = {
   /**
    * OK
    */
-  200: PartyMembershipResponse;
+  200: PartyMembership;
 };
 
 export type ReadPartyMembershipResponse =
@@ -8575,7 +8971,7 @@ export type UpdatePartyMembershipResponses = {
   /**
    * OK
    */
-  200: PartyMembershipResponse;
+  200: PartyMembership;
   /**
    * No Content
    */
@@ -8663,11 +9059,11 @@ export type ListPartyMembershipHistoryResponses = {
   /**
    * OK
    */
-  200: Array<PartyMembershipHistoryResponse>;
+  200: Array<PartyMembershipHistory>;
   /**
    * Partial Content
    */
-  206: Array<PartyMembershipHistoryResponse>;
+  206: Array<PartyMembershipHistory>;
 };
 
 export type ListPartyMembershipHistoryResponse =
@@ -8719,7 +9115,7 @@ export type ReadPartyMembershipHistoryResponses = {
   /**
    * OK
    */
-  200: PartyMembershipHistoryResponse;
+  200: PartyMembershipHistory;
 };
 
 export type ReadPartyMembershipHistoryResponse =
@@ -8806,11 +9202,11 @@ export type ListIdentityResponses = {
   /**
    * OK
    */
-  200: Array<IdentityResponse>;
+  200: Array<Identity>;
   /**
    * Partial Content
    */
-  206: Array<IdentityResponse>;
+  206: Array<Identity>;
 };
 
 export type ListIdentityResponse =
@@ -8858,7 +9254,7 @@ export type ReadIdentityResponses = {
   /**
    * OK
    */
-  200: IdentityResponse;
+  200: Identity;
 };
 
 export type ReadIdentityResponse =
@@ -8938,11 +9334,11 @@ export type ListTechnicalResourceResponses = {
   /**
    * OK
    */
-  200: Array<TechnicalResourceResponse>;
+  200: Array<TechnicalResource>;
   /**
    * Partial Content
    */
-  206: Array<TechnicalResourceResponse>;
+  206: Array<TechnicalResource>;
 };
 
 export type ListTechnicalResourceResponse =
@@ -8996,7 +9392,7 @@ export type CreateTechnicalResourceResponses = {
   /**
    * Created
    */
-  201: TechnicalResourceResponse;
+  201: TechnicalResource;
 };
 
 export type CreateTechnicalResourceResponse =
@@ -9090,7 +9486,7 @@ export type ReadTechnicalResourceResponses = {
   /**
    * OK
    */
-  200: TechnicalResourceResponse;
+  200: TechnicalResource;
 };
 
 export type ReadTechnicalResourceResponse =
@@ -9142,7 +9538,7 @@ export type UpdateTechnicalResourceResponses = {
   /**
    * OK
    */
-  200: TechnicalResourceResponse;
+  200: TechnicalResource;
   /**
    * No Content
    */
@@ -9230,11 +9626,11 @@ export type ListTechnicalResourceHistoryResponses = {
   /**
    * OK
    */
-  200: Array<TechnicalResourceHistoryResponse>;
+  200: Array<TechnicalResourceHistory>;
   /**
    * Partial Content
    */
-  206: Array<TechnicalResourceHistoryResponse>;
+  206: Array<TechnicalResourceHistory>;
 };
 
 export type ListTechnicalResourceHistoryResponse =
@@ -9286,7 +9682,7 @@ export type ReadTechnicalResourceHistoryResponses = {
   /**
    * OK
    */
-  200: TechnicalResourceHistoryResponse;
+  200: TechnicalResourceHistory;
 };
 
 export type ReadTechnicalResourceHistoryResponse =
@@ -9357,11 +9753,11 @@ export type ListEventResponses = {
   /**
    * OK
    */
-  200: Array<EventResponse>;
+  200: Array<Event>;
   /**
    * Partial Content
    */
-  206: Array<EventResponse>;
+  206: Array<Event>;
 };
 
 export type ListEventResponse = ListEventResponses[keyof ListEventResponses];
@@ -9408,7 +9804,7 @@ export type ReadEventResponses = {
   /**
    * OK
    */
-  200: EventResponse;
+  200: Event;
 };
 
 export type ReadEventResponse = ReadEventResponses[keyof ReadEventResponses];
@@ -9487,11 +9883,11 @@ export type ListNotificationResponses = {
   /**
    * OK
    */
-  200: Array<NotificationResponse>;
+  200: Array<Notification>;
   /**
    * Partial Content
    */
-  206: Array<NotificationResponse>;
+  206: Array<Notification>;
 };
 
 export type ListNotificationResponse =
@@ -9540,7 +9936,7 @@ export type ReadNotificationResponses = {
   /**
    * OK
    */
-  200: NotificationResponse;
+  200: Notification;
 };
 
 export type ReadNotificationResponse =
@@ -9592,7 +9988,7 @@ export type UpdateNotificationResponses = {
   /**
    * OK
    */
-  200: NotificationResponse;
+  200: Notification;
   /**
    * No Content
    */
@@ -9676,11 +10072,11 @@ export type ListAccountingPointResponses = {
   /**
    * OK
    */
-  200: Array<AccountingPointResponse>;
+  200: Array<AccountingPoint>;
   /**
    * Partial Content
    */
-  206: Array<AccountingPointResponse>;
+  206: Array<AccountingPoint>;
 };
 
 export type ListAccountingPointResponse =
@@ -9729,7 +10125,7 @@ export type ReadAccountingPointResponses = {
   /**
    * OK
    */
-  200: AccountingPointResponse;
+  200: AccountingPoint;
 };
 
 export type ReadAccountingPointResponse =
@@ -9805,11 +10201,11 @@ export type ListAccountingPointBalanceResponsiblePartyResponses = {
   /**
    * OK
    */
-  200: Array<AccountingPointBalanceResponsiblePartyResponse>;
+  200: Array<AccountingPointBalanceResponsibleParty>;
   /**
    * Partial Content
    */
-  206: Array<AccountingPointBalanceResponsiblePartyResponse>;
+  206: Array<AccountingPointBalanceResponsibleParty>;
 };
 
 export type ListAccountingPointBalanceResponsiblePartyResponse =
@@ -9885,11 +10281,11 @@ export type ListAccountingPointEnergySupplierResponses = {
   /**
    * OK
    */
-  200: Array<AccountingPointEnergySupplierResponse>;
+  200: Array<AccountingPointEnergySupplier>;
   /**
    * Partial Content
    */
-  206: Array<AccountingPointEnergySupplierResponse>;
+  206: Array<AccountingPointEnergySupplier>;
 };
 
 export type ListAccountingPointEnergySupplierResponse =
@@ -9969,11 +10365,11 @@ export type ListProductTypeResponses = {
   /**
    * OK
    */
-  200: Array<ProductTypeResponse>;
+  200: Array<ProductType>;
   /**
    * Partial Content
    */
-  206: Array<ProductTypeResponse>;
+  206: Array<ProductType>;
 };
 
 export type ListProductTypeResponse =
@@ -10022,7 +10418,7 @@ export type ReadProductTypeResponses = {
   /**
    * OK
    */
-  200: ProductTypeResponse;
+  200: ProductType;
 };
 
 export type ReadProductTypeResponse =
@@ -10102,11 +10498,11 @@ export type ListSystemOperatorProductTypeResponses = {
   /**
    * OK
    */
-  200: Array<SystemOperatorProductTypeResponse>;
+  200: Array<SystemOperatorProductType>;
   /**
    * Partial Content
    */
-  206: Array<SystemOperatorProductTypeResponse>;
+  206: Array<SystemOperatorProductType>;
 };
 
 export type ListSystemOperatorProductTypeResponse =
@@ -10160,7 +10556,7 @@ export type CreateSystemOperatorProductTypeResponses = {
   /**
    * Created
    */
-  201: SystemOperatorProductTypeResponse;
+  201: SystemOperatorProductType;
 };
 
 export type CreateSystemOperatorProductTypeResponse =
@@ -10209,7 +10605,7 @@ export type ReadSystemOperatorProductTypeResponses = {
   /**
    * OK
    */
-  200: SystemOperatorProductTypeResponse;
+  200: SystemOperatorProductType;
 };
 
 export type ReadSystemOperatorProductTypeResponse =
@@ -10261,7 +10657,7 @@ export type UpdateSystemOperatorProductTypeResponses = {
   /**
    * OK
    */
-  200: SystemOperatorProductTypeResponse;
+  200: SystemOperatorProductType;
   /**
    * No Content
    */
@@ -10349,11 +10745,11 @@ export type ListSystemOperatorProductTypeHistoryResponses = {
   /**
    * OK
    */
-  200: Array<SystemOperatorProductTypeHistoryResponse>;
+  200: Array<SystemOperatorProductTypeHistory>;
   /**
    * Partial Content
    */
-  206: Array<SystemOperatorProductTypeHistoryResponse>;
+  206: Array<SystemOperatorProductTypeHistory>;
 };
 
 export type ListSystemOperatorProductTypeHistoryResponse =
@@ -10405,7 +10801,7 @@ export type ReadSystemOperatorProductTypeHistoryResponses = {
   /**
    * OK
    */
-  200: SystemOperatorProductTypeHistoryResponse;
+  200: SystemOperatorProductTypeHistory;
 };
 
 export type ReadSystemOperatorProductTypeHistoryResponse =
@@ -10489,11 +10885,11 @@ export type ListServiceProviderProductApplicationResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductApplicationResponse>;
+  200: Array<ServiceProviderProductApplication>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductApplicationResponse>;
+  206: Array<ServiceProviderProductApplication>;
 };
 
 export type ListServiceProviderProductApplicationResponse =
@@ -10547,7 +10943,7 @@ export type CreateServiceProviderProductApplicationResponses = {
   /**
    * Created
    */
-  201: ServiceProviderProductApplicationResponse;
+  201: ServiceProviderProductApplication;
 };
 
 export type CreateServiceProviderProductApplicationResponse =
@@ -10596,7 +10992,7 @@ export type ReadServiceProviderProductApplicationResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductApplicationResponse;
+  200: ServiceProviderProductApplication;
 };
 
 export type ReadServiceProviderProductApplicationResponse =
@@ -10648,7 +11044,7 @@ export type UpdateServiceProviderProductApplicationResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductApplicationResponse;
+  200: ServiceProviderProductApplication;
   /**
    * No Content
    */
@@ -10740,11 +11136,11 @@ export type ListServiceProviderProductApplicationHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductApplicationHistoryResponse>;
+  200: Array<ServiceProviderProductApplicationHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductApplicationHistoryResponse>;
+  206: Array<ServiceProviderProductApplicationHistory>;
 };
 
 export type ListServiceProviderProductApplicationHistoryResponse =
@@ -10796,7 +11192,7 @@ export type ReadServiceProviderProductApplicationHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductApplicationHistoryResponse;
+  200: ServiceProviderProductApplicationHistory;
 };
 
 export type ReadServiceProviderProductApplicationHistoryResponse =
@@ -10872,11 +11268,11 @@ export type ListServiceProviderProductApplicationCommentResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductApplicationCommentResponse>;
+  200: Array<ServiceProviderProductApplicationComment>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductApplicationCommentResponse>;
+  206: Array<ServiceProviderProductApplicationComment>;
 };
 
 export type ListServiceProviderProductApplicationCommentResponse =
@@ -10930,7 +11326,7 @@ export type CreateServiceProviderProductApplicationCommentResponses = {
   /**
    * Created
    */
-  201: ServiceProviderProductApplicationCommentResponse;
+  201: ServiceProviderProductApplicationComment;
 };
 
 export type CreateServiceProviderProductApplicationCommentResponse =
@@ -10979,7 +11375,7 @@ export type ReadServiceProviderProductApplicationCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductApplicationCommentResponse;
+  200: ServiceProviderProductApplicationComment;
 };
 
 export type ReadServiceProviderProductApplicationCommentResponse =
@@ -11031,7 +11427,7 @@ export type UpdateServiceProviderProductApplicationCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductApplicationCommentResponse;
+  200: ServiceProviderProductApplicationComment;
   /**
    * No Content
    */
@@ -11115,11 +11511,11 @@ export type ListServiceProviderProductApplicationCommentHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductApplicationCommentHistoryResponse>;
+  200: Array<ServiceProviderProductApplicationCommentHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductApplicationCommentHistoryResponse>;
+  206: Array<ServiceProviderProductApplicationCommentHistory>;
 };
 
 export type ListServiceProviderProductApplicationCommentHistoryResponse =
@@ -11171,7 +11567,7 @@ export type ReadServiceProviderProductApplicationCommentHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductApplicationCommentHistoryResponse;
+  200: ServiceProviderProductApplicationCommentHistory;
 };
 
 export type ReadServiceProviderProductApplicationCommentHistoryResponse =
@@ -11255,11 +11651,11 @@ export type ListServiceProviderProductSuspensionResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductSuspensionResponse>;
+  200: Array<ServiceProviderProductSuspension>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductSuspensionResponse>;
+  206: Array<ServiceProviderProductSuspension>;
 };
 
 export type ListServiceProviderProductSuspensionResponse =
@@ -11313,7 +11709,7 @@ export type CreateServiceProviderProductSuspensionResponses = {
   /**
    * Created
    */
-  201: ServiceProviderProductSuspensionResponse;
+  201: ServiceProviderProductSuspension;
 };
 
 export type CreateServiceProviderProductSuspensionResponse =
@@ -11407,7 +11803,7 @@ export type ReadServiceProviderProductSuspensionResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductSuspensionResponse;
+  200: ServiceProviderProductSuspension;
 };
 
 export type ReadServiceProviderProductSuspensionResponse =
@@ -11459,7 +11855,7 @@ export type UpdateServiceProviderProductSuspensionResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductSuspensionResponse;
+  200: ServiceProviderProductSuspension;
   /**
    * No Content
    */
@@ -11551,11 +11947,11 @@ export type ListServiceProviderProductSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductSuspensionHistoryResponse>;
+  200: Array<ServiceProviderProductSuspensionHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductSuspensionHistoryResponse>;
+  206: Array<ServiceProviderProductSuspensionHistory>;
 };
 
 export type ListServiceProviderProductSuspensionHistoryResponse =
@@ -11607,7 +12003,7 @@ export type ReadServiceProviderProductSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductSuspensionHistoryResponse;
+  200: ServiceProviderProductSuspensionHistory;
 };
 
 export type ReadServiceProviderProductSuspensionHistoryResponse =
@@ -11683,11 +12079,11 @@ export type ListServiceProviderProductSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductSuspensionCommentResponse>;
+  200: Array<ServiceProviderProductSuspensionComment>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductSuspensionCommentResponse>;
+  206: Array<ServiceProviderProductSuspensionComment>;
 };
 
 export type ListServiceProviderProductSuspensionCommentResponse =
@@ -11741,7 +12137,7 @@ export type CreateServiceProviderProductSuspensionCommentResponses = {
   /**
    * Created
    */
-  201: ServiceProviderProductSuspensionCommentResponse;
+  201: ServiceProviderProductSuspensionComment;
 };
 
 export type CreateServiceProviderProductSuspensionCommentResponse =
@@ -11790,7 +12186,7 @@ export type ReadServiceProviderProductSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductSuspensionCommentResponse;
+  200: ServiceProviderProductSuspensionComment;
 };
 
 export type ReadServiceProviderProductSuspensionCommentResponse =
@@ -11842,7 +12238,7 @@ export type UpdateServiceProviderProductSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductSuspensionCommentResponse;
+  200: ServiceProviderProductSuspensionComment;
   /**
    * No Content
    */
@@ -11926,11 +12322,11 @@ export type ListServiceProviderProductSuspensionCommentHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProviderProductSuspensionCommentHistoryResponse>;
+  200: Array<ServiceProviderProductSuspensionCommentHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProviderProductSuspensionCommentHistoryResponse>;
+  206: Array<ServiceProviderProductSuspensionCommentHistory>;
 };
 
 export type ListServiceProviderProductSuspensionCommentHistoryResponse =
@@ -11982,7 +12378,7 @@ export type ReadServiceProviderProductSuspensionCommentHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProviderProductSuspensionCommentHistoryResponse;
+  200: ServiceProviderProductSuspensionCommentHistory;
 };
 
 export type ReadServiceProviderProductSuspensionCommentHistoryResponse =
@@ -12066,11 +12462,11 @@ export type ListServiceProvidingGroupProductApplicationResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupProductApplicationResponse>;
+  200: Array<ServiceProvidingGroupProductApplication>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupProductApplicationResponse>;
+  206: Array<ServiceProvidingGroupProductApplication>;
 };
 
 export type ListServiceProvidingGroupProductApplicationResponse =
@@ -12124,7 +12520,7 @@ export type CreateServiceProvidingGroupProductApplicationResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupProductApplicationResponse;
+  201: ServiceProvidingGroupProductApplication;
 };
 
 export type CreateServiceProvidingGroupProductApplicationResponse =
@@ -12173,7 +12569,7 @@ export type ReadServiceProvidingGroupProductApplicationResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductApplicationResponse;
+  200: ServiceProvidingGroupProductApplication;
 };
 
 export type ReadServiceProvidingGroupProductApplicationResponse =
@@ -12225,7 +12621,7 @@ export type UpdateServiceProvidingGroupProductApplicationResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductApplicationResponse;
+  200: ServiceProvidingGroupProductApplication;
   /**
    * No Content
    */
@@ -12317,11 +12713,11 @@ export type ListServiceProvidingGroupProductApplicationHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupProductApplicationHistoryResponse>;
+  200: Array<ServiceProvidingGroupProductApplicationHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupProductApplicationHistoryResponse>;
+  206: Array<ServiceProvidingGroupProductApplicationHistory>;
 };
 
 export type ListServiceProvidingGroupProductApplicationHistoryResponse =
@@ -12373,7 +12769,7 @@ export type ReadServiceProvidingGroupProductApplicationHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductApplicationHistoryResponse;
+  200: ServiceProvidingGroupProductApplicationHistory;
 };
 
 export type ReadServiceProvidingGroupProductApplicationHistoryResponse =
@@ -12457,11 +12853,11 @@ export type ListServiceProvidingGroupProductSuspensionResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupProductSuspensionResponse>;
+  200: Array<ServiceProvidingGroupProductSuspension>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupProductSuspensionResponse>;
+  206: Array<ServiceProvidingGroupProductSuspension>;
 };
 
 export type ListServiceProvidingGroupProductSuspensionResponse =
@@ -12515,7 +12911,7 @@ export type CreateServiceProvidingGroupProductSuspensionResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupProductSuspensionResponse;
+  201: ServiceProvidingGroupProductSuspension;
 };
 
 export type CreateServiceProvidingGroupProductSuspensionResponse =
@@ -12609,7 +13005,7 @@ export type ReadServiceProvidingGroupProductSuspensionResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductSuspensionResponse;
+  200: ServiceProvidingGroupProductSuspension;
 };
 
 export type ReadServiceProvidingGroupProductSuspensionResponse =
@@ -12661,7 +13057,7 @@ export type UpdateServiceProvidingGroupProductSuspensionResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductSuspensionResponse;
+  200: ServiceProvidingGroupProductSuspension;
   /**
    * No Content
    */
@@ -12753,11 +13149,11 @@ export type ListServiceProvidingGroupProductSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupProductSuspensionHistoryResponse>;
+  200: Array<ServiceProvidingGroupProductSuspensionHistory>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupProductSuspensionHistoryResponse>;
+  206: Array<ServiceProvidingGroupProductSuspensionHistory>;
 };
 
 export type ListServiceProvidingGroupProductSuspensionHistoryResponse =
@@ -12809,7 +13205,7 @@ export type ReadServiceProvidingGroupProductSuspensionHistoryResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductSuspensionHistoryResponse;
+  200: ServiceProvidingGroupProductSuspensionHistory;
 };
 
 export type ReadServiceProvidingGroupProductSuspensionHistoryResponse =
@@ -12885,11 +13281,11 @@ export type ListServiceProvidingGroupProductSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: Array<ServiceProvidingGroupProductSuspensionCommentResponse>;
+  200: Array<ServiceProvidingGroupProductSuspensionComment>;
   /**
    * Partial Content
    */
-  206: Array<ServiceProvidingGroupProductSuspensionCommentResponse>;
+  206: Array<ServiceProvidingGroupProductSuspensionComment>;
 };
 
 export type ListServiceProvidingGroupProductSuspensionCommentResponse =
@@ -12943,7 +13339,7 @@ export type CreateServiceProvidingGroupProductSuspensionCommentResponses = {
   /**
    * Created
    */
-  201: ServiceProvidingGroupProductSuspensionCommentResponse;
+  201: ServiceProvidingGroupProductSuspensionComment;
 };
 
 export type CreateServiceProvidingGroupProductSuspensionCommentResponse =
@@ -12992,7 +13388,7 @@ export type ReadServiceProvidingGroupProductSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductSuspensionCommentResponse;
+  200: ServiceProvidingGroupProductSuspensionComment;
 };
 
 export type ReadServiceProvidingGroupProductSuspensionCommentResponse =
@@ -13044,7 +13440,7 @@ export type UpdateServiceProvidingGroupProductSuspensionCommentResponses = {
   /**
    * OK
    */
-  200: ServiceProvidingGroupProductSuspensionCommentResponse;
+  200: ServiceProvidingGroupProductSuspensionComment;
   /**
    * No Content
    */
@@ -13129,11 +13525,11 @@ export type ListServiceProvidingGroupProductSuspensionCommentHistoryResponses =
     /**
      * OK
      */
-    200: Array<ServiceProvidingGroupProductSuspensionCommentHistoryResponse>;
+    200: Array<ServiceProvidingGroupProductSuspensionCommentHistory>;
     /**
      * Partial Content
      */
-    206: Array<ServiceProvidingGroupProductSuspensionCommentHistoryResponse>;
+    206: Array<ServiceProvidingGroupProductSuspensionCommentHistory>;
   };
 
 export type ListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
@@ -13186,7 +13582,7 @@ export type ReadServiceProvidingGroupProductSuspensionCommentHistoryResponses =
     /**
      * OK
      */
-    200: ServiceProvidingGroupProductSuspensionCommentHistoryResponse;
+    200: ServiceProvidingGroupProductSuspensionCommentHistory;
   };
 
 export type ReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
@@ -13257,11 +13653,11 @@ export type ListNoticeResponses = {
   /**
    * OK
    */
-  200: Array<NoticeResponse>;
+  200: Array<Notice>;
   /**
    * Partial Content
    */
-  206: Array<NoticeResponse>;
+  206: Array<Notice>;
 };
 
 export type ListNoticeResponse = ListNoticeResponses[keyof ListNoticeResponses];

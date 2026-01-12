@@ -18,53 +18,49 @@ class ServiceProvidingGroupHistoryResponse:
     """Service providing group - history
 
     Attributes:
+        id (int): Unique surrogate key. Example: 4.
+        name (str): Free text name of the service providing group. Example: Batteries #09.
+        service_provider_id (int): Reference to the `party` (service provider) managing the group. Example: 17.
+        bidding_zone (ServiceProvidingGroupBiddingZone): The bidding zone that restricts which CUs that can be added to
+            the group. Also known as scheduling area or price area for TSO. Example: NO3.
+        status (ServiceProvidingGroupStatus): The status of the group. Example: active.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_id (int): Reference to the resource that was updated. Example: 48.
-        name (str | Unset): Free text name of the service providing group. Example: Batteries #09.
-        bidding_zone (ServiceProvidingGroupBiddingZone | Unset): The bidding zone that restricts which CUs that can be
-            added to the group. Also known as scheduling area or price area for TSO. Example: NO3.
-        status (ServiceProvidingGroupStatus | Unset): The status of the group. Example: active.
-        service_provider_id (int | Unset): Reference to the `party` (service provider) managing the group. Example: 17.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate key. Example: 4.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
             CET.
     """
 
+    id: int
+    name: str
+    service_provider_id: int
+    bidding_zone: ServiceProvidingGroupBiddingZone
+    status: ServiceProvidingGroupStatus
+    recorded_at: str
+    recorded_by: int
     service_providing_group_id: int
-    name: str | Unset = UNSET
-    bidding_zone: ServiceProvidingGroupBiddingZone | Unset = UNSET
-    status: ServiceProvidingGroupStatus | Unset = UNSET
-    service_provider_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        service_providing_group_id = self.service_providing_group_id
+        id = self.id
 
         name = self.name
 
-        bidding_zone: str | Unset = UNSET
-        if not isinstance(self.bidding_zone, Unset):
-            bidding_zone = self.bidding_zone.value
-
-        status: str | Unset = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
-
         service_provider_id = self.service_provider_id
+
+        bidding_zone = self.bidding_zone.value
+
+        status = self.status.value
 
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
 
-        id = self.id
+        service_providing_group_id = self.service_providing_group_id
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -82,23 +78,16 @@ class ServiceProvidingGroupHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
+                "name": name,
+                "service_provider_id": service_provider_id,
+                "bidding_zone": bidding_zone,
+                "status": status,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
                 "service_providing_group_id": service_providing_group_id,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
-        if bidding_zone is not UNSET:
-            field_dict["bidding_zone"] = bidding_zone
-        if status is not UNSET:
-            field_dict["status"] = status
-        if service_provider_id is not UNSET:
-            field_dict["service_provider_id"] = service_provider_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -109,31 +98,21 @@ class ServiceProvidingGroupHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        id = d.pop("id")
+
+        name = d.pop("name")
+
+        service_provider_id = d.pop("service_provider_id")
+
+        bidding_zone = ServiceProvidingGroupBiddingZone(d.pop("bidding_zone"))
+
+        status = ServiceProvidingGroupStatus(d.pop("status"))
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
         service_providing_group_id = d.pop("service_providing_group_id")
-
-        name = d.pop("name", UNSET)
-
-        _bidding_zone = d.pop("bidding_zone", UNSET)
-        bidding_zone: ServiceProvidingGroupBiddingZone | Unset
-        if isinstance(_bidding_zone, Unset):
-            bidding_zone = UNSET
-        else:
-            bidding_zone = ServiceProvidingGroupBiddingZone(_bidding_zone)
-
-        _status = d.pop("status", UNSET)
-        status: ServiceProvidingGroupStatus | Unset
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = ServiceProvidingGroupStatus(_status)
-
-        service_provider_id = d.pop("service_provider_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -154,14 +133,14 @@ class ServiceProvidingGroupHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_providing_group_history_response = cls(
-            service_providing_group_id=service_providing_group_id,
+            id=id,
             name=name,
+            service_provider_id=service_provider_id,
             bidding_zone=bidding_zone,
             status=status,
-            service_provider_id=service_provider_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
+            service_providing_group_id=service_providing_group_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

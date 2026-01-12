@@ -7,7 +7,6 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.auth_scope import AuthScope
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PartyMembershipCreateRequest")
 
@@ -17,62 +16,58 @@ class PartyMembershipCreateRequest:
     """Request schema for create operations - The relation between a party and entity.
 
     Attributes:
-        scopes (list[AuthScope] | Unset): List of scopes granted to the entity when it acts as the party. Scopes are
-            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+        party_id (int): Reference to the party that the membership links to an entity. Example: 379.
+        entity_id (int): Reference to the entity that the party represents. Example: 30.
+        scopes (list[AuthScope]): List of scopes granted to the entity when it acts as the party. Scopes are inspired
+            from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
-        party_id (int | Unset): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (int | Unset): Reference to the entity that the party represents. Example: 30.
     """
 
-    scopes: list[AuthScope] | Unset = UNSET
-    party_id: int | Unset = UNSET
-    entity_id: int | Unset = UNSET
+    party_id: int
+    entity_id: int
+    scopes: list[AuthScope]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        scopes: list[str] | Unset = UNSET
-        if not isinstance(self.scopes, Unset):
-            scopes = []
-            for scopes_item_data in self.scopes:
-                scopes_item = scopes_item_data.value
-                scopes.append(scopes_item)
-
         party_id = self.party_id
 
         entity_id = self.entity_id
 
+        scopes = []
+        for scopes_item_data in self.scopes:
+            scopes_item = scopes_item_data.value
+            scopes.append(scopes_item)
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if scopes is not UNSET:
-            field_dict["scopes"] = scopes
-        if party_id is not UNSET:
-            field_dict["party_id"] = party_id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
+        field_dict.update(
+            {
+                "party_id": party_id,
+                "entity_id": entity_id,
+                "scopes": scopes,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        _scopes = d.pop("scopes", UNSET)
-        scopes: list[AuthScope] | Unset = UNSET
-        if _scopes is not UNSET:
-            scopes = []
-            for scopes_item_data in _scopes:
-                scopes_item = AuthScope(scopes_item_data)
+        party_id = d.pop("party_id")
 
-                scopes.append(scopes_item)
+        entity_id = d.pop("entity_id")
 
-        party_id = d.pop("party_id", UNSET)
+        scopes = []
+        _scopes = d.pop("scopes")
+        for scopes_item_data in _scopes:
+            scopes_item = AuthScope(scopes_item_data)
 
-        entity_id = d.pop("entity_id", UNSET)
+            scopes.append(scopes_item)
 
         party_membership_create_request = cls(
-            scopes=scopes,
             party_id=party_id,
             entity_id=entity_id,
+            scopes=scopes,
         )
 
         party_membership_create_request.additional_properties = d

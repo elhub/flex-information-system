@@ -17,13 +17,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { FieldStack } from "../../auth";
-import { zControllableUnitLookupResponse } from "../../generated-client/zod.gen";
-import { ControllableUnitLookupResponse } from "../../generated-client";
+import { zControllableUnitLookup } from "../../generated-client/zod.gen";
+import { ControllableUnitLookup } from "../../generated-client";
 import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
 import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 
 type LookupResponse_ControllableUnit =
-  ControllableUnitLookupResponse["controllable_units"][number];
+  ControllableUnitLookup["controllable_units"][number];
 type LookupResponse_TechnicalResource =
   LookupResponse_ControllableUnit["technical_resources"][number];
 
@@ -145,8 +145,9 @@ export const ControllableUnitLookupResult = () => {
   const {
     state: { result },
   } = useLocation();
-  const controllableUnitLookUpResult =
-    zControllableUnitLookupResponse.parse(result);
+  const controllableUnitLookUpResult = zControllableUnitLookup.parse(
+    result ?? {},
+  );
 
   return (
     <RecordContextProvider value={controllableUnitLookUpResult}>

@@ -16,56 +16,56 @@ class ServiceProvidingGroupMembershipHistoryResponse:
     """Membership relation of controllable unit in service providing group - history
 
     Attributes:
+        id (int): Unique surrogate key. Example: 27.
+        controllable_unit_id (int): Reference to the controllable unit this relation links to a service providing group.
+            Example: 6.
+        service_providing_group_id (int): Reference to the service providing group this relation links to a controllable
+            unit. Example: 55.
+        valid_from (str): The date from which the relation between the controllable unit and the service providing group
+            is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_membership_id (int): Reference to the resource that was updated. Example: 48.
-        valid_from (str | Unset): The date from which the relation between the controllable unit and the service
-            providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (None | str | Unset): The date until which the relation between the controllable unit and the service
             providing group is valid. Midnight aligned on Norwegian timezone.
-        controllable_unit_id (int | Unset): Reference to the controllable unit this relation links to a service
-            providing group. Example: 6.
-        service_providing_group_id (int | Unset): Reference to the service providing group this relation links to a
-            controllable unit. Example: 55.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate key. Example: 27.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
             CET.
     """
 
+    id: int
+    controllable_unit_id: int
+    service_providing_group_id: int
+    valid_from: str
+    recorded_at: str
+    recorded_by: int
     service_providing_group_membership_id: int
-    valid_from: str | Unset = UNSET
     valid_to: None | str | Unset = UNSET
-    controllable_unit_id: int | Unset = UNSET
-    service_providing_group_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        service_providing_group_membership_id = self.service_providing_group_membership_id
+        id = self.id
+
+        controllable_unit_id = self.controllable_unit_id
+
+        service_providing_group_id = self.service_providing_group_id
 
         valid_from = self.valid_from
+
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
+
+        service_providing_group_membership_id = self.service_providing_group_membership_id
 
         valid_to: None | str | Unset
         if isinstance(self.valid_to, Unset):
             valid_to = UNSET
         else:
             valid_to = self.valid_to
-
-        controllable_unit_id = self.controllable_unit_id
-
-        service_providing_group_id = self.service_providing_group_id
-
-        recorded_at = self.recorded_at
-
-        recorded_by = self.recorded_by
-
-        id = self.id
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -83,23 +83,17 @@ class ServiceProvidingGroupMembershipHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
+                "controllable_unit_id": controllable_unit_id,
+                "service_providing_group_id": service_providing_group_id,
+                "valid_from": valid_from,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
                 "service_providing_group_membership_id": service_providing_group_membership_id,
             }
         )
-        if valid_from is not UNSET:
-            field_dict["valid_from"] = valid_from
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
-        if controllable_unit_id is not UNSET:
-            field_dict["controllable_unit_id"] = controllable_unit_id
-        if service_providing_group_id is not UNSET:
-            field_dict["service_providing_group_id"] = service_providing_group_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -110,9 +104,19 @@ class ServiceProvidingGroupMembershipHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        service_providing_group_membership_id = d.pop("service_providing_group_membership_id")
+        id = d.pop("id")
 
-        valid_from = d.pop("valid_from", UNSET)
+        controllable_unit_id = d.pop("controllable_unit_id")
+
+        service_providing_group_id = d.pop("service_providing_group_id")
+
+        valid_from = d.pop("valid_from")
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
+        service_providing_group_membership_id = d.pop("service_providing_group_membership_id")
 
         def _parse_valid_to(data: object) -> None | str | Unset:
             if data is None:
@@ -122,16 +126,6 @@ class ServiceProvidingGroupMembershipHistoryResponse:
             return cast(None | str | Unset, data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
-
-        controllable_unit_id = d.pop("controllable_unit_id", UNSET)
-
-        service_providing_group_id = d.pop("service_providing_group_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -152,14 +146,14 @@ class ServiceProvidingGroupMembershipHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         service_providing_group_membership_history_response = cls(
-            service_providing_group_membership_id=service_providing_group_membership_id,
-            valid_from=valid_from,
-            valid_to=valid_to,
+            id=id,
             controllable_unit_id=controllable_unit_id,
             service_providing_group_id=service_providing_group_id,
+            valid_from=valid_from,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
+            service_providing_group_membership_id=service_providing_group_membership_id,
+            valid_to=valid_to,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

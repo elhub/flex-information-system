@@ -17,51 +17,49 @@ class PartyMembershipHistoryResponse:
     """Party Membership - history
 
     Attributes:
-        party_membership_id (int): Reference to the resource that was updated. Example: 48.
-        scopes (list[AuthScope] | Unset): List of scopes granted to the entity when it acts as the party. Scopes are
-            inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
+        id (int): Unique surrogate identifier. Example: 44.
+        party_id (int): Reference to the party that the membership links to an entity. Example: 379.
+        entity_id (int): Reference to the entity that the party represents. Example: 30.
+        scopes (list[AuthScope]): List of scopes granted to the entity when it acts as the party. Scopes are inspired
+            from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
-        party_id (int | Unset): Reference to the party that the membership links to an entity. Example: 379.
-        entity_id (int | Unset): Reference to the entity that the party represents. Example: 30.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 44.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
+        party_membership_id (int): Reference to the resource that was updated. Example: 48.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
             CET.
     """
 
+    id: int
+    party_id: int
+    entity_id: int
+    scopes: list[AuthScope]
+    recorded_at: str
+    recorded_by: int
     party_membership_id: int
-    scopes: list[AuthScope] | Unset = UNSET
-    party_id: int | Unset = UNSET
-    entity_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        party_membership_id = self.party_membership_id
-
-        scopes: list[str] | Unset = UNSET
-        if not isinstance(self.scopes, Unset):
-            scopes = []
-            for scopes_item_data in self.scopes:
-                scopes_item = scopes_item_data.value
-                scopes.append(scopes_item)
+        id = self.id
 
         party_id = self.party_id
 
         entity_id = self.entity_id
 
+        scopes = []
+        for scopes_item_data in self.scopes:
+            scopes_item = scopes_item_data.value
+            scopes.append(scopes_item)
+
         recorded_at = self.recorded_at
 
         recorded_by = self.recorded_by
 
-        id = self.id
+        party_membership_id = self.party_membership_id
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -79,21 +77,15 @@ class PartyMembershipHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
+                "party_id": party_id,
+                "entity_id": entity_id,
+                "scopes": scopes,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
                 "party_membership_id": party_membership_id,
             }
         )
-        if scopes is not UNSET:
-            field_dict["scopes"] = scopes
-        if party_id is not UNSET:
-            field_dict["party_id"] = party_id
-        if entity_id is not UNSET:
-            field_dict["entity_id"] = entity_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -104,26 +96,24 @@ class PartyMembershipHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        id = d.pop("id")
+
+        party_id = d.pop("party_id")
+
+        entity_id = d.pop("entity_id")
+
+        scopes = []
+        _scopes = d.pop("scopes")
+        for scopes_item_data in _scopes:
+            scopes_item = AuthScope(scopes_item_data)
+
+            scopes.append(scopes_item)
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
         party_membership_id = d.pop("party_membership_id")
-
-        _scopes = d.pop("scopes", UNSET)
-        scopes: list[AuthScope] | Unset = UNSET
-        if _scopes is not UNSET:
-            scopes = []
-            for scopes_item_data in _scopes:
-                scopes_item = AuthScope(scopes_item_data)
-
-                scopes.append(scopes_item)
-
-        party_id = d.pop("party_id", UNSET)
-
-        entity_id = d.pop("entity_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -144,13 +134,13 @@ class PartyMembershipHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         party_membership_history_response = cls(
-            party_membership_id=party_membership_id,
-            scopes=scopes,
+            id=id,
             party_id=party_id,
             entity_id=entity_id,
+            scopes=scopes,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
+            party_membership_id=party_membership_id,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

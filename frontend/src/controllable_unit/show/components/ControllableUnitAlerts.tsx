@@ -68,7 +68,7 @@ const useControllableUnitAlerts = (
     };
   }
 
-  if (controllableUnit.id && controllableUnit.status === "new") {
+  if (controllableUnit.status === "new") {
     return {
       severity: "info",
       title: "Not active",

@@ -37,15 +37,15 @@ components:
       properties:
         code:
           type: string
-          pattern: '^[A-Z0-9]+$'
+          pattern: "^[A-Z0-9]+$"
           description: The error code.
           example: PT418
         details:
-          type: [string, 'null']
+          type: [string, "null"]
           description: Detailed information about the error.
           example: null
         hint:
-          type: [string, 'null']
+          type: [string, "null"]
           description: A hint to help resolve the error.
           example: null
         message:
@@ -70,21 +70,6 @@ components:
         - "read:auth"
         - "use:auth"
         - "manage:auth"
-    audit_fields:
-      properties:
-        recorded_at:
-          description: >-
-            When the resource was recorded (created or updated) in the system.
-          format: timestamp with time zone
-          type: string
-          readOnly: true
-          example: 2023-12-31 23:59:00 CET
-        recorded_by:
-          description: The identity that recorded the resource.
-          format: bigint
-          type: integer
-          readOnly: true
-          example: 145
     controllable_unit_lookup_request:
       summary: Controllable unit lookup
       description: Request schema for controllable unit lookup operations
@@ -94,23 +79,23 @@ components:
           description: Birth number or organisation number of the end user.
           format: text
           type: string
-          pattern: '^[1-9]([0-9]{8}|[0-9]{10})$'
-          example: '133700008'
+          pattern: "^[1-9]([0-9]{8}|[0-9]{10})$"
+          example: "133700008"
         controllable_unit:
           description: The business ID of the controllable unit to lookup.
           format: text
           type: string
           # yamllint disable-line rule:line-length
-          pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
-          example: '53919b79-876f-4dad-8bde-b29368367604'
+          pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          example: "53919b79-876f-4dad-8bde-b29368367604"
         accounting_point:
           description: >-
             The accounting point ID of the controllable unit(s) to lookup.
             `GSRN` metering point id.
           format: text
           type: string
-          pattern: '^[1-9][0-9]{17}$'
-          example: '709000000000000057'
+          pattern: "^[1-9][0-9]{17}$"
+          example: "709000000000000057"
       required:
         - end_user
     controllable_unit_lookup_response:
@@ -133,8 +118,8 @@ components:
               description: The GSRN metering point ID of the accounting point.
               format: text
               type: string
-              pattern: '^[1-9][0-9]{17}$'
-              example: '709000000000000057'
+              pattern: "^[1-9][0-9]{17}$"
+              example: "709000000000000057"
           required:
             - id
             - business_id
@@ -168,12 +153,12 @@ components:
                 description: The business ID of the controllable unit.
                 format: text
                 type: string
-                example: '53919b79-876f-4dad-8bde-b29368367604'
+                example: "53919b79-876f-4dad-8bde-b29368367604"
               name:
                 description: The name of the controllable unit.
                 format: text
                 type: string
-                example: 'Car Charger #54'
+                example: "Car Charger #54"
               technical_resources:
                 description: >-
                   The technical resources belonging to the controllable unit.
@@ -190,13 +175,13 @@ components:
                       description: The name of the technical resource.
                       format: text
                       type: string
-                      example: 'Battery Unit A'
+                      example: "Battery Unit A"
                     details:
                       description: >-
                         Additional details about the technical resource.
                       format: text
                       type: string
-                      example: '16A'
+                      example: "16A"
                   required:
                     - id
                     - name
@@ -220,7 +205,7 @@ components:
             organisation number, according to `type`.
           format: text
           type: string
-          example: '13370000000'
+          example: "13370000000"
         name:
           description: Name of the entity.
           format: text
@@ -262,12 +247,12 @@ components:
             type: string
             format: date-time
             description: The start time of the timeline section.
-            example: '2023-01-01T00:00:00Z'
+            example: "2023-01-01T00:00:00Z"
           valid_to:
             type: string
             format: date-time
             description: The end time of the timeline section.
-            example: '2023-01-02T00:00:00Z'
+            example: "2023-01-02T00:00:00Z"
     notice_data_valid_time_outside_contract:
       description: >-
         Format of the data field in a notice of type
@@ -277,17 +262,17 @@ components:
           description: >-
             Part of the timeline where the end user on the CUSP relation does
             not match the end user on the accounting point.
-          $ref: '#/components/schemas/timeline_multi_range'
+          $ref: "#/components/schemas/timeline_multi_range"
     notice_data_party_missing:
       description: >-
         Format of the data field in a notice of type no.elhub.flex.party.missing
       properties:
         entity:
           description: Details about the entity owning the missing party.
-          $ref: '#/components/schemas/entity'
+          $ref: "#/components/schemas/entity_response"
         party:
           description: Details about the missing party.
-          $ref: '#/components/schemas/party'
+          $ref: "#/components/schemas/party_response"
     notice_data_party_outdated:
       description: >-
         Format of the data field in a notice of type
@@ -295,10 +280,10 @@ components:
       properties:
         entity:
           description: Details about the possibly new entity owning the party.
-          $ref: '#/components/schemas/entity'
+          $ref: "#/components/schemas/entity_response"
         party:
           description: Updated fields of the party.
-          $ref: '#/components/schemas/party'
+          $ref: "#/components/schemas/party_response"
     notice_data_product_type_not_qualified:
       description: >-
         Format of the data field in a notice of type
@@ -313,10 +298,10 @@ components:
             example: 2
     notice_data:
       oneOf:
-        - $ref: '#/components/schemas/notice_data_valid_time_outside_contract'
-        - $ref: '#/components/schemas/notice_data_party_missing'
-        - $ref: '#/components/schemas/notice_data_party_outdated'
-        - $ref: '#/components/schemas/notice_data_product_type_not_qualified'
+        - $ref: "#/components/schemas/notice_data_valid_time_outside_contract"
+        - $ref: "#/components/schemas/notice_data_party_missing"
+        - $ref: "#/components/schemas/notice_data_party_outdated"
+        - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
 paths:
   /openapi.json:
     get:
@@ -331,18 +316,18 @@ paths:
       tags:
         - introspection
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
   /controllable_unit/lookup:
     post:
       operationId: call_controllable_unit_lookup
@@ -359,43 +344,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/controllable_unit_lookup_request'
+              $ref: "#/components/schemas/controllable_unit_lookup_request"
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/controllable_unit_lookup_response'
+                $ref: "#/components/schemas/controllable_unit_lookup_response"
           description: OK
-        '400':
+        "400":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Unauthorized
-        '403':
+        "403":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Forbidden
-        '404':
+        "404":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Not Found
-        '500':
+        "500":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Internal Server Error
   /entity/lookup:
     post:
@@ -412,37 +397,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/entity_lookup_request'
+              $ref: "#/components/schemas/entity_lookup_request"
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/entity_lookup_response'
+                $ref: "#/components/schemas/entity_lookup_response"
           description: OK
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/entity_lookup_response'
+                $ref: "#/components/schemas/entity_lookup_response"
           description: Created
-        '400':
+        "400":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Bad Request
-        '401':
+        "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Unauthorized
-        '500':
+        "500":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error_message'
+                $ref: "#/components/schemas/error_message"
           description: Internal Server Error
 servers:
   - url: https://flex-test.elhub.no/api/v0

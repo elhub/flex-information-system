@@ -506,8 +506,14 @@ openapi-client-test:
 openapi-client-frontend:
     #!/usr/bin/env bash
     set -euo pipefail
+
+    # remove _response suffix from all response schemas to get cleaner imports of the types in frontend ControllableUnit, instead of ControllableUnitResponse
+    sed 's/_response//g' backend/data/static/openapi.json > backend/data/static/.openapi-frontend-client.json
+
     cd frontend
     npx openapi-ts
+
+    rm ../backend/data/static/.openapi-frontend-client.json
 
     # replace all z.optional properties to preprocess null so we dont have to handle null or undefined. Only undefined in forms.
     perl -i -pe 's/z\.optional\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*)\)/z.optional(z.preprocess((value) => (value === null ? undefined : value), $1.optional()))/g' src/generated-client/zod.gen.ts

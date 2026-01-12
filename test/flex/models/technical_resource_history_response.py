@@ -16,42 +16,36 @@ class TechnicalResourceHistoryResponse:
     """Technical Resource - history
 
     Attributes:
+        id (int): Unique surrogate identifier. Example: 89.
+        name (str): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
+        controllable_unit_id (int): Reference to the controllable unit that this technical resource belongs to. Example:
+            37.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         technical_resource_id (int): Reference to the resource that was updated. Example: 48.
-        name (str | Unset): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
         details (None | str | Unset): Free text details about the technical resource. Example: Make: ACME
             Model: Car Charger 3000.
-        controllable_unit_id (int | Unset): Reference to the controllable unit that this technical resource belongs to.
-            Example: 37.
-        recorded_at (str | Unset): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31 23:59:00 CET.
-        recorded_by (int | Unset): The identity that recorded the resource. Example: 145.
-        id (int | Unset): Unique surrogate identifier. Example: 89.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
             CET.
     """
 
+    id: int
+    name: str
+    controllable_unit_id: int
+    recorded_at: str
+    recorded_by: int
     technical_resource_id: int
-    name: str | Unset = UNSET
     details: None | str | Unset = UNSET
-    controllable_unit_id: int | Unset = UNSET
-    recorded_at: str | Unset = UNSET
-    recorded_by: int | Unset = UNSET
-    id: int | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        technical_resource_id = self.technical_resource_id
+        id = self.id
 
         name = self.name
-
-        details: None | str | Unset
-        if isinstance(self.details, Unset):
-            details = UNSET
-        else:
-            details = self.details
 
         controllable_unit_id = self.controllable_unit_id
 
@@ -59,7 +53,13 @@ class TechnicalResourceHistoryResponse:
 
         recorded_by = self.recorded_by
 
-        id = self.id
+        technical_resource_id = self.technical_resource_id
+
+        details: None | str | Unset
+        if isinstance(self.details, Unset):
+            details = UNSET
+        else:
+            details = self.details
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -77,21 +77,16 @@ class TechnicalResourceHistoryResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
+                "name": name,
+                "controllable_unit_id": controllable_unit_id,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
                 "technical_resource_id": technical_resource_id,
             }
         )
-        if name is not UNSET:
-            field_dict["name"] = name
         if details is not UNSET:
             field_dict["details"] = details
-        if controllable_unit_id is not UNSET:
-            field_dict["controllable_unit_id"] = controllable_unit_id
-        if recorded_at is not UNSET:
-            field_dict["recorded_at"] = recorded_at
-        if recorded_by is not UNSET:
-            field_dict["recorded_by"] = recorded_by
-        if id is not UNSET:
-            field_dict["id"] = id
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -102,9 +97,17 @@ class TechnicalResourceHistoryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        technical_resource_id = d.pop("technical_resource_id")
+        id = d.pop("id")
 
-        name = d.pop("name", UNSET)
+        name = d.pop("name")
+
+        controllable_unit_id = d.pop("controllable_unit_id")
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
+
+        technical_resource_id = d.pop("technical_resource_id")
 
         def _parse_details(data: object) -> None | str | Unset:
             if data is None:
@@ -114,14 +117,6 @@ class TechnicalResourceHistoryResponse:
             return cast(None | str | Unset, data)
 
         details = _parse_details(d.pop("details", UNSET))
-
-        controllable_unit_id = d.pop("controllable_unit_id", UNSET)
-
-        recorded_at = d.pop("recorded_at", UNSET)
-
-        recorded_by = d.pop("recorded_by", UNSET)
-
-        id = d.pop("id", UNSET)
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -142,13 +137,13 @@ class TechnicalResourceHistoryResponse:
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
         technical_resource_history_response = cls(
-            technical_resource_id=technical_resource_id,
+            id=id,
             name=name,
-            details=details,
             controllable_unit_id=controllable_unit_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            id=id,
+            technical_resource_id=technical_resource_id,
+            details=details,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

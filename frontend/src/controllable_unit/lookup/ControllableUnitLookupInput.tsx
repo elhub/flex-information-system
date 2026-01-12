@@ -13,7 +13,7 @@ import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
 import { callControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { unTypedZodResolver } from "../../util";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -113,7 +113,7 @@ export const ControllableUnitLookupInput = () => {
       onSubmit={lookup}
       defaultValues={{ controllable_unit: defaultControllableUnit }}
       // React admin types does not handle required types in validation resolvers, but it works at runtime.
-      resolver={zodResolver(zControllableUnitLookupRequest) as any}
+      resolver={unTypedZodResolver(zControllableUnitLookupRequest)}
       toolbar={<Toolbar />}
     >
       <Stack direction="column" spacing={1}>
