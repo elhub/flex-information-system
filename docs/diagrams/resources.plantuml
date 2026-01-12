@@ -62,6 +62,8 @@ digraph flex {
     accounting_point_energy_supplier    [label="{accounting_point_energy_supplier}|{Relation linking an energy\nsupplier to an accounting point.}" shape=record style=solid]
     accounting_point_energy_supplier -> accounting_point     [label=accounting_point_id]
     accounting_point_energy_supplier -> party     [label=energy_supplier_id]
+    metering_grid_area    [label="{metering_grid_area}|{Metering grid area\nto which accounting\npoints belong.}" shape=record style=solid]
+    metering_grid_area -> party     [label=system_operator_id]
     accounting_point_metering_grid_area    [label="{accounting_point_metering_grid_area}|{Relation telling which metering\ngrid area an accounting point\nbelongs to.}" shape=record style=solid]
     accounting_point_metering_grid_area -> accounting_point     [label=accounting_point_id]
     accounting_point_metering_grid_area -> metering_grid_area     [label=metering_grid_area_id]

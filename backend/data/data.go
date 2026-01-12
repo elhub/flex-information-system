@@ -162,6 +162,9 @@ func NewAPIHandler(
 	mux.Handle("GET /identity", dataListPostgRESTHandler)
 	mux.Handle("GET /identity/{id}", dataPostgRESTHandler)
 
+	mux.Handle("GET /metering_grid_area", dataListPostgRESTHandler)
+	mux.Handle("GET /metering_grid_area/{id}", dataPostgRESTHandler)
+
 	mux.Handle("GET /notice", dataListPostgRESTHandler)
 
 	mux.Handle("GET /notification", dataListPostgRESTHandler)

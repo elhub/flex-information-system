@@ -184,6 +184,16 @@ export type PermissionTarget =
   | "identity.id"
   | "identity.party_id"
   | "identity.party_name"
+  | "metering_grid_area"
+  | "metering_grid_area.business_id"
+  | "metering_grid_area.id"
+  | "metering_grid_area.name"
+  | "metering_grid_area.price_area"
+  | "metering_grid_area.recorded_at"
+  | "metering_grid_area.recorded_by"
+  | "metering_grid_area.system_operator_id"
+  | "metering_grid_area.valid_from"
+  | "metering_grid_area.valid_to"
   | "notice"
   | "notice.data"
   | "notice.party_id"
@@ -1240,6 +1250,46 @@ const rawPermissions: Record<
     },
     {
       target: "identity",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -3448,6 +3498,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
+      operation: "read",
+    },
+    {
       target: "notice.data",
       operation: "read",
     },
@@ -5650,6 +5740,46 @@ const rawPermissions: Record<
     },
     {
       target: "identity",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -8108,6 +8238,46 @@ const rawPermissions: Record<
     },
     {
       target: "identity",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -10814,6 +10984,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
+      operation: "read",
+    },
+    {
       target: "notice.data",
       operation: "read",
     },
@@ -13093,6 +13303,46 @@ const rawPermissions: Record<
     },
     {
       target: "identity",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
       operation: "read",
     },
     {
@@ -15782,6 +16032,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
+      operation: "read",
+    },
+    {
       target: "notice.data",
       operation: "read",
     },
@@ -18281,6 +18571,46 @@ const rawPermissions: Record<
     },
     {
       target: "identity",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.name",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.price_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.system_operator_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_from",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.valid_to",
       operation: "read",
     },
     {

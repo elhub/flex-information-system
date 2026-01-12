@@ -333,6 +333,17 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 ]);
 
 /**
+ * The price area of the metering grid area.
+ */
+export const zMeteringGridAreaPriceArea = z.enum([
+  "NO1",
+  "NO2",
+  "NO3",
+  "NO4",
+  "NO5",
+]);
+
+/**
  * The status of the relation.
  */
 export const zSystemOperatorProductTypeStatus = z.enum(["active", "inactive"]);
@@ -1704,6 +1715,29 @@ export const zAccountingPointEnergySupplier = z.object({
 });
 
 /**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export const zMeteringGridArea = z.object({
+  id: z.int().readonly(),
+  business_id: z
+    .string()
+    .regex(/^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$/)
+    .readonly(),
+  name: z.string().max(128).readonly(),
+  price_area: zMeteringGridAreaPriceArea,
+  system_operator_id: z.int().readonly(),
+  valid_from: z.string().readonly(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
+
+/**
  * Response schema - Relation telling which metering grid area an accounting point belongs to.
  */
 export const zAccountingPointMeteringGridArea = z.object({
@@ -3011,6 +3045,11 @@ export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
 export const zAccountingPointBiddingZoneWritable = z.object({
   bidding_zone: zAccountingPointBiddingZoneBiddingZone,
 });
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export const zMeteringGridAreaWritable = z.record(z.string(), z.unknown());
 
 /**
  * Response schema - Relation between a system operator and a product type they want to buy.
@@ -7989,6 +8028,107 @@ export const zListAccountingPointEnergySupplierResponse = z.union([
   z.array(zAccountingPointEnergySupplier),
   z.array(zAccountingPointEnergySupplier),
 ]);
+
+export const zListMeteringGridAreaData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
+});
+
+export const zListMeteringGridAreaResponse = z.union([
+  z.array(zMeteringGridArea),
+  z.array(zMeteringGridArea),
+]);
+
+export const zReadMeteringGridAreaData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.object({
+    id: z.int(),
+  }),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+});
+
+/**
+ * OK
+ */
+export const zReadMeteringGridAreaResponse = zMeteringGridArea;
 
 export const zListAccountingPointMeteringGridAreaData = z.object({
   body: z.optional(

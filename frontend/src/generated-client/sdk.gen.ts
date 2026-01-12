@@ -159,6 +159,9 @@ import type {
   ListIdentityData,
   ListIdentityErrors,
   ListIdentityResponses,
+  ListMeteringGridAreaData,
+  ListMeteringGridAreaErrors,
+  ListMeteringGridAreaResponses,
   ListNoticeData,
   ListNoticeErrors,
   ListNoticeResponses,
@@ -309,6 +312,9 @@ import type {
   ReadIdentityData,
   ReadIdentityErrors,
   ReadIdentityResponses,
+  ReadMeteringGridAreaData,
+  ReadMeteringGridAreaErrors,
+  ReadMeteringGridAreaResponses,
   ReadNotificationData,
   ReadNotificationErrors,
   ReadNotificationResponses,
@@ -2636,6 +2642,38 @@ export const listAccountingPointEnergySupplier = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/accounting_point_energy_supplier",
+    ...options,
+  });
+
+/**
+ * List Metering Grid Area
+ */
+export const listMeteringGridArea = <ThrowOnError extends boolean = false>(
+  options?: Options<ListMeteringGridAreaData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListMeteringGridAreaResponses,
+    ListMeteringGridAreaErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/metering_grid_area",
+    ...options,
+  });
+
+/**
+ * Read Metering Grid Area
+ */
+export const readMeteringGridArea = <ThrowOnError extends boolean = false>(
+  options: Options<ReadMeteringGridAreaData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadMeteringGridAreaResponses,
+    ReadMeteringGridAreaErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/metering_grid_area/{id}",
     ...options,
   });
 

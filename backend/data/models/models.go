@@ -213,6 +213,18 @@ type ApiIdentity struct {
 	PartyName  *string
 }
 
+type ApiMeteringGridArea struct {
+	ID               int
+	BusinessID       string
+	Name             string
+	PriceArea        string
+	SystemOperatorID int
+	ValidFrom        pgtype.Timestamptz
+	ValidTo          pgtype.Timestamptz
+	RecordedBy       int
+	RecordedAt       pgtype.Timestamptz
+}
+
 type ApiNotice struct {
 	PartyID int
 	Type    string

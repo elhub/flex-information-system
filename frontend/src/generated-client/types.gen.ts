@@ -383,6 +383,11 @@ export type AccountingPointBiddingZoneBiddingZone =
   | "NO5";
 
 /**
+ * The price area of the metering grid area.
+ */
+export type MeteringGridAreaPriceArea = "NO1" | "NO2" | "NO3" | "NO4" | "NO5";
+
+/**
  * The status of the relation.
  */
 export type SystemOperatorProductTypeStatus = "active" | "inactive";
@@ -1793,6 +1798,45 @@ export type AccountingPointEnergySupplier = {
 };
 
 /**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export type MeteringGridArea = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * The EIC-Y code for this metering grid area.
+   */
+  readonly business_id: string;
+  /**
+   * The name of the metering grid area.
+   */
+  readonly name: string;
+  price_area: MeteringGridAreaPriceArea;
+  /**
+   * The system operator responsible for the metering grid area.
+   */
+  readonly system_operator_id: number;
+  /**
+   * The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_from: string;
+  /**
+   * The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.
+   */
+  readonly valid_to?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
+
+/**
  * Response schema - Relation telling which metering grid area an accounting point belongs to.
  */
 export type AccountingPointMeteringGridArea = {
@@ -3180,6 +3224,13 @@ export type AccountingPointBalanceResponsiblePartyWritable = {
  */
 export type AccountingPointBiddingZoneWritable = {
   bidding_zone: AccountingPointBiddingZoneBiddingZone;
+};
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export type MeteringGridAreaWritable = {
+  [key: string]: unknown;
 };
 
 /**
@@ -10526,6 +10577,143 @@ export type ListAccountingPointEnergySupplierResponses = {
 
 export type ListAccountingPointEnergySupplierResponse =
   ListAccountingPointEnergySupplierResponses[keyof ListAccountingPointEnergySupplierResponses];
+
+export type ListMeteringGridAreaData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
+     * The system operator responsible for the metering grid area.
+     */
+    system_operator_id?: string;
+    /**
+     * The name of the metering grid area.
+     */
+    name?: string;
+    /**
+     * The EIC-Y code for this metering grid area.
+     */
+    business_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/metering_grid_area";
+};
+
+export type ListMeteringGridAreaErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListMeteringGridAreaError =
+  ListMeteringGridAreaErrors[keyof ListMeteringGridAreaErrors];
+
+export type ListMeteringGridAreaResponses = {
+  /**
+   * OK
+   */
+  200: Array<MeteringGridArea>;
+  /**
+   * Partial Content
+   */
+  206: Array<MeteringGridArea>;
+};
+
+export type ListMeteringGridAreaResponse =
+  ListMeteringGridAreaResponses[keyof ListMeteringGridAreaResponses];
+
+export type ReadMeteringGridAreaData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/metering_grid_area/{id}";
+};
+
+export type ReadMeteringGridAreaErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadMeteringGridAreaError =
+  ReadMeteringGridAreaErrors[keyof ReadMeteringGridAreaErrors];
+
+export type ReadMeteringGridAreaResponses = {
+  /**
+   * OK
+   */
+  200: MeteringGridArea;
+};
+
+export type ReadMeteringGridAreaResponse =
+  ReadMeteringGridAreaResponses[keyof ReadMeteringGridAreaResponses];
 
 export type ListAccountingPointMeteringGridAreaData = {
   body?: never;
