@@ -13,6 +13,8 @@ import { createServiceProviderResources } from "./serviceProviderResources";
 import { createProductResources } from "./productResources";
 import { createSystemResources } from "./systemResources";
 import { Permissions } from "../auth/permissions";
+import { AccountingPointList } from "../accounting_point/AccountingPointList";
+import { AccountingPointShow } from "../accounting_point/AccountingPointShow";
 
 /**
  * Creates all resources based on user permissions
@@ -24,6 +26,8 @@ export const createAllResources = (permissions: Permissions) => {
     <Resource
       key="accounting_point"
       name="accounting_point"
+      list={AccountingPointList}
+      show={AccountingPointShow}
       recordRepresentation="business_id"
     />,
   );
