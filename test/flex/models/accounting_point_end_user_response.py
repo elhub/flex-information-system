@@ -13,20 +13,20 @@ T = TypeVar("T", bound="AccountingPointEndUserResponse")
 
 @_attrs_define
 class AccountingPointEndUserResponse:
-    """Response schema for operations with return values - Relation telling which end user an accounting point belongs to.
+    """Response schema - Relation telling which end user an accounting point belongs to.
 
     Attributes:
-        accounting_point_id (int | Unset): The ID of the accounting point. Example: 245.
-        end_user_id (int | Unset): The end user on the accounting point. Example: 12.
-        valid_from (str | Unset): The date from which the accounting point belongs to the end user. Midnight aligned on
+        accounting_point_id (int): The ID of the accounting point. Example: 245.
+        end_user_id (int): The end user on the accounting point. Example: 12.
+        valid_from (str): The date from which the accounting point belongs to the end user. Midnight aligned on
             Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
         valid_to (None | str | Unset): The date until which the accounting point belongs to the end user. Midnight
             aligned on Norwegian timezone.
     """
 
-    accounting_point_id: int | Unset = UNSET
-    end_user_id: int | Unset = UNSET
-    valid_from: str | Unset = UNSET
+    accounting_point_id: int
+    end_user_id: int
+    valid_from: str
     valid_to: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -45,13 +45,13 @@ class AccountingPointEndUserResponse:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if accounting_point_id is not UNSET:
-            field_dict["accounting_point_id"] = accounting_point_id
-        if end_user_id is not UNSET:
-            field_dict["end_user_id"] = end_user_id
-        if valid_from is not UNSET:
-            field_dict["valid_from"] = valid_from
+        field_dict.update(
+            {
+                "accounting_point_id": accounting_point_id,
+                "end_user_id": end_user_id,
+                "valid_from": valid_from,
+            }
+        )
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
 
@@ -60,11 +60,11 @@ class AccountingPointEndUserResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        accounting_point_id = d.pop("accounting_point_id", UNSET)
+        accounting_point_id = d.pop("accounting_point_id")
 
-        end_user_id = d.pop("end_user_id", UNSET)
+        end_user_id = d.pop("end_user_id")
 
-        valid_from = d.pop("valid_from", UNSET)
+        valid_from = d.pop("valid_from")
 
         def _parse_valid_to(data: object) -> None | str | Unset:
             if data is None:
