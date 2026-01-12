@@ -803,7 +803,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.recorded_at": "Recorded at",
     "metering_grid_area.recorded_by": "Recorded by",
     "accounting_point_metering_grid_area.accounting_point_id": "Accounting point",
-    "accounting_point_metering_grid_area.metering_grid_area_id": "Metering Grid Area",
+    "accounting_point_metering_grid_area.metering_grid_area_id": "Metering grid area",
     "accounting_point_metering_grid_area.valid_from": "Valid from",
     "accounting_point_metering_grid_area.valid_to": "Valid to",
     "product_type.id": "ID",

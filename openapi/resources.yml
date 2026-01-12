@@ -2316,7 +2316,7 @@ resources:
           resource: metering_grid_area
           field: id
         x-intl:
-          en: Metering Grid Area
+          en: Metering grid area
           nb: Nettområde
           nn: Nettområde
       valid_from:
