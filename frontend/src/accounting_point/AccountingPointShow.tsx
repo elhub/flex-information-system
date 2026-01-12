@@ -131,7 +131,7 @@ const AccountingPointConnections = () => {
           direction="row"
           flexWrap="wrap"
           spacing={2}
-          resource="accounting_point_bidding_zone"
+          resource="accounting_point_end_user"
         >
           <ReferenceField
             source="end_user_id"
