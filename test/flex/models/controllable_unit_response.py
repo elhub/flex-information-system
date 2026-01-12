@@ -18,7 +18,7 @@ T = TypeVar("T", bound="ControllableUnitResponse")
 
 @_attrs_define
 class ControllableUnitResponse:
-    """Data schema - Controllable unit
+    """Response schema - Controllable unit
 
     Attributes:
         id (int): Unique surrogate key. Example: 12.

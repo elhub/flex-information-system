@@ -13,7 +13,7 @@ T = TypeVar("T", bound="EventResponse")
 
 @_attrs_define
 class EventResponse:
-    """Data schema - Event happening in the system.
+    """Response schema - Event happening in the system.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.

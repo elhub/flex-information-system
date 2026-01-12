@@ -21,7 +21,7 @@ class NoticeDataPartyOutdated:
     """Format of the data field in a notice of type no.elhub.flex.party.outdated
 
     Attributes:
-        entity (EntityResponse | Unset): Data schema - Entity - Natural or legal person
+        entity (EntityResponse | Unset): Response schema - Entity - Natural or legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information System.
 
@@ -29,7 +29,7 @@ class NoticeDataPartyOutdated:
 
             * Person
             * Organisation
-        party (PartyResponse | Unset): Data schema - The body that interacts with the Flexibility Information System
+        party (PartyResponse | Unset): Response schema - The body that interacts with the Flexibility Information System
 
             A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
 

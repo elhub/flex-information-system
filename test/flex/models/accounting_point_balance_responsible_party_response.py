@@ -16,7 +16,7 @@ T = TypeVar("T", bound="AccountingPointBalanceResponsiblePartyResponse")
 
 @_attrs_define
 class AccountingPointBalanceResponsiblePartyResponse:
-    """Data schema - Relation linking a balance responsible party to an accounting point.
+    """Response schema - Relation linking a balance responsible party to an accounting point.
 
     Attributes:
         accounting_point_id (int): The ID of the accounting point. Example: 245.

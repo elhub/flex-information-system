@@ -14,7 +14,7 @@ T = TypeVar("T", bound="EntityClientResponse")
 
 @_attrs_define
 class EntityClientResponse:
-    """Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+    """Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 14.

@@ -15,7 +15,7 @@ T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationCommentResponse
 
 @_attrs_define
 class ServiceProvidingGroupGridPrequalificationCommentResponse:
-    """Data schema - Comment made by a party involved in a service providing group grid prequalification.
+    """Response schema - Comment made by a party involved in a service providing group grid prequalification.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 9.

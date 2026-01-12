@@ -1008,8 +1008,8 @@
                 ]
             },
             "controllable_unit_response": {
-                "summary": "Data - Controllable unit",
-                "description": "Data schema - Controllable unit",
+                "summary": "Response - Controllable unit",
+                "description": "Response schema - Controllable unit",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1195,8 +1195,8 @@
                 ]
             },
             "controllable_unit_suspension_response": {
-                "summary": "Data - Controllable Unit Suspension",
-                "description": "Data schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
+                "summary": "Response - Controllable Unit Suspension",
+                "description": "Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1290,8 +1290,8 @@
                 ]
             },
             "controllable_unit_suspension_comment_response": {
-                "summary": "Data - Controllable Unit Suspension Comment",
-                "description": "Data schema - Comment made by a party involved in a controllable unit suspension.",
+                "summary": "Response - Controllable Unit Suspension Comment",
+                "description": "Response schema - Comment made by a party involved in a controllable unit suspension.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1439,8 +1439,8 @@
                 ]
             },
             "controllable_unit_service_provider_response": {
-                "summary": "Data - Relation between controllable unit and service provider",
-                "description": "Data schema - Relation between controllable unit and service provider",
+                "summary": "Response - Relation between controllable unit and service provider",
+                "description": "Response schema - Relation between controllable unit and service provider",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1566,8 +1566,8 @@
                 ]
             },
             "service_providing_group_response": {
-                "summary": "Data - Service providing group",
-                "description": "Data schema - Group of controllable units",
+                "summary": "Response - Service providing group",
+                "description": "Response schema - Group of controllable units",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1679,8 +1679,8 @@
                 ]
             },
             "service_providing_group_membership_response": {
-                "summary": "Data - Membership relation of controllable unit in service providing group",
-                "description": "Data schema - Membership relation of controllable unit in service providing group",
+                "summary": "Response - Membership relation of controllable unit in service providing group",
+                "description": "Response schema - Membership relation of controllable unit in service providing group",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1790,8 +1790,8 @@
                 ]
             },
             "service_providing_group_grid_prequalification_response": {
-                "summary": "Data - Grid prequalification for service providing group",
-                "description": "Data schema - Grid prequalification for service providing group",
+                "summary": "Response - Grid prequalification for service providing group",
+                "description": "Response schema - Grid prequalification for service providing group",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1892,8 +1892,8 @@
                 ]
             },
             "service_providing_group_grid_prequalification_comment_response": {
-                "summary": "Data - Grid prequalification for service providing group Comment",
-                "description": "Data schema - Comment made by a party involved in a service providing group grid prequalification.",
+                "summary": "Response - Grid prequalification for service providing group Comment",
+                "description": "Response schema - Comment made by a party involved in a service providing group grid prequalification.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1996,8 +1996,8 @@
                 ]
             },
             "service_providing_group_grid_suspension_response": {
-                "summary": "Data - Service Providing Group Grid Suspension",
-                "description": "Data schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
+                "summary": "Response - Service Providing Group Grid Suspension",
+                "description": "Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2091,8 +2091,8 @@
                 ]
             },
             "service_providing_group_grid_suspension_comment_response": {
-                "summary": "Data - Service Providing Group Grid Suspension Comment",
-                "description": "Data schema - Comment made by a party involved in a service providing group grid suspension.",
+                "summary": "Response - Service Providing Group Grid Suspension Comment",
+                "description": "Response schema - Comment made by a party involved in a service providing group grid suspension.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2209,8 +2209,8 @@
                 ]
             },
             "entity_response": {
-                "summary": "Data - Entity",
-                "description": "Data schema - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
+                "summary": "Response - Entity",
+                "description": "Response schema - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2372,8 +2372,8 @@
                 ]
             },
             "entity_client_response": {
-                "summary": "Data - Entity client",
-                "description": "Data schema - Client linked to an entity for client credentials and JWT grant authentication methods.",
+                "summary": "Response - Entity client",
+                "description": "Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2531,8 +2531,8 @@
                 ]
             },
             "party_response": {
-                "summary": "Data - Party",
-                "description": "Data schema - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
+                "summary": "Response - Party",
+                "description": "Response schema - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2654,8 +2654,8 @@
                 ]
             },
             "party_membership_response": {
-                "summary": "Data - Party Membership",
-                "description": "Data schema - The relation between a party and entity.",
+                "summary": "Response - Party Membership",
+                "description": "Response schema - The relation between a party and entity.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2713,8 +2713,8 @@
                 ]
             },
             "identity_response": {
-                "summary": "Data - Identity",
-                "description": "Data schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
+                "summary": "Response - Identity",
+                "description": "Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2814,8 +2814,8 @@
                 ]
             },
             "technical_resource_response": {
-                "summary": "Data - Technical Resource",
-                "description": "Data schema - Technical unit being part of a controllable unit.",
+                "summary": "Response - Technical Resource",
+                "description": "Response schema - Technical unit being part of a controllable unit.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2869,8 +2869,8 @@
                 ]
             },
             "event_response": {
-                "summary": "Data - Event",
-                "description": "Data schema - Event happening in the system.",
+                "summary": "Response - Event",
+                "description": "Response schema - Event happening in the system.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -2949,8 +2949,8 @@
                 }
             },
             "notification_response": {
-                "summary": "Data - Notification",
-                "description": "Data schema - Notification about an event happening in the system.",
+                "summary": "Response - Notification",
+                "description": "Response schema - Notification about an event happening in the system.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3003,8 +3003,8 @@
                 ]
             },
             "accounting_point_response": {
-                "summary": "Data - Accounting Point",
-                "description": "Data schema - Accounting point for a controllable unit.",
+                "summary": "Response - Accounting Point",
+                "description": "Response schema - Accounting point for a controllable unit.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3052,8 +3052,8 @@
                 ]
             },
             "accounting_point_balance_responsible_party_response": {
-                "summary": "Data - Accounting Point Balance Responsible Party",
-                "description": "Data schema - Relation linking a balance responsible party to an accounting point.",
+                "summary": "Response - Accounting Point Balance Responsible Party",
+                "description": "Response schema - Relation linking a balance responsible party to an accounting point.",
                 "type": "object",
                 "properties": {
                     "accounting_point_id": {
@@ -3097,8 +3097,8 @@
                 ]
             },
             "accounting_point_energy_supplier_response": {
-                "summary": "Data - Accounting Point Energy Supplier",
-                "description": "Data schema - Relation linking an energy supplier to an accounting point.",
+                "summary": "Response - Accounting Point Energy Supplier",
+                "description": "Response schema - Relation linking an energy supplier to an accounting point.",
                 "type": "object",
                 "properties": {
                     "accounting_point_id": {
@@ -3138,8 +3138,8 @@
                 ]
             },
             "product_type_response": {
-                "summary": "Data - Product Type",
-                "description": "Data schema - Product type.",
+                "summary": "Response - Product Type",
+                "description": "Response schema - Product type.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3224,8 +3224,8 @@
                 ]
             },
             "system_operator_product_type_response": {
-                "summary": "Data - System Operator Product Type",
-                "description": "Data schema - Relation between a system operator and a product type they want to buy.",
+                "summary": "Response - System Operator Product Type",
+                "description": "Response schema - Relation between a system operator and a product type they want to buy.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3352,8 +3352,8 @@
                 ]
             },
             "service_provider_product_application_response": {
-                "summary": "Data - Service Provider Product Application",
-                "description": "Data schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
+                "summary": "Response - Service Provider Product Application",
+                "description": "Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3468,8 +3468,8 @@
                 ]
             },
             "service_provider_product_application_comment_response": {
-                "summary": "Data - Service Provider Product Application Comment",
-                "description": "Data schema - Comment made by a party involved in a service provider product application.",
+                "summary": "Response - Service Provider Product Application Comment",
+                "description": "Response schema - Comment made by a party involved in a service provider product application.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3597,8 +3597,8 @@
                 ]
             },
             "service_provider_product_suspension_response": {
-                "summary": "Data - Service Provider Product Suspension",
-                "description": "Data schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
+                "summary": "Response - Service Provider Product Suspension",
+                "description": "Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3705,8 +3705,8 @@
                 ]
             },
             "service_provider_product_suspension_comment_response": {
-                "summary": "Data - Service Provider Product Suspension Comment",
-                "description": "Data schema - Comment made by a party involved in a service provider product suspension.",
+                "summary": "Response - Service Provider Product Suspension Comment",
+                "description": "Response schema - Comment made by a party involved in a service provider product suspension.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -3880,8 +3880,8 @@
                 ]
             },
             "service_providing_group_product_application_response": {
-                "summary": "Data - Service Providing Group Product Application",
-                "description": "Data schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
+                "summary": "Response - Service Providing Group Product Application",
+                "description": "Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -4028,8 +4028,8 @@
                 ]
             },
             "service_providing_group_product_suspension_response": {
-                "summary": "Data - Service Providing Group Product Suspension",
-                "description": "Data schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.",
+                "summary": "Response - Service Providing Group Product Suspension",
+                "description": "Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -4136,8 +4136,8 @@
                 ]
             },
             "service_providing_group_product_suspension_comment_response": {
-                "summary": "Data - Service Providing Group Product Suspension Comment",
-                "description": "Data schema - Comment made by a party involved in a service providing group product suspension.",
+                "summary": "Response - Service Providing Group Product Suspension Comment",
+                "description": "Response schema - Comment made by a party involved in a service providing group product suspension.",
                 "type": "object",
                 "properties": {
                     "id": {
@@ -4204,8 +4204,8 @@
                 ]
             },
             "notice_response": {
-                "summary": "Data - Notice",
-                "description": "Data schema - Notice to users about various issues or actions expected from them.",
+                "summary": "Response - Notice",
+                "description": "Response schema - Notice to users about various issues or actions expected from them.",
                 "type": "object",
                 "properties": {
                     "party_id": {

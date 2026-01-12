@@ -11,7 +11,7 @@ T = TypeVar("T", bound="NotificationResponse")
 
 @_attrs_define
 class NotificationResponse:
-    """Data schema - Notification about an event happening in the system.
+    """Response schema - Notification about an event happening in the system.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.

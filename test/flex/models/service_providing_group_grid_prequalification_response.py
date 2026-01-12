@@ -16,7 +16,7 @@ T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationResponse")
 
 @_attrs_define
 class ServiceProvidingGroupGridPrequalificationResponse:
-    """Data schema - Grid prequalification for service providing group
+    """Response schema - Grid prequalification for service providing group
 
     Attributes:
         id (int): Unique surrogate key. Example: 27.

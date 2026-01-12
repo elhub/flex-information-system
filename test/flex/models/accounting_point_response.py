@@ -11,7 +11,7 @@ T = TypeVar("T", bound="AccountingPointResponse")
 
 @_attrs_define
 class AccountingPointResponse:
-    """Data schema - Accounting point for a controllable unit.
+    """Response schema - Accounting point for a controllable unit.
 
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.
