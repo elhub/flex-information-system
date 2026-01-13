@@ -4400,6 +4400,18 @@ export const zListControllableUnitServiceProviderData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -4583,6 +4595,18 @@ export const zListControllableUnitServiceProviderHistoryData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -4928,6 +4952,18 @@ export const zListServiceProvidingGroupMembershipData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -5102,6 +5138,18 @@ export const zListServiceProvidingGroupMembershipHistoryData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -7038,25 +7086,7 @@ export const zListIdentityData = z.object({
             .optional(),
         ),
       ),
-      entity_name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z
-            .string()
-            .regex(/^eq\.[0-9]+$/)
-            .optional(),
-        ),
-      ),
       party_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z
-            .string()
-            .regex(/^eq\.[0-9]+$/)
-            .optional(),
-        ),
-      ),
-      party_name: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z
@@ -7705,6 +7735,18 @@ export const zListAccountingPointBalanceResponsiblePartyData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -7769,6 +7811,18 @@ export const zListAccountingPointEnergySupplierData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(

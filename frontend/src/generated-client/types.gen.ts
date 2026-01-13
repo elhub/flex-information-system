@@ -4982,6 +4982,14 @@ export type ListControllableUnitServiceProviderData = {
      */
     end_user_id?: string;
     /**
+     * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -5277,6 +5285,14 @@ export type ListControllableUnitServiceProviderHistoryData = {
      * Technical ID of the end user behind the accounting point.
      */
     end_user_id?: string;
+    /**
+     * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */
@@ -5797,6 +5813,14 @@ export type ListServiceProvidingGroupMembershipData = {
      */
     service_providing_group_id?: string;
     /**
+     * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -6088,6 +6112,14 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      * Reference to the service providing group this relation links to a controllable unit.
      */
     service_providing_group_id?: string;
+    /**
+     * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */
@@ -9134,17 +9166,9 @@ export type ListIdentityData = {
      */
     entity_id?: string;
     /**
-     * Name of the entity using the identity.
-     */
-    entity_name?: string;
-    /**
      * Reference to the party assumed by the entity.
      */
     party_id?: string;
-    /**
-     * Name of the party assumed by the entity.
-     */
-    party_name?: string;
     /**
      * Filtering Columns
      */
@@ -10144,6 +10168,14 @@ export type ListAccountingPointBalanceResponsiblePartyData = {
      */
     balance_responsible_party_id?: string;
     /**
+     * The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10223,6 +10255,14 @@ export type ListAccountingPointEnergySupplierData = {
      * The energy supplier of the accounting point.
      */
     energy_supplier_id?: string;
+    /**
+     * The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */

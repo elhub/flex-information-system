@@ -7923,6 +7923,24 @@
                         "name": "end_user_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -8587,6 +8605,24 @@
                         "example": "eq.55",
                         "description": "Technical ID of the end user behind the accounting point.",
                         "name": "end_user_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",
@@ -9744,6 +9780,24 @@
                         "name": "service_providing_group_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -10391,6 +10445,24 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group this relation links to a controllable unit.",
                         "name": "service_providing_group_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",
@@ -17179,28 +17251,8 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "Name of the entity using the identity.",
-                        "name": "entity_name"
-                    },
-                    {
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
-                        },
-                        "example": "eq.55",
                         "description": "Reference to the party assumed by the entity.",
                         "name": "party_id"
-                    },
-                    {
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
-                        },
-                        "example": "eq.55",
-                        "description": "Name of the party assumed by the entity.",
-                        "name": "party_name"
                     },
                     {
                         "description": "Filtering Columns",
@@ -19477,6 +19529,24 @@
                         "name": "balance_responsible_party_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -19654,6 +19724,24 @@
                         "example": "eq.55",
                         "description": "The energy supplier of the accounting point.",
                         "name": "energy_supplier_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",
