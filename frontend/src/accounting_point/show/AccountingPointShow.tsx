@@ -1,103 +1,43 @@
 import {
+  Loading,
   RecordContextProvider,
   ReferenceField,
   Show,
   SimpleShowLayout,
   TextField,
   useGetIdentity,
-  useGetList,
   useRecordContext,
 } from "react-admin";
-import { FieldStack } from "../auth";
+import { FieldStack } from "../../auth";
 import { Typography, Stack } from "@mui/material";
-import { DateField } from "../components/datetime";
-import {
-  AccountingPointBalanceResponsibleParty,
-  AccountingPointBiddingZone,
-  AccountingPointEndUser,
-  AccountingPointEnergySupplier,
-  AccountingPointMeteringGridArea,
-} from "../generated-client";
-import { EnumField } from "../components/enum";
-
-// helper to find the currently valid record from a timeline
-const findCurrentlyValidRecord = <
-  T extends { valid_from?: string; valid_to?: string },
->(
-  data: T[] | undefined,
-): T | undefined => {
-  if (!data) return undefined;
-
-  const now = new Date();
-  return data.find((record) => {
-    const validFrom = record.valid_from ? new Date(record.valid_from) : null;
-    const validTo = record.valid_to ? new Date(record.valid_to) : null;
-
-    // deleted or in the future -> skip
-    if (validFrom === null || validFrom > now) return false;
-    // expired -> skip
-    if (validTo !== null && validTo <= now) return false;
-    // remaining case: currently valid
-    return true;
-  });
-};
+import { DateField } from "../../components/datetime";
+import { EnumField } from "../../components/enum";
+import { useAccountingPointViewModel } from "./useAccountingPointViewModel";
+import { AccountingPoint } from "../../generated-client";
 
 const AccountingPointConnections = () => {
-  const record = useRecordContext()!;
+  const record = useRecordContext<AccountingPoint>()!;
 
-  const { data: brpData } = useGetList(
-    "accounting_point_balance_responsible_party",
-    {
-      filter: { accounting_point_id: record.id },
-      // NB: `sort` required because the resource does not have an `id` field,
-      // and the default sort in RA uses it (same for similar resources below)
-      sort: { field: "accounting_point_id", order: "ASC" },
-    },
-  );
-  const currentBRP =
-    findCurrentlyValidRecord<AccountingPointBalanceResponsibleParty>(brpData);
+  const {
+    data: accountingPointViewModel,
+    isPending,
+    error,
+  } = useAccountingPointViewModel(record);
 
-  const { data: biddingZoneData } = useGetList(
-    "accounting_point_bidding_zone",
-    {
-      filter: { accounting_point_id: record.id },
-      sort: { field: "accounting_point_id", order: "ASC" },
-    },
-  );
-  const currentBiddingZone =
-    findCurrentlyValidRecord<AccountingPointBiddingZone>(biddingZoneData);
+  if (isPending) {
+    return <Loading />;
+  }
 
-  const { data: endUserData } = useGetList("accounting_point_end_user", {
-    filter: { accounting_point_id: record.id },
-    sort: { field: "accounting_point_id", order: "ASC" },
-  });
-  const currentEndUser =
-    findCurrentlyValidRecord<AccountingPointEndUser>(endUserData);
+  if (error) {
+    // caught by the React-Admin Error Boundary
+    throw error;
+  }
 
-  const { data: esData } = useGetList("accounting_point_energy_supplier", {
-    filter: { accounting_point_id: record.id },
-    sort: { field: "accounting_point_id", order: "ASC" },
-  });
-  const currentEnergySupplier =
-    findCurrentlyValidRecord<AccountingPointEnergySupplier>(esData);
-
-  const { data: mgaData } = useGetList("accounting_point_metering_grid_area", {
-    filter: { accounting_point_id: record.id },
-    sort: { field: "accounting_point_id", order: "ASC" },
-  });
-  const currentMGA =
-    findCurrentlyValidRecord<AccountingPointMeteringGridArea>(mgaData);
+  console.log(JSON.stringify(accountingPointViewModel));
 
   return (
     <RecordContextProvider
-      value={{
-        ...record,
-        balance_responsible_party_id: currentBRP?.balance_responsible_party_id,
-        bidding_zone: currentBiddingZone?.bidding_zone,
-        end_user_id: currentEndUser?.end_user_id,
-        energy_supplier_id: currentEnergySupplier?.energy_supplier_id,
-        metering_grid_area_id: currentMGA?.metering_grid_area_id,
-      }}
+      value={{ ...record, ...accountingPointViewModel.connections }}
     >
       {/* NB: we need a FieldStack for each field because data is picked from several resources and
               we need to change the resource context of the tooltip everytime */}
