@@ -7086,7 +7086,25 @@ export const zListIdentityData = z.object({
             .optional(),
         ),
       ),
+      entity_name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
       party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_name: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z

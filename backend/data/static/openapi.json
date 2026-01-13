@@ -17311,8 +17311,28 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
+                        "description": "Name of the entity using the identity.",
+                        "name": "entity_name"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
                         "description": "Reference to the party assumed by the entity.",
                         "name": "party_id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Name of the party assumed by the entity.",
+                        "name": "party_name"
                     },
                     {
                         "description": "Filtering Columns",

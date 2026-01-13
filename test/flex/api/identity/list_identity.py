@@ -15,7 +15,9 @@ def _get_kwargs(
     *,
     id: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
+    entity_name: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    party_name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -27,7 +29,11 @@ def _get_kwargs(
 
     params["entity_id"] = entity_id
 
+    params["entity_name"] = entity_name
+
     params["party_id"] = party_id
+
+    params["party_name"] = party_name
 
     params["select"] = select
 
@@ -144,7 +150,9 @@ def sync_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
+    entity_name: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    party_name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -155,7 +163,9 @@ def sync_detailed(
     Args:
         id (str | Unset):
         entity_id (str | Unset):
+        entity_name (str | Unset):
         party_id (str | Unset):
+        party_name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -172,7 +182,9 @@ def sync_detailed(
     kwargs = _get_kwargs(
         id=id,
         entity_id=entity_id,
+        entity_name=entity_name,
         party_id=party_id,
+        party_name=party_name,
         select=select,
         order=order,
         offset=offset,
@@ -191,7 +203,9 @@ def sync(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
+    entity_name: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    party_name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -202,7 +216,9 @@ def sync(
     Args:
         id (str | Unset):
         entity_id (str | Unset):
+        entity_name (str | Unset):
         party_id (str | Unset):
+        party_name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -220,7 +236,9 @@ def sync(
         client=client,
         id=id,
         entity_id=entity_id,
+        entity_name=entity_name,
         party_id=party_id,
+        party_name=party_name,
         select=select,
         order=order,
         offset=offset,
@@ -233,7 +251,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
+    entity_name: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    party_name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -244,7 +264,9 @@ async def asyncio_detailed(
     Args:
         id (str | Unset):
         entity_id (str | Unset):
+        entity_name (str | Unset):
         party_id (str | Unset):
+        party_name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -261,7 +283,9 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         id=id,
         entity_id=entity_id,
+        entity_name=entity_name,
         party_id=party_id,
+        party_name=party_name,
         select=select,
         order=order,
         offset=offset,
@@ -278,7 +302,9 @@ async def asyncio(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     entity_id: str | Unset = UNSET,
+    entity_name: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    party_name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -289,7 +315,9 @@ async def asyncio(
     Args:
         id (str | Unset):
         entity_id (str | Unset):
+        entity_name (str | Unset):
         party_id (str | Unset):
+        party_name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -308,7 +336,9 @@ async def asyncio(
             client=client,
             id=id,
             entity_id=entity_id,
+            entity_name=entity_name,
             party_id=party_id,
+            party_name=party_name,
             select=select,
             order=order,
             offset=offset,

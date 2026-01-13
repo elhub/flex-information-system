@@ -9166,9 +9166,17 @@ export type ListIdentityData = {
      */
     entity_id?: string;
     /**
+     * Name of the entity using the identity.
+     */
+    entity_name?: string;
+    /**
      * Reference to the party assumed by the entity.
      */
     party_id?: string;
+    /**
+     * Name of the party assumed by the entity.
+     */
+    party_name?: string;
     /**
      * Filtering Columns
      */

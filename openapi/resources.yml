@@ -1582,6 +1582,7 @@ resources:
         format: text
         type: string
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: entity
           field: name
@@ -1613,6 +1614,7 @@ resources:
         type: string
         readOnly: true
         nullable: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: name
