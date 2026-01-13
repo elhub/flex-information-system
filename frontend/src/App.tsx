@@ -267,6 +267,10 @@ const MainMenu = () => (
     <Menu.DashboardItem />
     <SubMenu text="Basic resources" defaultOpen>
       <LabelledResourceMenuItem
+        name="accounting_point"
+        label="Accounting point data"
+      />
+      <LabelledResourceMenuItem
         name="controllable_unit"
         label="CU registrations"
       />

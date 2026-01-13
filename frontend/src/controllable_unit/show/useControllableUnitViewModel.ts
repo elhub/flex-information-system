@@ -4,8 +4,6 @@ import {
   ControllableUnitHistory,
   ControllableUnitServiceProvider,
   ControllableUnitSuspension,
-  EmptyObject,
-  ErrorMessage,
   listAccountingPointBalanceResponsibleParty,
   listControllableUnitServiceProvider,
   listControllableUnitSuspension,
@@ -17,24 +15,7 @@ import {
 } from "../../generated-client";
 
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-
-type Response<T> =
-  | {
-      data: T;
-      error: undefined;
-    }
-  | {
-      data: undefined;
-      error: ErrorMessage | EmptyObject;
-    };
-
-const throwOnError = <T>(response: Response<T>): T => {
-  const { data, error } = response;
-  if (error) {
-    throw error;
-  }
-  return data;
-};
+import { throwOnError } from "../../util";
 
 export type ControllableUnitShowViewModel = {
   controllableUnit: ControllableUnit | ControllableUnitHistory;

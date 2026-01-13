@@ -24,11 +24,32 @@ type ApiAccountingPointBalanceResponsibleParty struct {
 	ValidTo                   pgtype.Timestamptz
 }
 
+type ApiAccountingPointBiddingZone struct {
+	AccountingPointID int
+	BiddingZone       string
+	ValidFrom         pgtype.Timestamptz
+	ValidTo           pgtype.Timestamptz
+}
+
+type ApiAccountingPointEndUser struct {
+	AccountingPointID int
+	EndUserID         int
+	ValidFrom         pgtype.Timestamptz
+	ValidTo           pgtype.Timestamptz
+}
+
 type ApiAccountingPointEnergySupplier struct {
 	AccountingPointID int
 	EnergySupplierID  int
 	ValidFrom         pgtype.Timestamptz
 	ValidTo           pgtype.Timestamptz
+}
+
+type ApiAccountingPointMeteringGridArea struct {
+	AccountingPointID  int
+	MeteringGridAreaID int
+	ValidFrom          pgtype.Timestamptz
+	ValidTo            pgtype.Timestamptz
 }
 
 type ApiControllableUnit struct {
@@ -190,6 +211,18 @@ type ApiIdentity struct {
 	EntityName string
 	PartyID    *int
 	PartyName  *string
+}
+
+type ApiMeteringGridArea struct {
+	ID               int
+	BusinessID       string
+	Name             string
+	PriceArea        string
+	SystemOperatorID int
+	ValidFrom        pgtype.Timestamptz
+	ValidTo          pgtype.Timestamptz
+	RecordedBy       int
+	RecordedAt       pgtype.Timestamptz
 }
 
 type ApiNotice struct {

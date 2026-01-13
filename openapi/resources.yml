@@ -1942,6 +1942,159 @@ resources:
           nb: Gyldig til
           nn: Gyldig til
 
+  - id: accounting_point_bidding_zone
+    acronym: APBZ
+    summary: Accounting Point Bidding Zone
+    description: >-
+      Relation telling which bidding zone an accounting point belongs to.
+    x-intl:
+      en: Accounting Point Bidding Zone
+      nb: Avregningspunktsbudområde
+      nn: Avregningspunktsbudområde
+    operations:
+      - list
+    generate_views: false
+    audit: false
+    properties:
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 245
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+        x-intl:
+          en: Accounting point
+          nb: Avregningspunkt
+          nn: Avregningspunkt
+      bidding_zone:
+        description: The bidding zone of the accounting point.
+        format: text
+        type: string
+        enum:
+          - id: NO1
+            x-intl:
+              en: NO1 (Eastern Norway)
+              nb: NO1 (Østlandet)
+              nn: NO1 (Østlandet)
+          - id: NO2
+            x-intl:
+              en: NO2 (Southern Norway)
+              nb: NO2 (Sørvest-Norge)
+              nn: NO2 (Sørvest-Noreg)
+          - id: NO3
+            x-intl:
+              en: NO3 (Central Norway)
+              nb: NO3 (Midt-Norge)
+              nn: NO3 (Midt-Noreg)
+          - id: NO4
+            x-intl:
+              en: NO4 (Northern Norway)
+              nb: NO4 (Nord-Norge)
+              nn: NO4 (Nord-Noreg)
+          - id: NO5
+            x-intl:
+              en: NO5 (Western Norway)
+              nb: NO5 (Vestlandet)
+              nn: NO5 (Vestlandet)
+        example: NO3
+        x-intl:
+          en: Bidding zone
+          nb: Budområde
+          nn: Budområde
+      valid_from:
+        description: >-
+          The date from which the accounting point belongs to the bidding zone.
+          Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2022-08-08 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
+      valid_to:
+        description: >-
+          The date until which the accounting point belongs to the bidding zone.
+          Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
+
+  - id: accounting_point_end_user
+    acronym: APEU
+    summary: Accounting Point End User
+    description: Relation telling which end user an accounting point belongs to.
+    x-intl:
+      en: Accounting Point End User
+      nb: Avregningspunktssluttbruker
+      nn: Avregningspunktssluttbrukar
+    operations:
+      - list
+    generate_views: false
+    audit: false
+    properties:
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 245
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+        x-intl:
+          en: Accounting point
+          nb: Avregningspunkt
+          nn: Avregningspunkt
+      end_user_id:
+        description: The end user on the accounting point.
+        format: bigint
+        type: integer
+        example: 12
+        readOnly: true
+        x-foreign-key:
+          resource: party
+          field: id
+        x-intl:
+          en: End User
+          nb: Sluttbruker
+          nn: Sluttbrukar
+      valid_from:
+        description: >-
+          The date from which the accounting point belongs to the end user.
+          Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2022-08-08 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
+      valid_to:
+        description: >-
+          The date until which the accounting point belongs to the end user.
+          Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
+
   - id: accounting_point_energy_supplier
     acronym: APES
     summary: Accounting Point Energy Supplier
@@ -1998,6 +2151,190 @@ resources:
         description: >-
           The date until which the relation between the accounting point and
           the energy supplier is valid. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
+
+  - id: metering_grid_area
+    acronym: MGA
+    summary: Metering Grid Area
+    description: Metering grid area to which accounting points belong.
+    x-intl:
+      en: Metering Grid Area
+      nb: Nettområde
+      nn: Nettområde
+    operations:
+      - read
+      - list
+    generate_views: true
+    audit: true
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 3
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      business_id:
+        description: The EIC-Y code for this metering grid area.
+        format: text
+        type: string
+        pattern: '^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$'
+        readOnly: true
+        example: '24YAOER9FNW34FNN'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      name:
+        description: The name of the metering grid area.
+        format: text
+        type: string
+        maxLength: 128
+        readOnly: true
+        example: 'VN04VESTNORGEDX12'
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
+      price_area:
+        description: >-
+          The price area of the metering grid area.
+        format: text
+        type: string
+        readOnly: true
+        example: NO3
+        enum:
+          - id: NO1
+            x-intl:
+              en: NO1 (Eastern Norway)
+              nb: NO1 (Østlandet)
+              nn: NO1 (Østlandet)
+          - id: NO2
+            x-intl:
+              en: NO2 (Southern Norway)
+              nb: NO2 (Sørvest-Norge)
+              nn: NO2 (Sørvest-Noreg)
+          - id: NO3
+            x-intl:
+              en: NO3 (Central Norway)
+              nb: NO3 (Midt-Norge)
+              nn: NO3 (Midt-Noreg)
+          - id: NO4
+            x-intl:
+              en: NO4 (Northern Norway)
+              nb: NO4 (Nord-Norge)
+              nn: NO4 (Nord-Noreg)
+          - id: NO5
+            x-intl:
+              en: NO5 (Western Norway)
+              nb: NO5 (Vestlandet)
+              nn: NO5 (Vestlandet)
+      system_operator_id:
+        description: >-
+          The system operator responsible for the metering grid area.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-foreign-key:
+          resource: party
+          field: id
+        x-intl:
+          en: System operator
+          nb: Systemoperatør
+          nn: Systemoperatør
+      valid_from:
+        description: >-
+          The date from which the metering grid area is active. Midnight aligned
+          on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2023-09-09 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
+      valid_to:
+        description: >-
+          The date until which the metering grid area is active. Midnight
+          aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        nullable: true
+        example: null
+        x-intl:
+          en: Valid to
+          nb: Gyldig til
+          nn: Gyldig til
+
+  - id: accounting_point_metering_grid_area
+    acronym: APMGA
+    summary: Accounting Point Metering Grid Area
+    description: >-
+      Relation telling which metering grid area an accounting point belongs to.
+    x-intl:
+      en: Accounting Point Metering Grid Area
+      nb: Avregningspunktsnettområde
+      nn: Avregningspunktsnettområde
+    operations:
+      - list
+    generate_views: false
+    audit: false
+    properties:
+      accounting_point_id:
+        description: The ID of the accounting point.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 45
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+        x-intl:
+          en: Accounting point
+          nb: Avregningspunkt
+          nn: Avregningspunkt
+      metering_grid_area_id:
+        description: The metering grid area of the accounting point.
+        format: bigint
+        type: integer
+        example: 3
+        readOnly: true
+        x-foreign-key:
+          resource: metering_grid_area
+          field: id
+        x-intl:
+          en: Metering grid area
+          nb: Nettområde
+          nn: Nettområde
+      valid_from:
+        description: >-
+          The date from which the accounting point belongs to the metering grid
+          area. Midnight aligned on Norwegian timezone.
+        format: timestamp with time zone
+        type: string
+        readOnly: true
+        example: 2023-09-09 00:00:00 CET
+        x-intl:
+          en: Valid from
+          nb: Gyldig fra
+          nn: Gyldig frå
+      valid_to:
+        description: >-
+          The date until which the accounting point belongs to the metering grid
+          area. Midnight aligned on Norwegian timezone.
         format: timestamp with time zone
         type: string
         readOnly: true

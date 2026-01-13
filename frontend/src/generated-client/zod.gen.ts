@@ -322,6 +322,28 @@ export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z.enum([
 ]);
 
 /**
+ * The bidding zone of the accounting point.
+ */
+export const zAccountingPointBiddingZoneBiddingZone = z.enum([
+  "NO1",
+  "NO2",
+  "NO3",
+  "NO4",
+  "NO5",
+]);
+
+/**
+ * The price area of the metering grid area.
+ */
+export const zMeteringGridAreaPriceArea = z.enum([
+  "NO1",
+  "NO2",
+  "NO3",
+  "NO4",
+  "NO5",
+]);
+
+/**
  * The status of the relation.
  */
 export const zSystemOperatorProductTypeStatus = z.enum(["active", "inactive"]);
@@ -1648,11 +1670,79 @@ export const zAccountingPointBalanceResponsibleParty = z.object({
 });
 
 /**
+ * Response schema - Relation telling which bidding zone an accounting point belongs to.
+ */
+export const zAccountingPointBiddingZone = z.object({
+  accounting_point_id: z.int().readonly(),
+  bidding_zone: zAccountingPointBiddingZoneBiddingZone,
+  valid_from: z.string().readonly(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
+});
+
+/**
+ * Response schema - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUser = z.object({
+  accounting_point_id: z.int().readonly(),
+  end_user_id: z.int().readonly(),
+  valid_from: z.string().readonly(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
+});
+
+/**
  * Response schema - Relation linking an energy supplier to an accounting point.
  */
 export const zAccountingPointEnergySupplier = z.object({
   accounting_point_id: z.int().readonly(),
   energy_supplier_id: z.int().readonly(),
+  valid_from: z.string().readonly(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
+});
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export const zMeteringGridArea = z.object({
+  id: z.int().readonly(),
+  business_id: z
+    .string()
+    .regex(/^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$/)
+    .readonly(),
+  name: z.string().max(128).readonly(),
+  price_area: zMeteringGridAreaPriceArea,
+  system_operator_id: z.int().readonly(),
+  valid_from: z.string().readonly(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
+});
+
+/**
+ * Response schema - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridArea = z.object({
+  accounting_point_id: z.int().readonly(),
+  metering_grid_area_id: z.int().readonly(),
   valid_from: z.string().readonly(),
   valid_to: z.optional(
     z.preprocess(
@@ -2948,6 +3038,18 @@ export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
   z.string(),
   z.unknown(),
 );
+
+/**
+ * Response schema - Relation telling which bidding zone an accounting point belongs to.
+ */
+export const zAccountingPointBiddingZoneWritable = z.object({
+  bidding_zone: zAccountingPointBiddingZoneBiddingZone,
+});
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export const zMeteringGridAreaWritable = z.record(z.string(), z.unknown());
 
 /**
  * Response schema - Relation between a system operator and a product type they want to buy.
@@ -7738,6 +7840,129 @@ export const zListAccountingPointBalanceResponsiblePartyResponse = z.union([
   z.array(zAccountingPointBalanceResponsibleParty),
 ]);
 
+export const zListAccountingPointBiddingZoneData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
+});
+
+export const zListAccountingPointBiddingZoneResponse = z.union([
+  z.array(zAccountingPointBiddingZone),
+  z.array(zAccountingPointBiddingZone),
+]);
+
+export const zListAccountingPointEndUserData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      end_user_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
+});
+
+export const zListAccountingPointEndUserResponse = z.union([
+  z.array(zAccountingPointEndUser),
+  z.array(zAccountingPointEndUser),
+]);
+
 export const zListAccountingPointEnergySupplierData = z.object({
   body: z.optional(
     z.preprocess(
@@ -7802,6 +8027,173 @@ export const zListAccountingPointEnergySupplierData = z.object({
 export const zListAccountingPointEnergySupplierResponse = z.union([
   z.array(zAccountingPointEnergySupplier),
   z.array(zAccountingPointEnergySupplier),
+]);
+
+export const zListMeteringGridAreaData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
+});
+
+export const zListMeteringGridAreaResponse = z.union([
+  z.array(zMeteringGridArea),
+  z.array(zMeteringGridArea),
+]);
+
+export const zReadMeteringGridAreaData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.object({
+    id: z.int(),
+  }),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+});
+
+/**
+ * OK
+ */
+export const zReadMeteringGridAreaResponse = zMeteringGridArea;
+
+export const zListAccountingPointMeteringGridAreaData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      metering_grid_area_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
+});
+
+export const zListAccountingPointMeteringGridAreaResponse = z.union([
+  z.array(zAccountingPointMeteringGridArea),
+  z.array(zAccountingPointMeteringGridArea),
 ]);
 
 export const zListProductTypeData = z.object({
