@@ -2172,8 +2172,8 @@ resources:
     operations:
       - read
       - list
-    generate_views: true
-    audit: true
+    generate_views: false
+    audit: false
     properties:
       id:
         description: Unique surrogate identifier.
@@ -2207,77 +2207,6 @@ resources:
           en: Name
           nb: Navn
           nn: Namn
-      price_area:
-        description: >-
-          The price area of the metering grid area.
-        format: text
-        type: string
-        readOnly: true
-        example: NO3
-        enum:
-          - id: NO1
-            x-intl:
-              en: NO1 (Eastern Norway)
-              nb: NO1 (Østlandet)
-              nn: NO1 (Østlandet)
-          - id: NO2
-            x-intl:
-              en: NO2 (Southern Norway)
-              nb: NO2 (Sørvest-Norge)
-              nn: NO2 (Sørvest-Noreg)
-          - id: NO3
-            x-intl:
-              en: NO3 (Central Norway)
-              nb: NO3 (Midt-Norge)
-              nn: NO3 (Midt-Noreg)
-          - id: NO4
-            x-intl:
-              en: NO4 (Northern Norway)
-              nb: NO4 (Nord-Norge)
-              nn: NO4 (Nord-Noreg)
-          - id: NO5
-            x-intl:
-              en: NO5 (Western Norway)
-              nb: NO5 (Vestlandet)
-              nn: NO5 (Vestlandet)
-      system_operator_id:
-        description: >-
-          The system operator responsible for the metering grid area.
-        format: bigint
-        type: integer
-        readOnly: true
-        x-foreign-key:
-          resource: party
-          field: id
-        x-intl:
-          en: System operator
-          nb: Systemoperatør
-          nn: Systemoperatør
-      valid_from:
-        description: >-
-          The date from which the metering grid area is active. Midnight aligned
-          on Norwegian timezone.
-        format: timestamp with time zone
-        type: string
-        readOnly: true
-        example: 2023-09-09 00:00:00 CET
-        x-intl:
-          en: Valid from
-          nb: Gyldig fra
-          nn: Gyldig frå
-      valid_to:
-        description: >-
-          The date until which the metering grid area is active. Midnight
-          aligned on Norwegian timezone.
-        format: timestamp with time zone
-        type: string
-        readOnly: true
-        nullable: true
-        example: null
-        x-intl:
-          en: Valid to
-          nb: Gyldig til
-          nn: Gyldig til
 
   - id: accounting_point_metering_grid_area
     acronym: APMGA

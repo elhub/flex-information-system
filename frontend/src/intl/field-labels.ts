@@ -155,11 +155,6 @@ export type FieldLabel =
   | "metering_grid_area.business_id"
   | "metering_grid_area.id"
   | "metering_grid_area.name"
-  | "metering_grid_area.recorded_at"
-  | "metering_grid_area.recorded_by"
-  | "metering_grid_area.system_operator_id"
-  | "metering_grid_area.valid_from"
-  | "metering_grid_area.valid_to"
   | "notice.data"
   | "notice.party_id"
   | "notice.source"
@@ -797,11 +792,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.id": "ID",
     "metering_grid_area.business_id": "Business ID",
     "metering_grid_area.name": "Name",
-    "metering_grid_area.system_operator_id": "System operator",
-    "metering_grid_area.valid_from": "Valid from",
-    "metering_grid_area.valid_to": "Valid to",
-    "metering_grid_area.recorded_at": "Recorded at",
-    "metering_grid_area.recorded_by": "Recorded by",
     "accounting_point_metering_grid_area.accounting_point_id": "Accounting point",
     "accounting_point_metering_grid_area.metering_grid_area_id": "Metering grid area",
     "accounting_point_metering_grid_area.valid_from": "Valid from",
@@ -1278,11 +1268,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.id": "ID",
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.name": "Navn",
-    "metering_grid_area.system_operator_id": "Systemoperatør",
-    "metering_grid_area.valid_from": "Gyldig fra",
-    "metering_grid_area.valid_to": "Gyldig til",
-    "metering_grid_area.recorded_at": "Registrert",
-    "metering_grid_area.recorded_by": "Registrert av",
     "accounting_point_metering_grid_area.accounting_point_id": "Avregningspunkt",
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig fra",
@@ -1759,11 +1744,6 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.id": "ID",
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.name": "Namn",
-    "metering_grid_area.system_operator_id": "Systemoperatør",
-    "metering_grid_area.valid_from": "Gyldig frå",
-    "metering_grid_area.valid_to": "Gyldig til",
-    "metering_grid_area.recorded_at": "Registrert",
-    "metering_grid_area.recorded_by": "Registrert av",
     "accounting_point_metering_grid_area.accounting_point_id": "Avregningspunkt",
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig frå",

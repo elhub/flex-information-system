@@ -5268,13 +5268,7 @@ TO flex_third_party;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_balance_responsible_party;
@@ -5283,13 +5277,7 @@ TO flex_balance_responsible_party;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_energy_supplier;
@@ -5298,13 +5286,7 @@ TO flex_energy_supplier;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_end_user;
@@ -5313,13 +5295,7 @@ TO flex_end_user;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_flexibility_information_system_operator;
@@ -5328,13 +5304,7 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_market_operator;
@@ -5343,13 +5313,7 @@ TO flex_market_operator;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_system_operator;
@@ -5358,13 +5322,7 @@ TO flex_system_operator;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_service_provider;
@@ -5373,13 +5331,7 @@ TO flex_service_provider;
 GRANT SELECT (
     id,
     business_id,
-    name,
-    price_area,
-    system_operator_id,
-    valid_from,
-    valid_to,
-    recorded_at,
-    recorded_by
+    name
 ) ON TABLE
 api.metering_grid_area
 TO flex_third_party;

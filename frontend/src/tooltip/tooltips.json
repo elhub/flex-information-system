@@ -178,11 +178,7 @@
     "metering_grid_area": {
         "id": "Unique surrogate identifier.",
         "business_id": "The EIC-Y code for this metering grid area.",
-        "name": "The name of the metering grid area.",
-        "price_area": "The price area of the metering grid area.",
-        "system_operator_id": "The system operator responsible for the metering grid area.",
-        "valid_from": "The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.",
-        "valid_to": "The date until which the metering grid area is active. Midnight aligned on Norwegian timezone."
+        "name": "The name of the metering grid area."
     },
     "accounting_point_metering_grid_area": {
         "accounting_point_id": "The ID of the accounting point.",

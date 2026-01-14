@@ -741,20 +741,6 @@
                 ],
                 "example": "NO3"
             },
-            "metering_grid_area_price_area": {
-                "description": "The price area of the metering grid area.",
-                "format": "text",
-                "type": "string",
-                "readOnly": true,
-                "example": "NO3",
-                "enum": [
-                    "NO1",
-                    "NO2",
-                    "NO3",
-                    "NO4",
-                    "NO5"
-                ]
-            },
             "system_operator_product_type_status": {
                 "description": "The status of the relation.",
                 "format": "text",
@@ -3285,55 +3271,12 @@
                         "maxLength": 128,
                         "readOnly": true,
                         "example": "VN04VESTNORGEDX12"
-                    },
-                    "price_area": {
-                        "$ref": "#/components/schemas/metering_grid_area_price_area"
-                    },
-                    "system_operator_id": {
-                        "description": "The system operator responsible for the metering grid area.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "readOnly": true
-                    },
-                    "valid_from": {
-                        "description": "The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
-                        "type": "string",
-                        "readOnly": true,
-                        "example": "2023-09-09 00:00:00 CET"
-                    },
-                    "valid_to": {
-                        "description": "The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
-                        "type": "string",
-                        "readOnly": true,
-                        "nullable": true,
-                        "example": null
-                    },
-                    "recorded_at": {
-                        "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
-                        "type": "string",
-                        "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
-                    },
-                    "recorded_by": {
-                        "description": "The identity that recorded the resource.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "readOnly": true,
-                        "example": 145
                     }
                 },
                 "required": [
                     "id",
                     "business_id",
-                    "name",
-                    "price_area",
-                    "system_operator_id",
-                    "valid_from",
-                    "recorded_at",
-                    "recorded_by"
+                    "name"
                 ]
             },
             "accounting_point_metering_grid_area_response": {
@@ -20414,16 +20357,6 @@
                     },
                     {
                         "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
-                        },
-                        "example": "eq.55",
-                        "description": "The system operator responsible for the metering grid area.",
-                        "name": "system_operator_id"
-                    },
-                    {
-                        "in": "query",
                         "name": "name",
                         "schema": {
                             "type": "string"
@@ -20619,16 +20552,7 @@
                                 }
                             }
                         },
-                        "description": "OK",
-                        "links": {
-                            "system_operator_id": {
-                                "operationId": "read_party",
-                                "parameters": {
-                                    "path.id": "$response.body#/system_operator_id"
-                                },
-                                "description": "The `system_operator_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
-                            }
-                        }
+                        "description": "OK"
                     },
                     "400": {
                         "content": {

@@ -383,11 +383,6 @@ export type AccountingPointBiddingZoneBiddingZone =
   | "NO5";
 
 /**
- * The price area of the metering grid area.
- */
-export type MeteringGridAreaPriceArea = "NO1" | "NO2" | "NO3" | "NO4" | "NO5";
-
-/**
  * The status of the relation.
  */
 export type SystemOperatorProductTypeStatus = "active" | "inactive";
@@ -1813,27 +1808,6 @@ export type MeteringGridArea = {
    * The name of the metering grid area.
    */
   readonly name: string;
-  price_area: MeteringGridAreaPriceArea;
-  /**
-   * The system operator responsible for the metering grid area.
-   */
-  readonly system_operator_id: number;
-  /**
-   * The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.
-   */
-  readonly valid_from: string;
-  /**
-   * The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.
-   */
-  readonly valid_to?: string;
-  /**
-   * When the resource was recorded (created or updated) in the system.
-   */
-  readonly recorded_at: string;
-  /**
-   * The identity that recorded the resource.
-   */
-  readonly recorded_by: number;
 };
 
 /**
@@ -3224,13 +3198,6 @@ export type AccountingPointBalanceResponsiblePartyWritable = {
  */
 export type AccountingPointBiddingZoneWritable = {
   bidding_zone: AccountingPointBiddingZoneBiddingZone;
-};
-
-/**
- * Response schema - Metering grid area to which accounting points belong.
- */
-export type MeteringGridAreaWritable = {
-  [key: string]: unknown;
 };
 
 /**
@@ -10586,10 +10553,6 @@ export type ListMeteringGridAreaData = {
      * Unique surrogate identifier.
      */
     id?: string;
-    /**
-     * The system operator responsible for the metering grid area.
-     */
-    system_operator_id?: string;
     /**
      * The name of the metering grid area.
      */
