@@ -524,6 +524,7 @@ resources-to-intl-and-tooltips:
     #!/usr/bin/env bash
     cat openapi/resources.yml \
         | .venv/bin/python3 local/scripts/resources_to_intl.py
+    npx prettier --write frontend/src/intl/field-labels.ts frontend/src/intl/enum-labels.ts frontend/src/tooltip/tooltips.ts
 
 permissions: permissions-to-frontend permissions-to-md permissions-to-db
 
