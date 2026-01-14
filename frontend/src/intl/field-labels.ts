@@ -155,6 +155,7 @@ export type FieldLabel =
   | "metering_grid_area.business_id"
   | "metering_grid_area.id"
   | "metering_grid_area.name"
+  | "metering_grid_area.price_area"
   | "metering_grid_area.recorded_at"
   | "metering_grid_area.recorded_by"
   | "metering_grid_area.system_operator_id"
@@ -797,6 +798,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.id": "ID",
     "metering_grid_area.business_id": "Business ID",
     "metering_grid_area.name": "Name",
+    "metering_grid_area.price_area": "Price area",
     "metering_grid_area.system_operator_id": "System operator",
     "metering_grid_area.valid_from": "Valid from",
     "metering_grid_area.valid_to": "Valid to",
@@ -1278,6 +1280,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.id": "ID",
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.name": "Navn",
+    "metering_grid_area.price_area": "Prisområde",
     "metering_grid_area.system_operator_id": "Systemoperatør",
     "metering_grid_area.valid_from": "Gyldig fra",
     "metering_grid_area.valid_to": "Gyldig til",
@@ -1759,6 +1762,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.id": "ID",
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.name": "Namn",
+    "metering_grid_area.price_area": "Prisområde",
     "metering_grid_area.system_operator_id": "Systemoperatør",
     "metering_grid_area.valid_from": "Gyldig frå",
     "metering_grid_area.valid_to": "Gyldig til",

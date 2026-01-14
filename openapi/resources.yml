@@ -2290,6 +2290,10 @@ resources:
         type: string
         readOnly: true
         example: NO3
+        x-intl:
+          en: Price area
+          nb: Prisområde
+          nn: Prisområde
         enum:
           - id: NO1
             x-intl:
