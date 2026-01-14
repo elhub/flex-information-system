@@ -22,12 +22,14 @@ data:
       format: bigint
       type: integer
       readOnly: true
+      x-filter: true
       example: 9
     {{ resource }}_id:
       description: Reference to the {{ resource_spaces }}.
       format: bigint
       type: integer
       x-no-update: true
+      x-filter: true
       x-foreign-key:
         resource: {{ resource }}
         field: id

@@ -25,6 +25,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 12
         x-intl:
           en: ID
@@ -37,6 +38,7 @@ resources:
         # yamllint disable-line rule:line-length
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
         readOnly: true
+        x-filter: true
         example: '53919b79-876f-4dad-8bde-b29368367604'
         x-intl:
           en: Business ID
@@ -47,6 +49,7 @@ resources:
         format: text
         type: string
         maxLength: 512
+        x-filter: true
         example: 'Car Charger #34'
         x-intl:
           en: Name
@@ -210,6 +213,7 @@ resources:
         type: integer
         nullable: false
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: accounting_point
           field: id
@@ -322,6 +326,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 74
         x-intl:
           en: ID
@@ -333,6 +338,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: controllable_unit
           field: id
@@ -348,6 +354,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -404,6 +411,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 7
         x-intl:
           en: ID
@@ -416,6 +424,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: controllable_unit
           field: id
@@ -431,6 +440,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -445,6 +455,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -476,6 +487,7 @@ resources:
           the service provider is valid. Midnight aligned on Norwegian timezone.
         format: timestamp with time zone
         type: string
+        x-filter: true
         nullable: true
         example: 2022-08-08 00:00:00 CET
         x-intl:
@@ -488,6 +500,7 @@ resources:
           the service provider is valid. Midnight aligned on Norwegian timezone.
         format: timestamp with time zone
         type: string
+        x-filter: true
         nullable: true
         example: 2022-09-10 00:00:00 CET
         x-intl:
@@ -520,6 +533,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 4
         x-intl:
           en: ID
@@ -531,6 +545,7 @@ resources:
         format: text
         type: string
         maxLength: 128
+        x-filter: true
         example: 'Batteries #09'
         x-intl:
           en: Name
@@ -542,6 +557,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -650,6 +666,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 27
         x-intl:
           en: ID
@@ -662,6 +679,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: controllable_unit
           field: id
@@ -677,6 +695,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: service_providing_group
           field: id
@@ -692,6 +711,7 @@ resources:
           timezone.
         format: timestamp with time zone
         type: string
+        x-filter: true
         example: 2022-08-08 00:00:00 CET
         x-intl:
           en: Valid from
@@ -704,6 +724,7 @@ resources:
           timezone.
         format: timestamp with time zone
         type: string
+        x-filter: true
         nullable: true
         example: null
         x-intl:
@@ -739,6 +760,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 27
         x-intl:
           en: ID
@@ -751,6 +773,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: service_providing_group
           field: id
@@ -765,6 +788,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -854,6 +878,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 49
         x-intl:
           en: ID
@@ -866,6 +891,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         required: false
         x-details: Defaults to the system operator creating the resource.
         x-foreign-key:
@@ -881,6 +907,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: service_providing_group
           field: id
@@ -950,6 +977,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 14
         x-intl:
           en: ID
@@ -962,6 +990,7 @@ resources:
         format: text
         type: string
         x-no-update: true
+        x-filter: true
         example: '13370000000'
         x-intl:
           en: Business ID
@@ -973,6 +1002,7 @@ resources:
         format: text
         type: string
         x-no-update: true
+        x-filter: true
         example: pid
         x-intl:
           en: Business ID type
@@ -998,6 +1028,7 @@ resources:
         description: Name of the entity. Maximum 128 characters.
         format: text
         type: string
+        x-filter: true
         example: John Smith
         x-intl:
           en: Name
@@ -1049,6 +1080,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 14
         x-intl:
           en: ID
@@ -1059,6 +1091,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: entity
           field: id
@@ -1072,6 +1105,7 @@ resources:
         format: text
         type: string
         maxLength: 256
+        x-filter: true
         nullable: true
         example: Laptop
         x-intl:
@@ -1097,6 +1131,7 @@ resources:
         format: bigint
         type: integer
         nullable: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -1191,6 +1226,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 11
         x-intl:
           en: ID
@@ -1203,6 +1239,7 @@ resources:
         format: text
         type: string
         x-no-update: true
+        x-filter: true
         required: false
         example: '1337099000000'
         x-intl:
@@ -1215,6 +1252,7 @@ resources:
         format: text
         type: string
         x-no-update: true
+        x-filter: true
         default: uuid
         enum:
           - id: gln
@@ -1248,6 +1286,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: entity
           field: id
@@ -1260,6 +1299,7 @@ resources:
         description: Name of the party. Maximum 128 characters.
         format: text
         type: string
+        x-filter: true
         example: Flex Energy Supplier
         x-intl:
           en: Name
@@ -1444,6 +1484,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 44
         x-intl:
           en: ID
@@ -1455,6 +1496,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -1469,6 +1511,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: entity
           field: id
@@ -1512,6 +1555,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 44
         x-intl:
           en: ID
@@ -1523,6 +1567,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: entity
           field: id
@@ -1537,6 +1582,7 @@ resources:
         format: text
         type: string
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: entity
           field: name
@@ -1551,6 +1597,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         nullable: true
         x-foreign-key:
           resource: party
@@ -1567,6 +1614,7 @@ resources:
         type: string
         readOnly: true
         nullable: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: name
@@ -1602,6 +1650,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 89
         x-intl:
           en: ID
@@ -1611,6 +1660,7 @@ resources:
         description: Name of the technical resource. Maximum 128 characters.
         format: text
         type: string
+        x-filter: true
         example: 'Battery Unit #1'
         x-intl:
           en: Name
@@ -1623,6 +1673,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: controllable_unit
           field: id
@@ -1664,6 +1715,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 89
         x-intl:
           en: ID
@@ -1760,6 +1812,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 89
         x-intl:
           en: ID
@@ -1779,6 +1832,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: event
           field: id
@@ -1792,6 +1846,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -1820,6 +1875,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 89
         x-intl:
           en: ID
@@ -1831,6 +1887,7 @@ resources:
         format: text
         type: string
         readOnly: true
+        x-filter: true
         pattern: '^[1-9][0-9]{17}$'
         example: '709000000000000057'
         x-intl:
@@ -1843,6 +1900,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -1870,6 +1928,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 245
         x-foreign-key:
           resource: accounting_point
@@ -1884,6 +1943,7 @@ resources:
         type: integer
         example: 37
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -1922,6 +1982,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
+        x-filter: true
         example: 2022-08-08 00:00:00 CET
         x-intl:
           en: Valid from
@@ -1935,6 +1996,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
+        x-filter: true
         nullable: true
         example: null
         x-intl:
@@ -1962,6 +2024,7 @@ resources:
         type: integer
         readOnly: true
         example: 245
+        x-filter: true
         x-foreign-key:
           resource: accounting_point
           field: id
@@ -2011,6 +2074,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
+        x-filter: true
         example: 2022-08-08 00:00:00 CET
         x-intl:
           en: Valid from
@@ -2024,6 +2088,7 @@ resources:
         type: string
         readOnly: true
         nullable: true
+        x-filter: true
         example: null
         x-intl:
           en: Valid to
@@ -2048,6 +2113,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 245
         x-foreign-key:
           resource: accounting_point
@@ -2062,6 +2128,7 @@ resources:
         type: integer
         example: 12
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2077,6 +2144,7 @@ resources:
         type: string
         readOnly: true
         example: 2022-08-08 00:00:00 CET
+        x-filter: true
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2090,6 +2158,7 @@ resources:
         readOnly: true
         nullable: true
         example: null
+        x-filter: true
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2114,6 +2183,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 45
         x-foreign-key:
           resource: accounting_point
@@ -2128,6 +2198,7 @@ resources:
         type: integer
         example: 7
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2142,6 +2213,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
+        x-filter: true
         example: 2023-09-09 00:00:00 CET
         x-intl:
           en: Valid from
@@ -2154,6 +2226,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
+        x-filter: true
         nullable: true
         example: null
         x-intl:
@@ -2181,6 +2254,7 @@ resources:
         type: integer
         readOnly: true
         example: 3
+        x-filter: true
         x-intl:
           en: ID
           nb: ID
@@ -2192,6 +2266,7 @@ resources:
         pattern: '^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$'
         readOnly: true
         example: '24YAOER9FNW34FNN'
+        x-filter: true
         x-intl:
           en: Business ID
           nb: Forretnings-ID
@@ -2203,6 +2278,7 @@ resources:
         maxLength: 128
         readOnly: true
         example: 'VN04VESTNORGEDX12'
+        x-filter: true
         x-intl:
           en: Name
           nb: Navn
@@ -2246,6 +2322,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2261,6 +2338,7 @@ resources:
         type: string
         readOnly: true
         example: 2023-09-09 00:00:00 CET
+        x-filter: true
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2274,6 +2352,7 @@ resources:
         readOnly: true
         nullable: true
         example: null
+        x-filter: true
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2299,6 +2378,7 @@ resources:
         type: integer
         readOnly: true
         example: 45
+        x-filter: true
         x-foreign-key:
           resource: accounting_point
           field: id
@@ -2312,6 +2392,7 @@ resources:
         type: integer
         example: 3
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: metering_grid_area
           field: id
@@ -2326,6 +2407,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
+        x-filter: true
         example: 2023-09-09 00:00:00 CET
         x-intl:
           en: Valid from
@@ -2340,6 +2422,7 @@ resources:
         readOnly: true
         nullable: true
         example: null
+        x-filter: true
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2363,6 +2446,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 4
         x-intl:
           en: ID
@@ -2373,6 +2457,7 @@ resources:
         format: text
         type: string
         readOnly: true
+        x-filter: true
         example: 'manual_congestion'
         x-intl:
           en: Business ID
@@ -2384,6 +2469,7 @@ resources:
         type: string
         maxLength: 64
         readOnly: true
+        x-filter: true
         example: 'Manual Congestion'
         x-intl:
           en: Name
@@ -2436,6 +2522,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 89
         x-intl:
           en: ID
@@ -2446,6 +2533,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2459,6 +2547,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: product_type
           field: id
@@ -2518,6 +2607,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 89
         x-intl:
           en: ID
@@ -2528,6 +2618,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2541,6 +2632,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2555,6 +2647,7 @@ resources:
         items:
           format: bigint
           type: integer
+        x-filter: true
         x-foreign-key:
           resource: product_type
           field: id
@@ -2639,6 +2732,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 74
         x-intl:
           en: ID
@@ -2651,6 +2745,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         required: false
         x-details: Defaults to the system operator creating the resource.
         x-foreign-key:
@@ -2666,6 +2761,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2680,6 +2776,7 @@ resources:
         items:
           format: bigint
           type: integer
+        x-filter: true
         x-foreign-key:
           resource: product_type
           field: id
@@ -2756,6 +2853,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 89
         x-intl:
           en: ID
@@ -2766,6 +2864,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: service_providing_group
           field: id
@@ -2779,6 +2878,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id
@@ -2793,6 +2893,7 @@ resources:
         items:
           format: bigint
           type: integer
+        x-filter: true
         x-foreign-key:
           resource: product_type
           field: id
@@ -2908,6 +3009,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         example: 12
         x-intl:
           en: ID
@@ -2920,6 +3022,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         required: false
         x-details: Defaults to the system operator creating the resource.
         x-foreign-key:
@@ -2935,6 +3038,7 @@ resources:
         format: bigint
         type: integer
         x-no-update: true
+        x-filter: true
         x-foreign-key:
           resource: service_providing_group
           field: id
@@ -2949,6 +3053,7 @@ resources:
         items:
           format: bigint
           type: integer
+        x-filter: true
         x-foreign-key:
           resource: product_type
           field: id
@@ -2996,6 +3101,7 @@ resources:
         format: bigint
         type: integer
         readOnly: true
+        x-filter: true
         x-foreign-key:
           resource: party
           field: id

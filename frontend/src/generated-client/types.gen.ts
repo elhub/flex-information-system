@@ -3907,17 +3907,17 @@ export type ListControllableUnitData = {
      */
     id?: string;
     /**
-     * Reference to the accounting point that the controllable unit is connected to.
+     * Unique business identifier for the controllable unit.
      */
-    accounting_point_id?: string;
+    business_id?: string;
     /**
      * Free text name of the controllable unit.
      */
     name?: string;
     /**
-     * Unique business identifier for the controllable unit.
+     * Reference to the accounting point that the controllable unit is connected to.
      */
-    business_id?: string;
+    accounting_point_id?: string;
     /**
      * Filtering Columns
      */
@@ -4158,17 +4158,17 @@ export type ListControllableUnitHistoryData = {
      */
     controllable_unit_id?: string;
     /**
-     * Reference to the accounting point that the controllable unit is connected to.
+     * Unique business identifier for the controllable unit.
      */
-    accounting_point_id?: string;
+    business_id?: string;
     /**
      * Free text name of the controllable unit.
      */
     name?: string;
     /**
-     * Unique business identifier for the controllable unit.
+     * Reference to the accounting point that the controllable unit is connected to.
      */
-    business_id?: string;
+    accounting_point_id?: string;
     /**
      * Filtering Columns
      */
@@ -5113,6 +5113,14 @@ export type ListControllableUnitServiceProviderData = {
      */
     end_user_id?: string;
     /**
+     * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -5409,6 +5417,14 @@ export type ListControllableUnitServiceProviderHistoryData = {
      */
     end_user_id?: string;
     /**
+     * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -5537,13 +5553,13 @@ export type ListServiceProvidingGroupData = {
      */
     id?: string;
     /**
-     * Reference to the `party` (service provider) managing the group.
-     */
-    service_provider_id?: string;
-    /**
      * Free text name of the service providing group.
      */
     name?: string;
+    /**
+     * Reference to the `party` (service provider) managing the group.
+     */
+    service_provider_id?: string;
     /**
      * Filtering Columns
      */
@@ -5784,13 +5800,13 @@ export type ListServiceProvidingGroupHistoryData = {
      */
     service_providing_group_id?: string;
     /**
-     * Reference to the `party` (service provider) managing the group.
-     */
-    service_provider_id?: string;
-    /**
      * Free text name of the service providing group.
      */
     name?: string;
+    /**
+     * Reference to the `party` (service provider) managing the group.
+     */
+    service_provider_id?: string;
     /**
      * Filtering Columns
      */
@@ -5927,6 +5943,14 @@ export type ListServiceProvidingGroupMembershipData = {
      * Reference to the service providing group this relation links to a controllable unit.
      */
     service_providing_group_id?: string;
+    /**
+     * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */
@@ -6219,6 +6243,14 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      * Reference to the service providing group this relation links to a controllable unit.
      */
     service_providing_group_id?: string;
+    /**
+     * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */
@@ -7916,14 +7948,14 @@ export type ListEntityData = {
      */
     id?: string;
     /**
-     * Name of the entity. Maximum 128 characters.
-     */
-    name?: string;
-    /**
      * The business identifier of the entity. Format depends on `business_id_type`.
      */
     business_id?: string;
     business_id_type?: string;
+    /**
+     * Name of the entity. Maximum 128 characters.
+     */
+    name?: string;
     /**
      * Filtering Columns
      */
@@ -8158,13 +8190,13 @@ export type ListEntityClientData = {
      */
     entity_id?: string;
     /**
-     * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
-     */
-    party_id?: string;
-    /**
      * Name of the client.
      */
     name?: string;
+    /**
+     * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
+     */
+    party_id?: string;
     /**
      * Filtering Columns
      */
@@ -8446,6 +8478,11 @@ export type ListPartyData = {
      */
     id?: string;
     /**
+     * The business identifier of the party. Format depends on `business_id_type`.
+     */
+    business_id?: string;
+    business_id_type?: string;
+    /**
      * Reference to the entity that is the parent of the party.
      */
     entity_id?: string;
@@ -8453,11 +8490,6 @@ export type ListPartyData = {
      * Name of the party. Maximum 128 characters.
      */
     name?: string;
-    /**
-     * The business identifier of the party. Format depends on `business_id_type`.
-     */
-    business_id?: string;
-    business_id_type?: string;
     /**
      * Filtering Columns
      */
@@ -8692,6 +8724,11 @@ export type ListPartyHistoryData = {
      */
     party_id?: string;
     /**
+     * The business identifier of the party. Format depends on `business_id_type`.
+     */
+    business_id?: string;
+    business_id_type?: string;
+    /**
      * Reference to the entity that is the parent of the party.
      */
     entity_id?: string;
@@ -8699,11 +8736,6 @@ export type ListPartyHistoryData = {
      * Name of the party. Maximum 128 characters.
      */
     name?: string;
-    /**
-     * The business identifier of the party. Format depends on `business_id_type`.
-     */
-    business_id?: string;
-    business_id_type?: string;
     /**
      * Filtering Columns
      */
@@ -9400,13 +9432,13 @@ export type ListTechnicalResourceData = {
      */
     id?: string;
     /**
-     * Reference to the controllable unit that this technical resource belongs to.
-     */
-    controllable_unit_id?: string;
-    /**
      * Name of the technical resource. Maximum 128 characters.
      */
     name?: string;
+    /**
+     * Reference to the controllable unit that this technical resource belongs to.
+     */
+    controllable_unit_id?: string;
     /**
      * Filtering Columns
      */
@@ -9692,13 +9724,13 @@ export type ListTechnicalResourceHistoryData = {
      */
     technical_resource_id?: string;
     /**
-     * Reference to the controllable unit that this technical resource belongs to.
-     */
-    controllable_unit_id?: string;
-    /**
      * Name of the technical resource. Maximum 128 characters.
      */
     name?: string;
+    /**
+     * Reference to the controllable unit that this technical resource belongs to.
+     */
+    controllable_unit_id?: string;
     /**
      * Filtering Columns
      */
@@ -10138,13 +10170,13 @@ export type ListAccountingPointData = {
      */
     id?: string;
     /**
-     * The system operator of the accounting point.
-     */
-    system_operator_id?: string;
-    /**
      * The GSRN metering point id of the accounting point.
      */
     business_id?: string;
+    /**
+     * The system operator of the accounting point.
+     */
+    system_operator_id?: string;
     /**
      * Filtering Columns
      */
@@ -10275,6 +10307,14 @@ export type ListAccountingPointBalanceResponsiblePartyData = {
      */
     balance_responsible_party_id?: string;
     /**
+     * The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10350,6 +10390,14 @@ export type ListAccountingPointBiddingZoneData = {
      * The ID of the accounting point.
      */
     accounting_point_id?: string;
+    /**
+     * The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */
@@ -10431,6 +10479,14 @@ export type ListAccountingPointEndUserData = {
      */
     end_user_id?: string;
     /**
+     * The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10511,6 +10567,14 @@ export type ListAccountingPointEnergySupplierData = {
      */
     energy_supplier_id?: string;
     /**
+     * The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10587,17 +10651,25 @@ export type ListMeteringGridAreaData = {
      */
     id?: string;
     /**
-     * The system operator responsible for the metering grid area.
+     * The EIC-Y code for this metering grid area.
      */
-    system_operator_id?: string;
+    business_id?: string;
     /**
      * The name of the metering grid area.
      */
     name?: string;
     /**
-     * The EIC-Y code for this metering grid area.
+     * The system operator responsible for the metering grid area.
      */
-    business_id?: string;
+    system_operator_id?: string;
+    /**
+     * The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */
@@ -10728,6 +10800,14 @@ export type ListAccountingPointMeteringGridAreaData = {
      */
     metering_grid_area_id?: string;
     /**
+     * The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10804,13 +10884,13 @@ export type ListProductTypeData = {
      */
     id?: string;
     /**
-     * The name of the product type.
-     */
-    name?: string;
-    /**
      * The code for this product type.
      */
     business_id?: string;
+    /**
+     * The name of the product type.
+     */
+    name?: string;
     /**
      * Filtering Columns
      */

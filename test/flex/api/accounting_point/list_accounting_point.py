@@ -14,8 +14,8 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    system_operator_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -25,9 +25,9 @@ def _get_kwargs(
 
     params["id"] = id
 
-    params["system_operator_id"] = system_operator_id
-
     params["business_id"] = business_id
+
+    params["system_operator_id"] = system_operator_id
 
     params["select"] = select
 
@@ -143,8 +143,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    system_operator_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -154,8 +154,8 @@ def sync_detailed(
 
     Args:
         id (str | Unset):
-        system_operator_id (str | Unset):
         business_id (str | Unset):
+        system_operator_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -171,8 +171,8 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        system_operator_id=system_operator_id,
         business_id=business_id,
+        system_operator_id=system_operator_id,
         select=select,
         order=order,
         offset=offset,
@@ -190,8 +190,8 @@ def sync(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    system_operator_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -201,8 +201,8 @@ def sync(
 
     Args:
         id (str | Unset):
-        system_operator_id (str | Unset):
         business_id (str | Unset):
+        system_operator_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -219,8 +219,8 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
-        system_operator_id=system_operator_id,
         business_id=business_id,
+        system_operator_id=system_operator_id,
         select=select,
         order=order,
         offset=offset,
@@ -232,8 +232,8 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    system_operator_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -243,8 +243,8 @@ async def asyncio_detailed(
 
     Args:
         id (str | Unset):
-        system_operator_id (str | Unset):
         business_id (str | Unset):
+        system_operator_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -260,8 +260,8 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        system_operator_id=system_operator_id,
         business_id=business_id,
+        system_operator_id=system_operator_id,
         select=select,
         order=order,
         offset=offset,
@@ -277,8 +277,8 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    system_operator_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -288,8 +288,8 @@ async def asyncio(
 
     Args:
         id (str | Unset):
-        system_operator_id (str | Unset):
         business_id (str | Unset):
+        system_operator_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -307,8 +307,8 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
-            system_operator_id=system_operator_id,
             business_id=business_id,
+            system_operator_id=system_operator_id,
             select=select,
             order=order,
             offset=offset,

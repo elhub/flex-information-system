@@ -14,6 +14,8 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     accounting_point_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -22,6 +24,10 @@ def _get_kwargs(
     params: dict[str, Any] = {}
 
     params["accounting_point_id"] = accounting_point_id
+
+    params["valid_from"] = valid_from
+
+    params["valid_to"] = valid_to
 
     params["select"] = select
 
@@ -137,6 +143,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -146,6 +154,8 @@ def sync_detailed(
 
     Args:
         accounting_point_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -161,6 +171,8 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         accounting_point_id=accounting_point_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -178,6 +190,8 @@ def sync(
     *,
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -187,6 +201,8 @@ def sync(
 
     Args:
         accounting_point_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -203,6 +219,8 @@ def sync(
     return sync_detailed(
         client=client,
         accounting_point_id=accounting_point_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -214,6 +232,8 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -223,6 +243,8 @@ async def asyncio_detailed(
 
     Args:
         accounting_point_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -238,6 +260,8 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         accounting_point_id=accounting_point_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -253,6 +277,8 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -262,6 +288,8 @@ async def asyncio(
 
     Args:
         accounting_point_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -279,6 +307,8 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             accounting_point_id=accounting_point_id,
+            valid_from=valid_from,
+            valid_to=valid_to,
             select=select,
             order=order,
             offset=offset,

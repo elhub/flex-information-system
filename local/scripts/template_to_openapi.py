@@ -314,36 +314,29 @@ def link_template(target_resource, field):
     }
 
 
-def generate_list_parameters(resource, foreign_key_fields):
+def generate_list_parameters(resource, filter_fields):
     endpoint_parameters = []
 
-    query_filter_fields = []
-    if "id" in resource["properties"]:
-        query_filter_fields.append(("id", resource["properties"]["id"]))
-    query_filter_fields += foreign_key_fields
-
-    # add id and all the foreign key fields
-    for field, field_info in query_filter_fields:
-        parameter_template = id_query_parameter_template(
-            field, field_info["description"]
-        )
-        endpoint_parameters.append(parameter_template)
-
-    # add some standard parameters if they exist
-    for prop in ["name", "business_id", "business_id_type"]:
-        if resource["properties"].get(prop) is not None:
-            parameter_template = {
-                "in": "query",
-                "name": prop,
-                "schema": {"type": "string"},
-                "example": f"eq.some{prop}",
-            }
-            # add description if it exists
-            if resource["properties"][prop].get("description") is not None:
-                parameter_template["description"] = resource["properties"][prop][
-                    "description"
-                ]
+    # add all filterable fields to list responses
+    for field, field_info in filter_fields:
+        if field_info.get("x-foreign-key") is not None or field == "id":
+            parameter_template = id_query_parameter_template(
+                field, field_info.get("description", None)
+            )
             endpoint_parameters.append(parameter_template)
+            continue
+
+        parameter_template = {
+            "in": "query",
+            "name": field,
+            "schema": {"type": "string"},
+            "example": f"eq.some{field}",
+        }
+
+        if field_info.get("description") is not None:
+            parameter_template["description"] = field_info.get("description")
+
+        endpoint_parameters.append(parameter_template)
 
     endpoint_parameters += list_parameters_template
     return endpoint_parameters
@@ -465,6 +458,8 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 }
                 if data.get("default") is not None:
                     resource["properties"][field]["default"] = data["default"]
+                if data.get("x-filter") is not None:
+                    resource["properties"][field]["x-filter"] = data["x-filter"]
 
     # complete the non-history schemas
 
@@ -661,6 +656,12 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             if field_info.get("x-foreign-key") is not None
         ]
 
+        filter_fields = [
+            (field, field_info)
+            for field, field_info in resource["properties"].items()
+            if field_info.get("x-filter") is True
+        ]
+
         # generate endpoint for each operation
 
         for operation in resource["operations"]:
@@ -670,7 +671,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
 
             if operation == "list":
                 endpoint_template["parameters"] = generate_list_parameters(
-                    resource, foreign_key_fields
+                    resource, filter_fields
                 )
 
             endpoint_response_codes = endpoint_template["g-responses"]
@@ -710,7 +711,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
 
             if operation == "list":
                 endpoint_template["parameters"] = generate_list_parameters(
-                    resource, foreign_key_fields
+                    resource, filter_fields
                 )
 
             endpoint_response_codes = endpoint_template["g-responses"]

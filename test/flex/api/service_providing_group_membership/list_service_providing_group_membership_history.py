@@ -16,6 +16,8 @@ def _get_kwargs(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -29,6 +31,10 @@ def _get_kwargs(
     params["controllable_unit_id"] = controllable_unit_id
 
     params["service_providing_group_id"] = service_providing_group_id
+
+    params["valid_from"] = valid_from
+
+    params["valid_to"] = valid_to
 
     params["select"] = select
 
@@ -148,6 +154,8 @@ def sync_detailed(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -160,6 +168,8 @@ def sync_detailed(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         service_providing_group_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -178,6 +188,8 @@ def sync_detailed(
         id=id,
         controllable_unit_id=controllable_unit_id,
         service_providing_group_id=service_providing_group_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -198,6 +210,8 @@ def sync(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -210,6 +224,8 @@ def sync(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         service_providing_group_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -229,6 +245,8 @@ def sync(
         id=id,
         controllable_unit_id=controllable_unit_id,
         service_providing_group_id=service_providing_group_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -243,6 +261,8 @@ async def asyncio_detailed(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -255,6 +275,8 @@ async def asyncio_detailed(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         service_providing_group_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -273,6 +295,8 @@ async def asyncio_detailed(
         id=id,
         controllable_unit_id=controllable_unit_id,
         service_providing_group_id=service_providing_group_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -291,6 +315,8 @@ async def asyncio(
     id: str | Unset = UNSET,
     controllable_unit_id: str | Unset = UNSET,
     service_providing_group_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -303,6 +329,8 @@ async def asyncio(
         id (str | Unset):
         controllable_unit_id (str | Unset):
         service_providing_group_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -323,6 +351,8 @@ async def asyncio(
             id=id,
             controllable_unit_id=controllable_unit_id,
             service_providing_group_id=service_providing_group_id,
+            valid_from=valid_from,
+            valid_to=valid_to,
             select=select,
             order=order,
             offset=offset,
