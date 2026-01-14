@@ -212,7 +212,7 @@ def generate_field_translations(resources):
             )
 
             comment_resource_tooltips = dict(
-                comment_descriptions, **get_comment_history_descriptions(resource)
+                comment_resource_tooltips, **get_comment_history_descriptions(resource)
             )
             tooltips[f"{resource['id']}_comment_history"] = comment_resource_tooltips
 

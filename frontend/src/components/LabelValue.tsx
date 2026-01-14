@@ -2,9 +2,10 @@ import { Stack, Typography, TypographyProps } from "@mui/material";
 import { useTranslateField } from "../intl/intl";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 import { TooltipKey } from "../tooltip/tooltips";
+import { FieldLabel } from "../intl/field-labels";
 
 type LabelValueProps = {
-  labelKey?: TooltipKey;
+  labelKey?: TooltipKey | FieldLabel;
   label?: string;
   value: string | number | undefined;
   unit?: string;

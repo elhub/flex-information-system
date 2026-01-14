@@ -131,6 +131,8 @@ export const tooltips = {
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_suspension_comment_history.recorded_by":
     "The identity that recorded the resource.",
+  "controllable_unit_suspension_comment_history.controllable_unit_suspension_id":
+    "Unique surrogate identifier.",
   "controllable_unit_suspension_comment_history.controllable_unit_suspension_comment_id":
     "Comment ID",
   "controllable_unit_suspension_comment_history.replaced_at":
@@ -304,6 +306,8 @@ export const tooltips = {
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_prequalification_comment_history.recorded_by":
     "The identity that recorded the resource.",
+  "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id":
+    "Unique surrogate identifier.",
   "service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_comment_id":
     "Comment ID",
   "service_providing_group_grid_prequalification_comment_history.replaced_at":
@@ -369,6 +373,8 @@ export const tooltips = {
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_suspension_comment_history.recorded_by":
     "The identity that recorded the resource.",
+  "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id":
+    "Unique surrogate identifier.",
   "service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_comment_id":
     "Comment ID",
   "service_providing_group_grid_suspension_comment_history.replaced_at":
@@ -670,6 +676,8 @@ export const tooltips = {
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_application_comment_history.recorded_by":
     "The identity that recorded the resource.",
+  "service_provider_product_application_comment_history.service_provider_product_application_id":
+    "Unique surrogate identifier.",
   "service_provider_product_application_comment_history.service_provider_product_application_comment_id":
     "Comment ID",
   "service_provider_product_application_comment_history.replaced_at":
@@ -739,6 +747,8 @@ export const tooltips = {
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_suspension_comment_history.recorded_by":
     "The identity that recorded the resource.",
+  "service_provider_product_suspension_comment_history.service_provider_product_suspension_id":
+    "Unique surrogate identifier.",
   "service_provider_product_suspension_comment_history.service_provider_product_suspension_comment_id":
     "Comment ID",
   "service_provider_product_suspension_comment_history.replaced_at":
@@ -855,6 +865,8 @@ export const tooltips = {
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_suspension_comment_history.recorded_by":
     "The identity that recorded the resource.",
+  "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_id":
+    "Unique surrogate identifier.",
   "service_providing_group_product_suspension_comment_history.service_providing_group_product_suspension_comment_id":
     "Comment ID",
   "service_providing_group_product_suspension_comment_history.replaced_at":

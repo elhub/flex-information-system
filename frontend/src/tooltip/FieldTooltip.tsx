@@ -16,10 +16,17 @@ export const FieldTooltip = (props: TooltipProps) => {
   const title =
     "tooltipKey" in props
       ? tooltips[props.tooltipKey]
-      : tooltips[`${props.resource}.${props.field}` as TooltipKey];
-  return title ? (
+      : `${props.resource}.${props.field}` in tooltips
+        ? tooltips[`${props.resource}.${props.field}` as TooltipKey]
+        : undefined;
+
+  if (!title) {
+    return null;
+  }
+
+  return (
     <Tooltip title={title} arrow>
       <HelpIcon fontSize="small" color="disabled" />
     </Tooltip>
-  ) : null;
+  );
 };
