@@ -317,24 +317,8 @@ def link_template(target_resource, field):
 def generate_list_parameters(resource, filter_fields):
     endpoint_parameters = []
 
-    sort_order = {
-        "id": 0,
-        "foreign_key": 1,
-        "name": 2,
-        "business_id": 3,
-        "other": 4,
-    }
-
-    # Sorting to keep the the changes to openapi.json minimal so its easier to review
-    sorted_filter_fields = sorted(
-        filter_fields,
-        key=lambda x: sort_order.get(
-            "foreign_key" if x[1].get("x-foreign-key") else x[0], 4
-        ),
-    )
-    # add all filterable fields
-
-    for field, field_info in sorted_filter_fields:
+    # add all filterable fields to list responses
+    for field, field_info in filter_fields:
         if field_info.get("x-foreign-key") is not None or field == "id":
             parameter_template = id_query_parameter_template(
                 field, field_info.get("description", None)

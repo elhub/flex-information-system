@@ -5476,13 +5476,12 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
                         "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
+                            "type": "string"
                         },
-                        "example": "eq.55",
-                        "description": "Reference to the accounting point that the controllable unit is connected to.",
-                        "name": "accounting_point_id"
+                        "example": "eq.somebusiness_id",
+                        "description": "Unique business identifier for the controllable unit."
                     },
                     {
                         "in": "query",
@@ -5495,12 +5494,13 @@
                     },
                     {
                         "in": "query",
-                        "name": "business_id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
                         },
-                        "example": "eq.somebusiness_id",
-                        "description": "Unique business identifier for the controllable unit."
+                        "example": "eq.55",
+                        "description": "Reference to the accounting point that the controllable unit is connected to.",
+                        "name": "accounting_point_id"
                     },
                     {
                         "description": "Filtering Columns",
@@ -6039,13 +6039,12 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
                         "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
+                            "type": "string"
                         },
-                        "example": "eq.55",
-                        "description": "Reference to the accounting point that the controllable unit is connected to.",
-                        "name": "accounting_point_id"
+                        "example": "eq.somebusiness_id",
+                        "description": "Unique business identifier for the controllable unit."
                     },
                     {
                         "in": "query",
@@ -6058,12 +6057,13 @@
                     },
                     {
                         "in": "query",
-                        "name": "business_id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
                         },
-                        "example": "eq.somebusiness_id",
-                        "description": "Unique business identifier for the controllable unit."
+                        "example": "eq.55",
+                        "description": "Reference to the accounting point that the controllable unit is connected to.",
+                        "name": "accounting_point_id"
                     },
                     {
                         "description": "Filtering Columns",
@@ -9147,6 +9147,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Free text name of the service providing group."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -9154,15 +9163,6 @@
                         "example": "eq.55",
                         "description": "Reference to the `party` (service provider) managing the group.",
                         "name": "service_provider_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Free text name of the service providing group."
                     },
                     {
                         "description": "Filtering Columns",
@@ -9701,6 +9701,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Free text name of the service providing group."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -9708,15 +9717,6 @@
                         "example": "eq.55",
                         "description": "Reference to the `party` (service provider) managing the group.",
                         "name": "service_provider_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Free text name of the service providing group."
                     },
                     {
                         "description": "Filtering Columns",
@@ -14472,15 +14472,6 @@
                     },
                     {
                         "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the entity. Maximum 128 characters."
-                    },
-                    {
-                        "in": "query",
                         "name": "business_id",
                         "schema": {
                             "type": "string"
@@ -14495,6 +14486,15 @@
                             "type": "string"
                         },
                         "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the entity. Maximum 128 characters."
                     },
                     {
                         "description": "Filtering Columns",
@@ -15012,6 +15012,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the client."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -15019,15 +15028,6 @@
                         "example": "eq.55",
                         "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
                         "name": "party_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the client."
                     },
                     {
                         "description": "Filtering Columns",
@@ -15638,6 +15638,23 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The business identifier of the party. Format depends on `business_id_type`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -15654,23 +15671,6 @@
                         },
                         "example": "eq.somename",
                         "description": "Name of the party. Maximum 128 characters."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id",
-                        "description": "The business identifier of the party. Format depends on `business_id_type`."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id_type",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id_type"
                     },
                     {
                         "description": "Filtering Columns",
@@ -16209,6 +16209,23 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The business identifier of the party. Format depends on `business_id_type`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -16225,23 +16242,6 @@
                         },
                         "example": "eq.somename",
                         "description": "Name of the party. Maximum 128 characters."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id",
-                        "description": "The business identifier of the party. Format depends on `business_id_type`."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id_type",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id_type"
                     },
                     {
                         "description": "Filtering Columns",
@@ -17826,6 +17826,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the technical resource. Maximum 128 characters."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -17833,15 +17842,6 @@
                         "example": "eq.55",
                         "description": "Reference to the controllable unit that this technical resource belongs to.",
                         "name": "controllable_unit_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the technical resource. Maximum 128 characters."
                     },
                     {
                         "description": "Filtering Columns",
@@ -18467,6 +18467,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the technical resource. Maximum 128 characters."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -18474,15 +18483,6 @@
                         "example": "eq.55",
                         "description": "Reference to the controllable unit that this technical resource belongs to.",
                         "name": "controllable_unit_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the technical resource. Maximum 128 characters."
                     },
                     {
                         "description": "Filtering Columns",
@@ -19472,6 +19472,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The GSRN metering point id of the accounting point."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -19479,15 +19488,6 @@
                         "example": "eq.55",
                         "description": "The system operator of the accounting point.",
                         "name": "system_operator_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id",
-                        "description": "The GSRN metering point id of the accounting point."
                     },
                     {
                         "description": "Filtering Columns",
@@ -20558,13 +20558,12 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
                         "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
+                            "type": "string"
                         },
-                        "example": "eq.55",
-                        "description": "The system operator responsible for the metering grid area.",
-                        "name": "system_operator_id"
+                        "example": "eq.somebusiness_id",
+                        "description": "The EIC-Y code for this metering grid area."
                     },
                     {
                         "in": "query",
@@ -20577,12 +20576,13 @@
                     },
                     {
                         "in": "query",
-                        "name": "business_id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
                         },
-                        "example": "eq.somebusiness_id",
-                        "description": "The EIC-Y code for this metering grid area."
+                        "example": "eq.55",
+                        "description": "The system operator responsible for the metering grid area.",
+                        "name": "system_operator_id"
                     },
                     {
                         "in": "query",
@@ -21090,21 +21090,21 @@
                     },
                     {
                         "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "The name of the product type."
-                    },
-                    {
-                        "in": "query",
                         "name": "business_id",
                         "schema": {
                             "type": "string"
                         },
                         "example": "eq.somebusiness_id",
                         "description": "The code for this product type."
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "The name of the product type."
                     },
                     {
                         "description": "Filtering Columns",

@@ -3907,17 +3907,17 @@ export type ListControllableUnitData = {
      */
     id?: string;
     /**
-     * Reference to the accounting point that the controllable unit is connected to.
+     * Unique business identifier for the controllable unit.
      */
-    accounting_point_id?: string;
+    business_id?: string;
     /**
      * Free text name of the controllable unit.
      */
     name?: string;
     /**
-     * Unique business identifier for the controllable unit.
+     * Reference to the accounting point that the controllable unit is connected to.
      */
-    business_id?: string;
+    accounting_point_id?: string;
     /**
      * Filtering Columns
      */
@@ -4158,17 +4158,17 @@ export type ListControllableUnitHistoryData = {
      */
     controllable_unit_id?: string;
     /**
-     * Reference to the accounting point that the controllable unit is connected to.
+     * Unique business identifier for the controllable unit.
      */
-    accounting_point_id?: string;
+    business_id?: string;
     /**
      * Free text name of the controllable unit.
      */
     name?: string;
     /**
-     * Unique business identifier for the controllable unit.
+     * Reference to the accounting point that the controllable unit is connected to.
      */
-    business_id?: string;
+    accounting_point_id?: string;
     /**
      * Filtering Columns
      */
@@ -5553,13 +5553,13 @@ export type ListServiceProvidingGroupData = {
      */
     id?: string;
     /**
-     * Reference to the `party` (service provider) managing the group.
-     */
-    service_provider_id?: string;
-    /**
      * Free text name of the service providing group.
      */
     name?: string;
+    /**
+     * Reference to the `party` (service provider) managing the group.
+     */
+    service_provider_id?: string;
     /**
      * Filtering Columns
      */
@@ -5800,13 +5800,13 @@ export type ListServiceProvidingGroupHistoryData = {
      */
     service_providing_group_id?: string;
     /**
-     * Reference to the `party` (service provider) managing the group.
-     */
-    service_provider_id?: string;
-    /**
      * Free text name of the service providing group.
      */
     name?: string;
+    /**
+     * Reference to the `party` (service provider) managing the group.
+     */
+    service_provider_id?: string;
     /**
      * Filtering Columns
      */
@@ -7948,14 +7948,14 @@ export type ListEntityData = {
      */
     id?: string;
     /**
-     * Name of the entity. Maximum 128 characters.
-     */
-    name?: string;
-    /**
      * The business identifier of the entity. Format depends on `business_id_type`.
      */
     business_id?: string;
     business_id_type?: string;
+    /**
+     * Name of the entity. Maximum 128 characters.
+     */
+    name?: string;
     /**
      * Filtering Columns
      */
@@ -8190,13 +8190,13 @@ export type ListEntityClientData = {
      */
     entity_id?: string;
     /**
-     * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
-     */
-    party_id?: string;
-    /**
      * Name of the client.
      */
     name?: string;
+    /**
+     * Reference to the party this client allows to assume. A null value means the client cannot assume any party.
+     */
+    party_id?: string;
     /**
      * Filtering Columns
      */
@@ -8478,6 +8478,11 @@ export type ListPartyData = {
      */
     id?: string;
     /**
+     * The business identifier of the party. Format depends on `business_id_type`.
+     */
+    business_id?: string;
+    business_id_type?: string;
+    /**
      * Reference to the entity that is the parent of the party.
      */
     entity_id?: string;
@@ -8485,11 +8490,6 @@ export type ListPartyData = {
      * Name of the party. Maximum 128 characters.
      */
     name?: string;
-    /**
-     * The business identifier of the party. Format depends on `business_id_type`.
-     */
-    business_id?: string;
-    business_id_type?: string;
     /**
      * Filtering Columns
      */
@@ -8724,6 +8724,11 @@ export type ListPartyHistoryData = {
      */
     party_id?: string;
     /**
+     * The business identifier of the party. Format depends on `business_id_type`.
+     */
+    business_id?: string;
+    business_id_type?: string;
+    /**
      * Reference to the entity that is the parent of the party.
      */
     entity_id?: string;
@@ -8731,11 +8736,6 @@ export type ListPartyHistoryData = {
      * Name of the party. Maximum 128 characters.
      */
     name?: string;
-    /**
-     * The business identifier of the party. Format depends on `business_id_type`.
-     */
-    business_id?: string;
-    business_id_type?: string;
     /**
      * Filtering Columns
      */
@@ -9432,13 +9432,13 @@ export type ListTechnicalResourceData = {
      */
     id?: string;
     /**
-     * Reference to the controllable unit that this technical resource belongs to.
-     */
-    controllable_unit_id?: string;
-    /**
      * Name of the technical resource. Maximum 128 characters.
      */
     name?: string;
+    /**
+     * Reference to the controllable unit that this technical resource belongs to.
+     */
+    controllable_unit_id?: string;
     /**
      * Filtering Columns
      */
@@ -9724,13 +9724,13 @@ export type ListTechnicalResourceHistoryData = {
      */
     technical_resource_id?: string;
     /**
-     * Reference to the controllable unit that this technical resource belongs to.
-     */
-    controllable_unit_id?: string;
-    /**
      * Name of the technical resource. Maximum 128 characters.
      */
     name?: string;
+    /**
+     * Reference to the controllable unit that this technical resource belongs to.
+     */
+    controllable_unit_id?: string;
     /**
      * Filtering Columns
      */
@@ -10170,13 +10170,13 @@ export type ListAccountingPointData = {
      */
     id?: string;
     /**
-     * The system operator of the accounting point.
-     */
-    system_operator_id?: string;
-    /**
      * The GSRN metering point id of the accounting point.
      */
     business_id?: string;
+    /**
+     * The system operator of the accounting point.
+     */
+    system_operator_id?: string;
     /**
      * Filtering Columns
      */
@@ -10651,17 +10651,17 @@ export type ListMeteringGridAreaData = {
      */
     id?: string;
     /**
-     * The system operator responsible for the metering grid area.
+     * The EIC-Y code for this metering grid area.
      */
-    system_operator_id?: string;
+    business_id?: string;
     /**
      * The name of the metering grid area.
      */
     name?: string;
     /**
-     * The EIC-Y code for this metering grid area.
+     * The system operator responsible for the metering grid area.
      */
-    business_id?: string;
+    system_operator_id?: string;
     /**
      * The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.
      */
@@ -10884,13 +10884,13 @@ export type ListProductTypeData = {
      */
     id?: string;
     /**
-     * The name of the product type.
-     */
-    name?: string;
-    /**
      * The code for this product type.
      */
     business_id?: string;
+    /**
+     * The name of the product type.
+     */
+    name?: string;
     /**
      * Filtering Columns
      */
