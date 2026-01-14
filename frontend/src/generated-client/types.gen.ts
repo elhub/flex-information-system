@@ -10391,6 +10391,14 @@ export type ListAccountingPointBiddingZoneData = {
      */
     accounting_point_id?: string;
     /**
+     * The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10470,6 +10478,14 @@ export type ListAccountingPointEndUserData = {
      * The end user on the accounting point.
      */
     end_user_id?: string;
+    /**
+     * The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */
@@ -10647,6 +10663,14 @@ export type ListMeteringGridAreaData = {
      */
     business_id?: string;
     /**
+     * The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
+    /**
      * Filtering Columns
      */
     select?: string;
@@ -10775,6 +10799,14 @@ export type ListAccountingPointMeteringGridAreaData = {
      * The metering grid area of the accounting point.
      */
     metering_grid_area_id?: string;
+    /**
+     * The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
+     */
+    valid_from?: string;
+    /**
+     * The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
+     */
+    valid_to?: string;
     /**
      * Filtering Columns
      */

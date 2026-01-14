@@ -7924,6 +7924,18 @@ export const zListAccountingPointBiddingZoneData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -7988,6 +8000,18 @@ export const zListAccountingPointEndUserData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -8146,6 +8170,18 @@ export const zListMeteringGridAreaData = z.object({
           z.string().optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -8233,6 +8269,18 @@ export const zListAccountingPointMeteringGridAreaData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(

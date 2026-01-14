@@ -19976,6 +19976,24 @@
                         "name": "accounting_point_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -20153,6 +20171,24 @@
                         "example": "eq.55",
                         "description": "The end user on the accounting point.",
                         "name": "end_user_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",
@@ -20549,6 +20585,24 @@
                         "description": "The EIC-Y code for this metering grid area."
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the metering grid area is active. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the metering grid area is active. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -20846,6 +20900,24 @@
                         "example": "eq.55",
                         "description": "The metering grid area of the accounting point.",
                         "name": "metering_grid_area_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",

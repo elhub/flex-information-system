@@ -17,6 +17,8 @@ def _get_kwargs(
     system_operator_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -31,6 +33,10 @@ def _get_kwargs(
     params["name"] = name
 
     params["business_id"] = business_id
+
+    params["valid_from"] = valid_from
+
+    params["valid_to"] = valid_to
 
     params["select"] = select
 
@@ -149,6 +155,8 @@ def sync_detailed(
     system_operator_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -161,6 +169,8 @@ def sync_detailed(
         system_operator_id (str | Unset):
         name (str | Unset):
         business_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -179,6 +189,8 @@ def sync_detailed(
         system_operator_id=system_operator_id,
         name=name,
         business_id=business_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -199,6 +211,8 @@ def sync(
     system_operator_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -211,6 +225,8 @@ def sync(
         system_operator_id (str | Unset):
         name (str | Unset):
         business_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -230,6 +246,8 @@ def sync(
         system_operator_id=system_operator_id,
         name=name,
         business_id=business_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -244,6 +262,8 @@ async def asyncio_detailed(
     system_operator_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -256,6 +276,8 @@ async def asyncio_detailed(
         system_operator_id (str | Unset):
         name (str | Unset):
         business_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -274,6 +296,8 @@ async def asyncio_detailed(
         system_operator_id=system_operator_id,
         name=name,
         business_id=business_id,
+        valid_from=valid_from,
+        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -292,6 +316,8 @@ async def asyncio(
     system_operator_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    valid_from: str | Unset = UNSET,
+    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -304,6 +330,8 @@ async def asyncio(
         system_operator_id (str | Unset):
         name (str | Unset):
         business_id (str | Unset):
+        valid_from (str | Unset):
+        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -324,6 +352,8 @@ async def asyncio(
             system_operator_id=system_operator_id,
             name=name,
             business_id=business_id,
+            valid_from=valid_from,
+            valid_to=valid_to,
             select=select,
             order=order,
             offset=offset,
