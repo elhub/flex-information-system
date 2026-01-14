@@ -96,6 +96,12 @@ databaseChangeLog:
       file: ./metering_grid_area.sql
       relativeToChangelogFile: true
   - include:
+      file: ./metering_grid_area_bidding_zone.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./metering_grid_area_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./accounting_point.sql
       relativeToChangelogFile: true
   - include:
@@ -236,6 +242,12 @@ databaseChangeLog:
 
   - include:
       file: ./metering_grid_area_migrations.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./metering_grid_area_bidding_zone_migrations.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./metering_grid_area_system_operator_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./party_membership_migrations.sql
