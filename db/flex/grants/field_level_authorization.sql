@@ -1952,6 +1952,86 @@ GRANT SELECT ON TABLE
 flex.accounting_point_balance_responsible_party
 TO flex_third_party;
 
+-- changeset flex:flex-grant-accounting-point-bidding-zone-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-accounting-point-bidding-zone-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-accounting-point-bidding-zone-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_end_user;
+
+-- changeset flex:flex-grant-accounting-point-bidding-zone-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-bidding-zone-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-accounting-point-bidding-zone-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-bidding-zone-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-accounting-point-bidding-zone-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_bidding_zone
+TO flex_third_party;
+
+-- changeset flex:flex-grant-accounting-point-end-user-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-accounting-point-end-user-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-accounting-point-end-user-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_end_user;
+
+-- changeset flex:flex-grant-accounting-point-end-user-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-end-user-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-accounting-point-end-user-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-end-user-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-accounting-point-end-user-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_end_user
+TO flex_third_party;
+
 -- changeset flex:flex-grant-accounting-point-energy-supplier-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE
 flex.accounting_point_energy_supplier
@@ -1990,6 +2070,86 @@ TO flex_service_provider;
 -- changeset flex:flex-grant-accounting-point-energy-supplier-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT ON TABLE
 flex.accounting_point_energy_supplier
+TO flex_third_party;
+
+-- changeset flex:flex-grant-metering-grid-area-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-metering-grid-area-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-metering-grid-area-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_end_user;
+
+-- changeset flex:flex-grant-metering-grid-area-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-metering-grid-area-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-metering-grid-area-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-metering-grid-area-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-metering-grid-area-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.metering_grid_area
+TO flex_third_party;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-brp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
+TO flex_balance_responsible_party;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-es-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
+TO flex_energy_supplier;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-eu-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
+TO flex_end_user;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-fiso-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
+TO flex_flexibility_information_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-mo-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
+TO flex_market_operator;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-so-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
+TO flex_system_operator;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-sp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
+TO flex_service_provider;
+
+-- changeset flex:flex-grant-accounting-point-metering-grid-area-tp-select endDelimiter:-- runAlways:true
+GRANT SELECT ON TABLE
+flex.accounting_point_metering_grid_area
 TO flex_third_party;
 
 -- changeset flex:flex-grant-product-type-brp-select endDelimiter:-- runAlways:true

@@ -11,10 +11,22 @@ export type FieldLabel =
   | "accounting_point_balance_responsible_party.energy_direction"
   | "accounting_point_balance_responsible_party.valid_from"
   | "accounting_point_balance_responsible_party.valid_to"
+  | "accounting_point_bidding_zone.accounting_point_id"
+  | "accounting_point_bidding_zone.bidding_zone"
+  | "accounting_point_bidding_zone.valid_from"
+  | "accounting_point_bidding_zone.valid_to"
+  | "accounting_point_end_user.accounting_point_id"
+  | "accounting_point_end_user.end_user_id"
+  | "accounting_point_end_user.valid_from"
+  | "accounting_point_end_user.valid_to"
   | "accounting_point_energy_supplier.accounting_point_id"
   | "accounting_point_energy_supplier.energy_supplier_id"
   | "accounting_point_energy_supplier.valid_from"
   | "accounting_point_energy_supplier.valid_to"
+  | "accounting_point_metering_grid_area.accounting_point_id"
+  | "accounting_point_metering_grid_area.metering_grid_area_id"
+  | "accounting_point_metering_grid_area.valid_from"
+  | "accounting_point_metering_grid_area.valid_to"
   | "controllable_unit.accounting_point_id"
   | "controllable_unit.business_id"
   | "controllable_unit.grid_node_id"
@@ -140,6 +152,14 @@ export type FieldLabel =
   | "identity.id"
   | "identity.party_id"
   | "identity.party_name"
+  | "metering_grid_area.business_id"
+  | "metering_grid_area.id"
+  | "metering_grid_area.name"
+  | "metering_grid_area.recorded_at"
+  | "metering_grid_area.recorded_by"
+  | "metering_grid_area.system_operator_id"
+  | "metering_grid_area.valid_from"
+  | "metering_grid_area.valid_to"
   | "notice.data"
   | "notice.party_id"
   | "notice.source"
@@ -762,10 +782,30 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_balance_responsible_party.energy_direction": "Energy direction",
     "accounting_point_balance_responsible_party.valid_from": "Valid from",
     "accounting_point_balance_responsible_party.valid_to": "Valid to",
+    "accounting_point_bidding_zone.accounting_point_id": "Accounting point",
+    "accounting_point_bidding_zone.bidding_zone": "Bidding zone",
+    "accounting_point_bidding_zone.valid_from": "Valid from",
+    "accounting_point_bidding_zone.valid_to": "Valid to",
+    "accounting_point_end_user.accounting_point_id": "Accounting point",
+    "accounting_point_end_user.end_user_id": "End User",
+    "accounting_point_end_user.valid_from": "Valid from",
+    "accounting_point_end_user.valid_to": "Valid to",
     "accounting_point_energy_supplier.accounting_point_id": "Accounting point",
     "accounting_point_energy_supplier.energy_supplier_id": "Energy supplier",
     "accounting_point_energy_supplier.valid_from": "Valid from",
     "accounting_point_energy_supplier.valid_to": "Valid to",
+    "metering_grid_area.id": "ID",
+    "metering_grid_area.business_id": "Business ID",
+    "metering_grid_area.name": "Name",
+    "metering_grid_area.system_operator_id": "System operator",
+    "metering_grid_area.valid_from": "Valid from",
+    "metering_grid_area.valid_to": "Valid to",
+    "metering_grid_area.recorded_at": "Recorded at",
+    "metering_grid_area.recorded_by": "Recorded by",
+    "accounting_point_metering_grid_area.accounting_point_id": "Accounting point",
+    "accounting_point_metering_grid_area.metering_grid_area_id": "Metering grid area",
+    "accounting_point_metering_grid_area.valid_from": "Valid from",
+    "accounting_point_metering_grid_area.valid_to": "Valid to",
     "product_type.id": "ID",
     "product_type.business_id": "Business ID",
     "product_type.name": "Name",
@@ -1223,10 +1263,30 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_balance_responsible_party.energy_direction": "Energiretning",
     "accounting_point_balance_responsible_party.valid_from": "Gyldig fra",
     "accounting_point_balance_responsible_party.valid_to": "Gyldig til",
+    "accounting_point_bidding_zone.accounting_point_id": "Avregningspunkt",
+    "accounting_point_bidding_zone.bidding_zone": "Budområde",
+    "accounting_point_bidding_zone.valid_from": "Gyldig fra",
+    "accounting_point_bidding_zone.valid_to": "Gyldig til",
+    "accounting_point_end_user.accounting_point_id": "Avregningspunkt",
+    "accounting_point_end_user.end_user_id": "Sluttbruker",
+    "accounting_point_end_user.valid_from": "Gyldig fra",
+    "accounting_point_end_user.valid_to": "Gyldig til",
     "accounting_point_energy_supplier.accounting_point_id": "Avregningspunkt",
     "accounting_point_energy_supplier.energy_supplier_id": "Kraftleverandør",
     "accounting_point_energy_supplier.valid_from": "Gyldig fra",
     "accounting_point_energy_supplier.valid_to": "Gyldig til",
+    "metering_grid_area.id": "ID",
+    "metering_grid_area.business_id": "Forretnings-ID",
+    "metering_grid_area.name": "Navn",
+    "metering_grid_area.system_operator_id": "Systemoperatør",
+    "metering_grid_area.valid_from": "Gyldig fra",
+    "metering_grid_area.valid_to": "Gyldig til",
+    "metering_grid_area.recorded_at": "Registrert",
+    "metering_grid_area.recorded_by": "Registrert av",
+    "accounting_point_metering_grid_area.accounting_point_id": "Avregningspunkt",
+    "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
+    "accounting_point_metering_grid_area.valid_from": "Gyldig fra",
+    "accounting_point_metering_grid_area.valid_to": "Gyldig til",
     "product_type.id": "ID",
     "product_type.business_id": "Forretnings-ID",
     "product_type.name": "Navn",
@@ -1684,10 +1744,30 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_balance_responsible_party.energy_direction": "Energiretning",
     "accounting_point_balance_responsible_party.valid_from": "Gyldig frå",
     "accounting_point_balance_responsible_party.valid_to": "Gyldig til",
+    "accounting_point_bidding_zone.accounting_point_id": "Avregningspunkt",
+    "accounting_point_bidding_zone.bidding_zone": "Budområde",
+    "accounting_point_bidding_zone.valid_from": "Gyldig frå",
+    "accounting_point_bidding_zone.valid_to": "Gyldig til",
+    "accounting_point_end_user.accounting_point_id": "Avregningspunkt",
+    "accounting_point_end_user.end_user_id": "Sluttbrukar",
+    "accounting_point_end_user.valid_from": "Gyldig frå",
+    "accounting_point_end_user.valid_to": "Gyldig til",
     "accounting_point_energy_supplier.accounting_point_id": "Avregningspunkt",
     "accounting_point_energy_supplier.energy_supplier_id": "Kraftleverandør",
     "accounting_point_energy_supplier.valid_from": "Gyldig frå",
     "accounting_point_energy_supplier.valid_to": "Gyldig til",
+    "metering_grid_area.id": "ID",
+    "metering_grid_area.business_id": "Forretnings-ID",
+    "metering_grid_area.name": "Namn",
+    "metering_grid_area.system_operator_id": "Systemoperatør",
+    "metering_grid_area.valid_from": "Gyldig frå",
+    "metering_grid_area.valid_to": "Gyldig til",
+    "metering_grid_area.recorded_at": "Registrert",
+    "metering_grid_area.recorded_by": "Registrert av",
+    "accounting_point_metering_grid_area.accounting_point_id": "Avregningspunkt",
+    "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
+    "accounting_point_metering_grid_area.valid_from": "Gyldig frå",
+    "accounting_point_metering_grid_area.valid_to": "Gyldig til",
     "product_type.id": "ID",
     "product_type.business_id": "Forretnings-ID",
     "product_type.name": "Namn",

@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Resolver } from "react-hook-form";
+import { EmptyObject, Resolver } from "react-hook-form";
+import { ErrorMessage } from "./generated-client";
 
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
@@ -36,3 +37,21 @@ type FieldValues = Record<string, any>;
 // React admin does not support required fields in the schema, so we need to untype the resolver
 export const unTypedZodResolver = (schema: Parameters<typeof zodResolver>[0]) =>
   zodResolver(schema) as Resolver<FieldValues>;
+
+export type Response<T> =
+  | {
+      data: T;
+      error: undefined;
+    }
+  | {
+      data: undefined;
+      error: ErrorMessage | EmptyObject;
+    };
+
+export const throwOnError = <T>(response: Response<T>): T => {
+  const { data, error } = response;
+  if (error) {
+    throw error;
+  }
+  return data;
+};

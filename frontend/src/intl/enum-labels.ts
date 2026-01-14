@@ -3,6 +3,11 @@
 export type EnumLabel =
   | "accounting_point_balance_responsible_party.energy_direction.consumption"
   | "accounting_point_balance_responsible_party.energy_direction.production"
+  | "accounting_point_bidding_zone.bidding_zone.NO1"
+  | "accounting_point_bidding_zone.bidding_zone.NO2"
+  | "accounting_point_bidding_zone.bidding_zone.NO3"
+  | "accounting_point_bidding_zone.bidding_zone.NO4"
+  | "accounting_point_bidding_zone.bidding_zone.NO5"
   | "comment.visibility.any_involved_party"
   | "comment.visibility.same_party"
   | "controllable_unit.grid_validation_status.in_progress"
@@ -24,6 +29,11 @@ export type EnumLabel =
   | "entity.business_id_type.pid"
   | "entity.type.organisation"
   | "entity.type.person"
+  | "metering_grid_area.price_area.NO1"
+  | "metering_grid_area.price_area.NO2"
+  | "metering_grid_area.price_area.NO3"
+  | "metering_grid_area.price_area.NO4"
+  | "metering_grid_area.price_area.NO5"
   | "party.business_id_type.eic_x"
   | "party.business_id_type.gln"
   | "party.business_id_type.org"
@@ -161,6 +171,16 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.status.terminated": "Terminated",
     "accounting_point_balance_responsible_party.energy_direction.consumption": "Consumption",
     "accounting_point_balance_responsible_party.energy_direction.production": "Production",
+    "accounting_point_bidding_zone.bidding_zone.NO1": "NO1 (Eastern Norway)",
+    "accounting_point_bidding_zone.bidding_zone.NO2": "NO2 (Southern Norway)",
+    "accounting_point_bidding_zone.bidding_zone.NO3": "NO3 (Central Norway)",
+    "accounting_point_bidding_zone.bidding_zone.NO4": "NO4 (Northern Norway)",
+    "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Western Norway)",
+    "metering_grid_area.price_area.NO1": "NO1 (Eastern Norway)",
+    "metering_grid_area.price_area.NO2": "NO2 (Southern Norway)",
+    "metering_grid_area.price_area.NO3": "NO3 (Central Norway)",
+    "metering_grid_area.price_area.NO4": "NO4 (Northern Norway)",
+    "metering_grid_area.price_area.NO5": "NO5 (Western Norway)",
     "system_operator_product_type.status.active": "Active",
     "system_operator_product_type.status.inactive": "Inactive",
     "service_provider_product_application.status.requested": "Requested",
@@ -252,6 +272,16 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.status.terminated": "Terminert",
     "accounting_point_balance_responsible_party.energy_direction.consumption": "Forbruk",
     "accounting_point_balance_responsible_party.energy_direction.production": "Produksjon",
+    "accounting_point_bidding_zone.bidding_zone.NO1": "NO1 (Østlandet)",
+    "accounting_point_bidding_zone.bidding_zone.NO2": "NO2 (Sørvest-Norge)",
+    "accounting_point_bidding_zone.bidding_zone.NO3": "NO3 (Midt-Norge)",
+    "accounting_point_bidding_zone.bidding_zone.NO4": "NO4 (Nord-Norge)",
+    "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Vestlandet)",
+    "metering_grid_area.price_area.NO1": "NO1 (Østlandet)",
+    "metering_grid_area.price_area.NO2": "NO2 (Sørvest-Norge)",
+    "metering_grid_area.price_area.NO3": "NO3 (Midt-Norge)",
+    "metering_grid_area.price_area.NO4": "NO4 (Nord-Norge)",
+    "metering_grid_area.price_area.NO5": "NO5 (Vestlandet)",
     "system_operator_product_type.status.active": "Aktiv",
     "system_operator_product_type.status.inactive": "Inaktiv",
     "service_provider_product_application.status.requested": "Forespurt",
@@ -343,6 +373,16 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.status.terminated": "Terminert",
     "accounting_point_balance_responsible_party.energy_direction.consumption": "Forbruk",
     "accounting_point_balance_responsible_party.energy_direction.production": "Produksjon",
+    "accounting_point_bidding_zone.bidding_zone.NO1": "NO1 (Østlandet)",
+    "accounting_point_bidding_zone.bidding_zone.NO2": "NO2 (Sørvest-Noreg)",
+    "accounting_point_bidding_zone.bidding_zone.NO3": "NO3 (Midt-Noreg)",
+    "accounting_point_bidding_zone.bidding_zone.NO4": "NO4 (Nord-Noreg)",
+    "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Vestlandet)",
+    "metering_grid_area.price_area.NO1": "NO1 (Østlandet)",
+    "metering_grid_area.price_area.NO2": "NO2 (Sørvest-Noreg)",
+    "metering_grid_area.price_area.NO3": "NO3 (Midt-Noreg)",
+    "metering_grid_area.price_area.NO4": "NO4 (Nord-Noreg)",
+    "metering_grid_area.price_area.NO5": "NO5 (Vestlandet)",
     "system_operator_product_type.status.active": "Aktiv",
     "system_operator_product_type.status.inactive": "Inaktiv",
     "service_provider_product_application.status.requested": "Førespurt",
